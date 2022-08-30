@@ -1,0 +1,8 @@
+h1 { font-size:20px; margin:0px; margin-bottom:15px; padding:0px; font-weight:bold; color:#01bbe5 !important; } 
+h2 { font-size:12px; font-weight:bold; color:#565656 !important; text-transform:uppercase; margin:10px 0px; padding:0px; padding-bottom:5px; border-bottom:1px solid #ddd; } 
+h3 { color:#565656 !important; font-weight:bold; font-size:12px; margin:0px; margin-bottom:10px; padding:0px; } 
+body{background-color:#575757;} 
+a { cursor:pointer;color:#01bbe5;text-decoration:none;border:none; } 
+.acymailing_online {color:#d2d1d1; cursor:pointer;} 
+.acymailing_unsub {color:#d2d1d1; cursor:pointer;} 
+.acymailing_readmore {cursor:pointer; font-weight:bold; color:#fff; background-color:#01bbe5; padding:2px 5px;} 

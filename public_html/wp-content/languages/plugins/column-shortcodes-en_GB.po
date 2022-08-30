@@ -1,0 +1,160 @@
+# Translation of Plugins - Column Shortcodes - Stable (latest release) in English (UK)
+# This file is distributed under the same license as the Plugins - Column Shortcodes - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2020-06-18 13:12:25+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/3.0.0-alpha\n"
+"Language: en_GB\n"
+"Project-Id-Version: Plugins - Column Shortcodes - Stable (latest release)\n"
+
+#. Author URI of the plugin
+msgid "https://www.admincolumns.com/"
+msgstr "https://www.admincolumns.com/"
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/plugins/column-shortcodes"
+msgstr "https://en-gb.wordpress.org/plugins/column-shortcodes"
+
+#: column-shortcodes.php:444
+msgid "%s Active Installs"
+msgstr "%s Active Installs"
+
+#: column-shortcodes.php:435
+msgid "Download for Free"
+msgstr "Download for Free"
+
+#: column-shortcodes.php:431
+msgid "Be sure to check out other plugins by Codepress, such as %s. It adds custom columns to your posts, users, comments and media overview in your admin. Get more insight in your content now!"
+msgstr "Be sure to check out other plugins by Codepress, such as %s. It adds custom columns to your posts, users, comments and media overview in your admin. Get more insight into your content now!"
+
+#: column-shortcodes.php:417
+msgid "Tweet"
+msgstr "Tweet"
+
+#: column-shortcodes.php:416
+msgid "I'm using Column Shortcodes for WordPress!"
+msgstr "I'm using Column Shortcodes for WordPress!"
+
+#: column-shortcodes.php:411
+msgid "Rate"
+msgstr "Rate"
+
+#: column-shortcodes.php:406
+msgid "We would really love it if you could show your appreciation by giving us a rating on WordPress.org or tweet about Column Shortcodes!"
+msgstr "We would really love it if you could show your appreciation by giving us a rating on WordPress.org or tweet about Column Shortcodes!"
+
+#: column-shortcodes.php:403
+msgid "Woohoo! We're glad to hear that!"
+msgstr "Woohoo! We're glad to hear that!"
+
+#: column-shortcodes.php:393
+msgid "Support Forums"
+msgstr "Support Forums"
+
+#: column-shortcodes.php:388
+msgid "What's wrong? Need help? Let us know: please open a support topic on WordPress.org!"
+msgstr "What's wrong? Need help? Let us know: please open a support topic on WordPress.org!"
+
+#: column-shortcodes.php:382
+msgid "No"
+msgstr "No"
+
+#: column-shortcodes.php:381
+msgid "Yes"
+msgstr "Yes"
+
+#: column-shortcodes.php:378
+msgid "Are you happy with Columns Shortcodes?"
+msgstr "Are you happy with Column Shortcodes?"
+
+#. Author of the plugin
+msgid "Codepress"
+msgstr "Codepress"
+
+#. Description of the plugin
+msgid "Adds shortcodes to easily create columns in your posts or pages"
+msgstr "Adds shortcodes to easily create columns in your posts or pages"
+
+#. Plugin Name of the plugin
+msgid "Column Shortcodes"
+msgstr "Column Shortcodes"
+
+#: column-shortcodes.php:588
+msgid "last"
+msgstr "last"
+
+#: column-shortcodes.php:561
+msgid "five sixth"
+msgstr "five-sixth"
+
+#: column-shortcodes.php:560
+msgid "one sixth"
+msgstr "one-sixth"
+
+#: column-shortcodes.php:559
+msgid "four fifth"
+msgstr "four-fifth"
+
+#: column-shortcodes.php:558
+msgid "three fifth"
+msgstr "three-fifth"
+
+#: column-shortcodes.php:557
+msgid "two fifth"
+msgstr "two-fifth"
+
+#: column-shortcodes.php:556
+msgid "one fifth"
+msgstr "one-fifth"
+
+#: column-shortcodes.php:555
+msgid "three fourth"
+msgstr "three-fourth"
+
+#: column-shortcodes.php:554
+msgid "two third"
+msgstr "two-third"
+
+#: column-shortcodes.php:553
+msgid "one fourth"
+msgstr "one-fourth"
+
+#: column-shortcodes.php:552
+msgid "one third"
+msgstr "one-third"
+
+#: column-shortcodes.php:551
+msgid "one half"
+msgstr "one-half"
+
+#: column-shortcodes.php:550
+msgid "full width"
+msgstr "full width"
+
+#: column-shortcodes.php:367
+msgid "reset"
+msgstr "reset"
+
+#: column-shortcodes.php:352
+msgid "Enter padding first, then select your column shortcode."
+msgstr "Enter padding first, then select your column shortcode."
+
+#: column-shortcodes.php:351
+msgid "Use the input fields below to customize the padding of your column shortcode."
+msgstr "Use the input fields below to customise the padding of your column shortcode."
+
+#: column-shortcodes.php:349
+msgid "Column padding ( optional )"
+msgstr "Column padding ( optional )"
+
+#: column-shortcodes.php:342
+msgid "Column shortcodes"
+msgstr "Column shortcodes"
+
+#: column-shortcodes.php:306
+msgid "Select shortcode"
+msgstr "Select shortcode"

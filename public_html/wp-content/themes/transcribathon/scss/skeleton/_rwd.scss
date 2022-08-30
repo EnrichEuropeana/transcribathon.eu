@@ -1,0 +1,14 @@
+
+.rwd {
+	&-mobile-display {
+		display: none;
+	}
+}
+
+@media all and (max-width: 630px) {
+	.rwd {
+		&-mobile-display {
+			display: block;
+		}
+	}
+}

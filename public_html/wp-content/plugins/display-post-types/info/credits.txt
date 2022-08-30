@@ -1,0 +1,3 @@
+== Resources ==
+* flickity.pkgd.js https://github.com/metafizzy/flickity, (C) Desandro, [GPLV3]
+* Font Awesome SVG icon http://fontawesome.io/, (C) Dave Gandy, [CC BY 4.0](https://fontawesome.com/license/free)

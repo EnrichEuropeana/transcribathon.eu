@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'pretty_version' => 'dev-develop',
+        'version' => 'dev-develop',
+        'type' => 'wordpress-plugin',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'reference' => 'f899207b5ebb2cdd3e22547cb45750a4e1a7245e',
+        'name' => 'metaslider/metaslider-pro',
+        'dev' => false,
+    ),
+    'versions' => array(
+        'davidanderson684/simba-plugin-manager-updater' => array(
+            'pretty_version' => 'v1.8.14',
+            'version' => '1.8.14.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../davidanderson684/simba-plugin-manager-updater',
+            'aliases' => array(),
+            'reference' => '79162ec35b1b7753a7f7c38ea5569e90345d210a',
+            'dev_requirement' => false,
+        ),
+        'metaslider/metaslider-pro' => array(
+            'pretty_version' => 'dev-develop',
+            'version' => 'dev-develop',
+            'type' => 'wordpress-plugin',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'reference' => 'f899207b5ebb2cdd3e22547cb45750a4e1a7245e',
+            'dev_requirement' => false,
+        ),
+        'yahnis-elsts/plugin-update-checker' => array(
+            'pretty_version' => 'v4.11',
+            'version' => '4.11.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../yahnis-elsts/plugin-update-checker',
+            'aliases' => array(),
+            'reference' => '3155f2d3f1ca5e7ed3f25b256f020e370515af43',
+            'dev_requirement' => false,
+        ),
+    ),
+);

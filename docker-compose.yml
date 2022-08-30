@@ -1,0 +1,45 @@
+version: '3.7'
+
+services:
+  php_apache:
+    image: scto-php:7.4
+    container_name: transcribathon_eu
+    volumes:
+      - ./public_html/:/var/www/html/
+    ports:
+      - 443:443
+      - 80:80
+    depends_on:
+      - db
+    env_file:
+      - .env
+    networks:
+      - tp_backend
+
+  db:
+    image: mysql:5.7
+    container_name: transcribathon_eu_mysql
+    volumes:
+      - wp_db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 3306:3306
+    networks:
+      - tp_backend
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1225:1025
+      - 8025:8025
+
+volumes:
+  wp_db:
+
+networks:
+  tp_backend:
+    external: true

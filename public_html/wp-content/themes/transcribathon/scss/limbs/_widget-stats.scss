@@ -1,0 +1,32 @@
+.widget_tct-home-stats-widget {
+	text-align: center !important;
+	margin: 95px 0 30px !important;
+	@extend .hr-tb;
+
+	.home-stats-content {
+		max-width: 960px;
+		margin: auto;
+		padding: 40px 0;
+		overflow: hidden;
+	}
+
+	.stat-number {
+		display: block;
+		margin: 0 auto;
+		text-align: center;
+
+		h3 {
+			font-family: $f-headline;
+			font-size: $txt-xxl;
+			margin: 0;
+
+			span {
+				display: block;
+				font-size: $txt-l;
+				font-weight: $regular;
+				text-transform: uppercase;
+				letter-spacing: 0.3px;
+			}
+		}
+	}
+}

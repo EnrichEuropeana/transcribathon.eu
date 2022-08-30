@@ -1,0 +1,364 @@
+/*
+Theme Name: Transcribathon
+Description: Stylesheet for Story Page
+*/
+
+
+/* ---------------------------------- Story Page -------------------------------------------- */
+
+/* Image Slider */
+#carousel-image-slider {
+    margin-bottom: 20px;
+}
+#carousel-image-slider button:focus {
+    background: #0a72cc!important;
+}
+.carousel-control-prev,
+.carousel-control-next {
+    height: 50px;
+    width:20px!important;
+    padding: 0!important;
+    top: 50%!important;
+    transform: translateY(-60%);
+    background-color: #0a72cc!important;
+}
+.carousel-indicators {
+    position: relative!important;
+    top: 10px!important;
+}
+.carousel-indicators button {
+    background-color: #0a72cc;
+    padding: 3px 3px!important;
+    border: 0.5px solid #8a8987!important;
+    border-radius: 50%!important;
+    margin-right: 1px!important;
+    margin-left: 1px!important;
+    height: 0;
+    width: 0;
+}
+
+.carousel-control-next:focus {
+    height: 50px;
+    width:20px;
+    padding: 0!important;
+    top: 50;
+    background-color: #0a72cc!important;
+}
+.slide-img-wrap {
+    border: 5px solid transparent;
+    margin: 0 5px;
+}
+.slide-img-wrap:hover {
+    border: 5px solid #0a72cc;
+    transform: scale(1.01);
+}
+.slider-image {
+    width: 100%;
+}
+.slide-number-wrap {
+    position: relative;
+    left: 50%;
+}    
+.story-page-slider:hover button.slick-prev.slick-arrow {    
+    color: #3498DB;
+}
+.story-page-slider:hover button.slick-next.slick-arrow {
+    color: #3498DB;
+}
+.image-completion-status {
+    float: right;
+    width: 10px;
+    height: 10px;
+    border: 10px solid;
+    position: relative;
+    z-index: 1;
+}
+/* End of Image Slider */
+
+/* Misc */
+.label {
+    font-weight: 700;
+    font-size: 1em;
+}
+.size {
+    clear: both;
+  }
+  
+/* Navigation between slider and 'start transcription' button */
+.story-navigation-area {
+    background: #fff;
+    border-bottom: 1px solid #e7e7e7;
+    padding-top: 6px;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+    width: 100%;
+    margin-bottom: 30px;
+}
+ul.story-navigation-content-container.left {
+    float: left;
+    margin: 0;
+}
+ul.story-navigation-content-container.right {
+    float: right;
+    margin: 0 20px 0 0;
+    padding: 0;
+}
+.left {
+    text-align: left;
+}
+ul.story-navigation-content-container li {
+    padding-right: 5px;
+    list-style-type: none;
+    display: inline-block;
+    font-size: 11px;
+}
+/* End of Navigation */
+
+/* Start Transcription Button */
+.start-transcription {
+    display: block;
+    width: 15em;
+    height: 2.5em;
+    float: right;
+    border: 5px solid #0a72cc;
+    background: #fff;
+    color: #0a72cc!important;
+    margin-right: 5%;
+    text-transform: uppercase;
+    font-size: 20px;
+    text-align: center;
+    padding: 5px;
+}
+.start-transcription:hover {
+    background: #0a72cc;
+    color: #fff!important;
+    text-decoration: none;
+}
+/* End of Start Transcription Button */
+
+/* Story Page Main Container */
+.main-storypg {
+    padding: 5px;
+    margin: 0 auto;
+    width: 90%;
+}
+.storypg-container {
+    font-size: 1.7rem;
+    color: #666666;
+    position: relative;
+    margin-left: 1em;
+    margin-top: 3em;
+}
+/* End of Main Container */
+
+/* Description Image and Description text */
+.storypg-info {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    clear: both;
+}
+/* Image */
+.story-description-left {
+    float: left;
+    max-width: 48%;
+    min-width: 48%;
+    margin-right: 1%;
+    height: 500px;
+    background: #f8f8f8;
+}
+.description-img {
+    position: relative;
+    max-width: 500px;
+    max-height: 500px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: unset!important;
+    height: auto!important;
+}
+/* Text */
+.story-description-right {
+    float: right;
+    width: 48%;
+    max-width: 48%;
+}
+#desc-text-wrap {
+    position: relative;
+}
+.storypg-container h1 {
+    color: #0a72cc!important;
+    font-weight: 700;
+    font-size: 1.6rem!important;
+    text-transform: capitalize;
+    margin-top: 0!important;
+}
+.descMore {
+    text-align: center;
+    cursor: pointer;
+    color: #0a72cc;
+}
+.togglePara {
+    max-height: 200px;
+    overflow: hidden;
+}
+/* Progress Table */
+#progress-wrap {
+    bottom: 0;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    background-color: #ffffff;
+}
+.progress-h {
+    color: #0a72cc!important;
+    font-weight: 700!important;
+    background-color: #f8f8f8!important;
+    letter-spacing: 0.025em!important;
+    width: 100%;
+    padding: 15px 20px 15px 50px;
+}
+.progress-t {
+    color: #0a72cc!important;
+    font-weight: 700!important;
+    background-color: #f8f8f8!important;
+    letter-spacing: 0.025em!important;
+    width: 100%;
+    font-family: 'Dosis', sans-serif;
+}
+.progress-div {
+    background-color: #f8f8f8;
+    padding: 10px 0 10px;
+}
+.progress-p {
+    background-color: #f8f8f8;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.progress-div span {
+    width: 25%;
+}
+.table-l {
+    color: #0a72cc;
+    font-weight: 600;
+    margin-left: 50px;
+    margin-right: 5px;
+}
+.table-rm {
+    color: #0a72cc;
+    font-weight: 600;
+    margin-left: 25px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+.table-r {
+    text-align: center;
+}
+.table-label {
+    color: #0a72cc;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 7.5px 0 0 50px;
+}
+/* End of Description Img and Text */
+.bar-chart {
+    width: 100%;
+    max-height: 40px;
+    position: relative;
+}
+
+/* Story page horizontall chart */
+.story-status {
+    display: inline-block;
+    min-height: 30px;
+    max-height: 30px;
+    border-radius: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.status-header {
+    position: relative;
+    bottom: 12px;
+    margin-right: 5px;
+}
+.dot {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 5px 5px;
+}
+.storypg-chart {
+    display: block;
+    height: 50px;
+    width: 100%;
+    margin: 0 auto;
+}
+/* End of Horizontal Chart */
+
+/* Story Info(between chart and map) */
+.story-info {
+    position: relative;
+    font-family: 'Dosis', sans-serif;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 4% 0;
+}
+.story-info-s {
+    color: #0a72cc;
+    font-weight: 600;
+}
+/* End of Info */
+
+/* Story Page Map */
+#storyMap {
+    width: 100%;
+    height: 300px;
+    margin: 0 auto;
+}
+/* End of Map */
+
+/* Story Page Metadata */
+.metadata-h {
+    color: #0a72cc;
+    background-color: #f8f8f8;
+    width: 100%;
+    margin-top: 2%!important;
+    margin-bottom: 2%!important;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.mb-1 {
+    color: #0a72cc;
+    font-weight: 600;
+    padding: 0!important;
+}
+.meta-p {
+    margin: 0 0 0 5px!important;
+    font-weight: 300;
+}
+/* End of Metadata */
+/* Responsivness */
+@media screen and (max-width: 920px) {
+    .story-description-left {
+      float: none;
+      display: block;
+      margin: 0 auto;
+      width: 80%;
+      max-width: 80%;
+    }
+    .story-description-right{
+      float: none;
+      display: block;
+      margin: 0 auto;
+      width: 80%;
+      max-width: 80%;
+    }
+}
+/* -------------------------------------------- End of Story Page -------------------------- */

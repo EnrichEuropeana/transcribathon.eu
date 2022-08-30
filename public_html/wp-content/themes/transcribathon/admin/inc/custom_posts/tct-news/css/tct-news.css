@@ -1,0 +1,35 @@
+
+/* Adjust the styles for custom post */
+
+body.wp-admin.post-type-news div.postbox#newsfields{
+    background:#f1f1f1 !important;
+    border:none;
+    -webkit-box-shadow:none;
+    -moz-box-shadow:none;
+    box-shadow:none;
+}
+
+body.wp-admin.post-type-news div.postbox#newsfields h3{
+    font-size:1.8em;
+    font-weight:normal;
+    padding:5px 0px 10px 0px !important;
+    margin-bottom:0px;
+}
+
+body.wp-admin.post-type-news div.postbox#newsfields div.inside{
+    background:#f1f1f1 !important;
+    padding:5px 0px 10px 0px !important;
+}
+
+body.wp-admin.post-type-news div.postbox#newsfields div.inside label{
+    padding:5px 0px 0px 0px;
+    display:block; cursor:default;
+}
+
+body.wp-admin.post-type-news div.postbox#newsfields div.handlediv{
+    display:none;
+}
+
+body.wp-admin.post-type-news div.postbox#newsfields h2{
+    display:none;
+}
