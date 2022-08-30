@@ -85,7 +85,17 @@ class HtrData
 		$htrId = intval($htrId);
 
 		// check item existence in db here
-		$isItemInHtrDb = $this->transkribusClient->getDataFromTranscribathon($itemId);
+		$itemResultJson = $this->transkribusClient->getDataFromTranscribathon(
+			null,
+			array(
+				'itemId' => $itemId,
+				'htrId' => $htrId,
+				'orderBy' => 'updated_at',
+				'orderDir' => 'desc'
+			)
+		);
+		$storedHtr = json_decode($itemResultJson, true);
+		$isItemInHtrDb = !empty($storedHtr['data'][0]['id']) ? true : false;
 
 		if (!$isItemInHtrDb) {
 
@@ -101,12 +111,12 @@ class HtrData
 
 		} else {
 
-			$storedHtr = json_decode($isItemInHtrDb, true);
-			$storedHtrData = $storedHtr['data'];
+			$storedHtrData = $storedHtr['data'][0];
 			$processId = intval($storedHtrData['process_id']);
+			$id = intval($storedHtrData['id']);
 
 			// can be updated
-			if (in_array($storedHtrData['status'], array('CREATED', 'WAITING', 'RUNNING'))) {
+			if (in_array($storedHtrData['htr_status'], array('CREATED', 'WAITING', 'RUNNING'))) {
 
 				$transkribusData = $this->transkribusClient->getJSONDatafromTranskribus($processId);
 
@@ -126,6 +136,7 @@ class HtrData
 
 				if ($transkribusDataArray['status'] === 'FINISHED') {
 					$transkribusXmlData = $this->transkribusClient->getPageXMLfromTranskribus($processId);
+
 					if (!$transkribusXmlData) {
 						$this->currentErrors += 1;
 						$this->errorMessages[$this->currentErrors] = 'Could not get PAGE XML data from Transkribus.';
@@ -134,14 +145,11 @@ class HtrData
 
 					// save the data
 					$updateData = array(
-						'htr_id'     => $htrId,
-						'process_id' => $processId,
-						'status'     => 'FINISHED',
-						'data_type'  => 'xml',
-						'data'       => $transkribusXmlData
+						'htr_status'         => 'FINISHED',
+						'transcription_data' => $transkribusXmlData
 					);
 
-					$this->updateItem($itemId, $updateData);
+					$updateQuery = $this->updateItem($id, $updateData);
 				}
 
 			} else { // nothing is processed, update success
@@ -153,9 +161,9 @@ class HtrData
 		}
 	}
 
-	protected function updateItem($itemId, $data)
+	protected function updateItem($id, $data)
 	{
-		$updateEntry = $this->transkribusClient->updateDataToTranscribathon($itemId, $data);
+		$updateEntry = $this->transkribusClient->updateDataToTranscribathon($id, $data);
 
 		if (!$updateEntry) {
 			$this->currentErrors += 1;
@@ -242,7 +250,7 @@ if ($htrModel) {
 	<meta charset="utf-8" />
 	<title>Transkribus Importer</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
-	
+
 	<style>
 		button {vertical-align: bottom; position: relative; bottom: 4px;}
 		#loading { vertical-align: middle; margin: 13px 10px 0 0; display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; -webkit-animation: spin 1s ease-in-out infinite; }
@@ -338,7 +346,7 @@ if ($htrModel) {
 	<nav class='transkribus-nav'>
 	    <img class='logo' src="https://eu-citizen.science/media/images/2021-10-13_010110103636_734_transcribathon_eu_logo.jpg.612x408_q85_crop_upscale.png" alt='transcribathon-logo'/>
 	    <img class='logo' style='float:right;' src="https://europeana.transcribathon.eu/wp-content/uploads/sites/11/2019/09/europeana-transcribe.png" alt='logo'/>
-        
+
 	</nav>
 
     <div class='main-content'>
@@ -362,16 +370,16 @@ if ($htrModel) {
 	    		<span id="loading" x-show="processing"></span><button @click="getHtrData" x-bind:disabled="disabled" x-text="(processing || (!processing && percent !== 0)) ? percent.toFixed() + '% done': 'Import'"></button></p>
 	    	<p x-show="(importResponse.amount > 0 || processing)" x-text="processText"></p>
 	    	<p x-show="errors">Some errors occured, see console for output.</p>
-    
+
 	    </div>
-        
+
 		<hr>
 		<!-- List of HTR Models -->
         <div class='tr-models'>
 	        <h2>Test HTR model with Transcribathon item ID</h2>
-		
+
 		    <h3> Transkribus Public Models </h3>
-            
+
 
 			<!-- Checkbox Filter -->
 			<div x-data="{types: ['print','handwritten']}">
@@ -381,13 +389,13 @@ if ($htrModel) {
 			        <input id="hand" type="checkbox" value="handwritten" x-model="types">
 			        <label for="hand">Handwritten</label>
 			    </div>
-			
+
 
                 <!-- template wrapper to get conditional access to the 'cards' -->
 				<!-- Handwritten models -->
 			    <template x-if="types.includes('handwritten')">
-		            <div class="row"> 
-			        
+		            <div class="row">
+
                         <div class="card">
 			                <img src="https://readcoop.eu/wp-content/uploads/2021/02/Kurrent_example__-1024x385.jpg" class="card-img-top" alt="example"/>
 			            	<div class="card-body">
@@ -399,7 +407,7 @@ if ($htrModel) {
 			            		<a href="https://readcoop.eu/model/german-kurrent-and-sutterlin-17th-20th-century/" target="_blank">View more at Readcoop.eu</a>
 			            	</div>
 			            </div>
-    
+
 			            <div class="card">
 			                <img src="https://readcoop.eu/wp-content/uploads/2021/06/Polish-1024x567.jpg" class="card-img-top" alt="example-two"/>
 			            	<div class="card-body">
@@ -411,7 +419,7 @@ if ($htrModel) {
 			            		<a href="https://readcoop.eu/model/polish-general-model/" target="_blank">View more at Readcoop.eu</a>
 			            	</div>
 			            </div>
-    
+
 			    		<div class="card">
 			                <img src="https://readcoop.eu/wp-content/uploads/2020/07/word-image-268.png" class="card-img-top" alt="example-three"/>
 			            	<div class="card-body">
@@ -423,7 +431,7 @@ if ($htrModel) {
 			            		<a href="https://readcoop.eu/model/swedish-17th-century/" target="_blank">View more at Readcoop.eu</a>
 			            	</div>
 			            </div>
-    
+
 			    	</div>
 
 				</template>
@@ -469,11 +477,11 @@ if ($htrModel) {
 			            </div>
 
 					</div>
-    
+
 			    </template>
 				<!-- Print/Typewritten Models -->
 			    <template x-if="types.includes('print')">
-                
+
 				    <div class="row">
 		                <div class="card">
 			                <img src="https://readcoop.eu/wp-content/uploads/2021/04/Transkribus-Print-0.3-1.jpg" class="card-img-top" alt="example-seven"/>
@@ -486,7 +494,7 @@ if ($htrModel) {
 			            		<a href="https://readcoop.eu/model/print-multi-language-danish-dutch-german-finnish-french-latin-swedish/" target="_blank">View more at Readcoop.eu</a>
 			            	</div>
 			            </div>
-    
+
 
 			            <div class="card">
 			                <img src="https://readcoop.eu/wp-content/uploads/2021/03/Transkribus-Typewriter-Snippet.jpg" class="card-img-top" alt="example-eight"/>
