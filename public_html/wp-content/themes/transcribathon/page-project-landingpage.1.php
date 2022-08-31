@@ -35,13 +35,13 @@ get_header(); ?>
         <script>
             // When the user scrolls down 60px from the top of the document, resize the navbar's padding 
             //and the logo's font size
-
+        if(document.querySelector('#_transcribathon-partnerlogo')) {
             window.onscroll = function() {scrollFunction()};
                                 
             function scrollFunction() {
                 document.getElementById("_transcribathon_partnerlogo").style.height = "120px";
                 document.getElementById("_transcribathon_partnerlogo").style.width = "120px";
                 document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
-            }
+            }}
         </script>
 <?php get_footer(); ?>

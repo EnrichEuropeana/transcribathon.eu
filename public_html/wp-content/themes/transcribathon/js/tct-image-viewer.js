@@ -448,6 +448,10 @@ var tct_viewer = (function($, document, window) {
 	initTiny = function() {
 		//none fs ones
 		initTinyWithConfig('#full-view-editor #item-page-transcription-text');
+		if(document.querySelector('.tox-tinymce')){
+			document.querySelector('.tox-tinymce').style.display = 'block';
+		}
+		
 	},
 	getUrlParameter = function(sParam) {
 		var sPageURL = window.location.search.substring(1),
@@ -497,9 +501,19 @@ var tct_viewer = (function($, document, window) {
 					console.log('focusing');
 				});
 		 		editor.on('blur', function (e) {
-					jQuery('#mytoolbar-transcription').height('0px');
+					jQuery('#mytoolbar-transcription').height('1px');
 				});
-         
+				editor.on('mouseLeave', function(e) {
+					if(document.querySelector('.tox-tinymce')){
+                        document.querySelector('.tox-tinymce').style.display = 'none';
+					}
+				});
+				// editor.on('click', function(e) {
+				// 	if(document.querySelector('.tox-tinymce')){
+				// 		document.querySelector('.tox-tinymce').style.display = 'block';
+				// 	}
+				// })
+
 			},
 			setup: function (editor) {
 				

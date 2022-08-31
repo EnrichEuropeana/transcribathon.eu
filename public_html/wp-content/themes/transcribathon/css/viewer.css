@@ -213,7 +213,7 @@
 	font-size: 17px;
 }
 
-#buttons > div {
+#buttons > div, #buttons > a {
   padding: 4px 2px 0px 2px;
   background-color: #fff;
   margin: 1px;

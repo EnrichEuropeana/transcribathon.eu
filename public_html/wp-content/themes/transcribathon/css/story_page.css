@@ -7,7 +7,7 @@ Description: Stylesheet for Story Page
 /* ---------------------------------- Story Page -------------------------------------------- */
 
 /* Image Slider */
-#carousel-image-slider {
+/* #carousel-image-slider {
     margin-bottom: 20px;
 }
 #carousel-image-slider button:focus {
@@ -15,6 +15,7 @@ Description: Stylesheet for Story Page
 }
 .carousel-control-prev,
 .carousel-control-next {
+    background-blend-mode: color-burn;
     height: 50px;
     width:20px!important;
     padding: 0!important;
@@ -27,7 +28,7 @@ Description: Stylesheet for Story Page
     top: 10px!important;
 }
 .carousel-indicators button {
-    background-color: #0a72cc;
+    background-color: #fff;
     padding: 3px 3px!important;
     border: 0.5px solid #8a8987!important;
     border-radius: 50%!important;
@@ -36,6 +37,9 @@ Description: Stylesheet for Story Page
     height: 0;
     width: 0;
 }
+.carousel-indicators button.active{
+    background-color: #0a72cc!important;
+}
 
 .carousel-control-next:focus {
     height: 50px;
@@ -43,27 +47,27 @@ Description: Stylesheet for Story Page
     padding: 0!important;
     top: 50;
     background-color: #0a72cc!important;
-}
+} */
 .slide-img-wrap {
-    border: 5px solid transparent;
-    margin: 0 5px;
+    border: 2.5px solid transparent;
 }
 .slide-img-wrap:hover {
     border: 5px solid #0a72cc;
     transform: scale(1.01);
 }
 .slider-image {
-    width: 100%;
+    width: 150px;
+    height: 150px;
 }
 .slide-number-wrap {
     position: relative;
     left: 50%;
 }    
 .story-page-slider:hover button.slick-prev.slick-arrow {    
-    color: #3498DB;
+    color: #0a72cc;
 }
 .story-page-slider:hover button.slick-next.slick-arrow {
-    color: #3498DB;
+    color: #0a72cc;
 }
 .image-completion-status {
     float: right;
@@ -294,7 +298,7 @@ ul.story-navigation-content-container li {
 }
 .storypg-chart {
     display: block;
-    height: 50px;
+    min-height: 100px;
     width: 100%;
     margin: 0 auto;
 }
@@ -309,6 +313,10 @@ ul.story-navigation-content-container li {
     justify-content: space-evenly;
     margin: 4% 0;
 }
+.story-info div {
+    width: 20%;
+    display: inline-block;
+}
 .story-info-s {
     color: #0a72cc;
     font-weight: 600;
@@ -318,12 +326,25 @@ ul.story-navigation-content-container li {
 /* Story Page Map */
 #storyMap {
     width: 100%;
-    height: 300px;
+    height: 400px;
     margin: 0 auto;
 }
 /* End of Map */
 
 /* Story Page Metadata */
+.metadata-container {
+    display: block;
+    padding: 0 10px 20px 15px;
+    overflow: hidden;
+}
+.meta-sticker {
+    display: inline-block;
+    width: 18.5%;
+    min-height: 100px;
+    vertical-align: top;
+    margin: 5px 1.4% 5px 0;
+    margin-bottom: 50px;
+}
 .metadata-h {
     color: #0a72cc;
     background-color: #f8f8f8;
@@ -345,20 +366,191 @@ ul.story-navigation-content-container li {
 }
 /* End of Metadata */
 /* Responsivness */
-@media screen and (max-width: 920px) {
+/* @media screen and (max-width: 920px) {
     .story-description-left {
-      float: none;
+
       display: block;
       margin: 0 auto;
       width: 80%;
       max-width: 80%;
     }
     .story-description-right{
-      float: none;
+
       display: block;
       margin: 0 auto;
       width: 80%;
       max-width: 80%;
     }
-}
+} */
 /* -------------------------------------------- End of Story Page -------------------------- */
+#inner-slider {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+
+}
+.slide-sticker {
+    width: 10%;
+    height: 150px;
+    margin-bottom: 30px;
+    display: inline-block;
+}
+.prev-slide {
+    font-size: 15px;
+    position: relative;
+    width: 25px;
+    height: 50px;
+    padding: 5px;
+    float: left;
+    top: 30%;
+    color: #fff;
+    background: #0a72cc;
+}
+.next-slide {
+    font-size: 15px;
+    position: relative;
+    width: 25px;
+    height: 50px;
+    padding: 5px;
+    float: right;
+    top: 30%;
+    color: #fff;
+    background: #0a72cc;
+}
+.next-set {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    width: 30px;
+    background: #fff;
+    color: #0a72cc;
+    border: none;
+    padding: 0%;
+    font-size: 15px;
+    font-weight: bold;
+}
+.prev-set {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    width: 30px;
+    background: #fff;
+    color: #0a72cc;
+    border: none;
+    padding: 0;
+    font-size: 15px;
+    font-weight: bold;
+}
+#img-slider {
+    height: 220px;
+    margin-bottom: 30px;
+}
+.next-slide:focus, .prev-slide:focus {
+    background: #0a72cc;
+}
+#dot-indicators {
+    display: inline-flex;
+    justify-content: center;
+}
+.indicator-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #0a72cc;
+    margin-left: 2px;
+    margin-right: 2px;
+    top: 5px;
+    position: relative;
+    cursor: pointer;
+}
+#controls-div {
+    display: flex;
+    justify-content: center;
+}
+.num-indicators {
+    font-size: 15px;
+    position: relative;
+    bottom: 3px;
+    color: #0a72cc;
+    font-weight: bold;
+}
+@media screen and (max-width: 850px) {
+    .slide-sticker {
+        width: 150px;
+        height: 60%;
+    }
+    #primary-full-width {
+        padding: 0;
+    }
+    .storypg-info {
+        width: 100%;
+    }
+    .storypg-container {
+        margin-top: 1em;
+        margin-left: 0;
+    }
+    .story-description-left {
+        float: unset;
+        width: 100%;
+        min-width: unset;
+        max-width: unset;
+        height: unset;
+    }
+    .story-description-right {
+        float: unset;
+        width: 100%;
+        max-width: 100%;
+    }
+    .start-transcription {
+        line-height: normal;
+        display: block;
+        float: unset;
+        height: unset;
+        border: 5px solid #0a72cc;
+        background: #fff;
+        color: #0a72cc!important;
+        text-transform: uppercase;
+        font-size: 10px;
+        text-align: center;
+        padding: 0;
+        margin: 0 auto;
+    }
+    .progress-p span {
+        margin-left: 0;
+        margin-right: 0;
+        font-size: 12px;
+    }
+    #progress-wrap {
+        margin-bottom: 20px;
+    }
+    .story-info {
+        display: block;
+        flex-direction: unset;
+        justify-content: unset;
+    }
+    .story-info div {
+        width: 100%;
+        display: block;
+    }
+    .meta-sticker {
+        display: block;
+        width: 100%;
+        min-height: unset;
+    }
+    .description-img {
+        margin-bottom: 25px;
+        top: unset;
+        left: unset;
+        transform: unset;
+    }
+
+}
+@media screen and (min-width: 851px) and (max-width: 1200px) {
+    .slide-sticker {
+        width: 150px;
+        height: 60%;
+    }
+}

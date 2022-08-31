@@ -89,7 +89,7 @@ function _TCT_item_page_htr( $atts) {
     $content .= '</form>';
 
 
-    // Remove padding from page wrapper, otherwise it braks editor apearance
+    // Remove padding from page wrapper, otherwise it breaks editor apearance
     $content .= "<style> #primary-full-width { padding: unset!important;} </style>";
 
 

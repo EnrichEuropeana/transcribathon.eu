@@ -11,10 +11,10 @@ $config = array(
 		'grantType'      => 'password'
 	),
 	"transcribathon" => array(
-		"endpoint" => 'http://api.transcribathon.local/v2',
+		"endpoint" => 'http://api.transcribathon.eu.local/v2',
 		"apiToken" => 'HQadnqNt27Fx7xz5I92iJPAHxO7MuelorJzIMpFyP3MYaot4Mx246Eq49KRV'
 	)
 );
 
-$oldApiEndpoint = 'http://transcribathon.local/tp-api';
+$oldApiEndpoint = 'http://transcribathon.eu.local/tp-api';
 
