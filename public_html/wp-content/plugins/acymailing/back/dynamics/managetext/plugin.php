@@ -1,9 +1,12 @@
 <?php
 
+use AcyMailing\Classes\UserClass;
 use AcyMailing\Libraries\acymPlugin;
 
 class plgAcymManagetext extends acymPlugin
 {
+    private $noIfStatementTags;
+
     public function replaceContent(&$email, $send = true)
     {
         $this->_replaceRandom($email);
@@ -16,8 +19,8 @@ class plgAcymManagetext extends acymPlugin
         $this->pluginHelper->cleanHtml($email->body);
         $this->pluginHelper->replaceVideos($email->body);
 
-        $this->removetext($email);
-        $this->ifstatement($email, $user);
+        $this->removeText($email);
+        $this->ifStatement($email, $user);
         $this->replaceConstant($email, $user);
     }
 
@@ -45,9 +48,9 @@ class plgAcymManagetext extends acymPlugin
             }
             $tagValues = explode(':', $i);
             $type = ltrim($tagValues[0], '{');
-            if ($type == 'const') {
+            if ($type === 'const') {
                 $tagsReplaced[$i] = defined($val) ? constant($val) : 'Constant not defined : '.$val;
-            } elseif ($type == 'config') {
+            } elseif ($type === 'config') {
                 if ($val == 'sitename') {
                     $tagsReplaced[$i] = acym_getCMSConfig($val);
                 }
@@ -117,8 +120,7 @@ class plgAcymManagetext extends acymPlugin
         $this->pluginHelper->replaceTags($email, $tags, true);
     }
 
-
-    private function ifstatement(&$email, $user, $loop = 1)
+    private function ifStatement(&$email, $user, $loop = 1)
     {
         if (isset($this->noIfStatementTags[$email->id])) {
             return;
@@ -164,10 +166,12 @@ class plgAcymManagetext extends acymPlugin
             return;
         }
 
-        static $a = false;
+        static $alreadyHandled = false;
 
+        $userClass = new UserClass();
+        $acymUser = $userClass->getOneByIdWithCustomFields($user->id);
         $tags = [];
-        foreach ($results as $var => $allresults) {
+        foreach ($results as $allresults) {
             foreach ($allresults[0] as $i => $oneTag) {
                 if (isset($tags[$oneTag])) {
                     continue;
@@ -188,56 +192,56 @@ class plgAcymManagetext extends acymPlugin
                 $prop = '';
 
                 $operatorsParts = explode('.', $operators[1]);
-                $operatorComp = 'acym';
+                $type = 'acym';
                 if (count($operatorsParts) > 1 && in_array($operatorsParts[0], ['acym', 'joomla', 'var'])) {
-                    $operatorComp = $operatorsParts[0];
+                    $type = $operatorsParts[0];
                     unset($operatorsParts[0]);
                     $field = implode('.', $operatorsParts);
                 }
 
-                if ($operatorComp == 'joomla') {
+                if ($type === 'joomla') {
                     if (!empty($user->userid)) {
-                        if ($field == 'gid') {
+                        if ($field === 'gid') {
                             $prop = implode(';', acym_loadResultArray('SELECT group_id FROM #__user_usergroup_map WHERE user_id = '.intval($user->userid)));
                         } else {
                             $juser = acym_loadObject('SELECT * FROM #__users WHERE id = '.intval($user->userid));
                             if (isset($juser->{$field})) {
                                 $prop = strtolower($juser->{$field});
                             } else {
-                                if ($isAdmin && !$a) {
-                                    acym_display('User variable not set : '.$field.' in '.$allresults[1][$i], 'error');
+                                if ($isAdmin && !$alreadyHandled) {
+                                    acym_enqueueMessage('User variable not set: '.$field.' in '.$allresults[1][$i], 'error');
                                 }
-                                $a = true;
+                                $alreadyHandled = true;
                             }
                         }
                     }
-                } elseif ($operatorComp == 'var') {
+                } elseif ($type === 'var') {
                     $prop = strtolower($field);
                 } else {
-                    if (!isset($user->{$field})) {
-                        if ($isAdmin && !$a) {
-                            acym_display('User variable not set : '.$field.' in '.$allresults[1][$i], 'error');
+                    if (!isset($acymUser[$field])) {
+                        if ($isAdmin && !$alreadyHandled) {
+                            acym_enqueueMessage('User variable not set: '.$field.' in '.$allresults[1][$i], 'error');
                         }
-                        $a = true;
+                        $alreadyHandled = true;
                     } else {
-                        $prop = strtolower($user->{$field});
+                        $prop = strtolower($acymUser[$field]);
                     }
                 }
 
                 $tags[$oneTag] = '';
                 $val = strtolower(trim($operators[3]));
                 $prop = strip_tags($prop);
-                if ($operators[2] == '=' && ($prop == $val || in_array($prop, explode(';', $val)) || in_array($val, explode(';', $prop)))) {
+                if ($operators[2] === '=' && ($prop == $val || in_array($prop, explode(';', $val)) || in_array($val, explode(';', $prop)))) {
                     $tags[$oneTag] = $allresults[3][$i];
-                } elseif ($operators[2] == '!=' && $prop != $val) {
+                } elseif ($operators[2] === '!=' && $prop != $val) {
                     $tags[$oneTag] = $allresults[3][$i];
-                } elseif (($operators[2] == '>' || $operators[2] == '&gt;') && $prop > $val) {
+                } elseif (($operators[2] === '>' || $operators[2] === '&gt;') && $prop > $val) {
                     $tags[$oneTag] = $allresults[3][$i];
-                } elseif (($operators[2] == '<' || $operators[2] == '&lt;') && $prop < $val) {
+                } elseif (($operators[2] === '<' || $operators[2] === '&lt;') && $prop < $val) {
                     $tags[$oneTag] = $allresults[3][$i];
-                } elseif ($operators[2] == '~' && strpos($prop, $val) !== false) {
+                } elseif ($operators[2] === '~' && strpos($prop, $val) !== false) {
                     $tags[$oneTag] = $allresults[3][$i];
-                } elseif ($operators[2] == '!~' && strpos($prop, $val) === false) {
+                } elseif ($operators[2] === '!~' && strpos($prop, $val) === false) {
                     $tags[$oneTag] = $allresults[3][$i];
                 }
             }
@@ -245,14 +249,14 @@ class plgAcymManagetext extends acymPlugin
 
         $this->pluginHelper->replaceTags($email, $tags, true);
 
-        $this->ifstatement($email, $user, $loop + 1);
+        $this->ifStatement($email, $user, $loop + 1);
     }
 
-    private function removetext(&$email)
+    private function removeText(&$email)
     {
-        $removetext = '{reg},{/reg},{pub},{/pub}';
-        if (!empty($removetext)) {
-            $removeArray = explode(',', trim($removetext, ' ,'));
+        $removeText = '{reg},{/reg},{pub},{/pub}';
+        if (!empty($removeText)) {
+            $removeArray = explode(',', trim($removeText, ' ,'));
             if (!empty($email->body)) {
                 $email->body = str_replace($removeArray, '', $email->body);
             }

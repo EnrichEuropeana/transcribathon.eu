@@ -50,8 +50,7 @@ namespace WPDataProjects\List_Table {
 		 * @see WPDA_List_Table
 		 */
 		public function __construct( $args = array() ) {
-			$args['hide_db_info'] = true;
-			$args['pid']          = isset( $args['pid'] ) ? $args['pid'] : '';
+			$args['pid'] = isset( $args['pid'] ) ? $args['pid'] : '';
 
 			parent::__construct( $args );
 

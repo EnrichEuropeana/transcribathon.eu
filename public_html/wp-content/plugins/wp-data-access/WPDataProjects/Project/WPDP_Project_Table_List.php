@@ -44,73 +44,55 @@ namespace WPDataProjects\Project {
 
 		/**
 		 * Overwrite method add_header_button to add reverse engineering
-		 *
-		 * @param string $add_param
 		 */
-		protected function add_header_button( $add_param = '' ) {
+		protected function add_header_button() {
 			global $wpdb;
 
-			// Get available databases
-			$schema_names    = WPDA_Dictionary_Lists::get_db_schemas();
-			$database_tables = array();
-			foreach ( $schema_names as $schema_name ) {
-				// Check table access to prepare table listbox content
-				if ( $wpdb->dbname === $schema_name['schema_name'] ) {
-					$table_access = WPDA::get_option( WPDA::OPTION_BE_TABLE_ACCESS );
-				} else {
-					$table_access = get_option( WPDA::BACKEND_OPTIONNAME_DATABASE_ACCESS . $schema_name['schema_name'] );
-					if ( false === $table_access ) {
-						$table_access = 'show';
-					}
-				}
-				switch ( $table_access ) {
-					case 'show':
-						$tables = $this->get_all_db_tables( $schema_name['schema_name'] );
-						break;
-					case 'hide':
-						$tables = $this->get_all_db_tables( $schema_name['schema_name'] );
-						// Remove WordPress tables from listbox content
-						$tables_named = array();
-						foreach ( $tables as $table ) {
-							$tables_named[ $table ] = true;
-						}
-						foreach ( $wpdb->tables( 'all', true ) as $wp_table ) {
-							unset( $tables_named[ $wp_table ] );
-						}
-						$tables = array();
-						foreach ( $tables_named as $key => $value ) {
-							array_push( $tables, $key );
-						}
-						break;
-					default:
-						// Show only selected tables and views
-						if ( $wpdb->dbname === $schema_name['schema_name'] ) {
-							$tables = WPDA::get_option( WPDA::OPTION_BE_TABLE_ACCESS_SELECTED );
-						} else {
-							$tables = get_option( WPDA::BACKEND_OPTIONNAME_DATABASE_SELECTED . $schema_name['schema_name'] );
-							if ( false === $tables ) {
-								$tables = '';
-							}
-						}
-				}
-				$database_tables[ $schema_name['schema_name'] ] = $tables;
-			}
-
-			$tables       = array();
-			$column_index = $this->get_item_index( 'page_schema_name' );
-			if ( false !== $column_index ) {
-				$pub_schema_name = $this->form_items[ $column_index ]->get_item_value();
-				if ( '' === $pub_schema_name || null === $pub_schema_name ) {
-					$pub_schema_name = $wpdb->dbname;
-				}
-
-				if ( isset( $database_tables[ $pub_schema_name ] ) ) {
-					$tables = $database_tables[ $pub_schema_name ];
-				}
-			}
-
+			// Check table access to prepare table listbox content
 			$user_default_schema = WPDA::get_user_default_scheme();
-			$wpnonce             = wp_create_nonce( WPDP_Project_Table_Form::WPNONCE_SEED . WPDP_Project_Design_Table_Model::get_base_table_name() );
+			if ( $wpdb->dbname === $user_default_schema ) {
+				$table_access = WPDA::get_option( WPDA::OPTION_BE_TABLE_ACCESS );
+			} else {
+				$table_access = get_option( WPDA::BACKEND_OPTIONNAME_DATABASE_ACCESS . $user_default_schema );
+			}
+			if ( false === $table_access ) {
+				$table_access = 'show';
+			}
+
+			// Get available databases
+			$schema_names  = WPDA_Dictionary_Lists::get_db_schemas();
+			switch ( $table_access ) {
+				case 'show':
+					$tables = $this->get_all_db_tables( $user_default_schema );
+					break;
+				case 'hide':
+					$tables = $this->get_all_db_tables( $user_default_schema );
+					// Remove WordPress tables from listbox content
+					$tables_named = array();
+					foreach ( $tables as $table ) {
+						$tables_named[ $table ] = true;
+					}
+					foreach ( $wpdb->tables( 'all', true ) as $wp_table ) {
+						unset( $tables_named[ $wp_table ] );
+					}
+					$tables = array();
+					foreach ( $tables_named as $key => $value ) {
+						array_push( $tables, $key );
+					}
+					break;
+				default:
+					// Show only selected tables and views
+					if ( $wpdb->dbname === $user_default_schema ) {
+						$tables = WPDA::get_option( WPDA::OPTION_BE_TABLE_ACCESS_SELECTED );
+					} else {
+						$tables = get_option( WPDA::BACKEND_OPTIONNAME_DATABASE_SELECTED . $user_default_schema );
+					}
+					if ( false === $tables ) {
+						$tables = '';
+					}
+			}
+
+			$wpnonce = wp_create_nonce( WPDP_Project_Table_Form::WPNONCE_SEED . WPDP_Project_Design_Table_Model::get_base_table_name() );
 			if ( WPDA_Dashboard::add_actions_to_page_title() ) {
 				?>
 			<div id="no_repository_buttons" style="display: inline-block; vertical-align: unset;">
@@ -136,15 +118,15 @@ namespace WPDataProjects\Project {
 						<?php
 						foreach ( $schema_names as $schema_name ) {
 							$selected = $user_default_schema === $schema_name['schema_name'] ? ' selected' : '';
-							echo "<option value='{$schema_name['schema_name']}'{$selected}>{$schema_name['schema_name']}</option>"; // phpcs:ignore WordPress.Security.EscapeOutput
+							$database = $user_default_schema === $schema_name['schema_name'] ? "Wordpress database ({$schema_name['schema_name']})" : $schema_name['schema_name'];
+							echo "<option value='{$schema_name['schema_name']}'{$selected}>{$database}</option>"; // phpcs:ignore WordPress.Security.EscapeOutput
 						}
 						?>
 					</select>
 					<select name="wpda_table_name" id="wpda_table_name">
 						<?php
-						global $wpdb;
-						if ( isset( $database_tables[ $user_default_schema ] ) ) {
-							foreach ( $database_tables[ $user_default_schema ] as $table ) {
+						if ( is_array( $tables ) ) {
+							foreach ( $tables as $table ) {
 								?>
 								<option value="<?php echo esc_attr( $table ); ?>"><?php echo esc_attr( $table ); ?></option>
 								<?php
@@ -164,23 +146,31 @@ namespace WPDataProjects\Project {
 				</div>
 			</form>
 			<script type='text/javascript'>
-				var database_tables = new Object();
-				<?php
-				foreach ( $database_tables as $key => $value ) {
-					echo "database_tables['$key'] = " . json_encode( $value ) . ';'; // phpcs:ignore WordPress.Security.EscapeOutput
-				}
-				?>
+				function update_table_list(schema_name) {
+					var url = location.pathname + '?action=wpda_get_tables';
+					var data = {
+						wpdaschema_name: schema_name,
+						wpda_wpnonce: '<?php echo esc_attr( wp_create_nonce( 'wpda-getdata-access-' . WPDA::get_current_user_login() ) ); ?>'
+					};
+					jQuery.post(
+						url,
+						data,
+						function (data) {
+							jQuery('#wpda_table_name').empty();
 
+							var tables = JSON.parse(data);
+							for (var i = 0; i < tables.length; i++) {
+								jQuery('<option/>', {
+									value: tables[i].table_name,
+									html: tables[i].table_name
+								}).appendTo("#wpda_table_name");
+							}
+						}
+					);
+				}
 				jQuery(function () {
 					jQuery('#wpda_schema_name').on('change', function () {
-						jQuery('#wpda_table_name').empty();
-						var tables = database_tables[jQuery(this).val()];
-						for ( var i = 0; i < tables.length; i++ ) {
-							jQuery('<option/>', {
-								value: tables[i],
-								html: tables[i]
-							}).appendTo('#wpda_table_name');
-						}
+						update_table_list(jQuery('#wpda_schema_name').val());
 					});
 				});
 			</script>
@@ -307,10 +297,12 @@ namespace WPDataProjects\Project {
 			$copy_form       =
 				'<form' .
 				" id='copy_form$form_id'" .
-				" action='?page=" . esc_attr( $this->page ) . '&wpdaschema_name=' . esc_attr( $this->schema_name ) . '&table_name=' . esc_attr( $this->table_name ) . "'" .
+				" action='?page=" . esc_attr( $this->page ) . "'" .
 				" method='post'>" .
 				$this->get_key_input_fields( $item ) .
 				$this->add_parent_args_as_string( $item ) .
+				"<input type='hidden' name='wpdaschema_name' value='<?php echo esc_attr( $this->schema_name ); ?>' />" .
+				"<input type='hidden' name='table_name' value='<?php echo esc_attr( $this->table_name ); ?>' />" .
 				"<input type='hidden' name='action' value='copy' />" .
 				"<input type='hidden' name='_wpnonce' value='$wp_nonce'>" .
 				$this->page_number_item .

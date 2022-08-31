@@ -60,7 +60,7 @@ class WPDA_Publisher_Form extends WPDA_Simple_Form
     {
         // Add column labels.
         $args['column_headers'] = array(
-            'pub_id'                          => __( 'Pub ID', 'wp-data-accesss' ),
+            'pub_id'                          => __( 'Publication ID', 'wp-data-accesss' ),
             'pub_name'                        => __( 'Publication Name', 'wp-data-accesss' ),
             'pub_schema_name'                 => __( 'Database', 'wp-data-access' ),
             'pub_data_source'                 => __( '', 'wp-data-access' ),

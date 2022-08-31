@@ -184,6 +184,13 @@ namespace WPDataAccess\Simple_Form {
 		protected $is_foreign_key_column = false;
 
 		/**
+		 * Set to true to make item readonly
+		 *
+		 * @var boolean
+		 */
+		protected $is_readonly = false;
+
+		/**
 		 * Context variable to keep logic for showing items maintainable
 		 *
 		 * @var string
@@ -471,9 +478,9 @@ namespace WPDataAccess\Simple_Form {
 			$begin_int = substr( $this->column_type, strpos( $this->column_type, '(' ) + 1 );
 			$int_str   = substr( $begin_int, 0, strpos( $begin_int, ')' ) );
 			if ( is_numeric( $int_str ) ) {
-				$max_length = "maxlength={$int_str}";
+				$max_length = "maxlength=\"{$int_str}\"";
 			} else {
-				$max_length = "data-number-format={$int_str}";
+				$max_length = "data-number-format=\"{$int_str}\"";
 			}
 
 			// Set column value.
@@ -524,9 +531,10 @@ namespace WPDataAccess\Simple_Form {
 					}
 					?>
 				   "
-				<?php echo esc_attr( $max_length ); ?>
-				<?php echo esc_attr( $this->show_context_item_events ); ?>
-				   placeholder="<?php echo esc_attr( $this->item_placeholder ); ?>"
+					<?php echo esc_attr( $max_length ); ?>
+					<?php echo $this->is_readonly ? ' disabled="disabled"' : ''; ?>
+					<?php echo esc_attr( $this->show_context_item_events ); ?>
+				    placeholder="<?php echo esc_attr( $this->item_placeholder ); ?>"
 			/>
 			<?php
 			if ( 'string' === $this->data_type ) {
@@ -922,6 +930,16 @@ namespace WPDataAccess\Simple_Form {
 
 			$this->is_foreign_key_column = $is_foreign_key_column;
 
+		}
+
+		/**
+		 * Change item readonly property
+		 *
+		 * @param boolean $is_readonly TRUE|FALSE
+		 * @return void
+		 */
+		public function set_readonly( $is_readonly ) {
+			$this->is_readonly = $is_readonly;
 		}
 
 		/**

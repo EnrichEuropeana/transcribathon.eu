@@ -37,17 +37,16 @@ namespace WPDataAccess\Design_Table {
 
 		/**
 		 * Add buttons new and import (overwritten)
-		 *
-		 * @param string $add_param
 		 */
-		protected function add_header_button( $add_param = '' ) {
+		protected function add_header_button() {
 			?>
 			<form
 					method="post"
-					action="?page=<?php echo esc_attr( $this->page ); ?>&table_name=<?php echo esc_attr( $this->table_name ); ?>"
+					action="?page=<?php echo esc_attr( $this->page ); ?>"
 					style="display: inline-block; vertical-align: baseline;"
 			>
 				<div>
+					<input type="hidden" name="table_name" value="<?php echo esc_attr( $this->table_name ); ?>">
 					<input type="hidden" name="action" value="edit">
 					<button type="submit" class="page-title-action">
 						<i class="fas fa-plus-circle wpda_icon_on_button"></i>

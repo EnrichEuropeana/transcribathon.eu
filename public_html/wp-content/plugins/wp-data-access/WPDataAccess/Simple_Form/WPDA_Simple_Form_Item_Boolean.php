@@ -45,6 +45,7 @@ namespace WPDataAccess\Simple_Form {
 				<input type="checkbox"
 					   id="<?php echo esc_attr( $this->item_name ); ?>_chk"
 					   value="<?php echo esc_attr( $this->checkbox_on ); ?>"
+					<?php echo $this->is_readonly ? ' disabled="disabled"' : ''; ?>
 					<?php echo esc_attr( $checked ); ?>
 				/>
 

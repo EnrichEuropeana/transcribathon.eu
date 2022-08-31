@@ -3,7 +3,7 @@ Contributors: wptb, imtiazrayhan, istiakrayhan, ultimateblocks, wpcdplugin, wple
 Tags: table, table builder, drag and drop
 Requires at least: 4.9
 Tested up to: 6.0
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 Requires PHP: 5.6
 License: GPL3+
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -90,11 +90,17 @@ That's it. You're done!
 
 == Changelog ==
 
-= 1.4.2 - June 16th, 2022 =
+= 1.4.3 =
+
+* ADD: Option to set alignment for Button content.
+* FIX: UX Builder stuck on loading for new posts/page.
+* FIX: Cursor style for frontend texts.
+
+= 1.4.2 =
 
 * FIX: Some table changes not triggering dirty status.
 
-= 1.4.1 - June 2nd, 2022 =
+= 1.4.1 =
 
 * FIX: Plugin settings menu not being loaded.
 * FIX: Duplicate option not visible.

@@ -49,8 +49,6 @@ namespace WPDataProjects\Simple_Form {
 				$this->title = $args['title'];
 			}
 
-			$args['hide_db_info'] = true;
-
 			parent::__construct( $schema_name, $table_name, $wpda_list_columns, $args );
 
 			$this->setname = $this->wpda_list_columns->get_setname();
@@ -77,30 +75,7 @@ namespace WPDataProjects\Simple_Form {
 
 				// Set default value if available
 				if ( isset( $columns['default'] ) && '' !== $columns['default'] ) {
-					$item_default_value = $columns['default'];
-					if ( '$$USERID$$' === $item_default_value ) {
-						$item_default_value = WPDA::get_current_user_id();
-					} elseif ( '$$USER$$' === $item_default_value ) {
-						$item_default_value = WPDA::get_current_user_login();
-					} elseif ( '$$EMAIL$$' === $item_default_value ) {
-						$item_default_value = WPDA::get_current_user_email();
-					} elseif ( '$$NOW$$' === $item_default_value || '$$NOWDT$$' === $item_default_value ) {
-						global $wpdb;
-						$now_db       = $wpdb->get_var( 'select now()' );
-						$db_format    = WPDA::DB_DATETIME_FORMAT;
-						$convert_date = \DateTime::createFromFormat( $db_format, $now_db );
-						if ( false !== $convert_date ) {
-							$date_format = WPDA::get_option( WPDA::OPTION_PLUGIN_DATE_FORMAT );
-							$time_format = WPDA::get_option( WPDA::OPTION_PLUGIN_TIME_FORMAT );
-							$item_format = $date_format;
-							if ( '$$NOWDT$$' === $item_default_value ) {
-								$item_format .= " {$time_format}";
-							}
-							$item_default_value = $convert_date->format( $item_format );
-						} else {
-							$item_default_value = '';
-						}
-					}
+					$item_default_value = WPDA::convert_default_value( $columns['default'] );
 					$item_index = $this->get_item_index( $columns['column_name'] );
 					if ( isset( $this->form_items[ $item_index ] ) ) {
 						$this->form_items[ $item_index ]->set_item_default_value( $item_default_value );
@@ -118,6 +93,13 @@ namespace WPDataProjects\Simple_Form {
 					// Process lookup items
 					if ( isset( $tableform_item->lookup ) && false !== $tableform_item->lookup ) {
 						$lookup_column_name[ $tableform_item->column_name ] = $tableform_item->lookup;
+					}
+
+					if ( 'edit' === $this->action ) {
+						// Check readonly items
+						if ( isset( $tableform_item->readonly ) && 'on' === $tableform_item->readonly ) {
+							$this->form_items[ $i ]->set_readonly( true );
+						}
 					}
 
 					if ( is_admin() ) {

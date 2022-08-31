@@ -32,7 +32,8 @@ class plgAcymMailgun extends acymPlugin
             'us' => acym_translation('ACYM_US'),
             'eu' => acym_translation('ACYM_EU'),
         ];
-        $defaultDomain = empty($data['tab']->config->values[self::SENDING_METHOD_ID.'_api_domain']) ? '' : $data['tab']->config->values[self::SENDING_METHOD_ID.'_api_domain']->value;
+        $defaultDomain = empty($data['tab']->config->values[self::SENDING_METHOD_ID.'_api_domain']) ? ''
+            : $data['tab']->config->values[self::SENDING_METHOD_ID.'_api_domain']->value;
         $defaultApiKey = empty($data['tab']->config->values[self::SENDING_METHOD_ID.'_api_key']) ? '' : $data['tab']->config->values[self::SENDING_METHOD_ID.'_api_key']->value;
         ob_start();
         ?>
@@ -90,18 +91,20 @@ class plgAcymMailgun extends acymPlugin
         if ($sendingMethod !== self::SENDING_METHOD_ID) return;
 
         $this->setSendingMethodApiUrl($credentials);
+        $headers = $this->getHeadersSendingMethod(self::SENDING_METHOD_ID);
         $authentication = $this->getAuthenticationSendingMethod(self::SENDING_METHOD_ID, $credentials);
-        $response = $this->callApiSendingMethod($this->sendingMethodApiUrl.'log', [], [], 'GET', $authentication);
+        $data = [
+            'from' => $this->config->get('from_email'),
+            'to' => acym_currentUserEmail(),
+            'subject' => 'Test email',
+            'html' => 'Test email body',
+            'o:testmode' => true,
+        ];
+
+        $response = $this->callApiSendingMethod($this->sendingMethodApiUrl.'messages', $data, $headers, 'POST', $authentication, true);
 
         if (empty($response)) {
-            $errorMsg = acym_translation('ACYM_NO_ANSWER');
-            acym_sendAjaxResponse(acym_translationSprintf('ACYM_ERROR_OCCURRED_WHILE_CALLING_API', $errorMsg), [], false);
-        } elseif (!empty($response['error_curl'])) {
-            acym_sendAjaxResponse(acym_translationSprintf('ACYM_ERROR_OCCURRED_WHILE_CALLING_API', $response['error_curl']), [], false);
-        } elseif (!empty($response['message']) && $response['message'] == 'Invalid private key') {
             acym_sendAjaxResponse(acym_translation('ACYM_AUTHENTICATION_FAILS_WITH_API_KEY'), [], false);
-        } elseif (!empty($response['message'])) {
-            acym_sendAjaxResponse(acym_translation('ACYM_AUTHENTICATION_FAILS_WITH_DOMAIN_REGION'), [], false);
         } else {
             acym_sendAjaxResponse(acym_translation('ACYM_API_KEY_CORRECT'));
         }

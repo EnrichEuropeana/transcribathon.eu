@@ -4559,11 +4559,15 @@ module.exports = Backbone.View.extend( {
 
 		var builderView = this;
 		var builderID = builderView.$el.attr( 'id' );
+		var container = 'parent';
 
-		// Create the sortable for the rows
-		var wpVersion = $( 'body' ).attr( 'class' ).match( /version-([0-9-]+)/ )[0].replace( /\D/g,'' );
+		if ( ! $( 'body' ).hasClass( 'wp-customizer' ) && $( 'body' ).attr( 'class' ).match( /version-([0-9-]+)/ )[0].replace( /\D/g,'' ) < 59 ) {
+			wpVersion = '#wpwrap';
+		}
+
+		// Create the sortable element for rows.
 		this.rowsSortable = this.$( '.so-rows-container:not(.sow-row-color)' ).sortable( {
-			appendTo: wpVersion >= 59 ? 'parent' : '#wpwrap',
+			appendTo: container,
 			items: '.so-row-container',
 			handle: '.so-row-move',
 			// For the block editor, where it's possible to have multiple Page Builder blocks on a page.
@@ -7404,7 +7408,23 @@ module.exports = Backbone.View.extend( {
 			text.on( 'change', setValue );
 			unit.on( 'change', setValue );
 		} );
-		
+
+		// Set up all the toggle fields
+		this.$( '.style-field-toggle' ).each( function () {
+			var $$ = $( this );
+			var checkbox = $$.find( '.so-toggle-switch-input' );
+			var settings = $$.find( '.so-toggle-fields' );
+
+			checkbox.on( 'change', function() {
+				if ( $( this ).prop( 'checked' ) ) {
+					settings.slideDown();
+				} else {
+					settings.slideUp();
+				}
+			} );
+		} );
+		this.$( '.style-field-toggle .so-toggle-switch-input' ).trigger( 'change' );
+
 		// Allow other plugins to setup custom fields.
 		$( document ).trigger( 'setup_style_fields', this );
 	}

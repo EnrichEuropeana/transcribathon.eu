@@ -976,7 +976,7 @@ class BounceHelper extends acymObject
             $data[] = 'ACY_RULE::'.$oneRule->id.' '.$oneRule->name;
             $data[] = 'REPLYTO_ADDRESS::'.$this->_message->header->reply_to_name.' ( '.$this->_message->header->reply_to_email.' )';
             $data[] = 'FROM_ADDRESS::'.$this->_message->header->from_name.' ( '.$this->_message->header->from_email.' )';
-            $data[] = print_r($this->_message->headerinfo, true);
+            $data[] = @htmlentities(print_r($this->_message->headerinfo, true), ENT_COMPAT, 'UTF-8');
             if (empty($this->_message->mailid)) {
                 $this->_message->mailid = 0;
             }
@@ -984,7 +984,7 @@ class BounceHelper extends acymObject
                 $this->historyClass->insert($this->_message->userid, 'bounce', $data, $this->_message->mailid);
                 $message .= ' | '.acym_translationSprintf('ACYM_BOUNCE_MESSAGE_SAVED', $this->_message->userid);
             } catch (\Exception $e) {
-                $message .= ' | '.acym_translation_sprintf(
+                $message .= ' | '.acym_translationSprintf(
                         'ACYM_BOUNCE_SAVE_ERROR_USER_MAIL_RULE',
                         $this->_message->userid,
                         $this->_message->mailid,

@@ -674,7 +674,11 @@ class acymPlugin extends acymObject
         $varFields = [];
         $varFields['{picthtml}'] = '';
         foreach ($element as $fieldName => $oneField) {
-            $varFields['{'.$fieldName.'}'] = $oneField;
+            if (is_object($oneField) || is_array($oneField)) {
+                $varFields['{'.$fieldName.'}'] = json_encode($oneField);
+            } else {
+                $varFields['{'.$fieldName.'}'] = $oneField;
+            }
         }
 
         return $varFields;
@@ -1109,7 +1113,7 @@ class acymPlugin extends acymObject
     {
         if (!$raw) {
             if (empty($path)) $path = ACYM_DYNAMICS_URL.$this->name;
-            $css = $path.DS.'css'.DS.$css.'.css';
+            $css = $path.'/css/'.$css.'.css';
         }
         acym_addStyle($raw, $css);
     }
@@ -1118,7 +1122,7 @@ class acymPlugin extends acymObject
     {
         if (!$raw) {
             if (empty($path)) $path = ACYM_DYNAMICS_URL.$this->name;
-            $js = $path.DS.'js'.DS.$js.'.js';
+            $js = $path.'/js/'.$js.'.js';
         }
         acym_addScript($raw, $js);
     }
@@ -1337,7 +1341,10 @@ class acymPlugin extends acymObject
     {
         $page = acym_getVar('cmd', 'page');
         if (is_array($page)) return;
-        $ctrl = acym_getVar('cmd', 'ctrl', str_replace(ACYM_COMPONENT.'_', '', $page));
+        if (!empty($page) && is_string($page)) {
+            $page = str_replace(ACYM_COMPONENT.'_', '', $page);
+        }
+        $ctrl = acym_getVar('cmd', 'ctrl', $page);
         if (!in_array($ctrl, ['plugins', 'dynamics'])) return;
 
         $task = acym_getVar('cmd', 'task', 'installed');

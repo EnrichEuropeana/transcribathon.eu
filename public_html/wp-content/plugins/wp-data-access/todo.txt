@@ -1,12 +1,16 @@
++ When switching between different query types always force save before buttons can be used (Pascal)
++ Add custom color schemes to Data Publisher premium (Alex)
++ Allow access to premium data services from local hosts via pre-defined public ip addresses (Athena)
++ Write errors to log on CSV import (Ed)
+
 *** MAIN SCHEDULE 2022 ***
 
 + Finish Data Forms V2
 
 *** ISSUES ***
 
-+ Check for rewrite rules with URL parameters (Martin)
++ Search entire database for a string
 + Cannot import sample_test.csv with old CSV import feature
-+ Add filter to LOV - allowing to use WordPress environment variables (Marco)
 + Add order by to LOV (Barbara)
 + Dashboards
   + Start cache update after sending response
@@ -34,7 +38,6 @@
   - Publications
   - Sue > integration with phpdocx
 + Mieke
-  + Make fields read-only or hidden
   + Make parent read-only and child updatable
 + Howard - csp issue
   + https://wordpress.org/support/topic/content-security-policy-breaks-wp-data-access/

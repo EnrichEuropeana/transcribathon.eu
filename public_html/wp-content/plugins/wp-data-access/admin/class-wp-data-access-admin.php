@@ -399,6 +399,9 @@ class WP_Data_Access_Admin
             WPDA::get_option( WPDA::OPTION_WPDA_VERSION ),
             false
         );
+        wp_localize_script( 'wpda_admin_scripts', 'wpda_admin_vars', array(
+            'wpda_ajaxurl' => admin_url( 'admin-ajax.php' ),
+        ) );
         // Register dashboard.
         wp_register_script(
             'wpdataaccess_dashboard',
@@ -638,7 +641,7 @@ class WP_Data_Access_Admin
                 'manage_options',
                 $this->default_dashboard_menu,
                 null,
-                'dashicons-editor-table',
+                'dashicons-database',
                 999999999
             );
             // Add data explorer to WPDA menu.
@@ -1187,7 +1190,7 @@ class WP_Data_Access_Admin
                 $first_page,
                 function () {
             },
-                'dashicons-editor-table',
+                'dashicons-database-view',
                 999999999
             );
             $this->loaded_user_main_menu = true;

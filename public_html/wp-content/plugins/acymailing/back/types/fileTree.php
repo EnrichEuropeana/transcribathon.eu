@@ -13,7 +13,7 @@ class FileTreeType extends acymObject
             $tree = array_merge($tree, $this->searchChildren($children, $root));
         }
 
-        $treeView = '<div id="displaytree" class="cell"><input type="text" readonly name="currentPath" id="currentPath" value="'.acym_escape($currentFolder).'"></div>';
+        $treeView = '<div id="displaytree" class="cell medium-11"><input type="text" readonly name="currentPath" id="currentPath" value="'.acym_escape($currentFolder).'"></div>';
         $treeView .= '<div class="cell" id="treefile" style="display: none;">'.$this->displayTree($tree, $currentFolder).'</div>';
         $treeView .= '<input type="hidden" name="'.acym_escape($nameInput).'" id="'.acym_escape($nameInput).'" value="'.acym_escape($currentFolder).'">';
 

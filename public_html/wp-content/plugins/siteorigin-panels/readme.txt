@@ -3,8 +3,8 @@ Tags: page builder, responsive, parallax, widgets, blocks, gallery, layout, grid
 Requires at least: 4.7
 Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 2.16.17
-Build time: 2022-07-19T14:01:35+02:00
+Stable tag: 2.17.0
+Build time: 2022-08-28T14:58:49+02:00
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Donate link: https://siteorigin.com/downloads/premium/
@@ -107,10 +107,22 @@ SiteOrigin Premium includes access to our professional email support service, pe
 
 == Changelog ==
 
+= 2.17.0 - 28 August 2022 =
+* Row, Cell, and Widget Design Settings: Added Border Radius and Box Shadow settings.
+
+= 2.16.19 - 16 August 2022 =
+* Resolved `Uncaught TypeError` Customizer Layout Builder console error.
+
+= 2.16.18 - 10 August 2022 =
+* Easy Digital Downloads: Resolved `Add New` button error.
+* Resolved a Customizer Layout Builder widget sizing issue.
+* Improved `style` tag HTML validation.
+* Resolved a potential Panels preview PHP 8.3 type error.
+
 = 2.16.17 - 19 July 2022 =
 * Restored Cell `Link Color` and `Link Hover Color` settings.
 * Gravity Forms: Added additional check to prevent an unrelated notice.
-* Jetpack: Added Copy Post module support. 
+* Jetpack: Added Copy Post module support.
 
 = 2.16.16 - 09 July 2022 =
 * Legacy Layout Engine: Resolved `Undefined index: cell_index` notice.

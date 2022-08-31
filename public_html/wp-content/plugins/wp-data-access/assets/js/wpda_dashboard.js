@@ -89,6 +89,7 @@ function showMenu() {
         jQuery("#wpda-dashboard .wpda-dashboard .wpda-dashboard-group .wpda-dashboard-item").css("width", wd + "px");
         jQuery("#wpda-dashboard .wpda-dashboard .wpda-dashboard-group .wpda-dashboard-item .label").css("font-size", tx + "px");
         jQuery("#wpda-dashboard .wpda-dashboard .wpda-dashboard-group .wpda-dashboard-item .fas").css("font-size", fs + "px");
+        jQuery("#wpda-dashboard .wpda-dashboard .wpda-dashboard-group .wpda-dashboard-item .fa-solid").css("font-size", fs + "px");
 
         jQuery("#wpda-dashboard-mobile").hide();
         jQuery("#wpda-dashboard").fadeIn(1000);

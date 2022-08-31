@@ -730,6 +730,7 @@ class CampaignsController extends acymController
             $data['mailInformation']->settings = null;
             $data['mailInformation']->links_language = '';
             $data['mailInformation']->visible = 1;
+            $data['mailInformation']->mail_settings = null;
 
             $editLink .= '&from='.$mailId;
         } else {
@@ -755,6 +756,7 @@ class CampaignsController extends acymController
             $data['mailInformation']->from_name = '';
             $data['mailInformation']->reply_to_email = '';
             $data['mailInformation']->reply_to_name = '';
+            $data['mailInformation']->mail_settings = null;
             $data['typeEditor'] = 'acyEditor';
         } elseif (!empty($mailId)) {
             $mail = $mailClass->getOneById($mailId);
@@ -775,6 +777,7 @@ class CampaignsController extends acymController
             $data['mailInformation']->from_name = $mail->from_name;
             $data['mailInformation']->reply_to_email = $mail->reply_to_email;
             $data['mailInformation']->reply_to_name = $mail->reply_to_name;
+            $data['mailInformation']->mail_settings = $mail->mail_settings;
 
             if ($checkAutosave) {
                 $data['mailInformation']->autosave = $mail->autosave;
@@ -1095,6 +1098,15 @@ class CampaignsController extends acymController
         $mail->drag_editor = strpos($mail->body, 'acym__wysid__template') === false ? 0 : 1;
         $mail->attachments = empty($mail->attachments) ? [] : json_decode($mail->attachments, true);
 
+        $mainColors = acym_getVar('string', 'main_colors', '', 'REQUEST', ACYM_ALLOWRAW);;
+        if (!empty($mail->mail_settings)) {
+            $mailSettings = json_decode($mail->mail_settings, false);
+        } else {
+            $mailSettings = new \stdClass();
+        }
+        $mailSettings->mainColors = $mainColors;
+        $mail->mail_settings = json_encode($mailSettings);
+
         $mail->tags = acym_getVar('array', 'template_tags', []);
 
         $mailController = new MailsController();
@@ -1395,7 +1407,7 @@ class CampaignsController extends acymController
             $campaign->mail_id = $idNewMail;
             $campaignId = $campaignClass->save($campaign);
 
-            $allLists = $campaignClass->getListsForCampaign($oldMailId);
+            $allLists = $campaignClass->getListsByMailId($oldMailId);
 
             $campaignClass->manageListsToCampaign($allLists, $idNewMail);
         }
@@ -2033,7 +2045,7 @@ class CampaignsController extends acymController
             'version' => 'enterprise',
         ];
         if (!acym_isAcyCheckerInstalled()) {
-            $lists = $campaignClass->getListsForCampaign($campaign->mail_id);
+            $lists = $campaignClass->getListsByMailId($campaign->mail_id);
             $listClass = new ListClass();
             $data['recipients'] = $listClass->getTotalSubCount($lists);
         }

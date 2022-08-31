@@ -325,8 +325,8 @@ class CampaignClass extends acymClass
 
         $values = [];
         $listsIds = array_unique($listsIds);
-        foreach ($listsIds as $id) {
-            array_push($values, '('.intval($mailId).', '.intval($id).')');
+        foreach ($listsIds as $listId) {
+            $values[] = '('.intval($mailId).', '.intval($listId).')';
         }
 
         if (!empty($values)) {
@@ -728,7 +728,7 @@ class CampaignClass extends acymClass
         $query .= $where;
         $return = [];
         $return['count'] = acym_loadResult($queryCountSelect.$query.') AS r ');
-        
+
         $endQuerySelect = 'GROUP BY mail.id ';
         $endQuerySelect .= 'ORDER BY campaign.sending_date DESC';
 
@@ -784,7 +784,7 @@ class CampaignClass extends acymClass
         return $return;
     }
 
-    public function getListsForCampaign($mailId)
+    public function getListsByMailId($mailId)
     {
         $query = 'SELECT list_id FROM #__acym_mail_has_list WHERE mail_id = '.intval($mailId);
 
@@ -826,14 +826,16 @@ class CampaignClass extends acymClass
             $campaignMail = $mailClass->getOneById($campaign->mail_id);
 
             $lastGenerated = $campaign->last_generated;
-            $shouldGenerate = $this->_updateAutoCampaign($campaign, $campaignMail, $time);
+            $shouldGenerate = $this->updateAutoCampaign($campaign, $campaignMail, $time);
             $this->save($campaign);
 
             if (!$shouldGenerate) continue;
 
-            $generatedCampaign = $this->_generateCampaign($campaign, $campaignMail, $lastGenerated, $mailClass);
+            $generatedCampaign = $this->generateCampaign($campaign, $campaignMail, $lastGenerated, $mailClass);
 
-            if (empty($campaign->sending_params['need_confirm_to_send'])) $this->send($generatedCampaign->id);
+            if (empty($campaign->sending_params['need_confirm_to_send'])) {
+                $this->send($generatedCampaign->id);
+            }
         }
     }
 
@@ -854,7 +856,7 @@ class CampaignClass extends acymClass
         return true;
     }
 
-    private function _updateAutoCampaign(&$campaign, $campaignMail, $time)
+    private function updateAutoCampaign(&$campaign, $campaignMail, $time)
     {
         if (!$this->shouldGenerateCampaign($campaign, $campaignMail)) return false;
 
@@ -868,9 +870,9 @@ class CampaignClass extends acymClass
         return true;
     }
 
-    private function _generateCampaign($campaign, $campaignMail, $lastGenerated, $mailClass)
+    private function generateCampaign($campaign, $campaignMail, $lastGenerated, $mailClass)
     {
-        $newMail = $this->_generateMailAutoCampaign($campaignMail, $campaign->sending_params['number_generated']);
+        $newMail = $this->generateMailAutoCampaign($campaignMail, $campaign->sending_params['number_generated'], $mailClass);
         $newCampaign = new \stdClass();
         $newCampaign->mail_id = $newMail->id;
         $newCampaign->parent_id = $campaign->id;
@@ -890,46 +892,43 @@ class CampaignClass extends acymClass
         return $newCampaign;
     }
 
-    private function _generateMailAutoCampaign($newMail, $generatedMail)
+    private function generateMailAutoCampaign($newMail, $generatedMailNumber, $mailClass)
     {
         $mailId = $newMail->id;
         unset($newMail->id);
         $newMail->creation_date = acym_date('now', 'Y-m-d H:i:s', false);
-        $newMail->name .= ' #'.$generatedMail;
+        $newMail->name .= ' #'.$generatedMailNumber;
 
-        $mailClass = new MailClass();
         $newMail->id = $mailClass->save($newMail);
-        $this->_setListToGeneratedCampaign($mailId, $newMail->id);
+        $this->setListToGeneratedCampaign($mailId, $newMail->id, $mailClass);
 
-        if (acym_isMultilingual()) $this->generateMailAutoCampaignMultilingual($mailId, $generatedMail, $newMail->id);
+        if (acym_isMultilingual()) {
+            $this->generateMailAutoCampaignMultilingual($mailId, $generatedMailNumber, $newMail->id);
+        }
 
         return $newMail;
     }
 
-    private function generateMailAutoCampaignMultilingual($mailId, $generatedMail, $newParentId)
+    private function generateMailAutoCampaignMultilingual($mailId, $generatedMailNumber, $newParentId)
     {
         $mailClass = new MailClass();
         $mails = $mailClass->getTranslationsById($mailId, true);
 
         foreach ($mails as $mail) {
             unset($mail->id);
-            $mail->name .= ' #'.$generatedMail;
+            $mail->name .= ' #'.$generatedMailNumber;
             $mail->parent_id = $newParentId;
 
             $mailClass->save($mail);
         }
     }
 
-    private function _setListToGeneratedCampaign($parentMailId, $newMailId)
+    private function setListToGeneratedCampaign($parentMailId, $newMailId, $mailClass)
     {
-        $mailClass = new MailClass();
         $lists = $mailClass->getAllListsByMailId($parentMailId);
-        $listIds = [];
-        foreach ($lists as $list) {
-            $listIds[] = $list->id;
-        }
+        $listIds = array_keys($lists);
 
-        return $this->manageListsToCampaign($listIds, $newMailId);
+        $this->manageListsToCampaign($listIds, $newMailId);
     }
 
     public function getLastGenerated($mailId)

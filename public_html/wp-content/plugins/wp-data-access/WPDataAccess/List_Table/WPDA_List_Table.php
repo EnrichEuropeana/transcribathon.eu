@@ -289,12 +289,6 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
      */
     protected  $row_count_estimate = array() ;
     /**
-     * Hide schema and table name
-     *
-     * @var bool
-     */
-    protected  $hide_db_info = false ;
-    /**
      * Project page id
      *
      * Helper to hide schema and table name in export links on web pages
@@ -408,7 +402,6 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
             }
         }
         
-        $this->hide_db_info = isset( $args['hide_db_info'] ) && true === $args['hide_db_info'];
         $this->pid = ( isset( $args['pid'] ) ? $args['pid'] : '' );
         // Get menu slag of current page.
         
@@ -458,14 +451,7 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
         if ( !(isset( $args['allow_import'] ) && 'off' === $args['allow_import']) ) {
             try {
                 // Instantiate WPDA_Import.
-                
-                if ( !$this->hide_db_info ) {
-                    $url = ( is_admin() ? "?page={$this->page}&wpdaschema_name={$this->schema_name}&table_name={$this->table_name}" : "?wpdaschema_name={$this->schema_name}&table_name={$this->table_name}" );
-                } else {
-                    $url = ( is_admin() ? "?page={$this->page}" : '' );
-                }
-                
-                $this->wpda_import = new WPDA_Import( $url, $this->schema_name, $this->table_name );
+                $this->wpda_import = new WPDA_Import( ( is_admin() ? "?page={$this->page}" : '' ), $this->schema_name, $this->table_name );
             } catch ( \Exception $e ) {
                 // If import is turned off instantiation will fail. Handle is set to null (check in future calls).
                 $this->wpda_import = null;
@@ -812,25 +798,6 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
                 }
                 
                 
-                if ( !$this->hide_db_info ) {
-                    global  $wpdb ;
-                    
-                    if ( '' !== $this->schema_name && $wpdb->dbname !== $this->schema_name ) {
-                        $url .= ( '' === $url ? '?' : '&' );
-                        $url .= "wpdaschema_name={$this->schema_name}";
-                    }
-                    
-                    $url .= ( '' === $url ? '?' : '&' );
-                    $url .= "table_name={$this->table_name}";
-                }
-                
-                $url = esc_attr( $url );
-                // Functions used in heredocs.
-                $esc_attr = 'esc_attr';
-                $get_key_input_fields = $this->get_key_input_fields( $item );
-                $add_parent_args_as_string = $this->add_parent_args_as_string( $item );
-                $page_number_item = $this->page_number_item;
-                
                 if ( 'on' === $this->show_view_link ) {
                     $wp_nonce_action = "wpda-query-{$this->table_name}{$wp_nonce_keys}";
                     $wp_nonce = wp_create_nonce( $wp_nonce_action );
@@ -842,7 +809,9 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
                         'view',
                         $url,
                         $wp_nonce,
-                        $row_security_nonce_field
+                        $row_security_nonce_field,
+                        $this->schema_name,
+                        $this->table_name
                     );
                     ?>
 
@@ -884,7 +853,9 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
                         'edit',
                         $url,
                         $wp_nonce,
-                        $row_security_nonce_field
+                        $row_security_nonce_field,
+                        $this->schema_name,
+                        $this->table_name
                     );
                     ?>
 
@@ -926,7 +897,9 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
                         'delete',
                         $url,
                         $wp_nonce,
-                        $row_security_nonce_field
+                        $row_security_nonce_field,
+                        $this->schema_name,
+                        $this->table_name
                     );
                     ?>
 
@@ -1167,6 +1140,8 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
      * @param string $url URL admin page.
      * @param string $wp_nonce Nonce.
      * @param string $row_security_nonce_field Nonce for row level access security.
+     * @param string $schema_name Database schema name.
+     * @param string $table_name Database table name.
      *
      * @return array|string|string[]
      */
@@ -1176,7 +1151,9 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
         $action,
         $url,
         $wp_nonce,
-        $row_security_nonce_field
+        $row_security_nonce_field,
+        $schema_name,
+        $table_name
     )
     {
         // Already escaped: $url, $row_security_nonce_field, get_key_input_fields(), add_parent_args_as_string().
@@ -1188,6 +1165,8 @@ class WPDA_List_Table extends Wordpress_Original\WP_List_Table
 \t\t\t\t<form id='{$esc_attr( $form_id )}' action='{$url}' method='post'>
 \t\t\t\t\t{$get_key_input_fields}
 \t\t\t\t\t{$add_parent_args_as_string}
+\t\t\t\t\t<input type='hidden' name='wpdaschema_name' value='{$esc_attr( $schema_name )}' />
+\t\t\t\t\t<input type='hidden' name='table_name' value='{$esc_attr( $table_name )}' />
 \t\t\t\t\t<input type='hidden' name='action' value='{$esc_attr( $action )}' />
 \t\t\t\t\t<input type='hidden' name='_wpnonce' value='{$esc_attr( $wp_nonce )}'>
 \t\t\t\t\t{$row_security_nonce_field}
@@ -1253,13 +1232,19 @@ EOT;
      *
      * @return string Rendered column content
      */
-    protected function render_column_content( $item, $column_name )
+    protected function render_column_content( $item, $column_name, $substitute_newlines = true )
     {
         $column_content = ( isset( $item["lookup_value_{$column_name}"] ) ? $item["lookup_value_{$column_name}"] : $item[$column_name] );
         
         if ( 'off' === WPDA::get_option( WPDA::OPTION_BE_TEXT_WRAP_SWITCH ) && WPDA::get_option( WPDA::OPTION_BE_TEXT_WRAP ) < strlen( $column_content ) ) {
             $title = sprintf( __( 'Output limited to %1$s characters', 'wp-data-access' ), WPDA::get_option( WPDA::OPTION_BE_TEXT_WRAP ) );
-            return str_replace( "\n", '<br/>', substr( esc_html( str_replace( '&', '&amp;', $column_content ) ), 0, WPDA::get_option( WPDA::OPTION_BE_TEXT_WRAP ) ) . ' <a href="javascript:void(0)" title="' . $title . '">&bull;&bull;&bull;</a>' );
+            
+            if ( $substitute_newlines ) {
+                return str_replace( "\n", '<br/>', substr( esc_html( str_replace( '&', '&amp;', $column_content ) ), 0, WPDA::get_option( WPDA::OPTION_BE_TEXT_WRAP ) ) . ' <a href="javascript:void(0)" title="' . $title . '">&bull;&bull;&bull;</a>' );
+            } else {
+                return substr( esc_html( str_replace( '&', '&amp;', $column_content ) ), 0, WPDA::get_option( WPDA::OPTION_BE_TEXT_WRAP ) ) . ' <a href="javascript:void(0)" title="' . $title . '">&bull;&bull;&bull;</a>';
+            }
+        
         } else {
             $column_data_type = $this->wpda_list_columns->get_column_data_type( $column_name );
             switch ( $column_data_type ) {
@@ -1295,7 +1280,13 @@ EOT;
                     }
             
             }
-            return str_replace( "\n", '<br/>', esc_html( str_replace( '&', '&amp;', $column_content ) ) );
+            
+            if ( $substitute_newlines ) {
+                return str_replace( "\n", '<br/>', esc_html( str_replace( '&', '&amp;', $column_content ) ) );
+            } else {
+                return esc_html( str_replace( '&', '&amp;', $column_content ) );
+            }
+        
         }
     
     }
@@ -1568,23 +1559,6 @@ EOT;
             $url = '';
         }
         
-        
-        if ( !$this->hide_db_info ) {
-            global  $wpdb ;
-            
-            if ( self::LIST_BASE_TABLE !== $this->table_name ) {
-                
-                if ( '' !== $this->schema_name && $wpdb->dbname !== $this->schema_name ) {
-                    $url .= ( '' === $url ? '?' : '&' );
-                    $url .= "wpdaschema_name={$this->schema_name}";
-                }
-                
-                $url .= ( '' === $url ? '?' : '&' );
-                $url .= "table_name={$this->table_name}";
-            }
-        
-        }
-        
         ?>
 
 				<form	id="wpda_main_form"
@@ -1615,8 +1589,23 @@ EOT;
 						<?php 
         }
         
+        
+        if ( self::LIST_BASE_TABLE !== $this->table_name ) {
+            ?>
+						<input type="hidden" name="wpdaschema_name"
+							   value="<?php 
+            echo  esc_attr( $this->schema_name ) ;
+            // input var okay.
+            ?>"/>
+						<input type="hidden" name="table_name"
+							   value="<?php 
+            echo  esc_attr( $this->table_name ) ;
+            // input var okay.
+            ?>"/>
+						<?php 
+        }
+        
         ?>
-
 					<input id="wpda_main_form_orderby" type="hidden" name="orderby"
 						   value="<?php 
         echo  ( isset( $_REQUEST['orderby'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) ) : '' ) ;
@@ -1683,9 +1672,7 @@ EOT;
 					jQuery( '.wpda_tooltip' ).tooltip();
 					// Add toolbar events
 					jQuery("#wpda_toolbar_icon_go_backup").on("click", function() {
-						window.location.href = '?page=wpda&page_action=wpda_backup&wpdaschema_name=<?php 
-        echo  esc_attr( $this->schema_name ) ;
-        ?>';
+						jQuery("#wpda_goto_backup").submit();
 					});
 					jQuery("#wpda_toolbar_icon_add_row").on("click", function() {
 						jQuery("#wpda_new_row_table_name").val("<?php 
@@ -1745,11 +1732,9 @@ EOT;
      * By default "add new" and "import" buttons are added (depending on the settings). Overwrite this method to
      * add your own buttons.
      *
-     * @param string $add_param Parameter to be added to form action.
-     *
      * @since   1.0.1
      */
-    protected function add_header_button( $add_param = '' )
+    protected function add_header_button()
     {
         
         if ( 'off' === $this->allow_insert ) {
@@ -1768,21 +1753,6 @@ EOT;
                     $url = '';
                 }
                 
-                
-                if ( !$this->hide_db_info ) {
-                    global  $wpdb ;
-                    
-                    if ( '' !== $this->schema_name && $wpdb->dbname !== $this->schema_name ) {
-                        $url .= ( '' === $url ? '?' : '&' );
-                        $url .= "wpdaschema_name={$this->schema_name}";
-                    }
-                    
-                    $url .= ( '' === $url ? '?' : '&' );
-                    $url .= "table_name={$this->table_name}{$add_param}";
-                } else {
-                    $url .= $add_param;
-                }
-                
                 ?>
 					<form
 							method="post"
@@ -1792,6 +1762,16 @@ EOT;
 							style="display: inline-block; vertical-align: baseline;"
 					>
 						<div>
+							<input type="hidden" name="wpdaschema_name"
+								   value="<?php 
+                echo  esc_attr( $this->schema_name ) ;
+                // input var okay.
+                ?>"/>
+							<input type="hidden" name="table_name"
+								   value="<?php 
+                echo  esc_attr( $this->table_name ) ;
+                // input var okay.
+                ?>"/>
 							<input type="hidden" name="action" value="new">
 							<button type="submit" class="page-title-action wpda_tooltip"
 									title="<?php 

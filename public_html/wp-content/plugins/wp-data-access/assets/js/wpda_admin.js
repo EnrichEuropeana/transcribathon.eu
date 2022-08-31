@@ -493,3 +493,24 @@ function wpda_add_icons_to_dialog_buttons() {
 		}
 	});
 }
+
+function wpda_dbinit_admin( schema_name, wpnonce ) {
+	jQuery.ajax({
+		method: 'POST',
+		url: wpda_admin_vars.wpda_ajaxurl + '?action=wpda_dbinit_admin',
+		data: {
+			wpdaschema_name: schema_name,
+			wpnonce: wpnonce,
+		}
+	}).done(
+		function(data) {
+			msg = JSON.parse(data);
+			if (msg.status==="OK") {
+				jQuery.notify('Database function wpda_get_wp_user_id() created', 'success');
+			} else {
+				console.log(msg);
+				jQuery.notify(msg.msg, 'error');
+			}
+		}
+	);
+}

@@ -139,14 +139,14 @@ class plgAcymcreateuser extends acymPlugin
         $data['sitename'] = $joomlaConfig->get('sitename');
         $data['siteurl'] = str_replace('/administrator', '', acym_baseURI());
 
-        $emailSubject = acym_translation_sprintf('COM_USERS_EMAIL_ACCOUNT_DETAILS', $data['name'], $data['sitename']);
+        $emailSubject = acym_translationSprintf('COM_USERS_EMAIL_ACCOUNT_DETAILS', $data['name'], $data['sitename']);
         if (in_array($useractivation, [1, 2])) {
             $base = acym_currentURL();
             $activationLink = 'index.php?option=com_users&task=registration.activate&token=';
             $data['activate'] = $data['siteurl'].$activationLink.$data['activation'];
 
             if ($useractivation == 2) {
-                $emailBody = acym_translation_sprintf(
+                $emailBody = acym_translationSprintf(
                     'COM_USERS_EMAIL_REGISTERED_WITH_ADMIN_ACTIVATION_BODY',
                     $data['name'],
                     $data['sitename'],
@@ -157,7 +157,7 @@ class plgAcymcreateuser extends acymPlugin
                 );
             } else {
                 $activationMessage = 'COM_USERS_EMAIL_REGISTERED_WITH_ACTIVATION_BODY';
-                $emailBody = acym_translation_sprintf(
+                $emailBody = acym_translationSprintf(
                     $activationMessage,
                     $data['name'],
                     $data['sitename'],
@@ -168,7 +168,7 @@ class plgAcymcreateuser extends acymPlugin
                 );
             }
         } else {
-            $emailBody = acym_translation_sprintf(
+            $emailBody = acym_translationSprintf(
                 'COM_USERS_EMAIL_REGISTERED_BODY',
                 $data['name'],
                 $data['sitename'],

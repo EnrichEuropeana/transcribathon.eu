@@ -3,8 +3,8 @@ Tags: widget, button, slider, hero, google maps, image, carousel, lottie, featur
 Requires at least: 4.2
 Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 1.38.1
-Build time: 2022-07-20T19:42:49+02:00
+Stable tag: 1.40.1
+Build time: 2022-08-30T20:21:00+02:00
 License: GPLv3 or later
 Contributors: gpriday, braam-genis, alexgso
 Donate link: https://siteorigin.com/downloads/premium/
@@ -23,6 +23,7 @@ Our collection is growing; here's what we have so far:
 
 - **Accordion:** Squeeze a lot of content into a small space.
 - **Anything Carousel:** Display images, text, or any other content in a carousel.
+- **Blog:** Display blog posts in a list or grid. Choose a design that suits your content.
 - **Button:** A simple button widget with a variety of styling options.
 - **Call To Action:** Get users moving in the right direction.
 - **Contact Form:** A lightweight contact form builder.
@@ -104,6 +105,26 @@ SiteOrigin Premium includes access to our professional email support service, pe
 The Widgets Bundle global interface is available at Plugins > SiteOrigin Widgets. Widgets can be enabled or disabled as needed. If a widget offers global settings, you can access those via the Settings button next to each applicable widget.
 
 == Changelog ==
+
+= 1.40.1 - 30 August 2022 =
+* Contact Form: Added a new Dropdown Select setting `Allow multiple selections`.
+* Blog: Added a `Sticky` indicator to post meta.
+* Blog: Factored numbers into the Excerpt Length count.
+
+= 1.40.0 - 20 August 2022 =
+* Blog: Added `Excerpt Length` setting. The excerpt length can also be set using `siteorigin_widgets_blog_excerpt_length`.
+* Blog: Resolved a Portfolio template column sizing issue.
+
+= 1.39.0 - 08 August 2022 =
+* New Widget! Introducing the SiteOrigin Blog Widget.
+
+= 1.38.3 - 05 August 2022 =
+* Anything Carousel: Resolved potential navigation malfunction.
+* Post Carousel: Improved partially visible post navigation.
+* Improved `style` tag HTML validation.
+
+= 1.38.2 - 27 July 2022 =
+* Features: Resolved PHP 8 error when Features Per Row is empty.
 
 = 1.38.1 - 20 July 2022 =
 * Contact Form: Resolved a notice if Name and Message fields aren't included.

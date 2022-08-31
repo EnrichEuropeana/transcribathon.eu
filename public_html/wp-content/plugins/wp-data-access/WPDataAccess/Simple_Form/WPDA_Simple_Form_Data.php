@@ -129,6 +129,9 @@ class WPDA_Simple_Form_Data
     {
         $column_values_to_be_inserted = null;
         foreach ( $this->wpda_list_columns->get_table_columns() as $column ) {
+            if ( isset( $column['readonly'], $column['default'] ) ) {
+                $this->calling_form->insert_column_default( $column['column_name'], WPDA::convert_default_value( $column['default'] ) );
+            }
             
             if ( $column['column_name'] === $this->wpda_list_columns->get_auto_increment_column_name() ) {
                 // Auto increment column is not added
@@ -361,6 +364,12 @@ class WPDA_Simple_Form_Data
         }
         $column_values_to_be_updated = null;
         foreach ( $this->wpda_list_columns->get_table_columns() as $column ) {
+            
+            if ( isset( $column['readonly'] ) ) {
+                $this->calling_form->revert_column_value( $column['column_name'] );
+                continue;
+            }
+            
             if ( $this->calling_form->get_old_value( $column['column_name'] ) !== $this->calling_form->get_new_value( $column['column_name'] ) ) {
                 
                 if ( 'number' === WPDA::get_type( $column['data_type'] ) && '' === $this->calling_form->get_new_value( $column['column_name'] ) ) {

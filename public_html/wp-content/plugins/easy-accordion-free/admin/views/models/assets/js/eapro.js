@@ -1504,7 +1504,7 @@
         }, 1000);
       }
 
-      $(document).keydown(function (event) {
+      $(document).on('keydown',function (event) {
         if ((event.ctrlKey || event.metaKey) && event.which === 83) {
           $save_button.trigger('click');
           event.preventDefault();
@@ -2344,7 +2344,7 @@
 
   });
 
-  $('.post-type-sp_easy_accordion .column-shortcode input').click(function (e) {
+	$('.post-type-sp_easy_accordion .column-shortcode input').on('click',function (e) {
     e.preventDefault();
     /* Get the text field */
     var copyText = $(this);
@@ -2364,7 +2364,7 @@
       }, 0);
     }, 2000);
   });
-  $('.eap-shortcode-selectable').click(function (e) {
+	$('.eap-shortcode-selectable').on('click', function (e) {
     e.preventDefault();
     sp_eap_copyToClipboard($(this));
     sp_eap_SelectText($(this));
@@ -2399,7 +2399,7 @@
     sel.addRange(r);
   }
   // Theme preview
-  $('.sp_eap_accordion_theme').change(function () {
+  $('.sp_eap_accordion_theme').on('change',function () {
     var str = "";
     $(".sp_eap_accordion_theme option:selected").each(function () {
       str = $(this).val();
@@ -2407,7 +2407,7 @@
     if (str == 'sp-ea-one') {
       $('.eapro-field-theme_select .theme_preview').attr("src", eapro_vars.pluginsUrl + '/admin/img/ea-preview/theme-one.png')
     }
-  }).change();
+  }).trigger('change');
 
   // Hide shortcode option on update tab.
   $("#sp_eap_shortcode_options .eapro-nav-metabox ul li:last-of-type a").addClass("eapro_update_to_pro");
@@ -2436,7 +2436,7 @@ function isValidJSONString(str) {
   $('.eap_what_export').on('change', function () {
     $export_type = $(this).find('input:checked').val();
   });
-  $('.eap_export .eapro--button').click(function (event) {
+	$('.eap_export .eapro--button').on('click', function (event) {
     event.preventDefault();
     var $accordion_ids = $('.eap_post_ids select').val();
     var $accordion_ids_type = 'all_shortcodes' === $export_type ? 'all_shortcodes' : $accordion_ids;
@@ -2477,7 +2477,7 @@ function isValidJSONString(str) {
     }
   });
   // Accordion import.
-  $('.eap_import button.import').click(function (event) {
+	$('.eap_import button.import').on('click', function (event) {
     event.preventDefault();
     var eap_accordions = $('#import').prop('files')[0];
     if ($('#import').val() != '') {
@@ -2557,7 +2557,7 @@ function isValidJSONString(str) {
     var $button = $(this).find('.eapro-save');
     $button.css({"background-color": "#00C263", "pointer-events": "initial"}).val('Save Settings');
   });
- $('.sp-eap-options .eapro-save').click(function(e) {
+	$('.sp-eap-options .eapro-save').on('click', function(e) {
     e.preventDefault();
     $(this).css({"background-color": "#C5C5C6","pointer-events": "none"}).val('Changes Saved');
 })

@@ -37,8 +37,7 @@ namespace WPDataProjects\List_Table {
 				$this->orderby = $args['orderby_clause'];
 			}
 
-			$args['hide_db_info'] = true;
-			$args['pid']          = isset( $args['pid'] ) ? $args['pid'] : '';
+			$args['pid'] = isset( $args['pid'] ) ? $args['pid'] : '';
 
 			parent::__construct( $args );
 

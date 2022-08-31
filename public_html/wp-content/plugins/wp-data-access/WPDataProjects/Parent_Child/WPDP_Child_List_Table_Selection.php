@@ -57,13 +57,6 @@ namespace WPDataProjects\Parent_Child {
 
 			// Prepare url back button
 			$url = '?page=' . esc_attr( $this->page );
-			if ( ! $this->hide_db_info ) {
-				global $wpdb;
-				if ( '' !== $this->schema_name && $wpdb->dbname !== $this->schema_name ) {
-					$url .= '&wpdaschema_name=' . esc_attr( $this->schema_name );
-				}
-				$url .= '&table_name=' . esc_attr( $this->table_name );
-			}
 			$url .= '&' . esc_attr( $this->add_parent_args_to_back_button() ) . $this->page_number_link;
 			?>
 			<div style="padding-top:5px;padding-left:3px;">

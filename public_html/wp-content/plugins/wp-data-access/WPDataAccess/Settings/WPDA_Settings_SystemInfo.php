@@ -269,7 +269,7 @@ namespace WPDataAccess\Settings {
 							<tr>
 								<th class="wpda_system_info_subtitle"><?php echo __( 'Address' ); ?></th>
 								<td class="wpda_system_info_value" colspan="2">
-									<?php echo esc_attr( sanitize_text_field( wp_unslash( $_SERVER['SERVER_ADDR'] ) ) ); ?>
+									<?php echo esc_attr( sanitize_text_field( wp_unslash( WPDA::get_server_address() ) ) ); ?>
 								</td>
 							</tr>
 							<tr>

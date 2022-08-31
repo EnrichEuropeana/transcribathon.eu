@@ -129,7 +129,7 @@ namespace WPDataAccess\Backup {
 				<div id="wpda_export_import">
 					<div class="wpda_export_import">
 						<form id="wpda_export_import_form"
-								action="?page=wpda&page_action=wpda_backup&wpdaschema_name=<?php echo esc_attr( $schema_name ); ?>"
+								action="?page=wpda&page_action=wpda_backup"
 								method="post"
 								onsubmit="return pre_submit()">
 							<table>
@@ -258,6 +258,7 @@ namespace WPDataAccess\Backup {
 									</td>
 								</tr>
 							</table>
+							<input type="hidden" name="wpdaschema_name" value="<?php echo esc_attr( $schema_name ); ?>"/>
 							<input type="hidden" name="action" value="<?php echo esc_attr( $action ); ?>"/>
 						</form>
 					</div>
@@ -415,11 +416,13 @@ namespace WPDataAccess\Backup {
 			echo '</h1>&nbsp;';
 
 			if ( WPDA_Dashboard::add_actions_to_page_title() ) {
-				echo '<form method="post" action="?page=wpda&page_action=wpda_backup&wpdaschema_name=' . esc_attr( $schema_name ) . '" style="display: inline-block; vertical-align: baseline;">';
+				echo '<form method="post" action="?page=wpda&page_action=wpda_backup" style="display: inline-block; vertical-align: baseline;">';
 				echo '<button type="submit" class="page-title-action"><i class="fas fa-plus-circle wpda_icon_on_button"></i>' . __( 'New Data Backup' ) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput
+				echo '<input type="hidden" name="wpdaschema_name" value="' . esc_attr( $schema_name ) . '" />';
 				echo '<input type="hidden" name="action" value="new" />';
 				echo '</form>';
-				echo '<form method="post" action="?page=wpda&wpdaschema_name=' . esc_attr( $schema_name ) . '" style="display: inline-block; vertical-align: baseline;">';
+				echo '<form method="post" action="?page=wpda" style="display: inline-block; vertical-align: baseline;">';
+				echo '<input type="hidden" name="wpdaschema_name" value="' . esc_attr( $schema_name ) . '" />';
 				echo '<button type="submit" class="page-title-action"><i class="fas fa-angle-left wpda_icon_on_button"></i>Data Explorer</button>';
 				echo '</form>';
 			}
@@ -541,7 +544,9 @@ namespace WPDataAccess\Backup {
 							echo '</td>';
 							echo '<td>';
 							if ( 'wpda_data_backup' === $key ) {
-								echo '<form method="post" action="?page=wpda&table_name=' . esc_attr( $wpdb->prefix ) . 'wpda_logging&wpda_s=' . esc_attr( $value_value['args'][0] ) . '">';
+								echo '<form method="post" action="?page=wpda">';
+								echo '<input type="hidden" name="table_name" value="' . esc_attr( $wpdb->prefix ) . 'wpda_logging" />';
+								echo '<input type="hidden" name="wpda_s" value="' . esc_attr( $value_value['args'][0] ) . '" />';
 								echo '<a href="javascript:void(0)" onclick="jQuery(this).closest(\'form\').submit()" class="dashicons dashicons-info"></a>';
 								echo '</form>';
 							}

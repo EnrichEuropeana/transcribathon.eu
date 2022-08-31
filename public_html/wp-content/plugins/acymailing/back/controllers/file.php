@@ -15,6 +15,7 @@ class FileController extends acymController
 
     public function select()
     {
+        $warnings = '';
         $uploadFolderBase = acym_getFilesFolder();
         $currentFolder = acym_getVar('string', 'currentFolder', $uploadFolderBase);
         if (strpos($currentFolder, $uploadFolderBase) !== 0) $currentFolder = $uploadFolderBase;
@@ -29,14 +30,15 @@ class FileController extends acymController
         $uploadedFile = acym_getVar('array', 'uploadedFile', [], 'files');
         $selectedFile = '';
         if (!empty($uploadedFile) && !empty($uploadedFile['name'])) {
+            ob_start();
             $uploaded = acym_importFile($uploadedFile, $uploadPath, false);
+            $warnings = ob_get_clean();
             if ($uploaded) {
                 $selectedFile = $uploaded;
             }
         }
 
         $allowedExtensions = explode(',', $this->config->get('allowed_files'));
-        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'ico', 'bmp', 'svg'];
         $displayType = acym_getVar('string', 'displayType', 'icons');
 
         $files = [];
@@ -49,11 +51,12 @@ class FileController extends acymController
             'uploadFolder' => $uploadFolder,
             'map' => $map,
             'displayType' => $displayType,
-            'imageExtensions' => $imageExtensions,
+            'imageExtensions' => acym_getImageFileExtensions(),
             'allowedExtensions' => $allowedExtensions,
             'folders' => $folders,
             'fileTreeType' => new FileTreeType(),
-            'selectedFile' => $selectedFile
+            'selectedFile' => $selectedFile,
+            'warnings' => $warnings
         ];
 
         parent::display($data);

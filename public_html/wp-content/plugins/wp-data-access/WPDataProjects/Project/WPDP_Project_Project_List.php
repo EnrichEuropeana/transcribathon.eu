@@ -42,10 +42,8 @@ class WPDP_Project_Project_List extends WPDP_Parent_List_Table
     
     /**
      * Overwrites method add_header_button to add arguments to insert button
-     *
-     * @param string $add_param
      */
-    protected function add_header_button( $add_param = '' )
+    protected function add_header_button()
     {
         ?>
 			<form

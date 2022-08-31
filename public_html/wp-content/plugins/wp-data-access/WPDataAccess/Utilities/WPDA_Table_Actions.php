@@ -972,6 +972,11 @@ Start with high values and work down until the error disappears." style="cursor:
             foreach ( $column_settings_add_column as $add_column ) {
                 ?>
 														<td>
+															<?php 
+                if ( 'Edit' === $add_column['label'] ) {
+                    echo  '<label>' ;
+                }
+                ?>
 															<input
 																type="<?php 
                 echo  esc_attr( $add_column['type'] ) ;
@@ -1002,7 +1007,11 @@ Start with high values and work down until the error disappears." style="cursor:
                 }
                 
                 ?>
-															>
+															><?php 
+                if ( 'Edit' === $add_column['label'] ) {
+                    echo  '</label>' ;
+                }
+                ?>
 														</td>
 														<td></td>
 													<?php 

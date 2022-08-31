@@ -19,6 +19,7 @@ use  WPDataAccess\Utilities\WPDA_Favourites ;
 use  WPDataAccess\Utilities\WPDA_Import_Multi ;
 use  WPDataAccess\Utilities\WPDA_Message_Box ;
 use  WPDataAccess\WPDA ;
+use  WP_Data_Access_Admin ;
 /**
  * Class WPDA_List_Table_Menu
  *
@@ -395,7 +396,7 @@ class WPDA_List_Table_Menu extends WPDA_List_Table
                 // Add manage table/view line.
                 $wp_nonce_action_table_actions = "wpda-actions-{$table_name}";
                 $wp_nonce_table_actions = wp_create_nonce( $wp_nonce_action_table_actions );
-                $table_actions_title = sprintf( __( 'Table %s settings and administration panel', 'wp-data-access' ), $table_name );
+                $table_actions_title = sprintf( __( 'Table %s settings', 'wp-data-access' ), $table_name );
                 $actions['manage'] = "<a href=\"javascript:void( 0 )\" class='wpda_tooltip' title='{$table_actions_title}' onclick=\"wpda_show_table_actions( '{$this->schema_name}', '{$table_name}', '" . self::$list_number++ . "', '{$wp_nonce_table_actions}', '{$item['table_type_db']}', '" . self::LOADING . "' ); this.blur();\">" . '<i class="fas fa-gears wpda_icon_on_button"></i> ' . __( 'Manage', 'wp-data-access' ) . '</a>';
             }
             
@@ -420,28 +421,39 @@ class WPDA_List_Table_Menu extends WPDA_List_Table
                 }
             
             }
-            global  $wpdb ;
-            
-            if ( $this->schema_name === $wpdb->dbname ) {
-                $schema_name = '';
-            } else {
-                $schema_name = "&wpdaschema_name={$this->schema_name}";
-            }
-            
+            $esc_attr = 'esc_attr';
+            $form_name = 'explore_' . self::$list_number;
+            $url = "?page={$this->page}";
+            $form = <<<EOT
+\t\t\t\t<form id='{$esc_attr( $form_name )}' action='{$esc_attr( $url )}' method='post'>
+\t\t\t\t\t<input type='hidden' name='wpdaschema_name' value='{$esc_attr( $this->schema_name )}' />
+\t\t\t\t\t<input type='hidden' name='table_name' value='{$esc_attr( $table_name )}' />
+\t\t\t\t\t<input type='hidden' name='action' value='listtable' />
+\t\t\t\t</form>
+EOT;
+            $explore = str_replace( "\n", '', $form );
+            ?>
+
+				<script type='text/javascript'>
+					jQuery("#wpda_invisible_container").append("<?php 
+            echo  $explore ;
+            // phpcs:ignore WordPress.Security.EscapeOutput
+            ?>");
+				</script>
+
+				<?php 
             $action_view = ' <i class="fas fa-table-list wpda_icon_on_button"></i> ' . __( 'Explore', 'wp-data-access' );
-            $table_view_title = sprintf( __( 'Explore, filter and maintain %s table data', 'wp-data-access' ), $table_name );
+            $table_view_title = sprintf( __( 'Explore %s table', 'wp-data-access' ), $table_name );
             $actions['listtable'] = sprintf(
                 '<a href="javascript:void(0)" 
 						       title="%s"
                                class="view wpda_tooltip"  
-                               onclick="if (%s) window.location.href=\'?page=%s%s&table_name=%s&action=listtable\'">
+                               onclick="if (%s) jQuery(\'#%s\').submit()">
                                %s
                             </a>',
                 $table_view_title,
                 $check_view_access,
-                $this->page,
-                $schema_name,
-                $table_name,
+                $form_name,
                 $action_view
             );
             
@@ -2516,10 +2528,8 @@ class WPDA_List_Table_Menu extends WPDA_List_Table
     
     /**
      * Overwrite method: add button to design a table
-     *
-     * @param string $add_param
      */
-    protected function add_header_button( $add_param = '' )
+    protected function add_header_button()
     {
         ?>
 			<form
@@ -2543,12 +2553,18 @@ class WPDA_List_Table_Menu extends WPDA_List_Table
 					</button>
 				</div>
 			</form>
+			<form id="wpda_linkto_backup" style="display: none" method="post" action="?page=<?php 
+        echo  esc_attr( WP_Data_Access_Admin::PAGE_MAIN ) ;
+        ?>&page_action=wpda_backup">
+				<input type="hidden" name="wpdaschema_name" value="<?php 
+        echo  esc_attr( $this->schema_name ) ;
+        ?>">
+			</form>
 			<?php 
         $this->wpda_import->add_button();
         ?>
-			<a href="?page=wpda&page_action=wpda_backup&wpdaschema_name=<?php 
-        echo  esc_attr( $this->schema_name ) ;
-        ?>"
+			<a href="javascript:void(0)"
+			   onclick="jQuery('#wpda_linkto_backup').submit()"
 			   class="page-title-action wpda_tooltip"
 			   title="Create unattended export jobs"
 			><i class="fas fa-cloud-download wpda_icon_on_button"></i> <?php 
@@ -3044,6 +3060,17 @@ class WPDA_List_Table_Menu extends WPDA_List_Table
         ?>vertical-align:middle;"
 				   title="<?php 
         echo  esc_attr( $this->user_drop_db_hint ) ;
+        ?>">&nbsp;</a>
+				<a class="dashicons dashicons-admin-plugins wpda_tooltip"
+				   href="javascript:void(0)"
+				   onclick="wpda_dbinit_admin( '<?php 
+        echo  esc_attr( $this->schema_name ) ;
+        ?>', '<?php 
+        echo  wp_create_nonce( 'wpda_dbinit_admin_' . WPDA::get_current_user_login() ) ;
+        ?>' )"
+				   style="vertical-align:middle;"
+				   title="<?php 
+        echo  __( "Create function wpda_get_wp_user_id()\nto get access to the WordPress user ID from database views", 'wp-data-access' ) ;
         ?>">&nbsp;</a>
 				&nbsp;<span style="font-weight: bold;"><?php 
         echo  __( 'Favourites', 'wp-data-access' ) ;

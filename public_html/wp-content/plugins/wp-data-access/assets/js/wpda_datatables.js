@@ -312,7 +312,7 @@ function wpda_datatables_ajax_call(
 					var urlparam = val.split('=');
 					if (urlparam.length===2) {
 						if (urlparam[0].substring(0, 19) === 'wpda_search_column_') {
-							data[urlparam[0]] = urlparam[1];
+							data[urlparam[0]] = decodeURIComponent(urlparam[1]);
 						}
 					}
 				});
