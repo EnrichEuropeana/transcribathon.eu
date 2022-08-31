@@ -235,7 +235,7 @@ function _TCT_item_page( $atts ) {
                     //$editorTab .= do_shortcode('[ultimatemember form_id="38"]');
                     //status-changer
                     $editorTab .= "<div id='transcription-view'>".$itemData['Transcriptions'][0]['Text']."</div>";
-                    
+
                     $editorTab .= "<div class='item-page-section-headline-right-site'>";
                         $editorTab .= '<div id="transcription-status-changer" class="status-changer section-status-changer login-required">';
                             $editorTab .= '<i id="transcription-status-indicator" class="fal fa-circle status-indicator"
@@ -1359,7 +1359,7 @@ function _TCT_item_page( $atts ) {
         $content .= "<section id='img-slider'>";
             $content .= "<button class='prev-slide' type='button'><i class=\"fas fa-chevron-left\"></i></button>";
             $content .= "<button class='next-slide' type='button'><i class=\"fas fa-chevron-right\"></i></button>";
-    
+
             $content .= "<div id='inner-slider'>";
                 for($x = 0; $x < $numbPhotos; $x++) {
                     $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
@@ -1387,8 +1387,8 @@ function _TCT_item_page( $atts ) {
                     $content .= "</div>";
                 }
             $content .= "</div>";
-    
-            $content .= "<div id='controls-div'>";      
+
+            $content .= "<div id='controls-div'>";
                 $content .= "<button class='prev-set' type='button'><i class=\"fas fa-chevron-double-left\"></i></button>";
                 // $content .= "<div id='dot-indicators'>";
                 // // placeholder for dot indicators
@@ -1400,7 +1400,7 @@ function _TCT_item_page( $atts ) {
                 $content .= "<button class='next-set' type='button'><i class=\"fas fa-chevron-double-right\"></i></button>";
                 //// To be discussed if we keep dots or numbers /////
             $content .= "</div>";
-    
+
         $content .= "</section>";
 /* -------------------------------------------- End of Old Image slider -----------------------  */
     // Image viewer
@@ -1918,7 +1918,7 @@ function _TCT_item_page( $atts ) {
                     }
                 $content .= "</div>";
                 //Download Enrichments Button/Div
-                $content .= "<a class='dl-enrichments' style='display:flex;flex-direction:row;justify-content:space-evenly;background-color:#f8f8f8;color:#0a72cc;cursor:pointer;' type='button' target='_blank' href='https://transcribathon.local/htr-import/example/form-example.php'>";
+                    $content .= '<a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;background-color:#f8f8f8;color:#0a72cc;cursor:pointer;" type="button" target="_blank" href="' . get_main_url() . '/htr-import/example/form-example.php?itemId=' . $_GET['item']  . '">';
                     $content .= "<span><h5 style='color:#0a72cc;'>Test Transkribus HTR Transcription</h5></span>";
                     $content .= "<span><i style='position:relative;top:50%;transform:translateY(-50%);font-size:20px;' class='fa fa-download' aria-hidden='true'></i></span>";
                 $content .= "</a>";
@@ -2259,7 +2259,7 @@ function _TCT_item_page( $atts ) {
                         $content .= "<div style='padding-left:20px;padding-right:20px;'>";
                             $content .= $formattedTranscription;
                         $content .= "</div>";
-        
+
                         if($trLanguage){
                             $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
                             $content .= "<div class='accordion'>";
