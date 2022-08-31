@@ -1360,7 +1360,7 @@ class ConfigurationController extends acymController
 
         $this->store();
 
-        $smtpHost = $this->config->get('smtp_host');
+        $smtpHost = strtolower($this->config->get('smtp_host'));
         $clientId = $this->config->get('smtp_clientId');
         $clientSecret = $this->config->get('smtp_secret');
         $redirect_url = $this->config->get('smtp_redirectUrl');
@@ -1373,7 +1373,7 @@ class ConfigurationController extends acymController
 
         if (in_array($smtpHost, ['smtp.office365.com', 'smtp-mail.outlook.com'])) {
             $tenant = $this->config->get('smtp_tenant');
-            if(empty($tenant)){
+            if (empty($tenant)) {
                 acym_enqueueMessage(acym_translation('ACYM_TENANT_FIELD_IS_MISSING'), 'error');
                 $this->listing();
 

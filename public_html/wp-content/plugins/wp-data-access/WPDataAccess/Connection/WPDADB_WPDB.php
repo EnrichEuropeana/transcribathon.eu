@@ -49,10 +49,10 @@ class WPDADB_WPDB extends \wpdb
      *
      * Save schema_name
      *
-     * @param string $dbuser Username.
-     * @param string $dbpassword Password.
-     * @param string $dbname Database schema name.
-     * @param string $dbhost Host name.
+     * @param string $dbuser Username (original wpdb parameter).
+     * @param string $dbpassword Password (original wpdb parameter).
+     * @param string $dbname Database schema name (original wpdb parameter).
+     * @param string $dbhost Host name (original wpdb parameter).
      * @param string $ssl SSL on|off.
      * @param string $ssl_key SSL key.
      * @param string $ssl_cert SSL vertificate.
@@ -65,12 +65,12 @@ class WPDADB_WPDB extends \wpdb
         $dbpassword,
         $dbname,
         $dbhost,
-        $ssl,
-        $ssl_key,
-        $ssl_cert,
-        $ssl_ca,
-        $ssl_path,
-        $ssl_cipher
+        $ssl = 'OFF',
+        $ssl_key = null,
+        $ssl_cert = null,
+        $ssl_ca = null,
+        $ssl_path = null,
+        $ssl_cipher = null
     )
     {
         $this->ssl = $ssl;

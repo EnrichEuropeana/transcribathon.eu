@@ -274,12 +274,6 @@ class WPDA_Simple_Form
      */
     protected  $hide_add_new = false ;
     /**
-     * Hide schema and table name
-     *
-     * @var bool
-     */
-    protected  $hide_db_info = false ;
-    /**
      * Group items into fieldsets
      *
      * @var array
@@ -346,7 +340,6 @@ class WPDA_Simple_Form
             // Without a table name it makes no sense to continue.
             wp_die( __( 'ERROR: Wrong arguments [missing table_name argument]' ) );
         }
-        $this->hide_db_info = isset( $args['hide_db_info'] ) && true === $args['hide_db_info'];
         
         if ( !WPDA::is_wpda_table( $this->table_name ) ) {
             // Check access rights for tables that do not belong to the plugin.
@@ -579,10 +572,19 @@ class WPDA_Simple_Form
                 $this->row = $this->row_data->get_row( $this->auto_increment_value, $this->wpda_err );
                 $this->prepare_items( true );
                 // Update existing record.
+                
                 if ( $this->validate() ) {
                     // Update record.
                     $this->row_data->set_row();
+                    // Get values updated from database triggers
+                    $this->row = $this->row_data->get_row( $this->auto_increment_value, $this->wpda_err );
+                    foreach ( $this->form_items_new_values as $key => $value ) {
+                        if ( isset( $this->row[0][$key] ) ) {
+                            $this->form_items_new_values[$key] = $this->row[0][$key];
+                        }
+                    }
                 }
+                
                 $this->prepare_row();
                 $set_back_form_values = true;
             }
@@ -684,18 +686,6 @@ class WPDA_Simple_Form
             $url = '';
         }
         
-        
-        if ( !$this->hide_db_info ) {
-            
-            if ( '' !== $this->schema_name ) {
-                $url .= ( $url === '' ? '?' : '&' );
-                $url .= "wpdaschema_name={$this->schema_name}";
-            }
-            
-            $url .= ( $url === '' ? '?' : '&' );
-            $url .= "table_name={$this->table_name}";
-        }
-        
         $url_back = $url;
         $url .= $add_param;
         ?>
@@ -753,6 +743,12 @@ class WPDA_Simple_Form
 												style="display: inline-block; vertical-align: bottom;"
 										>
 											<div>
+												<input type="hidden" name="wpdaschema_name" value="<?php 
+                            echo  esc_attr( $this->schema_name ) ;
+                            ?>">
+												<input type="hidden" name="table_name" value="<?php 
+                            echo  esc_attr( $this->table_name ) ;
+                            ?>">
 												<input type="hidden" name="action" value="new">
 												<button type="submit" class="page-title-action wpda_tooltip"
 														title="<?php 
@@ -875,6 +871,12 @@ class WPDA_Simple_Form
         do_action_ref_array( 'wpda_after_simple_form', array( $this ) );
         ?>
 					<p></p>
+					<input type="hidden" name="wpdaschema_name" value="<?php 
+        echo  esc_attr( $this->schema_name ) ;
+        ?>">
+					<input type="hidden" name="table_name" value="<?php 
+        echo  esc_attr( $this->table_name ) ;
+        ?>">
 					<input type="hidden" name="action" value="<?php 
         echo  esc_attr( $this->action ) ;
         ?>"/>
@@ -981,6 +983,12 @@ class WPDA_Simple_Form
         echo  $this->page_number_item ;
         // phpcs:ignore WordPress.Security.EscapeOutput
         ?>
+					<input type="hidden" name="wpdaschema_name" value="<?php 
+        echo  esc_attr( $this->schema_name ) ;
+        ?>">
+					<input type="hidden" name="table_name" value="<?php 
+        echo  esc_attr( $this->table_name ) ;
+        ?>">
 					<input type="hidden" name="action" value="list">
 				</form>
 			</div>
@@ -1002,7 +1010,19 @@ class WPDA_Simple_Form
 							jQuery(e.target).hasClass("button-secondary") ||
 							jQuery(e.target).parent().hasClass("button-secondary")
 						) {
-							jQuery("#postaction").val("list");
+							<?php 
+            
+            if ( 'child_page_number' === $this->page_number_item_name ) {
+                ?>
+								jQuery("#postaction").val("childlist");
+							<?php 
+            } else {
+                ?>
+								jQuery("#postaction").val("list");
+							<?php 
+            }
+            
+            ?>
 						} else {
 							jQuery("#postaction").val("");
 						}
@@ -1452,6 +1472,18 @@ class WPDA_Simple_Form
     public function get_old_value( $column_name )
     {
         return ( isset( $this->form_items_old_values[$column_name] ) ? $this->form_items_old_values[$column_name] : null );
+    }
+    
+    public function revert_column_value( $column_name )
+    {
+        @($this->form_items_new_values[$column_name] = $this->form_items_old_values[$column_name]);
+    }
+    
+    public function insert_column_default( $column_name, $item_default_value )
+    {
+        if ( isset( $this->form_items_old_values ) ) {
+            @($this->form_items_new_values[$column_name] = $item_default_value);
+        }
     }
     
     /**

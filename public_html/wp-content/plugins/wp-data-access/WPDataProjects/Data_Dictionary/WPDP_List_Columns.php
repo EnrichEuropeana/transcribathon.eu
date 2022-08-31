@@ -63,10 +63,11 @@ namespace WPDataProjects\Data_Dictionary {
 				foreach ( $column_options as $column_option ) {
 					if ( isset( $column_option->column_name ) ) {
 						$option = array(
-							'label'   => isset( $column_option->label ) ? $column_option->label : null,
-							'show'    => isset( $column_option->show ) ? $column_option->show : null,
-							'less'    => isset( $column_option->less ) ? $column_option->less : null,
-							'default' => isset( $column_option->default ) ? $column_option->default : null,
+							'label'    => isset( $column_option->label ) ? $column_option->label : null,
+							'show'     => isset( $column_option->show ) ? $column_option->show : null,
+							'readonly' => isset( $column_option->readonly ) ? $column_option->readonly : null,
+							'less'     => isset( $column_option->less ) ? $column_option->less : null,
+							'default'  => isset( $column_option->default ) ? $column_option->default : null,
 						);
 						$this->column_options[ $column_option->column_name ] = $option;
 					}
@@ -133,6 +134,10 @@ namespace WPDataProjects\Data_Dictionary {
 						} elseif ( 'tableform' === $this->label_type ) {
 							if ( isset( $column_option['show'] ) && 'off' === $column_option['show'] ) {
 								$table_column['show'] = false;
+							}
+
+							if ( isset( $column_option['readonly'] ) && 'on' === $column_option['readonly'] ) {
+								$table_column['readonly'] = true;
 							}
 
 							if ( isset( $column_option['less'] ) && 'off' === $column_option['less'] ) {

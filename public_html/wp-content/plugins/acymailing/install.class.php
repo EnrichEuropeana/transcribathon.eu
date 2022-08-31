@@ -21,7 +21,7 @@ class acymInstall
 {
     var $cms = 'WordPress';
     var $level = 'starter';
-    var $version = '7.9.2';
+    var $version = '7.9.4';
     var $update = false;
     var $fromLevel = '';
     var $fromVersion = '';
@@ -633,7 +633,7 @@ class acymInstall
                 $uploadedFiles = acym_getFiles($socialFilesFolder);
                 foreach ($uploadedFiles as $oneFile) {
                     $extension = acym_fileGetExt($oneFile);
-                    if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'ico', 'bmp', 'svg'])) {
+                    if (!in_array($extension, acym_getImageFileExtensions())) {
                         acym_deleteFile($socialFilesFolder.DS.$oneFile);
                     }
                 }
@@ -1227,6 +1227,25 @@ class acymInstall
                     $this->updateQuery('UPDATE `#__acym_custom_zone` SET `content` = '.acym_escapeDB($oneZone->content).' WHERE `id` = '.intval($oneZone->id));
                 }
             }
+        }
+
+        if (version_compare($this->fromVersion, '7.9.3', '<')) {
+            $automationClass = new AutomationClass();
+            $automations = $automationClass->getAll();
+            if (!empty($automations)) {
+                foreach ($automations as $oneAutomation) {
+                    $translated = acym_translation($oneAutomation->name);
+                    if ($translated === $oneAutomation->name) continue;
+
+                    $oneAutomation->name = $translated;
+                    $oneAutomation->description = acym_translation($oneAutomation->description);
+                    $automationClass->save($oneAutomation);
+                }
+            }
+        }
+
+        if (version_compare($this->fromVersion, '7.9.4', '<')) {
+            $this->updateQuery('ALTER TABLE `#__acym_custom_zone` ADD `image` VARCHAR(255) NULL');
         }
     }
 

@@ -2,8 +2,8 @@
 Contributors: acyba
 Tags: newsletter, Sendinblue, SMTP newsletter, Mailgun, marketing newsletter
 Requires at least: 4.7
-Tested up to: 6.0
-Stable tag: 7.9.2
+Tested up to: 6.0.1
+Stable tag: 7.9.4
 Requires PHP: 5.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -196,16 +196,22 @@ You can even send emails from your own PHP Mail server or another SMTP of your c
 
 == Changelog ==
 
-= 7.9.2 - July 12, 2022 =
-* [add-on] The RSS add-on can now handle Atom feeds
+= 7.9.4 - August 29, 2022 =
+* [add-on] You can now filter on subscription variations, automatic renewals and renewal frequency in the WooCommerce subscription filter
 
-* Add tenant field for outlook Oauth connection
-* A security has been added on custom zones saving to avoid broken characters
-* Long attachments names are now shown entirely on the email edition page
-* Improve dynamic texts comparison for conditional statements in the editor
+* [editor] It is now possible to choose an image when saving custom zones in the editor
+* You can now change the thumbnail of your templates
+* The ElasticEmail API has changed, we updated our integration to let you send emails using their new API
+* [Mailgun] You can now use sending API keys
+* You can now filter on AcyMailing custom fields when adding conditional displays in your emails
 
-* [Editor] Clicking an inserted video now correctly opens the block options instead of opening the video link when re-opening the editor
-* [Editor] The zones and blocks actions are shown again after closing the desktop or mobile preview, and after sending a test
+* [editor] fixed the relative date field display
+* In the mail setting configuration the server field is now case-insensitive
+* Fixed the condition step when filling both condition types on save condition were merged
+* Fixed the custom zone insertion having special characters
+* Fixed empty alt attribute on image Built with AcyMailing
+* [Sendinblue] The campaigns aren't blocked anymore when one of the recipients is disabled in AcyMailing
+* [editor] Fixed the editor image edition
 
 
 

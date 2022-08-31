@@ -79,10 +79,10 @@ class WPDA_Publisher_List_Table extends WPDA_List_Table
             switch ( $item[$column_name] ) {
                 case 'Query':
                     // Show SQL query.
-                    return '<div>' . $this->render_column_content( $item, 'pub_query' ) . '</div>';
+                    return '<div>' . 'Custom query ' . '<i class="fas fa-eye wpda_tooltip_cq" title="' . $this->render_column_content( $item, 'pub_query', false ) . '"></i>' . '</div>';
                 case 'CPT':
                     // Show CPT query.
-                    return $this->render_column_content( $item, 'pub_cpt' ) . ' (custom post type)';
+                    return 'Custom post type: ' . $this->render_column_content( $item, 'pub_cpt' );
                 default:
                     // Show database table.
                     return $this->render_column_content( $item, 'pub_table_name' );
@@ -135,9 +135,10 @@ class WPDA_Publisher_List_Table extends WPDA_List_Table
         $page_field = $this->page_number_item;
         $copy_form = <<<EOT
 \t\t\t\t<form id='copy_form{$esc_attr( $form_id )}' method='post' 
-\t\t\t\t\t  action='?page={$esc_attr( $this->page )}&table_name={$esc_attr( $this->table_name )}'
+\t\t\t\t\t  action='?page={$esc_attr( $this->page )}'
 \t\t\t\t>
 \t\t\t\t\t{$input_fields}
+\t\t\t\t\t<input type='hidden' name='table_name' value='{$esc_attr( $this->table_name )}'>
 \t\t\t\t\t<input type='hidden' name='action' value='copy' />
 \t\t\t\t\t<input type='hidden' name='_wpnonce' value='{$esc_attr( $wp_nonce )}'>
 \t\t\t\t\t{$page_field}
@@ -358,7 +359,7 @@ EOT;
     public static function column_headers_labels()
     {
         return array(
-            'pub_id'                          => __( 'Pub ID', 'wp-data-access' ),
+            'pub_id'                          => __( 'Publication ID', 'wp-data-access' ),
             'pub_name'                        => __( 'Name', 'wp-data-access' ),
             'pub_schema_name'                 => __( 'Database', 'wp-data-access' ),
             'pub_data_source'                 => __( 'Data Source', 'wp-data-access' ),
@@ -424,6 +425,12 @@ EOT;
 						);
 					}
 				}
+				jQuery(function() {
+					// ???
+					jQuery(".wpda_tooltip_cq").tooltip({
+						tooltipClass: "wpda_tooltip_cq wpda_tooltip_dashboard"
+					});
+				});
 			</script>
 			<style>
 				table.wp-list-table td.pub_data_source div {
@@ -431,13 +438,14 @@ EOT;
                     max-height: 70px;
                     overflow-y: auto;
 				}
+				.row-actions {
+					white-space: nowrap;
+				}
+				.wpda_tooltip_cq {
+					max-width: max-content;
+				}
 			</style>
 			<?php 
-    }
-    
-    protected function add_header_button( $add_param = '' )
-    {
-        parent::add_header_button( $add_param );
     }
 
 }

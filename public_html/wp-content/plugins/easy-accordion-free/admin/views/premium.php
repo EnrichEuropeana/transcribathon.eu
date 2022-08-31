@@ -49,10 +49,9 @@ class Easy_Accordion_Premium {
 		add_submenu_page(
 			'edit.php?post_type=sp_easy_accordion',
 			__( 'Easy Accordion Premium', 'easy-accordion-free' ),
-			'<span style="color:#f5dd11;">Upgrade To Pro</span>',
+			'<span class="sp-go-pro-icon"></span>Go Pro',
 			'manage_options',
 			$landing_page
 		);
 	}
-
 }

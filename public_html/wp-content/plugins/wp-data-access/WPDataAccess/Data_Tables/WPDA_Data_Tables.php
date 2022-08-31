@@ -648,6 +648,32 @@ class WPDA_Data_Tables
         }
         
         $this->serverSide = true;
+        // Set pagination values.
+        $offset = 0;
+        
+        if ( isset( $_REQUEST['start'] ) ) {
+            $offset = sanitize_text_field( wp_unslash( $_REQUEST['start'] ) );
+            // input var okay.
+        }
+        
+        $limit = -1;
+        // jQuery DataTables default.
+        
+        if ( isset( $_REQUEST['length'] ) ) {
+            $limit = sanitize_text_field( wp_unslash( $_REQUEST['length'] ) );
+            // input var okay.
+        }
+        
+        $publication_mode = 'normal';
+        
+        if ( -1 == $limit && isset( $_REQUEST['more_start'] ) && isset( $_REQUEST['more_limit'] ) ) {
+            $publication_mode = 'more';
+            $offset = sanitize_text_field( wp_unslash( $_REQUEST['more_start'] ) );
+            // input var okay.
+            $limit = sanitize_text_field( wp_unslash( $_REQUEST['more_limit'] ) );
+            // input var okay.
+        }
+        
         
         if ( '' !== $pub_id && '0' != $pub_id ) {
             // Get publication data
@@ -835,32 +861,6 @@ class WPDA_Data_Tables
         
         // Save column name without backticks for later use
         $column_array_clean = $column_array;
-        // Set pagination values.
-        $offset = 0;
-        
-        if ( isset( $_REQUEST['start'] ) ) {
-            $offset = sanitize_text_field( wp_unslash( $_REQUEST['start'] ) );
-            // input var okay.
-        }
-        
-        $limit = -1;
-        // jQuery DataTables default.
-        
-        if ( isset( $_REQUEST['length'] ) ) {
-            $limit = sanitize_text_field( wp_unslash( $_REQUEST['length'] ) );
-            // input var okay.
-        }
-        
-        $publication_mode = 'normal';
-        
-        if ( -1 == $limit && isset( $_REQUEST['more_start'] ) && isset( $_REQUEST['more_limit'] ) ) {
-            $publication_mode = 'more';
-            $offset = sanitize_text_field( wp_unslash( $_REQUEST['more_start'] ) );
-            // input var okay.
-            $limit = sanitize_text_field( wp_unslash( $_REQUEST['more_limit'] ) );
-            // input var okay.
-        }
-        
         // Set order by.
         $orderby = '';
         
@@ -1328,7 +1328,9 @@ class WPDA_Data_Tables
         $has_sp,
         $sp_columns,
         $sql_query,
-        $is_cpt
+        $is_cpt,
+        $offset,
+        $limit
     )
     {
     }

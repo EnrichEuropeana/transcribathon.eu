@@ -84,6 +84,11 @@ $table_prefix = getenv('DB_PREFIX');
  */
 define('WP_DEBUG', (bool) getenv('WP_DEBUG'));
 
+/*
+ * auto update
+ */
+define('WP_AUTO_UPDATE_CORE', false);
+
 /* Multisite */
 define('WP_ALLOW_MULTISITE', true);
 define('MULTISITE', true);

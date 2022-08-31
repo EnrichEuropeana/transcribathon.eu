@@ -321,7 +321,7 @@ class WPDP
                                 WPDA::get_current_user_capability(),
                                 $main_page_name,
                                 null,
-                                'dashicons-editor-table'
+                                'dashicons-database-view'
                             );
                             $project_menu_shown = true;
                         }

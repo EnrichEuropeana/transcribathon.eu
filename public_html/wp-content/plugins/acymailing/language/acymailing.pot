@@ -1,13 +1,46 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: AcyMailing 7.9.2\n"
+"Project-Id-Version: AcyMailing 7.9.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/acymailing\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-07-12\n"
+"POT-Creation-Date: 2022-08-29\n"
 "X-Domain: acymailing\n"
 
+
+msgid "Upload image"
+msgstr ""
+
+msgid "The uploaded file is not an image"
+msgstr ""
+
+msgid "You can change the thumbnail of your template with this input"
+msgstr ""
+
+msgid "Custom thumbnail"
+msgstr ""
+
+msgid "Renewal type"
+msgstr ""
+
+msgid "Manual"
+msgstr ""
+
+msgid "Main colors"
+msgstr ""
+
+msgid "Colors that will be available in the color pickers"
+msgstr ""
+
+msgid "Conditions and filters based on the user who triggered the automation will be deleted. Are you sure you want to continue?"
+msgstr ""
+
+msgid "Ordering"
+msgstr ""
+
+msgid "Open inside the site's template"
+msgstr ""
 
 msgid "Organizations"
 msgstr ""
@@ -1471,12 +1504,6 @@ msgid "Delete this block"
 msgstr ""
 
 msgid "This option is disabled because the sending method you chose doesn't handle it."
-msgstr ""
-
-msgid "Authentication fails with this domain or region"
-msgstr ""
-
-msgid "no answer"
 msgstr ""
 
 msgid "EU"

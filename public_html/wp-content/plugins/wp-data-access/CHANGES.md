@@ -1,5 +1,35 @@
 ### ChangeLog for WP Data Access
 
+#### 5.2.3 / 2022-08-19
+
+Patched: Added read-only support to mandatory columns (Kevin)
+Patched: Removed enable label from checkbox elements (Kevin)
+
+Fixed: Environment variables not available in custom queries (Rahim)
+Fixed: Submit > Child List does not work (Rahim)
+Fixed: Pagination not working correctly with custom queries
+Fixed: Nonce not used with custom queries
+Fixed: Delete button no longer working in Data Forms
+Fixed: IP address not working on Windows (Athena)
+Fixed: Wildcard search not working in publication search form (sp4448)
+Fixed: Schema and table names moved from get to post to prevent security rule violations (Martin, Pierre-Yves)
+Added: Define read-only fields in project templates (Rahim, Kevin)
+Added: Create database function to access WordPress user ID from the database (Marco, Rahim, @kebhin)
+Added: Store WordPress user ID in session variable for remote connections (Rahim, @kebhin)
+Changed: Dynamically building lookups of list table Project Templates to improve performance
+Changed: Allow to use environment variables with and without quotes (Matt)
+
+#### 5.2.2 / 2022-08-05
+
+Fixed: Data Forms css issues with Divi theme
+Fixed: Google maps css height
+Fixed: Create backup icon not always visible
+Added: Enable label to inline editing checkbox (Kevin)
+Changed: Publication table layout
+Changed: Dashboard icons and labels
+Changed: Readme
+Updated: Freemius library
+
 #### 5.2.1 / 2022-07-05
 
 Fixed: Updating connect table does not return correct message

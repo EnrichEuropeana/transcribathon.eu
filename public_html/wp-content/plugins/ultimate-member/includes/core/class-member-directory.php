@@ -546,11 +546,18 @@ if ( ! class_exists( 'um\core\Member_Directory' ) ) {
 					break;
 				}
 				case 'text': {
+					$label = '';
+					if ( isset( $attrs['label'] ) ) {
+						$label = $attrs['label'];
+					} elseif ( ! isset( $attrs['label'] ) && isset( $attrs['title'] ) ) {
+						$label = $attrs['title'];
+					}
+
 					$filter_from_url = ! empty( $_GET[ 'filter_' . $filter . '_' . $unique_hash ] ) ? sanitize_text_field( $_GET[ 'filter_' . $filter . '_' . $unique_hash ] ) : $default_value; ?>
 						<input type="text" autocomplete="off" id="<?php echo $filter; ?>" name="<?php echo $filter; ?>"
-						   placeholder="<?php esc_attr_e( stripslashes( $attrs['label'] ), 'ultimate-member' ); ?>"
+						   placeholder="<?php esc_attr_e( stripslashes( $label ), 'ultimate-member' ); ?>"
 						          value="<?php echo esc_attr( $filter_from_url ) ?>" class="um-form-field"
-						       aria-label="<?php esc_attr_e( stripslashes( $attrs['label'] ), 'ultimate-member' ); ?>" />
+						       aria-label="<?php esc_attr_e( stripslashes( $label ), 'ultimate-member' ); ?>" />
 					<?php
 					break;
 				}
@@ -684,7 +691,13 @@ if ( ! class_exists( 'um\core\Member_Directory' ) ) {
 
 					$attrs['options'] = apply_filters( 'um_member_directory_filter_select_options_sorted', $attrs['options'], $attrs );
 
-					$label = isset( $attrs['label'] ) ? $attrs['label'] : ''; ?>
+					$label = '';
+					if ( isset( $attrs['label'] ) ) {
+						$label = $attrs['label'];
+					} elseif ( ! isset( $attrs['label'] ) && isset( $attrs['title'] ) ) {
+						$label = $attrs['title'];
+					}
+					?>
 
 					<select class="um-s1" id="<?php echo esc_attr( $filter ); ?>" name="<?php echo esc_attr( $filter ); ?><?php if ( $admin && count( $attrs['options'] ) > 1 ) { ?>[]<?php } ?>"
 							data-placeholder="<?php esc_attr_e( stripslashes( $label ), 'ultimate-member' ); ?>"

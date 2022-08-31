@@ -228,6 +228,72 @@ class WP_Data_Access
         // Check if a remote db connection can be established via ajax.
         $wpdadb = new WPDADB();
         $this->loader->add_action( 'admin_action_wpda_check_remote_database_connection', $wpdadb, 'check_remote_database_connection' );
+        // Make WordPress user ID available to database connections.
+        add_action(
+            'wpda_dbinit',
+            function ( $wpdadb ) {
+            
+            if ( null !== $wpdadb ) {
+                $suppress_errors = $wpdadb->suppress_errors( true );
+                $wpdadb->query( 'set @wpda_wp_user_id = ' . get_current_user_id() );
+                $wpdadb->suppress_errors( $suppress_errors );
+            }
+        
+        },
+            10,
+            1
+        );
+        add_action(
+            'wp_ajax_wpda_dbinit_admin',
+            function () {
+            
+            if ( !isset( $_POST['wpnonce'], $_POST['wpdaschema_name'] ) ) {
+                WPDA::sent_header( 'application/json' );
+                echo  WPDA::sent_msg( 'ERROR', 'Invalid arguments' ) ;
+                // phpcs:ignore WordPress.Security.EscapeOutput
+                wp_die();
+            }
+            
+            $wpnonce = sanitize_text_field( wp_unslash( $_REQUEST['wpnonce'] ) );
+            // input var okay.
+            
+            if ( !current_user_can( 'manage_options' ) || !wp_verify_nonce( $wpnonce, 'wpda_dbinit_admin_' . WPDA::get_current_user_login() ) ) {
+                WPDA::sent_header( 'application/json' );
+                echo  WPDA::sent_msg( 'ERROR', 'Not authorized' ) ;
+                // phpcs:ignore WordPress.Security.EscapeOutput
+                wp_die();
+            }
+            
+            $wpdaschema_name = sanitize_text_field( wp_unslash( $_REQUEST['wpdaschema_name'] ) );
+            // input var okay.
+            $wpdadb = WPDADB::get_db_connection( $wpdaschema_name );
+            
+            if ( null === $wpdadb ) {
+                WPDA::sent_header( 'application/json' );
+                echo  WPDA::sent_msg( 'ERROR', 'Cannot connect to database' ) ;
+                // phpcs:ignore WordPress.Security.EscapeOutput
+                wp_die();
+            }
+            
+            $suppress_errors = $wpdadb->suppress_errors( true );
+            $wpdadb->query( 'create function wpda_get_wp_user_id() returns integer deterministic no sql return @wpda_wp_user_id' );
+            $error = $wpdadb->last_error;
+            $fnc = $wpdadb->dbh->query( "show function status like 'wpda_get_wp_user_id'" );
+            $wpdadb->suppress_errors( $suppress_errors );
+            
+            if ( 1 === count( $fnc ) ) {
+                echo  WPDA::sent_msg( 'OK', '' ) ;
+                // phpcs:ignore WordPress.Security.EscapeOutput
+            } else {
+                echo  WPDA::sent_msg( 'ERROR', "Function not created [{$error}]" ) ;
+                // phpcs:ignore WordPress.Security.EscapeOutput
+            }
+            
+            wp_die();
+        },
+            10,
+            1
+        );
         // Add id to wpda_datatables.js (for IE).
         $this->loader->add_filter(
             'script_loader_tag',

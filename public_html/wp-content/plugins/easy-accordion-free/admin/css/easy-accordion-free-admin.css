@@ -102,3 +102,19 @@
     background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%2328303d'><polygon points='0,0 10,0 5,5'/></svg>") no-repeat;
     background-position: right 10px top 60%;
 }
+
+/* Go Pro Menu */
+#adminmenu #menu-posts-sp_easy_accordion li:nth-child(6) a,
+#adminmenu #menu-posts-sp_easy_accordion li:nth-child(6) a:hover {
+    color:#11b916;
+    font-weight: 700;
+}
+#adminmenu #menu-posts-sp_easy_accordion li a .sp-go-pro-icon {
+    background-image: url(../img/rocket.svg);
+    width: 20px;
+    height: 20px;
+    display: block;
+    float: left;
+    margin-right: 1px;
+    margin-left: -2px;
+}

@@ -29,6 +29,7 @@ namespace WPDataAccess\Simple_Form {
 					  id="<?php echo esc_attr( $this->item_name ); ?>"
 					  class="wpda_data_type_<?php echo esc_attr( $this->data_type ); ?> <?php echo esc_attr( $this->item_class ); ?>"
 					  maxlength="<?php echo esc_attr( $maxlength ); ?>"
+					  <?php echo $this->is_readonly ? ' disabled="disabled"' : ''; ?>
 					  <?php echo esc_attr( $this->show_context_item_events ); ?>
 					  style="vertical-align: top;"
 			><?php echo $this->show_context_column_value; // phpcs:ignore WordPress.Security.EscapeOutput ?></textarea>

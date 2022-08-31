@@ -1,5 +1,16 @@
 <?php
 
+__('Upload image', 'acymailing');
+__('The uploaded file is not an image', 'acymailing');
+__('You can change the thumbnail of your template with this input', 'acymailing');
+__('Custom thumbnail', 'acymailing');
+__('Renewal type', 'acymailing');
+__('Manual', 'acymailing');
+__('Main colors', 'acymailing');
+__('Colors that will be available in the color pickers', 'acymailing');
+__('Conditions and filters based on the user who triggered the automation will be deleted. Are you sure you want to continue?', 'acymailing');
+__('Ordering', 'acymailing');
+__('Open inside the site\'s template', 'acymailing');
 __('Organizations', 'acymailing');
 __('Any account type', 'acymailing');
 __('Microsoft accounts', 'acymailing');
@@ -488,8 +499,6 @@ __('The values for the automatic send process that you\'ve set in the configurat
 __('Send %1$s batches of %2$s e-mails every %3$s', 'acymailing');
 __('Delete this block', 'acymailing');
 __('This option is disabled because the sending method you chose doesn\'t handle it.', 'acymailing');
-__('Authentication fails with this domain or region', 'acymailing');
-__('no answer', 'acymailing');
 __('EU', 'acymailing');
 __('US', 'acymailing');
 __('%s domain', 'acymailing');

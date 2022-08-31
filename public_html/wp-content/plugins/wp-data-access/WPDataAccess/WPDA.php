@@ -51,7 +51,7 @@ namespace WPDataAccess {
 		/**
 		 * Option wpda_version and it's default value
 		 */
-		const OPTION_WPDA_VERSION = [ 'wpda_version', '5.2.1' ];
+		const OPTION_WPDA_VERSION = [ 'wpda_version', '5.2.3' ];
 		/**
 		 * Option wpda_setup_error and it's default value
 		 */
@@ -872,14 +872,30 @@ namespace WPDataAccess {
 				$where_clause = str_replace( '$$USERID$$', $user_id, $where_clause );
 			}
 
+			if ( strpos( $where_clause, '"$$USER$$"' ) ) {
+				$user_login   = WPDA::get_current_user_login();
+				$where_clause = str_replace( '"$$USER$$"', '"' . $user_login . '"', $where_clause );
+			}
+			if ( strpos( $where_clause, "'" . '$$USER$$' . "'" ) ) {
+				$user_login   = WPDA::get_current_user_login();
+				$where_clause = str_replace( "'" . '$$USER$$' . "'", "'" . $user_login . "'", $where_clause );
+			}
 			if ( strpos( $where_clause, '$$USER$$' ) ) {
 				$user_login   = WPDA::get_current_user_login();
 				$where_clause = str_replace( '$$USER$$', "'" . $user_login . "'", $where_clause );
 			}
 
+			if ( strpos( $where_clause, '"$$EMAIL$$"' ) ) {
+				$user_email      = WPDA::get_current_user_email();
+				$where_clause = str_replace( '"$$EMAIL$$"', '"' . $user_email . '"', $where_clause );
+			}
+			if ( strpos( $where_clause, "'" . '$$EMAIL$$' . "'" ) ) {
+				$user_email      = WPDA::get_current_user_email();
+				$where_clause = str_replace( "'" . '$$EMAIL$$' . "'", "'" . $user_email . "'", $where_clause );
+			}
 			if ( strpos( $where_clause, '$$EMAIL$$' ) ) {
 				$user_email      = WPDA::get_current_user_email();
-				$where_clause = str_replace( '$$EMAIL$$', $user_email, $where_clause );
+				$where_clause = str_replace( '$$EMAIL$$', "'" . $user_email . "'", $where_clause );
 			}
 
 			return $where_clause;
@@ -1531,6 +1547,50 @@ namespace WPDataAccess {
 				( is_scalar( $input ) ? sanitize_text_field( wp_unslash( $input ) ) : $input );
 		}
 
+		/**
+		 * Get server IP address
+		 *
+		 * @return mixed|string
+		 */
+		public static function get_server_address() {
+			if ( isset( $_SERVER['SERVER_ADDR'] ) ) {
+				return $_SERVER['SERVER_ADDR'];
+			} elseif ( isset( $_SERVER['LOCAL_ADDR'] ) ) {
+				return $_SERVER['LOCAL_ADDR'];
+			} else {
+				return 'UNKNOWN';
+			}
+		}
+
+		public static function convert_default_value( $item_default_value ) {
+			switch( $item_default_value ) {
+				case '$$USERID$$':
+					return WPDA::get_current_user_id();
+				case '$$USER$$':
+					return WPDA::get_current_user_login();
+				case '$$EMAIL$$':
+					return WPDA::get_current_user_email();
+				case '$$NOW$$':
+				case '$$NOWDT$$':
+					global $wpdb;
+					$now_db       = $wpdb->get_var( 'select now()' );
+					$db_format    = WPDA::DB_DATETIME_FORMAT;
+					$convert_date = \DateTime::createFromFormat( $db_format, $now_db );
+					if ( false !== $convert_date ) {
+						$date_format = WPDA::get_option( WPDA::OPTION_PLUGIN_DATE_FORMAT );
+						$time_format = WPDA::get_option( WPDA::OPTION_PLUGIN_TIME_FORMAT );
+						$item_format = $date_format;
+						if ( '$$NOWDT$$' === $item_default_value ) {
+							$item_format .= " {$time_format}";
+						}
+						return $convert_date->format( $item_format );
+					} else {
+						return '';
+					}
+				default:
+					return $item_default_value;
+			}
+		}
 	}
 
 }

@@ -16,8 +16,7 @@ namespace WPDataProjects\List_Table {
 	/**
 	 * Class WPDP_List_View extends WPDA_List_View
 	 *
-	 * Data Projects uses WPDP_List_View instead of WPDA_List_View to handle column labels correctly. If the where
-	 * clause contains the $$USER$$ variable insert, delete and import are disabled.
+	 * Data Projects uses WPDP_List_View instead of WPDA_List_View to handle column labels correctly.
 	 *
 	 * @see WPDA_List_View
 	 *

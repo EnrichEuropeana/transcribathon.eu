@@ -57,6 +57,7 @@ namespace WPDataAccess\Simple_Form {
 			<select name="<?php echo esc_attr( $this->item_name ); ?>"
 					id="<?php echo esc_attr( $this->item_name ); ?>"
 					class="<?php echo esc_attr( $this->show_context_class_primary_key ); ?> <?php echo esc_attr( $this->item_class ); ?>"
+				<?php echo $this->is_readonly ? ' disabled="disabled"' : ''; ?>
 				<?php echo esc_attr( $this->show_context_item_events ); ?>
 			>
 				<?php

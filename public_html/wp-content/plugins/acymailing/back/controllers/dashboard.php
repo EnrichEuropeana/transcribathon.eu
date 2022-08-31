@@ -331,6 +331,12 @@ class DashboardController extends acymController
         parent::display($data);
     }
 
+    public function loginForAuth2()
+    {
+        $configurationController = new ConfigurationController();
+        $configurationController->loginForAuth2();
+    }
+
     public function saveStepPhpmail()
     {
         if (!$this->_saveFrom()) {
@@ -672,7 +678,7 @@ class DashboardController extends acymController
 
         return true;
     }
-    
+
     private function _sendFirstEmail()
     {
         $walkthroughParams = json_decode($this->config->get('walkthrough_params', '[]'), true);

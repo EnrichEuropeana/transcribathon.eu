@@ -275,7 +275,7 @@ class WPDA_Dashboard
                             
                             }
                         
-                        } elseif ( 'wpda_backup' === $_REQUEST['page_action'] && !isset( $_REQUEST['action'] ) ) {
+                        } elseif ( 'wpda_backup' === $_REQUEST['page_action'] && (!isset( $_REQUEST['action'] ) || 'remove' === $_REQUEST['action'] || 'update' === $_REQUEST['action'] || 'add' === $_REQUEST['action']) ) {
                             // phpcs:ignore WordPress.Security.NonceVerification
                             $this->toolbar_backup();
                         } elseif ( 'wpda_import_csv' === $_REQUEST['page_action'] ) {
@@ -383,68 +383,68 @@ class WPDA_Dashboard
 						<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
         echo  admin_url( 'admin.php' ) ;
         // phpcs:ignore WordPress.Security.EscapeOutput
-        ?>?page=wpda" title="Data Explorer">
-							<div class="fas fa-database"></div>
+        ?>?page=wpda" title="Manage local and remote data and databases">
+							<div class="fa-solid fa-database"></div>
 							<div class="label">Explorer</div>
 						</a>
 						<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
         echo  admin_url( 'admin.php' ) ;
         // phpcs:ignore WordPress.Security.EscapeOutput
-        ?>?page=wpda_query_builder" title="Query Builder">
-							<div class="fas fa-tools"></div>
-							<div class="label">Queries</div>
+        ?>?page=wpda_query_builder" title="Execute SQL queries">
+							<div class="fa-solid fa-tools"></div>
+							<div class="label">SQL</div>
 						</a>
 						<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
         echo  admin_url( 'admin.php' ) ;
         // phpcs:ignore WordPress.Security.EscapeOutput
-        ?>?page=wpda_designer" title="Data Designer">
-							<div class="fas fa-drafting-compass"></div>
+        ?>?page=wpda_designer" title="Create database tables and indexes">
+							<div class="fa-solid fa-drafting-compass"></div>
 							<div class="label">Designer</div>
 						</a>
-						<div class="subject">Database management</div>
+						<div class="subject">Data Management</div>
 					</div>
 					<div class="wpda-dashboard-group wpda-dashboard-group-publisher">
 						<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
         echo  admin_url( 'admin.php' ) ;
         // phpcs:ignore WordPress.Security.EscapeOutput
-        ?>?page=wpda_dashboard" title="Analyse, report and share">
-							<div class="fas fa-tachometer-alt"></div>
+        ?>?page=wpda_dashboard" title="Analyse, report and share data on back-end, front-end and external pages">
+							<div class="fa-solid fa-tachometer-alt"></div>
 							<div class="label">Dashboard</div>
 						</a>
 						<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
         echo  admin_url( 'admin.php' ) ;
         // phpcs:ignore WordPress.Security.EscapeOutput
-        ?>?page=wpda_publisher" title="Data Publisher">
-							<div class="fas fa-address-card"></div>
-							<div class="label">Publications</div>
+        ?>?page=wpda_publisher" title="Use the Data Publisher to create professional data tables for back-end and front-end usage">
+							<div class="fa-solid fa-table"></div>
+							<div class="label">Tables</div>
 						</a>
 						<?php 
         ?>
-						<div class="subject">Data publishing</div>
+						<div class="subject">Data Publishing</div>
 					</div>
 					<div class="wpda-dashboard-group wpda-dashboard-group-projects">
 						<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
         echo  admin_url( 'admin.php' ) ;
         // phpcs:ignore WordPress.Security.EscapeOutput
-        ?>?page=wpda_wpdp" title="Data Projects">
-							<div class="fas fa-magic"></div>
-							<div class="label">Projects</div>
+        ?>?page=wpda_wpdp" title="Use Data Projects to create data driven WordPress apps that can be executed on the back-end and front-end">
+							<div class="fa-solid fa-wand-magic-sparkles"></div>
+							<div class="label">Forms</div>
 						</a>
 						<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
         echo  admin_url( 'admin.php' ) ;
         // phpcs:ignore WordPress.Security.EscapeOutput
-        ?>?page=wpda_templates" title="Project Templates">
-							<div class="fas fa-desktop"></div>
+        ?>?page=wpda_templates" title="Customize Data Projects with features like lookups, master-detail relationships, inline editing, many advanced search options, dynamic hyperlinks, WordPress tole integration, WordPress media library integration and more...">
+							<div class="fa-solid fa-desktop"></div>
 							<div class="label">Templates</div>
 						</a>
-						<div class="subject">Data projects</div>
+						<div class="subject">Data Projects</div>
 					</div>
 					<div class="wpda-dashboard-group wpda-dashboard-group-settings">
 						<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
         echo  admin_url( 'options-general.php' ) ;
         // phpcs:ignore WordPress.Security.EscapeOutput
-        ?>?page=wpdataaccess" title="Plugin Settings">
-							<div class="fas fa-cog"></div>
+        ?>?page=wpdataaccess" title="Manage plugin user interface and behavior">
+							<div class="fa-solid fa-cog"></div>
 							<div class="label">Settings</div>
 						</a>
 						<?php 
@@ -454,16 +454,16 @@ class WPDA_Dashboard
 							<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
             echo  admin_url( 'admin.php' ) ;
             // phpcs:ignore WordPress.Security.EscapeOutput
-            ?>?page=wpda-account" title="Manage Account">
-								<div class="fas fa-user"></div>
+            ?>?page=wpda-account" title="Manage your WP Data Access account">
+								<div class="fa-solid fa-user"></div>
 								<div class="label">Account</div>
 							</a>
 							<?php 
         }
         
         ?>
-						<a class="wpda-dashboard-item wpda_tooltip_icons" target="_blank" href="https://wpdataaccess.com/pricing/" title="All features, online pricing, licensing and ordering">
-							<div class="fas fa-hand-holding-usd"></div>
+						<a class="wpda-dashboard-item wpda_tooltip_icons" target="_blank" href="https://wpdataaccess.com/pricing/" title="All features, online pricing, licensing and ordering on one page">
+							<div class="fa-solid fa-hand-holding-usd"></div>
 							<div class="label">Pricing</div>
 						</a>
 						<?php 
@@ -473,8 +473,8 @@ class WPDA_Dashboard
 							<a class="wpda-dashboard-item wpda_tooltip_icons" href="<?php 
             echo  admin_url( 'admin.php' ) ;
             // phpcs:ignore WordPress.Security.EscapeOutput
-            ?>?page=wpda-pricing" title="Upgrade">
-								<div class="fas fa-gem"></div>
+            ?>?page=wpda-pricing" title="Upgrade your WP Data Access account">
+								<div class="fa-solid fa-gem"></div>
 								<div class="label">Upgrade</div>
 							</a>
 							<?php 
@@ -487,12 +487,12 @@ class WPDA_Dashboard
 						<a class="wpda-dashboard-item wpda_tooltip_icons" target="_blank" href="<?php 
         echo  $this->get_help_url() ;
         // phpcs:ignore WordPress.Security.EscapeOutput
-        ?>" title="Online Help and Documentation">
-							<div class="fas fa-question-circle"></div>
+        ?>" title="Online help and documentation">
+							<div class="fa-solid fa-question-circle"></div>
 							<div class="label">Docs</div>
 						</a>
-						<a class="wpda-dashboard-item wpda_tooltip_icons" target="_blank" href="https://wordpress.org/support/plugin/wp-data-access/" title="Public Support Forum">
-							<div class="fas fa-life-ring"></div>
+						<a class="wpda-dashboard-item wpda_tooltip_icons" target="_blank" href="https://wordpress.org/support/plugin/wp-data-access/" title="Public support forum">
+							<div class="fa-solid fa-life-ring"></div>
 							<div class="label">Forum</div>
 						</a>
 						<?php 
@@ -784,6 +784,13 @@ class WPDA_Dashboard
 				<input type="hidden" name="action" value="create_table">
 				<input type="hidden" name="caller" value="dataexplorer">
 			</form>
+			<form id="wpda_goto_backup" style="display: none" method="post" action="?page=<?php 
+        echo  esc_attr( WP_Data_Access_Admin::PAGE_MAIN ) ;
+        ?>&page_action=wpda_backup">
+				<input type="hidden" name="wpdaschema_name" value="<?php 
+        echo  esc_attr( $this->schema_name ) ;
+        ?>">
+			</form>
 			<div id="wpda-dashboard-toolbar" class="wpda-dashboard-toolbar" style="display:none">
 				<div class="wpda-nowrap">
 					<div>
@@ -1027,10 +1034,11 @@ class WPDA_Dashboard
         ?>
 			<form id="wpda_new_design" style="display: none"  method="post" action="?page=<?php 
         echo  esc_attr( WP_Data_Access_Admin::PAGE_DESIGNER ) ;
-        ?>&table_name=<?php 
-        echo  esc_attr( WPDA_Design_Table_Model::get_base_table_name() ) ;
         ?>">
 				<input type="hidden" name="action" value="edit">
+				<input type="hidden" name="table_name" value="<?php 
+        echo  esc_attr( WPDA_Design_Table_Model::get_base_table_name() ) ;
+        ?>">
 			</form>
 			<div id="wpda-dashboard-toolbar" class="wpda-dashboard-toolbar" style="display:none">
 				<div class="wpda-nowrap">

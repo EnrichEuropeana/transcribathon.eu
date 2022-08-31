@@ -224,6 +224,8 @@ namespace WPDataAccess\Utilities {
 										<?php echo __( 'Cancel', 'wp-data-access' ); ?>
 									</button>
 								</p>
+								<input type="hidden" name="wpdaschema_name" value="<?php echo esc_attr( $this->schema_name ); ?>">
+								<input type="hidden" name="table_name" value="<?php echo esc_attr( $this->table_name ); ?>">
 								<input type="hidden" name="action" value="import">
 								<?php wp_nonce_field( "wpda-import-{$this->table_name}", '_wpnonceimport', false ); ?>
 							</fieldset>

@@ -243,10 +243,8 @@ namespace WPDataProjects\Parent_Child {
 
 		/**
 		 * Overwrites method add_header_button to add arguments
-		 *
-		 * @param string $add_param
 		 */
-		protected function add_header_button( $add_param = '' ) {
+		protected function add_header_button() {
 			if ( 'edit' === $this->project->get_mode() && 'off' !== $this->allow_insert ) {
 				if ( is_admin() ) {
 					$url = "?page={$this->page}";

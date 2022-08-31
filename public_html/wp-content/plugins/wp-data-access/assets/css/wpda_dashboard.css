@@ -43,7 +43,8 @@
     color: #2271b1;
     cursor: pointer;
 }
-#wpda-dashboard .wpda-dashboard .wpda-dashboard-group .wpda-dashboard-item .fas {
+#wpda-dashboard .wpda-dashboard .wpda-dashboard-group .wpda-dashboard-item .fas,
+#wpda-dashboard .wpda-dashboard .wpda-dashboard-group .wpda-dashboard-item .fa-solid {
     font-size: 28px;
     padding: 10px 8px 0 8px;
 }
@@ -212,7 +213,8 @@
     background-color: grey;
     color: white;
 }
-#wpda-dashboard-mobile .fas {
+#wpda-dashboard-mobile .fas,
+#wpda-dashboard-mobile .fa-solid {
     width: 20px;
 }
 .wpda-separator {
@@ -517,7 +519,6 @@ table.dataTable thead .sorting_desc {
     color: white;
     border: 2px solid white;
     font: bold 10px "Helvetica Neue", Sans-Serif;
-    text-transform: uppercase;
     box-shadow: 0 0 7px black;
 }
 .wpda_tooltip_css_ic {
@@ -547,8 +548,8 @@ i.wpda_tooltip:hover {
     color: white;
     border-radius: 20px;
     font: bold 10px "Helvetica Neue", Sans-Serif;
-    text-transform: uppercase;
     box-shadow: 0 0 7px black;
+    text-align: center;
 }
 .arrow {
     width: 70px;

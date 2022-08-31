@@ -368,18 +368,22 @@ namespace WPDataAccess\Connection {
 					}
 				}
 
+				do_action( 'wpda_dbinit', self::$db_connections[ $schema_name ] );
 				return self::$db_connections[ $schema_name ];
 			} else {
 				// Database runs in local WordPress instance.
 				if ( '' === $schema_name || null === $schema_name || self::iswpdb( $schema_name ) ) {
+					do_action( 'wpda_dbinit', $wpdb );
 					return $wpdb;
 				} else {
 					if ( ! WPDA_Dictionary_Exist::schema_exists( $schema_name ) ) {
+						do_action( 'wpda_dbinit', $wpdb );
 						return $wpdb;
 					}
 
 					if ( ! isset( self::$db_connections[ $schema_name ] ) ) {
 						self::$db_connections[ $schema_name ] = new \wpdb( DB_USER, DB_PASSWORD, $schema_name, DB_HOST );
+						do_action( 'wpda_dbinit', self::$db_connections[ $schema_name ] );
 					}
 
 					return self::$db_connections[ $schema_name ];

@@ -476,6 +476,7 @@ namespace WPDataAccess\Plugin_Table_Models {
 						'label'           => isset( $_REQUEST[ $column_name ] ) ?
 							sanitize_text_field( wp_unslash( $_REQUEST[ $column_name ] ) ) :
 							ucfirst( str_replace( '_', ' ', $column_name ) ),
+						'readonly'        => isset( $_REQUEST[ "{$column_name}_readonly" ] ) ? 'on' : 'off',
 						'less'            => isset( $_REQUEST[ "{$column_name}_less" ] ) ? 'on' : 'off',
 						'show'            => isset( $_REQUEST[ "{$column_name}_show" ] ) ? 'on' : 'off',
 						'lookup'          => isset( $_REQUEST[ "{$column_name}_lookup" ] ) ?

@@ -2182,9 +2182,7 @@ default_generated on update current_timestamp" class="fas fa-circle-question poi
 						<input type='hidden' name='caller' value='<?php echo esc_attr( $this->caller ); ?>'/>
 					</form>
 					<form id="switch_mode_form" method="post"
-						  action="?page=<?php echo esc_attr( $this->page ); ?>&table_name=<?php
-							echo WPDA_Design_Table_Model::get_base_table_name(); // phpcs:ignore WordPress.Security.EscapeOutput
-						  ?>">
+						  action="?page=<?php echo esc_attr( $this->page ); ?>">
 						<input type="hidden" name="design_mode"
 							   value="<?php echo 'basic' === $this->design_mode ? 'advanced' : 'basic'; // phpcs:ignore WordPress.Security.EscapeOutput ?>">
 						<input type="hidden" name="action" value="edit">

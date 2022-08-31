@@ -1394,18 +1394,22 @@ class WPDP_Project_Table_Form
 							</th>
 							<th>
 								<?php 
-        echo  __( 'Key?', 'wp-data-access' ) ;
+        echo  __( 'Key', 'wp-data-access' ) ;
         ?>
 							</th>
 							<th>
 								<?php 
-        echo  __( 'Mandatory?', 'wp-data-access' ) ;
+        echo  __( 'Mandatory', 'wp-data-access' ) ;
         ?>
 							</th>
-							<th></th>
 							<th>
 								<?php 
-        echo  __( 'List label (uncheck to hide column)', 'wp-data-access' ) ;
+        echo  __( 'Visible', 'wp-data-access' ) ;
+        ?>
+							</th>
+							<th>
+								<?php 
+        echo  __( 'Label', 'wp-data-access' ) ;
         ?>
 							</th>
 							<th></th>
@@ -1499,7 +1503,7 @@ class WPDP_Project_Table_Form
             echo  esc_attr( $mandatory ) ;
             ?>
 								</td>
-								<td style="text-align:right;width:16px;">
+								<td>
 									<input type="checkbox"
 										   name="<?php 
             echo  esc_attr( $column_name ) ;
@@ -1671,23 +1675,32 @@ class WPDP_Project_Table_Form
 							</th>
 							<th>
 								<?php 
-        echo  __( 'Key?', 'wp-data-access' ) ;
+        echo  __( 'Key', 'wp-data-access' ) ;
         ?>
 							</th>
 							<th>
 								<?php 
-        echo  __( 'Mandatory?', 'wp-data-access' ) ;
+        echo  __( 'Mandatory', 'wp-data-access' ) ;
         ?>
 							</th>
 							<th>
 								<?php 
-        echo  __( 'Less?', 'wp-data-access' ) ;
+        echo  __( 'Visible', 'wp-data-access' ) ;
         ?>
 							</th>
-							<th></th>
 							<th>
 								<?php 
-        echo  __( 'Form label (uncheck to hide column)', 'wp-data-access' ) ;
+        echo  __( 'Read only', 'wp-data-access' ) ;
+        ?>
+							</th>
+							<th>
+								<?php 
+        echo  __( 'Less', 'wp-data-access' ) ;
+        ?>
+							</th>
+							<th>
+								<?php 
+        echo  __( 'Label', 'wp-data-access' ) ;
         ?>
 							</th>
 							<th></th>
@@ -1738,7 +1751,6 @@ class WPDP_Project_Table_Form
             
             if ( isset( $this->table_structure->tableform_column_options ) && isset( $table_structure[$column_name] ) ) {
                 $data_type = $table_structure[$column_name]->data_type;
-                $db_data_type = $data_type;
                 $type_attribute = $table_structure[$column_name]->type_attribute;
                 $key = $table_structure[$column_name]->key;
                 $mandatory = $table_structure[$column_name]->mandatory;
@@ -1769,6 +1781,13 @@ class WPDP_Project_Table_Form
                 $show_on_form = 'checked';
                 $label_on_form = ucfirst( str_replace( '_', ' ', $column_name ) );
                 $lookup_in_list = '';
+            }
+            
+            
+            if ( isset( $column->readonly ) ) {
+                $readonly_on_form = ( 'on' === $column->readonly ? 'checked' : '' );
+            } else {
+                $readonly_on_form = '';
             }
             
             
@@ -1813,34 +1832,30 @@ class WPDP_Project_Table_Form
 									<?php 
             echo  esc_attr( $data_type ) ;
             ?>
-								</td>
-								<td>
 									<?php 
-            echo  esc_attr( $key ) ;
+            echo  ( $this->wpda_list_columns->get_auto_increment_column_name() === $column_name ? ' (auto increment)' : '' ) ;
             ?>
 								</td>
 								<td>
 									<?php 
-            echo  esc_attr( $mandatory ) ;
+            echo  ( 'Yes' === $key ? 'Yes' : '' ) ;
             ?>
 								</td>
 								<td>
-									<input type="checkbox" name="<?php 
-            echo  esc_attr( $column_name ) ;
-            ?>_less"
-										   style="vertical-align:middle;width:16px;height:16px;"
-										<?php 
-            echo  esc_attr( $less_on_form ) ;
+									<?php 
+            echo  ( 'Yes' === $mandatory ? 'Yes' : '' ) ;
             ?>
-									/>
 								</td>
-								<td style="text-align:right;width:16px;">
+								<td>
 									<?php 
             
             if ( $this->wpda_list_columns->get_auto_increment_column_name() === $column_name ) {
                 // Allow to hide auto_increment column
-                $key = 'No';
-                $mandatory = 'No';
+                $l_key = 'No';
+                $l_mandatory = 'No';
+            } else {
+                $l_key = $key;
+                $l_mandatory = $mandatory;
             }
             
             ?>
@@ -1852,7 +1867,7 @@ class WPDP_Project_Table_Form
             echo  esc_attr( $show_on_form ) ;
             ?>
 										<?php 
-            if ( 'Yes' === $key || 'Yes' === $mandatory ) {
+            if ( 'Yes' === $l_key || 'Yes' === $l_mandatory ) {
                 echo  ' disabled="disabled"' ;
             }
             ?>
@@ -1860,7 +1875,7 @@ class WPDP_Project_Table_Form
 									/>
 									<?php 
             
-            if ( 'Yes' === $key || 'Yes' === $mandatory ) {
+            if ( 'Yes' === $l_key || 'Yes' === $l_mandatory ) {
                 ?>
 										<input name="<?php 
                 echo  esc_attr( $column_name ) ;
@@ -1871,6 +1886,26 @@ class WPDP_Project_Table_Form
             }
             
             ?>
+								</td>
+								<td>
+									<input type="checkbox" name="<?php 
+            echo  esc_attr( $column_name ) ;
+            ?>_readonly"
+										   style="vertical-align:middle;width:16px;height:16px;"
+											<?php 
+            echo  esc_attr( $readonly_on_form ) ;
+            ?>
+									/>
+								</td>
+								<td>
+									<input type="checkbox" name="<?php 
+            echo  esc_attr( $column_name ) ;
+            ?>_less"
+										   style="vertical-align:middle;width:16px;height:16px;"
+										<?php 
+            echo  esc_attr( $less_on_form ) ;
+            ?>
+									/>
 								</td>
 								<td>
 									<input type="text"

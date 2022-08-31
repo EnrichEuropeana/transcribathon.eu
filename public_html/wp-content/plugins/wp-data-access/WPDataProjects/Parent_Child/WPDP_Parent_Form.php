@@ -291,7 +291,11 @@ namespace WPDataProjects\Parent_Child {
 		 * @param array  $child Child info
 		 */
 		protected function show_child_form( $child_table_name, $child ) {
-			if ( 'edit' === $this->mode && ( 'new' === $this->child_action || 'edit' === $this->child_action ) ) {
+			if (
+					'edit' === $this->mode &&
+					( 'new' === $this->child_action || 'edit' === $this->child_action ) &&
+					( ! ( isset( $_POST['postaction'] ) && 'childlist' === $_POST['postaction'] ) )
+			) {
 				$this->button_add_new( $child, $child_table_name );
 				echo '<div style="clear:both;"></div>';
 			}
@@ -315,8 +319,8 @@ namespace WPDataProjects\Parent_Child {
 
 			$wpda_child_form->prepare_form();
 
-			if ( isset( $_POST['postaction'] ) && 'list' === $_POST['postaction'] ) {
-				$this->show_child_list_table();
+			if ( isset( $_POST['postaction'] ) && 'childlist' === $_POST['postaction'] ) {
+				$this->show_child_list_table( $child_table_name, $child );
 			} else {
 				$wpda_child_form->show();
 			}
@@ -375,25 +379,10 @@ namespace WPDataProjects\Parent_Child {
 					$id_from_name = preg_replace( '/[^a-zA-Z0-9]/', '', $name );
 
 					if ( is_admin() ) {
-						if ( $this->hide_db_info ) {
-							$url = "?page={$this->page}";
-						} else {
-							$url = "?page={$this->page}&table_name={$this->table_name}";
-						}
+						$url = "?page={$this->page}";
 					} else {
-						if ( $this->hide_db_info ) {
-							$url = '';
-						} else {
-							$url = "?table_name={$this->table_name}";
-						}
+						$url = '';
 					}
-					if ( ! $this->hide_db_info ) {
-						global $wpdb;
-						if ( '' !== $this->schema_name && $wpdb->dbname !== $this->schema_name ) {
-							$url .= "&wpdaschema_name={$this->schema_name}";
-						}
-					}
-
 					?>
 					<form action="<?php echo esc_attr( $url ); ?>"
 						  method="post"
@@ -463,23 +452,9 @@ namespace WPDataProjects\Parent_Child {
 			$title    = 'Add new row';
 
 			if ( is_admin() ) {
-				if ( $this->hide_db_info ) {
-					$url = "?page={$this->page}";
-				} else {
-					$url = "?page={$this->page}&table_name={$this->table_name}";
-				}
+				$url = "?page={$this->page}";
 			} else {
-				if ( $this->hide_db_info ) {
-					$url = '';
-				} else {
-					$url = "?table_name={$this->table_name}";
-				}
-			}
-			if ( ! $this->hide_db_info ) {
-				global $wpdb;
-				if ( '' !== $this->schema_name && $wpdb->dbname !== $this->schema_name ) {
-					$url .= "&wpdaschema_name={$this->schema_name}";
-				}
+				$url = '';
 			}
 
 			if ( ! empty( $check_pk->get_table_primary_key() ) ) {
