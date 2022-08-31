@@ -87,19 +87,6 @@ define( 'WP_DEBUG', false );
 
 /* That's all, stop editing! Happy publishing. */
 
-/**
- * define TP-API endoint host
- * transcribathon.local for development
- */
-define('TP_API_HOST', 'API host');
-define('TP_API_TOKEN', 'API token');
-
-/**
- * Solr
- */
-define('TP_SOLR', 'Solr host');
-
-
 /** Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );

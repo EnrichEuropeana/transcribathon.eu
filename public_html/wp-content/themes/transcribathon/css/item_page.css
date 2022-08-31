@@ -6,45 +6,8 @@ Description: Stylesheet for Item Page
 /* -------------------------------------- Item Page ---------------------------------------- */
 
 /* --- Image Slider --- */
-#item-page-carousel {
-    margin-bottom: 20px;
-}
-.carousel-control-prev,
-.carousel-control-next {
-    height: 50px;
-    width:20px!important;
-    padding: 0!important;
-    top: 50%!important;
-    transform: translateY(-60%);
-    background-color: #0a72cc!important;
-}
-.carousel-indicators {
-    position: relative!important;
-    top: 10px!important;
-}
-.carousel-indicators button {
-    background-color: #0a72cc;
-    padding: 3px 3px!important;
-    border: 0.5px solid #8a8987!important;
-    border-radius: 50%!important;
-    margin-right: 1px!important;
-    margin-left: 1px!important;
-    height: 0;
-    width: 0;
-}
-.carousel-indicators button:active {
-    color: #fff!important;
-}
-.carousel-control-next:focus {
-    height: 50px;
-    width:20px;
-    padding: 0!important;
-    top: 50;
-    background-color: #0a72cc!important;
-}
 .slide-img-wrap {
-    border: 5px solid transparent;
-    margin: 0 5px;
+    border: 2.5px solid transparent;
 }
 .slide-img-wrap:hover {
     border: 5px solid #0a72cc;
@@ -52,6 +15,7 @@ Description: Stylesheet for Item Page
 }
 .slider-image {
     width: 100%;
+    height: auto;
 }
 .slide-number-wrap {
     position: relative;
@@ -64,6 +28,100 @@ Description: Stylesheet for Item Page
     border: 10px solid;
     position: relative;
     z-index: 1;
+}
+#inner-slider {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: 230px;
+    display: flex;
+    justify-content: center;
+}
+.slide-sticker {
+    width: 10%;
+    height: 150px;
+    margin-bottom: 30px;
+    display: inline-block;
+}
+.prev-slide {
+    font-size: 15px;
+    position: relative;
+    width: 25px;
+    height: 50px;
+    padding: 5px;
+    float: left;
+    top: 30%;
+    color: #fff;
+    background: #0a72cc;
+}
+.next-slide {
+    font-size: 15px;
+    position: relative;
+    width: 25px;
+    height: 50px;
+    padding: 5px;
+    float: right;
+    top: 30%;
+    color: #fff;
+    background: #0a72cc;
+}
+.next-set {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    width: 30px;
+    background: #fff;
+    color: #0a72cc;
+    border: none;
+    padding: 0%;
+    font-size: 15px;
+    font-weight: bold;
+}
+.prev-set {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+    width: 30px;
+    background: #fff;
+    color: #0a72cc;
+    border: none;
+    padding: 0;
+    font-size: 15px;
+    font-weight: bold;
+}
+#img-slider {
+    height: 220px;
+    width: 95%;
+    margin: 50px auto;
+}
+.next-slide:focus, .prev-slide:focus {
+    background: #0a72cc;
+}
+#dot-indicators {
+    display: inline-flex;
+    justify-content: center;
+}
+.indicator-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #0a72cc;
+    margin-left: 2px;
+    margin-right: 2px;
+    top: 5px;
+    position: relative;
+    cursor: pointer;
+}
+#controls-div {
+    display: flex;
+    justify-content: center;
+}
+.num-indicators {
+    font-size: 15px;
+    position: relative;
+    bottom: 3.5px;
+    color: #0a72cc;
+    font-weight: bold;
 }
 /* --- End of Slider --- */
 
@@ -222,35 +280,8 @@ ul.item-navigation-content-container div {
 }
 /* --- End of Title --- */
 /* --- Left Half of Item Page --- */
-#full-view-l {
-    left: -25px;
-}
 #openseadragon {
-    left: -25px;
     background: #f8f8f8;
-}
-/* viewer hidden buttons */
-#viewer-next-item {
-    display: none;
-    position: absolute;
-    top: 55%;
-    right: 2%;
-    font-size: 0;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    outline: none;
-    z-index: 9;
-    border: none;
-    text-align: center;
-    background: white;
-    transition: all 0.4s ease 0.1s;
-    -webkit-transition: all 0.4s ease 0.1s;
-    -moz-transition: all 0.4s ease 0.1s;
-    -o-transition: all 0.4s ease 0.1s;
-    box-shadow: none!important;
-    -webkit-box-shadow: none!important;
-    -moz-box-shadow: none!important;
 }
 .openseadragon-canvas {
     box-shadow: 1px 1px #000;
@@ -323,31 +354,15 @@ div.openseadragon-canvas > canvas > svg {
     text-align: right;
     padding-right: 5px;
 }
-#progress-bar-Completed-section {
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #91f26b), color-stop(1, #4dcd1c));
-}
-.progress-bar-section {
-    border-right: 2px solid hsla(0, 0%, 78%);
-    float: left;
-    font-size: 12px;
-    color: transparent;
-}
-#progress-bar-Review-section {
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffc720), color-stop(1, #f0b146));
-}
-#progress-bar-Edit-section {
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff700), color-stop(1, #ffd800));
-}
-#progress-bar-Not-Started-section {
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #eeeeee), color-stop(1, #eeeeee));
-}
-
 .item-page-section {
     padding: 0 8px 8px 0;
     position: relative;
 }
 .transcription-headline-header {
     margin-bottom: 8px;
+}
+#tr-view-start-transcription {
+    display: none;
 }
 .entry-content .item-page-section-headline {
     font-size: 18px;
@@ -402,10 +417,11 @@ div.openseadragon-canvas > canvas > svg {
     padding: 0px 10px;
     min-height: 120px;
     overflow: auto;
-    max-height: 400px;
+    max-height: 350px;
     border: 1px solid #cccccc;
     border-radius: 2px;
     outline: none;
+    line-height: 1.2em;
 }
 #item-page-transcription-text textarea:focus ~ #transcription-update-button {
     display: inline-block;
@@ -639,152 +655,6 @@ div.openseadragon-canvas > canvas > svg {
     padding: 5px!important;
     outline: none;
 }
-/* new button to download enrichments */
-.dl-enrichments {
-    position: relative;
-    left: -25px;
-    margin-top: 2%;
-    margin-bottom: 2%;
-}
-/* Enrichments Table */
-.not-started {
-    width: 100px;
-    font-size: 10px;
-    text-align: center;
-    background-color: #eeeeee;
-    border-radius: 10px;
-}
-.enrich-headers {
-    margin-bottom: 5px!important;
-    padding-left: 10px;
-    color: #0a72cc!important;
-    font-family: 'Dosis', sans-serif;
-}
-.card {
-    border: none;
-}
-.card-header {
-    background-color: #f8f8f8;
-}
-.card-body {
-    padding: 0;
-}
-.meta-h {
-    padding-left: 10px;
-}
-.mb-1 {
-    color: #0a72cc;
-    font-weight: 600;
-    padding: 0!important;
-}
-.meta-p {
-    margin: 0 0 0 5px!important;
-    font-weight: 300;
-}
-/* --- End of Left Side of Item Page --- */
-
-/* --- Right Half of Item Page --- */
-#full-view-map {
-    position: relative;
-    padding-bottom: 13px;
-}
-.map-placeholder {
-    font-size: 100px;
-    margin: 150px;
-    color: #dddddd;
-}
-.description-map {
-    height: 43px!important;
-    width: 100%!important;
-}
-#location-input-section {
-    margin-top: 12px;
-}
-.location-input-container {
-    width: 100%;
-    margin-top: 6px;
-}
-.location-input-container input {
-    width: 100%;
-}
-.location-input-container textarea {
-    width: 100%;
-    margin-top: 6px;
-}
-.required-field {
-    color: red;
-    font-size: 18px;
-    float: right;
-    display: none;
-}
-.location-display {
-    display: inline-block;
-    width: 48%;
-}
-.location-input-coordinates-container {
-    display: inline-block;
-    width: 168px;
-}
-#location-input-geonames-search-container {
-    position: relative;
-}
-.location-search-container input {
-    padding-right: 15px;
-}
-.form-buttons-right {
-    margin-top: 12px;
-}
-.edit-data-save-right {
-    float: right;
-    padding: 8px 12px;
-    letter-spacing: 0.5px;
-}
-.item-data-output-list ul {
-    margin: 8px 0;
-}
-.item-data-output-list ul li {
-    list-style: none;
-    border: 1px solid #eeeeee;
-    margin: 8px 0!important;
-    padding: 4px 14px;
-    background-color: #f3f3f3;
-    border-radius: 5px;
-}
-.item-data-output-element-header h6 {
-    float: left;
-    width: calc(100% - 50px);
-    height: 25px;
-    overflow: hidden;
-}
-.item-data-output-list h6 {
-    margin: 0!important;
-}
-.edit-item-data-icon {
-    cursor: pointer;
-    float: right;
-    background: transparent;
-    border-radius: 50%;
-    padding: 6px;
-    margin-left: 3px;
-    font-size: 11px;
-}
-.location-data-edit-container {
-    display: none;
-    margin: 15px 0 5px 0;
-}
-.edit-data-cancel-right {
-    float: right;
-    padding: 8px 12px;
-    margin-right: 4px;
-    letter-spacing: 0.5px;
-}
-.additional-info-bottom {
-    padding-bottom: 3em;
-}
-.entry-content .item-page-property {
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
 #image-view-container {
     position: absolute;
     top: 0;
@@ -972,30 +842,8 @@ div.openseadragon-canvas > canvas > svg {
     background: transparent;
     border: 0;
 }
-#item-status-doughnut-chart {
-    float: left;
-    height: 50px;
-    padding: 5px;
-    position: relative;
-}
 #item-status-dropdown {
     left: 0;
-}
-#item-status-doughnut-chart-canvas {
-    padding: 6px;
-}
-#item-status-doughnut-chart-canvas:hover .item-status-info-box {
-    position: absolute;
-    padding: 15px;
-    z-index: 1;
-    background: #fff;
-    top: 18px;
-    right: 28px;
-    border: 0.8px solid #ccc;
-    display: block;
-}
-#item-status-doughnut-info-box {
-    top: 50px;
 }
 .view-switcher {
     position: absolute;
@@ -1186,7 +1034,6 @@ input#person-deathPlace-input {
 .person-names-entry-inputs {
     padding-bottom: 18px;
 }
-
 #keyword-input {
     float: left;
 }
@@ -1235,58 +1082,479 @@ input#person-deathPlace-input {
     padding: 10px;
     min-width: 425px;
 }
+/* Full screen viewer / change view */
+/* Vertical Split */
+.panel-right #tr-view-start-transcription {
+    display: unset;
+    background-color: #0a72cc;
+    padding: 5px;
+    color: #fff;
+    float: right;
+    border-radius: 5px;
+    cursor: pointer;
+    min-width: 70px;
+    text-align: center;
+    margin-left: 10px;
+}
+.panel-right-tab-menu #mce-wrapper-transcription {
+    height: 80%;
+}
+.panel-right-tab-menu #item-page-transcription-text {
+    max-height: unset;
+    height: 100%;
+}
+.panel-right-tab-menu #tr-history {
+    position: relative;
+    height: 50%;
+}
+.panel-right #mce-wrapper-transcription, .panel-right-tab-menu .transcription-mini-metadata{
+    display: none;
+}
+.panel-right #transcription-view {
+    display: block;
+    line-height: 1.4em;
+}
+/* Horizontal Split */
+#item-data-section.panel-bottom .tablinks .tab-i {
+    font-size: 15px;
+    float: right;
+}
+#item-data-section.panel-bottom .tablinks .tab-status {
+    float: left;
+    bottom: -6px!important;
+    position: relative;
+}
+#item-data-section.panel-bottom .tablinks {
+    height: 30px;
+    width: 120px;
+}
+#item-data-section.panel-bottom #item-data-header {
+    margin-top: 0;
+    padding-bottom: 0;
+    position: relative;
+    height: 10%;
+}
+#item-data-section.panel-bottom #item-data-content {
+    position: relative;
+    height: 90%;
+}
+#item-data-section.panel-bottom .tab-h {
+    margin: 0!important;
+    position: relative;
+    bottom: 5px;
+}
+#item-data-section.panel-bottom .tab-h.it {
+    left: 20px;
+}
+
+#item-data-section.panel-bottom #editor-tab {
+    overflow-y: hidden;
+}
+#item-data-section.panel-bottom {
+    padding-bottom: 0!important;
+}
+.panel-bottom #transcription-language-custom-selector {
+    font-size: 10px;
+    height: 25px;
+    padding: 0 20px 0 5px;
+    width: unset;
+}
+.panel-bottom #transcription-language-custom-selector::after {
+    right: 0;
+}
+.panel-bottom #transcription-selected-languages, .panel-bottom #transcription-selected-languages ul,
+.panel-bottom #transcription-selected-languages li, .panel-bottom #transcription-update-button {
+    font-size: 10px;
+    height: 25px;
+    padding: 0 5px;
+}
+.panel-bottom .transcription-mini-metadata {
+    margin-left: 0;
+    margin-top: 0;
+    position: relative;
+    top: 10px;
+}
+.panel-bottom .transcription-headline-header {
+    height: 35px;
+    margin-bottom: 0;
+}
+.panel-bottom #item-page-transcription-text {
+    overflow-y: auto;
+    max-height: unset;
+    height: 90%;
+}
+.panel-bottom #transcription-section {
+    position: relative;
+    height: 95%;
+}
+.panel-bottom #mce-wrapper-transcription {
+    height: 85%;
+}
+.panel-bottom #tr-history {
+    visibility: hidden;
+}
+.panel-bottom .language-item-select {
+    position: relative;
+    top: -6px;
+}
+.panel-bottom .selected-option {
+    font-size: 10px;
+    height: 25px;
+    padding: 0 10px 0 10px;
+    width: unset;
+}
+.panel-bottom #mytoolbar-transcription {
+    height: 1px!important;
+    margin-bottom: 2px;
+}
+.panel-bottom #desc-part {
+    height: inherit;
+    overflow-y: auto!important;
+}
+.panel-bottom #transcription-update-button {
+    right: 30px;
+    bottom: 15px;
+    height: 25px;
+    width: 100px;
+    font-size: 15px;
+    border: 5px solid #0a72cc;
+    border-radius: 5px;
+}
+.panel-bottom #description-update-button {
+    height: 25px;
+    width: 100px;
+    border: 5px solid #0a72cc;
+    border-radius: 5px;
+    padding: 0;
+}
+/* Popout */
+#item-data-section.data-popout {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background: #fff;
+}
+#item-data-section.data-popout #editor-tab.tabcontent {
+    overflow: hidden;
+}
+#item-data-section.data-popout #item-data-content {
+    position: relative;
+    height: calc(100% - 40px);
+    min-width: 350px;
+    min-height: 215px;
+    background-color: #fff;
+}
+#item-data-section.data-popout #mytoolbar-transcription {
+    /* height: 50px!important; */
+    margin: 3px 0;
+}
+#item-data-section.data-popout #mce-wrapper-transcription {
+    height: 98%;
+}
+#item-data-section.data-popout #transcription-section {
+    height: 100%;
+}
+#item-data-section.data-popout #item-data-header {
+    margin-top: 0px;
+    max-height: 40px;
+    padding-bottom: 0;
+    position: relative;
+}
+.data-popout .tab-h {
+    margin: 0;
+}
+#item-data-section.data-popout #item-page-transcription-text {
+    height: calc(100% - 2.3em);
+}
+#item-data-section.data-popout .transcription-headline-header div {
+    font-size: 12px;
+    height: 15px;
+    padding: 0;
+}
+.data-popout #transcription-status-dropdown {
+    height: auto!important;
+}
+.data-popout .item-page-section-headline-right-site {
+    padding: 0;
+    margin: 0;
+}
+#item-data-section.data-popout .transcription-headline-header {
+    margin: 0;
+    height: 20px;
+}
+#item-data-section.data-popout #item-tab-list li div i {
+    display: none;
+}
+#item-data-section.data-popout #item-data-content #editor-tab #tr-history {
+    display: none;
+}
+.data-popout #transcription-language-custom-selector{
+    font-size: 10px;
+    height: 25px;
+    padding: 0 15px 0 0;
+    width: unset;
+    margin: 0;
+}
+.data-popout #desc-part {
+    overflow-y: scroll;
+}
+.data-popout #transcription-language-custom-selector::after {
+    right: 0;
+}
+.data-popout #transcription-language-selector {
+    margin-bottom: 0!important;
+}
+.data-popout #transcription-selected-languages, .data-popout #transcription-selected-languages ul,
+.data-popout #transcription-selected-languages li, .data-popout #transcription-update-button {
+    font-size: 10px;
+    height: 25px;
+    padding: 0 5px;
+}
+.data-popout .transcription-mini-metadata {
+    margin-top: 1px!important;
+}
+#popup-lang {
+    display: none;
+}
+.data-popout .selected-option, .data-popout .language-select-selected, .data-popout .same-as-selected {
+    font-size: 10px;
+    height: 25px;
+    padding: 0 10px 0 10px;
+    width: unset;
+}
+.data-popout .language-item-select {
+    position: relative;
+    top: -6px;
+}
+.data-popout .tab-list li {
+    margin: 0;
+}
+.data-popout {
+    position: absolute!important;
+    top: 50%;
+    left: 25%;
+    height: 25%;
+    width: 50%;
+    background: #fff;
+    min-height: 350px;
+    min-width: 400px;
+    border-radius: 7px;
+    background-color: #fff;
+}
+.data-popout #transcription-update-button {
+    right: 30px;
+    bottom: 15px;
+    height: 25px;
+    width: 100px;
+    font-size: 15px;
+    border: 5px solid #0a72cc;
+    border-radius: 5px;
+}
+.data-popout .square-checkbox-container {
+    margin-right: 0px;
+    font-size: 10px;
+}
+.data-popout #desc-part h4, .data-popout #desc-part i {
+    font-size: 10px;
+}
+.data-popout #desc-part {
+    height: inherit;
+}
+.data-closed {
+    position: absolute!important;
+    right: 3px;
+    top: 5px;
+    border-radius: 7px;
+}
+.data-closed #item-data-header {
+    padding-bottom: 0px;
+}
+/* new button to download enrichments */
+.dl-enrichments {
+    position: relative;
+    /* left: -25px; */
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+/* Enrichments Table */
+.not-started {
+    width: 100px;
+    font-size: 10px;
+    text-align: center;
+    background-color: #eeeeee;
+    border-radius: 10px;
+}
+.enrich-headers {
+    margin-bottom: 5px!important;
+    padding-left: 10px;
+    color: #0a72cc!important;
+    font-family: 'Dosis', sans-serif;
+}
+.card {
+    border: none;
+}
+.card-header {
+    background-color: #f8f8f8;
+}
+.card-body {
+    padding: 0;
+}
+.meta-h {
+    padding-left: 10px;
+}
+.mb-1 {
+    color: #0a72cc;
+    font-weight: 600;
+    padding: 0!important;
+}
+.meta-p {
+    margin: 0 0 0 5px!important;
+    font-weight: 300;
+}
+.meta-sticker {
+    display: inline-block;
+    width: 18.5%;
+    min-height: 100px;
+    vertical-align: top;
+    margin: 5px 1.4% 5px 0;
+    margin-bottom: 50px;
+}
+/* --- End of Left Side of Item Page --- */
+/* --- Right Half of Item Page --- */
+#full-view-map {
+    position: relative;
+    padding-bottom: 13px;
+}
+.map-placeholder {
+    font-size: 100px;
+    margin: 150px;
+    color: #dddddd;
+}
+.description-map {
+    height: 43px!important;
+    width: 100%!important;
+}
+#location-input-section {
+    margin-top: 12px;
+}
+.location-input-container {
+    width: 100%;
+    margin-top: 6px;
+}
+.location-input-container input {
+    width: 100%;
+}
+.location-input-container textarea {
+    width: 100%;
+    margin-top: 6px;
+}
+.required-field {
+    color: red;
+    font-size: 18px;
+    float: right;
+    display: none;
+}
+.location-display {
+    display: inline-block;
+    width: 48%;
+}
+.location-input-coordinates-container {
+    display: inline-block;
+    width: 168px;
+}
+#location-input-geonames-search-container {
+    position: relative;
+}
+.location-search-container input {
+    padding-right: 15px;
+}
+.form-buttons-right {
+    margin-top: 12px;
+}
+.edit-data-save-right {
+    float: right;
+    padding: 8px 12px;
+    letter-spacing: 0.5px;
+}
+.item-data-output-list ul {
+    margin: 8px 0;
+}
+.item-data-output-list ul li {
+    list-style: none;
+    border: 1px solid #eeeeee;
+    margin: 8px 0!important;
+    padding: 4px 14px;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+}
+.item-data-output-element-header h6 {
+    float: left;
+    width: calc(100% - 50px);
+    height: 25px;
+    overflow: hidden;
+}
+.item-data-output-list h6 {
+    margin: 0!important;
+}
+.edit-item-data-icon {
+    cursor: pointer;
+    float: right;
+    background: transparent;
+    border-radius: 50%;
+    padding: 6px;
+    margin-left: 3px;
+    font-size: 11px;
+}
+.location-data-edit-container {
+    display: none;
+    margin: 15px 0 5px 0;
+}
+.edit-data-cancel-right {
+    float: right;
+    padding: 8px 12px;
+    margin-right: 4px;
+    letter-spacing: 0.5px;
+}
+.additional-info-bottom {
+    padding-bottom: 3em;
+}
+.entry-content .item-page-property {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
 /* Open sea dragon viewer next/prev buttons */
-#viewer-next-item {
-    display: none;
+#previous-itemFS {
     position: absolute;
-    top: 55%;
-    right: 2%;
-    font-size: 0;
-    width: 40px;
-    padding: 0;
-    outline: none;
-    z-index: 9;
-    border: none;
-    height: 40px;
-    text-align: center;
-    background: white;
-    transition: all 0.4s ease 0.1s;
-    -webkit-transition: all 0.4s ease 0.1s;
-    -moz-transition: all 0.4s ease 0.1s;
-    -o-transition: all 0.4s ease 0.1s;
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
+    top: 50%;
+    left: 1%;
+    z-index: 20;
+    width: 50px;
+    height: 50px;
+    padding: 11px;
+    border: 1px solid #0a72cc;
+    border-radius: 50%;
+    opacity: 0.1;
 }
-#viewer-previous-item {
-    display: none;
+#next-itemFS {
     position: absolute;
-    bottom: 6em;
-    left: 2%;
-    top: 55%;
-    right: 0%;
-    font-size: 0;
-    z-index: 9;
-    width: 40px;
-    padding: 0;
-    outline: none;
-    border: none;
-    height: 40px;
-    text-align: center;
-    background: white;
-    transition: all 0.4s ease 0.1s;
-    -webkit-transition: all 0.4s ease 0.1s;
-    -moz-transition: all 0.4s ease 0.1s;
-    -o-transition: all 0.4s ease 0.1s;
-    box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    -moz-box-shadow: none !important;
+    top: 50%;
+    right: 1%;
+    z-index: 20;
+    height: 50px;
+    width: 50px;
+    padding: 11px;
+    border: 1px solid #0a72cc;
+    border-radius: 50%;
+    opacity: 0.1;
 }
-#openseadragonFS #viewer-next-item {
-    top: 46%;
+#previous-itemFS:hover, #next-itemFS:hover {
+    opacity: 1;
 }
-#openseadragonFS #viewer-previous-item {
-    top: 46%;
+#previous-itemFS a, #next-itemFS a {
+    color: #0a72cc;
+}
+/* Horizontal Split next/previous item buttons */
+.panel-top #previous-itemFS, .panel-top #next-itemFS {
+    top: 80%;
 }
 /* Item page with htr transcription */
 /* .htr-trans-partial {
@@ -1304,7 +1572,6 @@ input#person-deathPlace-input {
     margin-top: 0!important;
     margin-bottom: 0!important;
 }
-
 .trans-partial {
     max-height: 400px;
     overflow: hidden;
@@ -1365,47 +1632,9 @@ input#person-deathPlace-input {
     color: transparent!important;
     border-radius: 10px;
 }
-/* .box-status-bar-info-box {
-    top: 18px;
-    left: 0px;
-} */
-/* #description-label-wrapper {
-    height: 25px;
-} */
 #item-image-section.panel-top img {
     height: 100%;
 }
-.data-popout {
-    position: absolute!important;
-    top: 50%;
-    left: 25%;
-    height: 25%;
-    width: 50%;
-    background: #fff;
-    min-height: 350px;
-    min-width: 400px;
-    border-radius: 7px;
-    background-color: #fff;
-}
-.data-popout #item-data-content {
-    min-width: 350px;
-    min-height: 215px;
-    background-color: #fff;
-}
-.data-closed {
-    position: absolute!important;
-    right: 3px;
-    top: 5px;
-    border-radius: 7px;
-}
-.data-closed #item-data-header {
-    padding-bottom: 0px;
-}
-
-/* .entry-content .item-page-property-headline {
-    font-size: 18px;
-    margin-bottom: 5px;
-} */
 #location-position {
     position: relative;
 }
@@ -1413,19 +1642,6 @@ input#person-deathPlace-input {
     float: right;
     margin-top: 12px;
 }
-/* #display-persondata-demo ul {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-#display-persondata-demo ul li {
-    list-style: none;
-} */
 #geo-tagging-map {
     position: relative;
 }
@@ -1433,50 +1649,12 @@ input#person-deathPlace-input {
     float: left;
     margin-right: 4px;
 }
-/* .location-input-namer {
-    margin-left: 0px;
-    margin-right: 8px;
-} */
-/* #location-google-search-container.location-search-container a {
-    font-size: 10px;
-    position: absolute;
-    right: 9px;
-    bottom: 0;
-} */
 #location-input-geonames-search-container.location-search-container a {
     font-size: 10px;
     position: absolute;
     right: 2%;
     bottom: 0;
 }
-/* .start-document-date {
-    outline: none;
-    background-color: #eeeeee;
-} */
-/* .end-document-date {
-    outline: none;
-    margin-left: 4px;
-    background-color: #eeeeee;
-} */
-/* #document-date-update-button {
-    float: right;
-    margin-right: 18px;
-} */
-/* .person-additional-inputs {
-    padding-bottom: 18px;
-}
-.person-dob-entry {
-    outline: none;
-    background-color: #eeeeee;
-}
-.person-dod-entry {
-    outline: none;
-    background-color: #eeeeee;
-} */
-/* #personinfo-update-button {
-    float: right;
-    margin-right: 18px;
-} */
 .ui-widget-content .ui-icon, .ui-widget-header .ui-icon {
     background-image: url(images/ui-icons_222222_256x240.png);
 }
@@ -1496,46 +1674,6 @@ input#person-deathPlace-input {
     padding: 2px;
     margin-left: 2px;
 }
-/* #add-location-button {
-    display: inline-block;
-    position: absolute;
-    top: 18em;
-    left: 12px;
-    padding: 6px;
-    border: 2px solid #ddd;
-    background-color: #eee;
-} */
-/* 
-#add-link-form {
-    margin-top: 12px;
-}
-#add-link-container {
-    padding-bottom: 18px;
-}
-#adding-new-link {
-    color: inherit;
-    text-decoration: none;
-}
-#add-link-container input {
-    outline: none;
-    width: 100%;
-} */
-/* #link-update-save-button {
-    float: right;
-}
-#save-link-button {
-    float: right;
-} */
-/* table.date-entry-docdate {
-    border: 2px solid #cccccc;
-    margin-top: 10px;
-    margin-bottom: 0px;
-    margin-right: 5px;
-    font-weight: 300;
-    font-size: 0.7em;
-    width: 48%;
-    float: left;
-} */
 .sow-form-field-textarea .sow-field-container {
     height: 175px;
 }
@@ -1558,19 +1696,6 @@ input#person-deathPlace-input {
     padding-left: 9px;
     padding-right: 9px;
 }
-/* .tab-list .twicon {
-    position: relative;
-    background-color: #f1eff0;
-    font-size: 25px;
-    -webkit-transition: 0.3s;
-    transition: 0.3s;
-    display: inline-block;
-    width: 60px;
-    height: 50px;
-} */
-/* .item-tab p {
-    font-size: 12px;
-} */
 .tabcontent::-webkit-scrollbar {
     width: 13px;
 }
@@ -1591,38 +1716,6 @@ input#person-deathPlace-input {
 .person-data-output-buttom i {
     float: right;
 }
-/* tutorial slick slide- to remove after rewriting tutorial */
-#help-tab .tutorial-window-slider button.slick-arrow {
-    bottom: 0;
-}
-.tutorial-window-slider button.slick-prev.slick-arrow {
-    position: absolute;
-    z-index: 1;
-}
-.tutorial-window-slider button.slick-next.slick-arrow {
-    right: 16px;
-}
-.tutorial-window-slider button.slick-arrow {
-    color: #0a72cc!important;
-    position: absolute;
-    bottom: 10px;
-    font-size: 16px;
-    text-transform: uppercase;
-    line-height: 0;
-    padding: 5px;
-    outline: none;
-    border: none;
-    text-align: center;
-    background: white;
-}
-.tutorial-window-slider .slick-list {
-    margin-right: 7px;
-    height: 100%;
-}
-.tutorial-window-slider .slick-slide {
-    overflow-y: auto;
-    overflow-x: hidden;
-}
 .tutorial-image-area img {
     height: auto;
     max-width: 100%;
@@ -1637,75 +1730,6 @@ input#person-deathPlace-input {
     font-size: 16px;
     letter-spacing: 0.5px;
 }
-#help-tab .tutorial-window-slider .slick-dots {
-    bottom: -17px;
-    right: 3em;
-}
-.tutorial-window-slider .slick-dots {
-    position: absolute;
-    bottom: 4px;
-    right: 7em;
-    margin: 0;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    padding: 0;
-}
-.slick-dots {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    width: 75%;
-    margin: 5px auto;
-    padding: 0;
-    list-style-type: none;
-}
-#help-tab .tutorial-window-slider .slick-dots li{
-    height: 5px;
-}
-.entry-content .slick-dots li {
-    margin-left: 5px;
-    margin-right: 5px;
-    list-style: none;
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    padding: 0;
-}
-#help-tab .tutorial-window-slider .slick-dots button {
-    padding: 5px;
-}
-.tutorial-window-slider .slick-dots button {
-    display: block;
-    height: 8px;
-    width: 8px;
-    padding: 10px;
-    outline: none;
-    border: none;
-    border-radius: 100%;
-    background-color: #9b9999;
-    background-image: none;
-    text-indent: -99999px;
-}
-.slick-dots button {
-    display: block;
-    height: 10px;
-    width: 10px;
-    padding: 0;
-    outline: none;
-    border: none;
-    border-radius: 100%;
-    background-color: #b7b7b7;
-    background-image: none;
-    text-indent: -99999px;
-}
-.tutorial-window-slider li.slick-active button {
-    background-color: black;
-}
-/* -------- end of stuff to remove --------- */
 .widget {
     margin: 0 0 1.5em;
 }
@@ -1722,4 +1746,60 @@ input#person-deathPlace-input {
 .togglePara {
     max-height: 200px;
     overflow: hidden;
+}
+#full-view-r {
+    float:right;
+    width:49%;
+    margin-right:1%;
+}
+#full-view-l {
+    float:left;
+    width:49%;
+    margin-right:1%;
+}
+.cover-up {
+    text-align: center;
+    background: #fff;
+    background-color: #fff;
+    color: #0a72cc;
+    font-size: 20px;
+    font-weight: bold;
+    height: 50px;
+    position: relative;
+    top: 20px;
+}
+#transcription-view {
+    display: none;
+}
+/* Css for smaller screens */
+@media screen and (max-width: 800px) {
+    #full-view-r {
+        display: block;
+        float: unset;
+        margin: 0 auto;
+        width: 100%; 
+        max-width: 100%; 
+        z-index: 10;
+        position: relative;
+        background: #fff;
+    }
+    #full-view-l {
+        float: unset;
+        width: 100%;
+    }
+    .slide-sticker {
+        width: 150px!important;
+        height: 60%;
+    }
+}
+/*------------------------------------------*/
+.tab-h.it {
+    position: relative;
+    left: 3px;
+}
+@media screen and (min-width: 851px) and (max-width: 1200px) {
+    .slide-sticker {
+        width: 150px;
+        height: 60%;
+    }
 }

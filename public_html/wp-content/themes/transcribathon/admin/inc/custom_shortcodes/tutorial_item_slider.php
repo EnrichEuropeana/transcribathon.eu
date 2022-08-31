@@ -23,7 +23,7 @@ function _TCT_tutorial_item_slider( $atts ) {
                             float: left;
                             bottom: 0;
                             padding: 5px;
-                            background-color: #0a72cc;
+                            background: #0a72cc;
                             color: #fff;
                             width: 80px;
                         }
@@ -32,7 +32,7 @@ function _TCT_tutorial_item_slider( $atts ) {
                             float: right;
                             bottom: 0;
                             padding: 5px;
-                            background-color: #0a72cc;
+                            background: #0a72cc;
                             color: #fff;
                             width: 80px;
                         }
@@ -104,53 +104,7 @@ function _TCT_tutorial_item_slider( $atts ) {
             $content .= "</div>";
         $content .= "</div>"; // Carousel closing
 
-        /* -------------------------------------------------------------------------------------- */
-        // $content .= '<div id="tutorial-help-item-page" class="tutorial-right tutorial-window-slider">';
-        //     $skipSlideList = ["Register","Enrich"];
-        //     foreach ($tutorialPosts as $tutorialPost) {
-        //         if (in_array($tutorialPost->post_title, $skipSlideList)) {
-        //             continue;
-        //         }
-        //         $content .= "<div class='testing active slick-slide'>";
-        //             if (get_post_meta($tutorialPost->ID, "_thumbnail_id")[0] != null) {
-        //                 $content .= "<div class='tutorial-image-area'>";
-        //                     $content .= '<img data-lazy="'.wp_get_attachment_image_src(get_post_meta($tutorialPost->ID, "_thumbnail_id")[0], 
-        //                     array($_wp_additional_image_sizes['tutorial-image']['width'],$_wp_additional_image_sizes['tutorial-image']['height']))[0].'" alt=""/>';
-        //                 $content .= "</div>";
-        //                 $content .= "<div class='tutorial-text-area'>";
-        //                     $content .= "<h2 class='theme-color tutorial-headline'>".$tutorialPost->post_title."</h2>";
-        //                     $content .= $tutorialPost->post_content;
-        //                 $content .= "</div>";
-        //             }
-        //             else {
-        //                 $content .= "<div class='tutorial-text-area' style='height: 100%'>";
-        //                     $content .= "<h2 class='theme-color tutorial-headline'>".$tutorialPost->post_title."</h2>";
-        //                     $content .= $tutorialPost->post_content;
-        //                 $content .= "</div>";
-        //             }
-        //             $content .= '<div style="clear:both;"></div>';
-        //         $content .= "</div>";
-        //     }
         $content .= '</div>';
-
-        //  JavaScript
-        // $content .= "<script> 
-        //                 jQuery(document).ready(function(){
-        //                     jQuery('#tutorial-help-item-page').slick({
-        //                         slidesToShow: 1,
-        //                         slidesToScroll: 1,
-        //                         dots: true,
-        //                         infinite: false
-        //                     });
-        //                     jQuery('a[data-slide]').click(function(e) {
-        //                     e.preventDefault();
-        //                     var slideno = jQuery(this).data('slide');
-        //                         jQuery('a[data-slide]').removeClass('theme-color-active');
-        //                         jQuery(this).addClass('theme-color-active');
-        //                     jQuery('#tutorial-help-item-page').slick('slickGoTo', slideno - 1);
-        //                     });
-        //                 });
-        //             </script>";
 
         return $content;
     }
