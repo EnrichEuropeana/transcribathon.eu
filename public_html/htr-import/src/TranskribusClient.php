@@ -45,7 +45,7 @@ class TranskribusClient
 
 		$this->transkribusUrlAccessToken = $transkribusConfig['urlAccessToken'];
 		$this->transkribusEndpoint = $transkribusConfig['endpoint'];
-		$this->transkribusHtrModelEndpoint = $transkribusConfig['htr_model_endpoint'];
+		$this->transkribusHtrModelEndpoint = $transkribusConfig['htrModelEndpoint'];
 
 		$access = $this->getTranskribusAccessToken();
 
@@ -166,16 +166,16 @@ class TranskribusClient
  	 *
  	 * get data from HTR Transcribathon data
  	 *
- 	 * @param  integer $itemId     ID of item in the Transcribathon DB
- 	 * @param  integer $processId  ID of the Transkribus process
- 	 * @return mixed               string JSON response on success otherwise false
+ 	 * @param  integer $itemId  ID og the HTR entry
+ 	 * @param  array  $what     nature parameters of endoint call
+ 	 * @return mixed            string JSON response on success otherwise false
  	 */
-	public function getDataFromTranscribathon($itemId = null, $processId = null)
+	public function getDataFromTranscribathon($id = null, $what = array())
 	{
 		$queryOptions = array(
 			'method' => 'GET',
-			'id'     => $itemId ?? $processId,
-			'what'   => $processId ? 'byprocessid' : null
+			'id'     => $id,
+			'what'   => $what
 		);
 
 		$result = $this->queryTranscribathon($queryOptions);
@@ -188,33 +188,28 @@ class TranskribusClient
  	 *
  	 * update item data to transcribathon db via TP API
  	 *
- 	 * full $data example:
+ 	 * $data example:
  	 *
  	 * array(
- 	 * 	"htr_id"     => $htrId,
- 	 * 	"process_id" => $processId,
- 	 * 	"status"     => $status,
- 	 * 	"data_type"  => $dataType,
- 	 * 	"data"       => $data
+ 	 * 	"htr_status" => $status,
+ 	 * 	"transcription_data" => $data
  	 * );
  	 *
- 	 * @param  integer $itemId ID of the item
+ 	 * @param  integer $id ID of the entry to be updated
  	 * @param  array   $data   $data array with data to be updated
  	 * @result mixed           response string on success otherwise false
  	 */
-	public function updateDataToTranscribathon($itemId, $data)
+	public function updateDataToTranscribathon($id, $data)
 	{
-		if (!$itemId || !$data) {
+		if (!$id || !$data) {
 			return false;
 		}
-
-		$data['item_id'] = $itemId;
 
 		$payload = json_encode($data);
 
 		$queryOptions = array(
 			'method' => 'PUT',
-			'id'     => $itemId,
+			'id'     => $id,
 			'body'   => $payload
 		);
 
@@ -231,16 +226,16 @@ class TranskribusClient
  	 * @param  integer $itemID     ID of the item
  	 * @param  integer $htrId      ID of the used HTR model
  	 * @param  integer $processId  ID of the Transkribus process
- 	 * @param  string  $status     Status of the process being done so far
+ 	 * @param  string  $htrStatus  Status of the HTR process being done so far
  	 * @result mixed               response string on success otherwise false
  	 */
-	protected function postToTranscribathon($itemId, $htrId, $processId, $status)
+	protected function postToTranscribathon($itemId, $htrId, $processId, $htrStatus)
 	{
 		$payload = array(
 			"item_id"    => $itemId,
 			"htr_id"     => $htrId,
 			"process_id" => $processId,
-			"status"     => $status
+			"htr_status" => $htrStatus
 		);
 
 		$payload = json_encode($payload);
@@ -269,7 +264,7 @@ class TranskribusClient
 			$queryOptions = array(
 				'method' => $queryOptions['method'] ?? 'GET',
 				'id'     => $queryOptions['id']     ?? null,
-				'what'   => $queryOptions['what']   ?? null,
+				'what'   => $queryOptions['what']   ?? array(),
 				'body'   => $queryOptions['body']   ?? null
 			);
 		} else {
@@ -293,8 +288,9 @@ class TranskribusClient
 			$options['http']['content'] = $body;
 		}
 
-		$whatPath = $what ? '/' . $what : '';
-		$idPath = $id ? '/' . $id : '';
+		$idSep = $what ? '=' : '/';
+		$whatPath = count($what) > 0 ? '?' . http_build_query($what): '';
+		$idPath = $id ? $idSep . $id : '';
 		$url = $this->transcribathonEndpoint . '/htrdata' . $whatPath . $idPath;
 
 		$result = $this->sendQuery($url, $options);
