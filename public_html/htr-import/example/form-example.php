@@ -249,7 +249,7 @@ if ($htrModel) {
 <head>
 	<meta charset="utf-8" />
 	<title>Transkribus Importer</title>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
 
 	<style>
 		button {vertical-align: bottom; position: relative; bottom: 4px;}
