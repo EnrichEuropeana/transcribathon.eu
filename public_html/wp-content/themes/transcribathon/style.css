@@ -806,16 +806,14 @@ body.responsive.layout-full #page-wrapper #primary-least-width {
   margin-right: auto;
 }
 body.responsive.layout-full #page-wrapper .primary-full-width {
-  max-width: 1600px;
-  margin: 0 auto;
   padding-left: 50px;
-  padding-right: 65px;
+  padding-right: 50px;
 }
-body.responsive.layout-full #page-wrapper #primary-full-width {
+/* body.responsive.layout-full #page-wrapper #primary-full-width {
   max-width: 1600px;
   margin-left: auto;
   margin-right: auto;
-}
+} */
 body.responsive.layout-full #page-wrapper .full-container {
   max-width: none;
 }
@@ -827,9 +825,7 @@ body.responsive.layout-full #page-wrapper .full-container {
 .primary-full-width {
   padding: 10px 0 0 45px;
 }
-#primary-full-width {
-  padding: 35px;
-}
+
 .primary-full-width-header {
   padding-top: 35px;
 }

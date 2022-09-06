@@ -32,14 +32,22 @@ Description: Stylesheet for Item Page
 #inner-slider {
     overflow-x: hidden;
     overflow-y: hidden;
-    height: 230px;
+    height: 90%;
+    width: 100%;
     display: flex;
     justify-content: center;
+    position: relative;
+    bottom: 10%;
+
+}
+#slider-container {
+    height: 100%;
+    background-color: #f8f8f8;
+    margin-bottom: 10px;
 }
 .slide-sticker {
-    width: 10%;
-    height: 150px;
-    margin-bottom: 30px;
+    width: 11%;
+    height: 90%;
     display: inline-block;
 }
 .prev-slide {
@@ -49,9 +57,10 @@ Description: Stylesheet for Item Page
     height: 50px;
     padding: 5px;
     float: left;
-    top: 30%;
+    top: 40%;
     color: #fff;
     background: #0a72cc;
+    z-index: 999;
 }
 .next-slide {
     font-size: 15px;
@@ -60,9 +69,10 @@ Description: Stylesheet for Item Page
     height: 50px;
     padding: 5px;
     float: right;
-    top: 30%;
+    top: 40%;
     color: #fff;
     background: #0a72cc;
+    z-index: 999;
 }
 .next-set {
     position: relative;
@@ -89,9 +99,8 @@ Description: Stylesheet for Item Page
     font-weight: bold;
 }
 #img-slider {
-    height: 220px;
-    width: 95%;
-    margin: 50px auto;
+    height: 275px;
+    margin-bottom: 30px;
 }
 .next-slide:focus, .prev-slide:focus {
     background: #0a72cc;
@@ -268,9 +277,9 @@ ul.item-navigation-content-container div {
 /* --- Item Title --- */
 .title-n-btn {
     display: flex;
-    width: 80%;
-    margin: 0 auto;
-    justify-content: space-between;
+    width: 100%;
+    padding-left: 50px;
+    justify-content: flex-start;
 }
 #item-header {
     position: relative;
@@ -1097,7 +1106,7 @@ input#person-deathPlace-input {
     margin-left: 10px;
 }
 .panel-right-tab-menu #mce-wrapper-transcription {
-    height: 80%;
+    height: 75%;
 }
 .panel-right-tab-menu #item-page-transcription-text {
     max-height: unset;
@@ -1113,6 +1122,49 @@ input#person-deathPlace-input {
 .panel-right #transcription-view {
     display: block;
     line-height: 1.4em;
+}
+.panel-right #item-data-header {
+    height: 13%;
+    padding-bottom: 0;
+}
+.panel-right #item-data-content {
+    height: 85%;
+}
+.panel-right #transcription-section {
+    height: fit-content;
+}
+.panel-right #transcription-status-indicator {
+    display: none;
+}
+.panel-right .language-item-select {
+    position: relative;
+    top: -2px;
+    height: 100%;
+}
+.panel-right .transcription-mini-metadata {
+    height: 13%;
+}
+.panel-right .selected-option {
+    font-size: 10px;
+    height: 25px;
+    padding: 0 10px 0 10px;
+    width: unset;
+}
+.panel-right #transcription-language-custom-selector{
+    font-size: 10px;
+    height: 25px;
+    padding: 0 15px 0 0;
+    width: unset;
+    margin: 0;
+}
+.panel-right #transcription-language-selector {
+    height: 100%;
+}
+.panel-right #transcription-selected-languages, .panel-right #transcription-selected-languages ul,
+.panel-right #transcription-selected-languages li, .panel-right #transcription-update-button {
+    font-size: 10px;
+    height: 25px;
+    padding: 0 5px;
 }
 /* Horizontal Split */
 #item-data-section.panel-bottom .tablinks .tab-i {
@@ -1226,6 +1278,9 @@ input#person-deathPlace-input {
     border: 5px solid #0a72cc;
     border-radius: 5px;
     padding: 0;
+}
+.panel-bottom #tr-history {
+    display: none;
 }
 /* Popout */
 #item-data-section.data-popout {
@@ -1373,7 +1428,7 @@ input#person-deathPlace-input {
     position: relative;
     /* left: -25px; */
     margin-top: 2%;
-    margin-bottom: 2%;
+    margin-bottom: 25px;
 }
 /* Enrichments Table */
 .not-started {
@@ -1384,7 +1439,7 @@ input#person-deathPlace-input {
     border-radius: 10px;
 }
 .enrich-headers {
-    margin-bottom: 5px!important;
+    margin-bottom: 15px!important;
     padding-left: 10px;
     color: #0a72cc!important;
     font-family: 'Dosis', sans-serif;
@@ -1802,4 +1857,55 @@ input#person-deathPlace-input {
         width: 150px;
         height: 60%;
     }
+}
+/* Keyword,People, Category restyling */
+.keyword-container, .language-container {
+    display: flex;
+    justify-content: flex-start;
+}
+.keyword-single, .language-single {
+    display: inline-block;
+    color: #fff;
+    background-color: #0a72cc;
+    padding: 2px 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+/* Location */
+.location-single {
+    padding: 2px 5px;
+    margin-bottom: 5px;
+    font-weight: 400;
+    border-bottom: 1px solid gray;
+}
+/* Back to story button at top of the page */
+.back-to-story {
+    float: left;
+    font-size: 14px;
+    margin-left: 10px;
+    position: relative;
+    bottom: 30px;
+}
+.back-to-story a, .back-to-story i {
+    color: #000!important;
+}
+.date-top, .date-bottom {
+    display: block;
+}
+.doc-date-container, .person-container, .keyword-container {
+    padding-left: 20px;
+}
+.date-top {
+    font-weight: 400;
+}
+.date-bottom {
+    font-weight: 300;
+}
+.person-info {
+    font-weight: 300;
+}
+.person-description {
+    position: relative;
+    bottom: 5px;
+    font-size: 12px;
 }

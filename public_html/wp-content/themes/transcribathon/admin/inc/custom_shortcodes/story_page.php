@@ -43,6 +43,7 @@ function _TCT_get_document_data( $atts ) {
     // $numbSlides = floor($numbPhotos / 9);
     // $restPhotos = $numbPhotos - ($numbSlides * 9);
     $content .= "<section id='img-slider'>";
+    $content .= "<div id='slider-container'>";
         $content .= "<button class='prev-slide' type='button'><i class=\"fas fa-chevron-left\"></i></button>";
         $content .= "<button class='next-slide' type='button'><i class=\"fas fa-chevron-right\"></i></button>";
 
@@ -57,13 +58,13 @@ function _TCT_get_document_data( $atts ) {
                 }
 
                 if(substr($sliderImg['service']['@id'],0,4) == 'rhus'){
-                   $sliderImgLink ='http://'. str_replace(' ','_',$sliderImg['service']["@id"]) . '/0,0,'.$dimensions.','.$dimensions.'/150,200/0/default.jpg';
+                   $sliderImgLink ='http://'. str_replace(' ','_',$sliderImg['service']["@id"]) . '/0,0,'.$dimensions.','.$dimensions.'/200,200/0/default.jpg';
                 } else {
-                    $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . '/0,0,'.$dimensions.','.$dimensions.'/150,200/0/default.jpg';
+                    $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . '/0,0,'.$dimensions.','.$dimensions.'/200,200/0/default.jpg';
                 }
                 $content .= "<div class='slide-sticker' data-value='". ($x+1) ."'>";
                     $content .= "<div class='slide-img-wrap'>";
-                        $content .= "<a href='".home_url()."/documents/story/item/?story=".$storyData['StoryId']."&item=".$storyData['Items'][$x]['ItemId']."'><img src=".$sliderImgLink." class='slider-image' alt='slider-image' width='150' height='200' loading='lazy'></a>";
+                        $content .= "<a href='".home_url()."/documents/story/item/?story=".$storyData['StoryId']."&item=".$storyData['Items'][$x]['ItemId']."'><img src=".$sliderImgLink." class='slider-image' alt='slider-image' width='200' height='200' loading='lazy'></a>";
                         $content .= "<div class='image-completion-status' style='bottom:20px;border-color:".$storyData['Items'][$x]['CompletionStatusColorCode']."'></div>";
                     $content .= "</div>";
                     $content .= "<div class='slide-number-wrap'>".($x+1)."</div>";
@@ -71,6 +72,7 @@ function _TCT_get_document_data( $atts ) {
             }
 
         $content .= "</div>";
+    $content .= "</div>";
 
         $content .= "<div id='controls-div'>";
             
@@ -92,8 +94,6 @@ function _TCT_get_document_data( $atts ) {
     //////// Carousel Test
 
 
-
-
         $content .= '<div class="story-navigation-area">';
             $content .= '<ul class="story-navigation-content-container left" style="">';
                 $content .= '<li><a href="'.home_url().'/documents/" style="text-decoration: none;">Stories</a></li>';
@@ -105,13 +105,13 @@ function _TCT_get_document_data( $atts ) {
         $content .= '</div>';
 
         /* New- Start Transcription button */
-        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$descrLink."'><b>🖉  Start Transcription</b></a>";
+        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$descrLink."' style='font-family:\"Dosis\";'><b>🖉  Start Transcription</b></a>";
 
         $content .= "<div id='total-storypg' class='storypg-container'>";
             $content .= "<div class='main-storypg'>";
 
                 // added image to description
-            $content .= "<section style='min-height:600px;'>";
+            $content .= "<section>";
                 $content .= "<div class='storypg-info'>";
 
                     $content .= "<div class='story-description-left'>";
@@ -160,7 +160,7 @@ function _TCT_get_document_data( $atts ) {
 
                         } elseif (strlen($storyText) > 420) {
                             $content .= "<div class='desc-toggle' role='button'>";
-                            $content .= "<div id='storyDescription' class='togglePara' style='max-height: 200px;'>";
+                            $content .= "<div id='storyDescription' class='togglePara' style='max-height: 202px;'>";
                             $content .= $storyText;
                             //$content .= "<span class='desc-span' style='display:none;'>".substr($storyText, 399)."</span>";
 
@@ -235,7 +235,6 @@ function _TCT_get_document_data( $atts ) {
 
                     $itemCount += 1;
                 }
-                echo $statusCount['Not Started'];
                 $completedStatus = ($statusCount['Completed'] / $itemCount) * 100;
                 $reviewedStatus = ($statusCount['Review'] / $itemCount) * 100;
                 $editedStatus = ($statusCount['Edit'] / $itemCount) * 100;
@@ -243,15 +242,15 @@ function _TCT_get_document_data( $atts ) {
 
                 
                 // new "chart"
-            $content .= "<section>";
+            $content .= "<section class='chart-section'>";
 
-                $content .= "<div style='margin-bottom:20px;'>";
-                    $content .= "<span style='color:#0a72cc;' class='status-header'><b>Story Status</b></span>";
-                    $content .= "<span class='dot' style='background:#61e02f;' title='Completed'></span>";
-                    $content .= "<span class='dot' style='background:#ffc720;' title='Reviewed'></span>";
-                    $content .= "<span class='dot' style='background:#fff700;' title='Edited'></span>";
-                    $content .= "<span class='dot' style='background:#eeeeee;' title='Not Started'></span>";
-                $content .= "</div>";
+                // $content .= "<div style='margin-bottom:20px;'>";
+                //     $content .= "<span style='color:#0a72cc;' class='status-header'><b>Story Status</b></span>";
+                //     $content .= "<span class='dot' style='background:#61e02f;' title='Completed'></span>";
+                //     $content .= "<span class='dot' style='background:#ffc720;' title='Reviewed'></span>";
+                //     $content .= "<span class='dot' style='background:#fff700;' title='Edited'></span>";
+                //     $content .= "<span class='dot' style='background:#eeeeee;' title='Not Started'></span>";
+                // $content .= "</div>";
 
                 $content .= "<div class='bar-chart'>";
                     $content .= "<div class='story-status' style='width:".$completedStatus."%;background-color:#61e02f;z-index:4' title='Completed: ".round($completedStatus)."%'>&nbsp</div>";
@@ -345,6 +344,34 @@ function _TCT_get_document_data( $atts ) {
 
                                 });
                                     </script>";
+                // Get the Story Contributor and People in Story
+                $storyContributors = [];
+                $storyPersons = [];
+                $personsInStory = explode(' || ', $storyData['edmAgent']);
+                $contributorCode = explode(' || ', $storyData['dcContributor']);
+                foreach($personsInStory as $person) {
+                    $temp = explode(' | ', $person);
+                    if($temp[sizeof($temp)-1] == $contributorCode[0]){
+                        array_pop($temp);
+                        foreach($temp as $tp) {
+                            array_push($storyContributors, $tp);
+                        }
+                    } else {
+                        array_pop($temp);
+                        foreach($temp as $tp) {
+                            array_push($storyPersons, $tp);
+                        }
+                    }
+                }
+                //var_dump($storyData['dcContributor']);
+                //   var_dump($storyData['edmAgent']);
+                //   var_dump($personsInStory);
+                //   var_dump($storyData['dcContributor']);
+                //  var_dump($storyData['dcCreator']);
+                // var_dump($storyContributors);
+                //  var_dump($storyData);
+                // var_dump($storyContributors);
+                // var_dump($storyPersons);
 
                 // metadata
                 $content .= "<section class='meta-section'>";
@@ -353,23 +380,31 @@ function _TCT_get_document_data( $atts ) {
                     $content .= "<div class='metadata-container js-container' style='height:170px;'>";
 
                         // Contributor
-                        if($storyData['dcContributor']) {
+                        if(sizeof($storyContributors) > 0) {
                             $content .= "<div class='meta-sticker'>";
                                 $content .= "<p class='mb-1'><b>Contributor</b></p>";
-                                $contributors = str_replace(' || ', '</br>', $storyData['dcContributor']);
-                                $content .= "<p class='meta-p'>". $contributors ."</p>";
-                                unset($contributors);
+                                foreach($storyContributors as $contributor) {
+                                    $content .= "<p class='meta-p'>". $contributor ."</p>";
+                                }
                             $content .= "</div>";
                         }
 
+                        // People
+                        if($storyPersons) { 
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>People</b></p>";
+                                foreach($storyPersons as $person) {
+                                    $content .= "<p class='meta-p' style='margin:0!important;'>". $person ."</p>";
+                                }
+                            $content .= "</div>";
+                        }
                         // Creator
-                        if($storyData['dcCreator']) { 
+                        if($storyData['dcCreator']){
                             $content .= "<div class='meta-sticker'>";
                                 $content .= "<p class='mb-1'><b>Creator</b></p>";
-                                $creators = str_replace(' || ', '</br>', $storyData['dcCreator']);
-                                $content .= "<p class='meta-p'>". $creators ."</p>";
+                                $creator = str_replace(' || ', '</br>', $storyData['dcCreator']);
+                                $content .= "<p class='meta-p'>". $creator . "</p>";
                             $content .= "</div>";
-                            unset($creators);
                         }
 
                         // Institution
@@ -608,13 +643,13 @@ function _TCT_get_document_data( $atts ) {
                             $content .= "</div>";
                         }
 
-                        // Agent
-                        if($storyData['edmAgent']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Agent</b></p>";
-                                $content .= "<p class='meta-p'>".$storyData['edmAgent']."</p>";
-                            $content .= "</div>";
-                        }
+                        // // Agent
+                        // if($storyData['edmAgent']) {
+                        //     $content .= "<div class='meta-sticker'>";
+                        //         $content .= "<p class='mb-1'><b>Agent</b></p>";
+                        //         $content .= "<p class='meta-p'>".$storyData['edmAgent']."</p>";
+                        //     $content .= "</div>";
+                        // }
 
                         //  dctermsMedium
                         if($storyData['dctermsMedium']) {

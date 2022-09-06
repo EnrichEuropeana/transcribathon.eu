@@ -47,7 +47,6 @@ function _TCT_item_page( $atts ) {
         // create new Transkribus client and inject configuration
         $transkribusClient = new TranskribusClient($config);
         // get the HTR-transcribed data from database if there is one
-        var_dump($_GET['item']);
         $htrDataJson = $transkribusClient->getDataFromTranscribathon($_GET['item']);
         // extract the data itself
         $htrDataArray = json_decode($htrDataJson, true);
@@ -1357,6 +1356,7 @@ function _TCT_item_page( $atts ) {
         $numbPhotos = count($itemImages);
 
         $content .= "<section id='img-slider'>";
+        $content .= "<div id='slider-container'>";
             $content .= "<button class='prev-slide' type='button'><i class=\"fas fa-chevron-left\"></i></button>";
             $content .= "<button class='next-slide' type='button'><i class=\"fas fa-chevron-right\"></i></button>";
 
@@ -1374,18 +1374,19 @@ function _TCT_item_page( $atts ) {
                         $dimensions = 'full';
                     }
                     if(substr($sliderImg['service']['@id'],0,4) == 'rhus'){
-                       $sliderImgLink ='http://'. str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/150,180/0/default.jpg';
+                       $sliderImgLink ='http://'. str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
                     } else {
-                        $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/150,180/0/default.jpg';
+                        $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
                     }
                     $content .= "<div class='slide-sticker' data-value='". ($x+1) ."'>";
                         $content .= "<div class='slide-img-wrap'>";
-                            $content .= "<a href='".home_url()."/documents/story/item/?story=".$itemData['StoryId']."&item=".$itemImages[$x]['ItemId']."'><img src=".$sliderImgLink." class='slider-image' alt='slider-image-".($x+1)."' width='150' height='200' loading='lazy'></a>";
+                            $content .= "<a href='".home_url()."/documents/story/item/?story=".$itemData['StoryId']."&item=".$itemImages[$x]['ItemId']."'><img src=".$sliderImgLink." class='slider-image' alt='slider-image-".($x+1)."' width='200' height='200' loading='lazy'></a>";
                             $content .= "<div class='image-completion-status' style='bottom:20px;border-color:".$itemImages[$x]['CompletionStatusColorCode']."'></div>";
                         $content .= "</div>";
                         $content .= "<div class='slide-number-wrap'>".($x+1)."</div>";
                     $content .= "</div>";
                 }
+            $content .= "</div>";
             $content .= "</div>";
 
             $content .= "<div id='controls-div'>";
@@ -1400,6 +1401,8 @@ function _TCT_item_page( $atts ) {
                 $content .= "<button class='next-set' type='button'><i class=\"fas fa-chevron-double-right\"></i></button>";
                 //// To be discussed if we keep dots or numbers /////
             $content .= "</div>";
+
+            $content .= "<div class='back-to-story'><a href='".home_url()."/documents/story?story=".$itemData['StoryId']."'><i class=\"fas fa-arrow-left\"></i> Back to the Story</a></div>";
 
         $content .= "</section>";
 /* -------------------------------------------- End of Old Image slider -----------------------  */
@@ -1441,37 +1444,37 @@ function _TCT_item_page( $atts ) {
             $imageViewer .= '</div>';
         $content .= "<div id='full-view-container'>";
 
-            $content .= '<div class="item-navigation-area">';
-                $content .= '<ul class="item-navigation-content-container left" style="">';
-                    $content .= '<li><a href="'.home_url().'/documents" style="text-decoration:none;">Stories</a></li>';
-                    $content .= '<li><i class="fal fa-angle-right"></i></li>';
-                    $content .= '<li><span style="text-decoration:none;">';
-                        $content .= '<a href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
-                            $content .= $itemData['Title'];
-                        $content .= '</a>';
-                    $content .= '</span></li>';
-                    /*$content .= '<li><i class="fal fa-angle-right"></i></li>';
-                    $content .= '<li><span>item number</span></li>';*/
-                $content .= '</ul>';
-                $content .= '<ul class="item-navigation-content-container right" style="">';
-                    $content .= '<div class="item-navigation-prev">';
-                        if ($prevItem != null) {
-                            $content .= '<li><a title="first" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$firstItem.'"><i class="fal fa-angle-double-left"></i></a></li>';
-                            $content .=  '<li class="rgt"><a title="previous" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$prevItem.'"><i class="fal fa-angle-left"></i></a></li>';
-                        }
-                    $content .= '</div>';
-                    $content .=  '<li class="rgt">';
-                        $content .= '<a title="Story:'.$itemData['StorydcTitle'].'" href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
-                        $content .= '<i class="fal fa-book"></i></a>';
-                    $content .= '</li>';
-                    $content .= '<div class="item-navigation-next">';
-                        if ($nextItem != null) {
-                            $content .= '<li class="rgt"><a title="next" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$nextItem.'"><i class="fal fa-angle-right"></i></a></li>';
-                            $content .= '<li class="rgt"><a title="last" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$lastItem.'"><i class="fal fa-angle-double-right"></i></a></li>';
-                        }
-                    $content .= '</div>';
-                $content .= '</ul>';
-            $content .= '</div>';
+            //$content .= '<div class="item-navigation-area">';
+                // $content .= '<ul class="item-navigation-content-container left" style="">';
+                //     $content .= '<li><a href="'.home_url().'/documents" style="text-decoration:none;">Stories</a></li>';
+                //     $content .= '<li><i class="fal fa-angle-right"></i></li>';
+                //     $content .= '<li><span style="text-decoration:none;">';
+                //         $content .= '<a href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
+                //             $content .= $itemData['Title'];
+                //         $content .= '</a>';
+                //     $content .= '</span></li>';
+                //     /*$content .= '<li><i class="fal fa-angle-right"></i></li>';
+                //     $content .= '<li><span>item number</span></li>';*/
+                // $content .= '</ul>';
+                // $content .= '<ul class="item-navigation-content-container right" style="">';
+                //     $content .= '<div class="item-navigation-prev">';
+                //         if ($prevItem != null) {
+                //             $content .= '<li><a title="first" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$firstItem.'"><i class="fal fa-angle-double-left"></i></a></li>';
+                //             $content .=  '<li class="rgt"><a title="previous" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$prevItem.'"><i class="fal fa-angle-left"></i></a></li>';
+                //         }
+                //     $content .= '</div>';
+                //     $content .=  '<li class="rgt">';
+                //         $content .= '<a title="Story:'.$itemData['StorydcTitle'].'" href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
+                //         $content .= '<i class="fal fa-book"></i></a>';
+                //     $content .= '</li>';
+                //     $content .= '<div class="item-navigation-next">';
+                //         if ($nextItem != null) {
+                //             $content .= '<li class="rgt"><a title="next" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$nextItem.'"><i class="fal fa-angle-right"></i></a></li>';
+                //             $content .= '<li class="rgt"><a title="last" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$lastItem.'"><i class="fal fa-angle-double-right"></i></a></li>';
+                //         }
+                //     $content .= '</div>';
+                // $content .= '</ul>';
+            //$content .= '</div>';
 
             // Start of Page building
             if($htrData){
@@ -1670,10 +1673,10 @@ function _TCT_item_page( $atts ) {
                         if($itemData['Properties']) {
                             // key words
                             $content .= "<h6 class='enrich-headers'>Keywords</h6>";
-                            $content .= "<div class='accordion js-check'>";
+                            $content .= "<div class='keyword-container js-check'>";
                             foreach($itemData['Properties'] as $properti){
                                 if($properti['PropertyType'] == "Keyword"){
-                                    $content .= "<div class='card-header'>".$properti['PropertyValue']."</div>";
+                                    $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
                                 }
                             }
                             $content .= "</div>";
@@ -1941,72 +1944,95 @@ function _TCT_item_page( $atts ) {
                 // document date
                 if($dateStart || $dateEnd) {
                     $content .= "<h6 class='enrich-headers'>Document Date</h6>";
-                    $content .= "<div class='accordion'>";
-                        $content .= "<div class='card'>";
-                            $content .= "<div class='card-header'>";
-                                $content .= "<span style='float:left;'>Start Date:</span>";
-                                $content .= "<span style='float:right;margin-right:10%;'>End Date:</span>";
-                            $content .= "</div>";
+                    $content .= "<div class='doc-date-container'>";
+                        $content .= "<div class='date-top'>";
+                                $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                                $content .= "<div style='float:right;margin-right:10%;display:inline-block;'>End Date:</div>";
                         $content .= "</div>";
-                        $content .= "<div class='card'>";
-                            $content .= "<div class='card-header'>";
-                                $content .= "<span style='float:left;'>".$dateStart."</span>";
-                                $content .= "<span style='float:right;margin-right:10%;'>".$dateEnd."</span>";
-                            $content .= "</div>";
+                        $content .= "<div style='clear:both;'></div>";
+                        $content .= "<div class='date-bottom'>";
+                                $content .= "<div style='float:left;display:inline-block'>".$dateStart."</div>";
+                                $content .= "<div style='float:right;margin-right:10%;display:inline-block;'>".$dateEnd."</div>";
                         $content .= "</div>";
                     $content .= "</div>";
+                    $content .= "<div style='clear:both;'></div>";
                 }
                 // people
                 if($itemData['Persons']) {
                     $content .= "<h6 class='enrich-headers'>People</h6>";
-                    $content .= "<div class='accordion' id='personAccord'>";
+                    $content .= "<div class='person-container' id='personAccord'>";
                     foreach($itemData['Persons'] as $persona) {
                         $personBDate = strtotime($persona['BirthDate']);
                         $pBirthDate = date("d/m/Y", $personBDate);
                         $personDDate = strtotime($persona['DeathDate']);
                         $pDeathDate = date("d/m/Y", $personDDate);
-                        $content .= "<div class='card'>";
-                            $content .= "<div style='cursor:pointer;' role='button' data-toggle='collapse' data-target='#collapse-".$persona['PersonId']."' aria-expanded='true' aria-controls='collapse-".$persona['PersonId']."' class='card-header' id='header-".$persona['PersonId']."'>";
-                                $content .= "<span>";
-                                $content .=  $persona['FirstName']." ".$persona['LastName'];
-                                if ($persona['BirthDate'] != "NULL" && $persona['DeathDate'] != "NULL") {
-                                    $content .= " (".$pBirthDate. " - " .$pDeathDate." )";
-                                } elseif ($persona['BirthDate'] != 'NULL') {
-                                    $content .= " (Birth: ".$pBirthDate." )";
-                                } elseif ($persona['DeathDate'] != 'NULL') {
-                                    $content .= " (Death: ".$pDeathDate." )";
+
+                        $content .= "<div class='single-person'>";
+                            $content .= "<div class='person-info'>";
+                                $content .= "<span style='font-weight:400;'>" . $persona['FirstName'] . ' ' . $persona['LastName'] . "</span>";
+                                if($personBDate != Null && $personDDate != Null) {
+                                    $content .= " (" . $pBirthDate;
+                                    if($persona['BirthPlace'] != Null) {
+                                        $content .= ', ' . $persona['BirthPlace'];
+                                    } 
+                                    $content .= " - " . $pDeathDate;
+                                    if($persona['DeathPlace'] != Null) {
+                                        $content .= ', ' . $persona['DeathPlace'];
+                                    }
+                                    $content .= ")";
+                                } elseif ($personBDate != Null) {
+                                    $content .= " (Birth: " . $pBirthDate . ")";
+                                } elseif ($personDDate != Null) {
+                                    $content .= " (Death: " . $pDeathDate . ")";
                                 }
-                                $content .= "</span>";
-                                $content .= "<span><i style='color:#0a72cc;float:right;' class='fas fa-angle-down'></i></span>";
                             $content .= "</div>";
-                            $content .= "<div class='collapse' id='collapse-".$persona['PersonId']."' aria-labelledby='header-".$persona['PersonId']."' data-parent='#personAccord'>";
-                                $content .= "<div class='card-body'>";
-                                    $content .= "<table border=0>";
-                                        $content .= "<tr>";
-                                            $content .= "<th></th>";
-                                            $content .= "<th>Birth</th>";
-                                            $content .= "<th>Death</th>";
-                                        $content .= "</tr>";
-                                        $content .= "<tr>";
-                                            $content .= "<th>Date</th>";
-                                            $content .= "<td>".$pBirthDate."</td>";
-                                            $content .= "<td>".$pDeathDate."</td>";
-                                        $content .= "</tr>";
-                                        $content .= "<tr>";
-                                            $content .= "<th>Place</th>";
-                                            $content .= "<td>".$persona['BirthPlace']."</td>";
-                                            $content .= "<td>".$persona['DeathPlace']."</td>";
-                                        $content .= "</tr>";
-                                        if($persona['Description'] && $persona['Description'] != 'NULL') {
-                                            $content .= "<tr>";
-                                                $content .= "<th>Description</th>";
-                                                $content .= "<td colspan='2'>" . $persona['Description'] . "</td>";
-                                            $content .= "</tr>";
-                                        }
-                                    $content .= "</table>";
-                                $content .= "</div>";
-                            $content .= "</div>";
+                            if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
+                                $content .= "<div class='person-description'><span style='font-weight:400;'>Description: </span>" . $persona['Description'] . "</span></div>";
+                            }
+                            
                         $content .= "</div>";
+                    //     $content .= "<div class='card'>";
+                    //         $content .= "<div style='cursor:pointer;' role='button' data-toggle='collapse' data-target='#collapse-".$persona['PersonId']."' aria-expanded='true' aria-controls='collapse-".$persona['PersonId']."' class='card-header' id='header-".$persona['PersonId']."'>";
+                    //             $content .= "<span>";
+                    //             $content .=  $persona['FirstName']." ".$persona['LastName'];
+                    //             if ($persona['BirthDate'] != "NULL" && $persona['DeathDate'] != "NULL") {
+                    //                 $content .= " (".$pBirthDate. " - " .$pDeathDate." )";
+                    //             } elseif ($persona['BirthDate'] != 'NULL') {
+                    //                 $content .= " (Birth: ".$pBirthDate." )";
+                    //             } elseif ($persona['DeathDate'] != 'NULL') {
+                    //                 $content .= " (Death: ".$pDeathDate." )";
+                    //             }
+                    //             $content .= "</span>";
+                    //             $content .= "<span><i style='color:#0a72cc;float:right;' class='fas fa-angle-down'></i></span>";
+                    //         $content .= "</div>";
+                    //         $content .= "<div class='collapse' id='collapse-".$persona['PersonId']."' aria-labelledby='header-".$persona['PersonId']."' data-parent='#personAccord'>";
+                    //             $content .= "<div class='card-body'>";
+                    //                 $content .= "<table border=0>";
+                    //                     $content .= "<tr>";
+                    //                         $content .= "<th></th>";
+                    //                         $content .= "<th>Birth</th>";
+                    //                         $content .= "<th>Death</th>";
+                    //                     $content .= "</tr>";
+                    //                     $content .= "<tr>";
+                    //                         $content .= "<th>Date</th>";
+                    //                         $content .= "<td>".$pBirthDate."</td>";
+                    //                         $content .= "<td>".$pDeathDate."</td>";
+                    //                     $content .= "</tr>";
+                    //                     $content .= "<tr>";
+                    //                         $content .= "<th>Place</th>";
+                    //                         $content .= "<td>".$persona['BirthPlace']."</td>";
+                    //                         $content .= "<td>".$persona['DeathPlace']."</td>";
+                    //                     $content .= "</tr>";
+                    //                     if($persona['Description'] && $persona['Description'] != 'NULL') {
+                    //                         $content .= "<tr>";
+                    //                             $content .= "<th>Description</th>";
+                    //                             $content .= "<td colspan='2'>" . $persona['Description'] . "</td>";
+                    //                         $content .= "</tr>";
+                    //                     }
+                    //                 $content .= "</table>";
+                    //             $content .= "</div>";
+                    //         $content .= "</div>";
+                    //     $content .= "</div>";
 
                     }
                     $content .= "</div>";
@@ -2015,31 +2041,30 @@ function _TCT_item_page( $atts ) {
                 // js-check class is used to check if the property field is empty, so we can hide the header if it is empty
                 if($itemData['Properties']) {
                     $content .= "<h6 class='enrich-headers'>Keywords</h6>";
-                    $content .= "<div class='accordion js-check'>";
+                    $content .= "<div class='keyword-container js-check'>";
                     foreach($itemData['Properties'] as $properti){
                         if($properti['PropertyType'] == "Keyword"){
-                            $content .= "<div class='card-header'>".$properti['PropertyValue']."</div>";
+                            $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
                         }
                     }
                     $content .= "</div>";
                     // Category
                     $content .= "<h6 class='enrich-headers'>Category</h6>";
-                    $content .= "<div class='accordion js-check'>";
+                    $content .= "<div class='keyword-container js-check'>";
                     foreach($itemData['Properties'] as $property) {
                         if($property['PropertyType'] == "Category") {
-                            $content .= "<div class='card-header'>" . $property['PropertyValue'] . "</div>";
+                            $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
                         }
                     }
                     $content .= "</div>";
                     // other sources
                     $content .= "<h6 class='enrich-headers'>Other Sources</h6>";
-                    $content .= "<div class='accordion js-check'>";
+                    $content .= "<div class='keyword-container js-check'>";
                     foreach($itemData['Properties'] as $property){
                         if($property['PropertyType'] == 'Link' ) {
-                            $content .= "<div class='card'>";
-                                $content .= "<div class='card-header'><a href='".$property['PropertyValue']."'>".$property['PropertyValue']."</a></div>";
-                                $content .= "<div class='card-header'>Description: ".$property['PropertyDescription']."</div>";
-                            $content .= "</div>";
+                            
+                            $content .= "<div class='keyword-single' title=".$property['PropertyDescription']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a></div>";
+                            
                         }
                     }
                     $content .= "</div>";
@@ -2052,7 +2077,7 @@ function _TCT_item_page( $atts ) {
                     $content .= "</div>";
                 $content .= "</div>";
 
-                $content .= "<div class='dl-enrichments' style='height: 300px;'>";
+                $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;'>";
                     //Contributor
                     if($itemData['StorydcContributor']) {
                         $content .= "<div class='meta-h'>";
@@ -2262,9 +2287,9 @@ function _TCT_item_page( $atts ) {
 
                         if($trLanguage){
                             $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
-                            $content .= "<div class='accordion'>";
+                            $content .= "<div class='language-container'>";
                             foreach($currentTranscription['Languages'] as $trLang) {
-                                $content .= "<div class='card-header' style='position:relative;left:-5px;'>" . $trLang['Name'] . "</div>";
+                                $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
                             }
                                 // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
                             $content .= "</div>";
@@ -2272,13 +2297,13 @@ function _TCT_item_page( $atts ) {
                         $content .= "</div>";
                     } else {
                     $content .= "<div class='trans-toggle'>";
-                        $content .= "<div id='itemTranscription' class='togglePara' style='padding-left:20px;padding-right:20px;max-height:200px;'>".$formattedTranscription."</div>";
+                        $content .= "<div id='itemTranscription' class='togglePara' style='padding-left:20px;padding-right:20px;max-height:500px;'>".$formattedTranscription."</div>";
                         $content .= "<div id='itemBtn' class='descMore'>Show More</div>";
                         if($trLanguage){
                             $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
-                            $content .= "<div class='accordion'>";
+                            $content .= "<div class='language-container'>";
                             foreach($currentTranscription['Languages'] as $trLang) {
-                                $content .= "<div class='card-header' style='position:relative;left:-5px;'>" . $trLang['Name'] . "</div>";
+                                $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
                             }
                                 // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
                             $content .= "</div>";
@@ -2311,9 +2336,9 @@ function _TCT_item_page( $atts ) {
                     }
                     if(count($dcLang) > 0){
                         $content .= "<h6 class='enrich-headers'>Language(s) of Description</h6>";
-                        $content .= "<div class='accordion'>";
+                        $content .= "<div class='language-container'>";
                             foreach($dcLang as $lang){
-                                $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$lang."</div>";
+                                $content .= "<div class='language-single'>".$lang."</div>";
                             }
                         $content .= "</div>";
                     }
@@ -2338,9 +2363,9 @@ function _TCT_item_page( $atts ) {
                        $content .= $mapTab;
                     $content .= "</div>";
 
-                    $content .= "<div class='accordion' style='position:relative;left:-2px;margin-top:1%;'>";
+                    $content .= "<div class='' style='position:relative;left:-2px;margin-top:1%;'>";
                     foreach($itemData['Places'] as $platz){
-                        $content .= "<div class='card-header'>".$platz['Name']." (".$platz['Latitude'].", ".$platz['Longitude'].")</div>";
+                        $content .= "<div class='location-single'>".$platz['Name']." (".$platz['Latitude'].", ".$platz['Longitude'].")</div>";
                     }
                     $content .= "</div>";
 
@@ -2358,6 +2383,60 @@ function _TCT_item_page( $atts ) {
             // Image section
             $content .= "<div id='item-image-section' class='panel-left'>";
                 $content .= '<div id="openseadragonFS">';
+                    // Save All at once button
+                    $content .= "<div id='save-all-btn'>Save All</div>";
+                    $content .= "<div id='save-all-spinner'>Saving...</div>";
+                    // Temporary Js
+                //    $content .= "<script>
+                //         document.querySelector('#save-all-btn').addEventListener('click', () => {
+                //             callAll();
+                //         }, true);
+
+                //         function callAll() {
+                //             document.querySelector('#save-all-spinner').style.display = 'block';
+                //             console.log('calling');
+                //             updateItemTranscription(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).");
+                //             setTimeout(()=>{saveItemLocation(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},400);
+                //             setTimeout(()=>{saveItemDate(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},600);
+                //             setTimeout(()=>{savePerson(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},800);
+                //             setTimeout(()=>{updateItemDescription(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")}, 1300);
+                //             setTimeout(()=>{saveKeyword(".htmlspecialchars($itemData['ItemId'], ENT_QUOTES, 'UTF-8').", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},1700);
+                //             setTimeout(()=>{saveLink(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},1900);
+                //             setTimeout(()=>{document.querySelector('#save-all-spinner').style.display = 'none';},2000);
+                //        }
+
+                //    </script>";
+
+
+                    // Temporary css
+                    $content .= "<style>
+                        #save-all-btn {
+                            position: absolute;
+                            height: 25px;
+                            width: 80px;
+                            background: #0a72cc;
+                            top: 1%;
+                            right: 5%;
+                            z-index: 9999;
+                            color: white;
+                            text-align: center;
+                            cursor: pointer;
+                        }
+                        #save-all-spinner {
+                            display: none;
+                            position: absolute;
+                            height: 150px;
+                            width: 250px;
+                            background: grey;
+                            border: 5px solid #000;
+                            text-align: center;
+                            padding-top: 50px;
+                            font-size: 20px;
+                            top: 50%;
+                            left: 50%;
+                            z-index: 9999;
+                        }
+                    </style>";
                     // viewer buttons at fullscreen
                     $content .= '<div class="buttons" id="buttonsFS">';
                         $content .= '<div id="zoom-inFS" class="theme-color theme-color-hover"><i class="far fa-plus"></i></div>';

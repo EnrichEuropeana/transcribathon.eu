@@ -94,10 +94,10 @@ var tct_viewer = (function($, document, window) {
 			if(!jQuery(this).children('i').hasClass('locked')) {
 				toggleFS(); 
 				if (jQuery('#transcription-section').width() >= 495) {
-				  jQuery('#mytoolbar-transcription').css('height', '39px');
+				//   jQuery('#mytoolbar-transcription').css('height', '1px');
 				}
 				else {
-				  jQuery('#mytoolbar-transcription').css('height', '78px');
+				//   jQuery('#mytoolbar-transcription').css('height', '1px');
 				}
 				tinymce.EditorManager.get('item-page-transcription-text').focus();
 				jQuery('.tox-tinymce').css('width', jQuery('#mytoolbar-transcription').css('width'))
@@ -497,22 +497,18 @@ var tct_viewer = (function($, document, window) {
 			init_instance_callback: function (editor) {
         
 				editor.on('focus', function (e) {
-					//jQuery('#mytoolbar-transcription').height('30px');
+					// jQuery('#mytoolbar-transcription').height('1px');
 					console.log('focusing');
 				});
-		 		editor.on('blur', function (e) {
-					jQuery('#mytoolbar-transcription').height('1px');
-				});
-				editor.on('mouseLeave', function(e) {
+		 		// editor.on('blur', function (e) {
+				// 	// jQuery('#mytoolbar-transcription').height('1px');
+				// });
+				editor.on('blur', function(e) {
 					if(document.querySelector('.tox-tinymce')){
                         document.querySelector('.tox-tinymce').style.display = 'none';
 					}
 				});
-				// editor.on('click', function(e) {
-				// 	if(document.querySelector('.tox-tinymce')){
-				// 		document.querySelector('.tox-tinymce').style.display = 'block';
-				// 	}
-				// })
+
 
 			},
 			setup: function (editor) {

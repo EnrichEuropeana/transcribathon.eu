@@ -7,47 +7,6 @@ Description: Stylesheet for Story Page
 /* ---------------------------------- Story Page -------------------------------------------- */
 
 /* Image Slider */
-/* #carousel-image-slider {
-    margin-bottom: 20px;
-}
-#carousel-image-slider button:focus {
-    background: #0a72cc!important;
-}
-.carousel-control-prev,
-.carousel-control-next {
-    background-blend-mode: color-burn;
-    height: 50px;
-    width:20px!important;
-    padding: 0!important;
-    top: 50%!important;
-    transform: translateY(-60%);
-    background-color: #0a72cc!important;
-}
-.carousel-indicators {
-    position: relative!important;
-    top: 10px!important;
-}
-.carousel-indicators button {
-    background-color: #fff;
-    padding: 3px 3px!important;
-    border: 0.5px solid #8a8987!important;
-    border-radius: 50%!important;
-    margin-right: 1px!important;
-    margin-left: 1px!important;
-    height: 0;
-    width: 0;
-}
-.carousel-indicators button.active{
-    background-color: #0a72cc!important;
-}
-
-.carousel-control-next:focus {
-    height: 50px;
-    width:20px;
-    padding: 0!important;
-    top: 50;
-    background-color: #0a72cc!important;
-} */
 .slide-img-wrap {
     border: 2.5px solid transparent;
 }
@@ -56,8 +15,8 @@ Description: Stylesheet for Story Page
     transform: scale(1.01);
 }
 .slider-image {
-    width: 150px;
-    height: 150px;
+    width: 100%;
+
 }
 .slide-number-wrap {
     position: relative;
@@ -150,14 +109,14 @@ ul.story-navigation-content-container li {
     font-size: 1.7rem;
     color: #666666;
     position: relative;
-    margin-left: 1em;
     margin-top: 3em;
 }
 /* End of Main Container */
 
 /* Description Image and Description text */
 .storypg-info {
-    width: 80%;
+    min-height: 500px;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 2%;
@@ -166,15 +125,14 @@ ul.story-navigation-content-container li {
 /* Image */
 .story-description-left {
     float: left;
-    max-width: 48%;
-    min-width: 48%;
+    max-width: 49%;
+    min-width: 49%;
     margin-right: 1%;
     height: 500px;
     background: #f8f8f8;
 }
 .description-img {
     position: relative;
-    max-width: 500px;
     max-height: 500px;
     top: 50%;
     left: 50%;
@@ -185,8 +143,8 @@ ul.story-navigation-content-container li {
 /* Text */
 .story-description-right {
     float: right;
-    width: 48%;
-    max-width: 48%;
+    width: 49%;
+    max-width: 49%;
 }
 #desc-text-wrap {
     position: relative;
@@ -204,8 +162,9 @@ ul.story-navigation-content-container li {
     color: #0a72cc;
 }
 .togglePara {
-    max-height: 200px;
+    max-height: 202px;
     overflow: hidden;
+    line-height: 1.4em;
 }
 /* Progress Table */
 #progress-wrap {
@@ -222,6 +181,7 @@ ul.story-navigation-content-container li {
     letter-spacing: 0.025em!important;
     width: 100%;
     padding: 15px 20px 15px 50px;
+    margin-bottom: 13px!important;
 }
 .progress-t {
     color: #0a72cc!important;
@@ -267,8 +227,12 @@ ul.story-navigation-content-container li {
     padding: 7.5px 0 0 50px;
 }
 /* End of Description Img and Text */
+.chart-section {
+    height: 80px;
+}
 .bar-chart {
     width: 100%;
+    top: 50%;
     max-height: 40px;
     position: relative;
 }
@@ -298,7 +262,7 @@ ul.story-navigation-content-container li {
 }
 .storypg-chart {
     display: block;
-    min-height: 100px;
+    height: 40px;
     width: 100%;
     margin: 0 auto;
 }
@@ -311,15 +275,17 @@ ul.story-navigation-content-container li {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    margin: 4% 0;
+    margin-top: 4%;
+    margin-bottom: 2%;
 }
 .story-info div {
     width: 20%;
     display: inline-block;
+    font-weight: 450;
 }
 .story-info-s {
     color: #0a72cc;
-    font-weight: 600;
+    font-weight: 650;
 }
 /* End of Info */
 
@@ -336,16 +302,17 @@ ul.story-navigation-content-container li {
     display: block;
     padding: 0 10px 20px 15px;
     overflow: hidden;
+    line-height: 1.3em;
 }
 .meta-sticker {
     display: inline-block;
     width: 18.5%;
-    min-height: 100px;
     vertical-align: top;
     margin: 5px 1.4% 5px 0;
     margin-bottom: 50px;
 }
 .metadata-h {
+    height: 40px;
     color: #0a72cc;
     background-color: #f8f8f8;
     width: 100%;
@@ -354,15 +321,22 @@ ul.story-navigation-content-container li {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding: 0 1%;
+}
+.metadata-h span {
+    position: relative;
+    top: 20%;
+    height: 50%;
 }
 .mb-1 {
     color: #0a72cc;
-    font-weight: 600;
+    font-weight: 650;
     padding: 0!important;
 }
 .meta-p {
-    margin: 0 0 0 5px!important;
-    font-weight: 300;
+    font-weight: 450;
+    font-size: 14px;
+    margin: 0 0 2px 0;
 }
 /* End of Metadata */
 /* Responsivness */
@@ -386,15 +360,21 @@ ul.story-navigation-content-container li {
 #inner-slider {
     overflow-x: hidden;
     overflow-y: hidden;
-    height: 220px;
+    height: 90%;
+    width: 100%;
     display: flex;
     justify-content: center;
-
+    position: relative;
+    bottom: 10%;
+}
+#slider-container {
+    height: 100%;
+    background-color: #f8f8f8;
+    margin-bottom: 10px;
 }
 .slide-sticker {
-    width: 10%;
-    height: 150px;
-    margin-bottom: 30px;
+    width: 11%;
+    height: 90%;
     display: inline-block;
 }
 .prev-slide {
@@ -404,9 +384,10 @@ ul.story-navigation-content-container li {
     height: 50px;
     padding: 5px;
     float: left;
-    top: 30%;
+    top: 40%;
     color: #fff;
     background: #0a72cc;
+    z-index: 999;
 }
 .next-slide {
     font-size: 15px;
@@ -415,9 +396,10 @@ ul.story-navigation-content-container li {
     height: 50px;
     padding: 5px;
     float: right;
-    top: 30%;
+    top: 40%;
     color: #fff;
     background: #0a72cc;
+    z-index: 999;
 }
 .next-set {
     position: relative;
@@ -444,7 +426,7 @@ ul.story-navigation-content-container li {
     font-weight: bold;
 }
 #img-slider {
-    height: 220px;
+    height: 275px;
     margin-bottom: 30px;
 }
 .next-slide:focus, .prev-slide:focus {
@@ -469,6 +451,7 @@ ul.story-navigation-content-container li {
 #controls-div {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 .num-indicators {
     font-size: 15px;
