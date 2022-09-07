@@ -1402,7 +1402,7 @@ function _TCT_item_page( $atts ) {
                 //// To be discussed if we keep dots or numbers /////
             $content .= "</div>";
 
-            $content .= "<div class='back-to-story'><a href='".home_url()."/documents/story?story=".$itemData['StoryId']."'><i class=\"fas fa-arrow-left\"></i> Back to the Story</a></div>";
+            $content .= "<div class='back-to-story'><a href='".home_url()."/documents/story?story=".$itemData['StoryId']."'><i class=\"fas fa-arrow-left\" style='margin-right:7.5px;'></i> Back to the Story</a></div>";
 
         $content .= "</section>";
 /* -------------------------------------------- End of Old Image slider -----------------------  */
@@ -1503,16 +1503,17 @@ function _TCT_item_page( $atts ) {
                             $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;padding:1px;' title='click to open editor'>";
                                 $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>&nbsp TRANSCRIPTION</h5></span>";
                                     if($itemData['TranscriptionStatusColorCode'] == '#61e02f'){
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p>";
                                     }
                                     elseif($itemData['TranscriptionStatusColorCode'] == '#fff700') {
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p>";
                                     }
                                     elseif($itemData['TranscriptionStatusColorCode'] == '#ffc720') {
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p>";
                                     } else {
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p>";
                                     }
+                                    $content .= "<i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i></span>";
                                 $content .= "</div>";
                                 $content .= "<div class='htr-trans-toggle'>";
                                 $content .= "<div class='togglePara' style='max-height:200px;'>";
@@ -1602,13 +1603,13 @@ function _TCT_item_page( $atts ) {
                                 $content .= "<div class='card'>";
                                     $content .= "<div class='card-header'>";
                                         $content .= "<span style='float:left;'>Start Date:</span>";
-                                        $content .= "<span style='float:right;margin-right:10%;'>End Date:</span>";
+                                        $content .= "<span style='float:right;margin-right:50%;'>End Date:</span>";
                                     $content .= "</div>";
                                 $content .= "</div>";
                                 $content .= "<div class='card'>";
                                     $content .= "<div class='card-header'>";
                                         $content .= "<span style='float:left;'>".$dateStart."</span>";
-                                        $content .= "<span style='float:right,margin-right:10%;'>".$dateEnd."</span>";
+                                        $content .= "<span style='float:right,margin-right:50%;'>".$dateEnd."</span>";
                                     $content .= "</div>";
                                 $content .= "</div>";
                             $content .= "</div>";
@@ -1717,7 +1718,7 @@ function _TCT_item_page( $atts ) {
                 // Metadata
                 $content .= "<div style='clear:both;'></div>";
                 $content .= "<div id='info-section' style='width:90%;margin:0 auto;'>";
-                    $content .= "<div id='item-meta-collapse' class='add-info' style='width:100%;background-color:#f8f8f8;' role='button' data-toggle='collapse' href='#infoCollapse' aria-expanded='false' aria-controls='infoCollapse'>";
+                    $content .= "<div id='item-meta-collapse' class='add-info enrich-header' style='width:100%;background-color:#f8f8f8;' role='button' data-toggle='collapse' href='#infoCollapse' aria-expanded='false' aria-controls='infoCollapse'>";
                         $content .= "<p style='color:#0a72cc;'><span><b><i style='margin-right:5px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</b></span><span style='float:right;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span></p>";
                     $content .= "</div>";
                     $content .= "<div class='dl-enrichments' style='height: 300px;'>";
@@ -1927,18 +1928,18 @@ function _TCT_item_page( $atts ) {
                 $content .= "</a>";
                 //Enrichments
                 $content .= "<div class='dl-enrichments'>";
-                $content .= "<div style='display:flex;flex-direction:row;justify-content:space-between;padding-left:20px;'>";
+                $content .= "<div class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;'>";
                 $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ENRICHMENTS</h5></span>";
                 if($itemData['TaggingStatusColorCode'] == '#61e02f'){
-                    $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                    $content .= "<span><p class='completed'>COMPLETED</p></span>";
                 }
                 elseif($itemData['TaggingStatusColorCode'] == '#fff700') {
-                    $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                    $content .= "<span><p class='edited'>EDITED</p></span>";
                 }
                 elseif($itemData['TaggingStatusColorCode'] == '#ffc720') {
-                    $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                    $content .= "<span><p class='reviewed'>REVIEWED</p></span>";
                 } else {
-                    $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                    $content .= "<span><p class='not-started'>NOT STARTED</p></span>";
                 }
                 $content .= "</div>";
                 // document date
@@ -1947,12 +1948,12 @@ function _TCT_item_page( $atts ) {
                     $content .= "<div class='doc-date-container'>";
                         $content .= "<div class='date-top'>";
                                 $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
-                                $content .= "<div style='float:right;margin-right:10%;display:inline-block;'>End Date:</div>";
+                                $content .= "<div style='float:right;margin-right:50%;display:inline-block;'>End Date:</div>";
                         $content .= "</div>";
                         $content .= "<div style='clear:both;'></div>";
                         $content .= "<div class='date-bottom'>";
                                 $content .= "<div style='float:left;display:inline-block'>".$dateStart."</div>";
-                                $content .= "<div style='float:right;margin-right:10%;display:inline-block;'>".$dateEnd."</div>";
+                                $content .= "<div style='float:right;margin-right:48%;display:inline-block;'>".$dateEnd."</div>";
                         $content .= "</div>";
                     $content .= "</div>";
                     $content .= "<div style='clear:both;'></div>";
@@ -2040,20 +2041,20 @@ function _TCT_item_page( $atts ) {
                 // key words
                 // js-check class is used to check if the property field is empty, so we can hide the header if it is empty
                 if($itemData['Properties']) {
+                    // Category
+                    $content .= "<h6 class='enrich-headers'>Type of Media</h6>";
+                    $content .= "<div class='keyword-container js-check'>";
+                    foreach($itemData['Properties'] as $property) {
+                        if($property['PropertyType'] == "Category") {
+                            $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                        }
+                    }
+                    $content .= "</div>";
                     $content .= "<h6 class='enrich-headers'>Keywords</h6>";
                     $content .= "<div class='keyword-container js-check'>";
                     foreach($itemData['Properties'] as $properti){
                         if($properti['PropertyType'] == "Keyword"){
                             $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
-                        }
-                    }
-                    $content .= "</div>";
-                    // Category
-                    $content .= "<h6 class='enrich-headers'>Category</h6>";
-                    $content .= "<div class='keyword-container js-check'>";
-                    foreach($itemData['Properties'] as $property) {
-                        if($property['PropertyType'] == "Category") {
-                            $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
                         }
                     }
                     $content .= "</div>";
@@ -2072,8 +2073,8 @@ function _TCT_item_page( $atts ) {
                 $content .= "</div>";
                 //Metadata
                 $content .= "<div id='item-meta-collapse' class='dl-enrichments' style='background-color:#f8f8f8;'>";
-                    $content .= "<div class='add-info' style='color:#0a72cc;padding-left:20px;font-size:1.2em;cursor:pointer;' role='button' aria-expanded='false'>";
-                        $content .= "<span><i style='margin-right:5px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span>";
+                    $content .= "<div class='add-info enrich-header' style='color:#0a72cc;padding-left:20px;font-size:1.2em;cursor:pointer;' role='button' aria-expanded='false'>";
+                        $content .= "<span><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span>";
                     $content .= "</div>";
                 $content .= "</div>";
 
@@ -2241,6 +2242,8 @@ function _TCT_item_page( $atts ) {
                             }
                         $content .= "</div>";
                     }
+                   // var_dump($storyData);
+                    //var_dump($itemData);
                     // Parent Story
                     if($itemData['StoryParentStory']) {
                         $content .= "<div class='meta-h'>";
@@ -2260,20 +2263,21 @@ function _TCT_item_page( $atts ) {
             // right side
             $content .= "<div id='full-view-r' >";
 
-                $content .= "<div>";
-                    $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;padding:1px;' title='click to open editor'>";
+                $content .= "<div id='transcription-container' style='min-height:575px;'>";
+                    $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;' title='click to open editor'>";
                     $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></span>";
                         if($itemData['TranscriptionStatusColorCode'] == '#61e02f'){
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                            $content .= "<span ><p class='completed'>COMPLETED</p>";
                         }
                         elseif($itemData['TranscriptionStatusColorCode'] == '#fff700') {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                            $content .= "<span><p class='edited'>EDITED</p>";
                         }
                         elseif($itemData['TranscriptionStatusColorCode'] == '#ffc720') {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                            $content .= "<span><p class='reviewed'>REVIEWED</p>";
                         } else {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                            $content .= "<span><p class='not-started'>NOT STARTED</p>";
                         }
+                        $content .= "<i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i></span>";
                     $content .= "</div>";
                     if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
                         $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
@@ -2281,7 +2285,7 @@ function _TCT_item_page( $atts ) {
                     $trLanguage = $currentTranscription['Languages'][0]['Name'];
                     if(strlen($formattedTranscription) < 700) {
 
-                        $content .= "<div style='padding-left:20px;padding-right:20px;'>";
+                        $content .= "<div style='padding-left:50px;padding-right:20px;padding-top:20px;'>";
                             $content .= $formattedTranscription;
                         $content .= "</div>";
 
@@ -2297,8 +2301,8 @@ function _TCT_item_page( $atts ) {
                         $content .= "</div>";
                     } else {
                     $content .= "<div class='trans-toggle'>";
-                        $content .= "<div id='itemTranscription' class='togglePara' style='padding-left:20px;padding-right:20px;max-height:500px;'>".$formattedTranscription."</div>";
-                        $content .= "<div id='itemBtn' class='descMore'>Show More</div>";
+                        $content .= "<div id='itemTranscription' class='togglePara' style='padding-left:50px;padding-right:20px;height:401px;padding-top:20px;'>".$formattedTranscription."</div>";
+                        $content .= "<div id='itemBtn' class=''>Show More</div>";
                         if($trLanguage){
                             $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
                             $content .= "<div class='language-container'>";
@@ -2312,22 +2316,22 @@ function _TCT_item_page( $atts ) {
                     $content .= "</div>";
                     }
                     // description
-                    $content .= "<div style='display:flex;flex-direction:row;justify-content:space-between;margin-top:3%;'>";
+                    $content .= "<div class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:26px;'>";
                         $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> DESCRIPTION</h5></span>";
                         if($itemData['DescriptionStatusColorCode'] == '#61e02f'){
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                            $content .= "<span><p class='completed'>COMPLETED</p></span>";
                         }
                         elseif($itemData['DescriptionStatusColorCode'] == '#fff700') {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                            $content .= "<span><p class='edited'>EDITED</p></span>";
                         }
                         elseif($itemData['DescriptionStatusColorCode'] == '#ffc720') {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                            $content .= "<span><p class='reviewed'>REVIEWED</p></span>";
                         } else {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                            $content .= "<span><p class='not-started'>NOT STARTED</p></span>";
                         }
                     $content .= "</div>";
 
-                    $content .= "<p style='padding-left:20px;padding-right:20px;'>".$itemData['Description']."</p>";
+                    $content .= "<p style='padding-left:50px;padding-right:20px;'>".$itemData['Description']."</p>";
                     $dcLang = array();
                     foreach($languages as $language){
                         if($itemData['DescriptionLanguage'] == $language['LanguageId']){
@@ -2343,27 +2347,27 @@ function _TCT_item_page( $atts ) {
                         $content .= "</div>";
                     }
                     // Location
-                    $content .= "<div style='display:flex;flex-direction:row;justify-content:space-between;'>";
-                    $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-globe\" aria-hidden=\"true\"></i> LOCATION</h5></span>";
+                    $content .= "<div class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:20px 0;'>";
+                    $content .= "<span><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/uploads/location-icon.svg'> LOCATION</h5></span>";
                     if($itemData['LocationStatusColorCode'] == '#61e02f'){
-                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                        $content .= "<span><p class='completed'>COMPLETED</p></span>";
                     }
                     elseif($itemData['LocationStatusColorCode'] == '#fff700') {
-                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                        $content .= "<span><p class='edited'>EDITED</p></span>";
                     }
                     elseif($itemData['LocationStatusColorCode'] == '#ffc720') {
-                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                        $content .= "<span><p class='reviewed'>REVIEWED</p></span>";
                     } else {
-                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                        $content .= "<span><p class='not-started'>NOT STARTED</p></span>";
                     }
                     $content .= "</div>";
 
-                    $content .= "<div id='full-view-tagging' class='no-htr-map' style='height:300px;position:relative;left:-2px;'>";
+                    $content .= "<div id='full-view-tagging' class='no-htr-map' style='height:300px;position:relative;margin-bottom:20px;'>";
                        // $content .= $taggingTab;
                        $content .= $mapTab;
                     $content .= "</div>";
 
-                    $content .= "<div class='' style='position:relative;left:-2px;margin-top:1%;'>";
+                    $content .= "<div class='' style='position:relative;'>";
                     foreach($itemData['Places'] as $platz){
                         $content .= "<div class='location-single'>".$platz['Name']." (".$platz['Latitude'].", ".$platz['Longitude'].")</div>";
                     }

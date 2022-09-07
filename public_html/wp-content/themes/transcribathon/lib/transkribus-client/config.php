@@ -2,19 +2,19 @@
 
 $config = array(
 	"transkribus" => array(
-		'endpoint'       => 'https://transkribus.eu/processing/v1',
-		'user'           => 'enrich.europeana.test@transkribus.eu',
-		'pass'           => 'heeF5PheiChie3zahl3eicuf',
-		'clientId'       => 'processing-api-client',
-		'urlAccessToken' => 'https://account.readcoop.eu/auth/realms/readcoop/protocol/openid-connect/token',
-		'scope'          => array('openid profile'),
-		'grantType'      => 'password'
+		'htrModelEndpoint' => getenv('HTR_MODEL_ENDPOINT'),
+		'endpoint'         => getenv('HTR_ENDPOINT'),
+		'user'             => getenv('HTR_USER'),
+		'pass'             => getenv('HTR_PASS'),
+		'clientId'         => getenv('HTR_CLIENT_ID'),
+		'urlAccessToken'   => getenv('HTR_TOKEN_URI'),
+		'scope'            => array('openid profile'),
+		'grantType'        => 'password'
 	),
 	"transcribathon" => array(
-		"endpoint" => 'http://api.transcribathon.eu.local/v2',
-		"apiToken" => 'HQadnqNt27Fx7xz5I92iJPAHxO7MuelorJzIMpFyP3MYaot4Mx246Eq49KRV'
+		"endpoint" => getenv('TP_API_V2_ENDPOINT'),
+		"apiToken" => getenv('TP_API_V2_TOKEN')
 	)
 );
 
-$oldApiEndpoint = 'http://transcribathon.eu.local/tp-api';
-
+$oldApiEndpoint = getenv('OLD_API_ENDPOINT');

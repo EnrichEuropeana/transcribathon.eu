@@ -537,3 +537,8 @@ ul.story-navigation-content-container li {
         height: 60%;
     }
 }
+@media screen and (min-width: 1201px) and (max-width: 1550px) {
+    #inner-slider {
+        bottom: 0;
+    }
+}

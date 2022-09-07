@@ -3201,6 +3201,20 @@ ready(() => {
             }
         })
     }
+    // Transcription collapse on item page
+    const itemTrBtn = document.querySelector('#itemBtn');
+    if(itemTrBtn) {
+        itemTrBtn.addEventListener('click', function() {
+            if(itemTrBtn.previousSibling.style.height === '401px') {
+                itemTrBtn.previousSibling.style.height = 'unset';
+                itemTrBtn.textContent = 'Show Less';
+            } else {
+                itemTrBtn.previousSibling.style.height = '401px';
+                itemTrBtn.textContent = 'Show More';
+              //  document.querySelector('.transcription-container').style.height = '575px';
+            }
+        })
+    }
     // Item Page full screen, switching between Transcription and Description Tab
     const transcriptionTab = document.querySelector('#tr-tab');
     // switching to Transcription

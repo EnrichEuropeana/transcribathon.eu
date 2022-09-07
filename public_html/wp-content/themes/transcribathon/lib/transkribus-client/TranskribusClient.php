@@ -262,7 +262,8 @@ class TranskribusClient
 				'ignore_errors' => true,
 				'header' => array(
 					'Content-type: application/json',
-					'Authorization: Bearer ' . $this->transcribathonToken
+					'Authorization: Bearer ' . $this->transcribathonToken,
+					'Access-Control-Allow-Origin: *'
 				),
 				'method' => $method
 			)

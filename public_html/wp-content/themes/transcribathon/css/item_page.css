@@ -285,7 +285,23 @@ ul.item-navigation-content-container div {
     position: relative;
     display: inline-block;
     color: #0a72cc;
-    text-transform: uppercase;
+    font-family: 'Dosis', sans-serif;
+}
+#startTranscription {
+    padding: 15px 50px;
+    background: #f8f8f8;
+}
+#startTranscription h5 {
+    margin: 0!important;
+    font-weight: 700;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 0.025em;
+}
+#startTranscription i {
+    margin-right: 14px;
+}
+#startTranscription span {
+    height: 25px;
 }
 /* --- End of Title --- */
 /* --- Left Half of Item Page --- */
@@ -1440,7 +1456,7 @@ input#person-deathPlace-input {
 }
 .enrich-headers {
     margin-bottom: 15px!important;
-    padding-left: 10px;
+    padding-left: 50px;
     color: #0a72cc!important;
     font-family: 'Dosis', sans-serif;
 }
@@ -1483,6 +1499,11 @@ input#person-deathPlace-input {
     font-size: 100px;
     margin: 150px;
     color: #dddddd;
+}
+#itemTranscription p {
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+    line-height: 1.3em;
 }
 .description-map {
     height: 43px!important;
@@ -1656,28 +1677,36 @@ input#person-deathPlace-input {
     font-size: 10px;
     text-align: center;
     background-color: #61e02f;
-    border-radius: 10px;
+    border-radius: 20px;
+    position: relative;
+    bottom: 10px;
 }
 .edited {
     width: 100px;
     font-size: 10px;
     text-align: center;
     background-color: #fff700;
-    border-radius: 10px;
+    border-radius: 20px;
+    position: relative;
+    bottom: 10px;
 }
 .reviewed {
     width: 100px;
     font-size: 10px;
     text-align: center;
     background-color: #ffc720;
-    border-radius: 10px;
+    border-radius: 20px;
+    position: relative;
+    bottom: 10px;
 }
 .not-started {
     width: 100px;
     font-size: 10px;
     text-align: center;
     background-color: #eeeeee;
-    border-radius: 10px;
+    border-radius: 20px;
+    position: relative;
+    bottom: 10px;
 }
 .no-status {
     width: 100px;
@@ -1766,7 +1795,6 @@ input#person-deathPlace-input {
 #startTranscription:hover  {
     border: 1px solid #0a72cc;
     cursor: pointer;
-    padding: 0!important;
 }
 .person-data-output-buttom i {
     float: right;
@@ -1793,23 +1821,24 @@ input#person-deathPlace-input {
     margin-left: 5px;
     margin-right: 5px;
 }
-.descMore {
+#itemBtn {
+    margin-top: 10px;
     text-align: center;
     cursor: pointer;
     color: #0a72cc;
 }
 .togglePara {
-    max-height: 200px;
+    height: 400px;
     overflow: hidden;
 }
 #full-view-r {
     float:right;
-    width:49%;
-    margin-right:1%;
+    width:48%;
+    margin-right:2%;
 }
 #full-view-l {
     float:left;
-    width:49%;
+    width:48%;
     margin-right:1%;
 }
 .cover-up {
@@ -1825,6 +1854,27 @@ input#person-deathPlace-input {
 }
 #transcription-view {
     display: none;
+}
+.enrich-header {
+    padding: 15px 50px;
+    background: #f8f8f8;
+    letter-spacing: 0.025em;
+}
+.enrich-header i {
+    margin-right: 14px;
+}
+.enrich-header span {
+    height: 25px;
+    margin: 0!important;
+    font-weight: 700!important;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 0.025em;
+}
+.enrich-header h5 {
+    margin: 0!important;
+    font-weight: 700!important;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 0.025em;
 }
 /* Css for smaller screens */
 @media screen and (max-width: 800px) {
@@ -1857,26 +1907,46 @@ input#person-deathPlace-input {
         width: 150px;
         height: 60%;
     }
+    #inner-slider {
+        bottom: 0;
+    }
+}
+@media screen and (min-width: 1201px) and (max-width: 1550px) {
+    #inner-slider {
+        bottom: 0;
+    }
 }
 /* Keyword,People, Category restyling */
 .keyword-container, .language-container {
     display: flex;
     justify-content: flex-start;
 }
-.keyword-single, .language-single {
+.keyword-single:hover, .language-single:hover {
     display: inline-block;
     color: #fff;
     background-color: #0a72cc;
-    padding: 2px 5px;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+.keyword-single, .language-single {
+    display: inline-block;
+    color: #000;
+    background-color: #f8f8f8;
+    padding: 5px 10px;
     margin-right: 5px;
-    border-radius: 5px;
 }
 /* Location */
 .location-single {
-    padding: 2px 5px;
-    margin-bottom: 5px;
+    padding: 5px 50px;
+    background: #f8f8f8;
+    margin-bottom: 10px;
     font-weight: 400;
-    border-bottom: 1px solid gray;
+}
+.enrich-header img {
+    height: 28px!important;
+    fill: #0a72cc;
+    color: #0a72cc;
+    margin-right: 14px;
 }
 /* Back to story button at top of the page */
 .back-to-story {
@@ -1884,7 +1954,11 @@ input#person-deathPlace-input {
     font-size: 14px;
     margin-left: 10px;
     position: relative;
-    bottom: 30px;
+    bottom: 36px;
+    padding: 10px;
+    left: 40px;
+    background: #f8f8f8;
+    font-family: 'Dosis', sans-serif;
 }
 .back-to-story a, .back-to-story i {
     color: #000!important;
@@ -1892,8 +1966,8 @@ input#person-deathPlace-input {
 .date-top, .date-bottom {
     display: block;
 }
-.doc-date-container, .person-container, .keyword-container {
-    padding-left: 20px;
+.doc-date-container, .person-container, .keyword-container, .language-container {
+    padding-left: 50px;
 }
 .date-top {
     font-weight: 400;
