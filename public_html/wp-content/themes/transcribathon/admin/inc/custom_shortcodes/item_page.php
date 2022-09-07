@@ -6,6 +6,7 @@ Description: Gets item data and builds the item page
 
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
+//include($_SERVER["DOCUMENT_ROOT"].'/htr-import/vendor/autoload.php');
 
 use FactsAndFiles\Transcribathon\TranskribusClient;
 
@@ -42,12 +43,14 @@ function _TCT_item_page( $atts ) {
         //include theme directory for text hovering
         $theme_sets = get_theme_mods();
         // Transkribus Client, include required files
-        require(get_stylesheet_directory() . '/lib/transkribus-client/TranskribusClient.php');
-        require(get_stylesheet_directory() . '/lib/transkribus-client/config.php');
+        include($_SERVER["DOCUMENT_ROOT"].'/htr-import/src/TranskribusClient.php');
+        include($_SERVER["DOCUMENT_ROOT"].'/htr-import/example/config.php');
+        
         // create new Transkribus client and inject configuration
         $transkribusClient = new TranskribusClient($config);
         // get the HTR-transcribed data from database if there is one
         $htrDataJson = $transkribusClient->getDataFromTranscribathon($_GET['item']);
+        //var_dump($htrDataJson);
         // extract the data itself
         $htrDataArray = json_decode($htrDataJson, true);
         $htrData = $htrDataArray['data']['data'];
@@ -230,6 +233,7 @@ function _TCT_item_page( $atts ) {
                             $editorTab .= "<i id='tr-view-btn-i' style=\"font-size:15px;margin-right:2px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>";
                             $editorTab .= "<span id='tr-view-btn-text'>Edit</span>";
                         $editorTab .= "</div>";
+                        $editorTab .= "<div id='lang-holder'></div>";
                     // $editorTab .= "</div>";
                     //$editorTab .= do_shortcode('[ultimatemember form_id="38"]');
                     //status-changer
@@ -340,7 +344,7 @@ function _TCT_item_page( $atts ) {
                         $editorTab .= '<div id="item-transcription-spinner-container" class="spinner-container spinner-container-right">';
                             $editorTab .= '<div class="spinner"></div>';
                         $editorTab .= "</div>";
-                        $editorTab .= "<div style='clear:both'></div>";
+                     $editorTab .= "<div style='clear:both'></div>";
                     $editorTab .= '</div>';
                     $editorTab .= "<div style='clear:both'></div>";
                 $editorTab .= '</div>';
@@ -2316,7 +2320,7 @@ function _TCT_item_page( $atts ) {
                     $content .= "</div>";
                     }
                     // description
-                    $content .= "<div class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:26px;'>";
+                    $content .= "<div class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:20px;'>";
                         $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> DESCRIPTION</h5></span>";
                         if($itemData['DescriptionStatusColorCode'] == '#61e02f'){
                             $content .= "<span><p class='completed'>COMPLETED</p></span>";

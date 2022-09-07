@@ -45,7 +45,6 @@ function installEventListeners() {
                 document.querySelector('#transcription-view').style.display = 'none';
                 document.querySelector('#tr-history').style.visibility = 'hidden';
                 document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-                document.querySelector('.transcription-mini-metadata').style.display = 'block';
                 document.querySelector('#tr-view-btn-i').style.display = 'none';
                 document.querySelector('#editor-tab').style.overflowY = 'hidden';
                 document.querySelector('#transcription-status-indicator').style.display = 'unset';
@@ -55,7 +54,6 @@ function installEventListeners() {
                 document.querySelector('#transcription-view').style.display = 'block';
                 document.querySelector('#tr-history').style.visibility = 'unset';
                 document.querySelector('#mce-wrapper-transcription').style.display = 'none';
-                document.querySelector('.transcription-mini-metadata').style.display = 'none';
                 document.querySelector('#tr-view-btn-i').style.display = 'inline-block';
                 document.querySelector('#editor-tab').style.overflowY = 'auto';
                 document.querySelector('#transcription-status-indicator').style.display = 'none';
@@ -501,14 +499,14 @@ function addPopUpLanguage() {
 }
 function addPopUpTranscription() {
     document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-    document.querySelector('.transcription-mini-metadata').style.display = 'none';
+    // document.querySelector('.transcription-mini-metadata').style.display = 'none';
 }
 // Switches between different views within the item page image view
 function switchItemView(event, viewName) {
   // Transcription Language selection
-  const langSelecta = document.querySelector('.transcription-mini-metadata'); //Language selector
-  const transToolBar = document.querySelector('#mytoolbar-transcription'); // Container for lang in popup
-  const transContainer = document.querySelector('#transcription-section'); // Original container for lang selector
+//   const langSelecta = document.querySelector('.transcription-mini-metadata'); //Language selector
+//   const transToolBar = document.querySelector('#mytoolbar-transcription'); // Container for lang in popup
+//   const transContainer = document.querySelector('#transcription-section'); // Original container for lang selector
   // Make tab icons inactive
   icons = document.getElementsByClassName("view-switcher-icons");
   for (i = 0; i < icons.length; i++) {
@@ -521,16 +519,16 @@ function switchItemView(event, viewName) {
   switch(viewName) {
     case 'horizontal':
         //Popup test
-        if(transToolBar.querySelector('.transcription-mini-metadata') !== null) {
-            transContainer.appendChild(langSelecta);
-        }
+        // if(transToolBar.querySelector('.transcription-mini-metadata') !== null) {
+        //     transContainer.appendChild(langSelecta);
+        // }
       // On switching views hide 'transcription-view' and show editor
       document.querySelector('#transcription-view').style.display = 'block';
       document.querySelector('#tr-history').style.visibility = 'unset';
       document.querySelector('#editor-tab').style.overflowY = 'auto';
       document.querySelector('#transcription-status-indicator').style.display = 'none';
       document.querySelector('#mce-wrapper-transcription').style.display = 'none';
-      document.querySelector('.transcription-mini-metadata').style.display = 'none';
+      // document.querySelector('.transcription-mini-metadata').style.display = 'none';
       document.querySelector('#tr-view-btn-i').style.display = 'inline-block';
       document.querySelector('#tr-view-btn-text').textContent = 'Edit';
 
@@ -575,13 +573,13 @@ function switchItemView(event, viewName) {
       break;
     case 'vertical':
         //Popup test
-        if(transToolBar.querySelector('.transcription-mini-metadata') === null) {
-            transToolBar.appendChild(langSelecta);
-        }
+        // if(transToolBar.querySelector('.transcription-mini-metadata') === null) {
+        //     transToolBar.appendChild(langSelecta);
+        // }
         // On switching views hide 'transcription-view' and show editor
         document.querySelector('#transcription-view').style.display = 'none';
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-        document.querySelector('.transcription-mini-metadata').style.display = 'block';
+        // document.querySelector('.transcription-mini-metadata').style.display = 'block';
         document.querySelector('#transcription-status-indicator').style.display = 'unset';
 
       jQuery("#item-image-section").css("width", '')
@@ -620,11 +618,11 @@ function switchItemView(event, viewName) {
     case 'popout':
     
         // Move language seletor from bottom to header
-        transToolBar.appendChild(langSelecta);
+        // transToolBar.appendChild(langSelecta);
         // On switching views hide 'transcription-view' and show editor
         document.querySelector('#transcription-view').style.display = 'none';
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-        document.querySelector('.transcription-mini-metadata').style.display = 'block';
+        // document.querySelector('.transcription-mini-metadata').style.display = 'block';
         document.querySelector('#transcription-status-indicator').style.display = 'unset';
 
       jQuery("#item-image-section").css("width", '100%')
@@ -667,13 +665,13 @@ function switchItemView(event, viewName) {
     case 'closewindow':
 
         // Move language selector back to bottom
-        if(transToolBar.querySelector('.transcription-mini-metadata') !== null) {
-            transContainer.appendChild(langSelecta);
-        }
+        // if(transToolBar.querySelector('.transcription-mini-metadata') !== null) {
+        //     transContainer.appendChild(langSelecta);
+        // }
               // On switching views hide 'transcription-view' and show editor
         document.querySelector('#transcription-view').style.display = 'none';
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-        document.querySelector('.transcription-mini-metadata').style.display = 'block';
+        // document.querySelector('.transcription-mini-metadata').style.display = 'block';
 
       jQuery("#item-image-section").css("width", '100%')
       jQuery("#item-image-section").css("height", '100%')
@@ -3517,6 +3515,16 @@ ready(() => {
             setTimeout(() => {document.querySelector('#full-page').click();}, 100);
         }
     }
+    //Quick fix to move languages until finding long term solution
+    const fullScreenBtn = document.querySelector('#full-page');
+    
+    if(fullScreenBtn) {
+        const langContainer = document.querySelector('#lang-holder');
+        const langSelecta = document.querySelector('.transcription-mini-metadata');
+        // move languages below title
+        langContainer.appendChild(langSelecta);
+    }
+
     // When the user scrolls down 60px from the top of the document, resize the navbar's padding
     //and the logo's font size
     if(document.querySelector('#_transcribathon_partnerlogo')) {

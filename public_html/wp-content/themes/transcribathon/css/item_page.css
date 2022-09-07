@@ -60,7 +60,7 @@ Description: Stylesheet for Item Page
     top: 40%;
     color: #fff;
     background: #0a72cc;
-    z-index: 999;
+    z-index: 99;
 }
 .next-slide {
     font-size: 15px;
@@ -72,7 +72,7 @@ Description: Stylesheet for Item Page
     top: 40%;
     color: #fff;
     background: #0a72cc;
-    z-index: 999;
+    z-index: 99;
 }
 .next-set {
     position: relative;
@@ -1132,7 +1132,7 @@ input#person-deathPlace-input {
     position: relative;
     height: 50%;
 }
-.panel-right #mce-wrapper-transcription, .panel-right-tab-menu .transcription-mini-metadata{
+.panel-right #mce-wrapper-transcription {
     display: none;
 }
 .panel-right #transcription-view {
