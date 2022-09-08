@@ -7,6 +7,9 @@ Description: Gets item data and builds the item page
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
+require(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
+require(get_stylesheet_directory() . '/htr-client/config.php');
+
 use FactsAndFiles\Transcribathon\TranskribusClient;
 
 date_default_timezone_set('Europe/Berlin');
@@ -42,8 +45,6 @@ function _TCT_item_page( $atts ) {
         //include theme directory for text hovering
         $theme_sets = get_theme_mods();
         // Transkribus Client, include required files
-        require(get_stylesheet_directory() . '/lib/transkribus-client/TranskribusClient.php');
-        require(get_stylesheet_directory() . '/lib/transkribus-client/config.php');
         // create new Transkribus client and inject configuration
         $transkribusClient = new TranskribusClient($config);
         // get the HTR-transcribed data from database if there is one
