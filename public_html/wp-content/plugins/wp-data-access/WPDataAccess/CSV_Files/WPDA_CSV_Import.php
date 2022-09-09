@@ -431,14 +431,22 @@ namespace WPDataAccess\CSV_Files {
 															$date_value   = substr( $data[ $column ], 0, 10 );
 															$convert_date = \DateTime::createFromFormat( str_replace( '%', '', $date_format ), $date_value );
 															if ( false === $convert_date ) {
-																echo '<div>ERROR: Cannot convert ' . esc_attr( $date_value ) . ' to date (using format ' . esc_attr( $date_format ) . ')</div>';
+																$error_msg = 'Cannot convert ' . esc_attr( $date_value ) . ' to date (using format ' . esc_attr( $date_format ) . ')';
+																echo "<div>ERROR: {$error_msg}</div>";
 																$row_values_valid = false;
+
+																// Write error to log file
+																WPDA::wpda_log_wp_error( $error_msg );
 															} else {
 																$wpda_insert_column_values[ $table_columns[ $column ] ] = $convert_date->format( 'Y-m-d' );
 															}
 														} catch ( \Exception $e ) {
-															echo '<div>ERROR: Cannot convert ' . esc_attr( $date_value ) . ' to date (using format ' . esc_attr( $date_format ) . ')</div>';
+															echo '<div>Cannot convert ' . esc_attr( $date_value ) . ' to date (using format ' . esc_attr( $date_format ) . ')</div>';
+															echo "<div>ERROR: {$error_msg}</div>";
 															$row_values_valid = false;
+
+															// Write error to log file
+															WPDA::wpda_log_wp_error( $error_msg );
 														}
 													}
 												}
@@ -485,8 +493,14 @@ namespace WPDataAccess\CSV_Files {
 										if ( false === $wpdadb->query( $insert ) ) {
 											if ( '' === $wpdadb->last_error ) {
 												echo 'Error: ' . esc_attr( $insert ) . '<br/>';
+
+												// Write error to log file
+												WPDA::wpda_log_wp_error( $insert );
 											} else {
 												echo 'Error: ' . esc_attr( $wpdadb->last_error ) . '<br/>';
+
+												// Write error to log file
+												WPDA::wpda_log_wp_error( $wpdadb->last_error );
 											}
 											$errors++;
 										} else {

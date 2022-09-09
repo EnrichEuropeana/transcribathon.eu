@@ -43,6 +43,7 @@ class Meow_MGCL_Core_Button_Meow_Gallery {
         text-align: center;
         background: rgba(15, 115, 239, 0.80);
         color: white;
+        z-index: 100;
       }
       #mgcl-${id} a:hover { 
         background: rgba(15, 115, 239, 0.9);

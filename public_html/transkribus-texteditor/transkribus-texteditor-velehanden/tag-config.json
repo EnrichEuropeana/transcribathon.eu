@@ -1,0 +1,149 @@
+
+{
+    "definitions": {
+      "annotations": [
+        {
+          "name": "Testing",
+          "label": "Ok",
+          "attributes": ["expansion"],
+          "extra": [
+            { "name": "expansion", "label": "Was soll das", "type": "string" }
+          ],
+          "color": "#ff0000",
+          "icon": 8228
+        },
+        {
+          "name": "blackening",
+          "label": "Blackening",
+          "attributes": ["comment"],
+          "extra": [{ "name": "comment", "label": "Comment", "type": "string" }],
+          "color": "#000000",
+          "icon": 11035
+        },
+        {
+          "name": "add",
+          "label": "Add",
+          "color": "#33ffcc",
+          "icon": 8230,
+          "attributes": ["place"],
+          "extra": [{ "name": "place", "label": "Place", "type": "string" }]
+        },
+        {
+          "name": "sic",
+          "label": "Sic",
+          "color": "#ffeb00",
+          "attributes": ["correction"],
+          "extra": [
+            { "name": "correction", "label": "Correction", "type": "string" }
+          ]
+        },
+        {
+          "name": "speech",
+          "label": "Speech",
+          "color": "#a30059",
+          "icon": 127908,
+          "attributes": ["speaker"],
+          "extra": [{ "name": "speaker", "label": "Speaker", "type": "string" }]
+        },
+        {
+          "name": "supplied",
+          "color": "#cd5c5c",
+          "label": "Supplied",
+          "attributes": ["reason"],
+          "extra": [{ "name": "reason", "label": "Reason", "type": "string" }]
+        },
+        { "name": "gap", "label": "Gap", "color": "#1ce6ff" },
+        {
+          "name": "div",
+          "label": "Div",
+          "color": "#006fa6",
+          "attributes": ["n", "type"],
+          "extra": [
+            { "name": "n", "label": "N", "type": "string" },
+            { "name": "type", "label": "Type", "type": "string" }
+          ]
+        },
+        {
+          "name": "unclear",
+          "label": "Unclear",
+          "color": "#ffcc66",
+          "icon": 8263,
+          "attributes": ["alternative", "reason"],
+          "extra": [
+            { "name": "alternative", "label": "Alternative", "type": "string" },
+            { "name": "reason", "label": "Reason", "type": "string" }
+          ]
+        },
+        {
+          "name": "comment",
+          "label": "Comment",
+          "attributes": ["type"],
+          "extra": [
+            { "name": "Comment", "type": "string" },
+            { "name": "Author", "type": "string" }
+          ],
+          "description": "Free text field to comment a part of the text.",
+          "color": "#417cb4",
+          "icon": 128172
+        },
+        {
+          "name": "date",
+          "label": "Date",
+          "attributes": ["when"],
+          "extra": [
+            {
+              "name": "when",
+              "label": "When",
+              "description": "YYYY-MM-DD",
+              "type": "date"
+            }
+          ],
+          "description": "date",
+          "color": "#0000ff",
+          "icon": 128338
+        },
+        {
+          "name": "organization",
+          "label": "Organization",
+          "color": "#ff00ff",
+          "icon": 127970
+        },
+        {
+          "name": "person",
+          "label": "Person",
+          "attributes": ["firstname", "dateOfDeath", "dateOfBirth", "lastname"],
+          "extra": [
+            {
+              "name": "dateOfDeath",
+              "label": "Date Of Death",
+              "description": "YYYY-MM-DD",
+              "type": "date"
+            },
+            {
+              "name": "dateOfBirth",
+              "label": "Date Of Birth",
+              "description": "YYYY-MM-DD",
+              "type": "date"
+            },
+            { "name": "firstname", "label": "Firstname", "type": "string" },
+            { "name": "lastname", "label": "Lastname", "type": "string" }
+          ],
+          "color": "#00ff00",
+          "icon": 128100
+        },
+        {
+          "name": "place",
+          "label": "Place",
+          "attributes": ["country", "placeName"],
+          "extra": [
+            { "name": "country", "label": "Country", "type": "string" },
+            { "name": "placeName", "label": "Place", "type": "string" }
+          ],
+          "color": "#8a2be2",
+          "icon": 127968
+        }
+      ]
+    }
+  }
+  
+

@@ -514,3 +514,21 @@ function wpda_dbinit_admin( schema_name, wpnonce ) {
 		}
 	);
 }
+
+function wpda_toggle_password(id, e) {
+	// Change input type
+	let elm = document.getElementById(id);
+	if (elm.type === "password") {
+		elm.type = "text";
+	} else {
+		elm.type = "password";
+	}
+
+	// Change icon if applicable
+	let icn = jQuery(e.target);
+	if (icn.hasClass("fa-eye")) {
+		icn.addClass("fa-eye-slash").removeClass("fa-eye");
+	} else if (icn.hasClass("fa-eye-slash")) {
+		icn.addClass("fa-eye").removeClass("fa-eye-slash");
+	}
+}

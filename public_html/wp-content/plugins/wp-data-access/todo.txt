@@ -1,7 +1,8 @@
-+ When switching between different query types always force save before buttons can be used (Pascal)
 + Add custom color schemes to Data Publisher premium (Alex)
-+ Allow access to premium data services from local hosts via pre-defined public ip addresses (Athena)
-+ Write errors to log on CSV import (Ed)
++ When switching between different query types always force save before buttons can be used (Pascal)
+
++ Is it possible to save table|view settings in the Data Explorer through ajax (no page refresh)? (Steve!)
++ Show dashboard on individual page (Matt)
 
 *** MAIN SCHEDULE 2022 ***
 
