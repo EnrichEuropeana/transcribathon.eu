@@ -689,7 +689,7 @@ class WPDA_Table_Actions
         }
         ?>
 											/>
-											<span class="dashicons dashicons-editor-help wpda_tooltip" title="Large exports can result in an 'allowed memory size exhausted' error. Reduce the query buffer size to prevent this fatal error.
+											<span class="dashicons dashicons-editor-help wpda_tooltip" title="Large exports to other databases can result in an 'allowed memory size exhausted' error. Reduce the query buffer size to prevent this fatal error.
 
 Start with high values and work down until the error disappears." style="cursor:pointer;vertical-align:middle"></span>
 										</div>

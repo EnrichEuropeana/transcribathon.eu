@@ -1,5 +1,15 @@
 ### ChangeLog for WP Data Access
 
+#### 5.2.4 / 2022-09-02
+
+Fixed: Geolocation batch update not working "Failed to load resource" (Jonathan)
+Added: Write CSV import errors to WP error log file (Ed)
+Added: Use filter count from previous request on button clicks to boost performance (Data Publisher only)
+Added: Use first record count to prevent count on each request to boost performance (Data Publisher only)
+Added: Show password icon to remote database connection panel
+Changed: Don't cache copy table actions when source database = destination database
+Changed: Password based security instead IP based security for premium data services 
+
 #### 5.2.3 / 2022-08-19
 
 Patched: Added read-only support to mandatory columns (Kevin)

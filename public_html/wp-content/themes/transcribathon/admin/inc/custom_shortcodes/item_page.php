@@ -8,12 +8,15 @@ Description: Gets item data and builds the item page
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 // include($_SERVER["DOCUMENT_ROOT"].'/htr-import/vendor/autoload.php');
 
-// use FactsAndFiles\Transcribathon\TranskribusClient;
+require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
+require_once(get_stylesheet_directory() . '/htr-client/config.php');
+
+use FactsAndFiles\Transcribathon\TranskribusClient;
 
 date_default_timezone_set('Europe/Berlin');
 
 function _TCT_item_page( $atts ) {
-    global $ultimatemember;
+    global $ultimatemember, $config;
     if (isset($_GET['item']) && $_GET['item'] != "") {
         // Set request parameters for image data
         $requestData = array(
@@ -43,18 +46,20 @@ function _TCT_item_page( $atts ) {
         //include theme directory for text hovering
         $theme_sets = get_theme_mods();
         // Transkribus Client, include required files
-        // include($_SERVER["DOCUMENT_ROOT"].'/htr-import/src/TranskribusClient.php');
-        // include($_SERVER["DOCUMENT_ROOT"].'/htr-import/example/config.php');
-        
-        // // create new Transkribus client and inject configuration
-        // $transkribusClient = new TranskribusClient($config);
-        // var_dump($transkribusClient);
-        // // get the HTR-transcribed data from database if there is one
-        // $htrDataJson = $transkribusClient->getDataFromTranscribathon($_GET['item']);
-
-        // // // extract the data itself
-        // $htrDataArray = json_decode($htrDataJson, true);
-        // $htrData = $htrDataArray['data']['data'];
+        // create new Transkribus client and inject configuration
+        $transkribusClient = new TranskribusClient($config);
+        // get the HTR-transcribed data from database if there is one
+        $htrDataJson = $transkribusClient->getDataFromTranscribathon(
+            null,
+            array(
+                'itemId' => $_GET['item'],
+		            'orderBy' => 'updated_at',
+		            'orderDir' => 'desc'
+            )
+        );
+        // extract the data itself
+        $htrDataArray = json_decode($htrDataJson, true);
+        $htrData = $htrDataArray['data'][0]['transcription_data'];
         // Get the next and previous item
         for($a = 0; $a < count($itemImages);$a++){
             if(array_search($_GET['item'], $itemImages[$a])){

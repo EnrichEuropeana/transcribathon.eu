@@ -252,6 +252,9 @@ function wpda_datatables_ajax_call(
 	var more_limit = 10;
 	var more_new = true;
 
+	// Prevent counting on each request to improve performance
+	var wpda_paginationButtonPressed = false;
+
 	if (table_options_advanced!==null && table_options_advanced.pageLength!==undefined && !isNaN(table_options_advanced.pageLength)) {
 		more_limit = table_options_advanced.pageLength;
 	}
@@ -283,7 +286,7 @@ function wpda_datatables_ajax_call(
 		ajax: {
 			method: "POST",
 			url: wpda_publication_vars.wpda_ajaxurl,
-			data: function(data) {
+			data: function(data, event) {
 				data.action ="wpda_datatables";
 				data.wpnonce = wpnonce;
 				data.pubid = pub_id;
@@ -360,6 +363,18 @@ function wpda_datatables_ajax_call(
 					}
 					data.geosearch = geosearch;
 				}
+
+				// Prevent counting on each request to improve performance
+				let table = jQuery("#" + table_name + pub_id).DataTable();
+				if (table.ajax.json()) {
+					data.records_total = table.ajax.json().recordsTotal;
+					if (wpda_paginationButtonPressed) {
+						data.records_filtered = table.ajax.json().recordsFiltered;
+					}
+				}
+				wpda_paginationButtonPressed = false;
+
+				console.log(data);
 			},
 			dataSrc: function(data) {
 				if (read_more==="true") {
@@ -482,8 +497,25 @@ function wpda_datatables_ajax_call(
 				// Add ui tooltip to jdt buttons
 				jQuery(".wpda_tooltip").tooltip();
 			}
+
+			// Prevent counting on each request to improve performance
+			jQuery("#" + table_name + pub_id + "_wrapper .dataTables_paginate, #" + table_name + pub_id + "_wrapper .dataTables_length").on("mousedown", "a, select", function () {
+				wpda_paginationButtonPressed = true;
+			});
+			jQuery("#" + table_name + pub_id + "_wrapper .dataTables_paginate").on("click", "a", function () {
+				wpda_paginationButtonPressed = false;
+			});
+			jQuery("#" + table_name + pub_id + "_wrapper .dataTables_length").on("change", "select", function () {
+				wpda_paginationButtonPressed = false;
+			});
 		},
 		drawCallback: function(settings) {
+			// console.log(settings);
+
+			table = jQuery("#" + table_name + pub_id).DataTable();
+			paging_start = table.page.info().start;
+			paging_length = table.page.info().length;
+
 			if (jQueryDataTablesDefaultOptions.wpda_geo) {
 				showmap = true;
 				if (
@@ -504,10 +536,6 @@ function wpda_datatables_ajax_call(
 					}
 
 					if (get_map_data) {
-						table = jQuery("#" + table_name + pub_id).DataTable();
-
-						paging_start = table.page.info().start;
-						paging_length = table.page.info().length;
 						radius = geo_search_options.radius;
 						if (jQuery("#" + table_name + pub_id + "_georange").val()) {
 							radius = jQuery("#" + table_name + pub_id + "_georange").val();
@@ -535,7 +563,7 @@ function wpda_datatables_ajax_call(
 							args.user_longitude = wpda_user_coords.longitude;
 						}
 						// Global search
-						args.search = jQuery("#" + table_name + pub_id).DataTable().search(this.value);
+						args.search = table.search(this.value);
 						filter_args = {}
 						// Column search
 						var searchBoxes = jQuery("#" + table_name + pub_id + "_wrapper .wpda_search_boxes");
@@ -560,7 +588,7 @@ function wpda_datatables_ajax_call(
 						// Add Search Builder
 						let searchBuilder = [];
 						if (jQuery(".dtsb-criteria").length>0) {
-							let sb = jQuery("#" + table_name + pub_id).DataTable().searchBuilder.getDetails();
+							let sb = table.searchBuilder.getDetails();
 							function updateColumnNames(obj) {
 								for (const property in obj) {
 									if (obj.criteria!==undefined && Array.isArray(obj.criteria)) {

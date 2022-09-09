@@ -737,6 +737,14 @@ msgstr ""
 msgid "Post navigation"
 msgstr ""
 
+#: widgets/blog/blog.php:1091
+msgid "Get more pagination themes and Ajax reloading with %sSiteOrigin Premium%s"
+msgstr ""
+
+#: widgets/blog/blog.php:1096
+msgid "Adjust the post Read More link text and choose a custom post date format with %sSiteOrigin Premium%s"
+msgstr ""
+
 #: widgets/button/button.php:4, widgets/button/button.php:17
 msgid "A powerful yet simple button widget for your sidebars or Page Builder pages."
 msgstr ""

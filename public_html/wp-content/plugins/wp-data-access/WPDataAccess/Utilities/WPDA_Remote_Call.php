@@ -34,6 +34,29 @@ namespace WPDataAccess\Utilities {
 			return $response;
 		}
 
+		public static function get( $url, $args = array(), $die = false ) {
+			$response = wp_remote_get( $url, $args );
+			// var_dump($response);
+
+			if ( is_wp_error( $response ) ) {
+				if ( $die ) {
+					self::die();
+				}
+
+				return false;
+			}
+
+			if ( ! isset( $response['response'], $response['body'] ) ) {
+				if ( $die ) {
+					self::die();
+				}
+
+				return false;
+			}
+
+			return $response;
+		}
+
 		public static function die() {
 			wp_die( __( 'ERROR: Remote call failed', 'wp-data-access' ) );
 		}

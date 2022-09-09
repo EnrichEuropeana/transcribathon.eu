@@ -494,6 +494,7 @@ class WPDA_Settings_Plugin extends WPDA_Settings
 						<br/>
 						<label for="remote_passwd" style="vertical-align:baseline;" class="database_item_label">MySQL password:</label>
 						<input type="password" name="remote_passwd" id="remote_passwd" autocomplete="new-password">
+						<i class="fas fa-eye" onclick="wpda_toggle_password('remote_passwd', event)" style="cursor:pointer"></i>
 						<br/>
 						<label for="remote_port" style="vertical-align:baseline;" class="database_item_label">MySQL port:</label>
 						<input type="text" name="remote_port" id="remote_port" value="3306">

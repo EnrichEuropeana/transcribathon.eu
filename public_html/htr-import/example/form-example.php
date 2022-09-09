@@ -1,246 +1,15 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-require 'config.php';
-
-use FactsAndFiles\Transcribathon\TranskribusClient;
-
-class HtrData
-{
-	protected $transkribusClient = null;
-
-	protected $amount = 0;
-
-	protected $currentSuccess = 0;
-
-	protected $currentErrors = 0;
-
-	protected $errorMessages = array();
-
-	public function __construct($config)
-	{
-		$this->transkribusClient = new TranskribusClient($config);
-	}
-
-	public function getAmount()
-	{
-		return $this->amount;
-	}
-
-	public function getCurrentSucces()
-	{
-		return $this->currentSuccess;
-	}
-
-	public function getCurrentErrors()
-	{
-		return $this->currentErrors;
-	}
-
-	public function getErrorMessages()
-	{
-		return $this->errorMessages;
-	}
-
-	public function sendQuery($url, $options)
-	{
-		$context = stream_context_create($options);
-		$result = @file_get_contents($url, false, $context);
-
-		$responseHeader = $http_response_header ?? array('HTTP/1.1 400 Bad request');
-
-		$status = explode(' ', $responseHeader[0])[1];
-
-		if ($status > 299) {
-			return false;
-		}
-
-		return $result;
-	}
-
-	public function sendStoryData($items, $htrId)
-	{
-		$this->amount = count($items);
-		$this->currentSuccess = 0;
-		$this->currentErrors = 0;
-		$this->errorMessages = array();
-
-		array_walk($items, array($this, 'handleItem'), $htrId);
-
-		$result = array(
-			'amount' => $this->getAmount(),
-			'errors' => $this->getCurrentErrors(),
-			'success' => $this->getCurrentSucces(),
-			'errorMessages' => $this->getErrorMessages()
-		);
-
-		$result = json_encode($result);
-
-		return $result;
-	}
-
-	protected function handleItem($item, $index, $htrId)
-	{
-		$itemId = intval($item['ItemId']);
-		$htrId = intval($htrId);
-
-		// check item existence in db here
-		$itemResultJson = $this->transkribusClient->getDataFromTranscribathon(
-			null,
-			array(
-				'itemId' => $itemId,
-				'htrId' => $htrId,
-				'orderBy' => 'updated_at',
-				'orderDir' => 'desc'
-			)
-		);
-		$storedHtr = json_decode($itemResultJson, true);
-		$isItemInHtrDb = !empty($storedHtr['data'][0]['id']) ? true : false;
-
-		if (!$isItemInHtrDb) {
-
-			if (!array_key_exists('ImageLink', $item)) {
-				$this->currentErrors += 1;
-				$this->errorMessages[$this->currentErrors] = 'No ImageLink available for this item.';
-				return;
-			}
-
-			$imageUrl = $this->buildImageUrlFromItem($item);
-
-			$this->insertItem($itemId, $imageUrl, $htrId);
-
-		} else {
-
-			$storedHtrData = $storedHtr['data'][0];
-			$processId = intval($storedHtrData['process_id']);
-			$id = intval($storedHtrData['id']);
-
-			// can be updated
-			if (in_array($storedHtrData['htr_status'], array('CREATED', 'WAITING', 'RUNNING'))) {
-
-				$transkribusData = $this->transkribusClient->getJSONDatafromTranskribus($processId);
-
-				if (!$transkribusData) {
-					$this->currentErrors += 1;
-					$this->errorMessages[$this->currentErrors] = 'Could not get data from Transkribus.';
-					return;
-				}
-
-				$transkribusDataArray = json_decode($transkribusData, true);
-
-				if ($transkribusDataArray['status'] === 'FAILED') {
-					$this->currentErrors += 1;
-					$this->errorMessages[$this->currentErrors] = 'Transkribus processing failed.';
-					return;
-				}
-
-				if ($transkribusDataArray['status'] === 'FINISHED') {
-					$transkribusXmlData = $this->transkribusClient->getPageXMLfromTranskribus($processId);
-
-					if (!$transkribusXmlData) {
-						$this->currentErrors += 1;
-						$this->errorMessages[$this->currentErrors] = 'Could not get PAGE XML data from Transkribus.';
-						return;
-					}
-
-					// save the data
-					$updateData = array(
-						'htr_status'         => 'FINISHED',
-						'transcription_data' => $transkribusXmlData
-					);
-
-					$updateQuery = $this->updateItem($id, $updateData);
-				}
-
-			} else { // nothing is processed, update success
-
-				$this->currentSuccess += 1;
-
-			}
-
-		}
-	}
-
-	protected function updateItem($id, $data)
-	{
-		$updateEntry = $this->transkribusClient->updateDataToTranscribathon($id, $data);
-
-		if (!$updateEntry) {
-			$this->currentErrors += 1;
-			$this->errorMessages[$this->currentErrors] = $this->transkribusClient->getLastError();
-		} else {
-			$this->currentSuccess += 1;
-		}
-	}
-
-	protected function insertItem($itemId, $imageUrl, $htrId)
-	{
-
-		$createEntry = $this->transkribusClient->submitDataToTranskribus($itemId, $imageUrl, $htrId);
-
-		if (!$createEntry) {
-			$this->currentErrors += 1;
-			$this->errorMessages[$this->currentErrors] = $this->transkribusClient->getLastError();
-		}
-	}
-
-	public function buildImageUrlFromItem($item)
-	{
-		$imageUrl = json_decode($item['ImageLink'], true)['@id'];
-		$imageUrl = str_replace('https://', '', $imageUrl);
-		$imageUrl = 'https://' . $imageUrl;
-
-		return $imageUrl;
-	}
+function sanitizeDigit ($string) {
+	return filter_var($string, FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))) ?: null;
 }
 
-$storyId = $_GET['storyId'] ?? null;
-$htrId   = $_GET['htrId']   ?? null;
-
-if ($storyId && $htrId) {
-
-	$HtrData = new HtrData($config);
-
-	// get itemData with Java API
-	$oldApiEndpoint .= '/stories/' . $storyId;
-	$queryOptions = array(
-		'http' => array(
-			'ignore_errors' => true,
-			'header' => array(
-				'Content-type: application/json'
-			),
-			'method' => 'GET'
-		)
-	);
-
-	$storyData = $HtrData->sendQuery($oldApiEndpoint, $queryOptions);
-
-	if (!$storyData) {
-		echo '{"error":"An error occurred when consuming the Java API."}';
-		exit(1);
-	}
-
-	$storyDataArray = json_decode($storyData, true);
-
-	$sendStoryData = $HtrData->sendStoryData($storyDataArray[0]['Items'], $htrId);
-
-	echo $sendStoryData;
-
-	exit(0);
+function e($string) {
+	echo $string;
 }
 
-$htrModel = $_GET['htrModel'] ?? null;
-
-if ($htrModel) {
-
-	$HtrModelData = new TranskribusClient($config);
-
-	$htrModels = $HtrModelData->getAllHtrModels();
-
-	echo $htrModels;
-
-	exit(0);
-}
+$itemId = sanitizeDigit($_GET['itemId']);
+$storyId = sanitizeDigit($_GET['storyId']);
 
 ?>
 
@@ -269,7 +38,7 @@ if ($htrModel) {
 			display: block;
 		}
 		.main-h {
-			width: 400px;
+			width: 430px;
 			margin: 50px auto;
 		}
 		.transkribus-nav {
@@ -354,10 +123,15 @@ if ($htrModel) {
 
 	    <div class="tr-form" x-data="htrForm">
 
-	    	<h2>Import by Transcribathon story ID and HTR model</h2>
+	    	<h2>Import stories or items by HTR model</h2>
 
 	    	<p>
-	    		<label>Story ID<input type="number" x-model="storyId" /></label>
+					<?php if (!$itemId) { ?>
+						<label>Story ID<input type="number" x-model.number="storyId" /></label> or
+					<?php } ?>
+					<?php if (!$storyId) { ?>
+						<label>Item ID<input type="number" x-model.number="itemId" /></label>
+					<?php } ?>
 	    		<label>HTR Model ID
 	    			<input type="text" x-model="htrId" list="htrList"/>
 	    			<datalist id="htrList">
@@ -577,11 +351,6 @@ if ($htrModel) {
 		    <a class="back-button" href="https://europeana.transcribathon.local/documents/" style="color: #0a72cc;">Back To Transcribathon</a>
 		</div>
 
-        <!-- Footer -->
-		<footer>
-		    <p style="font-size:10px;">Author: Tommy Schmucker</p>
-
-		</footer>
     </div>
 <script>
 
@@ -589,8 +358,11 @@ document.addEventListener('alpine:init', () => {
 
 	Alpine.data('htrForm', () => ({
 
+		loc: window.location,
+		pathname: '/wp-content/themes/transcribathon/htr-client/request.php',
 		htrModels: {},
-		storyId: null,
+		storyId: <?php e($storyId ?? 'null'); ?>,
+		itemId: <?php e($itemId ?? 'null'); ?>,
 		htrId: null,
 		percent: 0,
 		processing: false,
@@ -606,11 +378,10 @@ document.addEventListener('alpine:init', () => {
 
 		async init () {
 
-			const loc = window.location;
 			const params = new URLSearchParams({
 				htrModel: '1'
 			});
-			const url = loc.origin + loc.pathname + '?' + params;
+			const url = this.loc.origin + this.pathname + '?' + params;
 
 			this.htrModels = await (await fetch(url)).json();
 
@@ -624,12 +395,18 @@ document.addEventListener('alpine:init', () => {
 
 		async getHtrData () {
 
-			const loc = window.location;
+			if ((!this.storyId && !this.itemId) || !this.htrId) {
+
+				return;
+
+			}
+
 			const params = new URLSearchParams({
 				storyId: this.storyId,
+				itemId: this.itemId,
 				htrId: this.htrId
 			});
-			const url = loc.origin + loc.pathname + '?' + params;
+			const url = this.loc.origin + this.pathname + '?' + params;
 
 			this.disabled = true;
 			this.processing = true;

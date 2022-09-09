@@ -51,7 +51,7 @@ namespace WPDataAccess {
 		/**
 		 * Option wpda_version and it's default value
 		 */
-		const OPTION_WPDA_VERSION = [ 'wpda_version', '5.2.3' ];
+		const OPTION_WPDA_VERSION = [ 'wpda_version', '5.2.4' ];
 		/**
 		 * Option wpda_setup_error and it's default value
 		 */
@@ -1591,6 +1591,21 @@ namespace WPDataAccess {
 					return $item_default_value;
 			}
 		}
+
+		/**
+		 * Write error to WordPress log file
+		 *
+		 * @param string $errmsg Error message
+		 * @return void
+		 */
+		public static function wpda_log_wp_error( $errmsg ) {
+			$dbt = debug_backtrace();
+			$clr = array_shift( $dbt );
+
+			error_log( "WP Data Access error in {$clr['file']}:{$clr['line']}" );
+			error_log( $errmsg );
+		}
+
 	}
 
 }

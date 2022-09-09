@@ -1678,6 +1678,16 @@ EOT;
         if ( 'on' !== $include_data ) {
             return true;
         }
+        
+        if ( $copy_schema_name_src === $copy_schema_name_dst ) {
+            // No need for buffering if source database === destination database
+            $result = $wpdadb_dst->query( "insert `{$copy_table_name_dst}` select * from `{$copy_table_name_src}`" );
+            // db call ok; no-cache ok.
+            $wpdadb_src->suppress_errors( $suppress_wpdadb_src );
+            $wpdadb_dst->suppress_errors( $suppress_wpdadb_dst );
+            return $result;
+        }
+        
         // Check if buffering is needed for this table
         $settings_db = WPDA_Table_Settings_Model::query( $copy_table_name_src, $copy_schema_name_src );
         
@@ -2626,10 +2636,11 @@ EOT;
         echo  esc_attr( $user ) ;
         ?>">
 							<br/>
-							<label for="edit_remote_passwd" style="vertical-align:baseline;" class="database_item_label">MySQL password:</label>
+							<label for="edit_remote_passwd" style="vertical-align:baseline;" class="database_item_label" >MySQL password:</label>
 							<input type="password" name="edit_remote_passwd" id="edit_remote_passwd" value="<?php 
         echo  esc_attr( $passwd ) ;
         ?>" autocomplete="new-password">
+							<i class="fas fa-eye" onclick="wpda_toggle_password('edit_remote_passwd', event)" style="cursor:pointer"></i>
 							<br/>
 							<label for="edit_remote_port" style="vertical-align:baseline;" class="database_item_label">MySQL port:</label>
 							<input type="text" name="edit_remote_port" id="edit_remote_port" value="<?php 
@@ -2764,6 +2775,7 @@ EOT;
 								<br/>
 								<label for="remote_passwd" style="vertical-align:baseline;" class="database_item_label">MySQL password:</label>
 								<input type="password" name="remote_passwd" id="remote_passwd" autocomplete="new-password">
+								<i class="fas fa-eye" onclick="wpda_toggle_password('remote_passwd', event)" style="cursor:pointer"></i>
 								<br/>
 								<label for="remote_port" style="vertical-align:baseline;" class="database_item_label">MySQL port:</label>
 								<input type="text" name="remote_port" id="remote_port" value="3306">

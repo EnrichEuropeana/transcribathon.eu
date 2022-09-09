@@ -1238,9 +1238,18 @@ class WPDA_Data_Tables
         }
         
         if ( $this->serverSide ) {
-            $row_count_estimate = WPDA::get_row_count_estimate( $database, $table_name, $table_settings );
-            $rows_estimate = $row_count_estimate['row_count'];
-            $do_real_count = $row_count_estimate['do_real_count'];
+            
+            if ( isset( $_REQUEST['records_total'] ) && is_numeric( $_REQUEST['records_total'] ) && (!isset( $json->wpda_count_on_each_request ) || false === $json->wpda_count_on_each_request) ) {
+                // Prevent row count on each request
+                $rows_estimate = sanitize_text_field( wp_unslash( $_REQUEST['records_total'] ) );
+                // input var okay.
+                $do_real_count = false;
+            } else {
+                $row_count_estimate = WPDA::get_row_count_estimate( $database, $table_name, $table_settings );
+                $rows_estimate = $row_count_estimate['row_count'];
+                $do_real_count = $row_count_estimate['do_real_count'];
+            }
+        
         } else {
             $rows_estimate = count( $rows_final );
             $do_real_count = false;
@@ -1272,12 +1281,19 @@ class WPDA_Data_Tables
             } else {
                 
                 if ( '' !== $where ) {
-                    // Count rows in selection (only necessary if a search criteria was entered).
-                    $query3 = "select count(*) from `{$wpdadb->dbname}`.`{$table_name}` {$where}";
-                    $count_rows_filtered = $wpdadb->get_results( $query3, 'ARRAY_N' );
-                    // phpcs:ignore Standard.Category.SniffName.ErrorCode
-                    $count_table_filtered = $count_rows_filtered[0][0];
-                    // Number of rows in table.
+                    
+                    if ( isset( $_REQUEST['records_filtered'] ) && is_numeric( $_REQUEST['records_filtered'] ) && (!isset( $json->wpda_count_on_each_request ) || false === $json->wpda_count_on_each_request) ) {
+                        $count_table_filtered = sanitize_text_field( wp_unslash( $_REQUEST['records_filtered'] ) );
+                        // input var okay.
+                    } else {
+                        // Count rows in selection (only necessary if a search criteria was entered).
+                        $query3 = "select count(*) from `{$wpdadb->dbname}`.`{$table_name}` {$where}";
+                        $count_rows_filtered = $wpdadb->get_results( $query3, 'ARRAY_N' );
+                        // phpcs:ignore Standard.Category.SniffName.ErrorCode
+                        $count_table_filtered = $count_rows_filtered[0][0];
+                        // Number of rows in table.
+                    }
+                
                 } else {
                     // No search criteria entered: # filtered rows = # table rows.
                     $count_table_filtered = $count_table;

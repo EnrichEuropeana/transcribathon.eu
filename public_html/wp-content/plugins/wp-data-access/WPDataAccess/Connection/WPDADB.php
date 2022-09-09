@@ -318,6 +318,19 @@ namespace WPDataAccess\Connection {
 			}
 		}
 
+		public static function change_password( $database, $passwd ) {
+			self::load_remote_databases();
+
+			if ( false === self::get_remote_database( $database, true ) ) {
+				return false;
+			} else {
+				self::$remote_databases[ $database ]['password'] = $passwd;
+				self::save_remote_databases();
+
+				return true;
+			}
+		}
+
 		/**
 		 * Get database connection
 		 *

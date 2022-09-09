@@ -4,7 +4,7 @@ Tags: data, table, tables, datatables, database, csv, sql server, progresql, ora
 Donate link: https://www.paypal.me/kpsch
 Requires at least: 4.8.3
 Tested up to: 6.0
-Stable tag: 5.2.3
+Stable tag: 5.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
