@@ -8,35 +8,36 @@ Description: Gets item data and builds the item page with htr editor
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
-
-
+// Transkribus Client, include required files
+require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
+require_once(get_stylesheet_directory() . '/htr-client/config.php');
 
 use FactsAndFiles\Transcribathon\TranskribusClient;
 
-
 function _TCT_item_page_htr( $atts) {
 
-
-    // Transkribus Client, include required files
-    require(get_stylesheet_directory() . '/lib/transkribus-client/TranskribusClient.php');
-    require(get_stylesheet_directory() . '/lib/transkribus-client/config.php');
-
-
+    global $config;
 
     // create new Transkribus client and inject configuration
     $transkribusClient = new TranskribusClient($config);
 
     // get the HTR-transcribed data from database if there is one
-    $htrDataJson = $transkribusClient->getDataFromTranscribathon($_GET['item']);
+    $htrDataJson = $transkribusClient->getDataFromTranscribathon(
+        null,
+        array(
+            'itemId' => $_GET['item'],
+		        'orderBy' => 'updated_at',
+		        'orderDir' => 'desc'
+        )
+    );
 
     // extract the data itself
     $htrDataArray = json_decode($htrDataJson, true);
-    $htrData = $htrDataArray['data']['data'];
+    $htrData = $htrDataArray['data'][0]['transcription_data'];
 
-    // show data if existent
-    // if ($htrData) {
-    // 	echo $htrData;
-    // }
+     /* if ($htrData) { */
+     /* 	echo $htrData; */
+     /* } */
 
 
     if (isset($_GET['item']) && $_GET['item'] != "") {

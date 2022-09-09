@@ -7,8 +7,8 @@ Description: Gets item data and builds the item page
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
-require(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
-require(get_stylesheet_directory() . '/htr-client/config.php');
+require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
+require_once(get_stylesheet_directory() . '/htr-client/config.php');
 
 use FactsAndFiles\Transcribathon\TranskribusClient;
 
