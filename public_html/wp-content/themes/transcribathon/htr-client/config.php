@@ -12,8 +12,8 @@ $config = array(
 		'grantType'        => 'password'
 	),
 	"transcribathon" => array(
-		"endpoint" => getenv('TP_API_ENDPOINT'),
-		"apiToken" => getenv('TP_API_TOKEN')
+		"endpoint" => getenv('TP_API_V2_ENDPOINT'),
+		"apiToken" => getenv('TP_API_V2_TOKEN')
 	)
 );
 
