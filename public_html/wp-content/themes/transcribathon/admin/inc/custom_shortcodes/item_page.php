@@ -252,12 +252,12 @@ function _TCT_item_page( $atts ) {
                                 }
                             $editorTab .= '</div>';
                         $editorTab .= '</div>';
-                    $editorTab .= '</div>';
-                            //
-                        $editorTab .= "</div>";
+                        //
                         $editorTab .= "<div role='button' id='tr-view-start-transcription'>";
                             $editorTab .= "<i id='tr-view-btn-i' style=\"font-size:15px;margin-right:2px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>";
-                            $editorTab .= "<span id='tr-view-btn-text'>Edit</span>";
+                        $editorTab .= "</div>";
+                    $editorTab .= '</div>';
+                            //
                         $editorTab .= "</div>";
                         $editorTab .= "<div id='lang-holder'></div>";
                     // $editorTab .= "</div>";
@@ -2024,8 +2024,9 @@ function _TCT_item_page( $atts ) {
                     foreach($itemData['Properties'] as $property){
                         if($property['PropertyType'] == 'Link' ) {
                             
-                            $content .= "<div class='link-single' title=".$property['PropertyDescription']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a></div>";
-                            
+                            $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
+                            $content .= "<p class='link-description' style='display:none;'>" . $property['PropertyDescription'] . "</p>";
+                            $content .= "</div>";
                         }
                     }
                     $content .= "</div>";
@@ -2041,164 +2042,164 @@ function _TCT_item_page( $atts ) {
                 $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;padding: 0 50px;'>";
                     //Contributor
                     if($itemData['StorydcContributor']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Contributor</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcContributor']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Contributor</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcContributor']) . "</span>";
                         $content .= "</div>";
                     }
                     //Creator
                     if($itemData['StorydcCreator']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Creator</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcCreator']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Creator</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcCreator']) . "</span>";
                         $content .= "</div>";
                     }
                     // Story Source
                     if($itemData['StorydcSource']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Story Source</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Story Source</span>";
                             $source = array_unique(explode(' || ', $itemData['StorydcSource']));
-                            $content .= "<p class='meta-p'>" . implode('</br>', $source) . "</p>";
+                            $content .= "<span class='meta-p'>" . implode('</br>', $source) . "</span>";
                         $content .= "</div>";
                     }
                     //Identifier
                     if($itemData['StoryExternalRecordId']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Identifier</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Identifier</span>";
                             if(substr($itemData['StoryExternalRecordId'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . $itemData['StoryExternalRecordId'] . "</a></p>";
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . $itemData['StoryExternalRecordId'] . "</a></span>";
                             } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</p>";
+                                $content .= "<span class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</span>";
                             }
                         $content .= "</div>";
                     }
                     //Document Language
                     if($itemData['StorydcLanguage']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Document Language</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Document Language</span>";
                             $dcLanguage = array_unique(explode(' || ', $itemData['StorydcLanguage']));
-                            $content .= "<p class='meta-p'>" . implode('</br>', $dcLanguage) . "</p>";
+                            $content .= "<span class='meta-p'>" . implode(' / ', $dcLanguage) . "</span>";
                         $content .= "</div>";
                     }
                     // Provider Language
                     if($itemData['StoryedmLanguage']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Provider Language</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmLanguage']."</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Provider Language</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmLanguage']."</span>";
                         $content .= "</div>";
                     }
                     // Publisher
                     if($itemData['StoryedmProvider']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Publisher</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Publisher</span>";
                             if(substr($itemData['StoryedmProvider'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></p>";
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></span>";
                             } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryedmProvider'] . "</p>";
+                                $content .= "<span class='meta-p'>" . $itemData['StoryedmProvider'] . "</span>";
                             }
                         $content .= "</div>";
                     }
                     // Rights
                     if($itemData['StoryedmRights']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Rights</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Rights</span>";
                             $edmRights = array_unique(explode(' || ', $itemData['StoryedmRights']));
                             foreach($edmRights as $right) {
                                 if(substr($right, 0, 4) == 'http'){
-                                    $content .= "<p class='meta-p'><a target='_blank' href='".$right."'>" . $right . "</a></p>";
+                                    $content .= "<span class='meta-p'><a target='_blank' href='".$right."'>" . $right . "</a></span>";
                                 } else {
-                                    $content .= "<p class='meta-p'>" . $right . "</p>";
+                                    $content .= "<span class='meta-p'>" . $right . "</span>";
                                 }
                             }
                         $content .= "</div>";
                     }
                     // Image Rights
                     if($itemData['StorydcRights']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Image Rights</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Image Rights</span>";
                             $imgRights = array_unique(explode(' || ', $itemData['StorydcRights']));
                             foreach($imgRights as $iRight) {
                                 if(substr($iRight, 0, 4) == 'http'){
-                                    $content .= "<p class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></p>";
+                                    $content .= "<span class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></span>";
                                 } else {
-                                    $content .= "<p class='meta-p'>" . $iRight . "</p>";
+                                    $content .= "<span class='meta-p'>" . $iRight . "</span>";
                                 }
                             }
                         $content .= "</div>";
                     }
                     // Type
                     if($itemData['StorydcType']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Type</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcType']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Type</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydcType']) . "</span>";
                         $content .= "</div>";
                     }
                     // Medium
                     if($itemData['StorydctermsMedium']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Medium</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydctermsMedium']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Medium</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydctermsMedium']) . "</span>";
                         $content .= "</div>";
                     }
                     // Creation Start
                     if($itemData['StoryedmBegin']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Creation Start</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', "</br>", $itemData['StoryedmBegin']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Creation Start</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmBegin']) . "</span>";
                         $content .= "</div>";
                     }
                     // Creation End
                     if($itemData['StoryedmEnd']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Creation End</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', "</br>", $itemData['StoryedmEnd']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Creation End</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmEnd']) . "</span>";
                         $content .= "</div>";
                     }
                     // Providing Country
                     if($itemData['StoryedmCountry']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Providing Country</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmCountry']."</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Providing Country</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmCountry']."</span>";
                         $content .= "</div>";
                     }
                     // Institution
                     if($itemData['StoryedmDataProvider']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Institution</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmDataProvider']."</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Institution</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmDataProvider']."</span>";
                         $content .= "</div>";
                     }
                     // Dataset
                     if($itemData['StoryedmDatasetName']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Dataset</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmDatasetName']."</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Dataset</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmDatasetName']."</span>";
                         $content .= "</div>";
                     }
                     // Source Url
                     if($itemData['StoryedmIsShownAt']) {
-                        $content .= "<div class='single-person'>";
-                            $content .= "<p class='mb-1'>Source Url</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Source Url</span>";
                             if(substr($itemData['StoryedmIsShownAt'], 0, 4) == 'http'){
                                 $content .= "<a class='meta-p' target='_blank' href='".$itemData['StoryedmIsShownAt']."'>" . $itemData['StoryedmIsShownAt'] . "</a>";
                             } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryedmIsShownAt'] . "</p>";
+                                $content .= "<span class='meta-p'>" . $itemData['StoryedmIsShownAt'] . "</span>";
                             }
                         $content .= "</div>";
                     }
                     // Story Title
-                    $content .= "<div class='single-person'>";
-                        $content .= "<p class='mb-1'>Story Title</p>";
-                        $content .= "<p class='meta-p'>". str_replace(' || ', "</br>", $itemData['StorydcTitle']) . "</p>";
+                    $content .= "<div class='single-meta'>";
+                        $content .= "<span class='mb-1'>Story Title</span>";
+                        $content .= "<span class='meta-p'>". str_replace(' || ', "</br>", $itemData['StorydcTitle']) . "</span>";
                     $content .= "</div>";
                     // Story Landing Page
                     if($itemData['StoryedmLandingPage']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Story Landing Page</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Landing Page</span>";
                             if(substr($itemData['StoryedmLandingPage'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmLandingPage']."'>" . $itemData['StoryedmLandingPage'] . "</a></p>";
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryedmLandingPage']."'>" . substr($itemData['StoryedmLandingPage'], 0, 25) . "</a></span>";
                             } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryedmLandingPage'] . "</p>";
+                                $content .= "<span class='meta-p'>" . $itemData['StoryedmLandingPage'] . "</span>";
                             }
                         $content .= "</div>";
                     }
@@ -2206,7 +2207,7 @@ function _TCT_item_page( $atts ) {
                     //var_dump($itemData);
                     // Parent Story
                     if($itemData['StoryParentStory']) {
-                        $content .= "<div class='single-person'>";
+                        $content .= "<div class='single-meta'>";
                             $content .= "<p class='mb-1'>Parent Story</p>";
                             if(substr($itemData['StoryParentStory'], 0, 4) == 'http'){
                                 $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryParentStory']."'>" . $itemData['StoryParentStory'] . "</a></p>";

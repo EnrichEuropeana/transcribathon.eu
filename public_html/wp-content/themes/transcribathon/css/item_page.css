@@ -855,7 +855,7 @@ div.openseadragon-canvas > canvas > svg {
     list-style-type: none;
 }
 .tab-list div {
-    color: #0a72cc!important;
+    color: #2b2b2b!important;
     position: relative;
     font-size: 25px;
     -webkit-transition: 0.3s;
@@ -882,10 +882,18 @@ div.openseadragon-canvas > canvas > svg {
 .tab-status {
     border-radius: 50%;
     border: 1px solid;
-    font-size: 10px;
+    font-size: 6px;
+    position: relative;
+    bottom: 2px;
+    margin-right: 3px;
 }
 .tab-list div.active {
-    color: #000!important;
+    color: #0a72cc!important;
+}
+.tab-list span {
+    font-family: 'Dosis', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.025em;
 }
 .active {
     background: transparent;
@@ -1089,6 +1097,12 @@ input#person-deathPlace-input {
     margin-bottom: 10px;
     font-weight: 400;
 }
+.single-meta {
+    padding: 5px 10px;
+    border-bottom: 1px solid #f8f8f8;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
 .link-single a {
     color: #0a72cc!important;
 }
@@ -1144,15 +1158,18 @@ input#person-deathPlace-input {
 /* Vertical Split */
 .panel-right #tr-view-start-transcription {
     display: unset;
-    background-color: #0a72cc;
-    padding: 5px;
-    color: #fff;
+    padding: 3px;
+    color: #000;
     float: right;
     border-radius: 5px;
     cursor: pointer;
     min-width: 70px;
     text-align: center;
     margin-left: 10px;
+}
+.panel-right #tr-view-start-transcription:hover {
+    background-color: #0a72cc;
+    color: #fff;
 }
 .panel-right-tab-menu #mce-wrapper-transcription {
     height: 75%;
@@ -1173,7 +1190,7 @@ input#person-deathPlace-input {
     line-height: 1.4em;
 }
 .panel-right #item-data-header {
-    height: 13%;
+    height: fit-content;
     padding-bottom: 0;
 }
 .panel-right #item-data-content {
@@ -1516,10 +1533,13 @@ input#person-deathPlace-input {
     color: #0a72cc;
     font-weight: 600;
     padding: 0!important;
+    font-size: 14px;
 }
 .meta-p {
     margin: 0 0 0 5px!important;
-    font-weight: 300;
+    font-weight: 400;
+    float: right;
+    font-size: 13px;
 }
 .meta-sticker {
     display: inline-block;
@@ -1945,6 +1965,8 @@ input#person-deathPlace-input {
 .tab-h.it {
     position: relative;
     left: 3px;
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 0.025em;
 }
 @media screen and (min-width: 851px) and (max-width: 1200px) {
     .slide-sticker {

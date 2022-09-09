@@ -52,27 +52,26 @@ function installEventListeners() {
     }
     // Item Page, Full screen transcription view, toggle between view and edit
     const editButton = document.querySelector('#tr-view-start-transcription');
-    const editBtnText = document.querySelector('#tr-view-btn-text');
     if(editButton) {
         editButton.addEventListener('click', function() {
-            if(editBtnText.textContent === 'Edit') {
+            if(document.querySelector('#tr-view-btn-i').classList.contains('fa-pencil')) {
                 document.querySelector('#transcription-view').style.display = 'none';
                 document.querySelector('#tr-history').style.visibility = 'hidden';
                 document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-                document.querySelector('#tr-view-btn-i').style.display = 'none';
+                document.querySelector('#tr-view-btn-i').classList.remove('fa', 'fa-pencil');
+                document.querySelector('#tr-view-btn-i').classList.add('fas', 'fa-times');
                 document.querySelector('#editor-tab').style.overflowY = 'hidden';
                 document.querySelector('#transcription-status-indicator').style.display = 'unset';
                 document.querySelector('#transcription-section').style.height = 'inherit';
-                editBtnText.textContent = 'X';
             } else {
                 document.querySelector('#transcription-view').style.display = 'block';
                 document.querySelector('#tr-history').style.visibility = 'unset';
                 document.querySelector('#mce-wrapper-transcription').style.display = 'none';
-                document.querySelector('#tr-view-btn-i').style.display = 'inline-block';
+                document.querySelector('#tr-view-btn-i').classList.remove('fas', 'fa-times');
+                document.querySelector('#tr-view-btn-i').classList.add('fa', 'fa-pencil');
                 document.querySelector('#editor-tab').style.overflowY = 'auto';
                 document.querySelector('#transcription-status-indicator').style.display = 'none';
                 document.querySelector('#transcription-section').style.height = 'fit-content';
-                editBtnText.textContent = 'Edit';
             }
         }, true);
     }
@@ -3199,6 +3198,7 @@ ready(() => {
         paraToggler.addEventListener('click', descToggler, false);
     }
     // People collapse on Item page
+    // TODO write single function for all collapses on item page
     const singlePeople = document.querySelectorAll('.single-person');
     if(singlePeople) {
         for(let person of singlePeople) {
@@ -3211,6 +3211,21 @@ ready(() => {
                         person.querySelector('.person-description').style.display = 'none';
                     }
             });
+            }
+        }
+    }
+    const singleLinks = document.querySelectorAll('.link-single');
+    if(singleLinks) {
+        for(let link of singleLinks) {
+            if(link.querySelector('.link-description')) {
+                link.style.cursor = 'pointer';
+                link.addEventListener('click', function() {
+                    if(link.querySelector('.link-description').style.display === 'none') {
+                        link.querySelector('.link-description').style.display = 'block';
+                    } else {
+                        link.querySelector('.link-description').style.display = 'none';
+                    }
+                })
             }
         }
     }
