@@ -41,6 +41,19 @@ var tct_viewer = (function($, document, window) {
 			toggleFS();
 		});
 		jQuery('#startTranscription').click(function() {
+			document.querySelector('#tr-tab').click();
+			toggleFS();
+		});
+		jQuery('#startDescription').click(function() {
+			document.querySelector('#desc-tab').click();
+			toggleFS();
+		});
+		jQuery('#startLocation').click(function() {
+			document.querySelector('#loc-tab').click();
+			toggleFS();
+		});
+		jQuery('#startEnrichment').click(function() {
+			document.querySelector('#tagi-tab').click();
 			toggleFS();
 		});
 

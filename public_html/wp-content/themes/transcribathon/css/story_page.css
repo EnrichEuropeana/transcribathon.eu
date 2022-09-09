@@ -91,6 +91,8 @@ ul.story-navigation-content-container li {
     font-size: 20px;
     text-align: center;
     padding: 5px;
+    position: relative;
+    bottom: 30px;
 }
 .start-transcription:hover {
     background: #0a72cc;

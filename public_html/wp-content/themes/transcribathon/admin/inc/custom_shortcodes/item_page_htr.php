@@ -18,8 +18,8 @@ function _TCT_item_page_htr( $atts) {
 
 
     // Transkribus Client, include required files
-    require(get_stylesheet_directory() . '/lib/transkribus-client/TranskribusClient.php');
-    require(get_stylesheet_directory() . '/lib/transkribus-client/config.php');
+    include($_SERVER["DOCUMENT_ROOT"].'/htr-import/src/TranskribusClient.php');
+    include($_SERVER["DOCUMENT_ROOT"].'/htr-import/example/config.php');
 
 
 

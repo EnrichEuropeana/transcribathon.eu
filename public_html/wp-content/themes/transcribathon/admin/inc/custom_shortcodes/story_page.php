@@ -94,15 +94,15 @@ function _TCT_get_document_data( $atts ) {
     //////// Carousel Test
 
 
-        $content .= '<div class="story-navigation-area">';
-            $content .= '<ul class="story-navigation-content-container left" style="">';
-                $content .= '<li><a href="'.home_url().'/documents/" style="text-decoration: none;">Stories</a></li>';
-                $content .= '<li><i class="fal fa-angle-right"></i></li>';
-                $content .= '<li>';
-                $content .= $storyData['dcTitle'];
-                $content .= '</li>';
-            $content .= '</ul>';
-        $content .= '</div>';
+        // $content .= '<div class="story-navigation-area">';
+        //     $content .= '<ul class="story-navigation-content-container left" style="">';
+        //         $content .= '<li><a href="'.home_url().'/documents/" style="text-decoration: none;">Stories</a></li>';
+        //         $content .= '<li><i class="fal fa-angle-right"></i></li>';
+        //         $content .= '<li>';
+        //         $content .= $storyData['dcTitle'];
+        //         $content .= '</li>';
+        //     $content .= '</ul>';
+        // $content .= '</div>';
 
         /* New- Start Transcription button */
         $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$descrLink."' style='font-family:\"Dosis\";'><b>🖉  Start Transcription</b></a>";
@@ -363,16 +363,6 @@ function _TCT_get_document_data( $atts ) {
                         }
                     }
                 }
-                //var_dump($storyData['dcContributor']);
-                //   var_dump($storyData['edmAgent']);
-                //   var_dump($personsInStory);
-                //   var_dump($storyData['dcContributor']);
-                //  var_dump($storyData['dcCreator']);
-                // var_dump($storyContributors);
-                //  var_dump($storyData);
-                // var_dump($storyContributors);
-                // var_dump($storyPersons);
-
                 // metadata
                 $content .= "<section class='meta-section'>";
                     $content .= "<p id='meta-collapse-btn' class='metadata-h' role='button'><span><b><i style='margin-right:5px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</b></span><span><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span></p>";

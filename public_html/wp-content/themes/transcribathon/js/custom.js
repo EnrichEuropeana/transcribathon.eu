@@ -28,6 +28,20 @@ function uninstallEventListeners() {
 function installEventListeners() {
     initializeMap();
 
+    // Location editor collapse
+    const locEditor = document.querySelector('#location-position');
+    const locInput = document.querySelector('#location-input-section');
+    if(locEditor) {
+        locEditor.addEventListener('click', function() {
+            if(locInput.style.display == 'none') {
+                locInput.style.display = 'block';
+            } else {
+                locInput.style.display = 'none';
+            }
+
+        })
+    }
+
     const defaultLogContainer = document.querySelector('#default-login-container');
     // When the user clicks the button(pen on the image viewer), open the login modal
     const penLogin = document.querySelector('#lock-login');
@@ -775,6 +789,7 @@ function switchItemPageView() {
     // move tagging content
     jQuery('#full-view-map').css('height', '400px');
     jQuery('#location-section').css('display', 'block');
+    document.querySelector('.location-output').style.display = 'none';
     jQuery('#tagging-section').removeAttr('hidden');
     jQuery('#tagging-tab').html(jQuery('#full-view-tagging').html())
     jQuery('#full-view-tagging').html('')
@@ -827,6 +842,7 @@ function switchItemPageView() {
     jQuery('#full-view-map').css('height', '100%');
     jQuery('#tagging-section').attr('hidden', true);
     jQuery('#location-section').css('display', 'none');
+    document.querySelector('.location-output').style.display = 'block';
     jQuery('#full-view-tagging').html(jQuery('#tagging-tab').html())
     jQuery('#tagging-tab').html('')
 
@@ -1125,8 +1141,10 @@ function addItemProperty(itemId, userId, type, editStatusColor, statusCount, pro
 }
 // Change progress status
 function changeStatus (itemId, oldStatus, newStatus, fieldName, value, color, statusCount, e) {
-  jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').css("color", color)
-  jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').css("background-color", color)
+  // jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').innerHTML(newStatus);
+  
+  document.querySelector('#' + fieldName.replace("StatusId", "").toLowerCase() + "-status-indicator").textContent = newStatus;
+  document.querySelector('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').parentElement.style.backgroundColor = color;
 
   if (fieldName != "CompletionStatusId") {
     if (oldStatus == null) {
@@ -3179,6 +3197,22 @@ ready(() => {
     const paraToggler = document.querySelector('.descMore');
     if(paraToggler) {
         paraToggler.addEventListener('click', descToggler, false);
+    }
+    // People collapse on Item page
+    const singlePeople = document.querySelectorAll('.single-person');
+    if(singlePeople) {
+        for(let person of singlePeople) {
+            if(person.querySelector('.person-description')){
+                person.style.cursor = 'pointer';
+                person.addEventListener('click', function() {
+                    if(person.querySelector('.person-description').style.display === 'none') {
+                        person.querySelector('.person-description').style.display = 'block';
+                    } else if(person.querySelector('.person-description').style.display === 'block') {
+                        person.querySelector('.person-description').style.display = 'none';
+                    }
+            });
+            }
+        }
     }
     // Metadata collapse button on StoryPage
     const metaBtn = document.querySelector('#meta-collapse-btn');
