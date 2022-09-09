@@ -61,7 +61,6 @@ function installEventListeners() {
                 document.querySelector('#tr-view-btn-i').classList.remove('fa', 'fa-pencil');
                 document.querySelector('#tr-view-btn-i').classList.add('fas', 'fa-times');
                 document.querySelector('#editor-tab').style.overflowY = 'hidden';
-                document.querySelector('#transcription-status-indicator').style.display = 'unset';
                 document.querySelector('#transcription-section').style.height = 'inherit';
             } else {
                 document.querySelector('#transcription-view').style.display = 'block';
@@ -70,7 +69,6 @@ function installEventListeners() {
                 document.querySelector('#tr-view-btn-i').classList.remove('fas', 'fa-times');
                 document.querySelector('#tr-view-btn-i').classList.add('fa', 'fa-pencil');
                 document.querySelector('#editor-tab').style.overflowY = 'auto';
-                document.querySelector('#transcription-status-indicator').style.display = 'none';
                 document.querySelector('#transcription-section').style.height = 'fit-content';
             }
         }, true);
