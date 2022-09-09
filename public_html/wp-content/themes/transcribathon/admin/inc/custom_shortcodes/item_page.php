@@ -15,7 +15,7 @@ use FactsAndFiles\Transcribathon\TranskribusClient;
 date_default_timezone_set('Europe/Berlin');
 
 function _TCT_item_page( $atts ) {
-    global $ultimatemember;
+    global $ultimatemember, $config;
     if (isset($_GET['item']) && $_GET['item'] != "") {
         // Set request parameters for image data
         $requestData = array(
@@ -48,11 +48,17 @@ function _TCT_item_page( $atts ) {
         // create new Transkribus client and inject configuration
         $transkribusClient = new TranskribusClient($config);
         // get the HTR-transcribed data from database if there is one
-        var_dump($_GET['item']);
-        $htrDataJson = $transkribusClient->getDataFromTranscribathon($_GET['item']);
+        $htrDataJson = $transkribusClient->getDataFromTranscribathon(
+            null,
+            array(
+                'itemId' => $_GET['item'],
+		            'orderBy' => 'updated_at',
+		            'orderDir' => 'desc'
+            )
+        );
         // extract the data itself
         $htrDataArray = json_decode($htrDataJson, true);
-        $htrData = $htrDataArray['data']['data'];
+        $htrData = $htrDataArray['data'][0]['transcription_data'];
         // Get the next and previous item
         for($a = 0; $a < count($itemImages);$a++){
             if(array_search($_GET['item'], $itemImages[$a])){
