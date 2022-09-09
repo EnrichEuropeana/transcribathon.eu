@@ -86,7 +86,7 @@ function _TCT_item_page( $atts ) {
                                 width: 15em;
                             }
                             .language-select-selected{
-                                background: #0a72cc ;
+                                color: #0a72cc ;
                                 width: 15em;
                             }
                     </style>";
@@ -232,8 +232,9 @@ function _TCT_item_page( $atts ) {
                 $editorTab .= "<div class='item-page-section-headline-container transcription-headline-header'>";
                     // Add start transcription to tab view
                     $editorTab .= "<div class='transcirption-view-head'>";
-                        $editorTab .= "<div id='test-tr' class='theme-color item-page-section-headline'>";
+                        $editorTab .= "<div id='test-tr' class='theme-color item-page-section-headline' style='display:inline-block;'>";
                             $editorTab .= "TRANSCRIPTION";
+
                             // Change status & status indicator
                             $editorTab .= '<div id="transcription-status-changer" class="status-changer section-status-changer login-required" style="background-color:'.$itemData['TranscriptionStatusColorCode'].';">';
                             $editorTab .= '<span id="transcription-status-indicator" class="status-indicator"
@@ -257,11 +258,11 @@ function _TCT_item_page( $atts ) {
                                 }
                             $editorTab .= '</div>';
                         $editorTab .= '</div>';
-                        //
-                        $editorTab .= "<div role='button' id='tr-view-start-transcription'>";
-                            $editorTab .= "<i id='tr-view-btn-i' style=\"font-size:15px;margin-right:2px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>";
-                        $editorTab .= "</div>";
                     $editorTab .= '</div>';
+                    // change view/editor button
+                    $editorTab .= "<div role='button' id='tr-view-start-transcription'>";
+                        $editorTab .= "<i id='tr-view-btn-i' style=\"font-size:15px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>";
+                    $editorTab .= "</div>";
                             //
                         $editorTab .= "</div>";
                         $editorTab .= "<div id='lang-holder'></div>";
@@ -302,7 +303,7 @@ function _TCT_item_page( $atts ) {
                         $editorTab .= '<div id="transcription-language-selector" class="language-selector-background language-selector login-required">';
                             $editorTab .= '<select>';
                                 $editorTab .= '<option value="" disabled selected hidden>';
-                                    $editorTab .= 'Language(s) of the Document';
+                                    $editorTab .= 'Select Language';
                                 $editorTab .= '</option>';
                                 foreach ($languages as $language) {
                                     $editorTab .= '<option value="'.$language['LanguageId'].'">';
@@ -2447,6 +2448,39 @@ function _TCT_item_page( $atts ) {
             // Info/Transcription section
             $content .= "<div id='item-data-section' class='panel-right'>";
                 $content .= "<div id='item-data-header'>";
+                // back to story
+                $content .= "<div class='back-to-story'><a href='".home_url()."/documents/story?story=".$itemData['StoryId']."'><i class=\"fas fa-arrow-left\" style='margin-right:7.5px;'></i> Back to the Story</a></div>";
+                // view switcher
+                $content .= '<div class="view-switcher" id="switcher-casephase" style="display:inline-block;">';
+                $content .= '<ul id="item-switch-list" class="switch-list" style="z-index:10;top:0;right:0;">';
+
+                    $content .= "<li>";
+                        $content .= '<i id="popout" class="far fa-window-restore fa-rotate-180 view-switcher-icons"
+                    onclick="switchItemView(event, \'popout\')"></i>';
+                    $content .= "</li>";
+
+                    $content .= "<li>";
+                        $content .= '<i id="vertical-split" class="far fa-window-maximize fa-rotate-180 view-switcher-icons"
+                    onclick="switchItemView(event, \'vertical\')"></i>';
+                    $content .= "</li>";
+
+                    $content .= "<li>";
+                        $content .= '<i id="horizontal-split" class="far fa-window-maximize fa-rotate-90 view-switcher-icons active theme-color" style="font-size:12px;"
+                    onclick="switchItemView(event, \'horizontal\')"></i>';
+                    $content .= "</li>";
+
+                    $content .= "<li>";
+                        $content .= '<i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons"
+                    onclick="switchItemView(event, \'closewindow\')"></i>';
+                    $content .= "</li>";
+
+                    $content .= "<li>";
+                        $content .= '<i id="close-window-view" class="fas fa-times view-switcher-icons theme-color" onClick="switchItemPageView()"></i>';
+                    $content .= "</li>";
+
+                $content .= '</ul>';
+            $content .= '</div>';
+            $content .= '<div style="clear:both;margin-bottom: 10px;"></div>';
                     // Tab menu
                     $content .= '<ul id="item-tab-list" class="tab-list">';
                         $content .= "<li>";
@@ -2500,35 +2534,35 @@ function _TCT_item_page( $atts ) {
                         $content .= "</li>";
                     $content .= '</ul>';
                     // View switcher
-                    $content .= '<div class="view-switcher" id="switcher-casephase">';
-                        $content .= '<ul id="item-switch-list" class="switch-list" style="position:fixed;z-index:10;top:0;right:0;">';
+                    // $content .= '<div class="view-switcher" id="switcher-casephase">';
+                    //     $content .= '<ul id="item-switch-list" class="switch-list" style="position:fixed;z-index:10;top:0;right:0;">';
 
-                            $content .= "<li>";
-                                $content .= '<i id="popout" class="far fa-window-restore fa-rotate-180 view-switcher-icons"
-                            onclick="switchItemView(event, \'popout\')"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="popout" class="far fa-window-restore fa-rotate-180 view-switcher-icons"
+                    //         onclick="switchItemView(event, \'popout\')"></i>';
+                    //         $content .= "</li>";
 
-                            $content .= "<li>";
-                                $content .= '<i id="vertical-split" class="far fa-window-maximize fa-rotate-180 view-switcher-icons"
-                            onclick="switchItemView(event, \'vertical\')"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="vertical-split" class="far fa-window-maximize fa-rotate-180 view-switcher-icons"
+                    //         onclick="switchItemView(event, \'vertical\')"></i>';
+                    //         $content .= "</li>";
 
-                            $content .= "<li>";
-                                $content .= '<i id="horizontal-split" class="far fa-window-maximize fa-rotate-90 view-switcher-icons active theme-color" style="font-size:12px;"
-                            onclick="switchItemView(event, \'horizontal\')"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="horizontal-split" class="far fa-window-maximize fa-rotate-90 view-switcher-icons active theme-color" style="font-size:12px;"
+                    //         onclick="switchItemView(event, \'horizontal\')"></i>';
+                    //         $content .= "</li>";
 
-                            $content .= "<li>";
-                                $content .= '<i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons"
-                            onclick="switchItemView(event, \'closewindow\')"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons"
+                    //         onclick="switchItemView(event, \'closewindow\')"></i>';
+                    //         $content .= "</li>";
 
-                            $content .= "<li>";
-                                $content .= '<i id="close-window-view" class="fas fa-times view-switcher-icons theme-color" onClick="switchItemPageView()"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="close-window-view" class="fas fa-times view-switcher-icons theme-color" onClick="switchItemPageView()"></i>';
+                    //         $content .= "</li>";
 
-                        $content .= '</ul>';
-                    $content .= '</div>';
+                    //     $content .= '</ul>';
+                    // $content .= '</div>';
                 $content .= "</div>";
                 // Tab content
                 $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";

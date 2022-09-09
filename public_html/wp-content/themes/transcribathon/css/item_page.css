@@ -409,6 +409,8 @@ div.openseadragon-canvas > canvas > svg {
     display: inline-block;
     text-transform: uppercase;
     font-family: 'Dosis', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.025em;
 }
 .item-page-section-headline-right-site {
     width: 60px;
@@ -839,6 +841,39 @@ div.openseadragon-canvas > canvas > svg {
     padding-top: 1px;
     padding-left: 8px;
 }
+.panel-right #item-data-header {
+    margin-top: 0!important;
+    padding-top: 0!important;
+    margin-bottom: 10px;
+}
+.panel-right .back-to-story {
+    float: none;
+    margin-left: 10px;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    background-color: unset;
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #2b2b2b;
+}
+.panel-right .tab-list {
+    padding-top: 17px;
+    padding-left: 18px;
+    position: relative;
+    left: -3%;
+    width: 105%;
+    background-color: #f8f8f8;
+}
+.panel-bottom .back-to-story, .data-popout .back-to-story {
+    display: none;
+}
+#item-switch-list {
+    position: fixed;
+}
+.panel-right #item-switch-list {
+    position: relative;
+}
 .tab-list {
     overflow: hidden;
     background-color: inherit;
@@ -903,14 +938,16 @@ div.openseadragon-canvas > canvas > svg {
     left: 0;
 }
 .view-switcher {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    height: 25px;
+    padding: 0 15px;
 }
 .view-switcher li {
     max-height: 200px;
     width: auto;
     height: auto;
+}
+.panel-right .view-switcher {
+    float: right;
 }
 .switch-list {
     overflow: hidden;
@@ -1160,16 +1197,13 @@ input#person-deathPlace-input {
     display: unset;
     padding: 3px;
     color: #000;
-    float: right;
-    border-radius: 5px;
     cursor: pointer;
-    min-width: 70px;
     text-align: center;
-    margin-left: 10px;
+    margin-right: 25px;
+    float: right;
 }
 .panel-right #tr-view-start-transcription:hover {
-    background-color: #0a72cc;
-    color: #fff;
+    color: #0a72cc;
 }
 .panel-right-tab-menu #mce-wrapper-transcription {
     height: 75%;
@@ -1198,9 +1232,6 @@ input#person-deathPlace-input {
 }
 .panel-right #transcription-section {
     height: fit-content;
-}
-.panel-right #transcription-status-indicator {
-    display: none;
 }
 .panel-right .language-item-select {
     position: relative;
