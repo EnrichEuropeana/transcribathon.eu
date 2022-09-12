@@ -1,3 +1,5 @@
+# ignore most of installation
+
 # do not track environment variables
 .env*
 !.env.example
