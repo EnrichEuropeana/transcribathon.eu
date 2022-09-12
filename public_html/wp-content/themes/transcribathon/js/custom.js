@@ -2,20 +2,22 @@ var home_url = WP_URLs.home_url;
 var network_home_url = WP_URLs.network_home_url;
 var map, marker;
 
+// Save all button 2nd try
+function connectSaveButtons(itemId, userId, editStatusColor, statusCount) {
 
+}
 
 // jQuery(window).load(function() {
 //  initializeMap();
 // });
-
 jQuery(document).ready(function() {
-
   jQuery(".search-page-mobile-facets").click(function () {
     jQuery(this).siblings('.search-content-left').animate({ "left": -35 },    "slow");
   });
   jQuery(".facet-close-button").click(function () {
     jQuery(this).parents('.search-content-left').animate({ "left": -500 }, "slow");
   });
+ 
 
 });
 function uninstallEventListeners() {
@@ -25,6 +27,20 @@ function uninstallEventListeners() {
 }
 function installEventListeners() {
     initializeMap();
+
+    // Location editor collapse
+    const locEditor = document.querySelector('#location-position');
+    const locInput = document.querySelector('#location-input-section');
+    if(locEditor) {
+        locEditor.addEventListener('click', function() {
+            if(locInput.style.display == 'none') {
+                locInput.style.display = 'block';
+            } else {
+                locInput.style.display = 'none';
+            }
+
+        })
+    }
 
     const defaultLogContainer = document.querySelector('#default-login-container');
     // When the user clicks the button(pen on the image viewer), open the login modal
@@ -36,23 +52,24 @@ function installEventListeners() {
     }
     // Item Page, Full screen transcription view, toggle between view and edit
     const editButton = document.querySelector('#tr-view-start-transcription');
-    const editBtnText = document.querySelector('#tr-view-btn-text');
     if(editButton) {
         editButton.addEventListener('click', function() {
-            if(editBtnText.textContent === 'Edit') {
+            if(document.querySelector('#tr-view-btn-i').classList.contains('fa-pencil')) {
                 document.querySelector('#transcription-view').style.display = 'none';
                 document.querySelector('#tr-history').style.visibility = 'hidden';
                 document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-                document.querySelector('.transcription-mini-metadata').style.display = 'block';
-                document.querySelector('#tr-view-btn-i').style.display = 'none';
-                editBtnText.textContent = 'X';
+                document.querySelector('#tr-view-btn-i').classList.remove('fa', 'fa-pencil');
+                document.querySelector('#tr-view-btn-i').classList.add('fas', 'fa-times');
+                document.querySelector('#editor-tab').style.overflowY = 'hidden';
+                document.querySelector('#transcription-section').style.height = 'inherit';
             } else {
                 document.querySelector('#transcription-view').style.display = 'block';
                 document.querySelector('#tr-history').style.visibility = 'unset';
                 document.querySelector('#mce-wrapper-transcription').style.display = 'none';
-                document.querySelector('.transcription-mini-metadata').style.display = 'none';
-                document.querySelector('#tr-view-btn-i').style.display = 'inline-block';
-                editBtnText.textContent = 'Edit';
+                document.querySelector('#tr-view-btn-i').classList.remove('fas', 'fa-times');
+                document.querySelector('#tr-view-btn-i').classList.add('fa', 'fa-pencil');
+                document.querySelector('#editor-tab').style.overflowY = 'auto';
+                document.querySelector('#transcription-section').style.height = 'fit-content';
             }
         }, true);
     }
@@ -278,43 +295,33 @@ function installEventListeners() {
             searchHiddenV.value = searchInputV.value;
         }, false);
     }
-    /// Pagination Test
-////// Request keywords only on item page
-    // const keyWordLIst = [];
-    // const keyWordInput = document.querySelector('#keyword-input');
-    // const fetchAddress = TP_API_HOST + '/tp-api/properties?PropertyType=Keyword';
 
-    // if(keyWordInput) {
-    //     fetch(fetchAddress)
-    //     .then((response) => response.json())
-    //     .then((data) => console.log(data));
-    // }
-  const itemPageKeyWords = document.querySelector('#keyword-input');
-  let flag = true;
-  var keyWordList = [];
-  if(itemPageKeyWords && flag){
-  jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-      'type': 'GET',
-      'url': TP_API_HOST + '/tp-api/properties?PropertyType=Keyword'
-  },
-  function(response) {
+//   const itemPageKeyWords = document.querySelector('#keyword-input');
+//   let flag = true;
+//   var keyWordList = [];
+//   if(itemPageKeyWords && flag){
+//   jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+//       'type': 'GET',
+//       'url': TP_API_HOST + '/tp-api/properties?PropertyType=Keyword'
+//   },
+//   function(response) {
    
-    var response = JSON.parse(response);
-    var content = JSON.parse(response.content);
-    for (var i = 0; i < content.length; i++) {
-      keyWordList.push(content[i]['PropertyValue']);
-    }
-    jQuery( "#keyword-input" ).autocomplete({
-      source: keyWordList,
-      delay: 100,
-      minLength: 1
-    });
-    console.log(flag);
-    console.log(keyWordList);
-    flag = false;
-    console.log(flag);
-  });
-  }
+//     var response = JSON.parse(response);
+//     var content = JSON.parse(response.content);
+//     for (var i = 0; i < content.length; i++) {
+//       keyWordList.push(content[i]['PropertyValue']);
+//     }
+//     jQuery( "#keyword-input" ).autocomplete({
+//       source: keyWordList,
+//       delay: 100,
+//       minLength: 1
+//     });
+//     console.log(flag);
+//     console.log(keyWordList);
+//     flag = false;
+//     console.log(flag);
+//   });
+//   }
   jQuery('#startdateentry, #enddateentry').on("change paste keyup", function() {
     var dateText = jQuery(this).val();
     if(dateText.length > 0) {
@@ -503,14 +510,14 @@ function addPopUpLanguage() {
 }
 function addPopUpTranscription() {
     document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-    document.querySelector('.transcription-mini-metadata').style.display = 'none';
+    // document.querySelector('.transcription-mini-metadata').style.display = 'none';
 }
 // Switches between different views within the item page image view
 function switchItemView(event, viewName) {
   // Transcription Language selection
-  const langSelecta = document.querySelector('.transcription-mini-metadata'); //Language selector
-  const transToolBar = document.querySelector('#mytoolbar-transcription'); // Container for lang in popup
-  const transContainer = document.querySelector('#transcription-section'); // Original container for lang selector
+//   const langSelecta = document.querySelector('.transcription-mini-metadata'); //Language selector
+//   const transToolBar = document.querySelector('#mytoolbar-transcription'); // Container for lang in popup
+//   const transContainer = document.querySelector('#transcription-section'); // Original container for lang selector
   // Make tab icons inactive
   icons = document.getElementsByClassName("view-switcher-icons");
   for (i = 0; i < icons.length; i++) {
@@ -523,14 +530,16 @@ function switchItemView(event, viewName) {
   switch(viewName) {
     case 'horizontal':
         //Popup test
-        if(transToolBar.querySelector('.transcription-mini-metadata') !== null) {
-            transContainer.appendChild(langSelecta);
-        }
+        // if(transToolBar.querySelector('.transcription-mini-metadata') !== null) {
+        //     transContainer.appendChild(langSelecta);
+        // }
       // On switching views hide 'transcription-view' and show editor
       document.querySelector('#transcription-view').style.display = 'block';
       document.querySelector('#tr-history').style.visibility = 'unset';
+      document.querySelector('#editor-tab').style.overflowY = 'auto';
+      document.querySelector('#transcription-status-indicator').style.display = 'none';
       document.querySelector('#mce-wrapper-transcription').style.display = 'none';
-      document.querySelector('.transcription-mini-metadata').style.display = 'none';
+      // document.querySelector('.transcription-mini-metadata').style.display = 'none';
       document.querySelector('#tr-view-btn-i').style.display = 'inline-block';
       document.querySelector('#tr-view-btn-text').textContent = 'Edit';
 
@@ -575,13 +584,14 @@ function switchItemView(event, viewName) {
       break;
     case 'vertical':
         //Popup test
-        if(transToolBar.querySelector('.transcription-mini-metadata') === null) {
-            transToolBar.appendChild(langSelecta);
-        }
+        // if(transToolBar.querySelector('.transcription-mini-metadata') === null) {
+        //     transToolBar.appendChild(langSelecta);
+        // }
         // On switching views hide 'transcription-view' and show editor
         document.querySelector('#transcription-view').style.display = 'none';
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-        document.querySelector('.transcription-mini-metadata').style.display = 'block';
+        // document.querySelector('.transcription-mini-metadata').style.display = 'block';
+        document.querySelector('#transcription-status-indicator').style.display = 'unset';
 
       jQuery("#item-image-section").css("width", '')
       jQuery("#item-image-section").css("height", '')
@@ -619,11 +629,12 @@ function switchItemView(event, viewName) {
     case 'popout':
     
         // Move language seletor from bottom to header
-        transToolBar.appendChild(langSelecta);
+        // transToolBar.appendChild(langSelecta);
         // On switching views hide 'transcription-view' and show editor
         document.querySelector('#transcription-view').style.display = 'none';
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-        document.querySelector('.transcription-mini-metadata').style.display = 'block';
+        // document.querySelector('.transcription-mini-metadata').style.display = 'block';
+        document.querySelector('#transcription-status-indicator').style.display = 'unset';
 
       jQuery("#item-image-section").css("width", '100%')
       jQuery("#item-image-section").css("height", '100%')
@@ -648,6 +659,14 @@ function switchItemView(event, viewName) {
       jQuery("#item-data-section").draggable('enable')
       jQuery( "#item-data-section" ).resizable()
       jQuery( "#item-data-section" ).resizable('enable')
+      const resizeHandles = document.querySelectorAll('.ui-resizable-handle');
+      if(resizeHandles){
+        for(let handle of resizeHandles){
+            handle.addEventListener('mouseover', function() {
+                document.querySelector('#item-page-transcription-text').blur();
+            })
+        }
+      }
 
       jQuery("#item-data-content").css("display", 'block')
       jQuery("#item-tab-list").css("display", 'block')
@@ -657,13 +676,13 @@ function switchItemView(event, viewName) {
     case 'closewindow':
 
         // Move language selector back to bottom
-        if(transToolBar.querySelector('.transcription-mini-metadata') !== null) {
-            transContainer.appendChild(langSelecta);
-        }
+        // if(transToolBar.querySelector('.transcription-mini-metadata') !== null) {
+        //     transContainer.appendChild(langSelecta);
+        // }
               // On switching views hide 'transcription-view' and show editor
         document.querySelector('#transcription-view').style.display = 'none';
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
-        document.querySelector('.transcription-mini-metadata').style.display = 'block';
+        // document.querySelector('.transcription-mini-metadata').style.display = 'block';
 
       jQuery("#item-image-section").css("width", '100%')
       jQuery("#item-image-section").css("height", '100%')
@@ -699,7 +718,7 @@ function switchItemView(event, viewName) {
     }
 }
 // Calls script to draw linechart on the profile page
-function getTCTlinePersonalChart(what,start,ende,holder,uid){
+function getTCTlinehlChart(what,start,ende,holder,uid){
   "use strict";
   jQuery.post(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_profiletabs/scripts/linechart-script.php",
   {
@@ -767,6 +786,7 @@ function switchItemPageView() {
     // move tagging content
     jQuery('#full-view-map').css('height', '400px');
     jQuery('#location-section').css('display', 'block');
+    document.querySelector('.location-output').style.display = 'none';
     jQuery('#tagging-section').removeAttr('hidden');
     jQuery('#tagging-tab').html(jQuery('#full-view-tagging').html())
     jQuery('#full-view-tagging').html('')
@@ -819,6 +839,7 @@ function switchItemPageView() {
     jQuery('#full-view-map').css('height', '100%');
     jQuery('#tagging-section').attr('hidden', true);
     jQuery('#location-section').css('display', 'none');
+    document.querySelector('.location-output').style.display = 'block';
     jQuery('#full-view-tagging').html(jQuery('#tagging-tab').html())
     jQuery('#tagging-tab').html('')
 
@@ -971,7 +992,6 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
   if (jQuery('#no-text-checkbox').is(':checked')) {
     noText = 1
   }
-
   jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
     'type': 'GET',
     'url': TP_API_HOST + '/tp-api/items/' + itemId
@@ -989,7 +1009,8 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
       // var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
       // var newTranscriptionLength = tinyMCE.editors.get([jQuery('#item-page-transcription-text').attr('id')]).getContent({format : 'text'}).length;
       if(jQuery('#item-page-transcription-text').text()) {
-        var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
+        var newTranscriptionLength = (document.querySelector('#item-page-transcription-text').textContent).length;
+        console.log(newTranscriptionLength);
       }
       // Prepare data and send API request
       data = {
@@ -1022,6 +1043,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
         else {
           amount = 0;
         }
+        console.log(amount);
         scoreData = {
                       ItemId: itemId,
                       UserId: userId,
@@ -1116,8 +1138,10 @@ function addItemProperty(itemId, userId, type, editStatusColor, statusCount, pro
 }
 // Change progress status
 function changeStatus (itemId, oldStatus, newStatus, fieldName, value, color, statusCount, e) {
-  jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').css("color", color)
-  jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').css("background-color", color)
+  // jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').innerHTML(newStatus);
+  
+  document.querySelector('#' + fieldName.replace("StatusId", "").toLowerCase() + "-status-indicator").textContent = newStatus;
+  document.querySelector('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').parentElement.style.backgroundColor = color;
 
   if (fieldName != "CompletionStatusId") {
     if (oldStatus == null) {
@@ -3150,19 +3174,13 @@ Function to toggle between partial and full paragraph,
 used on Story page for description, and on Item page for transcription.
  */
 function descToggler() {
-    let buttons = document.querySelectorAll('.descMore');
-    let first = buttons[0]
-
-    if(first.previousSibling.style.maxHeight === '200px') {
-        for(const button of buttons) {
-            button.previousSibling.style.maxHeight = 'unset';
-            button.textContent = 'Show Less';
-        }
+    let buttonDesc = document.querySelector('.descMore');
+    if(buttonDesc.previousSibling.style.maxHeight === '202px') {
+            buttonDesc.previousSibling.style.maxHeight = 'unset';
+            buttonDesc.textContent = 'Show Less';
     } else {
-        for(const button of buttons) {
-            button.previousSibling.style.maxHeight = '200px';
-            button.textContent = 'Show More';
-        }
+            buttonDesc.previousSibling.style.maxHeight = '202px';
+            buttonDesc.textContent = 'Show More';
     }
 }
 // Declaration of replacement for jQuery document.ready, it runs the check if DOM has loaded until it loads
@@ -3173,9 +3191,41 @@ var ready = (callback) => {
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
     /////////// Paragraph Collapse Toggler, on Story Page and Item Page - story/item page only
-    const paraTogglers = document.querySelectorAll('.descMore');
-    for(const paraToggler of paraTogglers) {
+    const paraToggler = document.querySelector('.descMore');
+    if(paraToggler) {
         paraToggler.addEventListener('click', descToggler, false);
+    }
+    // People collapse on Item page
+    // TODO write single function for all collapses on item page
+    const singlePeople = document.querySelectorAll('.single-person');
+    if(singlePeople) {
+        for(let person of singlePeople) {
+            if(person.querySelector('.person-description')){
+                person.style.cursor = 'pointer';
+                person.addEventListener('click', function() {
+                    if(person.querySelector('.person-description').style.display === 'none') {
+                        person.querySelector('.person-description').style.display = 'block';
+                    } else if(person.querySelector('.person-description').style.display === 'block') {
+                        person.querySelector('.person-description').style.display = 'none';
+                    }
+            });
+            }
+        }
+    }
+    const singleLinks = document.querySelectorAll('.link-single');
+    if(singleLinks) {
+        for(let link of singleLinks) {
+            if(link.querySelector('.link-description')) {
+                link.style.cursor = 'pointer';
+                link.addEventListener('click', function() {
+                    if(link.querySelector('.link-description').style.display === 'none') {
+                        link.querySelector('.link-description').style.display = 'block';
+                    } else {
+                        link.querySelector('.link-description').style.display = 'none';
+                    }
+                })
+            }
+        }
     }
     // Metadata collapse button on StoryPage
     const metaBtn = document.querySelector('#meta-collapse-btn');
@@ -3196,6 +3246,20 @@ ready(() => {
             }
         })
     }
+    // Transcription collapse on item page
+    const itemTrBtn = document.querySelector('#itemBtn');
+    if(itemTrBtn) {
+        itemTrBtn.addEventListener('click', function() {
+            if(itemTrBtn.previousSibling.style.height === '401px') {
+                itemTrBtn.previousSibling.style.height = 'unset';
+                itemTrBtn.textContent = 'Show Less';
+            } else {
+                itemTrBtn.previousSibling.style.height = '401px';
+                itemTrBtn.textContent = 'Show More';
+              //  document.querySelector('.transcription-container').style.height = '575px';
+            }
+        })
+    }
     // Item Page full screen, switching between Transcription and Description Tab
     const transcriptionTab = document.querySelector('#tr-tab');
     // switching to Transcription
@@ -3204,6 +3268,7 @@ ready(() => {
             document.querySelector('#desc-part').setAttribute('hidden', 'true');
             document.querySelector('#tr-history').removeAttribute('hidden');
             document.querySelector('#transcription-section').removeAttribute('hidden');
+            document.querySelector('#editor-tab').style.overflowY = 'none';
         })
     }
     // switching to description
@@ -3376,8 +3441,8 @@ ready(() => {
         let slideN; // follows current images
         let step; // holds the step for moving right/left(increment/decrement)
         if(windowWidth > 1200) {
-            slideN = 10;
-            step = 10;
+            slideN = 9;
+            step = 9;
         } else if(windowWidth > 800) {
             slideN = 5;
             step = 5;
@@ -3497,6 +3562,16 @@ ready(() => {
             setTimeout(() => {document.querySelector('#full-page').click();}, 100);
         }
     }
+    //Quick fix to move languages until finding long term solution
+    const fullScreenBtn = document.querySelector('#full-page');
+    
+    if(fullScreenBtn) {
+        const langContainer = document.querySelector('#lang-holder');
+        const langSelecta = document.querySelector('.transcription-mini-metadata');
+        // move languages below title
+        langContainer.appendChild(langSelecta);
+    }
+
     // When the user scrolls down 60px from the top of the document, resize the navbar's padding
     //and the logo's font size
     if(document.querySelector('#_transcribathon_partnerlogo')) {

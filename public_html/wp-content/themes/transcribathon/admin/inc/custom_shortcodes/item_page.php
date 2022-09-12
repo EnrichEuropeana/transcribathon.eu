@@ -6,6 +6,7 @@ Description: Gets item data and builds the item page
 
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
+// include($_SERVER["DOCUMENT_ROOT"].'/htr-import/vendor/autoload.php');
 
 require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
 require_once(get_stylesheet_directory() . '/htr-client/config.php');
@@ -85,7 +86,7 @@ function _TCT_item_page( $atts ) {
                                 width: 15em;
                             }
                             .language-select-selected{
-                                background: #0a72cc ;
+                                color: #0a72cc ;
                                 width: 15em;
                             }
                     </style>";
@@ -231,23 +232,13 @@ function _TCT_item_page( $atts ) {
                 $editorTab .= "<div class='item-page-section-headline-container transcription-headline-header'>";
                     // Add start transcription to tab view
                     $editorTab .= "<div class='transcirption-view-head'>";
-                        $editorTab .= "<div id='test-tr' class='theme-color item-page-section-headline'>";
+                        $editorTab .= "<div id='test-tr' class='theme-color item-page-section-headline' style='display:inline-block;'>";
                             $editorTab .= "TRANSCRIPTION";
-                        $editorTab .= "</div>";
-                        $editorTab .= "<div role='button' id='tr-view-start-transcription'>";
-                            $editorTab .= "<i id='tr-view-btn-i' style=\"font-size:15px;margin-right:2px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>";
-                            $editorTab .= "<span id='tr-view-btn-text'>Edit</span>";
-                        $editorTab .= "</div>";
-                    // $editorTab .= "</div>";
-                    //$editorTab .= do_shortcode('[ultimatemember form_id="38"]');
-                    //status-changer
-                    $editorTab .= "<div id='transcription-view'>".$itemData['Transcriptions'][0]['Text']."</div>";
 
-                    $editorTab .= "<div class='item-page-section-headline-right-site'>";
-                        $editorTab .= '<div id="transcription-status-changer" class="status-changer section-status-changer login-required">';
-                            $editorTab .= '<i id="transcription-status-indicator" class="fal fa-circle status-indicator"
-                                                style="color: '.$itemData['TranscriptionStatusColorCode'].'; background-color:'.$itemData['TranscriptionStatusColorCode'].';"
-                                                onclick="event.stopPropagation(); document.getElementById(\'transcription-status-dropdown\').classList.toggle(\'show\')"></i>';
+                            // Change status & status indicator
+                            $editorTab .= '<div id="transcription-status-changer" class="status-changer section-status-changer login-required" style="background-color:'.$itemData['TranscriptionStatusColorCode'].';">';
+                            $editorTab .= '<span id="transcription-status-indicator" class="status-indicator"
+                                                onclick="event.stopPropagation(); document.getElementById(\'transcription-status-dropdown\').classList.toggle(\'show\')">' . $itemData['TranscriptionStatusName'] . '</span>';
                             $editorTab .= '<div id="transcription-status-dropdown" class="sub-status status-dropdown-content">';
 
                                 foreach ($statusTypes as $statusType) {
@@ -268,7 +259,20 @@ function _TCT_item_page( $atts ) {
                             $editorTab .= '</div>';
                         $editorTab .= '</div>';
                     $editorTab .= '</div>';
+                    // change view/editor button
+                    $editorTab .= "<div role='button' id='tr-view-start-transcription'>";
+                        $editorTab .= "<i id='tr-view-btn-i' style=\"font-size:15px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>";
                     $editorTab .= "</div>";
+                            //
+                        $editorTab .= "</div>";
+                        $editorTab .= "<div id='lang-holder'></div>";
+                    // $editorTab .= "</div>";
+                    //$editorTab .= do_shortcode('[ultimatemember form_id="38"]');
+                    //status-changer
+                    $editorTab .= "<div id='transcription-view'>".$itemData['Transcriptions'][0]['Text']."</div>";
+
+                   // $editorTab .= "<div class='item-page-section-headline-right-site'>";
+                  //  $editorTab .= "</div>";
 
                 $editorTab .= '</div>';
                 $editorTab .= '<div style="clear: both;"></div>';
@@ -299,7 +303,7 @@ function _TCT_item_page( $atts ) {
                         $editorTab .= '<div id="transcription-language-selector" class="language-selector-background language-selector login-required">';
                             $editorTab .= '<select>';
                                 $editorTab .= '<option value="" disabled selected hidden>';
-                                    $editorTab .= 'Language(s) of the Document';
+                                    $editorTab .= 'Select Language';
                                 $editorTab .= '</option>';
                                 foreach ($languages as $language) {
                                     $editorTab .= '<option value="'.$language['LanguageId'].'">';
@@ -348,27 +352,22 @@ function _TCT_item_page( $atts ) {
                         $editorTab .= '<div id="item-transcription-spinner-container" class="spinner-container spinner-container-right">';
                             $editorTab .= '<div class="spinner"></div>';
                         $editorTab .= "</div>";
-                        $editorTab .= "<div style='clear:both'></div>";
+                     $editorTab .= "<div style='clear:both'></div>";
                     $editorTab .= '</div>';
                     $editorTab .= "<div style='clear:both'></div>";
                 $editorTab .= '</div>';
             $editorTab .= '</div>';
             // Description
             $editorTab .= '<div class="item-page-section" id="desc-part" hidden>';
-                $editorTab .= '<div class="item-page-section-headline-container collapse-headline  item-page-section-collapse-headline collapse-controller" data-toggle="collapse" href="#description-area"
-                                    onClick="jQuery(this).find(\'.collapse-icon\').toggleClass(\'fa-caret-circle-up\')
-                                    jQuery(this).find(\'.collapse-icon\').toggleClass(\'fa-caret-circle-down\')">';
-                    $editorTab .= '<h4 id="description-collapse-heading" class="theme-color item-page-section-headline">';
+                $editorTab .= '<div class="item-page-section-headline-container collapse-headline  item-page-section-collapse-headline">';
+                    $editorTab .= '<div id="description-collapse-heading" class="theme-color item-page-section-headline">';
                         $editorTab .= "DESCRIPTION";
-                    $editorTab .= '</h4>';
-                    $editorTab .= '<i class="far fa-caret-circle-up collapse-icon theme-color" style="font-size: 17px; float:left; margin-right: 8px; margin-top: 9px;"></i>';
-                $editorTab .= '</div>';
-                //status-changer
-                $editorTab .= '<div id="description-status-changer" class="status-changer section-status-changer login-required">';
+                    
+                    // status changer
+                    $editorTab .= '<div id="description-status-changer" class="status-changer section-status-changer login-required" style="background-color:'.$itemData['DescriptionStatusColorCode'].'">';
                     //if (current_user_can('administrator')) {
-                        $editorTab .= '<i id="description-status-indicator" class="fal fa-circle status-indicator"
-                                            style="color: '.$itemData['DescriptionStatusColorCode'].'; background-color:'.$itemData['DescriptionStatusColorCode'].';"
-                                            onclick="event.stopPropagation(); document.getElementById(\'description-status-dropdown\').classList.toggle(\'show\')"></i>';
+                        $editorTab .= '<span id="description-status-indicator" class="status-indicator"
+                                            onclick="event.stopPropagation(); document.getElementById(\'description-status-dropdown\').classList.toggle(\'show\')">'. $itemData['DescriptionStatusName'] .'</span>';
                     /*}
                     else {
                         $editorTab .= '<i id="description-status-indicator" class="fal fa-circle status-indicator"
@@ -390,6 +389,9 @@ function _TCT_item_page( $atts ) {
                             }
                         }
                     $editorTab .= '</div>';
+                $editorTab .= '</div>';
+                $editorTab .= '</div>';
+                    //
                 $editorTab .= '</div>';
                 $editorTab .= '<div style="clear: both;"></div>';
                     $editorTab .= "<div id=\"description-area\" class=\"description-save collapse show\">";
@@ -546,9 +548,9 @@ function _TCT_item_page( $atts ) {
             $infoTab .= '<div style="clear: both;"></div>';
 
             $infoTab .= '<div id="additional-information-area">';
-                $infoTab .= "<h4 class='theme-color item-page-section-headline'>";
-                    $infoTab .= "Title: ".$itemData['Title'];
-                $infoTab .= "</h4>";
+                // $infoTab .= "<h4 class='theme-color item-page-section-headline'>";
+                //     $infoTab .= "Title: ".$itemData['Title'];
+                // $infoTab .= "</h4>";
 
                 $fields = array();
                 foreach ($fieldMappings as $fieldMapping) {
@@ -623,19 +625,18 @@ function _TCT_item_page( $atts ) {
 						<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />";
 
        $mapTab .= "<div id='location-section' class='item-page-section' style='display:none;'>";
-            $mapTab .= "<div id='location-hide' class='item-page-section-headline-container login-required' data-toggle='collapse' href='#location-input-section'>";
+            $mapTab .= "<div id='location-hide' class='item-page-section-headline-container login-required'>";
                 $mapTab .= "<i class='fal fa-map-marker-alt theme-color' style='padding-right: 3px; font-size: 17px; margin-right:8px;'></i>";
-                $mapTab .= "<h4 id='location-position' class='theme-color item-page-section-headline collapse-headline collapse-controller' title='Click to add a location'>";
+                $mapTab .= "<div id='location-position' class='theme-color item-page-section-headline collapse-headline' title='Click to add a location'>";
                     $mapTab .= "Locations";
-                    $mapTab .= '<i class="fas fa-plus-circle" style="margin-left:5px; font-size:15px; position: absolute; top: 10px;"></i>';
-                $mapTab .= "</h4>";
+                    $mapTab .= '<i class="fas fa-plus-circle" style="margin-left:5px; font-size:15px; position: absolute; top: 14.5px;"></i>';
+             //   $mapTab .= "</div>";
                 //status-changer
-                $mapTab .= "<div class='item-page-section-headline-right-site'>";
-                    $mapTab .= '<div id="location-status-changer" class="status-changer section-status-changer login-required">';
+               // $mapTab .= "<div class='item-page-section-headline-right-site'>";
+                    $mapTab .= '<div id="location-status-changer" class="status-changer section-status-changer login-required" style="background-color:'.$itemData['LocationStatusColorCode'].';">';
                         //if (current_user_can('administrator')) {
-                            $mapTab .= '<i id="location-status-indicator" class="fal fa-circle status-indicator"
-                                                style="color: '.$itemData['LocationStatusColorCode'].'; background-color:'.$itemData['LocationStatusColorCode'].';"
-                                                onclick="event.stopPropagation(); document.getElementById(\'location-status-dropdown\').classList.toggle(\'show\')"></i>';
+                            $mapTab .= '<span id="location-status-indicator" class="status-indicator"
+                                                onclick="event.stopPropagation(); document.getElementById(\'location-status-dropdown\').classList.toggle(\'show\')">'.$itemData['LocationStatusName'].'</span>';
                         /*}
                         else {
                             $taggingTab .= '<i id="location-status-indicator" class="fal fa-circle status-indicator"
@@ -657,9 +658,9 @@ function _TCT_item_page( $atts ) {
                             }
                         $mapTab .= '</div>';
                     $mapTab .= '</div>';
-                $mapTab .= '</div>';
+               // $mapTab .= '</div>';
             $mapTab .= "</div>";
-            $mapTab .= '<div id="location-input-section" class="collapse">';
+            $mapTab .= '<div id="location-input-section" style="display:none;">';
 
                 $mapTab .= '<div class="location-input-section-second">';
                     $mapTab .= '<div class="location-input-name-container location-input-container">';
@@ -811,16 +812,15 @@ function _TCT_item_page( $atts ) {
             $taggingTab = "";
             $taggingTab .= "<div id='tagging-section' class='item-page-section' hidden>";
                 $taggingTab .= "<div class='item-page-section-headline-container'>";
-                    $taggingTab .= "<i class='fal fa-tag theme-color' style='font-size: 17px; margin-right:8px;'></i><h4 class='theme-color item-page-section-headline'>";
-                        $taggingTab .= "Tagging";
-                    $taggingTab .= "</h4>";
+                    $taggingTab .= "<i class='fal fa-tag theme-color' style='font-size: 17px; margin-right:8px;'></i><div class='theme-color item-page-section-headline' style='display:inline-block;'>";
+                        $taggingTab .= "Enrichments";
+                    $taggingTab .= "</div>";
                         //status-changer
-                    $taggingTab .= "<div class='item-page-section-headline-right-site'>";
-                        $taggingTab .= '<div id="tagging-status-changer" class="status-changer section-status-changer login-required">';
+                    $taggingTab .= "<div class='item-page-section-headline-right-site' style='display:inline-block;'>";
+                        $taggingTab .= '<div id="tagging-status-changer" class="status-changer section-status-changer login-required" style="background-color:'.$itemData['TaggingStatusColorCode'].';">';
                             //if (current_user_can('administrator')) {
-                                $taggingTab .= '<i id="tagging-status-indicator" class="fal fa-circle status-indicator"
-                                                    style="color: '.$itemData['TaggingStatusColorCode'].'; background-color:'.$itemData['TaggingStatusColorCode'].';"
-                                                    onclick="event.stopPropagation(); document.getElementById(\'tagging-status-dropdown\').classList.toggle(\'show\')"></i>';
+                                $taggingTab .= '<span id="tagging-status-indicator" class="status-indicator"
+                                                    onclick="event.stopPropagation(); document.getElementById(\'tagging-status-dropdown\').classList.toggle(\'show\')">'.$itemData['TaggingStatusName'].'</span>';
                             /*}
                             else {
                                 $taggingTab .= '<i id="tagging-status-indicator" class="fal fa-circle status-indicator"
@@ -1364,6 +1364,7 @@ function _TCT_item_page( $atts ) {
         $numbPhotos = count($itemImages);
 
         $content .= "<section id='img-slider'>";
+        $content .= "<div id='slider-container'>";
             $content .= "<button class='prev-slide' type='button'><i class=\"fas fa-chevron-left\"></i></button>";
             $content .= "<button class='next-slide' type='button'><i class=\"fas fa-chevron-right\"></i></button>";
 
@@ -1381,18 +1382,19 @@ function _TCT_item_page( $atts ) {
                         $dimensions = 'full';
                     }
                     if(substr($sliderImg['service']['@id'],0,4) == 'rhus'){
-                       $sliderImgLink ='http://'. str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/150,180/0/default.jpg';
+                       $sliderImgLink ='http://'. str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
                     } else {
-                        $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/150,180/0/default.jpg';
+                        $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
                     }
                     $content .= "<div class='slide-sticker' data-value='". ($x+1) ."'>";
                         $content .= "<div class='slide-img-wrap'>";
-                            $content .= "<a href='".home_url()."/documents/story/item/?story=".$itemData['StoryId']."&item=".$itemImages[$x]['ItemId']."'><img src=".$sliderImgLink." class='slider-image' alt='slider-image-".($x+1)."' width='150' height='200' loading='lazy'></a>";
+                            $content .= "<a href='".home_url()."/documents/story/item/?story=".$itemData['StoryId']."&item=".$itemImages[$x]['ItemId']."'><img src=".$sliderImgLink." class='slider-image' alt='slider-image-".($x+1)."' width='200' height='200' loading='lazy'></a>";
                             $content .= "<div class='image-completion-status' style='bottom:20px;border-color:".$itemImages[$x]['CompletionStatusColorCode']."'></div>";
                         $content .= "</div>";
                         $content .= "<div class='slide-number-wrap'>".($x+1)."</div>";
                     $content .= "</div>";
                 }
+            $content .= "</div>";
             $content .= "</div>";
 
             $content .= "<div id='controls-div'>";
@@ -1407,6 +1409,8 @@ function _TCT_item_page( $atts ) {
                 $content .= "<button class='next-set' type='button'><i class=\"fas fa-chevron-double-right\"></i></button>";
                 //// To be discussed if we keep dots or numbers /////
             $content .= "</div>";
+
+            $content .= "<div class='back-to-story'><a href='".home_url()."/documents/story?story=".$itemData['StoryId']."'><i class=\"fas fa-arrow-left\" style='margin-right:7.5px;'></i> Back to the Story</a></div>";
 
         $content .= "</section>";
 /* -------------------------------------------- End of Old Image slider -----------------------  */
@@ -1448,37 +1452,37 @@ function _TCT_item_page( $atts ) {
             $imageViewer .= '</div>';
         $content .= "<div id='full-view-container'>";
 
-            $content .= '<div class="item-navigation-area">';
-                $content .= '<ul class="item-navigation-content-container left" style="">';
-                    $content .= '<li><a href="'.home_url().'/documents" style="text-decoration:none;">Stories</a></li>';
-                    $content .= '<li><i class="fal fa-angle-right"></i></li>';
-                    $content .= '<li><span style="text-decoration:none;">';
-                        $content .= '<a href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
-                            $content .= $itemData['Title'];
-                        $content .= '</a>';
-                    $content .= '</span></li>';
-                    /*$content .= '<li><i class="fal fa-angle-right"></i></li>';
-                    $content .= '<li><span>item number</span></li>';*/
-                $content .= '</ul>';
-                $content .= '<ul class="item-navigation-content-container right" style="">';
-                    $content .= '<div class="item-navigation-prev">';
-                        if ($prevItem != null) {
-                            $content .= '<li><a title="first" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$firstItem.'"><i class="fal fa-angle-double-left"></i></a></li>';
-                            $content .=  '<li class="rgt"><a title="previous" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$prevItem.'"><i class="fal fa-angle-left"></i></a></li>';
-                        }
-                    $content .= '</div>';
-                    $content .=  '<li class="rgt">';
-                        $content .= '<a title="Story:'.$itemData['StorydcTitle'].'" href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
-                        $content .= '<i class="fal fa-book"></i></a>';
-                    $content .= '</li>';
-                    $content .= '<div class="item-navigation-next">';
-                        if ($nextItem != null) {
-                            $content .= '<li class="rgt"><a title="next" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$nextItem.'"><i class="fal fa-angle-right"></i></a></li>';
-                            $content .= '<li class="rgt"><a title="last" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$lastItem.'"><i class="fal fa-angle-double-right"></i></a></li>';
-                        }
-                    $content .= '</div>';
-                $content .= '</ul>';
-            $content .= '</div>';
+            //$content .= '<div class="item-navigation-area">';
+                // $content .= '<ul class="item-navigation-content-container left" style="">';
+                //     $content .= '<li><a href="'.home_url().'/documents" style="text-decoration:none;">Stories</a></li>';
+                //     $content .= '<li><i class="fal fa-angle-right"></i></li>';
+                //     $content .= '<li><span style="text-decoration:none;">';
+                //         $content .= '<a href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
+                //             $content .= $itemData['Title'];
+                //         $content .= '</a>';
+                //     $content .= '</span></li>';
+                //     /*$content .= '<li><i class="fal fa-angle-right"></i></li>';
+                //     $content .= '<li><span>item number</span></li>';*/
+                // $content .= '</ul>';
+                // $content .= '<ul class="item-navigation-content-container right" style="">';
+                //     $content .= '<div class="item-navigation-prev">';
+                //         if ($prevItem != null) {
+                //             $content .= '<li><a title="first" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$firstItem.'"><i class="fal fa-angle-double-left"></i></a></li>';
+                //             $content .=  '<li class="rgt"><a title="previous" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$prevItem.'"><i class="fal fa-angle-left"></i></a></li>';
+                //         }
+                //     $content .= '</div>';
+                //     $content .=  '<li class="rgt">';
+                //         $content .= '<a title="Story:'.$itemData['StorydcTitle'].'" href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
+                //         $content .= '<i class="fal fa-book"></i></a>';
+                //     $content .= '</li>';
+                //     $content .= '<div class="item-navigation-next">';
+                //         if ($nextItem != null) {
+                //             $content .= '<li class="rgt"><a title="next" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$nextItem.'"><i class="fal fa-angle-right"></i></a></li>';
+                //             $content .= '<li class="rgt"><a title="last" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$lastItem.'"><i class="fal fa-angle-double-right"></i></a></li>';
+                //         }
+                //     $content .= '</div>';
+                // $content .= '</ul>';
+            //$content .= '</div>';
 
             // Start of Page building
             if($htrData){
@@ -1507,16 +1511,17 @@ function _TCT_item_page( $atts ) {
                             $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;padding:1px;' title='click to open editor'>";
                                 $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>&nbsp TRANSCRIPTION</h5></span>";
                                     if($itemData['TranscriptionStatusColorCode'] == '#61e02f'){
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p>";
                                     }
                                     elseif($itemData['TranscriptionStatusColorCode'] == '#fff700') {
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p>";
                                     }
                                     elseif($itemData['TranscriptionStatusColorCode'] == '#ffc720') {
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p>";
                                     } else {
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p>";
                                     }
+                                    $content .= "<i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i></span>";
                                 $content .= "</div>";
                                 $content .= "<div class='htr-trans-toggle'>";
                                 $content .= "<div class='togglePara' style='max-height:200px;'>";
@@ -1551,7 +1556,7 @@ function _TCT_item_page( $atts ) {
                         $content .= "<div style='clear:both;'></div>";
                         //HTR Transcription
                         $htrTranscription = get_text_from_pagexml($htrData, '<br />');
-                        $content .= "<a style='text-decoration:none;' href='".get_europeana_url()."/documents/story/item/item_page_htr/?story=".$_GET['story']."&item=".$_GET['item']."'><div id='htrButton' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:30px;' title='click to open HTR viewer'>";
+                        $content .= "<a style='text-decoration:none;' href='http://europeana.transcribathon.eu.local/documents/story/item/item_page_htr/?story=".$_GET['story']."&item=".$_GET['item']."'><div id='htrButton' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:30px;' title='click to open HTR viewer'>";
                             $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>&nbsp HTR TRANSCRIPTION</h5></span>";
                             if(strlen($htrTranscription) > 10){
                                 $content .= "<span style='top:50%;transform:translate(-1.5px,8px);'><p class='edited'>EDITED</p></span>";
@@ -1578,10 +1583,10 @@ function _TCT_item_page( $atts ) {
                                 $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
                             }
                             elseif($itemData['TaggingStatusColorCode'] == '#fff700') {
-                                $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                                $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDIT</p></span>";
                             }
                             elseif($itemData['TaggingStatusColorCode'] == '#ffc720') {
-                                $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                                $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEW</p></span>";
                             } else {
                                 $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
                             }
@@ -1606,13 +1611,13 @@ function _TCT_item_page( $atts ) {
                                 $content .= "<div class='card'>";
                                     $content .= "<div class='card-header'>";
                                         $content .= "<span style='float:left;'>Start Date:</span>";
-                                        $content .= "<span style='float:right;margin-right:10%;'>End Date:</span>";
+                                        $content .= "<span style='float:right;margin-right:50%;'>End Date:</span>";
                                     $content .= "</div>";
                                 $content .= "</div>";
                                 $content .= "<div class='card'>";
                                     $content .= "<div class='card-header'>";
                                         $content .= "<span style='float:left;'>".$dateStart."</span>";
-                                        $content .= "<span style='float:right,margin-right:10%;'>".$dateEnd."</span>";
+                                        $content .= "<span style='float:right,margin-right:50%;'>".$dateEnd."</span>";
                                     $content .= "</div>";
                                 $content .= "</div>";
                             $content .= "</div>";
@@ -1677,10 +1682,10 @@ function _TCT_item_page( $atts ) {
                         if($itemData['Properties']) {
                             // key words
                             $content .= "<h6 class='enrich-headers'>Keywords</h6>";
-                            $content .= "<div class='accordion js-check'>";
+                            $content .= "<div class='keyword-container js-check'>";
                             foreach($itemData['Properties'] as $properti){
                                 if($properti['PropertyType'] == "Keyword"){
-                                    $content .= "<div class='card-header'>".$properti['PropertyValue']."</div>";
+                                    $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
                                 }
                             }
                             $content .= "</div>";
@@ -1721,7 +1726,7 @@ function _TCT_item_page( $atts ) {
                 // Metadata
                 $content .= "<div style='clear:both;'></div>";
                 $content .= "<div id='info-section' style='width:90%;margin:0 auto;'>";
-                    $content .= "<div id='item-meta-collapse' class='add-info' style='width:100%;background-color:#f8f8f8;' role='button' data-toggle='collapse' href='#infoCollapse' aria-expanded='false' aria-controls='infoCollapse'>";
+                    $content .= "<div id='item-meta-collapse' class='add-info enrich-header' style='width:100%;background-color:#f8f8f8;' role='button' data-toggle='collapse' href='#infoCollapse' aria-expanded='false' aria-controls='infoCollapse'>";
                         $content .= "<p style='color:#0a72cc;'><span><b><i style='margin-right:5px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</b></span><span style='float:right;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span></p>";
                     $content .= "</div>";
                     $content .= "<div class='dl-enrichments' style='height: 300px;'>";
@@ -1931,121 +1936,102 @@ function _TCT_item_page( $atts ) {
                 $content .= "</a>";
                 //Enrichments
                 $content .= "<div class='dl-enrichments'>";
-                $content .= "<div style='display:flex;flex-direction:row;justify-content:space-between;padding-left:20px;'>";
-                $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ENRICHMENTS</h5></span>";
+                $content .= "<div id='startEnrichment' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;'>";
+                $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ENRICHMENTS</h5></div>";
                 if($itemData['TaggingStatusColorCode'] == '#61e02f'){
-                    $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='completed'>COMPLETED</span>";
                 }
                 elseif($itemData['TaggingStatusColorCode'] == '#fff700') {
-                    $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='edited'>EDIT</span>";
                 }
                 elseif($itemData['TaggingStatusColorCode'] == '#ffc720') {
-                    $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='reviewed'>REVIEW</span>";
                 } else {
-                    $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='not-started'>NOT STARTED</span>";
                 }
+                $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
                 $content .= "</div>";
                 // document date
                 if($dateStart || $dateEnd) {
                     $content .= "<h6 class='enrich-headers'>Document Date</h6>";
-                    $content .= "<div class='accordion'>";
-                        $content .= "<div class='card'>";
-                            $content .= "<div class='card-header'>";
-                                $content .= "<span style='float:left;'>Start Date:</span>";
-                                $content .= "<span style='float:right;margin-right:10%;'>End Date:</span>";
-                            $content .= "</div>";
+                    $content .= "<div class='doc-date-container'>";
+                        $content .= "<div class='date-top'>";
+                                $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                                $content .= "<div style='float:right;margin-right:50%;display:inline-block;'>End Date:</div>";
                         $content .= "</div>";
-                        $content .= "<div class='card'>";
-                            $content .= "<div class='card-header'>";
-                                $content .= "<span style='float:left;'>".$dateStart."</span>";
-                                $content .= "<span style='float:right;margin-right:10%;'>".$dateEnd."</span>";
-                            $content .= "</div>";
+                        $content .= "<div style='clear:both;'></div>";
+                        $content .= "<div class='date-bottom'>";
+                                $content .= "<div style='float:left;display:inline-block'>".$dateStart."</div>";
+                                $content .= "<div style='float:right;margin-right:48%;display:inline-block;'>".$dateEnd."</div>";
                         $content .= "</div>";
                     $content .= "</div>";
+                    $content .= "<div style='clear:both;'></div>";
                 }
                 // people
                 if($itemData['Persons']) {
                     $content .= "<h6 class='enrich-headers'>People</h6>";
-                    $content .= "<div class='accordion' id='personAccord'>";
+                    $content .= "<div class='person-container' id='personAccord'>";
                     foreach($itemData['Persons'] as $persona) {
                         $personBDate = strtotime($persona['BirthDate']);
                         $pBirthDate = date("d/m/Y", $personBDate);
                         $personDDate = strtotime($persona['DeathDate']);
                         $pDeathDate = date("d/m/Y", $personDDate);
-                        $content .= "<div class='card'>";
-                            $content .= "<div style='cursor:pointer;' role='button' data-toggle='collapse' data-target='#collapse-".$persona['PersonId']."' aria-expanded='true' aria-controls='collapse-".$persona['PersonId']."' class='card-header' id='header-".$persona['PersonId']."'>";
-                                $content .= "<span>";
-                                $content .=  $persona['FirstName']." ".$persona['LastName'];
-                                if ($persona['BirthDate'] != "NULL" && $persona['DeathDate'] != "NULL") {
-                                    $content .= " (".$pBirthDate. " - " .$pDeathDate." )";
-                                } elseif ($persona['BirthDate'] != 'NULL') {
-                                    $content .= " (Birth: ".$pBirthDate." )";
-                                } elseif ($persona['DeathDate'] != 'NULL') {
-                                    $content .= " (Death: ".$pDeathDate." )";
-                                }
-                                $content .= "</span>";
-                                $content .= "<span><i style='color:#0a72cc;float:right;' class='fas fa-angle-down'></i></span>";
-                            $content .= "</div>";
-                            $content .= "<div class='collapse' id='collapse-".$persona['PersonId']."' aria-labelledby='header-".$persona['PersonId']."' data-parent='#personAccord'>";
-                                $content .= "<div class='card-body'>";
-                                    $content .= "<table border=0>";
-                                        $content .= "<tr>";
-                                            $content .= "<th></th>";
-                                            $content .= "<th>Birth</th>";
-                                            $content .= "<th>Death</th>";
-                                        $content .= "</tr>";
-                                        $content .= "<tr>";
-                                            $content .= "<th>Date</th>";
-                                            $content .= "<td>".$pBirthDate."</td>";
-                                            $content .= "<td>".$pDeathDate."</td>";
-                                        $content .= "</tr>";
-                                        $content .= "<tr>";
-                                            $content .= "<th>Place</th>";
-                                            $content .= "<td>".$persona['BirthPlace']."</td>";
-                                            $content .= "<td>".$persona['DeathPlace']."</td>";
-                                        $content .= "</tr>";
-                                        if($persona['Description'] && $persona['Description'] != 'NULL') {
-                                            $content .= "<tr>";
-                                                $content .= "<th>Description</th>";
-                                                $content .= "<td colspan='2'>" . $persona['Description'] . "</td>";
-                                            $content .= "</tr>";
-                                        }
-                                    $content .= "</table>";
-                                $content .= "</div>";
-                            $content .= "</div>";
-                        $content .= "</div>";
 
+                        $content .= "<div class='single-person'>";
+                            $content .= "<div class='person-info'>";
+                                $content .= "<span style='font-weight:400;'>" . $persona['FirstName'] . ' ' . $persona['LastName'] . "</span>";
+                                if($personBDate != Null && $personDDate != Null) {
+                                    $content .= " (" . $pBirthDate;
+                                    if($persona['BirthPlace'] != Null) {
+                                        $content .= ', ' . $persona['BirthPlace'];
+                                    } 
+                                    $content .= " - " . $pDeathDate;
+                                    if($persona['DeathPlace'] != Null) {
+                                        $content .= ', ' . $persona['DeathPlace'];
+                                    }
+                                    $content .= ")";
+                                } elseif ($personBDate != Null) {
+                                    $content .= " (Birth: " . $pBirthDate . ")";
+                                } elseif ($personDDate != Null) {
+                                    $content .= " (Death: " . $pDeathDate . ")";
+                                }
+                            $content .= "</div>";
+                            if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
+                                $content .= "<div class='person-description' style='display:none;'><span style='font-weight:400;'><b>Description</b>: </span>" . $persona['Description'] . "</span></div>";
+                            }
+                            
+                        $content .= "</div>";
                     }
                     $content .= "</div>";
                 }
                 // key words
                 // js-check class is used to check if the property field is empty, so we can hide the header if it is empty
                 if($itemData['Properties']) {
-                    $content .= "<h6 class='enrich-headers'>Keywords</h6>";
-                    $content .= "<div class='accordion js-check'>";
-                    foreach($itemData['Properties'] as $properti){
-                        if($properti['PropertyType'] == "Keyword"){
-                            $content .= "<div class='card-header'>".$properti['PropertyValue']."</div>";
+                    // Category
+                    $content .= "<h6 class='enrich-headers'>Type of Media</h6>";
+                    $content .= "<div class='keyword-container js-check'>";
+                    foreach($itemData['Properties'] as $property) {
+                        if($property['PropertyType'] == "Category") {
+                            $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
                         }
                     }
                     $content .= "</div>";
-                    // Category
-                    $content .= "<h6 class='enrich-headers'>Category</h6>";
-                    $content .= "<div class='accordion js-check'>";
-                    foreach($itemData['Properties'] as $property) {
-                        if($property['PropertyType'] == "Category") {
-                            $content .= "<div class='card-header'>" . $property['PropertyValue'] . "</div>";
+                    $content .= "<h6 class='enrich-headers'>Keywords</h6>";
+                    $content .= "<div class='keyword-container js-check'>";
+                    foreach($itemData['Properties'] as $properti){
+                        if($properti['PropertyType'] == "Keyword"){
+                            $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
                         }
                     }
                     $content .= "</div>";
                     // other sources
                     $content .= "<h6 class='enrich-headers'>Other Sources</h6>";
-                    $content .= "<div class='accordion js-check'>";
+                    $content .= "<div class='link-container js-check'>";
                     foreach($itemData['Properties'] as $property){
                         if($property['PropertyType'] == 'Link' ) {
-                            $content .= "<div class='card'>";
-                                $content .= "<div class='card-header'><a href='".$property['PropertyValue']."'>".$property['PropertyValue']."</a></div>";
-                                $content .= "<div class='card-header'>Description: ".$property['PropertyDescription']."</div>";
+                            
+                            $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
+                            $content .= "<p class='link-description' style='display:none;'>" . $property['PropertyDescription'] . "</p>";
                             $content .= "</div>";
                         }
                     }
@@ -2054,178 +2040,180 @@ function _TCT_item_page( $atts ) {
                 $content .= "</div>";
                 //Metadata
                 $content .= "<div id='item-meta-collapse' class='dl-enrichments' style='background-color:#f8f8f8;'>";
-                    $content .= "<div class='add-info' style='color:#0a72cc;padding-left:20px;font-size:1.2em;cursor:pointer;' role='button' aria-expanded='false'>";
-                        $content .= "<span><i style='margin-right:5px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span>";
+                    $content .= "<div class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;' role='button' aria-expanded='false'>";
+                        $content .= "<span><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span>";
                     $content .= "</div>";
                 $content .= "</div>";
 
-                $content .= "<div class='dl-enrichments' style='height: 300px;'>";
+                $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;padding: 0 50px;'>";
                     //Contributor
                     if($itemData['StorydcContributor']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Contributor</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcContributor']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Contributor</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcContributor']) . "</span>";
                         $content .= "</div>";
                     }
                     //Creator
                     if($itemData['StorydcCreator']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Creator</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcCreator']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Creator</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcCreator']) . "</span>";
                         $content .= "</div>";
                     }
                     // Story Source
                     if($itemData['StorydcSource']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Story Source</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Story Source</span>";
                             $source = array_unique(explode(' || ', $itemData['StorydcSource']));
-                            $content .= "<p class='meta-p'>" . implode('</br>', $source) . "</p>";
+                            $content .= "<span class='meta-p'>" . implode('</br>', $source) . "</span>";
                         $content .= "</div>";
                     }
                     //Identifier
                     if($itemData['StoryExternalRecordId']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Identifier</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Identifier</span>";
                             if(substr($itemData['StoryExternalRecordId'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . $itemData['StoryExternalRecordId'] . "</a></p>";
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . $itemData['StoryExternalRecordId'] . "</a></span>";
                             } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</p>";
+                                $content .= "<span class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</span>";
                             }
                         $content .= "</div>";
                     }
                     //Document Language
                     if($itemData['StorydcLanguage']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Document Language</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Document Language</span>";
                             $dcLanguage = array_unique(explode(' || ', $itemData['StorydcLanguage']));
-                            $content .= "<p class='meta-p'>" . implode('</br>', $dcLanguage) . "</p>";
+                            $content .= "<span class='meta-p'>" . implode(' / ', $dcLanguage) . "</span>";
                         $content .= "</div>";
                     }
                     // Provider Language
                     if($itemData['StoryedmLanguage']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Provider Language</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmLanguage']."</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Provider Language</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmLanguage']."</span>";
                         $content .= "</div>";
                     }
                     // Publisher
                     if($itemData['StoryedmProvider']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Publisher</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Publisher</span>";
                             if(substr($itemData['StoryedmProvider'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></p>";
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></span>";
                             } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryedmProvider'] . "</p>";
+                                $content .= "<span class='meta-p'>" . $itemData['StoryedmProvider'] . "</span>";
                             }
                         $content .= "</div>";
                     }
                     // Rights
                     if($itemData['StoryedmRights']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Rights</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Rights</span>";
                             $edmRights = array_unique(explode(' || ', $itemData['StoryedmRights']));
                             foreach($edmRights as $right) {
                                 if(substr($right, 0, 4) == 'http'){
-                                    $content .= "<p class='meta-p'><a target='_blank' href='".$right."'>" . $right . "</a></p>";
+                                    $content .= "<span class='meta-p'><a target='_blank' href='".$right."'>" . $right . "</a></span>";
                                 } else {
-                                    $content .= "<p class='meta-p'>" . $right . "</p>";
+                                    $content .= "<span class='meta-p'>" . $right . "</span>";
                                 }
                             }
                         $content .= "</div>";
                     }
                     // Image Rights
                     if($itemData['StorydcRights']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Image Rights</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Image Rights</span>";
                             $imgRights = array_unique(explode(' || ', $itemData['StorydcRights']));
                             foreach($imgRights as $iRight) {
                                 if(substr($iRight, 0, 4) == 'http'){
-                                    $content .= "<p class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></p>";
+                                    $content .= "<span class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></span>";
                                 } else {
-                                    $content .= "<p class='meta-p'>" . $iRight . "</p>";
+                                    $content .= "<span class='meta-p'>" . $iRight . "</span>";
                                 }
                             }
                         $content .= "</div>";
                     }
                     // Type
                     if($itemData['StorydcType']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Type</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcType']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Type</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydcType']) . "</span>";
                         $content .= "</div>";
                     }
                     // Medium
                     if($itemData['StorydctermsMedium']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Medium</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydctermsMedium']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Medium</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydctermsMedium']) . "</span>";
                         $content .= "</div>";
                     }
                     // Creation Start
                     if($itemData['StoryedmBegin']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Creation Start</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', "</br>", $itemData['StoryedmBegin']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Creation Start</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmBegin']) . "</span>";
                         $content .= "</div>";
                     }
                     // Creation End
                     if($itemData['StoryedmEnd']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Creation End</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', "</br>", $itemData['StoryedmEnd']) . "</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Creation End</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmEnd']) . "</span>";
                         $content .= "</div>";
                     }
                     // Providing Country
                     if($itemData['StoryedmCountry']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Providing Country</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmCountry']."</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Providing Country</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmCountry']."</span>";
                         $content .= "</div>";
                     }
                     // Institution
                     if($itemData['StoryedmDataProvider']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Institution</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmDataProvider']."</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Institution</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmDataProvider']."</span>";
                         $content .= "</div>";
                     }
                     // Dataset
                     if($itemData['StoryedmDatasetName']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Dataset</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmDatasetName']."</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Dataset</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmDatasetName']."</span>";
                         $content .= "</div>";
                     }
                     // Source Url
                     if($itemData['StoryedmIsShownAt']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Source Url</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Source Url</span>";
                             if(substr($itemData['StoryedmIsShownAt'], 0, 4) == 'http'){
                                 $content .= "<a class='meta-p' target='_blank' href='".$itemData['StoryedmIsShownAt']."'>" . $itemData['StoryedmIsShownAt'] . "</a>";
                             } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryedmIsShownAt'] . "</p>";
+                                $content .= "<span class='meta-p'>" . $itemData['StoryedmIsShownAt'] . "</span>";
                             }
                         $content .= "</div>";
                     }
                     // Story Title
-                    $content .= "<div class='meta-h'>";
-                        $content .= "<p class='mb-1'>Story Title</p>";
-                        $content .= "<p class='meta-p'>". str_replace(' || ', "</br>", $itemData['StorydcTitle']) . "</p>";
+                    $content .= "<div class='single-meta'>";
+                        $content .= "<span class='mb-1'>Story Title</span>";
+                        $content .= "<span class='meta-p'>". str_replace(' || ', "</br>", $itemData['StorydcTitle']) . "</span>";
                     $content .= "</div>";
                     // Story Landing Page
                     if($itemData['StoryedmLandingPage']) {
-                        $content .= "<div class='meta-h'>";
-                            $content .= "<p class='mb-1'>Story Landing Page</p>";
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Landing Page</span>";
                             if(substr($itemData['StoryedmLandingPage'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmLandingPage']."'>" . $itemData['StoryedmLandingPage'] . "</a></p>";
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryedmLandingPage']."'>" . substr($itemData['StoryedmLandingPage'], 0, 25) . "</a></span>";
                             } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryedmLandingPage'] . "</p>";
+                                $content .= "<span class='meta-p'>" . $itemData['StoryedmLandingPage'] . "</span>";
                             }
                         $content .= "</div>";
                     }
+                   // var_dump($storyData);
+                    //var_dump($itemData);
                     // Parent Story
                     if($itemData['StoryParentStory']) {
-                        $content .= "<div class='meta-h'>";
+                        $content .= "<div class='single-meta'>";
                             $content .= "<p class='mb-1'>Parent Story</p>";
                             if(substr($itemData['StoryParentStory'], 0, 4) == 'http'){
                                 $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryParentStory']."'>" . $itemData['StoryParentStory'] . "</a></p>";
@@ -2242,20 +2230,21 @@ function _TCT_item_page( $atts ) {
             // right side
             $content .= "<div id='full-view-r' >";
 
-                $content .= "<div>";
-                    $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;padding:1px;' title='click to open editor'>";
-                    $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></span>";
+                $content .= "<div id='transcription-container' style='min-height:575px;'>";
+                    $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;' title='click to open editor'>";
+                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         if($itemData['TranscriptionStatusColorCode'] == '#61e02f'){
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                            $content .= "<div style='display:inline-block;'><span class='completed'>COMPLETED</span>";
                         }
                         elseif($itemData['TranscriptionStatusColorCode'] == '#fff700') {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                            $content .= "<div style='display:inline-block;'><span class='edited'>EDIT</span>";
                         }
                         elseif($itemData['TranscriptionStatusColorCode'] == '#ffc720') {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                            $content .= "<div style='display:inline-block;'><span class='reviewed'>REVIEW</span>";
                         } else {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                            $content .= "<div style='display:inline-block;'><span class='not-started'>NOT STARTED</span>";
                         }
+                        $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
                     $content .= "</div>";
                     if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
                         $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
@@ -2263,15 +2252,15 @@ function _TCT_item_page( $atts ) {
                     $trLanguage = $currentTranscription['Languages'][0]['Name'];
                     if(strlen($formattedTranscription) < 700) {
 
-                        $content .= "<div style='padding-left:20px;padding-right:20px;'>";
+                        $content .= "<div style='padding-left:50px;padding-right:20px;padding-top:20px;'>";
                             $content .= $formattedTranscription;
                         $content .= "</div>";
 
                         if($trLanguage){
                             $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
-                            $content .= "<div class='accordion'>";
+                            $content .= "<div class='language-container'>";
                             foreach($currentTranscription['Languages'] as $trLang) {
-                                $content .= "<div class='card-header' style='position:relative;left:-5px;'>" . $trLang['Name'] . "</div>";
+                                $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
                             }
                                 // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
                             $content .= "</div>";
@@ -2279,13 +2268,13 @@ function _TCT_item_page( $atts ) {
                         $content .= "</div>";
                     } else {
                     $content .= "<div class='trans-toggle'>";
-                        $content .= "<div id='itemTranscription' class='togglePara' style='padding-left:20px;padding-right:20px;max-height:200px;'>".$formattedTranscription."</div>";
-                        $content .= "<div id='itemBtn' class='descMore'>Show More</div>";
+                        $content .= "<div id='itemTranscription' class='togglePara' style='padding-left:50px;padding-right:20px;height:401px;padding-top:20px;'>".$formattedTranscription."</div>";
+                        $content .= "<div id='itemBtn' class=''>Show More</div>";
                         if($trLanguage){
                             $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
-                            $content .= "<div class='accordion'>";
+                            $content .= "<div class='language-container'>";
                             foreach($currentTranscription['Languages'] as $trLang) {
-                                $content .= "<div class='card-header' style='position:relative;left:-5px;'>" . $trLang['Name'] . "</div>";
+                                $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
                             }
                                 // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
                             $content .= "</div>";
@@ -2294,22 +2283,23 @@ function _TCT_item_page( $atts ) {
                     $content .= "</div>";
                     }
                     // description
-                    $content .= "<div style='display:flex;flex-direction:row;justify-content:space-between;margin-top:3%;'>";
-                        $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> DESCRIPTION</h5></span>";
+                    $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:20px;'>";
+                        $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> DESCRIPTION</h5></div>";
                         if($itemData['DescriptionStatusColorCode'] == '#61e02f'){
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='completed'>COMPLETED</span>";
                         }
                         elseif($itemData['DescriptionStatusColorCode'] == '#fff700') {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='edited'>EDIT</span>";
                         }
                         elseif($itemData['DescriptionStatusColorCode'] == '#ffc720') {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='reviewed'>REVIEW</span>";
                         } else {
-                            $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='not-started'>NOT STARTED</span>";
                         }
+                        $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
                     $content .= "</div>";
 
-                    $content .= "<p style='padding-left:20px;padding-right:20px;'>".$itemData['Description']."</p>";
+                    $content .= "<p style='padding-left:50px;padding-right:20px;'>".$itemData['Description']."</p>";
                     $dcLang = array();
                     foreach($languages as $language){
                         if($itemData['DescriptionLanguage'] == $language['LanguageId']){
@@ -2318,36 +2308,37 @@ function _TCT_item_page( $atts ) {
                     }
                     if(count($dcLang) > 0){
                         $content .= "<h6 class='enrich-headers'>Language(s) of Description</h6>";
-                        $content .= "<div class='accordion'>";
+                        $content .= "<div class='language-container'>";
                             foreach($dcLang as $lang){
-                                $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$lang."</div>";
+                                $content .= "<div class='language-single'>".$lang."</div>";
                             }
                         $content .= "</div>";
                     }
                     // Location
-                    $content .= "<div style='display:flex;flex-direction:row;justify-content:space-between;'>";
-                    $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-globe\" aria-hidden=\"true\"></i> LOCATION</h5></span>";
+                    $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:20px 0;'>";
+                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/uploads/location-icon.svg'> LOCATION</h5></div>";
                     if($itemData['LocationStatusColorCode'] == '#61e02f'){
-                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='completed'>COMPLETED</span>";
                     }
                     elseif($itemData['LocationStatusColorCode'] == '#fff700') {
-                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p></span>";
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='edited'>EDIT</span>";
                     }
                     elseif($itemData['LocationStatusColorCode'] == '#ffc720') {
-                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p></span>";
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='reviewed'>REVIEW</span>";
                     } else {
-                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='not-started'>NOT STARTED</span>";
                     }
+                    $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
                     $content .= "</div>";
 
-                    $content .= "<div id='full-view-tagging' class='no-htr-map' style='height:300px;position:relative;left:-2px;'>";
+                    $content .= "<div id='full-view-tagging' class='no-htr-map' style='height:300px;position:relative;margin-bottom:20px;'>";
                        // $content .= $taggingTab;
                        $content .= $mapTab;
                     $content .= "</div>";
 
-                    $content .= "<div class='accordion' style='position:relative;left:-2px;margin-top:1%;'>";
+                    $content .= "<div class='location-output' style='position:relative;margin-top:20px;'>";
                     foreach($itemData['Places'] as $platz){
-                        $content .= "<div class='card-header'>".$platz['Name']." (".$platz['Latitude'].", ".$platz['Longitude'].")</div>";
+                        $content .= "<div class='location-single'>".$platz['Name']." (".$platz['Latitude'].", ".$platz['Longitude'].")</div>";
                     }
                     $content .= "</div>";
 
@@ -2365,6 +2356,60 @@ function _TCT_item_page( $atts ) {
             // Image section
             $content .= "<div id='item-image-section' class='panel-left'>";
                 $content .= '<div id="openseadragonFS">';
+                    // Save All at once button
+                    $content .= "<div id='save-all-btn'>Save All</div>";
+                    $content .= "<div id='save-all-spinner'>Saving...</div>";
+                    // Temporary Js
+                //    $content .= "<script>
+                //         document.querySelector('#save-all-btn').addEventListener('click', () => {
+                //             callAll();
+                //         }, true);
+
+                //         function callAll() {
+                //             document.querySelector('#save-all-spinner').style.display = 'block';
+                //             console.log('calling');
+                //             updateItemTranscription(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).");
+                //             setTimeout(()=>{saveItemLocation(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},400);
+                //             setTimeout(()=>{saveItemDate(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},600);
+                //             setTimeout(()=>{savePerson(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},800);
+                //             setTimeout(()=>{updateItemDescription(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")}, 1300);
+                //             setTimeout(()=>{saveKeyword(".htmlspecialchars($itemData['ItemId'], ENT_QUOTES, 'UTF-8').", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},1700);
+                //             setTimeout(()=>{saveLink(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")},1900);
+                //             setTimeout(()=>{document.querySelector('#save-all-spinner').style.display = 'none';},2000);
+                //        }
+
+                //    </script>";
+
+
+                    // Temporary css
+                    $content .= "<style>
+                        #save-all-btn {
+                            position: absolute;
+                            height: 25px;
+                            width: 80px;
+                            background: #0a72cc;
+                            top: 1%;
+                            right: 5%;
+                            z-index: 9999;
+                            color: white;
+                            text-align: center;
+                            cursor: pointer;
+                        }
+                        #save-all-spinner {
+                            display: none;
+                            position: absolute;
+                            height: 150px;
+                            width: 250px;
+                            background: grey;
+                            border: 5px solid #000;
+                            text-align: center;
+                            padding-top: 50px;
+                            font-size: 20px;
+                            top: 50%;
+                            left: 50%;
+                            z-index: 9999;
+                        }
+                    </style>";
                     // viewer buttons at fullscreen
                     $content .= '<div class="buttons" id="buttonsFS">';
                         $content .= '<div id="zoom-inFS" class="theme-color theme-color-hover"><i class="far fa-plus"></i></div>';
@@ -2403,6 +2448,39 @@ function _TCT_item_page( $atts ) {
             // Info/Transcription section
             $content .= "<div id='item-data-section' class='panel-right'>";
                 $content .= "<div id='item-data-header'>";
+                // back to story
+                $content .= "<div class='back-to-story'><a href='".home_url()."/documents/story?story=".$itemData['StoryId']."'><i class=\"fas fa-arrow-left\" style='margin-right:7.5px;'></i> Back to the Story</a></div>";
+                // view switcher
+                $content .= '<div class="view-switcher" id="switcher-casephase" style="display:inline-block;">';
+                $content .= '<ul id="item-switch-list" class="switch-list" style="z-index:10;top:0;right:0;">';
+
+                    $content .= "<li>";
+                        $content .= '<i id="popout" class="far fa-window-restore fa-rotate-180 view-switcher-icons"
+                    onclick="switchItemView(event, \'popout\')"></i>';
+                    $content .= "</li>";
+
+                    $content .= "<li>";
+                        $content .= '<i id="vertical-split" class="far fa-window-maximize fa-rotate-180 view-switcher-icons"
+                    onclick="switchItemView(event, \'vertical\')"></i>';
+                    $content .= "</li>";
+
+                    $content .= "<li>";
+                        $content .= '<i id="horizontal-split" class="far fa-window-maximize fa-rotate-90 view-switcher-icons active theme-color" style="font-size:12px;"
+                    onclick="switchItemView(event, \'horizontal\')"></i>';
+                    $content .= "</li>";
+
+                    $content .= "<li>";
+                        $content .= '<i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons"
+                    onclick="switchItemView(event, \'closewindow\')"></i>';
+                    $content .= "</li>";
+
+                    $content .= "<li>";
+                        $content .= '<i id="close-window-view" class="fas fa-times view-switcher-icons theme-color" onClick="switchItemPageView()"></i>';
+                    $content .= "</li>";
+
+                $content .= '</ul>';
+            $content .= '</div>';
+            $content .= '<div style="clear:both;margin-bottom: 10px;"></div>';
                     // Tab menu
                     $content .= '<ul id="item-tab-list" class="tab-list">';
                         $content .= "<li>";
@@ -2423,7 +2501,7 @@ function _TCT_item_page( $atts ) {
                         $content .= "</li>";
 
                         $content .= "<li>";
-                            $content .= "<div class='theme-color tablinks' title='Locations and Tagging'
+                            $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations and Tagging'
                                             onclick='switchItemTab(event, \"tagging-tab\");map.resize()'>";
                                     $content .= '<i class="fa fa-map-marker tab-i" style="background-color:#fff;"></i>';
                                     $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
@@ -2432,10 +2510,10 @@ function _TCT_item_page( $atts ) {
                         $content .= "</li>";
 
                         $content .= "<li>";
-                            $content .= "<div class='theme-color tablinks' title='Tagging' onclick='switchItemTab(event, \"tag-tab\");'>";
+                            $content .= "<div id='tagi-tab' class='theme-color tablinks' title='Tagging' onclick='switchItemTab(event, \"tag-tab\");'>";
                                 $content .= "<i class='fa fa-tag tab-i' aria-hidden='true'></i>";
                                 $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TaggingStatusColorCode'].";background-color:".$itemData['TaggingStatusColorCode'].";'></i>";
-                                $content .= "<span><b> TAGGING</b></span></p>";
+                                $content .= "<span><b> ENRICHMENTS</b></span></p>";
                             $content .= "</div>";
                         $content .= "</li>";
 
@@ -2456,35 +2534,35 @@ function _TCT_item_page( $atts ) {
                         $content .= "</li>";
                     $content .= '</ul>';
                     // View switcher
-                    $content .= '<div class="view-switcher" id="switcher-casephase">';
-                        $content .= '<ul id="item-switch-list" class="switch-list" style="position:fixed;z-index:10;top:0;right:0;">';
+                    // $content .= '<div class="view-switcher" id="switcher-casephase">';
+                    //     $content .= '<ul id="item-switch-list" class="switch-list" style="position:fixed;z-index:10;top:0;right:0;">';
 
-                            $content .= "<li>";
-                                $content .= '<i id="popout" class="far fa-window-restore fa-rotate-180 view-switcher-icons"
-                            onclick="switchItemView(event, \'popout\')"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="popout" class="far fa-window-restore fa-rotate-180 view-switcher-icons"
+                    //         onclick="switchItemView(event, \'popout\')"></i>';
+                    //         $content .= "</li>";
 
-                            $content .= "<li>";
-                                $content .= '<i id="vertical-split" class="far fa-window-maximize fa-rotate-180 view-switcher-icons"
-                            onclick="switchItemView(event, \'vertical\')"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="vertical-split" class="far fa-window-maximize fa-rotate-180 view-switcher-icons"
+                    //         onclick="switchItemView(event, \'vertical\')"></i>';
+                    //         $content .= "</li>";
 
-                            $content .= "<li>";
-                                $content .= '<i id="horizontal-split" class="far fa-window-maximize fa-rotate-90 view-switcher-icons active theme-color" style="font-size:12px;"
-                            onclick="switchItemView(event, \'horizontal\')"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="horizontal-split" class="far fa-window-maximize fa-rotate-90 view-switcher-icons active theme-color" style="font-size:12px;"
+                    //         onclick="switchItemView(event, \'horizontal\')"></i>';
+                    //         $content .= "</li>";
 
-                            $content .= "<li>";
-                                $content .= '<i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons"
-                            onclick="switchItemView(event, \'closewindow\')"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons"
+                    //         onclick="switchItemView(event, \'closewindow\')"></i>';
+                    //         $content .= "</li>";
 
-                            $content .= "<li>";
-                                $content .= '<i id="close-window-view" class="fas fa-times view-switcher-icons theme-color" onClick="switchItemPageView()"></i>';
-                            $content .= "</li>";
+                    //         $content .= "<li>";
+                    //             $content .= '<i id="close-window-view" class="fas fa-times view-switcher-icons theme-color" onClick="switchItemPageView()"></i>';
+                    //         $content .= "</li>";
 
-                        $content .= '</ul>';
-                    $content .= '</div>';
+                    //     $content .= '</ul>';
+                    // $content .= '</div>';
                 $content .= "</div>";
                 // Tab content
                 $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";

@@ -70,7 +70,7 @@ $logo_in_menu = siteorigin_setting( 'layout_masthead' ) == 'logo-in-menu';
 	    			echo "<a id=\"login\" href=\"#\">Login</a>";
 	    		echo "</li>\n";
 	    	}
-			echo "<li class='menu-item'><a href='".get_europeana_url()."/tutorial-english/'><i class=\"fal fa-question-circle\" style='font-size:20px;bottom:10px;'></i></a></li>";
+			echo "<li class='menu-item' style='top:3px;'><a href='".get_europeana_url()."/tutorial-english/'><i class=\"fal fa-question-circle\" style='font-size:20px;bottom:10px;'></i></a></li>";
 
 	//echo "<li>";
 	// echo '<li id="help-tutorials" class="help-tutorials">';
