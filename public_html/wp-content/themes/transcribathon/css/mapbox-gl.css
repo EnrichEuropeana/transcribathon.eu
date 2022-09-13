@@ -56,9 +56,9 @@
 .mapboxgl-ctrl-top-right,
 .mapboxgl-ctrl-bottom-left,
 .mapboxgl-ctrl-bottom-right { position: absolute; pointer-events: none; z-index: 2; }
-.mapboxgl-ctrl-top-left     { top: 0; left: 0; }
+.mapboxgl-ctrl-top-left     { top: 0; left: 30px; }
 .mapboxgl-ctrl-top-right    { top: 0; right: 0; }
-.mapboxgl-ctrl-bottom-left  { bottom: 0; left: 0; }
+.mapboxgl-ctrl-bottom-left  { bottom: 0; left: 30px; }
 .mapboxgl-ctrl-bottom-right { right: 0; bottom: 0; }
 
 .mapboxgl-ctrl {
@@ -259,6 +259,11 @@ a.mapboxgl-ctrl-logo.mapboxgl-compact {
 
     .mapboxgl-ctrl-attrib.mapboxgl-compact .mapboxgl-ctrl-attrib-inner {
         display: none;
+    }
+
+    .mapboxgl-ctrl-attrib-inner {
+        position: relative;
+        left: 30px;
     }
 
     .mapboxgl-ctrl-attrib.mapboxgl-compact:hover .mapboxgl-ctrl-attrib-inner {

@@ -3168,7 +3168,7 @@ a.ow-icon-placement-top.ow-button-hover {
   font-weight: bold;
   letter-spacing: 0.5px;
 }
-.item-date-display {
+/* .item-date-display {
   border: 1px solid #eeeeee;
   padding: 4px 8px;
   background-color: #f3f3f3;
@@ -3177,16 +3177,11 @@ a.ow-icon-placement-top.ow-button-hover {
 }
 .item-date-display-container {
   margin-top: 6px;
-}
+} */
 .edit-data-cancel-right {
   float: right;
   padding: 8px 12px;
   margin-right: 4px;
-  letter-spacing: 0.5px;
-}
-.edit-data-save-right {
-  float: right;
-  padding: 8px 12px;
   letter-spacing: 0.5px;
 }
 .form-buttons-right {

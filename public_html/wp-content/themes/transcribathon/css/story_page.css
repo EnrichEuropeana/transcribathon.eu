@@ -113,6 +113,12 @@ ul.story-navigation-content-container li {
     position: relative;
     margin-top: 3em;
 }
+.storypg-title {
+    text-transform: none;
+}
+.storypg-title::first-letter{
+    text-transform: capitalize;
+}
 /* End of Main Container */
 
 /* Description Image and Description text */
