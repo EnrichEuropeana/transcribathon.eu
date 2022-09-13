@@ -20,6 +20,8 @@ class TranskribusClient
 
 	protected $transcribathonToken = null;
 
+	protected $verifySSL = true;
+
 	/*
  	 * __construct
  	 *
@@ -31,6 +33,8 @@ class TranskribusClient
 	{
 		$transkribusConfig = $config['transkribus'];
 		$transcribathonConfig = $config['transcribathon'];
+
+		$this->verifySSL = $config['verifySSL'];
 
 		$this->transcribathonToken = $transcribathonConfig['apiToken'];
 		$this->transcribathonEndpoint = $transcribathonConfig['endpoint'];
@@ -275,7 +279,6 @@ class TranskribusClient
 
 		$options = array(
 			'http' => array(
-				'ignore_errors' => true,
 				'header' => array(
 					'Content-type: application/json',
 					'Authorization: Bearer ' . $this->transcribathonToken
@@ -309,6 +312,16 @@ class TranskribusClient
  	 */
 	protected function sendQuery($url, $options)
 	{
+		if (!$this->verifySSL) {
+			$options['ssl'] = array(
+				'verify_peer' => false,
+        'verify_peer_name' => false,
+			);
+		}
+
+		$options['http']['ignore_errors'] = true;
+		$options['http']['timeout'] = 60;
+
 		$context = stream_context_create($options);
 		$result = @file_get_contents($url, false, $context);
 
@@ -317,7 +330,7 @@ class TranskribusClient
 		$status = explode(' ', $responseHeader[0])[1];
 
 		if ($status > 299) {
-			$this->error = $result;
+			$this->error = $result ?: error_get_last();
 			return false;
 		}
 
@@ -356,7 +369,6 @@ class TranskribusClient
 
 		$options = array(
 			'http' => array(
-				'ignore_errors' => true,
 				'header' => array(
 					'Content-type: application/' .$accept,
 					'Authorization: Bearer ' . $accessToken
