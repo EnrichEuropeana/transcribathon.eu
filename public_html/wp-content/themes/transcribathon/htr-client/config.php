@@ -1,7 +1,7 @@
 <?php
 
 $config = array(
-	"transkribus" => array(
+	'transkribus' => array(
 		'htrModelEndpoint' => getenv('HTR_MODEL_ENDPOINT'),
 		'endpoint'         => getenv('HTR_ENDPOINT'),
 		'user'             => getenv('HTR_USER'),
@@ -11,10 +11,11 @@ $config = array(
 		'scope'            => array('openid profile'),
 		'grantType'        => 'password'
 	),
-	"transcribathon" => array(
-		"endpoint" => getenv('TP_API_V2_ENDPOINT'),
-		"apiToken" => getenv('TP_API_V2_TOKEN')
-	)
+	'transcribathon' => array(
+		'endpoint' => getenv('TP_API_V2_ENDPOINT'),
+		'apiToken' => getenv('TP_API_V2_TOKEN')
+	),
+	'verifySSL' => false
 );
 
 $oldApiEndpoint = getenv('OLD_API_ENDPOINT');
