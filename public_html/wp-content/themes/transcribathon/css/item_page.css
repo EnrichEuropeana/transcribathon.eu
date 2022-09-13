@@ -527,11 +527,17 @@ div.openseadragon-canvas > canvas > svg {
 }
 #transcription-selected-languages li {
     display: inline-block;
-    background-color: #f1f1f1;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
     border-radius: 2px;
     padding: 3px 6px;
     margin: 0 0 6px 6px;
     list-style: none;
+    font-weight: 600;
+}
+#transcription-selected-languages li:hover {
+    background-color: #0a72cc;
+    color: #fff;
 }
 .theme-colored-data-box {
     color: white;
@@ -573,6 +579,20 @@ div.openseadragon-canvas > canvas > svg {
     left: -20px;
     position: absolute;
     z-index: 1;
+}
+.data-popout .language-tooltip .language-tooltip-text, .panel-bottom .language-tooltip .language-tooltip-text {
+    visibility: hidden;
+    width: 120px;
+    background-color: #828282;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    float: inherit;
+    width: fit-content;
 }
 #no-text-selector {
     margin-top: 4.6px;
@@ -668,16 +688,16 @@ div.openseadragon-canvas > canvas > svg {
     resize: none;
     height: 120px;
     padding: 0 10px;
-    margin-bottom: 6px;
     border: 1px solid #cccccc;
     border-radius: 2px;
     outline: none;
 }
 #description-language-selector {
-    float: left;
+    display: inline-block;
 }
 #description-update-button {
     margin-bottom: 8px;
+    float: right;
     display: none;
     border: 1px solid #eeeeee;
     background: #eeeeee;
@@ -685,6 +705,13 @@ div.openseadragon-canvas > canvas > svg {
     letter-spacing: 0.9px;
     outline: none;
     border-radius: 0;
+}
+.desc-lang-label {
+    display: inline-block;
+    color: #2b2b2b;
+    background-color: #f8f8f8;
+    font-size: 10px;
+    font-weight: 700;
 }
 .transcription-toggle {
     width: 100%;
@@ -833,6 +860,18 @@ div.openseadragon-canvas > canvas > svg {
     height: 100%!important;
     align-content: space-evenly;
 }
+.panel-right #transcription-update-button, .panel-right #description-update-button {
+    width: 100%;
+    float: unset;
+    height: 25px!important;
+    font-size: 14px!important;
+    font-weight: 700;
+}
+.panel-right #description-update-button {
+    padding-top: 5px;
+    border: 1px solid #0a72cc;
+}
+
 #item-data-header {
     margin-top: 15px;
     padding-bottom: 16px;
@@ -858,6 +897,7 @@ div.openseadragon-canvas > canvas > svg {
     color: #2b2b2b;
 }
 .panel-right .tab-list {
+    height: 85px;
     padding-top: 17px;
     padding-left: 18px;
     position: relative;
@@ -870,6 +910,12 @@ div.openseadragon-canvas > canvas > svg {
 }
 #item-switch-list {
     position: fixed;
+}
+#item-switch-list img {
+    height: 20px;
+    width: 20px;
+    vertical-align: unset;
+    background-color: #f8f8f8;
 }
 .panel-right #item-switch-list {
     position: relative;
@@ -958,20 +1004,21 @@ div.openseadragon-canvas > canvas > svg {
 .entry-content .switch-list li {
     display: inline;
     margin-left: 0;
-    margin: 0.65px;
+    margin: 0 1px;
 }
 .switch-list i {
-    background-color: #ddd;
-    font-size: 13px;
-    padding: 6px;
-    -webkit-transition: 0.3s;
+    font-size: 15px;
+    text-align: center;
     transition: 0.3s;
+    position: relative;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
 }
-.switch-list i:hover {
-    background-color: #ccc;
-}
-.switch-list i.active {
-    background-color: inherit;
+.switch-i {
+    display: inline-block;
+    background-color: #f8f8f8;
+    height: 20.5px;
 }
 #item-data-content {
     height: calc(100% - 70px);
@@ -1214,14 +1261,18 @@ input#person-deathPlace-input {
 }
 .panel-right-tab-menu #tr-history {
     position: relative;
-    height: 50%;
 }
 .panel-right #mce-wrapper-transcription {
     display: none;
 }
 .panel-right #transcription-view {
     display: block;
-    line-height: 1.4em;
+    line-height: 1.3em;
+    height: 400px;
+    overflow-y: scroll;
+}
+#editor-tab.tabcontent {
+    overflow: hidden!important;
 }
 .panel-right #item-data-header {
     height: fit-content;
@@ -1236,7 +1287,8 @@ input#person-deathPlace-input {
 .panel-right .language-item-select {
     position: relative;
     top: -2px;
-    height: 100%;
+    height: 300px;
+    overflow-y: scroll;
 }
 .panel-right .transcription-mini-metadata {
     height: 13%;
@@ -1253,6 +1305,9 @@ input#person-deathPlace-input {
     padding: 0 10px;
     width: unset;
     margin: 0;
+    background-color: #f8f8f8;
+    font-size: 10px;
+    font-weight: 700;
 }
 .panel-right #transcription-language-selector {
     height: 100%;
@@ -1361,8 +1416,6 @@ input#person-deathPlace-input {
     overflow-y: auto!important;
 }
 .panel-bottom #transcription-update-button {
-    right: 30px;
-    bottom: 15px;
     height: 25px;
     width: 100px;
     font-size: 15px;
@@ -1373,8 +1426,12 @@ input#person-deathPlace-input {
     height: 25px;
     width: 100px;
     border: 5px solid #0a72cc;
+    font-size: 15px;
     border-radius: 5px;
     padding: 0;
+    float: right;
+    margin-bottom: 0;
+    left: 40px;
 }
 .panel-bottom #tr-history {
     display: none;
@@ -1417,9 +1474,16 @@ input#person-deathPlace-input {
 #item-data-section.data-popout #item-page-transcription-text {
     height: calc(100% - 2.3em);
 }
-#item-data-section.data-popout .transcription-headline-header div {
+#item-data-section.data-popout .transcription-headline-header div, .data-popout #description-collapse-heading {
     font-size: 12px;
     padding: 0;
+}
+.data-popout #description-collapse-heading, .panel-bottom #description-collapse-heading {
+    width: 100%;
+}
+.data-popout #description-status-changer, .panel-bottom #description-status-changer {
+    float: none;
+    display: inline-block;
 }
 .data-popout #transcription-status-dropdown {
     height: auto!important;
@@ -1443,9 +1507,6 @@ input#person-deathPlace-input {
     padding: 0 10px!important;
     width: unset;
     margin: 0;
-}
-.data-popout #desc-part {
-    overflow-y: scroll;
 }
 .data-popout #transcription-language-custom-selector::after {
     right: 0;
@@ -1474,6 +1535,7 @@ input#person-deathPlace-input {
 .data-popout .language-item-select {
     position: relative;
     top: -6px;
+    width: 200px;
 }
 .data-popout .tab-list li {
     margin: 0;
@@ -1490,14 +1552,17 @@ input#person-deathPlace-input {
     border-radius: 7px;
     background-color: #fff;
 }
-.data-popout #transcription-update-button {
-    right: 30px;
-    bottom: 15px;
+.data-popout #transcription-update-button, .data-popout #description-update-button {
     height: 25px;
     width: 100px;
     font-size: 15px;
     border: 5px solid #0a72cc;
     border-radius: 5px;
+}
+.data-popout #description-update-button {
+    padding: 0;
+    margin-bottom: 0;
+    left: 40px;
 }
 .data-popout .square-checkbox-container {
     margin-right: 0px;
@@ -1517,6 +1582,11 @@ input#person-deathPlace-input {
 .data-popout .section-status-changer {
     height: 20px;
     top: 2px;
+}
+.data-popout #switcher-casephase, .panel-bottom #switcher-casephase {
+    position: fixed;
+    top: 0px;
+    right: 0px;
 }
 .data-closed {
     position: absolute!important;
@@ -2009,6 +2079,13 @@ input#person-deathPlace-input {
     }
     .tab-h span, .tab-h.it {
         display: none;
+    }
+    .data-popout .tab-h span{
+        display: inline-block;
+    }
+    .data-popout .tab-h.it {
+        display: inline-block;
+        bottom: 5px;
     }
 }
 @media screen and (min-width: 1201px) and (max-width: 1550px) {
