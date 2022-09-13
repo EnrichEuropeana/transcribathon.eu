@@ -41,7 +41,32 @@ function installEventListeners() {
 
         })
     }
+    //
+    const descLangLabel = document.querySelector('.desc-lang-label');
+    if(descLangLabel) {
+        if(document.querySelector('#description-language-custom-selector').textContent === 'Select Language') {
+            descLangLabel.style.display = 'none';
+        } else {
+            descLangLabel.style.display = 'inline-block';
+        }
+    }
+        // Transcription history header, on click hide transcription to make space for tr history
+    const historyTr = document.querySelector('#transcription-history-collapse-heading');
+    if(historyTr){
+        let trView = document.querySelector('#transcription-view');
+        let trHistory = document.querySelector('#tr-history');
+        historyTr.parentElement.addEventListener('click', function () {
+            if(trHistory.style.height === '20px') {
+                trView.style.maxHeight = '100px';
+                trView.style.transition = 'all 2s';
+                trHistory.style.height = '400px';
+            } else {
+                trView.style.maxHeight = 'unset';
+                trHistory.style.height = '20px';
+            }
 
+        })
+    }
     const defaultLogContainer = document.querySelector('#default-login-container');
     // When the user clicks the button(pen on the image viewer), open the login modal
     const penLogin = document.querySelector('#lock-login');
@@ -515,9 +540,8 @@ function addPopUpTranscription() {
 // Switches between different views within the item page image view
 function switchItemView(event, viewName) {
   // Transcription Language selection
-//   const langSelecta = document.querySelector('.transcription-mini-metadata'); //Language selector
-//   const transToolBar = document.querySelector('#mytoolbar-transcription'); // Container for lang in popup
-//   const transContainer = document.querySelector('#transcription-section'); // Original container for lang selector
+  const trSaveBtn = document.querySelector('#transcription-update-button');
+  const descSaveBtn = document.querySelector('#description-update-button');
   // Make tab icons inactive
   icons = document.getElementsByClassName("view-switcher-icons");
   for (i = 0; i < icons.length; i++) {
@@ -541,7 +565,12 @@ function switchItemView(event, viewName) {
       document.querySelector('#mce-wrapper-transcription').style.display = 'none';
       // document.querySelector('.transcription-mini-metadata').style.display = 'none';
       document.querySelector('#tr-view-btn-i').style.display = 'inline-block';
-      document.querySelector('#tr-view-btn-text').textContent = 'Edit';
+      if(document.querySelector('#tr-save-btn').querySelector('#transcription-update-button') == null){
+          document.querySelector('#tr-save-btn').appendChild(trSaveBtn);
+      }
+      if(document.querySelector('#desc-save-btn').querySelector('#description-update-button') == null){
+        document.querySelector('#desc-save-btn').appendChild(descSaveBtn);
+     }
 
       jQuery("#item-image-section").css("width", '')
       jQuery("#item-image-section").css("height", '')
@@ -592,6 +621,12 @@ function switchItemView(event, viewName) {
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
         // document.querySelector('.transcription-mini-metadata').style.display = 'block';
         document.querySelector('#transcription-status-indicator').style.display = 'unset';
+        if(document.querySelector('.transcirption-view-head').querySelector('#transcription-update-button') === null){
+            document.querySelector('.transcirption-view-head').appendChild(trSaveBtn);
+        }
+        if(document.querySelector('#description-collapse-heading').querySelector('#description-update-button') === null){
+            document.querySelector('#description-collapse-heading').appendChild(descSaveBtn);
+        }
 
       jQuery("#item-image-section").css("width", '')
       jQuery("#item-image-section").css("height", '')
@@ -635,6 +670,12 @@ function switchItemView(event, viewName) {
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
         // document.querySelector('.transcription-mini-metadata').style.display = 'block';
         document.querySelector('#transcription-status-indicator').style.display = 'unset';
+        if(document.querySelector('.transcirption-view-head').querySelector('#transcription-update-button') === null){
+            document.querySelector('.transcirption-view-head').appendChild(trSaveBtn);
+        }
+        if(document.querySelector('#description-collapse-heading').querySelector('#description-update-button') === null){
+            document.querySelector('#description-collapse-heading').appendChild(descSaveBtn);
+        }
 
       jQuery("#item-image-section").css("width", '100%')
       jQuery("#item-image-section").css("height", '100%')
@@ -2809,7 +2850,7 @@ function switchItem(itemId, userId, statusColor, progressSize, itemOrder, itemAm
       }
       else {
         jQuery('#description-language-selector select').val(null);
-        jQuery('#description-language-custom-selector').html('Language of the Description');
+        jQuery('#description-language-custom-selector').html('Select Language');
       }
       var title = jQuery('#additional-information-area .item-page-section-headline').html();
       var titleWords = title.split(" ");

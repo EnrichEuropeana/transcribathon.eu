@@ -77,17 +77,19 @@ function _TCT_item_page( $atts ) {
                             .transcription-toggle>a:hover {
                                 color: #0a72cc !important;
                             }
-                            #transcription-selected-languages.language-selected ul li {
-                                background: #0a72cc ;
-                                color: #ffffff;
-                            }
                             .language-item-select{
                                 background: #0a72cc ;
                                 width: 15em;
                             }
                             .language-select-selected{
-                                color: #0a72cc ;
-                                width: 15em;
+                                font-size: 10px;
+                                color: #2b2b2b;
+                                font-weight: 700;
+                                background-color: #f8f8f8;
+                            }
+                            .language-select-selected:hover {
+                                color: #fff;
+                                background-color: #0a72cc!important;
                             }
                     </style>";
         $content .= '<script>
@@ -298,6 +300,14 @@ function _TCT_item_page( $atts ) {
                     }
                     $editorTab .= '</div>';
                 $editorTab .= '</div>';
+                $editorTab .= '<div id="tr-save-btn">';
+                $editorTab .= "<button disabled class='item-page-save-button language-tooltip' id='transcription-update-button'
+                onClick='updateItemTranscription(".$itemData['ItemId'].", ".get_current_user_id()."
+                        , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                $editorTab .= "SAVE"; // save transcription
+                $editorTab .= "<span class='language-tooltip-text'>Please select a language</span>";
+                $editorTab .= "</button>";
+                $editorTab .= '</div>';
 
                     $editorTab .= "<div class='transcription-mini-metadata'>";
                         $editorTab .= '<div id="transcription-language-selector" class="language-selector-background language-selector login-required">';
@@ -329,13 +339,7 @@ function _TCT_item_page( $atts ) {
                             $editorTab .= '</ul>';
                         $editorTab .= '</div>';
                         $editorTab .= '<div class="transcription-metadata-container">';
-                            $editorTab .= "<button disabled class='item-page-save-button language-tooltip' id='transcription-update-button'
-                                                    onClick='updateItemTranscription(".$itemData['ItemId'].", ".get_current_user_id()."
-                                                            , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                                $editorTab .= "SAVE"; // save transcription
-                                $editorTab .= "<span class='language-tooltip-text'>Please select a language</span>";
-                            $editorTab .= "</button>";
-
+                        ///save button original position
                         $editorTab .= '<div id="no-text-selector">';
                             $editorTab .= '<label class="square-checkbox-container login-required">';
                                 $editorTab .= '<span>No Text</span>';
@@ -416,6 +420,40 @@ function _TCT_item_page( $atts ) {
                             }
                             $editorTab .= '<div style="clear: both;"></div>';
                         $editorTab .= '</div>';
+                        $editorTab .= '<div id="desc-lang-container">';
+                        $editorTab .= '<div class="desc-lang-label">Language of description: </div>';
+                        $editorTab .= '<div id= "description-language-selector" class="language-selector-background language-selector login-required">';
+                        $editorTab .= '<select>';
+                            if ($itemData['DescriptionLanguage'] == null) {
+                                $editorTab .= '<option value="" disabled selected hidden>';
+                                    $editorTab .= 'Select Language';
+                                $editorTab .= '</option>';
+                                foreach ($languages as $language) {
+                                    $editorTab .= '<option value="'.$language['LanguageId'].'">';
+                                        $editorTab .= $language['Name']." (".$language['NameEnglish'].")";
+                                    $editorTab .= '</option>';
+                                }
+                            }
+                            else {
+                                $editorTab .= '<option value="" disabled selected hidden>';
+                                    $editorTab .= 'Select Language';
+                                $editorTab .= '</option>';
+                                foreach ($languages as $language) {
+                                    if ($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                                        $editorTab .= '<option value="'.$language['LanguageId'].'" selected>';
+                                            $editorTab .= $language['Name'];
+                                        $editorTab .= '</option>';
+                                    }
+                                    else {
+                                        $editorTab .= '<option value="'.$language['LanguageId'].'">';
+                                            $editorTab .= $language['Name'];
+                                        $editorTab .= '</option>';
+                                    }
+                                }
+                            }
+                        $editorTab .= '</select>';
+                    $editorTab .= '</div>';
+                    $editorTab .= '</div>';
 
                         $editorTab .= '<textarea id="item-page-description-text" class="login-required" name="description" rows="4">';
                             if ($itemData['Description'] != null) {
@@ -423,40 +461,42 @@ function _TCT_item_page( $atts ) {
                             }
                         $editorTab .= '</textarea>';
 
-                        $editorTab .= '<div id= "description-language-selector" class="language-selector-background language-selector login-required">';
-                            $editorTab .= '<select>';
-                                if ($itemData['DescriptionLanguage'] == null) {
-                                    $editorTab .= '<option value="" disabled selected hidden>';
-                                        $editorTab .= 'Language of the Description';
-                                    $editorTab .= '</option>';
-                                    foreach ($languages as $language) {
-                                        $editorTab .= '<option value="'.$language['LanguageId'].'">';
-                                            $editorTab .= $language['Name']." (".$language['NameEnglish'].")";
-                                        $editorTab .= '</option>';
-                                    }
-                                }
-                                else {
-                                    foreach ($languages as $language) {
-                                        if ($itemData['DescriptionLanguage'] == $language['LanguageId']) {
-                                            $editorTab .= '<option value="'.$language['LanguageId'].'" selected>';
-                                                $editorTab .= $language['Name'];
-                                            $editorTab .= '</option>';
-                                        }
-                                        else {
-                                            $editorTab .= '<option value="'.$language['LanguageId'].'">';
-                                                $editorTab .= $language['Name'];
-                                            $editorTab .= '</option>';
-                                        }
-                                    }
-                                }
-                            $editorTab .= '</select>';
-                        $editorTab .= '</div>';
+                        // $editorTab .= '<div id= "description-language-selector" class="language-selector-background language-selector login-required">';
+                        //     $editorTab .= '<select>';
+                        //         if ($itemData['DescriptionLanguage'] == null) {
+                        //             $editorTab .= '<option value="" disabled selected hidden>';
+                        //                 $editorTab .= 'Language of the Description';
+                        //             $editorTab .= '</option>';
+                        //             foreach ($languages as $language) {
+                        //                 $editorTab .= '<option value="'.$language['LanguageId'].'">';
+                        //                     $editorTab .= $language['Name']." (".$language['NameEnglish'].")";
+                        //                 $editorTab .= '</option>';
+                        //             }
+                        //         }
+                        //         else {
+                        //             foreach ($languages as $language) {
+                        //                 if ($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                        //                     $editorTab .= '<option value="'.$language['LanguageId'].'" selected>';
+                        //                         $editorTab .= $language['Name'];
+                        //                     $editorTab .= '</option>';
+                        //                 }
+                        //                 else {
+                        //                     $editorTab .= '<option value="'.$language['LanguageId'].'">';
+                        //                         $editorTab .= $language['Name'];
+                        //                     $editorTab .= '</option>';
+                        //                 }
+                        //             }
+                        //         }
+                        //     $editorTab .= '</select>';
+                        // $editorTab .= '</div>';
                         $editorTab .= '<div>';
-                            $editorTab .= "<button disabled class='language-tooltip' id='description-update-button' style='float: right;'
+                            $editorTab .= '<div id="desc-save-btn">';
+                            $editorTab .= "<button disabled class='language-tooltip' id='description-update-button'
                                                 onClick='updateItemDescription(".$itemData['ItemId'].", ".get_current_user_id().", \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
                                 $editorTab .= "SAVE"; //save description
                                 $editorTab .= "<span class='language-tooltip-text'>Please select a language</span>";
                             $editorTab .= "</button>";
+                            $editorTab .= '</div>';
                             $editorTab .= '<div id="item-description-spinner-container" class="spinner-container spinner-container-right">';
                                 $editorTab .= '<div class="spinner"></div>';
                             $editorTab .= "</div>";
@@ -467,7 +507,7 @@ function _TCT_item_page( $atts ) {
                     $editorTab .= '</div>';
                 $editorTab .= '</div>';
             // Transcription History
-            $editorTab .= '<div id="tr-history" class="item-page-section">';
+            $editorTab .= '<div id="tr-history" class="item-page-section" style="height: 20px;">';
                 $editorTab .= '<div class="item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller" data-toggle="collapse" href="#transcription-history"
                                             onClick="jQuery(this).find(\'.collapse-icon\').toggleClass(\'fa-caret-circle-down\')
                                             jQuery(this).find(\'.collapse-icon\').toggleClass(\'fa-caret-circle-up\')">';
@@ -2307,7 +2347,7 @@ function _TCT_item_page( $atts ) {
                         }
                     }
                     if(count($dcLang) > 0){
-                        $content .= "<h6 class='enrich-headers'>Language(s) of Description</h6>";
+                        $content .= "<h6 class='enrich-headers'>Language of Description</h6>";
                         $content .= "<div class='language-container'>";
                             foreach($dcLang as $lang){
                                 $content .= "<div class='language-single'>".$lang."</div>";
@@ -2455,32 +2495,32 @@ function _TCT_item_page( $atts ) {
                 $content .= '<ul id="item-switch-list" class="switch-list" style="z-index:10;top:0;right:0;">';
 
                     $content .= "<li>";
-                        $content .= '<i id="popout" class="far fa-window-restore fa-rotate-180 view-switcher-icons"
-                    onclick="switchItemView(event, \'popout\')"></i>';
+                        $content .= '<div id="popout" class="view-switcher-icons" style="display:inline-block;width: 20px;"
+                    onclick="switchItemView(event, \'popout\')"><img src="'.home_url().'/wp-content/uploads/icon_float.svg"></div>';
                     $content .= "</li>";
 
                     $content .= "<li>";
-                        $content .= '<i id="vertical-split" class="far fa-window-maximize fa-rotate-180 view-switcher-icons"
-                    onclick="switchItemView(event, \'vertical\')"></i>';
+                        $content .= '<div id="vertical-split" class="view-switcher-icons" style="display:inline-block;width: 20px;"
+                    onclick="switchItemView(event, \'vertical\')"><img src="'.home_url().'/wp-content/uploads/icon_below.svg"></div>';
                     $content .= "</li>";
 
                     $content .= "<li>";
-                        $content .= '<i id="horizontal-split" class="far fa-window-maximize fa-rotate-90 view-switcher-icons active theme-color" style="font-size:12px;"
-                    onclick="switchItemView(event, \'horizontal\')"></i>';
+                        $content .= '<div id="horizontal-split" class="view-switcher-icons active theme-color" style="font-size:12px;display:inline-block;width: 20px;"
+                    onclick="switchItemView(event, \'horizontal\')"><img src="'.home_url().'/wp-content/uploads/icon_side.svg"></div>';
                     $content .= "</li>";
 
-                    $content .= "<li>";
-                        $content .= '<i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons"
-                    onclick="switchItemView(event, \'closewindow\')"></i>';
+                    $content .= "<li style='position:relative;bottom:2px;'>";
+                        $content .= '<div class="switch-i"><i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons" style="position:relative;bottom:3px;"
+                    onclick="switchItemView(event, \'closewindow\')"></i></div>';
                     $content .= "</li>";
 
-                    $content .= "<li>";
-                        $content .= '<i id="close-window-view" class="fas fa-times view-switcher-icons theme-color" onClick="switchItemPageView()"></i>';
+                    $content .= "<li style='position:relative;bottom:2px;'>";
+                        $content .= '<div class="switch-i"><i id="close-window-view" class="fas fa-times view-switcher-icons" onClick="switchItemPageView()" style="position:relative;bottom:2px;"></i></div>';
                     $content .= "</li>";
 
                 $content .= '</ul>';
             $content .= '</div>';
-            $content .= '<div style="clear:both;margin-bottom: 10px;"></div>';
+            $content .= '<div style="clear:both;"></div>';
                     // Tab menu
                     $content .= '<ul id="item-tab-list" class="tab-list">';
                         $content .= "<li>";
