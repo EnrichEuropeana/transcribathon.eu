@@ -5,8 +5,6 @@ public_html/*
 !public_html/transkribus-texteditor
 !public_html/wp-content/themes
 
-pi
-
 # do not track environment variables
 .env*
 !.env.example
