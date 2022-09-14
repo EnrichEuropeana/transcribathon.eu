@@ -10,20 +10,54 @@ define( 'TCT_THEME_DIR_PATH', plugin_dir_path( __FILE__ ) );
 /* Disable WordPress Admin Bar for all users but admins. */
 show_admin_bar(false);
 
+function dd ($data) {
+    dump($data);
+    die();
+}
+
+function dump($data) {
+    $style = '
+        position: fixed;
+        top: 10vh;
+        right: 10vw;
+        bottom: 10vh;
+        left: 10vw;
+        width: 80vw;
+        height: 80vh;
+        padding: 2rem;
+        z-index: 100000;
+        overflow-x: auto;
+        font-family: monospace;
+        tab-size: 4;
+        background: white;
+        color: darkslategrey;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+                    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+                    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+        border-radius: 0.5rem;';
+
+    echo '<pre style="' . $style . '">';
+
+    if (is_array($data)) {
+        print_r($data);
+    } elseif (is_string($data)){
+        echo (htmlspecialchars($data));
+    } else {
+        var_dump($data);
+    }
+
+    echo '</pre>';
+}
+
 function get_main_url() {
-
     return get_site_url();
-
 }
 
 function get_europeana_url() {
-
     return get_site_url(11);
-
 }
 
 function get_text_from_pagexml($xmlString, $break = '') {
-
     $text = '';
     $xmlString = str_replace('xmlns=', 'ns=', $xmlString);
     $xml = new SimpleXMLElement($xmlString);
