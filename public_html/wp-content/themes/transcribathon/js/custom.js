@@ -1,6 +1,7 @@
 var home_url = WP_URLs.home_url;
 var network_home_url = WP_URLs.network_home_url;
 var map, marker;
+var itemDateCheck = true;
 
 // Save all button 2nd try
 function connectSaveButtons(itemId, userId, editStatusColor, statusCount) {
@@ -38,10 +39,9 @@ function installEventListeners() {
             } else {
                 locInput.style.display = 'none';
             }
-
         })
     }
-    //
+    // Probably to be removed, ads label when description language is already selected
     const descLangLabel = document.querySelector('.desc-lang-label');
     if(descLangLabel) {
         if(document.querySelector('#description-language-custom-selector').textContent === 'Select Language') {
@@ -50,7 +50,17 @@ function installEventListeners() {
             descLangLabel.style.display = 'inline-block';
         }
     }
-        // Transcription history header, on click hide transcription to make space for tr history
+    // Add event listener to save all of the tagging
+    const saveAlltags = document.querySelector('#save-all-tags');
+    if(saveAlltags) {
+        saveAlltags.addEventListener('click', function() {
+            setTimeout(()=>{document.querySelector('#item-date-save-button').click()}, 100);
+            setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 500);
+            setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 900);
+            setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1300);
+        });
+    }
+    // Transcription history header, on click hide transcription to make space for tr history
     const historyTr = document.querySelector('#transcription-history-collapse-heading');
     if(historyTr){
         let trView = document.querySelector('#transcription-view');
@@ -69,12 +79,15 @@ function installEventListeners() {
     }
     const defaultLogContainer = document.querySelector('#default-login-container');
     // When the user clicks the button(pen on the image viewer), open the login modal
-    const penLogin = document.querySelector('#lock-login');
-    if(penLogin){
-        penLogin.addEventListener('click', function() {
-            defaultLogContainer.style.display = 'block';
-        }, false);
-    }
+    jQuery('#lock-login').click(function() {
+        jQuery('#default-login-container').css('display', 'block');
+      })
+      jQuery('#lock-loginFS').click(function() {
+        jQuery("nav").addClass("fullscreen");
+        jQuery(".site-navigation").css('display', 'block');
+        jQuery('#default-login-container').css('display', 'block');
+      })
+    
     // Item Page, Full screen transcription view, toggle between view and edit
     const editButton = document.querySelector('#tr-view-start-transcription');
     if(editButton) {
@@ -98,133 +111,97 @@ function installEventListeners() {
             }
         }, true);
     }
-    // Full Screen(FS) pen
-    const navBar = document.querySelector('nav');
-    const penLoginFS = document.querySelector('#lock-loginFS');
-    if(penLoginFS){
-        penLoginFS.addEventListener('click', function() {
-            defaultLogContainer.style.display = 'block';
-            navBar.style.display = 'block';
-            // Added 'fullscreen' class to control wether navbar needs display 'none' or not
-            navBar.classList.add('fullscreen');
-        }, false);
-    }
     // When the user clicks on <span> (x), close the modal
-    const spanClose = document.querySelector('.item-login-close');
-    if(spanClose) {
-        spanClose.addEventListener('click', function() {
-            defaultLogContainer.style.display = 'none';
-            if(navBar.classList.contains('fullscreen')) {
-                navBar.style.display = 'none';
-                navBar.classList.remove('fullscreen');
-            }
-        }, false);
-    }
+    jQuery('.item-login-close').click(function() {
+        jQuery('#default-login-container').css('display', 'none');
+        if(jQuery('.site-navigation').hasClass("fullscreen")){
+            jQuery("nav").removeClass("fullscreen");
+            jQuery(".site-navigation").css('display', 'none');
+        }
+    })
+    
     //Prevent users of editing fields that need logged in user
-    const loginsRequired = document.querySelectorAll('.login-required');
-    const loginCheck = document.querySelector('#login');
-    if(loginsRequired) {
-        for(const loginRequired of loginsRequired) {
-
-            loginRequired.addEventListener('click', function(event) {
-                if(loginCheck) {
-                    console.log('true');
-                    event.preventDefault();
-                    defaultLogContainer.style.display = 'block';
-                    navBar.style.display = 'block';
-                    navBar.classList.add('fullscreen');
-                }
-            }, false);
+    jQuery('.login-required').mousedown(function(event) {
+        // Checks if document is locked
+        if (jQuery('#login').length) {
+          event.preventDefault();
+          jQuery('#default-login-container').css('display', 'block');
+          jQuery(".site-navigation").addClass("fullscreen");
+          jQuery(".site-navigation").css('display', 'block');
         }
-    }
+    })
+    jQuery('#mce-wrapper-transcription').mousedown(function(event) {
+        // Checks if document is locked
+        if (jQuery('#transcribeLock').length) {
+          event.preventDefault();
+          lockWarning();
+        }
+    })
+    jQuery('#item-page-description-text').mousedown(function(event) {
+        // Checks if document is locked
+        if (jQuery('#transcribeLock').length) {
+          event.preventDefault();
+          lockWarning();
+        }
+    })
+    ////
+    jQuery('.edit-item-data-icon').mousedown(function(event) {
+        // Checks if document is locked
+        if (jQuery('#transcribeLock').length) {
+          event.preventDefault();
+          lockWarning();
+        }
+    })
 
-    const mceWrapperLock = document.querySelector('#mce-wrapper-transcription');
-    if(mceWrapperLock) {
-        mceWrapperLock.addEventListener('mousedown', function(event) {
-            // check if document is locked
-            if(document.querySelector('#transcribeLock')) {
-                event.preventDefault();
-                lockWarning();
+    var options = document.getElementsByClassName('selected-option');
+    for (var i = 0; i < options.length; i++) {
+      options[i].addEventListener("click", function(e) {
+        /*when an item is clicked, update the original select box,
+        and the selected item:*/
+        var y, i, k, s, h;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        h = this.parentNode.previousSibling;
+        for (i = 0; i < s.length; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            for (k = 0; k < y.length; k++) {
+              y[k].removeAttribute("class");
             }
-        }, false);
-    }
-
-    const descriptionLock = document.querySelector('#item-page-description-text');
-    if(descriptionLock) {
-        descriptionLock.addEventListener('mousedown', function(event) {
-            if(document.querySelector('#transcribeLock')) {
-                event.preventDefault();
-                lockWarning();
-            }
-        }, false);
-    }
-
-    const editItems = document.querySelectorAll('.edit-item-data-icon');
-    if(editItems) {
-        for(const item of editItems) {
-            item.addEventListener('mousedown', function(event) {
-                if(document.querySelector('#transcribeLock')) {
-                    event.preventDefault();
-                    lockWarning();
-                }
-            }, false);
+            this.setAttribute("class", "same-as-selected");
+            break;
+          }
         }
+        h.click();
+      });
+    }
+    ///
+    var selectors = document.getElementsByClassName('language-select-selected');
+    for (var i = 0; i < selectors.length; i++) {
+      selectors[i].addEventListener("click", function(e) {
+          /*when the select box is clicked, close any other select boxes,
+          and open/close the current select box:*/
+          e.stopPropagation();
+          closeAllSelect(this);
+          this.nextSibling.classList.toggle("select-hide");
+          this.classList.toggle("select-arrow-active");
+          });
     }
 
-    const options = document.getElementsByClassName('selected-option');
-    if(options) {
-        for (let i = 0; i < options.length; i++) {
-            options[i].addEventListener("click", function(e) {
-                /*when an item is clicked, update the original select box,
-                and the selected item:*/
-                let y, i, k, s, h;
-                s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-                h = this.parentNode.previousSibling;
-                for (i = 0; i < s.length; i++) {
-                    if (s.options[i].textContent == this.textContent) {
-                        s.selectedIndex = i;
-                        h.textContent = this.textContent;
-
-                    y = this.parentNode.getElementsByClassName("same-as-selected");
-                    for (k = 0; k < y.length; k++) {
-                        y[k].removeAttribute("class");
-                    }
-                    this.setAttribute("class", "same-as-selected");
-                    break;
-                    }
-                }
-                h.click();
-            });
-        }
-    }
-
-    const selectors = document.getElementsByClassName('language-select-selected');
-    for (let i = 0; i < selectors.length; i++) {
-        selectors[i].addEventListener("click", function(event) {
-            /*when the select box is clicked, close any other select boxes,
-            and open/close the current select box:*/
-            event.stopPropagation();
-            closeAllSelect(this);
-            this.nextSibling.classList.toggle("select-hide");
-            this.classList.toggle("select-arrow-active");
-        });
-    }
     /*if the user clicks anywhere outside the select box,
     then close all select boxes:*/
     document.addEventListener("click", closeAllSelect, false);
 
-    const editItemsDate = document.querySelectorAll('.edit-item-date');
-    for(const itemDate of editItemsDate) {
-        itemDate.addEventListener('click', function(event) {
-            if(document.querySelector('#transcribeLock')) {
-                event.preventDefault();
-                lockWarning();
-            } else {
-                this.parentElement.style.display = 'none';
-                this.parentElement.nextSibling.style.display = 'block';
-            }
-        })
-    }
+    jQuery('.edit-item-date').click(function() {
+        if(jQuery('#transcribeLock').length) {
+            event.preventDefault();
+            lockWarning();
+        } else {
+            jQuery(this).parent('.item-date-display-container').css('display', 'none');
+            jQuery(this).parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'inline-block');
+        }
+    })
     // Not sure where is this on site, needs more testing
     const singleResultDescriptions = document.querySelectorAll('.search-page-single-result-description');
 
@@ -3629,7 +3606,12 @@ ready(() => {
                 document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
             }
         }}
-    installEventListeners();
+        if(itemDateCheck === true) {
+            installEventListeners();
+            itemDateCheck = false;
+            console.log(itemDateCheck);
+        }
+
 });
 
 

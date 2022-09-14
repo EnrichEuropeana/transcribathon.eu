@@ -2441,7 +2441,7 @@ hr {
 }
 /* The checkbox-container
 /* Create a custom checkbox */
-.checkmark {
+/* .checkmark {
   position: absolute;
   top: 3px;
   left: 0;
@@ -2449,14 +2449,14 @@ hr {
   width: 18px;
   border-radius: 3px;
   background-color: #eee;
-}
+} */
 /* On mouse-over, add a grey background color */
 .square-checkbox-container:hover input ~ .checkmark {
   background-color: #ccc;
 }
 /* When the checkbox is checked, add a blue background */
 .square-checkbox-container input:checked ~ .checkmark {
-  background-color: #2196F3;
+  background-color: #0a72cc;
 }
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
@@ -2470,8 +2470,8 @@ hr {
 }
 /* Style the checkmark/indicator */
 .square-checkbox-container .checkmark:after {
-  left: 7px;
-  top: 3px;
+  left: 5px;
+  top: 1px;
   width: 5px;
   height: 10px;
   border: solid white;
@@ -3125,12 +3125,6 @@ a.ow-icon-placement-top.ow-button-hover {
   opacity: 0.5;
   left: 0;
   z-index: 101;
-}
-#keyword-input {
-  float: left;
-}
-#keyword-save-button {
-  float: left;
 }
 .facts dd {
   word-break: break-word;
