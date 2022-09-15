@@ -430,6 +430,35 @@ div.openseadragon-canvas > canvas > svg {
 #location-status-changer.section-status-changer {
     left: 30px!important;
 }
+.edit-location-save {
+    float: left;
+    border: none;
+    border-radius: 0;
+}
+.edit-location-cancel {
+    float: right;
+    border: none;
+    border-radius: 0;
+    margin-right: 5%;
+}
+.location-data-edit-container .edit-input {
+    background-color: #fff!important;
+    border: 1px solid #0a72cc!important;
+    width: 59%!important;
+    margin-right: 5%;
+    float: right;
+}
+.wiki-input {
+    float: right;
+    margin-right: 49px;
+    width: 55%;
+    background-color: #f8f8f8;
+    border: 0!important;
+    border-radius: 0!important;
+}
+.location-data-edit-container label {
+    width: 30%;
+}
 .status-indicator {
     cursor: pointer;
     font-size: 10px;
@@ -471,7 +500,7 @@ div.openseadragon-canvas > canvas > svg {
     min-height: 120px;
     overflow: auto;
     max-height: 350px;
-    border: 1px solid #cccccc;
+    border: 1px solid #0a72cc;
     border-radius: 2px;
     outline: none;
     line-height: 1.2em;
@@ -496,25 +525,19 @@ div.openseadragon-canvas > canvas > svg {
     padding: 4px;
 }
 .language-item-select div, .language-select-selected {
-    color: #ffffff;
-    padding: 2px 16px;
     cursor: pointer;
-    margin-bottom: 6px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
+    letter-spacing: -0.5px;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
 }
 .language-item-select {
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 99;
-    height: 160px;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
+    width: 200px;
+    height: 200px;
     overflow-y: scroll;
-    -webkit-box-shadow: 1px 1px 1px 1px rgb(0 0 0 / 5%);
-    box-shadow: 1px 1px 1px 1px rgb(0 0 0 / 5%);
 }
 .select-hide {
     display: none;
@@ -529,8 +552,6 @@ div.openseadragon-canvas > canvas > svg {
     display: inline-block;
     background-color: #f8f8f8;
     color: #2b2b2b;
-    border-radius: 2px;
-    padding: 3px 6px;
     margin: 0 0 6px 6px;
     list-style: none;
     font-weight: 600;
@@ -561,6 +582,11 @@ div.openseadragon-canvas > canvas > svg {
     letter-spacing: 0.9px;
     outline: none;
     border-radius: 0;
+}
+#transcription-history {
+    overflow-y: scroll;
+    height: 450px;
+    padding-left: 25px;
 }
 .language-tooltip {
     position: relative;
@@ -705,13 +731,17 @@ div.openseadragon-canvas > canvas > svg {
     border-radius: 0;
 }
 .desc-lang-label {
-    padding: 2px 0;
     margin-right: 5px;
     display: inline-block;
     color: #2b2b2b;
     background-color: #f8f8f8;
     font-size: 10px;
     font-weight: 700;
+    padding: 0 10px;
+}
+.desc-lang-label:hover {
+    color: #fff;
+    background-color: #0a72cc;
 }
 .transcription-toggle {
     width: 100%;
@@ -1176,7 +1206,7 @@ button.ui-datepicker-trigger {
     margin-bottom: 10px;
 }
 .person-item-data-container input:not(:first-of-type) {
-    margin-left: 10px;
+    margin-left: 9px;
 }
 .person-description-input {
     margin-bottom: 10px;
@@ -1188,7 +1218,28 @@ button.ui-datepicker-trigger {
     width: 100%;
 }
 .person-description-input input {
-    width: 21.75em;
+    width: 100%;
+    background-color: #f8f8f8;
+}
+.person-re-edit {
+    width: 48%;
+    background-color: #f8f8f8;
+}
+.person-re-edit-right {
+    width: 48%;
+    margin-left: 9px;
+    background-color: #f8f8f8;
+    float: right;
+}
+.person-data-edit-container .input-response button.ui-datepicker-trigger {
+    position: absolute;
+    right: -20px;
+    left: unset;
+    bottom: unset;
+    top: 8px;
+}
+.person-data-edit-container .edit-location-cancel, .link-data-edit-container .edit-location-cancel {
+    margin-right: 0!important;
 }
 input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-input, #person-deathDate-input, 
 .link-description-input textarea, .link-url-input input  {
@@ -1225,9 +1276,6 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     display: none;
     margin: 15px 0 5px 0;
 }
-.person-re-edit {
-    width: 10em;
-}
 .person-names-entry-inputs {
     padding-bottom: 18px;
 }
@@ -1245,6 +1293,10 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .link-single a {
     color: #0a72cc!important;
+}
+.link-data-edit-container .link-url-input input, .link-data-edit-container .link-description-input textarea {
+    background-color: #fff;
+    border: 1px solid #0a72cc;
 }
 #keyword-input {
     width: 100%!important;
@@ -1298,6 +1350,10 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     padding: 10px;
     min-width: 425px;
 }
+#transcription-language-custom-selector:hover {
+    color: #fff!important;
+    background-color: #0a72cc;
+}
 /* Full screen viewer / change view */
 /* Vertical Split */
 .panel-right #tr-view-start-transcription {
@@ -1328,7 +1384,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .panel-right #transcription-view {
     display: block;
     line-height: 1.3em;
-    height: 400px;
+    height: 500px;
     overflow-y: scroll;
 }
 #editor-tab.tabcontent {
@@ -1345,10 +1401,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: fit-content;
 }
 .panel-right .language-item-select {
-    position: relative;
-    top: -2px;
     height: 300px;
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 .panel-right .selected-lang {
     padding-top: 5px!important;
@@ -1357,10 +1412,18 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 13%;
 }
 .panel-right .selected-option {
-    font-size: 10px;
-    height: 25px;
-    padding: 0 10px 0 10px;
-    width: unset;
+    font-size: 13px;
+    padding: 1px 10px;
+    width: 200px;
+    background-color: #f8f8f8;
+    position: relative;
+    z-index: 50;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+.selected-option:hover {
+    background-color: #0a72cc!important;
+    color: #fff!important;
 }
 .panel-right #transcription-language-custom-selector{
     height: 40px;
@@ -1381,6 +1444,19 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 40px;
     padding: 0 10px;
     letter-spacing: -0.5px;
+}
+.panel-right .desc-lang-label {
+    height: 40px;
+    padding: 5px 10px 0;
+    font-size: 14px;
+}
+.panel-right .language-select-selected {
+    padding: 5px 10px 0;
+    height: 40px;
+    font-size: 14px;
+    color: #2b2b2b;
+    background-color: #f8f8f8;
+    font-weight: 600;
 }
 /* Horizontal Split */
 #item-data-section.panel-bottom .tablinks .tab-i {
@@ -1426,9 +1502,16 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 25px;
     padding: 0 10px;
     width: unset;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
 }
 .panel-bottom #transcription-language-custom-selector::after {
     right: 0;
+}
+.panel-bottom .language-select-selected {
+    padding: 0 10px;
+    font-size: 10px;
+    font-weight: 600;
 }
 .panel-bottom #transcription-selected-languages, .panel-bottom #transcription-selected-languages ul,
 .panel-bottom #transcription-selected-languages li, .panel-bottom #transcription-update-button {
@@ -1461,15 +1544,15 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .panel-bottom #tr-history {
     visibility: hidden;
 }
-.panel-bottom .language-item-select {
-    position: relative;
-    top: -6px;
-}
 .panel-bottom .selected-option {
     font-size: 10px;
-    height: 25px;
-    padding: 0 10px 0 10px;
-    width: unset;
+    position: relative;
+    padding: 0 10px;
+    background-color: #f8f8f8;
+    z-index: 50;
+}
+.panel-bottom .language-item-select {
+    height: 180px;
 }
 .panel-bottom #mytoolbar-transcription {
     height: 1px!important;
@@ -1571,6 +1654,8 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     padding: 0 10px!important;
     width: unset;
     margin: 0;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
 }
 .data-popout #transcription-language-custom-selector::after {
     right: 0;
@@ -1592,14 +1677,10 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .data-popout .selected-option, .data-popout .language-select-selected, .data-popout .same-as-selected {
     font-size: 10px;
-    height: 25px;
-    padding: 0 10px 0 10px;
-    width: unset;
-}
-.data-popout .language-item-select {
+    padding: 0 10px!important;
     position: relative;
-    top: -6px;
-    width: 200px;
+    z-index: 50;
+    background-color: #f8f8f8;
 }
 .data-popout .tab-list li {
     margin: 0;
@@ -1738,7 +1819,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     width: 100%;
     margin-top: 6px;
 }
-.location-input-section-top .location-input-container input, #lgns,
+.location-input-section-top .location-input-container input,
 .location-input-description-container textarea {
     float: right;
     margin-right: 49px;

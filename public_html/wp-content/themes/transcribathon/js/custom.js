@@ -64,17 +64,17 @@ function installEventListeners() {
     const historyTr = document.querySelector('#transcription-history-collapse-heading');
     if(historyTr){
         let trView = document.querySelector('#transcription-view');
-        let trHistory = document.querySelector('#tr-history');
+        let trHistory = document.querySelector('#transcription-history');
         historyTr.parentElement.addEventListener('click', function () {
-            if(trHistory.style.height === '20px') {
+            if(trHistory.style.display === 'none') {
                 trView.style.maxHeight = '100px';
-                trView.style.transition = 'all 2s';
-                trHistory.style.height = '400px';
+                trView.style.overflowY = 'hidden';
+                trHistory.style.display = 'block';
             } else {
                 trView.style.maxHeight = 'unset';
-                trHistory.style.height = '20px';
+                trView.style.overflowY = 'scroll';
+                trHistory.style.display = 'none';
             }
-
         })
     }
     const defaultLogContainer = document.querySelector('#default-login-container');
@@ -505,6 +505,9 @@ function switchItemTab(event, tabName) {
   //if (tabName == "help-tab") {
   //  jQuery('#tutorial-help-item-page').slick('refresh')
   //}
+  if(document.querySelector('#transcription-history').style.display === 'block') {
+      document.querySelector('#tr-history').click();
+  }
 }
 function addPopUpLanguage() {
     document.querySelector('#mce-wrapper-transcription').style.display = 'none';
@@ -603,6 +606,9 @@ function switchItemView(event, viewName) {
         }
         if(document.querySelector('#description-collapse-heading').querySelector('#description-update-button') === null){
             document.querySelector('#description-collapse-heading').appendChild(descSaveBtn);
+        }
+        if(document.querySelector('#transcription-history').style.display === 'block') {
+            document.querySelector('#tr-history').click();
         }
 
       jQuery("#item-image-section").css("width", '')
@@ -1630,44 +1636,43 @@ function loadPlaceData(itemId, userId) {
                             '</div>' +
                             '<div id="location-data-edit-' + escapeHtml(content[i]['PlaceId']) + '" class="location-data-edit-container">' +
                                 '<div class="location-input-section-top">' +
-                                    '<div class="location-input-name-container location-input-container">' +
-                                        '<label>Location Name:</label><br/>' +
-                                        '<input type="text" value="' + escapeHtml(content[i]['Name']) + '" name="" placeholder="">' +
+                                    '<div class="location-input-name-container">' +
+                                        '<label>Location Name:</label>' +
+                                        '<input type="text" class="edit-input" value="' + escapeHtml(content[i]['Name']) + '" name="" placeholder="">' +
                                     '</div>' +
-                                    '<div class="location-input-coordinates-container location-input-container">' +
+                                    '<div class="location-input-coordinates-container">' +
                                         '<label>Coordinates: </label>' +
                                         '<span class="required-field">*</span>' +
-                                        '<br/>' +
-                                        '<input type="text" value="' + escapeHtml(content[i]['Latitude']) + ', ' + escapeHtml(content[i]['Longitude']) + '" name="" placeholder="">' +
+                                        '<input type="text" class="edit-input" value="' + escapeHtml(content[i]['Latitude']) + ', ' + escapeHtml(content[i]['Longitude']) + '" name="" placeholder="">' +
                                     '</div>' +
                                     "<div style='clear:both;'></div>" +
                                 '</div>' +
 
-                                '<div class="location-input-description-container location-input-container">' +
-                                    '<label>Description:<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this location, e.g. the building name, or its significance to the item"></i></label><br/>' +
-                                    '<textarea rows= "2" style="resize:none;" class="gsearch-form" type="text" id="ldsc" placeholder="" name="">' + comment + '</textarea>' +
-                                '</div>' +
-
-                                '<div class="location-input-geonames-container location-input-container location-search-container">' +
-                                  '<label>WikiData:</label><br/>';
-                                  if (content[i]['WikidataName'] != "NULL" && content[i]['WikidataId'] != "NULL") {
-                                    placeHtml +=
-                                      '<input type="text" id="lgns" placeholder="" name="" value="' + escapeHtml(content[i]['WikidataName']) + '; ' + escapeHtml(content[i]['WikidataId']) + '"/>';
-                                  }
-                                  else {
-                                    placeHtml +=
-                                      '<input type="text" id="lgns" placeholder="" name=""/>';
-                                  }
+                                '<div class="location-input-geonames-container location-search-container" style="margin:5px 0;">' +
+                                '<label>WikiData:</label>';
+                                if (content[i]['WikidataName'] != "NULL" && content[i]['WikidataId'] != "NULL") {
                                   placeHtml +=
+                                    '<input type="text" id="lgns" class="edit-input" placeholder="" name="" value="' + escapeHtml(content[i]['WikidataName']) + '; ' + escapeHtml(content[i]['WikidataId']) + '"/>';
+                                }
+                                else {
+                                  placeHtml +=
+                                    '<input type="text" id="lgns" class="edit-input" placeholder="" name=""/>';
+                                }
+                                placeHtml +=
+                              '</div>' +
+
+                                '<div class="location-input-description-container" style="height:50px;">' +
+                                    '<label>Description:<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this location, e.g. the building name, or its significance to the item"></i></label>' +
+                                    '<textarea rows= "2" style="resize:none;" class="gsearch-form edit-input" type="text" id="ldsc" placeholder="" name="">' + comment + '</textarea>' +
                                 '</div>' +
 
                                 "<div class='form-buttons-right'>" +
                                     "<button onClick='editItemLocation(" + content[i]['PlaceId'] + ", " + itemId + ", " + userId + ")' " +
-                                                "class='item-page-save-button edit-data-save-right theme-color-background'>" +
+                                                "class='item-page-save-button edit-location-save theme-color-background'>" +
                                         "SAVE" +
                                     "</button>" +
 
-                                    "<button class='theme-color-background edit-data-cancel-right' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
+                                    "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
                                         "CANCEL" +
                                     "</button>" +
 
@@ -1744,6 +1749,12 @@ function loadPersonData(itemId, userId) {
         }
         else {
             var description = "";
+        }
+        if (content[i]['Link'] != "NULL" && content[i]['Link'] != null) {
+            var wikidata = escapeHtml(content[i]['Link']);
+        }
+        else {
+            var wikidata = "";
         }
 
         var personHeadline = '<span class="item-name-header">' +
@@ -1847,68 +1858,74 @@ function loadPersonData(itemId, userId) {
             '<div class="person-data-edit-container person-item-data-container" id="person-data-edit-' + content[i]['PersonId'] + '">' +
               '<div class="person-input-names-container">';
                 if (firstName != "") {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit"  placeholder="First Name" class="input-response person-input-field" value="' + firstName + '" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit"  placeholder="First Name" class="input-response person-input-field person-re-edit" value="' + firstName + '" style="outline:none;">'
                 }
                 else {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit" class="input-response person-input-field" placeholder="First Name" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit" class="input-response person-input-field person-re-edit" placeholder="First Name" style="outline:none;">'
                 }
 
                 if (lastName != "") {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field" placeholder="Last Name" value="' + lastName + '" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field person-re-edit-right" placeholder="Last Name" value="' + lastName + '" style="outline:none;">'
                 }
                 else {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field" placeholder="Last Name" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field person-re-edit-right" placeholder="Last Name" style="outline:none;">'
                 }
               personHtml +=
               '</div>' +
 
               '<div class="person-description-input">' +
-                      '<label>Description:</label><br/>' +
+                    //   '<label>Description:</label><br/>' +
                       '<input type="text" id="person-' + content[i]['PersonId'] + '-description-edit" class="input-response person-input-field" value="' + description + '">' +
-                      '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
+                    //   '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
               '</div>' +
 
-              '<div class="person-location-birth-inputs">';
+              '<div class="person-description-input">' +
+              //   '<label>Description:</label><br/>' +
+                '<input type="text" id="person-' + content[i]['PersonId'] + '-wiki-edit" class="input-response person-input-field" value="' + wikidata + '">' +
+              //   '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
+              '</div>' +
+
+              '<div class="person-location-birth-inputs" style="margin-top:5px;position:relative;">';
                 if (birthPlace != "") {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field" value="' + birthPlace + '" placeholder="Birth Location" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field person-re-edit" value="' + birthPlace + '" placeholder="Birth Location" style="outline:none;">'
                 }
                 else {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field" placeholder="Birth Location" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field person-re-edit" placeholder="Birth Location" style="outline:none;">'
                 }
 
                 if (birthDate != "") {
-                  personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field" value="' + birthDate + '" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
+                  personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="' + birthDate + '" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
                 }
                 else {
-                  personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
+                  personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
                 }
                 personHtml +=
                 '</div>' +
 
-                '<div class="person-location-death-inputs">';
+                '<div class="person-location-death-inputs" style="margin-top:5px;position:relative;">';
                   if (deathPlace != "") {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field" value="' + deathPlace + '" placeholder="Death Location" style="outline:none;">'
+                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field person-re-edit" value="' + deathPlace + '" placeholder="Death Location" style="outline:none;">'
                   }
                   else {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field" placeholder="Death Location" style="outline:none;">'
+                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field person-re-edit" placeholder="Death Location" style="outline:none;">'
                   }
 
                   if (deathDate != "") {
-                    personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field" value="' + deathDate + '" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
+                    personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="' + deathDate + '" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
                   }
                   else {
-                    personHtml += '<span class="input-response><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
+                    personHtml += '<span class="input-response><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
                   }
                   personHtml +=
                   '</div>' +
 
                   '<div class="form-buttons-right">' +
-                      "<button class='edit-data-save-right theme-color-background'" +
+                      "<button class='edit-location-save theme-color-background'" +
                                   "onClick='editPerson(" + content[i]['PersonId'] + ", " + itemId + ", " + userId + ")'>" +
                           "SAVE" +
                       "</button>" +
 
-                      "<button id='save-personinfo-button' class='theme-color-background edit-data-cancel-right' onClick='openPersonEdit(" + content[i]['PersonId'] + ")'>" +
+                      "<button id='save-personinfo-button' class='theme-color-background edit-location-cancel' onClick='openPersonEdit(" + content[i]['PersonId'] + ")'>" +
                           "CANCEL" +
                       "</button>" +
 
@@ -1922,6 +1939,14 @@ function loadPersonData(itemId, userId) {
               '</div>' +
             '</li>'
         jQuery('#item-person-list ul').append(personHtml)
+        jQuery( ".datepicker-input-field" ).datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1000:2019",
+            showOn: "button",
+            buttonText: "📅"
+          });
       }
     }
   });
@@ -2208,6 +2233,7 @@ function editPerson(personId, itemId, userId) {
   deathPlace = jQuery('#person-' + personId + '-deathPlace-edit').val();
   deathDate = jQuery('#person-' + personId + '-deathDate-edit').val().split('/');
   description = jQuery('#person-' + personId + '-description-edit').val();
+  wiki = jQuery('#person-' + personId + '-wiki-edit').val();
 
   if (firstName == "" && lastName == "") {
     return 0;
@@ -2218,7 +2244,7 @@ function editPerson(personId, itemId, userId) {
     LastName: lastName,
     BirthPlace: birthPlace,
     DeathPlace: deathPlace,
-    Link: null,
+    Link: wiki,
     Description: description,
     ItemId: itemId
   }

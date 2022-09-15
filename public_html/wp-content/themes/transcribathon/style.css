@@ -3437,9 +3437,6 @@ form#tct-crtrtm-frm label:after {
 .language-tooltip:hover .language-tooltip-text {
   visibility: visible;
 }
-.person-re-edit {
-  width: 10em;
-}
 /* Balkenchart-Widget */
 h3.tct_barchar_head {
   font-size: 16px;
