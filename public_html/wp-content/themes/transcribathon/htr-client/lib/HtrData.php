@@ -39,8 +39,18 @@ class HtrData
 		return $this->errorMessages;
 	}
 
-	public function sendQuery($url, $options)
+	public static function sendQuery($url, $options, $verifySSL = true)
 	{
+		if (!$verifySSL) {
+			$options['ssl'] = array(
+				'verify_peer' => false,
+        'verify_peer_name' => false,
+			);
+		}
+
+		$options['http']['ignore_errors'] = true;
+		$options['http']['timeout'] = 60;
+
 		$context = stream_context_create($options);
 		$result = @file_get_contents($url, false, $context);
 
@@ -49,6 +59,7 @@ class HtrData
 		$status = explode(' ', $responseHeader[0])[1];
 
 		if ($status > 299) {
+			/* return error_get_last(); */
 			return false;
 		}
 
@@ -93,8 +104,10 @@ class HtrData
 		);
 		$storedHtr = json_decode($itemResultJson, true);
 		$isItemInHtrDb = !empty($storedHtr['data'][0]['id']) ? true : false;
+		$isDifferentHtrModel = $htrId !== $storedHtr['data'][0]['htr_id'];
 
-		if (!$isItemInHtrDb) {
+		// add new transcription if is not in DB or the HTR model is another
+		if (!$isItemInHtrDb || $isDifferentHtrModel) {
 
 			if (!array_key_exists('ImageLink', $item)) {
 				$this->currentErrors += 1;

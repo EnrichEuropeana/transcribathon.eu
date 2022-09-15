@@ -15,8 +15,21 @@ require_once(get_stylesheet_directory() . '/htr-client/config.php');
 use FactsAndFiles\Transcribathon\TranskribusClient;
 
 function _TCT_item_page_htr( $atts) {
-
     global $config;
+
+    $isLoggedIn = is_user_logged_in();
+
+    if (empty($_GET['item'])) {
+        echo '<h1 class="entry-title">No item found.</h1>';
+        echo '<p>No item specified.</p>';
+        return;
+    }
+
+    if (!$isLoggedIn) {
+        echo '<h1 class="entry-title">Not logged in.</h1>';
+        echo '<p>Please login to proceed.</p>';
+        return;
+    }
 
     // create new Transkribus client and inject configuration
     $transkribusClient = new TranskribusClient($config);
@@ -42,27 +55,18 @@ function _TCT_item_page_htr( $atts) {
 
     $htrTranscription = strlen($htrData) < 1 ? $minimalPageXML : $htrData;
 
-    if (isset($_GET['item']) && $_GET['item'] != "") {
-        // Set request parameters for image data
-        $requestData = array(
-            'key' => 'testKey'
-        );
-        $url = TP_API_HOST."/tp-api/items/".$_GET['item'];
-        $requestType = "GET";
-        $isLoggedIn = is_user_logged_in();
+    // Set request parameters for image data
+    $requestData = array('key' => 'testKey');
+    $url = TP_API_HOST."/tp-api/items/".$_GET['item'];
+    $requestType = "GET";
 
-        // Execude http request
-        include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
+    // Execude http request
+    include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
 
-        // Save image data
-        $itemData = json_decode($result, true);
-
-    }
-
+    // Save image data
+    $itemData = json_decode($result, true);
     $imgInfo = explode('":"',$itemData['ImageLink']);
-
     $imgLink = explode(',',$imgInfo[1]);
-
     $imgJson = str_replace('full/full/0/default.jpg"','info.json',$imgLink[0]);
     $imJLink = '';
     if (substr($imgJson,0,4) != 'http') {
@@ -83,7 +87,6 @@ function _TCT_item_page_htr( $atts) {
     // Remove padding from page wrapper, otherwise it breaks editor apearance
     $content .= "<style> #primary-full-width { padding: unset!important;} </style>";
 
-/* var_dump(htmlspecialchars($htrTranscription)); */
 if($_GET['editor'] == NULL || $_GET['editor'] == 'text') {
 
     //$content .= '';
@@ -100,11 +103,65 @@ if($_GET['editor'] == NULL || $_GET['editor'] == 'text') {
     $content .= "<input form='changeEditor' type='submit' value='Layout Editor' style='position:absolute;bottom:5%;z-index:9999;width:100px;margin:0auto;'>";
 //////
 $layoutTranscription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
+$layoutTranscription = htmlspecialchars($layoutTranscription);
+/* dd($layoutTranscription); */
 
-    $content .= "<div id='transkribusEditor' data-iiif-url='".$imJLink."' data-xml='".$layoutTranscription."'></div>";
+    $content .= '<div '
+        . 'id="transkribusEditor" '
+        . 'ref="editor" '
+        . 'data-iiif-url="' . $imJLink . '" '
+        . 'data-xml="' . $layoutTranscription . '">'
+        . '</div>';
 
     $content .= '<script src="/transkribus-texteditor/transkribus-texteditor-velehanden/js/chunk-vendors.8c83230e.js"></script>';
     $content .= '<script src="/transkribus-texteditor/transkribus-texteditor-velehanden/js/app.9b333d52.js"></script>';
+
+    /* { */
+    /*     "item_id": 421717, */
+    /*     "user_id": 5736, */
+    /*     "transcription_data": "<?xml version=\"1.0\" encoding=\"UTF-8\"? />" */
+    /* } */
+    $wpUserId = get_current_user_id();
+    // for now we assume no user as empty in TEST
+    // do not set live with this data
+    // we need an endpoint for retreiving UserId
+    $userId = 'null'; // API endpoint to retreive UserId
+    $itemId = $_GET['item'];
+
+    $saveScript = <<<EOF
+<script>
+		const loc = window.location;
+		const pathname =  '/wp-content/themes/transcribathon/htr-client/request.php';
+
+    window.eventBus.\$on('save', async (data) => {
+
+        const payload = {
+            item_id: $itemId,
+            userId: $userId,
+            transcription_data: data.xml.replaceAll('} "', '}"') // remove when XML is fixed
+        };
+
+        const sendData = await fetch(loc.origin + pathname, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+
+        const result = await sendData.json();
+
+        if (result && result.success === true) {
+
+            alert('The entry has been updated.');
+
+        } else {
+
+            alert('The entry could not be saved.');
+
+        }
+    });
+</script>
+EOF;
+
+    $content .= $saveScript;
 
 } else {
 
