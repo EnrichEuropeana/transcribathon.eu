@@ -337,7 +337,7 @@ function installEventListeners() {
   jQuery('#transcription-language-custom-selector').siblings('.language-item-select').children('.selected-option').click(function(){
     jQuery('#no-text-selector').css('display','none');
     jQuery('#transcription-selected-languages ul').append(
-            '<li>'
+            '<li class="selected-lang">'
               + jQuery('#transcription-language-selector option:selected').text()
               + '<i class="far fa-times" onClick="removeTranscriptionLanguage(' + jQuery('#transcription-language-selector option:selected').val() + ', this)"></i>'
             + '</li>');
@@ -1397,6 +1397,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
   deathPlace = jQuery('#person-deathPlace-input').val();
   deathDate = jQuery('#person-deathDate-input').val().split('/');
   description = jQuery('#person-description-input-field').val();
+  link = jQuery('#person-wiki-input-field').val();
 
   if (firstName == "" && lastName == "") {
     return 0;
@@ -1408,7 +1409,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
     LastName: lastName,
     BirthPlace: birthPlace,
     DeathPlace: deathPlace,
-    Link: null,
+    Link: link,
     Description: description,
     ItemId: itemId
   }
@@ -1935,15 +1936,15 @@ function loadKeywordData(itemId, userId) {
     var response = JSON.parse(response);
     if (response.code == "200") {
       var content = JSON.parse(response.content);
-      jQuery('#item-keyword-list ul').html('')
+      jQuery('#item-keyword-list').html('')
       for (var i = 0; i < content['Properties'].length; i++) {
         if (content['Properties'][i]['PropertyType'] == "Keyword") {
-          jQuery('#item-keyword-list ul').append(
-            '<li id="add-item-keyword" class="theme-color-background">' +
+          jQuery('#item-keyword-list').append(
+            '<div id="'+ content['Properties'][i]['PropertyId'] + '" class="keyword-single">' +
                 escapeHtml(content['Properties'][i]['PropertyValue']) +
-                '<i class="login-required delete-item-datas far fa-times"' +
+                '<i style="margin-left:5px;" class="login-required delete-item-datas far fa-times"' +
                     'onClick="deleteItemData(\'properties\', ' + content['Properties'][i]['PropertyId'] + ', ' + itemId + ', \'keyword\', ' + userId + ')"></i>' +
-            '</li>'
+            '</div>'
           )
         }
       }
@@ -1980,7 +1981,7 @@ function loadLinkData(itemId, userId) {
 
                         '<i class="edit-item-data-icon fas fa-pencil theme-color-hover"' +
                         'onClick="openLinksourceEdit(' + content['Properties'][i]['PropertyId'] + ')"></i>' +
-                        '<i class="edit-item-data-icon delete-item-data fas fa-trash-alt theme-color-hover"' +
+                        '<i class="edit-item-data-icon delete-item-data fas fa-times theme-color-hover"' +
                                       'onClick="deleteItemData(\'properties\', ' + content['Properties'][i]['PropertyId'] + ', ' + itemId + ', \'link\', ' + userId + ')"></i>' +
                         '<div style="clear:both;"></div>' +
                     '</div>' +
@@ -3215,36 +3216,36 @@ ready(() => {
     }
     // People collapse on Item page
     // TODO write single function for all collapses on item page
-    const singlePeople = document.querySelectorAll('.single-person');
-    if(singlePeople) {
-        for(let person of singlePeople) {
-            if(person.querySelector('.person-description')){
-                person.style.cursor = 'pointer';
-                person.addEventListener('click', function() {
-                    if(person.querySelector('.person-description').style.display === 'none') {
-                        person.querySelector('.person-description').style.display = 'block';
-                    } else if(person.querySelector('.person-description').style.display === 'block') {
-                        person.querySelector('.person-description').style.display = 'none';
-                    }
-            });
-            }
-        }
-    }
-    const singleLinks = document.querySelectorAll('.link-single');
-    if(singleLinks) {
-        for(let link of singleLinks) {
-            if(link.querySelector('.link-description')) {
-                link.style.cursor = 'pointer';
-                link.addEventListener('click', function() {
-                    if(link.querySelector('.link-description').style.display === 'none') {
-                        link.querySelector('.link-description').style.display = 'block';
-                    } else {
-                        link.querySelector('.link-description').style.display = 'none';
-                    }
-                })
-            }
-        }
-    }
+    // const singlePeople = document.querySelectorAll('.single-person');
+    // if(singlePeople) {
+    //     for(let person of singlePeople) {
+    //         if(person.querySelector('.person-description')){
+    //             person.style.cursor = 'pointer';
+    //             person.addEventListener('click', function() {
+    //                 if(person.querySelector('.person-description').style.display === 'none') {
+    //                     person.querySelector('.person-description').style.display = 'block';
+    //                 } else if(person.querySelector('.person-description').style.display === 'block') {
+    //                     person.querySelector('.person-description').style.display = 'none';
+    //                 }
+    //         });
+    //         }
+    //     }
+    // }
+    // const singleLinks = document.querySelectorAll('.link-single');
+    // if(singleLinks) {
+    //     for(let link of singleLinks) {
+    //         if(link.querySelector('.link-description')) {
+    //             link.style.cursor = 'pointer';
+    //             link.addEventListener('click', function() {
+    //                 if(link.querySelector('.link-description').style.display === 'none') {
+    //                     link.querySelector('.link-description').style.display = 'block';
+    //                 } else {
+    //                     link.querySelector('.link-description').style.display = 'none';
+    //                 }
+    //             })
+    //         }
+    //     }
+    // }
     // Metadata collapse button on StoryPage
     const metaBtn = document.querySelector('#meta-collapse-btn');
     const metaContainer = document.querySelector('.js-container');

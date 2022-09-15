@@ -3099,9 +3099,6 @@ a.ow-icon-placement-top.ow-button-hover {
     transform: translate3d(-50%, -50%, 0) rotate(360deg);
   }
 }
-#link-save-button {
-  floaT: right;
-}
 .spinner-container {
   display: none;
   padding: 10px;

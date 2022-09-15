@@ -1209,9 +1209,6 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     background-color: #fff;
     outline: none;
 }
-.person-location-death-inputs {
-    padding-bottom: 18px;
-}
 .person-dots {
     white-space: nowrap;
     overflow: hidden;
@@ -1353,6 +1350,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 300px;
     overflow-y: scroll;
 }
+.panel-right .selected-lang {
+    padding-top: 5px!important;
+}
 .panel-right .transcription-mini-metadata {
     height: 13%;
 }
@@ -1363,23 +1363,24 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     width: unset;
 }
 .panel-right #transcription-language-custom-selector{
-    font-size: 10px;
-    height: 25px;
-    padding: 0 10px;
+    height: 40px;
+    padding: 5px 10px 0;
     width: unset;
     margin: 0;
     background-color: #f8f8f8;
-    font-size: 10px;
+    font-size: 14px;
     font-weight: 700;
+    letter-spacing: -0.5px;
 }
 .panel-right #transcription-language-selector {
     height: 100%;
 }
 .panel-right #transcription-selected-languages, .panel-right #transcription-selected-languages ul,
 .panel-right #transcription-selected-languages li, .panel-right #transcription-update-button {
-    font-size: 10px;
-    height: 25px;
+    font-size: 14px;
+    height: 40px;
     padding: 0 10px;
+    letter-spacing: -0.5px;
 }
 /* Horizontal Split */
 #item-data-section.panel-bottom .tablinks .tab-i {
@@ -1996,6 +1997,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     width: 69%;
     padding: 0 10px;
 }
+#item-keyword-list .keyword-single {
+    cursor: pointer;
+}
 #add-item-keyword:first-child {
     margin: 0 0 6px 6px;
 }
@@ -2053,7 +2057,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .person-item-data-container {
     padding-right: 70px;
 }
-#person-description-input-field, #item-page-description-text {
+#person-description-input-field, #item-page-description-text, #person-wiki-input-field {
     width: 100%;
     background-color: #f8f8f8;
     border: none;
@@ -2256,7 +2260,8 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-weight: 300;
 }
 .person-description {
-    position: relative;
-    bottom: 5px;
-    font-size: 12px;
+    font-size: 14px;
+}
+.location-single p {
+    margin-bottom: 0px!important;
 }

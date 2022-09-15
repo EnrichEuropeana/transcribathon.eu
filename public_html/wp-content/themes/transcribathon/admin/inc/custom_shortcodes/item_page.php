@@ -327,7 +327,7 @@ function _TCT_item_page( $atts ) {
                                 if ($transcriptionData[0]['Languages'] != null) {
                                     $transcriptionLanguages = $transcriptionData[0]['Languages'];
                                             foreach($transcriptionLanguages as $transcriptionLanguage) {
-                                                $editorTab .= "<li class='theme-colored-data-box'>";
+                                                $editorTab .= "<li class='theme-colored-data-box selected-lang'>";
                                                     $editorTab .= $transcriptionLanguage['Name']." (".$transcriptionLanguage['NameEnglish'].")";
                                                     $editorTab .= '<script>
                                                                 jQuery("#transcription-language-selector option[value=\''.$transcriptionLanguage['LanguageId'].'\'").prop("disabled", true)
@@ -992,6 +992,10 @@ function _TCT_item_page( $atts ) {
                             $taggingTab .= '<input id="person-description-input-field" type="text" placeholder="&nbsp Add more info to this person..." title="e.g. their profession, or their significance to the document" class="input-response person-input-field">';
                         $taggingTab .= '</div>';
 
+                        $taggingTab .= '<div class="person-description-input">';
+                            $taggingTab .= '<input id="person-wiki-input-field" type="text" placeholder="&nbsp Add Wikidata Id to this person..." title="e.g. Wikidata Title Id" class="input-response person-input-field">';
+                        $taggingTab .= '</div>';
+
                         $taggingTab .= '<div class="person-location-birth-inputs">';
                             $taggingTab .= '<input type="text" id="person-birthPlace-input" class="input-response person-input-field" name="" placeholder="&nbsp Birth Location">';
                             $taggingTab .= '<span style="display:inline-block;width:49%;" class="input-response"><input type="text" id="person-birthDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Birth: dd/mm/yyyy" style="width:100%;margin-left:15px;"></span>';
@@ -1220,7 +1224,7 @@ function _TCT_item_page( $atts ) {
                 $taggingTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add keywords">';
                         $taggingTab .= 'Keywords';
                         $taggingTab .= "<button id='keyword-plus-button' type='submit' class='edit-data-save-right'
-                        onClick='document.querySelector(\"#keyword-save-button\").click()'>";
+                        onClick='document.querySelector(\"#keyword-save-button\").click();'>";
                             $taggingTab .= '<i class="fas fa-plus"></i>';
                         $taggingtab .= "</button>";
                     $taggingTab .= '</h6>';
@@ -1256,14 +1260,18 @@ function _TCT_item_page( $atts ) {
                 //other sources metadata area
                 $taggingTab .= '<div id="item-page-link-container">';
                     //add source link collapse heading
-                    $taggingTab .= '<div class= "collapse-headline collapse-controller" data-toggle="collapse" href="#link-input-container">';
+                    $taggingTab .= '<div class= "" data-toggle="collapse">';
                     $taggingTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add a link">';
                             $taggingTab .= 'Other Sources';
-                            $taggingTab .= '<i class="fas fa-plus-circle"></i>';
+                            $taggingTab .= "<button type='submit' class='edit-data-save-right' id='link-save-button'
+                            onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
+                            , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                            $taggingTab .= '<i class="fas fa-plus"></i>';
+                            $taggingTab .= "</button>";
                         $taggingTab .= '</h6>';
                     $taggingTab .= '</div>';
                     // add source link form area
-                    $taggingTab .= '<div id="link-input-container" class="collapse">';
+                    $taggingTab .= '<div id="link-input-container" class="">';
                             // $taggingTab .= '<div>';
                             //     $taggingTab .= "<span>Link:</span><br/>";
                             // $taggingTab .= '</div>';
@@ -1277,11 +1285,11 @@ function _TCT_item_page( $atts ) {
                                 $taggingTab .= '<textarea rows= "3" type="text" placeholder="&nbsp Add description of the link" name=""></textarea>';
                             $taggingTab .= '</div>';
                             $taggingTab .= "<div class='form-buttons-right' style='display:none;'>";
-                                $taggingTab .= "<button type='submit' class='theme-color-background edit-data-save-right' id='link-save-button'
-                                                    onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
-                                                    , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                                    $taggingTab .= "SAVE";
-                                $taggingTab .= "</button>";
+                                // $taggingTab .= "<button type='submit' class='theme-color-background edit-data-save-right' id='link-save-button'
+                                //                     onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
+                                //                     , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                                //     $taggingTab .= "SAVE";
+                                // $taggingTab .= "</button>";
                                 $taggingTab .= '<div id="item-link-spinner-container" class="spinner-container spinner-container-left">';
                                     $taggingTab .= '<div class="spinner"></div>';
                                 $taggingTab .= "</div>";
@@ -2047,10 +2055,14 @@ function _TCT_item_page( $atts ) {
                                 } elseif ($personDDate != Null) {
                                     $content .= " (Death: " . $pDeathDate . ")";
                                 }
+                                if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
+                                    $content .= "<div class='person-description'><span style='font-weight:400;'><b>Description</b>: </span>" . $persona['Description'] . "</div>";
+                                }
+                                if($persona['Link'] != Null && $persona['Link'] != 'NULL') {
+                                    $content .= "<div class='person-description'><span style='font-weight:400;'><b>Wikidata Id</b>: </span><a href='https://www.wikidata.org/wiki/".$persona['Link']."' target='_blank'>".$persona['Link']."</a></div>";
+                                }
                             $content .= "</div>";
-                            if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
-                                $content .= "<div class='person-description' style='display:none;'><span style='font-weight:400;'><b>Description</b>: </span>" . $persona['Description'] . "</span></div>";
-                            }
+
                             
                         $content .= "</div>";
                     }
@@ -2083,7 +2095,7 @@ function _TCT_item_page( $atts ) {
                         if($property['PropertyType'] == 'Link' ) {
                             
                             $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
-                            $content .= "<p class='link-description' style='display:none;'>" . $property['PropertyDescription'] . "</p>";
+                            $content .= "<p class='link-description'>" . $property['PropertyDescription'] . "</p>";
                             $content .= "</div>";
                         }
                     }
@@ -2385,10 +2397,17 @@ function _TCT_item_page( $atts ) {
                        // $content .= $taggingTab;
                        $content .= $mapTab;
                     $content .= "</div>";
-
                     $content .= "<div class='location-output' style='position:relative;margin-top:20px;'>";
                     foreach($itemData['Places'] as $platz){
-                        $content .= "<div class='location-single'>".$platz['Name']." (".$platz['Latitude'].", ".$platz['Longitude'].")</div>";
+                        $content .= "<div class='location-single'>";
+                            $content .= "<p><b>" . $platz['Name']."</b> (".$platz['Latitude'].", ".$platz['Longitude'].")</p>";
+                            if($platz['Comment'] != NULL && $platz['Comment'] != "") {
+                                $content .= "<p style='margin-top:0px;font-size:13px;'><b>Description:</b> " . $platz['Comment'] . "</p>";
+                            }
+                            if($platz['WikidataId'] != NULL && $platz['WikidataId'] != "") {
+                                $content .= '<div style="font-size:13px;"><span><b>Wikidata Reference:</b> </span><a href="http://www.wikidata.org/wiki/'.$platz['WikidataId'].'" style="text-decoration: none;" target="_blank">'.$platz['WikidataName'].', '.$platz['WikidataId'].'</a></div>';
+                            }
+                        $content .= "</div>";
                     }
                     $content .= "</div>";
 
