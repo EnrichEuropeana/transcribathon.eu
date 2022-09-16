@@ -153,7 +153,6 @@ namespace WPDataProjects\Simple_Form {
 						foreach ( $autocompletes as $autocomplete ) {
 							$source_column_name = $autocomplete->source_column_name[0];
 							if ( $source_column_name === $item->get_item_name() ) {
-								// TODO Add autocomplete lookup
 								$this->form_items[ $i ] = new WPDA_Simple_Form_Item_Autocomplete( $item );
 								$this->form_items[ $i ]->set_autocomplete( $autocomplete, $tableform );
 								$this->form_items[ $i ]->set_item_class( 'hide_item' );

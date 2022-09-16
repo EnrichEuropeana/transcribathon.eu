@@ -717,3 +717,9 @@ div[aria-describedby=shareWidget] .ui-dialog-title {
 div.wpda-widget-content .dataTables_wrapper .dataTables_length select {
     padding-right: 1.6em;
 }
+
+/* Remove space created by other plugins */
+div#wpbody-content div:nth-child(2).wrap,
+div#wpbody-content div:nth-child(3).wrap {
+    margin: 0;
+}

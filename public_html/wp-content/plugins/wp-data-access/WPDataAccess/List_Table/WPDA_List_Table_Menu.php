@@ -397,7 +397,7 @@ class WPDA_List_Table_Menu extends WPDA_List_Table
                 $wp_nonce_action_table_actions = "wpda-actions-{$table_name}";
                 $wp_nonce_table_actions = wp_create_nonce( $wp_nonce_action_table_actions );
                 $table_actions_title = sprintf( __( 'Table %s settings', 'wp-data-access' ), $table_name );
-                $actions['manage'] = "<a href=\"javascript:void( 0 )\" class='wpda_tooltip' title='{$table_actions_title}' onclick=\"wpda_show_table_actions( '{$this->schema_name}', '{$table_name}', '" . self::$list_number++ . "', '{$wp_nonce_table_actions}', '{$item['table_type_db']}', '" . self::LOADING . "' ); this.blur();\">" . '<i class="fas fa-gears wpda_icon_on_button"></i> ' . __( 'Manage', 'wp-data-access' ) . '</a>';
+                $actions['wpda_manage'] = "<a href=\"javascript:void( 0 )\" class='wpda_tooltip' title='{$table_actions_title}' onclick=\"wpda_show_table_actions( '{$this->schema_name}', '{$table_name}', '" . self::$list_number++ . "', '{$wp_nonce_table_actions}', '{$item['table_type_db']}', '" . self::LOADING . "' ); this.blur();\">" . '<i class="fas fa-gears wpda_icon_on_button"></i> ' . __( 'Manage', 'wp-data-access' ) . '</a>';
             }
             
             // Prepare type checking for editing.
@@ -444,7 +444,7 @@ EOT;
 				<?php 
             $action_view = ' <i class="fas fa-table-list wpda_icon_on_button"></i> ' . __( 'Explore', 'wp-data-access' );
             $table_view_title = sprintf( __( 'Explore %s table', 'wp-data-access' ), $table_name );
-            $actions['listtable'] = sprintf(
+            $actions['wpda_listtable'] = sprintf(
                 '<a href="javascript:void(0)" 
 						       title="%s"
                                class="view wpda_tooltip"  

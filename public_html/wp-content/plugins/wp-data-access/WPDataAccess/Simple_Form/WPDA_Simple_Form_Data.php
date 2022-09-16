@@ -273,7 +273,7 @@ class WPDA_Simple_Form_Data
                 }
                 
                 
-                if ( $auto_increment_value > -1 ) {
+                if ( $auto_increment_value > -1 && $pk_column === $this->wpda_list_columns->get_auto_increment_column_name() ) {
                     // For inserts with auto_increment columns use $wpdadb->insert_id.
                     $pkvalue = $auto_increment_value;
                 } else {

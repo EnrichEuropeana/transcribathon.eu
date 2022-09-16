@@ -1,3 +1,5 @@
++ ReQuery tables without page refresh - search + master-detail (curiositykillsthecat)
+
 + Add custom color schemes to Data Publisher premium (Alex)
 + When switching between different query types always force save before buttons can be used (Pascal)
 

@@ -4,7 +4,7 @@
  * Plugin Name:       WP Data Access
  * Plugin URI:        https://wpdataaccess.com/
  * Description:       Local and remote data administration, publication and app development tool available directly from the WordPress dashboard.
- * Version:           5.2.4
+ * Version:           5.2.5
  * Author:            Passionate Programmers B.V.
  * Author URI:        https://wpdataaccess.com/
  * Text Domain:       wp-data-access

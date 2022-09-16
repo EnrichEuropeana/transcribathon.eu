@@ -51,7 +51,7 @@ namespace WPDataAccess {
 		/**
 		 * Option wpda_version and it's default value
 		 */
-		const OPTION_WPDA_VERSION = [ 'wpda_version', '5.2.4' ];
+		const OPTION_WPDA_VERSION = [ 'wpda_version', '5.2.5' ];
 		/**
 		 * Option wpda_setup_error and it's default value
 		 */

@@ -374,7 +374,7 @@ function wpda_datatables_ajax_call(
 				}
 				wpda_paginationButtonPressed = false;
 
-				console.log(data);
+				// console.log(data);
 			},
 			dataSrc: function(data) {
 				if (read_more==="true") {

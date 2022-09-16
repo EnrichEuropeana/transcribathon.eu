@@ -1,21 +1,21 @@
 === WP Data Access ===
 Contributors: peterschulznl, maxxschulz, freemius
-Tags: data, table, tables, datatables, database, csv, sql server, progresql, oracle, mysql, mariadb, ms access, json, xml, excel, charts, builder, simple, responsive, dynamic
+Tags: table, tables, data, datatable, datatables, csv, import, export, database, sql server, progresql, oracle, mysql, mariadb, ms access, json, xml, excel, charts, builder, simple, responsive, dynamic
 Donate link: https://www.paypal.me/kpsch
 Requires at least: 4.8.3
 Tested up to: 6.0
-Stable tag: 5.2.4
+Stable tag: 5.2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 WP Data Access is the #1 plugin for creating professional tables, charts and data entry forms directly from the WordPress dashboard
 
 ## Description
-WP Data Access is a powerful data administration, publication, and development tool. An intuitive interface helps to create responsive tables and charts for back-end and front-end usage in just minutes. Highly customizable CRUD pages are generated on the fly. No programming skills required.
+WP Data Access is a powerful data administration, publication and development tool. An intuitive interface helps to create responsive tables and charts for back-end and front-end usage in just minutes. Highly customizable CRUD pages are generated on the fly. No programming skills required.
 
 The plugin supports more complex features for advanced users, including remote database and file access, master-detail pages, lookups, inline editing, advanced search options, dynamic hyperlinks, WordPress media library integration, WordPress role management integration and many more. Programmers can also benefit from the WP Data Access API, which can be used to access remote databases and data files directly from their PHP code.
 
-### Tables
+### Data Tables
 > Use the Data Publisher to create professional data tables for back-end and front-end usage.
 
 #### Levels
@@ -76,9 +76,10 @@ Database tables created from remote database connections and remote data files a
 * Multiple advanced search options (PREMIUM)
 
 ### Data Explorer
-> The Data Explorer helps WordPress users to manage local and remote data and databases from a single location.
+> The Data Explorer helps WordPress users to manage local and remote data and databases directly from the WordPress dashboard.
 
 * Manage local and remote data and databases
+* Global search and replace on multiple databases and tables
 * Import SQL and CSV files (supports ZIP for large import files)
 * Exports to SQL, CSV, JSON and XML (supports extremely large table exports)
 * Rename, copy, truncate, drop, optimize and alter tables
@@ -95,10 +96,11 @@ Database tables created from remote database connections and remote data files a
 * Protects WordPress table structures and data
 * Interactive Visual Query Builder for user with limited or no SQL knowledge (PREMIUM)
 
-### Geolocation maps
-> Create a searchable geolocation map from a database table containing geolocation information.
+### Geolocation
+> Create a searchable geolocation map from a database table.
 
 * Google Maps integration (PREMIUM)
+* Supports seamless integration with Data Publisher tables  (PREMIUM)
 * Define map settings per table (PREMIUM)
 * Dynamic marker layout configuration (PREMIUM)
 * Use static or user location (PREMIUM)

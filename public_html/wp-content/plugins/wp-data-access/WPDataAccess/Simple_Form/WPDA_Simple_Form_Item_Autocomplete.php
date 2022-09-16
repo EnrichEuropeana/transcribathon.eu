@@ -45,7 +45,7 @@ namespace WPDataAccess\Simple_Form {
 				$lookup_column_value = $this->item_value;
 
 				foreach ( $this->tableform_settings as $tableform_setting ) {
-					if ( $tableform_setting->column_name === $column_name ) {
+					if ( $tableform_setting->column_name === $this->autocomplete_def->source_column_name[0] ) {
 						$lookup_column_name = $tableform_setting->lookup;
 					}
 				}
