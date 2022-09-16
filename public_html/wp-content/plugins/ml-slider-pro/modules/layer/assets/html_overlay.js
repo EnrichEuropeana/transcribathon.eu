@@ -48,7 +48,8 @@ wp.media.view.Toolbar.Custom = wp.media.view.Toolbar.extend({
             var data = {
                 action: 'create_html_overlay_slide',
                 slide_id: attachment.id,
-                slider_id: window.parent.metaslider_slider_id
+                slider_id: window.parent.metaslider_slider_id,
+                nonce: metaslider_custom_slide_type.nonce
             };
 
             jQuery.post(ajaxurl, data, function(response) {

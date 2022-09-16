@@ -2,15 +2,24 @@
 
 Requires at least: 4.6
 Tested up to: 6.0
-Stable tag: 2.18.5
+Stable tag: 2.18.6
 Requires PHP: 5.6
 
 Extends MetaSlider, adding features such as video slides, layer slides and include additional CSS.
 
 == Changelog ==
 
-The format is based on [Keep a Changelog recomendations](http://keepachangelog.com/)
+The format is based on [Keep a Changelog recommendations](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+= [2.18.6] - 15 Sep, 2022 =
+
+* FIXED: Fix some Italian language strings;
+* FIXED: Fix the Schedule tab after MetaSlider v3.27.9;
+* FIXED: Fix the taxonomies tab after MetaSlider v3.27.9;
+* FIXED: Fix typos in the readme file;
+* FIXED: Fix output escaping on the admin notice;
+* FIXED: Fix nonce validation on a few ajax requests;
 
 = [2.18.5] - 30 May, 2022 =
 
@@ -43,7 +52,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 = [2.17.0] - 10 Sep, 2019 =
 
-* ADDED: Adds abililty to loop Vimeo videos
+* ADDED: Adds ability to loop Vimeo videos
 * CHANGED: Updates check for plugin file location
 * CHANGED: Updates jQuery to work with WP 5.5 (while maintaining backwards compatibility)
 * FIXED: Add polyfill for WP4.4 wp_add_inline_script
@@ -154,7 +163,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 = [2.7.2] - 28 Nov, 2017 =
 
-* FIXED: Fixes abililty to navigate External Slide tabs
+* FIXED: Fixes ability to navigate External Slide tabs
 
 = [2.7.1] - 14 Nov, 2017 =
 

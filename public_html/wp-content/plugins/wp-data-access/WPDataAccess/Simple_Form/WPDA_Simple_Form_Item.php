@@ -532,7 +532,7 @@ namespace WPDataAccess\Simple_Form {
 					?>
 				   "
 					<?php echo esc_attr( $max_length ); ?>
-					<?php echo $this->is_readonly ? ' disabled="disabled"' : ''; ?>
+					<?php echo $this->is_readonly ? ' readonly' : ''; ?>
 					<?php echo esc_attr( $this->show_context_item_events ); ?>
 				    placeholder="<?php echo esc_attr( $this->item_placeholder ); ?>"
 			/>

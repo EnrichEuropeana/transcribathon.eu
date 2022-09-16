@@ -777,6 +777,8 @@ class WPDA_Dashboard
             $color = '';
         }
         
+        $schema_name = ( isset( $_REQUEST['wpdaschema_name'] ) ? esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['wpdaschema_name'] ) ) ) : '' );
+        // phpcs:ignore WordPress.Security.NonceVerification
         ?>
 			<form id="wpda_new_design" style="display: none" method="post" action="?page=<?php 
         echo  esc_attr( WP_Data_Access_Admin::PAGE_DESIGNER ) ;
@@ -788,13 +790,25 @@ class WPDA_Dashboard
         echo  esc_attr( WP_Data_Access_Admin::PAGE_MAIN ) ;
         ?>&page_action=wpda_backup">
 				<input type="hidden" name="wpdaschema_name" value="<?php 
-        echo  esc_attr( $this->schema_name ) ;
+        echo  esc_attr( $schema_name ) ;
         ?>">
 			</form>
 			<div id="wpda-dashboard-toolbar" class="wpda-dashboard-toolbar" style="display:none">
 				<div class="wpda-nowrap">
 					<div>
 						<div>
+							<i class="fas fa-search-plus wpda_tooltip"
+							   title="Search and replace text in multiple databases and tables"
+							   onclick="window.location.href='<?php 
+        echo  admin_url( 'admin.php' ) ;
+        // phpcs:ignore WordPress.Security.EscapeOutput
+        ?>?page=<?php 
+        echo  esc_attr( WP_Data_Access_Admin::PAGE_MAIN ) ;
+        ?>&page_action=wpda_global_search'"
+							></i>
+							<br/>
+							Search & Replace
+						</div><div>
 							<i class="fas fa-plus-circle wpda_tooltip" title="Create new table design" onclick="jQuery('#wpda_new_design').submit()"></i>
 							<br/>
 							Create table

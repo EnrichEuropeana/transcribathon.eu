@@ -8,6 +8,7 @@
 use  WPDataAccess\Backup\WPDA_Data_Export ;
 use  WPDataAccess\CSV_Files\WPDA_CSV_Import ;
 use  WPDataAccess\Dashboard\WPDA_Dashboard ;
+use  WPDataAccess\Global_Search\WPDA_Global_Search ;
 use  WPDataAccess\List_Table\WPDA_List_View ;
 use  WPDataAccess\Plugin_Table_Models\WPDA_Design_Table_Model ;
 use  WPDataAccess\Plugin_Table_Models\WPDA_Publisher_Model ;
@@ -247,7 +248,7 @@ class WP_Data_Access_Admin
             WPDA::get_option( WPDA::OPTION_WPDA_VERSION )
         );
         
-        if ( self::PAGE_DASHBOARD === $this->page || self::PAGE_QUERY_BUILDER === $this->page || self::PAGE_PUBLISHER === $this->page || self::PAGE_CHARTS === $this->page ) {
+        if ( self::PAGE_MAIN === $this->page || self::PAGE_DASHBOARD === $this->page || self::PAGE_QUERY_BUILDER === $this->page || self::PAGE_PUBLISHER === $this->page || self::PAGE_CHARTS === $this->page ) {
             // Load UI smoothness theme.
             wp_enqueue_style(
                 'wpda_ui_smoothness',
@@ -904,10 +905,19 @@ class WP_Data_Access_Admin
         } elseif ( isset( $_REQUEST['page_action'] ) && 'wpda_import_csv' === $_REQUEST['page_action'] ) {
             // phpcs:ignore WordPress.Security.NonceVerification
             $this->import_csv();
+        } elseif ( isset( $_REQUEST['page_action'] ) && 'wpda_global_search' === $_REQUEST['page_action'] ) {
+            // phpcs:ignore WordPress.Security.NonceVerification
+            $this->advanced_search();
         } else {
             $this->wpda_data_explorer_view->show();
         }
     
+    }
+    
+    public function advanced_search()
+    {
+        $advanced_search = new WPDA_Global_Search();
+        $advanced_search->show();
     }
     
     /**

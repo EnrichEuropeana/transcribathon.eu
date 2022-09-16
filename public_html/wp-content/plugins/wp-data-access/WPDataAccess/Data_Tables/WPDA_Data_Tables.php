@@ -748,7 +748,9 @@ class WPDA_Data_Tables
                 $this->create_empty_response( 'Not authorized' );
                 wp_die();
             }
-        
+            
+            // Init var to prevent undefined var messages.
+            $json = null;
         }
         
         if ( '' !== $where && 'where' !== strtolower( trim( substr( $where, 0, 5 ) ) ) ) {
@@ -802,9 +804,13 @@ class WPDA_Data_Tables
         }
         // Load table settings
         $table_settings_db = WPDA_Table_Settings_Model::query( $table_name, $database );
+        
         if ( isset( $table_settings_db[0]['wpda_table_settings'] ) ) {
             $table_settings = json_decode( $table_settings_db[0]['wpda_table_settings'] );
+        } else {
+            $table_settings = [];
         }
+        
         
         if ( '*' === $columns ) {
             // Get all column names from table (must be comma seperated string).

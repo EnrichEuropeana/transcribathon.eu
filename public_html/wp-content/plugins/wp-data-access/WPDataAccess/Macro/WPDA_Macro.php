@@ -68,10 +68,10 @@ namespace WPDataAccess\Macro {
 
 					if ( -1 === $line_else ) {
 						// Get code between if and end if
-						$code_slice = array_slice( $code_array, $line_start + 1, $line_end - 1 );
+						$code_slice = array_slice( $code_array, $line_start + 1, $line_end - $line_start - 1 );
 					} else {
 						// Get code between if and else
-						$code_slice = array_slice( $code_array, $line_start + 1, $line_else - 1 );
+						$code_slice = array_slice( $code_array, $line_start + 1, $line_else - $line_start - 1 );
 						// Get code between else and end if
 						$code_else = array_slice( $code_array, $line_else + 1, $line_end - $line_else - 1 );
 					}
@@ -93,6 +93,8 @@ namespace WPDataAccess\Macro {
 							break;
 						}
 					}
+				} else {
+					$codeif = array_merge( $codeif, array( $code_array[ $line ] ) );
 				}
 			}
 

@@ -24,7 +24,7 @@ function _TCT_get_document_data( $atts ) {
 
         // Display data
         $storyData = json_decode($result, true);
-        //var_dump($storyData);
+        //dd($storyData);
         $storyData = $storyData[0];
     }
 
@@ -36,7 +36,7 @@ function _TCT_get_document_data( $atts ) {
     }
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
-    //var_dump(array_keys($storyData));
+    //dd(array_keys($storyData));
 
     /////////////////////////
     $numbPhotos = count($storyData['Items']);
@@ -75,7 +75,7 @@ function _TCT_get_document_data( $atts ) {
     $content .= "</div>";
 
         $content .= "<div id='controls-div'>";
-            
+
             $content .= "<button class='prev-set' type='button'><i class=\"fas fa-chevron-double-left\"></i></button>";
             // $content .= "<div id='dot-indicators'>";
             // // placeholder for dot indicators
@@ -103,7 +103,6 @@ function _TCT_get_document_data( $atts ) {
         //         $content .= '</li>';
         //     $content .= '</ul>';
         // $content .= '</div>';
-var_dump($storyData['dcTitle']);
         /* New- Start Transcription button */
         $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$descrLink."' style='font-family:\"Dosis\";'><b>🖉  Start Transcription</b></a>";
 
@@ -240,7 +239,7 @@ var_dump($storyData['dcTitle']);
                 $editedStatus = ($statusCount['Edit'] / $itemCount) * 100;
                 $notStartedStatus = ($statusCount['Not Started'] / $itemCount) * 100;
 
-                
+
                 // new "chart"
             $content .= "<section class='chart-section'>";
 
@@ -380,7 +379,7 @@ var_dump($storyData['dcTitle']);
                         }
 
                         // People
-                        if($storyPersons) { 
+                        if($storyPersons) {
                             $content .= "<div class='meta-sticker'>";
                                 $content .= "<p class='mb-1'><b>People</b></p>";
                                 foreach($storyPersons as $person) {
@@ -452,7 +451,7 @@ var_dump($storyData['dcTitle']);
                                 }
                             $content .= "</div>";
                             unset($itemIdentifiers);
-                        }            
+                        }
 
                         // Creation Start
                         if($storyData['edmBegin']) {
@@ -652,8 +651,8 @@ var_dump($storyData['dcTitle']);
 
 
                     $content .= "</div>";
-                    
-                
+
+
                 $content .= "</section>";
 
             $content .= "</div>"; // end of story details

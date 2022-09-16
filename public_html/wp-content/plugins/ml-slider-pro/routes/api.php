@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     die('No direct access.');
 }
 
@@ -49,7 +49,6 @@ class MetaSliderPro_Api
      */
     public function register_admin_ajax_hooks()
     {
-
         // CSS Manager
         add_action('wp_ajax_ms_save_extra_css', array(self::$instance, 'save_extra_css'));
         add_action('wp_ajax_ms_get_extra_css', array(self::$instance, 'get_extra_css'));
@@ -83,7 +82,7 @@ class MetaSliderPro_Api
      * (supports rest & admin-ajax)
      * Does not handle any validation
      *
-     * @param object $request 	 The request
+     * @param object $request The request
      * @param object $parameters The wanted parameters
      * @return array
      */
@@ -109,13 +108,13 @@ class MetaSliderPro_Api
      */
     public function save_extra_css($request)
     {
-        if (!$this->can_access()) {
+        if (! $this->can_access()) {
             $this->deny_access();
         }
 
         $data = $this->get_request_data($request, array('slideshow_id', 'css'));
 
-        if (!is_string($data['css'])) {
+        if (! is_string($data['css'])) {
             return wp_send_json_error(array(
                 'message' => __('The request format was not valid.', 'ml-slider')
             ), 415);
@@ -136,14 +135,14 @@ class MetaSliderPro_Api
      */
     public function get_extra_css($request)
     {
-        if (!$this->can_access()) {
+        if (! $this->can_access()) {
             return $this->deny_access();
         }
 
         $data = $this->get_request_data($request, array('slideshow_id', 'css'));
 
         // Get the custom CSS. Will be an empty string if not set
-        $css = (string) get_post_meta(absint($data['slideshow_id']), 'metaslider_extra_slideshow_css', true);
+        $css = (string)get_post_meta(absint($data['slideshow_id']), 'metaslider_extra_slideshow_css', true);
 
         return wp_send_json_success($css, 200);
     }

@@ -1,5 +1,18 @@
 ### ChangeLog for WP Data Access
 
+#### 5.2.5 / 2022-09-16
+
+Added: Global search and replace on multiple databases and tables
+Added: Log remote call errors (Bruce)
+Added: Save original map object in geolocation home element (Jonathan)
+Added: Support composite keys using auto_increment (Kevin)
+Fixed: Macros in dynamic hyperlinks not working correctly
+Fixed: Autocomplete not working with shortcode wpdadiehard (Kevin)
+Fixed: Read-only on key field prevents transactions (Kevin)
+Fixed: URL arguments in Google Maps API call not properly encoded (Jonathan)
+Fixed: Schema name not available in dashboard
+Removed: Space created by other plugins and themes on my dashboard
+
 #### 5.2.4 / 2022-09-02
 
 Fixed: Geolocation batch update not working "Failed to load resource" (Jonathan)
