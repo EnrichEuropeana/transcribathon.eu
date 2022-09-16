@@ -113,6 +113,12 @@ ul.story-navigation-content-container li {
     position: relative;
     margin-top: 3em;
 }
+.storypg-title {
+    text-transform: none;
+}
+.storypg-title::first-letter{
+    text-transform: capitalize;
+}
 /* End of Main Container */
 
 /* Description Image and Description text */
@@ -242,8 +248,8 @@ ul.story-navigation-content-container li {
 /* Story page horizontall chart */
 .story-status {
     display: inline-block;
-    min-height: 30px;
-    max-height: 30px;
+    min-height: 20px;
+    max-height: 20px;
     border-radius: 15px;
     position: absolute;
     top: 0;

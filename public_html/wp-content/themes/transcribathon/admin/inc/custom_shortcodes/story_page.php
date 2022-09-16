@@ -103,7 +103,7 @@ function _TCT_get_document_data( $atts ) {
         //         $content .= '</li>';
         //     $content .= '</ul>';
         // $content .= '</div>';
-
+var_dump($storyData['dcTitle']);
         /* New- Start Transcription button */
         $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$descrLink."' style='font-family:\"Dosis\";'><b>🖉  Start Transcription</b></a>";
 

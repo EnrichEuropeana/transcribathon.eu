@@ -1,6 +1,7 @@
 var home_url = WP_URLs.home_url;
 var network_home_url = WP_URLs.network_home_url;
 var map, marker;
+var itemDateCheck = true;
 
 // Save all button 2nd try
 function connectSaveButtons(itemId, userId, editStatusColor, statusCount) {
@@ -38,18 +39,55 @@ function installEventListeners() {
             } else {
                 locInput.style.display = 'none';
             }
-
         })
     }
-
+    // Probably to be removed, ads label when description language is already selected
+    const descLangLabel = document.querySelector('.desc-lang-label');
+    if(descLangLabel) {
+        if(document.querySelector('#description-language-custom-selector').textContent === 'Select Language') {
+            descLangLabel.style.display = 'none';
+        } else {
+            descLangLabel.style.display = 'inline-block';
+        }
+    }
+    // Add event listener to save all of the tagging
+    const saveAlltags = document.querySelector('#save-all-tags');
+    if(saveAlltags) {
+        saveAlltags.addEventListener('click', function() {
+            setTimeout(()=>{document.querySelector('#item-date-save-button').click()}, 100);
+            setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 500);
+            setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 900);
+            setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1300);
+        });
+    }
+    // Transcription history header, on click hide transcription to make space for tr history
+    const historyTr = document.querySelector('#transcription-history-collapse-heading');
+    if(historyTr){
+        let trView = document.querySelector('#transcription-view');
+        let trHistory = document.querySelector('#transcription-history');
+        historyTr.parentElement.addEventListener('click', function () {
+            if(trHistory.style.display === 'none') {
+                trView.style.maxHeight = '100px';
+                trView.style.overflowY = 'hidden';
+                trHistory.style.display = 'block';
+            } else {
+                trView.style.maxHeight = 'unset';
+                trView.style.overflowY = 'scroll';
+                trHistory.style.display = 'none';
+            }
+        })
+    }
     const defaultLogContainer = document.querySelector('#default-login-container');
     // When the user clicks the button(pen on the image viewer), open the login modal
-    const penLogin = document.querySelector('#lock-login');
-    if(penLogin){
-        penLogin.addEventListener('click', function() {
-            defaultLogContainer.style.display = 'block';
-        }, false);
-    }
+    jQuery('#lock-login').click(function() {
+        jQuery('#default-login-container').css('display', 'block');
+      })
+      jQuery('#lock-loginFS').click(function() {
+        jQuery("nav").addClass("fullscreen");
+        jQuery(".site-navigation").css('display', 'block');
+        jQuery('#default-login-container').css('display', 'block');
+      })
+    
     // Item Page, Full screen transcription view, toggle between view and edit
     const editButton = document.querySelector('#tr-view-start-transcription');
     if(editButton) {
@@ -73,133 +111,97 @@ function installEventListeners() {
             }
         }, true);
     }
-    // Full Screen(FS) pen
-    const navBar = document.querySelector('nav');
-    const penLoginFS = document.querySelector('#lock-loginFS');
-    if(penLoginFS){
-        penLoginFS.addEventListener('click', function() {
-            defaultLogContainer.style.display = 'block';
-            navBar.style.display = 'block';
-            // Added 'fullscreen' class to control wether navbar needs display 'none' or not
-            navBar.classList.add('fullscreen');
-        }, false);
-    }
     // When the user clicks on <span> (x), close the modal
-    const spanClose = document.querySelector('.item-login-close');
-    if(spanClose) {
-        spanClose.addEventListener('click', function() {
-            defaultLogContainer.style.display = 'none';
-            if(navBar.classList.contains('fullscreen')) {
-                navBar.style.display = 'none';
-                navBar.classList.remove('fullscreen');
-            }
-        }, false);
-    }
+    jQuery('.item-login-close').click(function() {
+        jQuery('#default-login-container').css('display', 'none');
+        if(jQuery('.site-navigation').hasClass("fullscreen")){
+            jQuery("nav").removeClass("fullscreen");
+            jQuery(".site-navigation").css('display', 'none');
+        }
+    })
+    
     //Prevent users of editing fields that need logged in user
-    const loginsRequired = document.querySelectorAll('.login-required');
-    const loginCheck = document.querySelector('#login');
-    if(loginsRequired) {
-        for(const loginRequired of loginsRequired) {
-
-            loginRequired.addEventListener('click', function(event) {
-                if(loginCheck) {
-                    console.log('true');
-                    event.preventDefault();
-                    defaultLogContainer.style.display = 'block';
-                    navBar.style.display = 'block';
-                    navBar.classList.add('fullscreen');
-                }
-            }, false);
+    jQuery('.login-required').mousedown(function(event) {
+        // Checks if document is locked
+        if (jQuery('#login').length) {
+          event.preventDefault();
+          jQuery('#default-login-container').css('display', 'block');
+          jQuery(".site-navigation").addClass("fullscreen");
+          jQuery(".site-navigation").css('display', 'block');
         }
-    }
+    })
+    jQuery('#mce-wrapper-transcription').mousedown(function(event) {
+        // Checks if document is locked
+        if (jQuery('#transcribeLock').length) {
+          event.preventDefault();
+          lockWarning();
+        }
+    })
+    jQuery('#item-page-description-text').mousedown(function(event) {
+        // Checks if document is locked
+        if (jQuery('#transcribeLock').length) {
+          event.preventDefault();
+          lockWarning();
+        }
+    })
+    ////
+    jQuery('.edit-item-data-icon').mousedown(function(event) {
+        // Checks if document is locked
+        if (jQuery('#transcribeLock').length) {
+          event.preventDefault();
+          lockWarning();
+        }
+    })
 
-    const mceWrapperLock = document.querySelector('#mce-wrapper-transcription');
-    if(mceWrapperLock) {
-        mceWrapperLock.addEventListener('mousedown', function(event) {
-            // check if document is locked
-            if(document.querySelector('#transcribeLock')) {
-                event.preventDefault();
-                lockWarning();
+    var options = document.getElementsByClassName('selected-option');
+    for (var i = 0; i < options.length; i++) {
+      options[i].addEventListener("click", function(e) {
+        /*when an item is clicked, update the original select box,
+        and the selected item:*/
+        var y, i, k, s, h;
+        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+        h = this.parentNode.previousSibling;
+        for (i = 0; i < s.length; i++) {
+          if (s.options[i].innerHTML == this.innerHTML) {
+            s.selectedIndex = i;
+            h.innerHTML = this.innerHTML;
+            y = this.parentNode.getElementsByClassName("same-as-selected");
+            for (k = 0; k < y.length; k++) {
+              y[k].removeAttribute("class");
             }
-        }, false);
-    }
-
-    const descriptionLock = document.querySelector('#item-page-description-text');
-    if(descriptionLock) {
-        descriptionLock.addEventListener('mousedown', function(event) {
-            if(document.querySelector('#transcribeLock')) {
-                event.preventDefault();
-                lockWarning();
-            }
-        }, false);
-    }
-
-    const editItems = document.querySelectorAll('.edit-item-data-icon');
-    if(editItems) {
-        for(const item of editItems) {
-            item.addEventListener('mousedown', function(event) {
-                if(document.querySelector('#transcribeLock')) {
-                    event.preventDefault();
-                    lockWarning();
-                }
-            }, false);
+            this.setAttribute("class", "same-as-selected");
+            break;
+          }
         }
+        h.click();
+      });
+    }
+    ///
+    var selectors = document.getElementsByClassName('language-select-selected');
+    for (var i = 0; i < selectors.length; i++) {
+      selectors[i].addEventListener("click", function(e) {
+          /*when the select box is clicked, close any other select boxes,
+          and open/close the current select box:*/
+          e.stopPropagation();
+          closeAllSelect(this);
+          this.nextSibling.classList.toggle("select-hide");
+          this.classList.toggle("select-arrow-active");
+          });
     }
 
-    const options = document.getElementsByClassName('selected-option');
-    if(options) {
-        for (let i = 0; i < options.length; i++) {
-            options[i].addEventListener("click", function(e) {
-                /*when an item is clicked, update the original select box,
-                and the selected item:*/
-                let y, i, k, s, h;
-                s = this.parentNode.parentNode.getElementsByTagName("select")[0];
-                h = this.parentNode.previousSibling;
-                for (i = 0; i < s.length; i++) {
-                    if (s.options[i].textContent == this.textContent) {
-                        s.selectedIndex = i;
-                        h.textContent = this.textContent;
-
-                    y = this.parentNode.getElementsByClassName("same-as-selected");
-                    for (k = 0; k < y.length; k++) {
-                        y[k].removeAttribute("class");
-                    }
-                    this.setAttribute("class", "same-as-selected");
-                    break;
-                    }
-                }
-                h.click();
-            });
-        }
-    }
-
-    const selectors = document.getElementsByClassName('language-select-selected');
-    for (let i = 0; i < selectors.length; i++) {
-        selectors[i].addEventListener("click", function(event) {
-            /*when the select box is clicked, close any other select boxes,
-            and open/close the current select box:*/
-            event.stopPropagation();
-            closeAllSelect(this);
-            this.nextSibling.classList.toggle("select-hide");
-            this.classList.toggle("select-arrow-active");
-        });
-    }
     /*if the user clicks anywhere outside the select box,
     then close all select boxes:*/
     document.addEventListener("click", closeAllSelect, false);
 
-    const editItemsDate = document.querySelectorAll('.edit-item-date');
-    for(const itemDate of editItemsDate) {
-        itemDate.addEventListener('click', function(event) {
-            if(document.querySelector('#transcribeLock')) {
-                event.preventDefault();
-                lockWarning();
-            } else {
-                this.parentElement.style.display = 'none';
-                this.parentElement.nextSibling.style.display = 'block';
-            }
-        })
-    }
+    jQuery('.edit-item-date').click(function() {
+        if(jQuery('#transcribeLock').length) {
+            event.preventDefault();
+            lockWarning();
+        } else {
+            jQuery(this).parent('.item-date-display-container').css('display', 'none');
+            jQuery(this).parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'inline-block');
+        }
+    })
     // Not sure where is this on site, needs more testing
     const singleResultDescriptions = document.querySelectorAll('.search-page-single-result-description');
 
@@ -335,7 +337,7 @@ function installEventListeners() {
   jQuery('#transcription-language-custom-selector').siblings('.language-item-select').children('.selected-option').click(function(){
     jQuery('#no-text-selector').css('display','none');
     jQuery('#transcription-selected-languages ul').append(
-            '<li>'
+            '<li class="selected-lang">'
               + jQuery('#transcription-language-selector option:selected').text()
               + '<i class="far fa-times" onClick="removeTranscriptionLanguage(' + jQuery('#transcription-language-selector option:selected').val() + ', this)"></i>'
             + '</li>');
@@ -503,6 +505,9 @@ function switchItemTab(event, tabName) {
   //if (tabName == "help-tab") {
   //  jQuery('#tutorial-help-item-page').slick('refresh')
   //}
+  if(document.querySelector('#transcription-history').style.display === 'block') {
+      document.querySelector('#tr-history').click();
+  }
 }
 function addPopUpLanguage() {
     document.querySelector('#mce-wrapper-transcription').style.display = 'none';
@@ -515,9 +520,8 @@ function addPopUpTranscription() {
 // Switches between different views within the item page image view
 function switchItemView(event, viewName) {
   // Transcription Language selection
-//   const langSelecta = document.querySelector('.transcription-mini-metadata'); //Language selector
-//   const transToolBar = document.querySelector('#mytoolbar-transcription'); // Container for lang in popup
-//   const transContainer = document.querySelector('#transcription-section'); // Original container for lang selector
+  const trSaveBtn = document.querySelector('#transcription-update-button');
+  const descSaveBtn = document.querySelector('#description-update-button');
   // Make tab icons inactive
   icons = document.getElementsByClassName("view-switcher-icons");
   for (i = 0; i < icons.length; i++) {
@@ -541,7 +545,12 @@ function switchItemView(event, viewName) {
       document.querySelector('#mce-wrapper-transcription').style.display = 'none';
       // document.querySelector('.transcription-mini-metadata').style.display = 'none';
       document.querySelector('#tr-view-btn-i').style.display = 'inline-block';
-      document.querySelector('#tr-view-btn-text').textContent = 'Edit';
+      if(document.querySelector('#tr-save-btn').querySelector('#transcription-update-button') == null){
+          document.querySelector('#tr-save-btn').appendChild(trSaveBtn);
+      }
+      if(document.querySelector('#desc-save-btn').querySelector('#description-update-button') == null){
+        document.querySelector('#desc-save-btn').appendChild(descSaveBtn);
+     }
 
       jQuery("#item-image-section").css("width", '')
       jQuery("#item-image-section").css("height", '')
@@ -592,6 +601,15 @@ function switchItemView(event, viewName) {
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
         // document.querySelector('.transcription-mini-metadata').style.display = 'block';
         document.querySelector('#transcription-status-indicator').style.display = 'unset';
+        if(document.querySelector('.transcirption-view-head').querySelector('#transcription-update-button') === null){
+            document.querySelector('.transcirption-view-head').appendChild(trSaveBtn);
+        }
+        if(document.querySelector('#description-collapse-heading').querySelector('#description-update-button') === null){
+            document.querySelector('#description-collapse-heading').appendChild(descSaveBtn);
+        }
+        if(document.querySelector('#transcription-history').style.display === 'block') {
+            document.querySelector('#tr-history').click();
+        }
 
       jQuery("#item-image-section").css("width", '')
       jQuery("#item-image-section").css("height", '')
@@ -635,6 +653,12 @@ function switchItemView(event, viewName) {
         document.querySelector('#mce-wrapper-transcription').style.display = 'block';
         // document.querySelector('.transcription-mini-metadata').style.display = 'block';
         document.querySelector('#transcription-status-indicator').style.display = 'unset';
+        if(document.querySelector('.transcirption-view-head').querySelector('#transcription-update-button') === null){
+            document.querySelector('.transcirption-view-head').appendChild(trSaveBtn);
+        }
+        if(document.querySelector('#description-collapse-heading').querySelector('#description-update-button') === null){
+            document.querySelector('#description-collapse-heading').appendChild(descSaveBtn);
+        }
 
       jQuery("#item-image-section").css("width", '100%')
       jQuery("#item-image-section").css("height", '100%')
@@ -1379,6 +1403,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
   deathPlace = jQuery('#person-deathPlace-input').val();
   deathDate = jQuery('#person-deathDate-input').val().split('/');
   description = jQuery('#person-description-input-field').val();
+  link = jQuery('#person-wiki-input-field').val();
 
   if (firstName == "" && lastName == "") {
     return 0;
@@ -1390,7 +1415,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
     LastName: lastName,
     BirthPlace: birthPlace,
     DeathPlace: deathPlace,
-    Link: null,
+    Link: link,
     Description: description,
     ItemId: itemId
   }
@@ -1611,44 +1636,43 @@ function loadPlaceData(itemId, userId) {
                             '</div>' +
                             '<div id="location-data-edit-' + escapeHtml(content[i]['PlaceId']) + '" class="location-data-edit-container">' +
                                 '<div class="location-input-section-top">' +
-                                    '<div class="location-input-name-container location-input-container">' +
-                                        '<label>Location Name:</label><br/>' +
-                                        '<input type="text" value="' + escapeHtml(content[i]['Name']) + '" name="" placeholder="">' +
+                                    '<div class="location-input-name-container">' +
+                                        '<label>Location Name:</label>' +
+                                        '<input type="text" class="edit-input" value="' + escapeHtml(content[i]['Name']) + '" name="" placeholder="">' +
                                     '</div>' +
-                                    '<div class="location-input-coordinates-container location-input-container">' +
+                                    '<div class="location-input-coordinates-container">' +
                                         '<label>Coordinates: </label>' +
                                         '<span class="required-field">*</span>' +
-                                        '<br/>' +
-                                        '<input type="text" value="' + escapeHtml(content[i]['Latitude']) + ', ' + escapeHtml(content[i]['Longitude']) + '" name="" placeholder="">' +
+                                        '<input type="text" class="edit-input" value="' + escapeHtml(content[i]['Latitude']) + ', ' + escapeHtml(content[i]['Longitude']) + '" name="" placeholder="">' +
                                     '</div>' +
                                     "<div style='clear:both;'></div>" +
                                 '</div>' +
 
-                                '<div class="location-input-description-container location-input-container">' +
-                                    '<label>Description:<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this location, e.g. the building name, or its significance to the item"></i></label><br/>' +
-                                    '<textarea rows= "2" style="resize:none;" class="gsearch-form" type="text" id="ldsc" placeholder="" name="">' + comment + '</textarea>' +
-                                '</div>' +
-
-                                '<div class="location-input-geonames-container location-input-container location-search-container">' +
-                                  '<label>WikiData:</label><br/>';
-                                  if (content[i]['WikidataName'] != "NULL" && content[i]['WikidataId'] != "NULL") {
-                                    placeHtml +=
-                                      '<input type="text" id="lgns" placeholder="" name="" value="' + escapeHtml(content[i]['WikidataName']) + '; ' + escapeHtml(content[i]['WikidataId']) + '"/>';
-                                  }
-                                  else {
-                                    placeHtml +=
-                                      '<input type="text" id="lgns" placeholder="" name=""/>';
-                                  }
+                                '<div class="location-input-geonames-container location-search-container" style="margin:5px 0;">' +
+                                '<label>WikiData:</label>';
+                                if (content[i]['WikidataName'] != "NULL" && content[i]['WikidataId'] != "NULL") {
                                   placeHtml +=
+                                    '<input type="text" id="lgns" class="edit-input" placeholder="" name="" value="' + escapeHtml(content[i]['WikidataName']) + '; ' + escapeHtml(content[i]['WikidataId']) + '"/>';
+                                }
+                                else {
+                                  placeHtml +=
+                                    '<input type="text" id="lgns" class="edit-input" placeholder="" name=""/>';
+                                }
+                                placeHtml +=
+                              '</div>' +
+
+                                '<div class="location-input-description-container" style="height:50px;">' +
+                                    '<label>Description:<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this location, e.g. the building name, or its significance to the item"></i></label>' +
+                                    '<textarea rows= "2" style="resize:none;" class="gsearch-form edit-input" type="text" id="ldsc" placeholder="" name="">' + comment + '</textarea>' +
                                 '</div>' +
 
                                 "<div class='form-buttons-right'>" +
                                     "<button onClick='editItemLocation(" + content[i]['PlaceId'] + ", " + itemId + ", " + userId + ")' " +
-                                                "class='item-page-save-button edit-data-save-right theme-color-background'>" +
+                                                "class='item-page-save-button edit-location-save theme-color-background'>" +
                                         "SAVE" +
                                     "</button>" +
 
-                                    "<button class='theme-color-background edit-data-cancel-right' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
+                                    "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
                                         "CANCEL" +
                                     "</button>" +
 
@@ -1725,6 +1749,12 @@ function loadPersonData(itemId, userId) {
         }
         else {
             var description = "";
+        }
+        if (content[i]['Link'] != "NULL" && content[i]['Link'] != null) {
+            var wikidata = escapeHtml(content[i]['Link']);
+        }
+        else {
+            var wikidata = "";
         }
 
         var personHeadline = '<span class="item-name-header">' +
@@ -1828,68 +1858,74 @@ function loadPersonData(itemId, userId) {
             '<div class="person-data-edit-container person-item-data-container" id="person-data-edit-' + content[i]['PersonId'] + '">' +
               '<div class="person-input-names-container">';
                 if (firstName != "") {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit"  placeholder="First Name" class="input-response person-input-field" value="' + firstName + '" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit"  placeholder="First Name" class="input-response person-input-field person-re-edit" value="' + firstName + '" style="outline:none;">'
                 }
                 else {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit" class="input-response person-input-field" placeholder="First Name" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit" class="input-response person-input-field person-re-edit" placeholder="First Name" style="outline:none;">'
                 }
 
                 if (lastName != "") {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field" placeholder="Last Name" value="' + lastName + '" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field person-re-edit-right" placeholder="Last Name" value="' + lastName + '" style="outline:none;">'
                 }
                 else {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field" placeholder="Last Name" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field person-re-edit-right" placeholder="Last Name" style="outline:none;">'
                 }
               personHtml +=
               '</div>' +
 
               '<div class="person-description-input">' +
-                      '<label>Description:</label><br/>' +
+                    //   '<label>Description:</label><br/>' +
                       '<input type="text" id="person-' + content[i]['PersonId'] + '-description-edit" class="input-response person-input-field" value="' + description + '">' +
-                      '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
+                    //   '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
               '</div>' +
 
-              '<div class="person-location-birth-inputs">';
+              '<div class="person-description-input">' +
+              //   '<label>Description:</label><br/>' +
+                '<input type="text" id="person-' + content[i]['PersonId'] + '-wiki-edit" class="input-response person-input-field" value="' + wikidata + '">' +
+              //   '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
+              '</div>' +
+
+              '<div class="person-location-birth-inputs" style="margin-top:5px;position:relative;">';
                 if (birthPlace != "") {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field" value="' + birthPlace + '" placeholder="Birth Location" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field person-re-edit" value="' + birthPlace + '" placeholder="Birth Location" style="outline:none;">'
                 }
                 else {
-                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field" placeholder="Birth Location" style="outline:none;">'
+                  personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field person-re-edit" placeholder="Birth Location" style="outline:none;">'
                 }
 
                 if (birthDate != "") {
-                  personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field" value="' + birthDate + '" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
+                  personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="' + birthDate + '" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
                 }
                 else {
-                  personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
+                  personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
                 }
                 personHtml +=
                 '</div>' +
 
-                '<div class="person-location-death-inputs">';
+                '<div class="person-location-death-inputs" style="margin-top:5px;position:relative;">';
                   if (deathPlace != "") {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field" value="' + deathPlace + '" placeholder="Death Location" style="outline:none;">'
+                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field person-re-edit" value="' + deathPlace + '" placeholder="Death Location" style="outline:none;">'
                   }
                   else {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field" placeholder="Death Location" style="outline:none;">'
+                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field person-re-edit" placeholder="Death Location" style="outline:none;">'
                   }
 
                   if (deathDate != "") {
-                    personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field" value="' + deathDate + '" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
+                    personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="' + deathDate + '" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
                   }
                   else {
-                    personHtml += '<span class="input-response><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
+                    personHtml += '<span class="input-response><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
                   }
                   personHtml +=
                   '</div>' +
 
                   '<div class="form-buttons-right">' +
-                      "<button class='edit-data-save-right theme-color-background'" +
+                      "<button class='edit-location-save theme-color-background'" +
                                   "onClick='editPerson(" + content[i]['PersonId'] + ", " + itemId + ", " + userId + ")'>" +
                           "SAVE" +
                       "</button>" +
 
-                      "<button id='save-personinfo-button' class='theme-color-background edit-data-cancel-right' onClick='openPersonEdit(" + content[i]['PersonId'] + ")'>" +
+                      "<button id='save-personinfo-button' class='theme-color-background edit-location-cancel' onClick='openPersonEdit(" + content[i]['PersonId'] + ")'>" +
                           "CANCEL" +
                       "</button>" +
 
@@ -1903,6 +1939,14 @@ function loadPersonData(itemId, userId) {
               '</div>' +
             '</li>'
         jQuery('#item-person-list ul').append(personHtml)
+        jQuery( ".datepicker-input-field" ).datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1000:2019",
+            showOn: "button",
+            buttonText: "📅"
+          });
       }
     }
   });
@@ -1917,15 +1961,15 @@ function loadKeywordData(itemId, userId) {
     var response = JSON.parse(response);
     if (response.code == "200") {
       var content = JSON.parse(response.content);
-      jQuery('#item-keyword-list ul').html('')
+      jQuery('#item-keyword-list').html('')
       for (var i = 0; i < content['Properties'].length; i++) {
         if (content['Properties'][i]['PropertyType'] == "Keyword") {
-          jQuery('#item-keyword-list ul').append(
-            '<li id="add-item-keyword" class="theme-color-background">' +
+          jQuery('#item-keyword-list').append(
+            '<div id="'+ content['Properties'][i]['PropertyId'] + '" class="keyword-single">' +
                 escapeHtml(content['Properties'][i]['PropertyValue']) +
-                '<i class="login-required delete-item-datas far fa-times"' +
+                '<i style="margin-left:5px;" class="login-required delete-item-datas far fa-times"' +
                     'onClick="deleteItemData(\'properties\', ' + content['Properties'][i]['PropertyId'] + ', ' + itemId + ', \'keyword\', ' + userId + ')"></i>' +
-            '</li>'
+            '</div>'
           )
         }
       }
@@ -1962,7 +2006,7 @@ function loadLinkData(itemId, userId) {
 
                         '<i class="edit-item-data-icon fas fa-pencil theme-color-hover"' +
                         'onClick="openLinksourceEdit(' + content['Properties'][i]['PropertyId'] + ')"></i>' +
-                        '<i class="edit-item-data-icon delete-item-data fas fa-trash-alt theme-color-hover"' +
+                        '<i class="edit-item-data-icon delete-item-data fas fa-times theme-color-hover"' +
                                       'onClick="deleteItemData(\'properties\', ' + content['Properties'][i]['PropertyId'] + ', ' + itemId + ', \'link\', ' + userId + ')"></i>' +
                         '<div style="clear:both;"></div>' +
                     '</div>' +
@@ -2189,6 +2233,7 @@ function editPerson(personId, itemId, userId) {
   deathPlace = jQuery('#person-' + personId + '-deathPlace-edit').val();
   deathDate = jQuery('#person-' + personId + '-deathDate-edit').val().split('/');
   description = jQuery('#person-' + personId + '-description-edit').val();
+  wiki = jQuery('#person-' + personId + '-wiki-edit').val();
 
   if (firstName == "" && lastName == "") {
     return 0;
@@ -2199,7 +2244,7 @@ function editPerson(personId, itemId, userId) {
     LastName: lastName,
     BirthPlace: birthPlace,
     DeathPlace: deathPlace,
-    Link: null,
+    Link: wiki,
     Description: description,
     ItemId: itemId
   }
@@ -2809,7 +2854,7 @@ function switchItem(itemId, userId, statusColor, progressSize, itemOrder, itemAm
       }
       else {
         jQuery('#description-language-selector select').val(null);
-        jQuery('#description-language-custom-selector').html('Language of the Description');
+        jQuery('#description-language-custom-selector').html('Select Language');
       }
       var title = jQuery('#additional-information-area .item-page-section-headline').html();
       var titleWords = title.split(" ");
@@ -3197,36 +3242,36 @@ ready(() => {
     }
     // People collapse on Item page
     // TODO write single function for all collapses on item page
-    const singlePeople = document.querySelectorAll('.single-person');
-    if(singlePeople) {
-        for(let person of singlePeople) {
-            if(person.querySelector('.person-description')){
-                person.style.cursor = 'pointer';
-                person.addEventListener('click', function() {
-                    if(person.querySelector('.person-description').style.display === 'none') {
-                        person.querySelector('.person-description').style.display = 'block';
-                    } else if(person.querySelector('.person-description').style.display === 'block') {
-                        person.querySelector('.person-description').style.display = 'none';
-                    }
-            });
-            }
-        }
-    }
-    const singleLinks = document.querySelectorAll('.link-single');
-    if(singleLinks) {
-        for(let link of singleLinks) {
-            if(link.querySelector('.link-description')) {
-                link.style.cursor = 'pointer';
-                link.addEventListener('click', function() {
-                    if(link.querySelector('.link-description').style.display === 'none') {
-                        link.querySelector('.link-description').style.display = 'block';
-                    } else {
-                        link.querySelector('.link-description').style.display = 'none';
-                    }
-                })
-            }
-        }
-    }
+    // const singlePeople = document.querySelectorAll('.single-person');
+    // if(singlePeople) {
+    //     for(let person of singlePeople) {
+    //         if(person.querySelector('.person-description')){
+    //             person.style.cursor = 'pointer';
+    //             person.addEventListener('click', function() {
+    //                 if(person.querySelector('.person-description').style.display === 'none') {
+    //                     person.querySelector('.person-description').style.display = 'block';
+    //                 } else if(person.querySelector('.person-description').style.display === 'block') {
+    //                     person.querySelector('.person-description').style.display = 'none';
+    //                 }
+    //         });
+    //         }
+    //     }
+    // }
+    // const singleLinks = document.querySelectorAll('.link-single');
+    // if(singleLinks) {
+    //     for(let link of singleLinks) {
+    //         if(link.querySelector('.link-description')) {
+    //             link.style.cursor = 'pointer';
+    //             link.addEventListener('click', function() {
+    //                 if(link.querySelector('.link-description').style.display === 'none') {
+    //                     link.querySelector('.link-description').style.display = 'block';
+    //                 } else {
+    //                     link.querySelector('.link-description').style.display = 'none';
+    //                 }
+    //             })
+    //         }
+    //     }
+    // }
     // Metadata collapse button on StoryPage
     const metaBtn = document.querySelector('#meta-collapse-btn');
     const metaContainer = document.querySelector('.js-container');
@@ -3588,7 +3633,12 @@ ready(() => {
                 document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
             }
         }}
-    installEventListeners();
+        if(itemDateCheck === true) {
+            installEventListeners();
+            itemDateCheck = false;
+            console.log(itemDateCheck);
+        }
+
 });
 
 

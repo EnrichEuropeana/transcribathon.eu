@@ -430,6 +430,35 @@ div.openseadragon-canvas > canvas > svg {
 #location-status-changer.section-status-changer {
     left: 30px!important;
 }
+.edit-location-save {
+    float: left;
+    border: none;
+    border-radius: 0;
+}
+.edit-location-cancel {
+    float: right;
+    border: none;
+    border-radius: 0;
+    margin-right: 5%;
+}
+.location-data-edit-container .edit-input {
+    background-color: #fff!important;
+    border: 1px solid #0a72cc!important;
+    width: 59%!important;
+    margin-right: 5%;
+    float: right;
+}
+.wiki-input {
+    float: right;
+    margin-right: 49px;
+    width: 55%;
+    background-color: #f8f8f8;
+    border: 0!important;
+    border-radius: 0!important;
+}
+.location-data-edit-container label {
+    width: 30%;
+}
 .status-indicator {
     cursor: pointer;
     font-size: 10px;
@@ -471,7 +500,7 @@ div.openseadragon-canvas > canvas > svg {
     min-height: 120px;
     overflow: auto;
     max-height: 350px;
-    border: 1px solid #cccccc;
+    border: 1px solid #0a72cc;
     border-radius: 2px;
     outline: none;
     line-height: 1.2em;
@@ -496,25 +525,19 @@ div.openseadragon-canvas > canvas > svg {
     padding: 4px;
 }
 .language-item-select div, .language-select-selected {
-    color: #ffffff;
-    padding: 2px 16px;
     cursor: pointer;
-    margin-bottom: 6px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
+    letter-spacing: -0.5px;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
 }
 .language-item-select {
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    z-index: 99;
-    height: 160px;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
+    width: 200px;
+    height: 200px;
     overflow-y: scroll;
-    -webkit-box-shadow: 1px 1px 1px 1px rgb(0 0 0 / 5%);
-    box-shadow: 1px 1px 1px 1px rgb(0 0 0 / 5%);
 }
 .select-hide {
     display: none;
@@ -527,11 +550,15 @@ div.openseadragon-canvas > canvas > svg {
 }
 #transcription-selected-languages li {
     display: inline-block;
-    background-color: #f1f1f1;
-    border-radius: 2px;
-    padding: 3px 6px;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
     margin: 0 0 6px 6px;
     list-style: none;
+    font-weight: 600;
+}
+#transcription-selected-languages li:hover {
+    background-color: #0a72cc;
+    color: #fff;
 }
 .theme-colored-data-box {
     color: white;
@@ -556,6 +583,11 @@ div.openseadragon-canvas > canvas > svg {
     outline: none;
     border-radius: 0;
 }
+#transcription-history {
+    overflow-y: scroll;
+    height: 450px;
+    padding-left: 25px;
+}
 .language-tooltip {
     position: relative;
     display: inline-block;
@@ -574,6 +606,20 @@ div.openseadragon-canvas > canvas > svg {
     position: absolute;
     z-index: 1;
 }
+.data-popout .language-tooltip .language-tooltip-text, .panel-bottom .language-tooltip .language-tooltip-text {
+    visibility: hidden;
+    width: 120px;
+    background-color: #828282;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    float: inherit;
+    width: fit-content;
+}
 #no-text-selector {
     margin-top: 4.6px;
     margin-right: 20px;
@@ -584,6 +630,7 @@ div.openseadragon-canvas > canvas > svg {
     margin: 0;
 }
 .square-checkbox-container {
+    margin-left: 8px;
     display: block;
     position: relative;
     padding-left: 20px;
@@ -607,17 +654,13 @@ div.openseadragon-canvas > canvas > svg {
     height: 0;
     width: 0;
 }
-.item-checkmark.checkmark {
-    filter: brightness(1.3);
-}
 .checkmark {
     position: absolute;
     top: 3px;
-    left: 0;
+    left: -7px;
     height: 18px;
     width: 18px;
-    border-radius: 3px;
-    background-color: #eee;
+    border: 2px solid #0a72cc;
 }
 .spinner-container-right {
     float: right;
@@ -662,22 +705,23 @@ div.openseadragon-canvas > canvas > svg {
 }
 #category-checkboxes {
     padding: 5px 0px;
+    margin-bottom: 12px;
 }
 #item-page-description-text {
     width: 100%;
     resize: none;
     height: 120px;
     padding: 0 10px;
-    margin-bottom: 6px;
     border: 1px solid #cccccc;
     border-radius: 2px;
     outline: none;
 }
 #description-language-selector {
-    float: left;
+    display: inline-block;
 }
 #description-update-button {
     margin-bottom: 8px;
+    float: right;
     display: none;
     border: 1px solid #eeeeee;
     background: #eeeeee;
@@ -685,6 +729,19 @@ div.openseadragon-canvas > canvas > svg {
     letter-spacing: 0.9px;
     outline: none;
     border-radius: 0;
+}
+.desc-lang-label {
+    margin-right: 5px;
+    display: inline-block;
+    color: #2b2b2b;
+    background-color: #f8f8f8;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 0 10px;
+}
+.desc-lang-label:hover {
+    color: #fff;
+    background-color: #0a72cc;
 }
 .transcription-toggle {
     width: 100%;
@@ -833,6 +890,18 @@ div.openseadragon-canvas > canvas > svg {
     height: 100%!important;
     align-content: space-evenly;
 }
+.panel-right #transcription-update-button, .panel-right #description-update-button {
+    width: 100%;
+    float: unset;
+    height: 25px!important;
+    font-size: 14px!important;
+    font-weight: 700;
+}
+.panel-right #description-update-button {
+    padding-top: 5px;
+    border: 1px solid #0a72cc;
+}
+
 #item-data-header {
     margin-top: 15px;
     padding-bottom: 16px;
@@ -858,6 +927,7 @@ div.openseadragon-canvas > canvas > svg {
     color: #2b2b2b;
 }
 .panel-right .tab-list {
+    height: 85px;
     padding-top: 17px;
     padding-left: 18px;
     position: relative;
@@ -871,8 +941,61 @@ div.openseadragon-canvas > canvas > svg {
 #item-switch-list {
     position: fixed;
 }
+#item-switch-list img {
+    height: 20px;
+    width: 20px;
+    vertical-align: unset;
+    background-color: #f8f8f8;
+}
 .panel-right #item-switch-list {
     position: relative;
+}
+.panel-right .location-save-btn {
+    width: 100%;
+    background: #0a72cc;
+    padding: 0px 10px;
+    letter-spacing: 0.5px;
+    border: 1px solid #0a72cc;
+    font-size: 14px;
+    font-weight: 700;
+    height: 25px;
+    margin-bottom: 20px;
+    margin-top: 45px;
+}
+.panel-right #full-view-map {
+    padding-left: 30px;
+    width: 99%;
+}
+.loc-input-fa {
+    position: absolute;
+    right: 25px;
+    display: inline-block;
+    padding-top: 5px;
+    font-size: 14px!important;
+}
+#tagging-tab label {
+    color: #0a72cc;
+    font-family: 'Dosis', sans-serif;
+}
+.mapboxgl-ctrl-geocoder--input {
+    width: 100%!important;
+    border: 2px solid #0a72cc!important;
+    border-radius: 0!important;
+}
+.panel-right #save-all-tags {
+    width: 100%;
+    background-color: #0a72cc;
+    color: #fff;
+    padding: 0px 10px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    border: 1px solid #0a72cc;
+    height: 25px;
+    font-size: 14px;
+    font-weight: 700;
+    position: relative;
+    bottom: 8px;
+    cursor: pointer;
 }
 .tab-list {
     overflow: hidden;
@@ -958,20 +1081,21 @@ div.openseadragon-canvas > canvas > svg {
 .entry-content .switch-list li {
     display: inline;
     margin-left: 0;
-    margin: 0.65px;
+    margin: 0 1px;
 }
 .switch-list i {
-    background-color: #ddd;
-    font-size: 13px;
-    padding: 6px;
-    -webkit-transition: 0.3s;
+    font-size: 15px;
+    text-align: center;
     transition: 0.3s;
+    position: relative;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
 }
-.switch-list i:hover {
-    background-color: #ccc;
-}
-.switch-list i.active {
-    background-color: inherit;
+.switch-i {
+    display: inline-block;
+    background-color: #f8f8f8;
+    height: 20.5px;
 }
 #item-data-content {
     height: calc(100% - 70px);
@@ -990,37 +1114,45 @@ div.openseadragon-canvas > canvas > svg {
 .item-data-input-headline {
     font-size: 14px;
 }
-.item-data-input-headline i {
-    padding-left: 6px;
-}
 .item-date-inner-container {
     display: inline-block;
     padding-right: 28px;
 }
+.item-date-input-container {
+    display: inline-block;
+}
 .item-date-inner-container label {
-    display: block;
+    display: inline-block;
+    margin-right: 10px;
+    color: #0a72cc;
+    font-family: 'Dosis', sans-serif;
 }
 .item-date-inner-container input {
     width: 94px;
 }
 .item-date-display-container {
     margin-top: 6px;
+    display: inline-block;
 }
 .item-date-display {
     border: 1px solid #eeeeee;
     padding: 4px 8px;
     background-color: #f3f3f3;
     font-weight: bold;
-    border-radius: 5px;
 }
 .edit-item-data-icon {
     cursor: pointer;
     float: right;
     background: transparent;
-    border-radius: 50%;
     padding: 6px;
     margin-left: 3px;
-    font-size: 11px;
+    font-size: 14px;
+}
+.person-location-birth-inputs .ui-datepicker-trigger, .person-location-death-inputs .ui-datepicker-trigger {
+    float: right;
+    position: relative;
+    bottom: 20px;
+    left: 35px;
 }
 button.ui-datepicker-trigger {
     padding: 0;
@@ -1060,6 +1192,9 @@ button.ui-datepicker-trigger {
 #item-location-save-button {
     float: right;
 }
+#item-location-list {
+    margin-bottom: 20px;
+}
 .delete-item-data {
     cursor: pointer;
     background: transparent;
@@ -1068,43 +1203,62 @@ button.ui-datepicker-trigger {
     font-size: 11px;
 }
 .person-item-data-container div:first-of-type {
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
 .person-item-data-container input:not(:first-of-type) {
-    margin-left: 10px;
+    margin-left: 9px;
 }
 .person-description-input {
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
 #person-description-input {
-    padding-bottom: 18px;
+    padding-bottom: 10px;
 }
 #person-description-input input {
     width: 100%;
 }
-input#person-description-input-field {
-    width: 22.5em;
-}
 .person-description-input input {
-    width: 21.75em;
+    width: 100%;
+    background-color: #f8f8f8;
 }
-.person-location-birth-inputs {
-    padding-bottom: 18px;
+.person-re-edit {
+    width: 48%;
+    background-color: #f8f8f8;
 }
-input#person-birthPlace-input {
-    margin-right: 10px;
-}
-.person-location-death-inputs {
-    padding-bottom: 18px;
-}
-input#person-deathPlace-input {
-    margin-right: 10px;
-}
-#save-personinfo-button {
+.person-re-edit-right {
+    width: 48%;
+    margin-left: 9px;
+    background-color: #f8f8f8;
     float: right;
 }
-.person-item-data-container div:first-of-type {
-    margin-bottom: 18px;
+.person-data-edit-container .input-response button.ui-datepicker-trigger {
+    position: absolute;
+    right: -20px;
+    left: unset;
+    bottom: unset;
+    top: 8px;
+}
+.person-data-edit-container .edit-location-cancel, .link-data-edit-container .edit-location-cancel {
+    margin-right: 0!important;
+}
+input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-input, #person-deathDate-input, 
+.link-description-input textarea, .link-url-input input  {
+    width: 49%;
+    display: inline-block;
+    background-color: #f8f8f8;
+    border-radius: 0;
+    border: none;
+}
+#person-firstName-input, #person-lastName-input, #person-description-input-field {
+    border: none;
+}
+#person-firstName-input:focus-visible, #person-lastName-input:focus-visible, #keyword-input:focus-visible, .link-url-input input:focus-visible,
+#person-description-input-field:focus-visible, #person-birthPlace-input:focus-visible, .link-description-input textarea:focus-visible,
+#person-birthDate-input:focus-visible, #person-deathPlace-input:focus-visible, #person-deathDate-input:focus-visible,
+#item-page-description-text:focus-visible {
+    border: 1px solid #0a72cc;
+    background-color: #fff;
+    outline: none;
 }
 .person-dots {
     white-space: nowrap;
@@ -1121,9 +1275,6 @@ input#person-deathPlace-input {
 .person-data-edit-container {
     display: none;
     margin: 15px 0 5px 0;
-}
-.person-re-edit {
-    width: 10em;
 }
 .person-names-entry-inputs {
     padding-bottom: 18px;
@@ -1143,28 +1294,36 @@ input#person-deathPlace-input {
 .link-single a {
     color: #0a72cc!important;
 }
+.link-data-edit-container .link-url-input input, .link-data-edit-container .link-description-input textarea {
+    background-color: #fff;
+    border: 1px solid #0a72cc;
+}
 #keyword-input {
-    float: left;
+    width: 100%!important;
+    border-radius: 0;
+    border: none;
+    background-color: #f8f8f8;
+    height: inherit;
 }
 .keyword-data-output-headlinee {
     margin-right: 6px;
 }
-#keyword-save-button {
-    float: left;
-    padding: 6px;
-    margin-left: 4px;
-    padding-bottom: 3.5px;
-    outline: none;
-}
 .keyword-entry-headline {
     padding-bottom: 12px;
 }
-.item-data-output-listt ul {
+#keyword-input-container {
+    display: inline-block;
+    width: 30%;
+    vertical-align: top;
+    height: 35.5px;
+}
+/* .item-data-output-list ul {
     padding: 0;
     margin: 10px 0;
-}
+} */
 .link-url-input {
-    margin-bottom: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .link-url-input input {
     width: 100%;
@@ -1191,6 +1350,10 @@ input#person-deathPlace-input {
     padding: 10px;
     min-width: 425px;
 }
+#transcription-language-custom-selector:hover {
+    color: #fff!important;
+    background-color: #0a72cc;
+}
 /* Full screen viewer / change view */
 /* Vertical Split */
 .panel-right #tr-view-start-transcription {
@@ -1214,14 +1377,18 @@ input#person-deathPlace-input {
 }
 .panel-right-tab-menu #tr-history {
     position: relative;
-    height: 50%;
 }
 .panel-right #mce-wrapper-transcription {
     display: none;
 }
 .panel-right #transcription-view {
     display: block;
-    line-height: 1.4em;
+    line-height: 1.3em;
+    height: 500px;
+    overflow-y: scroll;
+}
+#editor-tab.tabcontent {
+    overflow: hidden!important;
 }
 .panel-right #item-data-header {
     height: fit-content;
@@ -1234,34 +1401,62 @@ input#person-deathPlace-input {
     height: fit-content;
 }
 .panel-right .language-item-select {
-    position: relative;
-    top: -2px;
-    height: 100%;
+    height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.panel-right .selected-lang {
+    padding-top: 5px!important;
 }
 .panel-right .transcription-mini-metadata {
     height: 13%;
 }
 .panel-right .selected-option {
-    font-size: 10px;
-    height: 25px;
-    padding: 0 10px 0 10px;
-    width: unset;
+    font-size: 13px;
+    padding: 1px 10px;
+    width: 200px;
+    background-color: #f8f8f8;
+    position: relative;
+    z-index: 50;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+.selected-option:hover {
+    background-color: #0a72cc!important;
+    color: #fff!important;
 }
 .panel-right #transcription-language-custom-selector{
-    font-size: 10px;
-    height: 25px;
-    padding: 0 10px;
+    height: 40px;
+    padding: 5px 10px 0;
     width: unset;
     margin: 0;
+    background-color: #f8f8f8;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 .panel-right #transcription-language-selector {
     height: 100%;
 }
 .panel-right #transcription-selected-languages, .panel-right #transcription-selected-languages ul,
 .panel-right #transcription-selected-languages li, .panel-right #transcription-update-button {
-    font-size: 10px;
-    height: 25px;
+    font-size: 14px;
+    height: 40px;
     padding: 0 10px;
+    letter-spacing: -0.5px;
+}
+.panel-right .desc-lang-label {
+    height: 40px;
+    padding: 5px 10px 0;
+    font-size: 14px;
+}
+.panel-right .language-select-selected {
+    padding: 5px 10px 0;
+    height: 40px;
+    font-size: 14px;
+    color: #2b2b2b;
+    background-color: #f8f8f8;
+    font-weight: 600;
 }
 /* Horizontal Split */
 #item-data-section.panel-bottom .tablinks .tab-i {
@@ -1307,9 +1502,16 @@ input#person-deathPlace-input {
     height: 25px;
     padding: 0 10px;
     width: unset;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
 }
 .panel-bottom #transcription-language-custom-selector::after {
     right: 0;
+}
+.panel-bottom .language-select-selected {
+    padding: 0 10px;
+    font-size: 10px;
+    font-weight: 600;
 }
 .panel-bottom #transcription-selected-languages, .panel-bottom #transcription-selected-languages ul,
 .panel-bottom #transcription-selected-languages li, .panel-bottom #transcription-update-button {
@@ -1342,15 +1544,15 @@ input#person-deathPlace-input {
 .panel-bottom #tr-history {
     visibility: hidden;
 }
-.panel-bottom .language-item-select {
-    position: relative;
-    top: -6px;
-}
 .panel-bottom .selected-option {
     font-size: 10px;
-    height: 25px;
-    padding: 0 10px 0 10px;
-    width: unset;
+    position: relative;
+    padding: 0 10px;
+    background-color: #f8f8f8;
+    z-index: 50;
+}
+.panel-bottom .language-item-select {
+    height: 180px;
 }
 .panel-bottom #mytoolbar-transcription {
     height: 1px!important;
@@ -1361,8 +1563,6 @@ input#person-deathPlace-input {
     overflow-y: auto!important;
 }
 .panel-bottom #transcription-update-button {
-    right: 30px;
-    bottom: 15px;
     height: 25px;
     width: 100px;
     font-size: 15px;
@@ -1373,8 +1573,12 @@ input#person-deathPlace-input {
     height: 25px;
     width: 100px;
     border: 5px solid #0a72cc;
+    font-size: 15px;
     border-radius: 5px;
     padding: 0;
+    float: right;
+    margin-bottom: 0;
+    left: 40px;
 }
 .panel-bottom #tr-history {
     display: none;
@@ -1417,9 +1621,16 @@ input#person-deathPlace-input {
 #item-data-section.data-popout #item-page-transcription-text {
     height: calc(100% - 2.3em);
 }
-#item-data-section.data-popout .transcription-headline-header div {
+#item-data-section.data-popout .transcription-headline-header div, .data-popout #description-collapse-heading {
     font-size: 12px;
     padding: 0;
+}
+.data-popout #description-collapse-heading, .panel-bottom #description-collapse-heading {
+    width: 100%;
+}
+.data-popout #description-status-changer, .panel-bottom #description-status-changer {
+    float: none;
+    display: inline-block;
 }
 .data-popout #transcription-status-dropdown {
     height: auto!important;
@@ -1443,9 +1654,8 @@ input#person-deathPlace-input {
     padding: 0 10px!important;
     width: unset;
     margin: 0;
-}
-.data-popout #desc-part {
-    overflow-y: scroll;
+    background-color: #f8f8f8;
+    color: #2b2b2b;
 }
 .data-popout #transcription-language-custom-selector::after {
     right: 0;
@@ -1467,13 +1677,10 @@ input#person-deathPlace-input {
 }
 .data-popout .selected-option, .data-popout .language-select-selected, .data-popout .same-as-selected {
     font-size: 10px;
-    height: 25px;
-    padding: 0 10px 0 10px;
-    width: unset;
-}
-.data-popout .language-item-select {
+    padding: 0 10px!important;
     position: relative;
-    top: -6px;
+    z-index: 50;
+    background-color: #f8f8f8;
 }
 .data-popout .tab-list li {
     margin: 0;
@@ -1490,14 +1697,17 @@ input#person-deathPlace-input {
     border-radius: 7px;
     background-color: #fff;
 }
-.data-popout #transcription-update-button {
-    right: 30px;
-    bottom: 15px;
+.data-popout #transcription-update-button, .data-popout #description-update-button {
     height: 25px;
     width: 100px;
     font-size: 15px;
     border: 5px solid #0a72cc;
     border-radius: 5px;
+}
+.data-popout #description-update-button {
+    padding: 0;
+    margin-bottom: 0;
+    left: 40px;
 }
 .data-popout .square-checkbox-container {
     margin-right: 0px;
@@ -1517,6 +1727,11 @@ input#person-deathPlace-input {
 .data-popout .section-status-changer {
     height: 20px;
     top: 2px;
+}
+.data-popout #switcher-casephase, .panel-bottom #switcher-casephase {
+    position: fixed;
+    top: 0px;
+    right: 0px;
 }
 .data-closed {
     position: absolute!important;
@@ -1604,13 +1819,24 @@ input#person-deathPlace-input {
     width: 100%;
     margin-top: 6px;
 }
-.location-input-container input {
-    width: 100%;
+.location-input-section-top .location-input-container input,
+.location-input-description-container textarea {
+    float: right;
+    margin-right: 49px;
+    width: 55%;
+    background-color: #f8f8f8;
+    border: 0!important;
+    border-radius: 0!important;
 }
+#location-name-display, .location-input-coordinates-container, #location-input-geonames-search-container,
+.location-input-description-container {
+    margin: 10px 0 0 0;
+}
+/*
 .location-input-container textarea {
     width: 100%;
     margin-top: 6px;
-}
+} */
 .required-field {
     color: red;
     font-size: 18px;
@@ -1618,12 +1844,8 @@ input#person-deathPlace-input {
     display: none;
 }
 .location-display {
-    display: inline-block;
-    width: 48%;
-}
-.location-input-coordinates-container {
-    display: inline-block;
-    width: 168px;
+    display: block;
+    width: 100%;
 }
 #location-input-geonames-search-container {
     position: relative;
@@ -1635,20 +1857,26 @@ input#person-deathPlace-input {
     margin-top: 12px;
 }
 .edit-data-save-right {
-    float: right;
-    padding: 8px 12px;
+    padding: 0;
     letter-spacing: 0.5px;
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    color: #0a72cc;
+    margin-left: 5px;
+    border: none!important;
+    background: #fff;
+    outline: none!important;
+    font-size: 15px;
 }
 .item-data-output-list ul {
     margin: 8px 0;
 }
 .item-data-output-list ul li {
     list-style: none;
-    border: 1px solid #eeeeee;
     margin: 8px 0!important;
-    padding: 4px 14px;
-    background-color: #f3f3f3;
-    border-radius: 5px;
+    padding: 10px 14px 4px 14px;
+    background-color: #f8f8f8;
 }
 .item-data-output-element-header h6 {
     float: left;
@@ -1667,6 +1895,9 @@ input#person-deathPlace-input {
     padding: 6px;
     margin-left: 3px;
     font-size: 11px;
+}
+.edit-item-data-icon:hover {
+    color: #0a72cc;
 }
 .location-data-edit-container {
     display: none;
@@ -1842,6 +2073,14 @@ input#person-deathPlace-input {
     border-radius: 2px;
     margin: 0 0 6px 6px;
 }
+#item-keyword-list {
+    display: inline-block;
+    width: 69%;
+    padding: 0 10px;
+}
+#item-keyword-list .keyword-single {
+    cursor: pointer;
+}
 #add-item-keyword:first-child {
     margin: 0 0 6px 6px;
 }
@@ -1891,6 +2130,18 @@ input#person-deathPlace-input {
 }
 .person-data-output-buttom i {
     float: right;
+}
+.person-input-names-container input {
+    background-color: #f8f8f8;
+    border-radius: 0!important;
+}
+.person-item-data-container {
+    padding-right: 70px;
+}
+#person-description-input-field, #item-page-description-text, #person-wiki-input-field {
+    width: 100%;
+    background-color: #f8f8f8;
+    border: none;
 }
 .tutorial-image-area img {
     height: auto;
@@ -2010,6 +2261,13 @@ input#person-deathPlace-input {
     .tab-h span, .tab-h.it {
         display: none;
     }
+    .data-popout .tab-h span{
+        display: inline-block;
+    }
+    .data-popout .tab-h.it {
+        display: inline-block;
+        bottom: 5px;
+    }
 }
 @media screen and (min-width: 1201px) and (max-width: 1550px) {
     #inner-slider {
@@ -2034,6 +2292,7 @@ input#person-deathPlace-input {
     background-color: #f8f8f8;
     padding: 5px 10px;
     margin-right: 5px;
+    margin-bottom: 5px;
 }
 /* Location */
 .location-single {
@@ -2082,7 +2341,8 @@ input#person-deathPlace-input {
     font-weight: 300;
 }
 .person-description {
-    position: relative;
-    bottom: 5px;
-    font-size: 12px;
+    font-size: 14px;
+}
+.location-single p {
+    margin-bottom: 0px!important;
 }

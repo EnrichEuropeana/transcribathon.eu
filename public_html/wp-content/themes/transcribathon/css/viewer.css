@@ -258,6 +258,16 @@
 /* fix for fullscreen inline editor */
 body > div.tox.tox-tinymce.tox-tinymce-inline.tox-toolbar-dock-transition.tox-toolbar-dock-fadein {
   z-index: 999;
+  border: none;
+}
+
+.tox-toolbar {
+  background-color: transparent!important;
+}
+
+.tox .tox-toolbar__group {
+  background-color: #fff!important;
+  border: 1px solid #2b2b2b;
 }
 
 body > div.tox.tox-silver-sink.tox-tinymce-aux {
