@@ -17,6 +17,9 @@ use FactsAndFiles\Transcribathon\TranskribusClient;
 function _TCT_item_page_htr( $atts) {
     global $config;
 
+    $textEditorUrl = get_europeana_url() . '/transkribus-texteditor/transkribus-texteditor-velehanden/';
+    $layoutEditorUrl = get_europeana_url() . '/Layouteditor/dist/';
+
     $isLoggedIn = is_user_logged_in();
 
     if (empty($_GET['item'])) {
@@ -76,8 +79,18 @@ function _TCT_item_page_htr( $atts) {
         $imJLink = $imgJson;
     }
 
-    $content = '';
+    $transcription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
+    /* $transcription = htmlspecialchars($transcription); */
+    /* dd($transcription); */
 
+    $wpUserId = get_current_user_id();
+    // for now we assume no user as empty in TEST
+    // do not set live with this data
+    // we need an endpoint for retreiving UserId
+    $userId = 'null'; // API endpoint to retreive UserId here
+    $itemId = $_GET['item'];
+
+    $content = '';
     $content .= '<form id="changeEditor" action="'.get_europeana_url().'/documents/story/item/item_page_htr/" method="get" style="position:absolute;bottom:10%;z-index:9999;">';
         $content .= '<input type="number" name="story" value="'.$_GET['story'].'" hidden>';
         $content .= '<input type="number" name="item" value="'.$_GET['item'].'" hidden>';
@@ -87,48 +100,24 @@ function _TCT_item_page_htr( $atts) {
     // Remove padding from page wrapper, otherwise it breaks editor apearance
     $content .= "<style> #primary-full-width { padding: unset!important;} </style>";
 
-if($_GET['editor'] == NULL || $_GET['editor'] == 'text') {
+    if($_GET['editor'] == NULL || $_GET['editor'] == 'text') {
 
-    //$content .= '';
-    $content .= '<link href="/transkribus-texteditor/transkribus-texteditor-velehanden/custom.css" rel="stylesheet">';
-    $content .= '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>';
-    $content .= '<link href="/transkribus-texteditor/transkribus-texteditor-velehanden/css/app.c2e7a107.css" rel="stylesheet" as="style">';
-    $content .= '<link href="/transkribus-texteditor/transkribus-texteditor-velehanden/css/chunk-vendors.3ee89ce5.css" rel="stylesheet" as="style">';
-    $content .= '<link href="/transkribus-texteditor/transkribus-texteditor-velehanden/js/app.9b333d52.js" rel="preload" as="script" >';
-    $content .= '<link href="/transkribus-texteditor/transkribus-texteditor-velehanden/js/chunk-vendors.8c83230e.js" rel="preload" as="script">';
-    $content .= '<link href="/transkribus-texteditor/transkribus-texteditor-velehanden/css/chunk-vendors.3ee89ce5.css rel="stylesheet" as="style">';
-    $content .= '<link href="/transkribus-texteditor/transkribus-texteditor-velehanden/css/app.c2e7a107.css" rel="stylesheet" as="style">';
-
-    $content .= "<input form='changeEditor' name='editor' value='layout' hidden>";
-    $content .= "<input form='changeEditor' type='submit' value='Layout Editor' style='position:absolute;bottom:5%;z-index:9999;width:100px;margin:0auto;'>";
-//////
-$layoutTranscription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
-$layoutTranscription = htmlspecialchars($layoutTranscription);
-/* dd($layoutTranscription); */
-
-    $content .= '<div '
-        . 'id="transkribusEditor" '
-        . 'ref="editor" '
-        . 'data-iiif-url="' . $imJLink . '" '
-        . 'data-xml="' . $layoutTranscription . '">'
-        . '</div>';
-
-    $content .= '<script src="/transkribus-texteditor/transkribus-texteditor-velehanden/js/chunk-vendors.8c83230e.js"></script>';
-    $content .= '<script src="/transkribus-texteditor/transkribus-texteditor-velehanden/js/app.9b333d52.js"></script>';
-
-    /* { */
-    /*     "item_id": 421717, */
-    /*     "user_id": 5736, */
-    /*     "transcription_data": "<?xml version=\"1.0\" encoding=\"UTF-8\"? />" */
-    /* } */
-    $wpUserId = get_current_user_id();
-    // for now we assume no user as empty in TEST
-    // do not set live with this data
-    // we need an endpoint for retreiving UserId
-    $userId = 'null'; // API endpoint to retreive UserId
-    $itemId = $_GET['item'];
-
-    $saveScript = <<<EOF
+        $htrEditor = <<<HED
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link href="{$textEditorUrl}css/app.c2e7a107.css" rel="stylesheet" />
+<link href="{$textEditorUrl}css/chunk-vendors.3ee89ce5.css" rel="stylesheet" />
+<link href="{$textEditorUrl}custom.css" rel="stylesheet" />
+<input form="changeEditor" name="editor" value="layout" hidden />
+<input form="changeEditor" type="submit" value="Layout Editor" style="position:absolute;bottom:5%;z-index:9999;width:100px;margin:0auto;" />
+<div
+    id="transkribusEditor"
+    ref="editor"
+    data-iiif-url='{$imJLink}'
+    data-xml='{$transcription}'
+>
+</div>
+<script src="{$textEditorUrl}js/chunk-vendors.8c83230e.js"></script>
+<script src="{$textEditorUrl}js/app.dba0aef6.js"></script>
 <script>
 		const loc = window.location;
 		const pathname =  '/wp-content/themes/transcribathon/htr-client/request.php';
@@ -136,9 +125,9 @@ $layoutTranscription = htmlspecialchars($layoutTranscription);
     window.eventBus.\$on('save', async (data) => {
 
         const payload = {
-            item_id: $itemId,
-            userId: $userId,
-            transcription_data: data.xml.replaceAll('} "', '}"') // remove when XML is fixed
+            item_id: {$itemId},
+            userId: {$userId},
+            transcription_data: data.xml
         };
 
         const sendData = await fetch(loc.origin + pathname, {
@@ -159,53 +148,43 @@ $layoutTranscription = htmlspecialchars($layoutTranscription);
         }
     });
 </script>
-EOF;
+HED;
 
-    $content .= $saveScript;
+        $content .= $htrEditor;
 
-} else {
+    } else {
 
-    //$content = '';
+        // Remove line breaks, otherwise layoueditor doesn't work
+        $layoutTranscription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
+        // Get json file from IIIF
+        $layoutImage = file_get_contents($imJLink);
+        // Remove line breaks
+        $cleanImage = trim(preg_replace('/\s+/', ' ', $layoutImage));
 
-    $content .= "<link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" />";
-    $content .= "<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css\" />";
-    $content .= "<link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.2.0/css/all.css\" />";
+        $layoutEdtitor = <<<LED
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" />
+<link href="{$layoutEditorUrl}css/chunk-vendors.0d1a6cf4.css" rel="stylesheet" />
+<link href="{$layoutEditorUrl}css/app.497aabb0.css" rel="stylesheet" />
+<input form="changeEditor" name="editor" value="text" hidden>
+<input form="changeEditor" type="submit" value="Text Editor" style="position:absolute;bottom:5%;right:0;z-index:9999;width:100px;margin:0auto;">
+<div id="app"></div>
+<script>
+    window.layoutEditorConfig = {
+        xml: '{$layoutTranscription}',
+        iiifJson: '{$cleanImage}'
+    }
+</script>';
+<script src="{$layoutEditorUrl}js/chunk-vendors.35d45b29.js"></script>
+<script src="{$layoutEditorUrl}js/app.159aa223.js"></script>
+LED;
 
-    $content .= "<link href='/Layouteditor/dist/css/app.497aabb0.css' rel='preload' as='style' /> ";
-    $content .= "<link href='/Layouteditor/dist/css/chunk-vendors.0d1a6cf4.css' rel='preload' as='style' />";
-    $content .= "<link href='/Layouteditor/dist/js/app.159aa223.js' rel='preload' as='script' />";
-    $content .= "<link href='/Layouteditor/dist/js/chunk-vendors.35d45b29.js' rel='preload' as='script' />";
-    $content .= "<link href='/Layouteditor/dist/css/chunk-vendors.0d1a6cf4.css' rel='stylesheet' />";
-    $content .= "<link href='/Layouteditor/dist/css/app.497aabb0.css' rel='stylesheet' />";
+        $content .= $layoutEdtitor;
 
-    $content .= "<input form='changeEditor' name='editor' value='text' hidden>";
-    $content .= "<input form='changeEditor' type='submit' value='Text Editor' style='position:absolute;bottom:5%;right:0;z-index:9999;width:100px;margin:0auto;'>";
+    }
 
-
-    $content .= '<div id="app"></div>';
-
-    // Remove line breaks, otherwise layoueditor doesn't work
-    $layoutTranscription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
-    // Get json file from IIIF
-    $layoutImage = file_get_contents($imJLink);
-    // Remove line breaks
-    $cleanImage = trim(preg_replace('/\s+/', ' ', $layoutImage));
-
-    // Pass data to layout editor
-    $content .= '<script>
-        window.layoutEditorConfig = {
-            xml: \''.$layoutTranscription.'\',
-            iiifJson: \''.$cleanImage.'\'
-        }
-        </script>';
-
-    $content .= "<script src='/Layouteditor/dist/js/chunk-vendors.35d45b29.js'></script>";
-    $content .= "<script src='/Layouteditor/dist/js/app.159aa223.js'></script>";
-
-
-}
-
-        return $content;
+    return $content;
 }
 
 add_shortcode( 'item_page_htr', '_TCT_item_page_htr' );
