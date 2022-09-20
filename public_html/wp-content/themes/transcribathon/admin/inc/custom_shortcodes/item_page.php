@@ -957,18 +957,24 @@ function _TCT_item_page( $atts ) {
                 //add person metadata area
                 $taggingTab .= '<div class="item-page-person-container">';
                     //add person collapse heading
-                    $taggingTab .= '<div id="item-page-person-headline" class="theme-color">';
+                    $taggingTab .= '<div id="item-page-person-headline" class="theme-color collapse-headline collapse-controller" data-toggle="collapse" href="#person-input-container"
+                            onCLick = " jQuery(this).find(\'.collapse-icon\').toggleClass(\'fa-caret-circle-up\')
+                                        jQuery(this).find(\'.collapse-icon\').toggleClass(\'fa-caret-circle-down\')">';
                         $taggingTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to tag a person">';
                             $taggingTab .= 'People';
-                            $taggingTab .= "<button id='save-personinfo-button' class='edit-data-save-right' id='person-save-button'
-                                                onClick='savePerson(".$itemData['ItemId'].", ".get_current_user_id()."
-                                                        , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                                $taggingTab .= '<i class="fas fa-plus"></i>';
-                            $taggingTab .= "</button>";
+                            // $taggingTab .= "<button id='save-personinfo-button' class='edit-data-save-right' id='person-save-button'
+                            //                     onClick='savePerson(".$itemData['ItemId'].", ".get_current_user_id()."
+                            //                             , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                            $taggingTab .= '<i style="margin-left:5px;" class="fas fa-plus-circle"></i>';
+                            // $taggingTab .= "</button>";
                         $taggingTab .= '</h6>';
                     $taggingTab .= '</div>';
                     // add person form area
-                    $taggingTab .= '<div class="person-item-data-container" id="person-input-container">';
+                    if(count($itemData['Persons']) > 0) {
+                        $taggingTab .= '<div class="collapse person-item-data-container" id="person-input-container" style="position:relative;">';
+                    } else {
+                        $taggingTab .= '<div class="collapse person-item-data-container collapse show" id="person-input-container" style="position:relative;">';
+                    }
                         $taggingTab .= '<div class="person-input-names-container">';
                             $taggingTab .= '<input type="text" id="person-firstName-input" class="input-response person-input-field" name="" placeholder="&nbsp First Name" style="width:49%;">';
                             $taggingTab .= '<input type="text" id="person-lastName-input" class="input-response person-input-field" name="" placeholder="&nbsp Last Name" style="width:49%;float:right;">';
@@ -993,7 +999,12 @@ function _TCT_item_page( $atts ) {
                             $taggingTab .= '<span style="display:inline-block;width:49%;" class="input-response"><input type="text" id="person-deathDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Death: dd/mm/yyyy" style="width:100%;margin-left:15px;"></span>';
                         $taggingTab .= '</div>';
 
-                        $taggingTab .= '<div class="form-buttons-right"  style="display:none;">';
+                        $taggingTab .= '<div class="person form-buttons-right"  style="display:block;margin-top:0;">';
+                            $taggingTab .= "<button id='save-personinfo-button' class='edit-data-save-right' id='person-save-button'
+                                            onClick='savePerson(".$itemData['ItemId'].", ".get_current_user_id()."
+                                            , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                                $taggingTab .= '<i style="margin-left:5px;font-size:20px;" class="fas fa-save"></i>';
+                            $taggingTab .= "</button>";
                             $taggingTab .= '<div id="item-person-spinner-container" class="spinner-container spinner-container-left">';
                                 $taggingTab .= '<div class="spinner"></div>';
                             $taggingTab .= "</div>";
@@ -1182,21 +1193,21 @@ function _TCT_item_page( $atts ) {
                                             }
 
                                             if ($deathDate != "") {
-                                                $taggingTab .= '<span class="input-response"><input type="text" id="person-'.$person['PersonId'].'-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="'.$deathDate.'" placeholder="&nbsp Death: dd/mm/yyyy"></span>';
+                                                $taggingTab .= '<span class=\'input-response\'> <input type="text" id="person-'.$person['PersonId'].'-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="'.$deathDate.'" placeholder="&nbsp Death: dd/mm/yyyy"></span>';
                                             }
                                             else {
-                                                $taggingTab .= '<span class="input-response"><input type="text" id="person-'.$person['PersonId'].'-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="&nbsp Death: dd/mm/yyyy"></span>';
+                                                $taggingTab .= '<span class=\'input-response\'><input type="text" id="person-'.$person['PersonId'].'-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="&nbsp Death: dd/mm/yyyy"></span>';
                                             }
                                         $taggingTab .= '</div>';
 
                                         $taggingTab .= '<div class="form-buttons-right">';
-                                            $taggingTab .= "<button class='edit-location-save theme-color-background'
+
+                                            $taggingTab .= "<button class='theme-color-background edit-location-save' onClick='openPersonEdit(".$person['PersonId'].")'>";
+                                                $taggingTab .= "CANCEL";
+                                            $taggingTab .= "</button>";
+                                            $taggingTab .= "<button class='edit-location-cancel theme-color-background'
                                                                     onClick='editPerson(".$person['PersonId'].", ".$_GET['item'].", ".get_current_user_id().")'>";
                                                 $taggingTab .= "SAVE";
-                                            $taggingTab .= "</button>";
-
-                                            $taggingTab .= "<button class='theme-color-background edit-location-cancel' onClick='openPersonEdit(".$person['PersonId'].")'>";
-                                                $taggingTab .= "CANCEL";
                                             $taggingTab .= "</button>";
 
                                             $taggingTab .= '<div id="item-person-'.$person['PersonId'].'-spinner-container" class="spinner-container spinner-container-left">';
@@ -1216,26 +1227,28 @@ function _TCT_item_page( $atts ) {
              //   $taggingTab .= '<hr>';
                 //key word metadata area
                 $taggingTab .= '<div id="item-page-keyword-container">';
-                $taggingTab .= '<div id="item-page-person-headline">';
+                $taggingTab .= '<div id="item-page-keyword-headline" class="keyword-collapse">';
                 $taggingTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add keywords">';
                         $taggingTab .= 'Keywords';
-                        $taggingTab .= "<button id='keyword-plus-button' type='submit' class='edit-data-save-right'
-                        onClick='document.querySelector(\"#keyword-save-button\").click();'>";
-                            $taggingTab .= '<i class="fas fa-plus"></i>';
-                        $taggingtab .= "</button>";
+                        // $taggingTab .= "<button id='keyword-plus-button' type='submit' class='edit-data-save-right'
+                        // onClick='document.querySelector(\"#keyword-save-button\").click();'>";
+                        $taggingTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
+                        // $taggingtab .= "</button>";
                     $taggingTab .= '</h6>';
                 $taggingTab .= '</div>';
-                $taggingTab .= '<div id="keyword-input-container">';
+                $taggingTab .= '<div  style="position:relative;width:100%;">';
+                $taggingTab .= '<div id="keyword-input-container" class="" style="display:none;margin-right:10px;margin-bottom:10px;">';
                     $taggingTab .= '<input type="text" id="keyword-input" name="" placeholder="&nbsp Add a Keyword">';
-                    $taggingTab .= "<button id='keyword-save-button' type='submit' class='theme-color-background' style='display:none;'
+                    $taggingTab .= "<button id='keyword-save-button' type='submit' class='theme-color' style='display:block;background:none;border:none'
                                         onClick='saveKeyword(".htmlspecialchars($itemData['ItemId'], ENT_QUOTES, 'UTF-8').", ".get_current_user_id()."
                                         , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                        $taggingTab .= 'SAVE';
+                        $taggingTab .= '<i style="font-size:20px;" class="fas fa-save"></i>';
                     $taggingTab .= '</button>';
                     $taggingTab .= '<div id="item-keyword-spinner-container" class="spinner-container spinner-container-left">';
                         $taggingTab .= '<div class="spinner"></div>';
                     $taggingTab .= "</div>";
                     $taggingTab .= '<div style="clear: both;"></div>';
+                $taggingTab .= '</div>';
                 $taggingTab .= '</div>';
 
                 $taggingTab .= '<div id="item-keyword-list" class="item-data-output-listt">';
@@ -1256,18 +1269,19 @@ function _TCT_item_page( $atts ) {
                 //other sources metadata area
                 $taggingTab .= '<div id="item-page-link-container">';
                     //add source link collapse heading
-                    $taggingTab .= '<div class= "" data-toggle="collapse">';
+                    $taggingTab .= '<div class="collapse-headline collapse-controller" data-toggle="collapse" href="#link-input-container">';
                     $taggingTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add a link">';
                             $taggingTab .= 'Other Sources';
-                            $taggingTab .= "<button type='submit' class='edit-data-save-right' id='link-save-button'
-                            onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
-                            , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                            $taggingTab .= '<i class="fas fa-plus"></i>';
-                            $taggingTab .= "</button>";
+                            // $taggingTab .= "<button type='submit' class='edit-data-save-right' id='link-save-button'
+                            // onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
+                            // , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                            // $taggingTab .= '<div>Save</div>';
+                            // $taggingTab .= "</button>";
+                            $taggingTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
                         $taggingTab .= '</h6>';
                     $taggingTab .= '</div>';
                     // add source link form area
-                    $taggingTab .= '<div id="link-input-container" class="">';
+                    $taggingTab .= '<div id="link-input-container" class="collapse" style="padding-right:70px;position:relative;">';
                             // $taggingTab .= '<div>';
                             //     $taggingTab .= "<span>Link:</span><br/>";
                             // $taggingTab .= '</div>';
@@ -1280,12 +1294,12 @@ function _TCT_item_page( $atts ) {
                                 // $taggingTab .= '<label>Additional description:</label><br/>';
                                 $taggingTab .= '<textarea rows= "3" type="text" placeholder="&nbsp Add description of the link" name=""></textarea>';
                             $taggingTab .= '</div>';
-                            $taggingTab .= "<div class='form-buttons-right' style='display:none;'>";
-                                // $taggingTab .= "<button type='submit' class='theme-color-background edit-data-save-right' id='link-save-button'
-                                //                     onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
-                                //                     , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                                //     $taggingTab .= "SAVE";
-                                // $taggingTab .= "</button>";
+                            $taggingTab .= "<div class='form-buttons-right' style='display:inline-block;position:absolute;right:40px;top:-10px;'>";
+                                $taggingTab .= "<button type='submit' class='theme-color edit-data-save-right' id='link-save-button'
+                                                    onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
+                                                    , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                                    $taggingTab .= "<i style='font-size:20px;' class='fas fa-save'></i>";
+                                $taggingTab .= "</button>";
                                 $taggingTab .= '<div id="item-link-spinner-container" class="spinner-container spinner-container-left">';
                                     $taggingTab .= '<div class="spinner"></div>';
                                 $taggingTab .= "</div>";
@@ -1361,7 +1375,7 @@ function _TCT_item_page( $atts ) {
                     $taggingTab .= '</ul>';
                 $taggingTab .= '</div>';
                 $taggingTab .= '<div id="save-all-tags">';
-                    $taggingTab .= 'SAVE';
+                    $taggingTab .= '<span style="display:inline-block;">SAVE</span>';
                 $taggingTab .= '</div>';
             $taggingTab .= '</div>';
         $taggingTab .= '</div>';
@@ -1419,6 +1433,10 @@ function _TCT_item_page( $atts ) {
 /* ---------------------------------------------- Old Image Slider --------------------------------- */
         $numbPhotos = count($itemImages);
 
+        // Get starting Image for Image slider
+        $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
+        $content .= "<span id='slide-start' style='display:none;'>" . $startingSlide . "</span>";
+
         $content .= "<section id='img-slider'>";
         $content .= "<div id='slider-container'>";
             $content .= "<button class='prev-slide' type='button'><i class=\"fas fa-chevron-left\"></i></button>";
@@ -1442,8 +1460,13 @@ function _TCT_item_page( $atts ) {
                     } else {
                         $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
                     }
+                   
                     $content .= "<div class='slide-sticker' data-value='". ($x+1) ."'>";
+                    if($x == $startingSlide) {
+                        $content .= "<div class='slide-img-wrap active'>";
+                    } else {
                         $content .= "<div class='slide-img-wrap'>";
+                    }
                             $content .= "<a href='".home_url()."/documents/story/item/?story=".$itemData['StoryId']."&item=".$itemImages[$x]['ItemId']."'><img src=".$sliderImgLink." class='slider-image' alt='slider-image-".($x+1)."' width='200' height='200' loading='lazy'></a>";
                             $content .= "<div class='image-completion-status' style='bottom:20px;border-color:".$itemImages[$x]['CompletionStatusColorCode']."'></div>";
                         $content .= "</div>";
@@ -1452,6 +1475,7 @@ function _TCT_item_page( $atts ) {
                 }
             $content .= "</div>";
             $content .= "</div>";
+            
 
             $content .= "<div id='controls-div'>";
                 $content .= "<button class='prev-set' type='button'><i class=\"fas fa-chevron-double-left\"></i></button>";
@@ -1508,463 +1532,520 @@ function _TCT_item_page( $atts ) {
             $imageViewer .= '</div>';
         $content .= "<div id='full-view-container'>";
 
-            //$content .= '<div class="item-navigation-area">';
-                // $content .= '<ul class="item-navigation-content-container left" style="">';
-                //     $content .= '<li><a href="'.home_url().'/documents" style="text-decoration:none;">Stories</a></li>';
-                //     $content .= '<li><i class="fal fa-angle-right"></i></li>';
-                //     $content .= '<li><span style="text-decoration:none;">';
-                //         $content .= '<a href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
-                //             $content .= $itemData['Title'];
-                //         $content .= '</a>';
-                //     $content .= '</span></li>';
-                //     /*$content .= '<li><i class="fal fa-angle-right"></i></li>';
-                //     $content .= '<li><span>item number</span></li>';*/
-                // $content .= '</ul>';
-                // $content .= '<ul class="item-navigation-content-container right" style="">';
-                //     $content .= '<div class="item-navigation-prev">';
-                //         if ($prevItem != null) {
-                //             $content .= '<li><a title="first" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$firstItem.'"><i class="fal fa-angle-double-left"></i></a></li>';
-                //             $content .=  '<li class="rgt"><a title="previous" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$prevItem.'"><i class="fal fa-angle-left"></i></a></li>';
-                //         }
-                //     $content .= '</div>';
-                //     $content .=  '<li class="rgt">';
-                //         $content .= '<a title="Story:'.$itemData['StorydcTitle'].'" href="'.home_url().'/documents/story?story='.$itemData['StoryId'].'">';
-                //         $content .= '<i class="fal fa-book"></i></a>';
-                //     $content .= '</li>';
-                //     $content .= '<div class="item-navigation-next">';
-                //         if ($nextItem != null) {
-                //             $content .= '<li class="rgt"><a title="next" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$nextItem.'"><i class="fal fa-angle-right"></i></a></li>';
-                //             $content .= '<li class="rgt"><a title="last" href="'.home_url().'/documents/story/item/?story='.$itemData['StoryId'].'&item='.$lastItem.'"><i class="fal fa-angle-double-right"></i></a></li>';
-                //         }
-                //     $content .= '</div>';
-                // $content .= '</ul>';
-            //$content .= '</div>';
 
             // Start of Page building
             if($htrData){
-                // $content .= "<div class='title-n-btn'>";
-                //     $content .= "<div id='startTranscription'><b>🖉  Start Transcription</b></div>";
-                //     $content .= "<a id='htrButton' type='button' href='https://europeana.transcribathon.local/story/item/item_page_htr/?story=".$_GET['story']."&item=".$_GET['item']."'><i class='fa fa-laptop' aria-hidden='true'></i><b> HTR TRANSCRIPTION</b></a>";
-                // $content .= "</div>";
-                $content .= "<div style='position:relative;width:80%;margin:20px auto;'>";
+             // Item page with htr transcription
+                $content .= "<div class='title-n-btn'>";
                     $content .= "<h4 id='item-header'><b>".$itemData['Title']."</b></h4>";
+                  //  $content .= "<div id='startTranscription' class='start-transcription'><b>🖉  Start Transcription</b></div>";
                 $content .= "</div>";
-                $content .= "<div style='clear:both;'></div>";
 
                 $content .= "<div class='primary-full-width'>";
-                // left side
-                    $content .= "<div id='full-view-l'>";
-                        $content .= $imageViewer;
-                        $content .= "<div style='clear:both;'></div>";
 
-                        $content .= "<div id='full-view-editor' hidden>";
-                            $content .= $editorTab;
-                        $content .= "</div>";
-                        if($currentTranscription['Text'] != Null){
-                            $content .= "<script>document.querySelector('#no-text-selector').style.display='none';</script>";
-                        }
-                        $content .= "<div id='user-transcription' style='position:relative;margin-top:30px;'>";
-                            $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;padding:1px;' title='click to open editor'>";
-                                $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>&nbsp TRANSCRIPTION</h5></span>";
-                                    if($itemData['TranscriptionStatusColorCode'] == '#61e02f'){
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p>";
-                                    }
-                                    elseif($itemData['TranscriptionStatusColorCode'] == '#fff700') {
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDITED</p>";
-                                    }
-                                    elseif($itemData['TranscriptionStatusColorCode'] == '#ffc720') {
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEWED</p>";
-                                    } else {
-                                        $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p>";
-                                    }
-                                    $content .= "<i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i></span>";
-                                $content .= "</div>";
-                                $content .= "<div class='htr-trans-toggle'>";
-                                $content .= "<div class='togglePara' style='max-height:200px;'>";
-                                    $content .= "<p>". $currentTranscription['Text'] ."</p>";
-                                $content .= "</div>";
-                                if(strlen($currentTranscription['Text']) > 200){
-                                    $content .= "<p id='no-htr-toggle' class='descMore'>Show More</p>";
-                                }
-                                $content .= "</div>";
-                                if($currentTranscription['Languages']){
-                                    $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
-                                    $content .= "<div class='accordion'>";
-                                    foreach($currentTranscription['Languages'] as $trLang) {
-                                        $content .= "<div class='card-header' style='position:relative;left:-5px;'>" . $trLang['Name'] . "</div>";
-                                    }
-                                        // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
-                                    $content .= "</div>";
-                                }
-                            $content .= "</div>";
-                    $content .= "</div>";
-                    // right side
-                    $content .= "<div id='full-view-r'>";
-                        $content .= "<div id='full-view-tagging' class='htr-map' style='height:500px;'>";
-                            $content .= $mapTab;
-                         //   $content .= $taggingTab;
-                        $content .= "</div>";
-                    //$content .= "<hr>";
-                        $content .= "<div id='full-view-info' style='display:none;'>";
-                            $content .= $infoTab;
-                        $content .= "</div>";
-                    //$content .= "<hr>";
-                        $content .= "<div style='clear:both;'></div>";
-                        //HTR Transcription
-                        $htrTranscription = get_text_from_pagexml($htrData, '<br />');
-                        $content .= "<a style='text-decoration:none;' href='http://europeana.transcribathon.eu.local/documents/story/item/item_page_htr/?story=".$_GET['story']."&item=".$_GET['item']."'><div id='htrButton' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:30px;' title='click to open HTR viewer'>";
-                            $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>&nbsp HTR TRANSCRIPTION</h5></span>";
-                            if(strlen($htrTranscription) > 10){
-                                $content .= "<span style='top:50%;transform:translate(-1.5px,8px);'><p class='edited'>EDITED</p></span>";
-                            } else {
-                                $content .= "<span style='top:50%;transform:translate(-1.5px,8px);'><p class='not-started'>NOT STARTED</p></span>";
-                            }
-                        $content .= "</div></a>";
-                        $content .= "<div class='htr-trans-toggle'>";
-                        $content .= "<div class='togglePara' style='max-height:200px;'>";
-                            $content .= "<p>" . str_replace("<br /><br />", "<br />", $htrTranscription) . "</p>";
-                        $content .= "</div>";
-                        if(strlen($htrTranscription)> 200){
-                            $content .= "<p class='descMore' role='button'>Show More</p>";
-                        }
-                        $content .= "</div>";
+                $content .= "<div id='full-view-l'>";
+                    $content .= $imageViewer;
 
-                        $content .= '<div id="full-view-autoEnrichment" >';
-                            $content .= $autoEnrichmentTab;
-                        $content .= '</div>';
-                        //Enrichments
-                        $content .= "<div style='display:flex;flex-direction:row;justify-content:space-between;'>";
-                            $content .= "<span><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i>&nbsp ENRICHMENTS</h5></span>";
-                            if($itemData['TaggingStatusColorCode'] == '#61e02f'){
-                                $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='completed'>COMPLETED</p></span>";
-                            }
-                            elseif($itemData['TaggingStatusColorCode'] == '#fff700') {
-                                $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='edited'>EDIT</p></span>";
-                            }
-                            elseif($itemData['TaggingStatusColorCode'] == '#ffc720') {
-                                $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='reviewed'>REVIEW</p></span>";
-                            } else {
-                                $content .= "<span style='top:50%;transform:translate(0,8px);'><p class='not-started'>NOT STARTED</p></span>";
-                            }
-                        $content .= "</div>";
-                        // description
-                        if($itemData['description']) {
-                            $content .= "<h6 class='enrich-headers'>Description</h6>";
-                                $content .= "<p>".$itemData['Description']."</p>";
-                            $content .= "<h6 class='enrich-headers'>Language(s) of Description</h6>";
-                            $content .= "<div calss='accordion'>";
-                            foreach($languages as $language){
-                                if($itemData['DescriptionLanguage'] == $language['LanguageId']){
-                                    $content .= "<div class='card-header'>".$language['Name']."</div>";
-                                }
-                            }
-                            $content .= "</div>";
-                        }
-                        // document date
-                        if($dateStart || $dateEnd) {
-                            $content .= "<h6 class='enrich-headers'>Document Date</h6>";
-                            $content .= "<div class='accordion'>";
-                                $content .= "<div class='card'>";
-                                    $content .= "<div class='card-header'>";
-                                        $content .= "<span style='float:left;'>Start Date:</span>";
-                                        $content .= "<span style='float:right;margin-right:50%;'>End Date:</span>";
-                                    $content .= "</div>";
-                                $content .= "</div>";
-                                $content .= "<div class='card'>";
-                                    $content .= "<div class='card-header'>";
-                                        $content .= "<span style='float:left;'>".$dateStart."</span>";
-                                        $content .= "<span style='float:right,margin-right:50%;'>".$dateEnd."</span>";
-                                    $content .= "</div>";
-                                $content .= "</div>";
-                            $content .= "</div>";
-                        }
-                        // people
-                        if($itemData['Persons']) {
-                            $content .= "<h6 class='enrich-headers'>People</h6>";
-                            $content .= "<div class='accordion' id='personAccord'>";
-                            foreach($itemData['Persons'] as $persona) {
-                                $personBDate = strtotime($persona['BirthDate']);
-                                $pBirthDate = date("d/m/Y", $personBDate);
-                                $personDDate = strtotime($persona['DeathDate']);
-                                $pDeathDate = date("d/m/Y", $personDDate);
-
-                                $content .= "<div class='card'>";
-                                    $content .= "<div role='button' data-toggle='collapse' data-target='#collapse-".$persona['PersonId']."' aria-expanded='true' aria-controls='collapse-".$persona['PersonId']."' class='card-header' id='header-".$persona['PersonId']."'>";
-                                        $content .= "<span>";
-                                        $content .=  $persona['FirstName']." ".$persona['LastName'];
-                                        if ($persona['BirthDate'] && $persona['DeathDate']) {
-                                            $content .= " (".$pBirthDate. " - " .$pDeathDate." )";
-                                        } elseif ($persona['BirthDate']) {
-                                            $content .= " (Birth: ".$pBirthDate." )";
-                                        } elseif ($persona['DeathDate']) {
-                                            $content .= " (Death: ".$pDeathDate." )";
-                                        }
-                                        $content .= "</span>";
-                                        $content .= "<span><i style='color:#0a72cc;float:right;' class='fas fa-angle-down'></i></span>";
-                                    $content .= "</div>";
-                                    $content .= "<div class='collapse' id='collapse-".$persona['PersonId']."' aria-labelledby='header-".$persona['PersonId']."' data-parent='#personAccord'>";
-                                        $content .= "<div class='card-body'>";
-                                            $content .= "<table border=0>";
-                                                $content .= "<tr>";
-                                                    $content .= "<th></th>";
-                                                    $content .= "<th>Birth</th>";
-                                                    $content .= "<th>Death</th>";
-                                                $content .= "</tr>";
-                                                $content .= "<tr>";
-                                                    $content .= "<th>Date</th>";
-                                                    $content .= "<td>".$pBirthDate."</td>";
-                                                    $content .= "<td>".$pDeathDate."</td>";
-                                                $content .= "</tr>";
-                                                $content .= "<tr>";
-                                                    $content .= "<th>Place</th>";
-                                                    $content .= "<td>".$persona['BirthPlace']."</td>";
-                                                    $content .= "<td>".$persona['DeathPlace']."</td>";
-                                                $content .= "</tr>";
-                                                if($persona['Description'] && $persona['Description'] != 'NULL') {
-                                                    $content .= "<tr>";
-                                                        $content .= "<th>Description</th>";
-                                                        $content .= "<td colspan='2'>" . $persona['Description'] . "</td>";
-                                                    $content .= "</tr>";
-                                                }
-                                             //   $content .= "<tr><td>" . $persona['Description'] . "</td></tr>";
-                                            $content .= "</table>";
-                                        $content .= "</div>";
-                                    $content .= "</div>";
-                                $content .= "</div>";
-
-                            }
-                            $content .= "</div>";
-                        }
-                        if($itemData['Properties']) {
-                            // key words
-                            $content .= "<h6 class='enrich-headers'>Keywords</h6>";
-                            $content .= "<div class='keyword-container js-check'>";
-                            foreach($itemData['Properties'] as $properti){
-                                if($properti['PropertyType'] == "Keyword"){
-                                    $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
-                                }
-                            }
-                            $content .= "</div>";
-                            // Category
-                            $content .= "<h6 class='enrich-headers'>Category</h6>";
-                            $content .= "<div class='accordion js-check'>";
-                            foreach($itemData['Properties'] as $property) {
-                                if($property['PropertyType'] == "Category") {
-                                    $content .= "<div class='card-header'>" . $property['PropertyValue'] . "</div>";
-                                }
-                            }
-                            $content .= "</div>";
-                            // other sources
-                            $content .= "<h6 class='enrich-headers'>Other Sources</h6>";
-                            $content .= "<div class='accordion js-check'>";
-                            foreach($itemData['Properties'] as $property){
-                                if($property['PropertyType'] == 'Link' ) {
-                                    $content .= "<div class='card'>";
-                                        $content .= "<div class='card-header'><a href='".$property['PropertyValue']."'>".$property['PropertyValue']."</a></div>";
-                                        $content .= "<div class='card-header'>Description: ".$property['PropertyDescription']."</div>";
-                                    $content .= "</div>";
-                                }
-                            }
-                            $content .= "</div>";
-                        }
-                        // Location
-                        if($itemData['Places']) {
-                            $content .= "<h6 class='enrich-headers'>Location</h6>";
-                            $content .= "<div class='accordion'>";
-                            foreach($itemData['Places'] as $platz){
-                                $content .= "<div class='card-header'>".$platz['Name']." (".$platz['Latitude'].", ".$platz['Longitude'].")</div>";
-                            }
-                            $content .= "</div>";
-                        }
-                        $content .= "</div>";
-                    $content .= "</div>";
-                $content .= "</div>";
-                // Metadata
                 $content .= "<div style='clear:both;'></div>";
-                $content .= "<div id='info-section' style='width:90%;margin:0 auto;'>";
-                    $content .= "<div id='item-meta-collapse' class='add-info enrich-header' style='width:100%;background-color:#f8f8f8;' role='button' data-toggle='collapse' href='#infoCollapse' aria-expanded='false' aria-controls='infoCollapse'>";
-                        $content .= "<p style='color:#0a72cc;'><span><b><i style='margin-right:5px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</b></span><span style='float:right;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span></p>";
-                    $content .= "</div>";
-                    $content .= "<div class='dl-enrichments' style='height: 300px;'>";
-                    //Contributor
-                    if($itemData['StorydcContributor']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Contributor</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcContributor']) . "</p>";
-                        $content .= "</div>";
-                    }
-                    //Creator
-                    if($itemData['StorydcCreator']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Creator</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcCreator']) . "</p>";
-                        $content .= "</div>";
-                    }
-                    // Story Source
-                    if($itemData['StorydcSource']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Story Source</p>";
-                            $source = array_unique(explode(' || ', $itemData['StorydcSource']));
-                            $content .= "<p class='meta-p'>" . implode('</br>', $source) . "</p>";
-                        $content .= "</div>";
-                    }
-                    //Identifier
-                    if($itemData['StoryExternalRecordId']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Identifier</p>";
-                            if(substr($itemData['StoryExternalRecordId'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . $itemData['StoryExternalRecordId'] . "</a></p>";
-                            } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</p>";
-                            }
-                        $content .= "</div>";
-                    }
-                    //Document Language
-                    if($itemData['StorydcLanguage']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Document Language</p>";
-                            $dcLanguage = array_unique(explode(' || ', $itemData['StorydcLanguage']));
-                            $content .= "<p class='meta-p'>" . implode('</br>', $dcLanguage) . "</p>";
-                        $content .= "</div>";
-                    }
-                    // Provider Language
-                    if($itemData['StoryedmLanguage']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Provider Language</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmLanguage']."</p>";
-                        $content .= "</div>";
-                    }
-                    // Publisher
-                    if($itemData['StoryedmProvider']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Publisher</p>";
-                            if(substr($itemData['StoryedmProvider'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></p>";
-                            } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryedmProvider'] . "</p>";
-                            }
-                        $content .= "</div>";
-                    }
-                    // Rights
-                    if($itemData['StoryedmRights']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Rights</p>";
-                            $edmRights = array_unique(explode(' || ', $itemData['StoryedmRights']));
-                            foreach($edmRights as $right) {
-                                if(substr($right, 0, 4) == 'http'){
-                                    $content .= "<p class='meta-p'><a target='_blank' href='".$right."'>" . $right . "</a></p>";
-                                } else {
-                                    $content .= "<p class='meta-p'>" . $right . "</p>";
-                                }
-                            }
-                        $content .= "</div>";
-                    }
-                    // Image Rights
-                    if($itemData['StorydcRights']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Image Rights</p>";
-                            $imgRights = array_unique(explode(' || ', $itemData['StorydcRights']));
-                            foreach($imgRights as $iRight) {
-                                if(substr($iRight, 0, 4) == 'http'){
-                                    $content .= "<p class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></p>";
-                                } else {
-                                    $content .= "<p class='meta-p'>" . $iRight . "</p>";
-                                }
-                            }
-                        $content .= "</div>";
-                    }
-                    // Type
-                    if($itemData['StorydcType']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Type</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcType']) . "</p>";
-                        $content .= "</div>";
-                    }
-                    // Medium
-                    if($itemData['StorydctermsMedium']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Medium</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydctermsMedium']) . "</p>";
-                        $content .= "</div>";
-                    }
-                    // Creation Start
-                    if($itemData['StoryedmBegin']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Creation Start</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', "</br>", $itemData['StoryedmBegin']) . "</p>";
-                        $content .= "</div>";
-                    }
-                    // Creation End
-                    if($itemData['StoryedmEnd']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Creation End</p>";
-                            $content .= "<p class='meta-p'>" . str_replace(' || ', "</br>", $itemData['StoryedmEnd']) . "</p>";
-                        $content .= "</div>";
-                    }
-                    // Providing Country
-                    if($itemData['StoryedmCountry']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Providing Country</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmCountry']."</p>";
-                        $content .= "</div>";
-                    }
-                    // Institution
-                    if($itemData['StoryedmDataProvider']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Institution</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmDataProvider']."</p>";
-                        $content .= "</div>";
-                    }
-                    // Dataset
-                    if($itemData['StoryedmDatasetName']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Dataset</p>";
-                            $content .= "<p class='meta-p'>".$itemData['StoryedmDatasetName']."</p>";
-                        $content .= "</div>";
-                    }
-                    // Source Url
-                    if($itemData['StoryedmIsShownAt']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Source Url</p>";
-                            if(substr($itemData['StoryedmIsShownAt'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmIsShownAt']."'>" . $itemData['StoryedmIsShownAt'] . "</a></p>";
-                            } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryedmIsShownAt'] . "</p>";
-                            }
-                        $content .= "</div>";
-                    }
-                    // Story Title
-                    $content .= "<div class='meta-h meta-sticker'>";
-                        $content .= "<p class='mb-1'>Story Title</p>";
-                        $content .= "<p class='meta-p'>". str_replace(' || ', "</br>", $itemData['StorydcTitle']) . "</p>";
-                    $content .= "</div>";
-                    // Story Landing Page
-                    if($itemData['StoryedmLandingPage']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Story Landing Page</p>";
-                            if(substr($itemData['StoryedmLandingPage'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmLandingPage']."'>" . $itemData['StoryedmLandingPage'] . "</a></p>";
-                            } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryedmLandingPage'] . "</p>";
-                            }
-                        $content .= "</div>";
-                    }
-                    // Parent Story
-                    if($itemData['StoryParentStory']) {
-                        $content .= "<div class='meta-h meta-sticker'>";
-                            $content .= "<p class='mb-1'>Parent Story</p>";
-                            if(substr($itemData['StoryParentStory'], 0, 4) == 'http'){
-                                $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryParentStory']."'>" . $itemData['StoryParentStory'] . "</a></p>";
-                            } else {
-                                $content .= "<p class='meta-p'>" . $itemData['StoryParentStory'] . "</p>";
-                            }
-                        $content .= "</div>";
-                    }
-                $content .= "</div>";
-                $content .= "<div style='clear:both'></div>";
 
+                $content .= "<div id='full-view-editor' hidden>";
+                    $content .= $editorTab;
+                    if($currentTranscription['Text'] != Null){
+                        $content .= "<script>document.querySelector('#no-text-selector').style.display='none';</script>";
+                    }
                 $content .= "</div>";
-            // Else means that there is no Htr data available for the choosen Story
+                //Download Enrichments Button/Div
+                $content .= "<div id='htr-transcription' style='height:580px;'>";
+                //HTR Transcription
+                $htrTranscription = get_text_from_pagexml($htrData, '<br />');
+                $content .= "<div id='htrTranscription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:20px;'>";
+                $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> HTR TRANSCRIPTION</h5></div>";
+                if(strlen($htrTranscription) > 1){
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='edited'>EDIT</span>";
+                } else {
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='not-started'>NOT STARTED</span>";
+                }
+                $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
+                $content .= "</div>";
+                $content .= "<div class='trans-toggle' style='padding-left:50px;padding-top:20px;'>";
+                $content .= "<div class='togglePara' style='height:401px;'>";
+                    $content .= "<p>" . str_replace("<br /><br />", "<br />", $htrTranscription) . "</p>";
+                $content .= "</div>";
+                if(strlen($htrTranscription)> 200){
+                    $content .= "<p id='htrMore' role='button'>Show More</p>";
+                }
+                $content .= "</div>";
+                $content .= "</div>";
+                //Enrichments
+                $content .= "<div class='dl-enrichments' style='margin-top:20px;'>";
+                $content .= "<div id='startEnrichment' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;'>";
+                $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ENRICHMENTS</h5></div>";
+                if($itemData['TaggingStatusColorCode'] == '#61e02f'){
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='completed'>COMPLETED</span>";
+                }
+                elseif($itemData['TaggingStatusColorCode'] == '#fff700') {
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='edited'>EDIT</span>";
+                }
+                elseif($itemData['TaggingStatusColorCode'] == '#ffc720') {
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='reviewed'>REVIEW</span>";
+                } else {
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='not-started'>NOT STARTED</span>";
+                }
+                $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
+                $content .= "</div>";
+                // document date
+                if($dateStart || $dateEnd) {
+                    $content .= "<h6 class='enrich-headers'>Document Date</h6>";
+                    $content .= "<div class='doc-date-container'>";
+                        $content .= "<div class='date-top'>";
+                                $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                                $content .= "<div style='float:right;margin-right:50%;display:inline-block;'>End Date:</div>";
+                        $content .= "</div>";
+                        $content .= "<div style='clear:both;'></div>";
+                        $content .= "<div class='date-bottom'>";
+                                $content .= "<div style='float:left;display:inline-block'>".$dateStart."</div>";
+                                $content .= "<div style='float:right;margin-right:48%;display:inline-block;'>".$dateEnd."</div>";
+                        $content .= "</div>";
+                    $content .= "</div>";
+                    $content .= "<div style='clear:both;'></div>";
+                }
+                // people
+                $content .= "<h6 class='enrich-headers'>People</h6>";
+                if($itemData['Persons']) {
+                    
+                    $content .= "<div class='person-container' id='personAccord'>";
+                    foreach($itemData['Persons'] as $persona) {
+                        $personBDate = strtotime($persona['BirthDate']);
+                        $pBirthDate = date("d/m/Y", $personBDate);
+                        $personDDate = strtotime($persona['DeathDate']);
+                        $pDeathDate = date("d/m/Y", $personDDate);
+
+                        $content .= "<div class='single-person'>";
+                            $content .= "<div class='person-info'>";
+                                $content .= "<span style='font-weight:400;'>" . $persona['FirstName'] . ' ' . $persona['LastName'] . "</span>";
+                                if($personBDate != Null && $personDDate != Null) {
+                                    $content .= " (" . $pBirthDate;
+                                    if($persona['BirthPlace'] != Null) {
+                                        $content .= ', ' . $persona['BirthPlace'];
+                                    } 
+                                    $content .= " - " . $pDeathDate;
+                                    if($persona['DeathPlace'] != Null) {
+                                        $content .= ', ' . $persona['DeathPlace'];
+                                    }
+                                    $content .= ")";
+                                } elseif ($personBDate != Null) {
+                                    $content .= " (Birth: " . $pBirthDate;
+                                    if($persona['BirthPlace'] != Null) {
+                                        $content .= ", " . $persona['BirthPlace'];
+                                    }
+                                    $content .= ")";
+                                } elseif ($personDDate != Null) {
+                                    $content .= " (Death: " . $pDeathDate;
+                                    if($persona['DeathPlace'] != Null) {
+                                        $content .= ", " . $persona['DeathPlace'];
+                                    } 
+                                    $content .= ")";
+                                }
+                                if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
+                                    $content .= "<div class='person-description'>Description: <span style='font-weight:600;'>" . $persona['Description'] . "</span></div>";
+                                }
+                                if($persona['Link'] != Null && $persona['Link'] != 'NULL') {
+                                    $content .= "<div class='person-description'>Wikidata Id: <span style='font-weight:600;'><a href='https://www.wikidata.org/wiki/".$persona['Link']."' target='_blank'>".$persona['Link']."</a></span></div>";
+                                }
+                            $content .= "</div>";
+
+                            
+                        $content .= "</div>";
+                    }
+                    $content .= "</div>";
+                }
+                // key words
+                // js-check class is used to check if the property field is empty, so we can hide the header if it is empty
+                if($itemData['Properties']) {
+                    // Category
+                    $content .= "<h6 class='enrich-headers'>Type of Media</h6>";
+                    $content .= "<div class='keyword-container js-check'>";
+                    foreach($itemData['Properties'] as $property) {
+                        if($property['PropertyType'] == "Category") {
+                            $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                        }
+                    }
+                    $content .= "</div>";
+                    $content .= "<h6 class='enrich-headers'>Keywords</h6>";
+                    $content .= "<div class='keyword-container js-check'>";
+                    foreach($itemData['Properties'] as $properti){
+                        if($properti['PropertyType'] == "Keyword"){
+                            $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
+                        }
+                    }
+                    $content .= "</div>";
+                    // other sources
+                    $content .= "<h6 class='enrich-headers'>Other Sources</h6>";
+                    $content .= "<div class='link-container js-check'>";
+                    foreach($itemData['Properties'] as $property){
+                        if($property['PropertyType'] == 'Link' ) {
+                            
+                            $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
+                            $content .= "<p class='link-description'>" . $property['PropertyDescription'] . "</p>";
+                            $content .= "</div>";
+                        }
+                    }
+                    $content .= "</div>";
+                }
+                $content .= "</div>";
+
+            $content .= "</div>";
+
+            // right side
+            $content .= "<div id='full-view-r' >";
+
+            $content .= "<div id='full-view-tagging' class='htr-map' style='height:500px;position:relative;margin-bottom:20px;'>";
+            // $content .= $taggingTab;
+            $content .= $mapTab;
+         $content .= "</div></div>";
+
+                $content .= "<div id='transcription-container' style='height:580px;'>";
+                    $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;' title='click to open editor'>";
+                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
+                        if($itemData['TranscriptionStatusColorCode'] == '#61e02f'){
+                            $content .= "<div style='display:inline-block;'><span class='completed'>COMPLETED</span>";
+                        }
+                        elseif($itemData['TranscriptionStatusColorCode'] == '#fff700') {
+                            $content .= "<div style='display:inline-block;'><span class='edited'>EDIT</span>";
+                        }
+                        elseif($itemData['TranscriptionStatusColorCode'] == '#ffc720') {
+                            $content .= "<div style='display:inline-block;'><span class='reviewed'>REVIEW</span>";
+                        } else {
+                            $content .= "<div style='display:inline-block;'><span class='not-started'>NOT STARTED</span>";
+                        }
+                        $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
+                    $content .= "</div>";
+                    if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
+                        $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
+                    }
+                    $trLanguage = $currentTranscription['Languages'][0]['Name'];
+                    if(strlen($formattedTranscription) < 700) {
+
+                        $content .= "<div style='padding-left:50px;padding-right:20px;padding-top:20px;'>";
+                            $content .= $formattedTranscription;
+                        $content .= "</div>";
+
+                        if($trLanguage){
+                            $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
+                            $content .= "<div class='language-container'>";
+                            foreach($currentTranscription['Languages'] as $trLang) {
+                                $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
+                            }
+                                // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
+                            $content .= "</div>";
+                        }
+                        $content .= "</div>";
+                    } else {
+                    $content .= "<div class='trans-toggle'>";
+                        $content .= "<div id='itemTranscription' class='togglePara' style='padding-left:50px;padding-right:20px;height:401px;padding-top:20px;'>".$formattedTranscription."</div>";
+                        $content .= "<div id='itemBtn' class=''>Show More</div>";
+                        if($trLanguage){
+                            $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
+                            $content .= "<div class='language-container'>";
+                            foreach($currentTranscription['Languages'] as $trLang) {
+                                $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
+                            }
+                                // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
+                            $content .= "</div>";
+                        }
+                    $content .= "</div>";
+                    $content .= "</div>";
+                    }
+                    // description
+                    $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:20px;'>";
+                        $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> DESCRIPTION</h5></div>";
+                        if($itemData['DescriptionStatusColorCode'] == '#61e02f'){
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='completed'>COMPLETED</span>";
+                        }
+                        elseif($itemData['DescriptionStatusColorCode'] == '#fff700') {
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='edited'>EDIT</span>";
+                        }
+                        elseif($itemData['DescriptionStatusColorCode'] == '#ffc720') {
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='reviewed'>REVIEW</span>";
+                        } else {
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='not-started'>NOT STARTED</span>";
+                        }
+                        $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
+                    $content .= "</div>";
+
+                    $content .= "<p style='padding-left:50px;padding-right:20px;'>".$itemData['Description']."</p>";
+                    $dcLang = array();
+                    foreach($languages as $language){
+                        if($itemData['DescriptionLanguage'] == $language['LanguageId']){
+                            array_push($dcLang, $language['Name']);
+                        }
+                    }
+                    if(count($dcLang) > 0){
+                        $content .= "<h6 class='enrich-headers'>Language of Description</h6>";
+                        $content .= "<div class='language-container'>";
+                            foreach($dcLang as $lang){
+                                $content .= "<div class='language-single'>".$lang."</div>";
+                            }
+                        $content .= "</div>";
+                    }
+                    // Location
+                    $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:20px 0;'>";
+                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/uploads/location-icon.svg'> LOCATION</h5></div>";
+                    if($itemData['LocationStatusColorCode'] == '#61e02f'){
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='completed'>COMPLETED</span>";
+                    }
+                    elseif($itemData['LocationStatusColorCode'] == '#fff700') {
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='edited'>EDIT</span>";
+                    }
+                    elseif($itemData['LocationStatusColorCode'] == '#ffc720') {
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='reviewed'>REVIEW</span>";
+                    } else {
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='not-started'>NOT STARTED</span>";
+                    }
+                    $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
+                    $content .= "</div>";
+
+                    // $content .= "<div id='full-view-tagging' class='no-htr-map' style='height:400px;position:relative;margin-bottom:20px;'>";
+                    //    // $content .= $taggingTab;
+                    //    $content .= $mapTab;
+                    // $content .= "</div>";
+                    $content .= "<div class='location-output' style='position:relative;margin-top:20px;'>";
+                    foreach($itemData['Places'] as $platz){
+                        $content .= "<div class='location-single'>";
+                            $content .= "<p><b>" . $platz['Name']."</b> (".$platz['Latitude'].", ".$platz['Longitude'].")</p>";
+                            if($platz['Comment'] != NULL && $platz['Comment'] != "") {
+                                $content .= "<p style='margin-top:0px;font-size:13px;'>Description: <span style='font-weight:600;'>" . $platz['Comment'] . "</span></p>";
+                            }
+                            if($platz['WikidataId'] != NULL && $platz['WikidataId'] != "") {
+                                $content .= '<div style="font-size:13px;">Wikidata Reference: <span style="font-weight:600;"><a href="http://www.wikidata.org/wiki/'.$platz['WikidataId'].'" style="text-decoration: none;" target="_blank">'.$platz['WikidataName'].', '.$platz['WikidataId'].'</a></span></div>';
+                            }
+                        $content .= "</div>";
+                    }
+                    $content .= "</div>";
+
+                        $content .= "</div>";
+                    $content .= "</div>";
+            //    $content .= "</div>";
+
+                $content .= "<div id='full-view-info' style='display:none;'>";
+                    $content .= $infoTab;
+                $content .= "</div>";
+
+                $content .= "<div style='clear:both;'></div>";
+                //Metadata
+                $content .= "<div id='item-meta-collapse' class='dl-enrichments' style='padding-left:50px;padding-right:calc(50px + 2%);'>";
+                    $content .= "<div class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;background-color:#f8f8f8;' role='button' aria-expanded='false'>";
+                        $content .= "<span><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span>";
+                     $content .= "</div>";
+                $content .= "</div>";
+                $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;padding: 0 50px;margin-left:50px;margin-right: calc(50px + 2%);'>";
+                /////////
+                //Contributor
+                if($itemData['StorydcContributor']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Contributor</span>";
+                        $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcContributor']) . "</span>";
+                    $content .= "</div>";
+                }
+                //Creator
+                if($itemData['StorydcCreator']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Creator</span>";
+                        $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcCreator']) . "</span>";
+                    $content .= "</div>";
+                }
+                // Date
+                if($itemData['StorydcDate']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'><b>Date</b></span>";
+                        $storyDates = array_unique(explode(' || ', $itemData['StorydcDate']));
+                        foreach($storyDates as $date){
+                            if(substr($date, 0, 4) == 'http'){
+                                // $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
+                                continue;
+                            } else {
+                                $content .= "<span class='meta-p'>" . $date . "</span>";
+                            }
+                        }
+                    $content .= "</div>";
+                }
+                // Institution
+                if($itemData['StoryedmDataProvider']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Institution</span>";
+                        $content .= "<span class='meta-p'>".$itemData['StoryedmDataProvider']."</span>";
+                    $content .= "</div>";
+                }
+                //Identifier
+                if($itemData['StoryExternalRecordId']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Identifier</span>";
+                        if(substr($itemData['StoryExternalRecordId'], 0, 4) == 'http'){
+                            $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . $itemData['StoryExternalRecordId'] . "</a></span>";
+                        } else {
+                            $content .= "<span class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</span>";
+                        }
+                    $content .= "</div>";
+                }
+                //Document Language
+                if($itemData['StorydcLanguage']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Document Language</span>";
+                        $dcLanguage = array_unique(explode(' || ', $itemData['StorydcLanguage']));
+                        $content .= "<span class='meta-p'>" . implode(' / ', $dcLanguage) . "</span>";
+                    $content .= "</div>";
+                }
+                // Creation Start
+                if($itemData['StoryedmBegin']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Creation Start</span>";
+                        $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmBegin']) . "</span>";
+                    $content .= "</div>";
+                }
+                // Creation End
+                if($itemData['StoryedmEnd']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Creation End</span>";
+                        $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmEnd']) . "</span>";
+                    $content .= "</div>";
+                }
+                // Story Source
+                if($itemData['StorydcSource']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Story Source</span>";
+                        $source = array_unique(explode(' || ', $itemData['StorydcSource']));
+                        $content .= "<span class='meta-p'>" . implode('</br>', $source) . "</span>";
+                    $content .= "</div>";
+                }
+                // dctermsProvenance
+                if($itemData['StorydctermsProvenance']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Provenance</span>";
+                        $provenance = array_unique(explode(' || ', $itemData['StorydctermsProvenance']));
+                        $content .= "<span class='meta-p'>". implode('</br>' , $provenance) ."</span>";
+                    $content .= "</div>";
+                }  
+                // Type
+                if($itemData['StorydcType']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Type</span>";
+                        $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydcType']) . "</span>";
+                    $content .= "</div>";
+                }
+                // Rights
+                if($itemData['StoryedmRights']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Rights</span>";
+                        $edmRights = array_unique(explode(' || ', $itemData['StoryedmRights']));
+                        foreach($edmRights as $right) {
+                            if(substr($right, 0, 4) == 'http'){
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$right."'>" . $right . "</a></span>";
+                            } else {
+                                $content .= "<span class='meta-p'>" . $right . "</span>";
+                            }
+                        }
+                    $content .= "</div>";
+                }
+                // Image Rights
+                if($itemData['StorydcRights']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Image Rights</span>";
+                        $imgRights = array_unique(explode(' || ', $itemData['StorydcRights']));
+                        foreach($imgRights as $iRight) {
+                            if(substr($iRight, 0, 4) == 'http'){
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></span>";
+                            } else {
+                                $content .= "<span class='meta-p'>" . $iRight . "</span>";
+                            }
+                        }
+                    $content .= "</div>";
+                }
+                // Provider
+                if($itemData['StoryedmProvider']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Provider Language</span>";
+                        $content .= "<span class='meta-p'>".$itemData['StoryedmProvider']."</span>";
+                    $content .= "</div>";
+                }
+                // Providing Country
+                if($itemData['StoryedmCountry']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Providing Country</span>";
+                        $content .= "<span class='meta-p'>".$itemData['StoryedmCountry']."</span>";
+                    $content .= "</div>";
+                }
+                // Provider Language
+                if($itemData['StoryedmLanguage']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Provider Language</span>";
+                        $content .= "<span class='meta-p'>".$itemData['StoryedmLanguage']."</span>";
+                    $content .= "</div>";
+                }
+                // Dataset
+                if($itemData['StoryedmDatasetName']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Dataset</span>";
+                        $content .= "<span class='meta-p'>".$itemData['StoryedmDatasetName']."</span>";
+                    $content .= "</div>";
+                }
+                // Publisher
+                if($itemData['StoryedmProvider']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Publisher</span>";
+                        if(substr($itemData['StoryedmProvider'], 0, 4) == 'http'){
+                            $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></span>";
+                        } else {
+                            $content .= "<span class='meta-p'>" . $itemData['StoryedmProvider'] . "</span>";
+                        }
+                    $content .= "</div>";
+                }
+                // Medium
+                if($itemData['StorydctermsMedium']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Medium</span>";
+                        $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydctermsMedium']) . "</span>";
+                    $content .= "</div>";
+                }
+                // Source Url
+                if($itemData['StoryedmIsShownAt']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Source Url</span>";
+                        if(substr($itemData['StoryedmIsShownAt'], 0, 4) == 'http'){
+                            $content .= "<a class='meta-p' target='_blank' href='".$itemData['StoryedmIsShownAt']."'>" . $itemData['StoryedmIsShownAt'] . "</a>";
+                        } else {
+                            $content .= "<span class='meta-p'>" . $itemData['StoryedmIsShownAt'] . "</span>";
+                        }
+                    $content .= "</div>";
+                }
+                // Story Title
+                $content .= "<div class='single-meta-htr'>";
+                    $content .= "<span class='mb-1'>Story Title</span>";
+                    $content .= "<span class='meta-p'>". str_replace(' || ', "</br>", $itemData['StorydcTitle']) . "</span>";
+                $content .= "</div>";
+                // Story Landing Page
+                if($itemData['StoryedmLandingPage']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<span class='mb-1'>Landing Page</span>";
+                        if(substr($itemData['StoryedmLandingPage'], 0, 4) == 'http'){
+                            $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryedmLandingPage']."'>" . substr($itemData['StoryedmLandingPage'], 0, 25) . "</a></span>";
+                        } else {
+                            $content .= "<span class='meta-p'>" . $itemData['StoryedmLandingPage'] . "</span>";
+                        }
+                    $content .= "</div>";
+                }
+                // Parent Story
+                if($itemData['StoryParentStory']) {
+                    $content .= "<div class='single-meta-htr'>";
+                        $content .= "<p class='mb-1'>Parent Story</p>";
+                        if(substr($itemData['StoryParentStory'], 0, 4) == 'http'){
+                            $content .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryParentStory']."'>" . $itemData['StoryParentStory'] . "</a></p>";
+                        } else {
+                            $content .= "<p class='meta-p'>" . $itemData['StoryParentStory'] . "</p>";
+                        }
+                    $content .= "</div>";
+                }
+            $content .= "</div>";
+
             } else {
                 // Item page without htr transcription
                 $content .= "<div class='title-n-btn'>";
@@ -1995,15 +2076,15 @@ function _TCT_item_page( $atts ) {
                 $content .= "<div id='startEnrichment' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;'>";
                 $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ENRICHMENTS</h5></div>";
                 if($itemData['TaggingStatusColorCode'] == '#61e02f'){
-                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='completed'>COMPLETED</span>";
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='completed'>COMPLETED</span>";
                 }
                 elseif($itemData['TaggingStatusColorCode'] == '#fff700') {
-                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='edited'>EDIT</span>";
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='edited'>EDIT</span>";
                 }
                 elseif($itemData['TaggingStatusColorCode'] == '#ffc720') {
-                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='reviewed'>REVIEW</span>";
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='reviewed'>REVIEW</span>";
                 } else {
-                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='not-started'>NOT STARTED</span>";
+                    $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='not-started'>NOT STARTED</span>";
                 }
                 $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
                 $content .= "</div>";
@@ -2024,8 +2105,9 @@ function _TCT_item_page( $atts ) {
                     $content .= "<div style='clear:both;'></div>";
                 }
                 // people
+                $content .= "<h6 class='enrich-headers'>People</h6>";
                 if($itemData['Persons']) {
-                    $content .= "<h6 class='enrich-headers'>People</h6>";
+                    
                     $content .= "<div class='person-container' id='personAccord'>";
                     foreach($itemData['Persons'] as $persona) {
                         $personBDate = strtotime($persona['BirthDate']);
@@ -2047,15 +2129,23 @@ function _TCT_item_page( $atts ) {
                                     }
                                     $content .= ")";
                                 } elseif ($personBDate != Null) {
-                                    $content .= " (Birth: " . $pBirthDate . ")";
+                                    $content .= " (Birth: " . $pBirthDate;
+                                    if($persona['BirthPlace'] != Null) {
+                                        $content .= ", " . $persona['BirthPlace'];
+                                    }
+                                    $content .= ")";
                                 } elseif ($personDDate != Null) {
-                                    $content .= " (Death: " . $pDeathDate . ")";
+                                    $content .= " (Death: " . $pDeathDate;
+                                    if($persona['DeathPlace'] != Null) {
+                                        $content .= ", " . $persona['DeathPlace'];
+                                    } 
+                                    $content .= ")";
                                 }
                                 if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
-                                    $content .= "<div class='person-description'><span style='font-weight:400;'><b>Description</b>: </span>" . $persona['Description'] . "</div>";
+                                    $content .= "<div class='person-description'>Description: <span style='font-weight:600;'>" . $persona['Description'] . "</span></div>";
                                 }
                                 if($persona['Link'] != Null && $persona['Link'] != 'NULL') {
-                                    $content .= "<div class='person-description'><span style='font-weight:400;'><b>Wikidata Id</b>: </span><a href='https://www.wikidata.org/wiki/".$persona['Link']."' target='_blank'>".$persona['Link']."</a></div>";
+                                    $content .= "<div class='person-description'>Wikidata Id: <span style='font-weight:600;'><a href='https://www.wikidata.org/wiki/".$persona['Link']."' target='_blank'>".$persona['Link']."</a></span></div>";
                                 }
                             $content .= "</div>";
 
@@ -2104,6 +2194,7 @@ function _TCT_item_page( $atts ) {
                         $content .= "<span><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span>";
                     $content .= "</div>";
                 $content .= "</div>";
+                //var_dump($itemData);
 
                 $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;padding: 0 50px;'>";
                     //Contributor
@@ -2120,12 +2211,26 @@ function _TCT_item_page( $atts ) {
                             $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcCreator']) . "</span>";
                         $content .= "</div>";
                     }
-                    // Story Source
-                    if($itemData['StorydcSource']) {
+                    // Date
+                    if($itemData['StorydcDate']) {
                         $content .= "<div class='single-meta'>";
-                            $content .= "<span class='mb-1'>Story Source</span>";
-                            $source = array_unique(explode(' || ', $itemData['StorydcSource']));
-                            $content .= "<span class='meta-p'>" . implode('</br>', $source) . "</span>";
+                            $content .= "<span class='mb-1'><b>Date</b></span>";
+                            $storyDates = array_unique(explode(' || ', $itemData['StorydcDate']));
+                            foreach($storyDates as $date){
+                                if(substr($date, 0, 4) == 'http'){
+                                    // $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
+                                    continue;
+                                } else {
+                                    $content .= "<span class='meta-p'>" . $date . "</span>";
+                                }
+                            }
+                        $content .= "</div>";
+                    }
+                    // Institution
+                    if($itemData['StoryedmDataProvider']) {
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Institution</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmDataProvider']."</span>";
                         $content .= "</div>";
                     }
                     //Identifier
@@ -2147,22 +2252,41 @@ function _TCT_item_page( $atts ) {
                             $content .= "<span class='meta-p'>" . implode(' / ', $dcLanguage) . "</span>";
                         $content .= "</div>";
                     }
-                    // Provider Language
-                    if($itemData['StoryedmLanguage']) {
+                    // Creation Start
+                    if($itemData['StoryedmBegin']) {
                         $content .= "<div class='single-meta'>";
-                            $content .= "<span class='mb-1'>Provider Language</span>";
-                            $content .= "<span class='meta-p'>".$itemData['StoryedmLanguage']."</span>";
+                            $content .= "<span class='mb-1'>Creation Start</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmBegin']) . "</span>";
                         $content .= "</div>";
                     }
-                    // Publisher
-                    if($itemData['StoryedmProvider']) {
+                    // Creation End
+                    if($itemData['StoryedmEnd']) {
                         $content .= "<div class='single-meta'>";
-                            $content .= "<span class='mb-1'>Publisher</span>";
-                            if(substr($itemData['StoryedmProvider'], 0, 4) == 'http'){
-                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></span>";
-                            } else {
-                                $content .= "<span class='meta-p'>" . $itemData['StoryedmProvider'] . "</span>";
-                            }
+                            $content .= "<span class='mb-1'>Creation End</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmEnd']) . "</span>";
+                        $content .= "</div>";
+                    }
+                    // Story Source
+                    if($itemData['StorydcSource']) {
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Story Source</span>";
+                            $source = array_unique(explode(' || ', $itemData['StorydcSource']));
+                            $content .= "<span class='meta-p'>" . implode('</br>', $source) . "</span>";
+                        $content .= "</div>";
+                    }
+                    // dctermsProvenance
+                    if($itemData['StorydctermsProvenance']) {
+                        $content .= "<div class='meta-sticker'>";
+                            $content .= "<p class='mb-1'><b>Provenance</b></p>";
+                            $provenance = array_unique(explode(' || ', $itemData['StorydctermsProvenance']));
+                            $content .= "<p class='meta-p'>". implode('</br>' , $provenance) ."</p>";
+                        $content .= "</div>";
+                    }  
+                    // Type
+                    if($itemData['StorydcType']) {
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Type</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydcType']) . "</span>";
                         $content .= "</div>";
                     }
                     // Rights
@@ -2193,32 +2317,11 @@ function _TCT_item_page( $atts ) {
                             }
                         $content .= "</div>";
                     }
-                    // Type
-                    if($itemData['StorydcType']) {
+                    // Provider
+                    if($itemData['StoryedmProvider']) {
                         $content .= "<div class='single-meta'>";
-                            $content .= "<span class='mb-1'>Type</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydcType']) . "</span>";
-                        $content .= "</div>";
-                    }
-                    // Medium
-                    if($itemData['StorydctermsMedium']) {
-                        $content .= "<div class='single-meta'>";
-                            $content .= "<span class='mb-1'>Medium</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydctermsMedium']) . "</span>";
-                        $content .= "</div>";
-                    }
-                    // Creation Start
-                    if($itemData['StoryedmBegin']) {
-                        $content .= "<div class='single-meta'>";
-                            $content .= "<span class='mb-1'>Creation Start</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmBegin']) . "</span>";
-                        $content .= "</div>";
-                    }
-                    // Creation End
-                    if($itemData['StoryedmEnd']) {
-                        $content .= "<div class='single-meta'>";
-                            $content .= "<span class='mb-1'>Creation End</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmEnd']) . "</span>";
+                            $content .= "<span class='mb-1'>Provider Language</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmProvider']."</span>";
                         $content .= "</div>";
                     }
                     // Providing Country
@@ -2228,11 +2331,11 @@ function _TCT_item_page( $atts ) {
                             $content .= "<span class='meta-p'>".$itemData['StoryedmCountry']."</span>";
                         $content .= "</div>";
                     }
-                    // Institution
-                    if($itemData['StoryedmDataProvider']) {
+                    // Provider Language
+                    if($itemData['StoryedmLanguage']) {
                         $content .= "<div class='single-meta'>";
-                            $content .= "<span class='mb-1'>Institution</span>";
-                            $content .= "<span class='meta-p'>".$itemData['StoryedmDataProvider']."</span>";
+                            $content .= "<span class='mb-1'>Provider Language</span>";
+                            $content .= "<span class='meta-p'>".$itemData['StoryedmLanguage']."</span>";
                         $content .= "</div>";
                     }
                     // Dataset
@@ -2240,6 +2343,24 @@ function _TCT_item_page( $atts ) {
                         $content .= "<div class='single-meta'>";
                             $content .= "<span class='mb-1'>Dataset</span>";
                             $content .= "<span class='meta-p'>".$itemData['StoryedmDatasetName']."</span>";
+                        $content .= "</div>";
+                    }
+                    // Publisher
+                    if($itemData['StoryedmProvider']) {
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Publisher</span>";
+                            if(substr($itemData['StoryedmProvider'], 0, 4) == 'http'){
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></span>";
+                            } else {
+                                $content .= "<span class='meta-p'>" . $itemData['StoryedmProvider'] . "</span>";
+                            }
+                        $content .= "</div>";
+                    }
+                    // Medium
+                    if($itemData['StorydctermsMedium']) {
+                        $content .= "<div class='single-meta'>";
+                            $content .= "<span class='mb-1'>Medium</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydctermsMedium']) . "</span>";
                         $content .= "</div>";
                     }
                     // Source Url
@@ -2344,15 +2465,15 @@ function _TCT_item_page( $atts ) {
                     $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:20px;'>";
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> DESCRIPTION</h5></div>";
                         if($itemData['DescriptionStatusColorCode'] == '#61e02f'){
-                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='completed'>COMPLETED</span>";
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='completed'>COMPLETED</span>";
                         }
                         elseif($itemData['DescriptionStatusColorCode'] == '#fff700') {
-                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='edited'>EDIT</span>";
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='edited'>EDIT</span>";
                         }
                         elseif($itemData['DescriptionStatusColorCode'] == '#ffc720') {
-                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='reviewed'>REVIEW</span>";
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='reviewed'>REVIEW</span>";
                         } else {
-                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='not-started'>NOT STARTED</span>";
+                            $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='not-started'>NOT STARTED</span>";
                         }
                         $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
                     $content .= "</div>";
@@ -2376,20 +2497,20 @@ function _TCT_item_page( $atts ) {
                     $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:20px 0;'>";
                     $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/uploads/location-icon.svg'> LOCATION</h5></div>";
                     if($itemData['LocationStatusColorCode'] == '#61e02f'){
-                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='completed'>COMPLETED</span>";
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='completed'>COMPLETED</span>";
                     }
                     elseif($itemData['LocationStatusColorCode'] == '#fff700') {
-                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='edited'>EDIT</span>";
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='edited'>EDIT</span>";
                     }
                     elseif($itemData['LocationStatusColorCode'] == '#ffc720') {
-                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='reviewed'>REVIEW</span>";
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='reviewed'>REVIEW</span>";
                     } else {
-                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:500!important;' class='not-started'>NOT STARTED</span>";
+                        $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='not-started'>NOT STARTED</span>";
                     }
                     $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
                     $content .= "</div>";
 
-                    $content .= "<div id='full-view-tagging' class='no-htr-map' style='height:300px;position:relative;margin-bottom:20px;'>";
+                    $content .= "<div id='full-view-tagging' class='no-htr-map' style='height:400px;position:relative;margin-bottom:20px;'>";
                        // $content .= $taggingTab;
                        $content .= $mapTab;
                     $content .= "</div>";
@@ -2398,10 +2519,10 @@ function _TCT_item_page( $atts ) {
                         $content .= "<div class='location-single'>";
                             $content .= "<p><b>" . $platz['Name']."</b> (".$platz['Latitude'].", ".$platz['Longitude'].")</p>";
                             if($platz['Comment'] != NULL && $platz['Comment'] != "") {
-                                $content .= "<p style='margin-top:0px;font-size:13px;'><b>Description:</b> " . $platz['Comment'] . "</p>";
+                                $content .= "<p style='margin-top:0px;font-size:13px;'>Description: <span style='font-weight:600;'>" . $platz['Comment'] . "</span></p>";
                             }
                             if($platz['WikidataId'] != NULL && $platz['WikidataId'] != "") {
-                                $content .= '<div style="font-size:13px;"><span><b>Wikidata Reference:</b> </span><a href="http://www.wikidata.org/wiki/'.$platz['WikidataId'].'" style="text-decoration: none;" target="_blank">'.$platz['WikidataName'].', '.$platz['WikidataId'].'</a></div>';
+                                $content .= '<div style="font-size:13px;">Wikidata Reference: <span style="font-weight:600;"><a href="http://www.wikidata.org/wiki/'.$platz['WikidataId'].'" style="text-decoration: none;" target="_blank">'.$platz['WikidataName'].', '.$platz['WikidataId'].'</a></span></div>';
                             }
                         $content .= "</div>";
                     }
