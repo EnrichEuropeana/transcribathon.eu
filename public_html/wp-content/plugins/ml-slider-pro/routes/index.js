@@ -1,3 +1,3 @@
 import Axios from './http'
 
-export { Axios }
+export {Axios}

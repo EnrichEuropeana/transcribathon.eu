@@ -24,7 +24,7 @@ function _TCT_get_document_data( $atts ) {
 
         // Display data
         $storyData = json_decode($result, true);
-        //var_dump($storyData);
+        //dd($storyData);
         $storyData = $storyData[0];
     }
 
@@ -36,7 +36,7 @@ function _TCT_get_document_data( $atts ) {
     }
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
-    //var_dump(array_keys($storyData));
+    //dd(array_keys($storyData));
 
     /////////////////////////
     $numbPhotos = count($storyData['Items']);
@@ -75,7 +75,7 @@ function _TCT_get_document_data( $atts ) {
     $content .= "</div>";
 
         $content .= "<div id='controls-div'>";
-            
+
             $content .= "<button class='prev-set' type='button'><i class=\"fas fa-chevron-double-left\"></i></button>";
             // $content .= "<div id='dot-indicators'>";
             // // placeholder for dot indicators
@@ -239,7 +239,7 @@ function _TCT_get_document_data( $atts ) {
                 $editedStatus = ($statusCount['Edit'] / $itemCount) * 100;
                 $notStartedStatus = ($statusCount['Not Started'] / $itemCount) * 100;
 
-                
+
                 // new "chart"
             $content .= "<section class='chart-section'>";
 
@@ -379,7 +379,7 @@ function _TCT_get_document_data( $atts ) {
                         }
 
                         // People
-                        if($storyPersons) { 
+                        if($storyPersons) {
                             $content .= "<div class='meta-sticker'>";
                                 $content .= "<p class='mb-1'><b>People</b></p>";
                                 foreach($storyPersons as $person) {
@@ -435,6 +435,7 @@ function _TCT_get_document_data( $atts ) {
                             $content .= "</div>";
                             unset($itemIdentifiers);
                         }
+
                         // Document Language
                         if($storyData['dcLanguage']) {
                             $content .= "<div class='meta-sticker'>";
@@ -452,6 +453,7 @@ function _TCT_get_document_data( $atts ) {
                                 $content .= "<p class='meta-p'>".$itemLocations."</p>";
                             $content .= "</div>";
                         }
+
                         // Creation Start
                         if($storyData['edmBegin']) {
                             $content .= "<div class='meta-sticker'>";
@@ -638,8 +640,8 @@ function _TCT_get_document_data( $atts ) {
 
 
                     $content .= "</div>";
-                    
-                
+
+
                 $content .= "</section>";
 
             $content .= "</div>"; // end of story details

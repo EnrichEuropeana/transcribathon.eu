@@ -2,6 +2,8 @@
 
 namespace WPDataAccess\Utilities {
 
+	use WPDataAccess\WPDA;
+
 	class WPDA_Remote_Call {
 
 		public static function post( $url, $body, $die = false, $headers = array() ) {
@@ -16,6 +18,7 @@ namespace WPDataAccess\Utilities {
 			// var_dump($response);
 
 			if ( is_wp_error( $response ) ) {
+				WPDA::wpda_log_wp_error( json_encode( $response ) );
 				if ( $die ) {
 					self::die();
 				}
@@ -24,6 +27,7 @@ namespace WPDataAccess\Utilities {
 			}
 
 			if ( ! isset( $response['response'], $response['body'] ) ) {
+				WPDA::wpda_log_wp_error( json_encode( $response ) );
 				if ( $die ) {
 					self::die();
 				}
@@ -39,6 +43,7 @@ namespace WPDataAccess\Utilities {
 			// var_dump($response);
 
 			if ( is_wp_error( $response ) ) {
+				WPDA::wpda_log_wp_error( json_encode( $response ) );
 				if ( $die ) {
 					self::die();
 				}
@@ -47,6 +52,7 @@ namespace WPDataAccess\Utilities {
 			}
 
 			if ( ! isset( $response['response'], $response['body'] ) ) {
+				WPDA::wpda_log_wp_error( json_encode( $response ) );
 				if ( $die ) {
 					self::die();
 				}

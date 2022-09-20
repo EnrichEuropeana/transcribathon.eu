@@ -213,6 +213,9 @@ class WP_Data_Access
         $this->loader->add_action( 'admin_action_wpda_get_table_row_count', $plugin_dictionary_list, 'get_table_row_count_ajax' );
         // Get table widget info.
         $this->loader->add_action( 'admin_action_wpda_get_table_widget_info', $plugin_dictionary_list, 'get_table_widget_info' );
+        // Global database search and replace.
+        $this->loader->add_action( 'wp_ajax_wpda_global_search', \WPDataAccess\Global_Search\WPDA_Global_Search::class, 'search' );
+        $this->loader->add_action( 'wp_ajax_wpda_global_replace', \WPDataAccess\Global_Search\WPDA_Global_Search::class, 'replace' );
         // Export project.
         $plugin_export_project = new WPDP_Export_Project();
         $this->loader->add_action( 'admin_action_wpda_export_project', $plugin_export_project, 'export' );

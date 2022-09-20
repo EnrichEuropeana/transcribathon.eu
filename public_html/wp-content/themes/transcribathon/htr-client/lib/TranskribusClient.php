@@ -116,7 +116,14 @@ class TranskribusClient
 		$processId   = $resultArray['processId'];
 		$status      = $resultArray['status'];
 
-		$tpResult = $this->postToTranscribathon($itemId, $htrId, $processId, $status);
+		$postData = array(
+			'item_id' => $itemId,
+			'htr_id'  => $htrId,
+			'process_id' => $processId,
+			'htr_status' => $status
+		);
+
+		$tpResult = $this->postToTranscribathon($postData);
 
 		if (!$tpResult) {
 			return false;
@@ -227,22 +234,36 @@ class TranskribusClient
  	 *
  	 * save the query data to transcribathon db via TP API
  	 *
- 	 * @param  integer $itemID     ID of the item
- 	 * @param  integer $htrId      ID of the used HTR model
- 	 * @param  integer $processId  ID of the Transkribus process
- 	 * @param  string  $htrStatus  Status of the HTR process being done so far
- 	 * @result mixed               response string on success otherwise false
+ 	 * $data example for data from Transkribus:
+ 	 *
+ 	 * array(
+ 	 *	"item_id"    => 1111,
+ 	 *	"htr_id"     => 2025,
+ 	 *	"process_id" => 3333,
+ 	 *	"htr_status" => 'CREATED'
+ 	 * );
+ 	 *
+ 	 * $data example for data from Transcribathon user:
+ 	 *
+ 	 * array(
+ 	 *	"item_id"                 => 1111,
+ 	 *	"user_id"                 => 2222,
+ 	 * 	"transcription_data"      => '<xml />'
+ 	 * 	"europeana_annotation_id" => 'string'
+ 	 * );
+ 	 *
+ 	 * @param  array $body array with entries for the payload
+ 	 * @result mixed       response string on success otherwise false
  	 */
-	protected function postToTranscribathon($itemId, $htrId, $processId, $htrStatus)
-	{
-		$payload = array(
-			"item_id"    => $itemId,
-			"htr_id"     => $htrId,
-			"process_id" => $processId,
-			"htr_status" => $htrStatus
-		);
+	public function postToTranscribathon($data = array())
 
-		$payload = json_encode($payload);
+	{
+		if (empty($data['item_id'])) {
+			$this->error = 'No item ID in posted data';
+			return false;
+		}
+
+		$payload = json_encode($data);
 
 		$queryOptions = array(
 			'method' => 'POST',
@@ -330,7 +351,7 @@ class TranskribusClient
 		$status = explode(' ', $responseHeader[0])[1];
 
 		if ($status > 299) {
-			$this->error = $result ?: error_get_last();
+			$this->error = $result ?: error_get_last()['message'];
 			return false;
 		}
 
@@ -459,15 +480,11 @@ class TranskribusClient
 
 		$url = $this->transkribusUrlAccessToken;
 
-		$context  = stream_context_create($options);
-		$result = @file_get_contents($url, false, $context);
+		$result = $this->sendQuery($url, $options);
 
-		if ($result === false) {
-			$this->error = error_get_last()['message'];
-			return false;
+		if ($result) {
+			$result = json_decode($result, true);
 		}
-
-		$result = json_decode($result, true);
 
 		return $result;
 	}

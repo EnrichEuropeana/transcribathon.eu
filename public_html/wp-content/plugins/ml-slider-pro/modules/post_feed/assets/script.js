@@ -15,7 +15,8 @@
 
 			var data = {
 				action: 'create_post_feed_slide',
-				slider_id: window.parent.metaslider_slider_id
+				slider_id: window.parent.metaslider_slider_id,
+				nonce: metaslider_custom_slide_type.nonce
 			};
 
 			jQuery.post(ajaxurl, data, function(response) {

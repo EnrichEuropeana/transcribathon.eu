@@ -3,8 +3,8 @@ Tags: widget, button, slider, hero, google maps, image, carousel, lottie, featur
 Requires at least: 4.2
 Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 1.40.2
-Build time: 2022-09-03T15:28:23+02:00
+Stable tag: 1.41.0
+Build time: 2022-09-13T20:32:07+02:00
 License: GPLv3 or later
 Contributors: gpriday, braam-genis, alexgso
 Donate link: https://siteorigin.com/downloads/premium/
@@ -105,6 +105,17 @@ SiteOrigin Premium includes access to our professional email support service, pe
 The Widgets Bundle global interface is available at Plugins > SiteOrigin Widgets. Widgets can be enabled or disabled as needed. If a widget offers global settings, you can access those via the Settings button next to each applicable widget.
 
 == Changelog ==
+
+= 1.41.0 - 13 September 2022 =
+* Blog: Adjusted `article` tag CSS to ensure priority over theme styling.
+* Blog: Removed featured image center alignment for the Alternate template.
+* Blog: Added featured image image sizes for the Grid, Alternate, and Portfolio templates.
+* Features: Added a new setting `Bottom align More link text.`
+* Google Maps: Only setup consent if Google Maps not already setup.
+* LiteSpeed Cache: Ensured purge header isn't set if headers already sent.
+* Post Carousel: Resolved Overlay Theme `Slides to Scroll` incorrect count.
+* Developer: Added `siteorigin_widgets_blog_excerpt_trim` filter.
+* Developer: Added `siteorigin_widgets_blog_image_sizes` filter.
 
 = 1.40.2 - 03 September 2022 =
 * Blog: Added SiteOrigin Premium Blog Addon CTA.

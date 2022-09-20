@@ -532,3 +532,36 @@ function wpda_toggle_password(id, e) {
 		icn.addClass("fa-eye").removeClass("fa-eye-slash");
 	}
 }
+
+function wpda_alert(title, txt) {
+	jQuery("<p></p>").append(txt).dialog({
+		title: title,
+		modal: true,
+		buttons: {
+			OK: function() {
+				jQuery(this).dialog("close");
+			}
+		}
+	});
+}
+
+function wpda_confirm(title, txt) {
+	var defer = jQuery.Deferred();
+
+	jQuery("<p></p>").append(txt).dialog({
+		title: title,
+		modal: true,
+		buttons: {
+			OK: function() {
+				defer.resolve(true);
+				jQuery(this).dialog("close");
+			},
+			CANCEL: function() {
+				defer.resolve(false);
+				jQuery(this).dialog("close");
+			}
+		}
+	});
+
+	return defer.promise();
+}

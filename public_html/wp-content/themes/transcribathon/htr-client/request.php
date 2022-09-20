@@ -6,6 +6,8 @@ require 'lib/TranskribusClient.php';
 
 use FactsAndFiles\Transcribathon\TranskribusClient;
 
+$TranskribusClient = new TranskribusClient($config);
+
 $itemId = ($_GET['itemId'] && $_GET['itemId'] !== 'null')
 	? $_GET['itemId']
 	: null;
@@ -17,6 +19,8 @@ $storyId = ($_GET['storyId'] && $_GET['storyId'] !== 'null')
 $htrId = $_GET['htrId'] ?? null;
 
 $htrModel = $_GET['htrModel'] ?? null;
+
+$htrUserData = file_get_contents('php://input');
 
 if ($storyId && $itemId) {
 	echo '{"error":"Please, choose a storyID or an itemID."}';
@@ -43,7 +47,7 @@ if (($storyId || $itemId) && $htrId) {
 		)
 	);
 
-	$queryData = $HtrData->sendQuery($oldApiEndpoint, $queryOptions);
+	$queryData = $HtrData::sendQuery($oldApiEndpoint, $queryOptions);
 
 	if (!$queryData) {
 		echo '{"error":"An error occurred when consuming the Java API."}';
@@ -63,11 +67,25 @@ if (($storyId || $itemId) && $htrId) {
 
 if ($htrModel) {
 
-	$HtrModelData = new TranskribusClient($config);
-
-	$htrModels = $HtrModelData->getAllHtrModels();
+	$htrModels = $TranskribusClient->getAllHtrModels();
 
 	echo $htrModels;
 
 	exit(0);
+}
+
+if ($htrUserData) {
+
+	$htrUserDataArray = json_decode($htrUserData, true);
+	$htrUserTranscritpion = $TranskribusClient->postToTranscribathon($htrUserDataArray);
+
+	if (!$htrUserTranscritpion) {
+		echo '{ "error": ' . $TranskribusClient->getLastError() . '}';
+		exit(1);
+	}
+
+	echo $htrUserTranscritpion;
+
+	exit(0);
+
 }
