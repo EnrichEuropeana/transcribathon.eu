@@ -9,7 +9,7 @@ Description: Stylesheet for Item Page
 .slide-img-wrap {
     border: 2.5px solid transparent;
 }
-.slide-img-wrap:hover {
+.slide-img-wrap:hover, .slide-img-wrap.active {
     border: 5px solid #0a72cc;
     transform: scale(1.01);
 }
@@ -49,6 +49,9 @@ Description: Stylesheet for Item Page
     width: 11%;
     height: 90%;
     display: inline-block;
+}
+.slide-sticker.active {
+    border: 2px solid #5cb85c;
 }
 .prev-slide {
     font-size: 15px;
@@ -302,10 +305,14 @@ ul.item-navigation-content-container div {
 #startTranscription i {
     margin-right: 14px;
 }
-#startTranscription span {
-    display: inline-block;
-    bottom: 0px!important;
-}
+/* #startTranscription span {
+    height: 25px;
+    font-size: 9px;
+    margin: 0!important;
+    font-weight: 600!important;
+    font-family: 'Open Sans';
+    letter-spacing: 0.025em;
+} */
 .right-i {
     font-size: 20px;
     margin-right:0px;
@@ -315,6 +322,9 @@ ul.item-navigation-content-container div {
     top: 5px;
 }
 /* --- End of Title --- */
+/* .primary-full-width {
+    min-height: 1250px;
+} */
 /* --- Left Half of Item Page --- */
 #openseadragon {
     background: #f8f8f8;
@@ -434,12 +444,16 @@ div.openseadragon-canvas > canvas > svg {
     float: left;
     border: none;
     border-radius: 0;
+    font-weight: 700;
+    font-size: 14px;
 }
 .edit-location-cancel {
     float: right;
     border: none;
     border-radius: 0;
     margin-right: 5%;
+    font-weight: 700;
+    font-size: 14px;
 }
 .location-data-edit-container .edit-input {
     background-color: #fff!important;
@@ -496,14 +510,17 @@ div.openseadragon-canvas > canvas > svg {
 #item-page-transcription-text {
     width: 100%;
     resize: none;
-    padding: 0px 10px;
+    padding: 10px 10px;
     min-height: 120px;
     overflow: auto;
     max-height: 350px;
     border: 1px solid #0a72cc;
     border-radius: 2px;
     outline: none;
-    line-height: 1.2em;
+    line-height: 1.6em;
+}
+#item-page-transcription-text p {
+    margin: 0!important;
 }
 #item-page-transcription-text textarea:focus ~ #transcription-update-button {
     display: inline-block;
@@ -568,6 +585,7 @@ div.openseadragon-canvas > canvas > svg {
     border-radius: 3px;
     outline: none;
 }
+
 #transcription-selected-languages li i {
     cursor: pointer;
     padding: 2px;
@@ -983,19 +1001,25 @@ div.openseadragon-canvas > canvas > svg {
     border-radius: 0!important;
 }
 .panel-right #save-all-tags {
-    width: 100%;
+    width: -webkit-fill-available;
     background-color: #0a72cc;
     color: #fff;
     padding: 0px 10px;
-    text-align: center;
     letter-spacing: 0.5px;
     border: 1px solid #0a72cc;
     height: 25px;
     font-size: 14px;
     font-weight: 700;
-    position: relative;
-    bottom: 8px;
+    position: fixed;
+    bottom: 0px;
     cursor: pointer;
+    text-align: center;
+}
+.panel-bottom #save-all-tags, .data-popout #save-all-tags {
+    width: 100%;
+    background-color: #0a72cc;
+    color: #fff;
+    text-align: center;
 }
 .tab-list {
     overflow: hidden;
@@ -1151,14 +1175,15 @@ div.openseadragon-canvas > canvas > svg {
 .person-location-birth-inputs .ui-datepicker-trigger, .person-location-death-inputs .ui-datepicker-trigger {
     float: right;
     position: relative;
-    bottom: 20px;
-    left: 35px;
+    bottom: 25px;
+    left: 40px;
 }
 button.ui-datepicker-trigger {
     padding: 0;
     border: 0;
-    margin-left: 4px;
+    margin-left: 7px;
     outline: none;
+    width: 15px;
 }
 .datepick-calendar-size {
     font-size: 18px;
@@ -1291,6 +1316,14 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     margin-bottom: 10px;
     font-weight: 400;
 }
+.single-meta-htr {
+    display: inline-block;
+    width: 49%;
+    padding: 5px 10px;
+    border-bottom: 1px solid #f8f8f8;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
 .link-single a {
     color: #0a72cc!important;
 }
@@ -1313,9 +1346,19 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 #keyword-input-container {
     display: inline-block;
-    width: 30%;
+    width: 29%;
     vertical-align: top;
     height: 35.5px;
+}
+.person.form-buttons-right {
+    position: absolute;
+    top: 5px;
+    right: 45px;
+}
+#keyword-save-button {
+    position: absolute;
+    top: 0;
+    right: 25px;
 }
 /* .item-data-output-list ul {
     padding: 0;
@@ -1382,8 +1425,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     display: none;
 }
 .panel-right #transcription-view {
+    padding: 10px;
     display: block;
-    line-height: 1.3em;
+    line-height: 1.6em;
     height: 500px;
     overflow-y: scroll;
 }
@@ -1650,7 +1694,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     display: none;
 }
 .data-popout #transcription-language-custom-selector{
-    font-size: 10px!important;
+    font-size: 13px!important;
     padding: 0 10px!important;
     width: unset;
     margin: 0;
@@ -1665,8 +1709,8 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .data-popout #transcription-selected-languages, .data-popout #transcription-selected-languages ul,
 .data-popout #transcription-selected-languages li, .data-popout #transcription-update-button {
-    font-size: 10px;
-    height: 25px;
+    font-size: 13px;
+    height: 30px;
     padding: 0 5px;
 }
 .data-popout .transcription-mini-metadata {
@@ -1763,6 +1807,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     color: #0a72cc!important;
     font-family: 'Dosis', sans-serif;
 }
+h6.enrich-headers {
+    font-weight: 600!important;
+}
 .card {
     border: none;
 }
@@ -1783,7 +1830,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .meta-p {
     margin: 0 0 0 5px!important;
-    font-weight: 400;
+    font-weight: 600;
     float: right;
     font-size: 13px;
 }
@@ -1807,9 +1854,11 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     color: #dddddd;
 }
 #itemTranscription p {
-    margin-top: 2.5px;
-    margin-bottom: 2.5px;
-    line-height: 1.3em;
+    margin: 0!important;
+    line-height: 1.6em;
+}
+#transcription-view p {
+    margin: 0!important;
 }
 .description-map {
     height: 43px!important;
@@ -2076,7 +2125,6 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 #item-keyword-list {
     display: inline-block;
     width: 69%;
-    padding: 0 10px;
 }
 #item-keyword-list .keyword-single {
     cursor: pointer;
@@ -2123,10 +2171,22 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .tabcontent::-webkit-scrollbar-thumb:hover {
     background: #c4c4c4;
 }
+#startTranscription span {
+    display: inline-block;
+    bottom: 0px!important;
+}
 #startTranscription:hover, .enrich-header:hover  {
     border: 1px solid #0a72cc;
     padding: 14px 49px;
     cursor: pointer;
+}
+#transcription-section.item-page-section {
+    margin: 0 25px!important;
+}
+span.edited, span.completed, span.reviewed , span.not-started {
+    font-family: 'Open Sans'!important;
+    font-weight: 600;
+    font-size: 10px;
 }
 .person-data-output-buttom i {
     float: right;
@@ -2165,7 +2225,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     margin-left: 5px;
     margin-right: 5px;
 }
-#itemBtn {
+#itemBtn, #htrMore {
     margin-top: 10px;
     text-align: center;
     cursor: pointer;
@@ -2176,7 +2236,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     overflow: hidden;
 }
 #full-view-r {
-    float:right;
+    float: right;
     width:48%;
     margin-right:2%;
 }

@@ -1,16 +1,10 @@
 var home_url = WP_URLs.home_url;
 var network_home_url = WP_URLs.network_home_url;
 var map, marker;
-var itemDateCheck = true;
 
-// Save all button 2nd try
-function connectSaveButtons(itemId, userId, editStatusColor, statusCount) {
-
-}
-
-// jQuery(window).load(function() {
-//  initializeMap();
-// });
+jQuery(window).load(function() {
+ initializeMap();
+});
 jQuery(document).ready(function() {
   jQuery(".search-page-mobile-facets").click(function () {
     jQuery(this).siblings('.search-content-left').animate({ "left": -35 },    "slow");
@@ -50,14 +44,33 @@ function installEventListeners() {
             descLangLabel.style.display = 'inline-block';
         }
     }
+    // show/hide keyword input
+    const keywordToggle = document.querySelector('#item-page-keyword-headline');
+    if(keywordToggle) {
+      keywordToggle.addEventListener('click', function() {
+        if(document.querySelector('#keyword-input-container').style.display === 'none') {
+          document.querySelector('#keyword-input-container').style.display = 'inline-block';
+        } else {
+          document.querySelector('#keyword-input-container').style.display = 'none';
+        }
+      })
+    }
     // Add event listener to save all of the tagging
     const saveAlltags = document.querySelector('#save-all-tags');
     if(saveAlltags) {
         saveAlltags.addEventListener('click', function() {
-            setTimeout(()=>{document.querySelector('#item-date-save-button').click()}, 100);
-            setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 500);
-            setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 900);
-            setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1300);
+            if(jQuery('#startdateentry').val().length > 0 || jQuery('#enddateentry').val().length > 0) {
+                setTimeout(()=>{document.querySelector('#item-date-save-button').click()}, 100);
+            }
+            if(jQuery('#person-firstName-input').val().length > 0 || jQuery('#person-lastName-input').val().length > 0) {
+                setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 500);
+            }
+            if(jQuery('#keyword-input').val().length > 0) {
+                setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 900);
+            }
+            if(jQuery('#link-input-container .link-url-input input').val().length > 0 || jQuery('#link-input-container .link-description-input textarea').val().length > 0) {
+                setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1300);
+            }
         });
     }
     // Transcription history header, on click hide transcription to make space for tr history
@@ -326,12 +339,12 @@ function installEventListeners() {
 //   }
   jQuery('#startdateentry, #enddateentry').on("change paste keyup", function() {
     var dateText = jQuery(this).val();
-    if(dateText.length > 0) {
-      jQuery('#item-date-save-button').css('display','block');
-    }
-    else {
-      jQuery('#item-date-save-button').css('display','none');
-    }
+    // if(dateText.length > 0) {
+    //   jQuery('#item-date-save-button').css('display','block');
+    // }
+    // else {
+    //   jQuery('#item-date-save-button').css('display','none');
+    // }
   })
   // New transcription langauge selected
   jQuery('#transcription-language-custom-selector').siblings('.language-item-select').children('.selected-option').click(function(){
@@ -443,9 +456,9 @@ function installEventListeners() {
     dateFormat: "dd/mm/yy",
     changeMonth: true,
     changeYear: true,
-    yearRange: "1000:2019",
+    yearRange: "100:+10",
     showOn: "button",
-    buttonText: "📅"
+    buttonImage: `${home_url}/public_html/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg`
   });
   jQuery("#startdateentry").val(startDate);
   jQuery("#enddateentry").val(endDate);
@@ -454,9 +467,9 @@ function installEventListeners() {
     dateFormat: "dd/mm/yy",
     changeMonth: true,
     changeYear: true,
-    yearRange: "1000:2019",
+    yearRange: "100:+10",
     showOn: "button",
-    buttonText: "📅"
+    buttonImage:  `${home_url}/public_html/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg`
   });
   jQuery("#person-birthDate-input").val(birthDate);
   jQuery("#person-deathDate-input").val(deathDate);
@@ -1914,7 +1927,7 @@ function loadPersonData(itemId, userId) {
                     personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="' + deathDate + '" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
                   }
                   else {
-                    personHtml += '<span class="input-response><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
+                    personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
                   }
                   personHtml +=
                   '</div>' +
@@ -1943,9 +1956,9 @@ function loadPersonData(itemId, userId) {
             dateFormat: "dd/mm/yy",
             changeMonth: true,
             changeYear: true,
-            yearRange: "1000:2019",
+            yearRange: "100:+10",
             showOn: "button",
-            buttonText: "📅"
+            buttonImage:  `${home_url}/public_html/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg`
           });
       }
     }
@@ -2019,26 +2032,26 @@ function loadLinkData(itemId, userId) {
                   '</div>' +
 
                   '<div class="link-data-edit-container" id="link-data-edit-' + content['Properties'][i]['PropertyId'] +'">' +
-                      '<div>' +
-                        "<span>Link:</span><br/>" +
-                      '</div>' +
+                      // '<div>' +
+                      //   "<span>Link:</span><br/>" +
+                      // '</div>' +
 
                       '<div id="link-' + content['Properties'][i]['PropertyId'] +'-url-input" class="link-url-input">' +
                         '<input type="url" value="' + escapeHtml(content['Properties'][i]['PropertyValue']) + '">' +
                       '</div>' +
 
                       '<div id="link-' + content['Properties'][i]['PropertyId'] +'-description-input" class="link-description-input" >' +
-                        '<label>Additional description:</label><br/>' +
+                        // '<label>Additional description:</label><br/>' +
                         '<textarea rows= "3" type="text" placeholder="" name="">' + escapeHtml(description) + '</textarea>' +
                       '</div>' +
 
                       '<div class="form-buttons-right">' +
-                          "<button type='submit' class='theme-color-background' id='link-save-button'" +
+                          "<button type='submit' class='theme-color-background edit-location-save' id='link-save-button'" +
                                 "onClick='editLink(" + content['Properties'][i]['PropertyId'] + ", " + itemId + ", " + userId + ")'>" +
                             "SAVE" +
                           "</button>" +
 
-                          "<button class='theme-color-background edit-data-cancel-right' onClick='openLinksourceEdit(" + content['Properties'][i]['PropertyId'] + ")'>" +
+                          "<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(" + content['Properties'][i]['PropertyId'] + ")'>" +
                             "CANCEL" +
                           "</button>" +
 
@@ -3257,6 +3270,7 @@ ready(() => {
     //         }
     //     }
     // }
+
     // const singleLinks = document.querySelectorAll('.link-single');
     // if(singleLinks) {
     //     for(let link of singleLinks) {
@@ -3297,11 +3311,27 @@ ready(() => {
         itemTrBtn.addEventListener('click', function() {
             if(itemTrBtn.previousSibling.style.height === '401px') {
                 itemTrBtn.previousSibling.style.height = 'unset';
+                document.querySelector('#transcription-container').style.height = 'unset';
                 itemTrBtn.textContent = 'Show Less';
             } else {
                 itemTrBtn.previousSibling.style.height = '401px';
+                document.querySelector('#transcription-container').style.height = '580px';
                 itemTrBtn.textContent = 'Show More';
-              //  document.querySelector('.transcription-container').style.height = '575px';
+            }
+        })
+    }
+    // HTR transcription collapse
+    const itemHtrBtn = document.querySelector('#htrMore');
+    if(itemHtrBtn) {
+        itemHtrBtn.addEventListener('click', function() {
+            if(itemHtrBtn.previousSibling.style.height === '401px') {
+                itemHtrBtn.previousSibling.style.height = 'unset';
+                document.querySelector('#htr-transcription').style.height = 'unset';
+                itemHtrBtn.textContent = 'Show Less';
+            } else {
+                itemHtrBtn.previousSibling.style.height = '401px';
+                document.querySelector('#htr-transcription').style.height = '580px';
+                itemHtrBtn.textContent = 'Show More';
             }
         })
     }
@@ -3473,6 +3503,10 @@ ready(() => {
     if(imgSliderCheck) {
         const imgSticker = document.querySelectorAll('.slide-sticker');
         const windowWidth = document.querySelector('#img-slider').clientWidth;
+        let sliderStart = null;
+        if(document.querySelector('#slide-start')){
+          sliderStart = parseInt(document.querySelector('#slide-start').textContent) + 1;
+        } 
         // Buttons to move by 1
         const prevBtn = document.querySelector('.prev-slide');
         const nextBtn = document.querySelector('.next-slide');
@@ -3492,8 +3526,8 @@ ready(() => {
             slideN = 5;
             step = 5;
         } else {
-            slideN = 2;
-            step = 2;
+            slideN = 3;
+            step = 3;
         }
         // Remove buttons if there is less images than step
         if(imgSticker.length <= step){
@@ -3510,6 +3544,22 @@ ready(() => {
             } else {
                 rightSpanNumb.textContent = step;
             }
+            if(sliderStart != null) {
+              if(slideN > sliderStart) {
+                slideN = slideN;
+              } else {
+                slideN = sliderStart;
+              
+              for(let img of imgSticker){
+                if(img.getAttribute('data-value') < (slideN-step)+1 || img.getAttribute('data-value') > slideN) {
+                  img.style.display = 'none';
+                  img.setAttribute('loading', 'lazy');
+                }
+                leftSpanNumb.textContent = slideN - step + 1;
+                rightSpanNumb.textContent = slideN;
+              }}
+            }
+            
             // Sliding images by value of slideN(number of slides that depends on screen width) -- right (+)
             nextSet.addEventListener('click', function() {
                 if(slideN + step < imgSticker.length) {
@@ -3559,6 +3609,7 @@ ready(() => {
                     img.setAttribute('loading', 'lazy');
                 }
             }
+
             // Sliding images by 1 slide -- right (+)
             nextBtn.addEventListener('click', function() {
                 imgSticker[slideN].style.display = 'inline-block';
@@ -3588,6 +3639,10 @@ ready(() => {
                 leftSpanNumb.textContent = slideN - step +1;
                 rightSpanNumb.textContent = slideN;
             })
+            // If it's last item, move slider to the end
+            if(slideN == imgSticker.length){
+              nextSet.click();
+            }
         } // End of slider functions
     }
     // Cover up at the end of Item Metadata
@@ -3633,11 +3688,11 @@ ready(() => {
                 document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
             }
         }}
-        if(itemDateCheck === true) {
-            installEventListeners();
-            itemDateCheck = false;
-            console.log(itemDateCheck);
-        }
+        // if(itemDateCheck === true) {
+        //     installEventListeners();
+        //     itemDateCheck = false;
+        //     console.log(itemDateCheck);
+        // }
 
 });
 

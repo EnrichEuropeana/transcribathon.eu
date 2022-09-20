@@ -103,9 +103,8 @@ function _TCT_get_document_data( $atts ) {
         //         $content .= '</li>';
         //     $content .= '</ul>';
         // $content .= '</div>';
-var_dump($storyData['dcTitle']);
         /* New- Start Transcription button */
-        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$descrLink."' style='font-family:\"Dosis\";'><b>🖉  Start Transcription</b></a>";
+        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$descrLink."' style='font-family:\"Dosis\";margin-top:6px;'><b>🖉  Start Transcription</b></a>";
 
         $content .= "<div id='total-storypg' class='storypg-container'>";
             $content .= "<div class='main-storypg'>";
@@ -388,6 +387,21 @@ var_dump($storyData['dcTitle']);
                                 }
                             $content .= "</div>";
                         }
+                        // Date
+                        if($storyData['dcDate']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Date</b></p>";
+                                $storyDates = array_unique(explode(' || ', $storyData['dcDate']));
+                                foreach($storyDates as $date){
+                                    if(substr($date, 0, 4) == 'http'){
+                                        // $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
+                                        continue;
+                                    } else {
+                                        $content .= "<p class='meta-p'>" . $date . "</p>";
+                                    }
+                                }
+                            $content .= "</div>";
+                        }
                         // Creator
                         if($storyData['dcCreator']){
                             $content .= "<div class='meta-sticker'>";
@@ -406,38 +420,6 @@ var_dump($storyData['dcTitle']);
                             $content .= "</div>";
                             unset($institutions);
                         }
-
-                        // Publisher
-                        if($storyData['dcPublisher']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Publisher</b></p>";
-                                $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $storyData['dcPublisher']) . "</p>";
-                            $content .= "</div>";
-                        }
-
-                        // Provider Rights
-                        if($storyData['dcRights']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Provider Rights</b></p>";
-                                $dcRights = array_unique(explode(' || ', $storyData['dcRights']));
-                                foreach($dcRights as $dcRight){
-                                    if(substr($dcRight, 0, 4) == 'http'){
-                                        $content .= "<p class='meta-p'><a target='_blank' href='".$dcRight."'>" . $dcRight . "</a></p>";
-                                    } else {
-                                        $content .= "<p class='meta-p'>" . $dcRight . "</p>";
-                                    }
-                                }
-                            $content .= "</div>";
-                        }
-
-                        // dcCoverage
-                        if($storyData['dcCoverage']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Coverage</b></p>";
-                                $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $storyData['dcCoverage']) . "</p>";
-                            $content .= "</div>";
-                        }
-
                         // Identifier
                         if($storyData['dcIdentifier']) {
                             $content .= "<div class='meta-sticker'>";
@@ -452,8 +434,24 @@ var_dump($storyData['dcTitle']);
                                 }
                             $content .= "</div>";
                             unset($itemIdentifiers);
-                        }            
-
+                        }
+                        // Document Language
+                        if($storyData['dcLanguage']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Document Language</b></p>";
+                                $languages = str_replace(' || ', '</br>', $storyData['dcLanguage']);
+                                $content .= "<p class='meta-p'>". $languages ."</p>";
+                            $content .= "</div>";
+                            unset($languages);
+                        }
+                        // Location
+                        if($storyData['PlaceName']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Location</b></p>";
+                                $itemLocations = str_replace(' || ', '</br>', $storyData['PlaceName']);
+                                $content .= "<p class='meta-p'>".$itemLocations."</p>";
+                            $content .= "</div>";
+                        }
                         // Creation Start
                         if($storyData['edmBegin']) {
                             $content .= "<div class='meta-sticker'>";
@@ -463,7 +461,6 @@ var_dump($storyData['dcTitle']);
                             $content .= "</div>";
                             unset($creationStarts);
                         }
-
                         // Creation End
                         if($storyData['edmEnd']) {
                             $content .= "<div class='meta-sticker'>";
@@ -472,8 +469,7 @@ var_dump($storyData['dcTitle']);
                                 $content .= "<p class='meta-p'>" . $creationEnds ."</p>";
                             $content .= "</div>";
                             unset($creationEnds);
-                        }
-
+                        }   
                         // Source
                         if($storyData['dcSource']) {
                             $content .= "<div class='meta-sticker'>";
@@ -482,6 +478,90 @@ var_dump($storyData['dcTitle']);
                                 $content .= "<p class='meta-p'>". implode('</br>', $itemProvenances) ."</p>";
                             $content .= "</div>";
                             unset($itemProvenances);
+                        } 
+                        // dctermsProvenance
+                        if($storyData['dctermsProvenance']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Provenance</b></p>";
+                                $provenance = array_unique(explode(' || ', $storyData['dctermsProvenance']));
+                                $content .= "<p class='meta-p'>". implode('</br>' , $provenance) ."</p>";
+                            $content .= "</div>";
+                        }  
+                        // Type
+                        if($storyData['dcType']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Type</b></p>";
+                                $itemTypes = explode(' || ', $storyData['dcType']);
+                                foreach($itemTypes as $type) {
+                                    if(substr($type, 0, 4) == 'http'){
+                                        $content .= "<p class='meta-p'><a target='_blank' href='".$type."'>" . $type . "</a></p>";
+                                    } else {
+                                        $content .= "<p class='meta-p'>" . $type . "</p>";
+                                    }
+                                }
+                            $content .= "</div>";
+                        }
+                        // Provider Rights
+                        if($storyData['dcRights']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Provider Rights</b></p>";
+                                $dcRights = array_unique(explode(' || ', $storyData['dcRights']));
+                                foreach($dcRights as $dcRight){
+                                    if(substr($dcRight, 0, 4) == 'http'){
+                                        $content .= "<p class='meta-p'><a target='_blank' href='".$dcRight."'>" . $dcRight . "</a></p>";
+                                    } else {
+                                        $content .= "<p class='meta-p'>" . $dcRight . "</p>";
+                                    }
+                                }
+                            $content .= "</div>";
+                        }
+                        // edmProvider
+                        if($storyData['edmProvider']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Provider</b></p>";
+                                if(substr($storyData['edmProvider'], 0, 4) == 'http'){
+                                    $content .= "<p class='meta-p'><a target='_blank' href='".$storyData['edmProvider']."'>" . $storyData['edmProvider'] . "</a></p>";
+                                } else {
+                                    $content .= "<p class='meta-p'>" . $storyData['edmProvider'] . "</p>";
+                                }
+                            $content .= "</div>";
+                        }
+                        // Providing Country
+                        if($storyData['edmCountry']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Providing Country</b></p>";
+                                $content .= "<p class='meta-p'>".$storyData['edmCountry']."</p>";
+                            $content .= "</div>";
+                        }
+                        // Provider Language
+                        if($storyData['edmLanguage']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Provider Language</b></p>";
+                                $content .= "<p class='meta-p'>".$storyData['edmLanguage']."</p>";
+                            $content .= "</div>";
+                        }
+                        // Dataset
+                        if($storyData['edmDatasetName']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Dataset</b></p>";
+                                $content .= "<p class='meta-p'>".$storyData['edmDatasetName']."</p>";
+                            $content .= "</div>";
+                        }
+
+                        // Publisher
+                        if($storyData['dcPublisher']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Publisher</b></p>";
+                                $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $storyData['dcPublisher']) . "</p>";
+                            $content .= "</div>";
+                        }
+
+                        // dcCoverage
+                        if($storyData['dcCoverage']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<p class='mb-1'><b>Coverage</b></p>";
+                                $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $storyData['dcCoverage']) . "</p>";
+                            $content .= "</div>";
                         }
 
                         // URL
@@ -508,76 +588,6 @@ var_dump($storyData['dcTitle']);
                             $content .= "</div>";
                         }
 
-                        // Document Language
-                        if($storyData['dcLanguage']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Document Language</b></p>";
-                                $languages = str_replace(' || ', '</br>', $storyData['dcLanguage']);
-                                $content .= "<p class='meta-p'>". $languages ."</p>";
-                            $content .= "</div>";
-                            unset($languages);
-                        }
-
-                        // Providing Country
-                        if($storyData['edmCountry']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Providing Country</b></p>";
-                                $content .= "<p class='meta-p'>".$storyData['edmCountry']."</p>";
-                            $content .= "</div>";
-                        }
-
-                        // Provider Language
-                        if($storyData['edmLanguage']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Provider Language</b></p>";
-                                $content .= "<p class='meta-p'>".$storyData['edmLanguage']."</p>";
-                            $content .= "</div>";
-                        }
-
-                        // edmProvider
-                        if($storyData['edmProvider']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Provider</b></p>";
-                                if(substr($storyData['edmProvider'], 0, 4) == 'http'){
-                                    $content .= "<p class='meta-p'><a target='_blank' href='".$storyData['edmProvider']."'>" . $storyData['edmProvider'] . "</a></p>";
-                                } else {
-                                    $content .= "<p class='meta-p'>" . $storyData['edmProvider'] . "</p>";
-                                }
-                            $content .= "</div>";
-                        }
-
-                        // Location
-                        if($storyData['PlaceName']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Location</b></p>";
-                                $itemLocations = str_replace(' || ', '</br>', $storyData['PlaceName']);
-                                $content .= "<p class='meta-p'>".$itemLocations."</p>";
-                            $content .= "</div>";
-                        }
-
-                        // Type
-                        if($storyData['dcType']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Type</b></p>";
-                                $itemTypes = explode(' || ', $storyData['dcType']);
-                                foreach($itemTypes as $type) {
-                                    if(substr($type, 0, 4) == 'http'){
-                                        $content .= "<p class='meta-p'><a target='_blank' href='".$type."'>" . $type . "</a></p>";
-                                    } else {
-                                        $content .= "<p class='meta-p'>" . $type . "</p>";
-                                    }
-                                }
-                            $content .= "</div>";
-                        }
-
-                        // Dataset
-                        if($storyData['edmDatasetName']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Dataset</b></p>";
-                                $content .= "<p class='meta-p'>".$storyData['edmDatasetName']."</p>";
-                            $content .= "</div>";
-                        }
-
                         // Relation
                         if($storyData['dcRelation']) {
                             $content .= "<div class='meta-sticker'>";
@@ -601,35 +611,11 @@ var_dump($storyData['dcTitle']);
                             $content .= "</div>";
                         }
 
-                        // Date
-                        if($storyData['dcDate']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Date</b></p>";
-                                $storyDates = array_unique(explode(' || ', $storyData['dcDate']));
-                                foreach($storyDates as $date){
-                                    if(substr($date, 0, 4) == 'http'){
-                                        $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
-                                    } else {
-                                        $content .= "<p class='meta-p'>" . $date . "</p>";
-                                    }
-                                }
-                            $content .= "</div>";
-                        }
-
                         // Year
                         if($storyData['edmYear']) {
                             $content .= "<div class='meta-sticker'>";
                                 $content .= "<p class='mb-1'><b>Year</b></p>";
                                 $content .= "<p class='meta-p'>" . str_replace(' || ', '</br>', $storyData['edmYear']) ."</p>";
-                            $content .= "</div>";
-                        }
-
-                        // dctermsProvenance
-                        if($storyData['dctermsProvenance']) {
-                            $content .= "<div class='meta-sticker'>";
-                                $content .= "<p class='mb-1'><b>Provenance</b></p>";
-                                $provenance = array_unique(explode(' || ', $storyData['dctermsProvenance']));
-                                $content .= "<p class='meta-p'>". implode('</br>' , $provenance) ."</p>";
                             $content .= "</div>";
                         }
 
