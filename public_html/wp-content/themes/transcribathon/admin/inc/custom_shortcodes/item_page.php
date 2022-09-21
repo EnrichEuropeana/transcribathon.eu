@@ -356,7 +356,7 @@ function _TCT_item_page( $atts ) {
                 $editorTab .= '<div class="item-page-section-headline-container collapse-headline  item-page-section-collapse-headline">';
                     $editorTab .= '<div id="description-collapse-heading" class="theme-color item-page-section-headline">';
                         $editorTab .= "DESCRIPTION";
-                    
+
                     // status changer
                     $editorTab .= '<div id="description-status-changer" class="status-changer section-status-changer login-required" style="background-color:'.$itemData['DescriptionStatusColorCode'].'">';
                     //if (current_user_can('administrator')) {
@@ -819,7 +819,7 @@ function _TCT_item_page( $atts ) {
                                 //$taggingTab .= '<a id="geonames-search-button" href="">';
                                 //    $taggingTab .= '<i class="far fa-search"></i>';
                                 //$taggingTab .= '</a>';
-                            
+
 
                             $mapTab .= "<div class='form-buttons-right'>";
                                 $mapTab .= "<button class='item-page-save-button theme-color-background edit-location-save'
@@ -1460,7 +1460,7 @@ function _TCT_item_page( $atts ) {
                     } else {
                         $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
                     }
-                   
+
                     $content .= "<div class='slide-sticker' data-value='". ($x+1) ."'>";
                     if($x == $startingSlide) {
                         $content .= "<div class='slide-img-wrap active'>";
@@ -1475,7 +1475,7 @@ function _TCT_item_page( $atts ) {
                 }
             $content .= "</div>";
             $content .= "</div>";
-            
+
 
             $content .= "<div id='controls-div'>";
                 $content .= "<button class='prev-set' type='button'><i class=\"fas fa-chevron-double-left\"></i></button>";
@@ -1612,7 +1612,7 @@ function _TCT_item_page( $atts ) {
                 // people
                 $content .= "<h6 class='enrich-headers'>People</h6>";
                 if($itemData['Persons']) {
-                    
+
                     $content .= "<div class='person-container' id='personAccord'>";
                     foreach($itemData['Persons'] as $persona) {
                         $personBDate = strtotime($persona['BirthDate']);
@@ -1627,7 +1627,7 @@ function _TCT_item_page( $atts ) {
                                     $content .= " (" . $pBirthDate;
                                     if($persona['BirthPlace'] != Null) {
                                         $content .= ', ' . $persona['BirthPlace'];
-                                    } 
+                                    }
                                     $content .= " - " . $pDeathDate;
                                     if($persona['DeathPlace'] != Null) {
                                         $content .= ', ' . $persona['DeathPlace'];
@@ -1643,7 +1643,7 @@ function _TCT_item_page( $atts ) {
                                     $content .= " (Death: " . $pDeathDate;
                                     if($persona['DeathPlace'] != Null) {
                                         $content .= ", " . $persona['DeathPlace'];
-                                    } 
+                                    }
                                     $content .= ")";
                                 }
                                 if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
@@ -1654,7 +1654,7 @@ function _TCT_item_page( $atts ) {
                                 }
                             $content .= "</div>";
 
-                            
+
                         $content .= "</div>";
                     }
                     $content .= "</div>";
@@ -1684,7 +1684,7 @@ function _TCT_item_page( $atts ) {
                     $content .= "<div class='link-container js-check'>";
                     foreach($itemData['Properties'] as $property){
                         if($property['PropertyType'] == 'Link' ) {
-                            
+
                             $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
                             $content .= "<p class='link-description'>" . $property['PropertyDescription'] . "</p>";
                             $content .= "</div>";
@@ -1790,7 +1790,7 @@ function _TCT_item_page( $atts ) {
                     }
                     // Location
                     $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:20px 0;'>";
-                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/uploads/location-icon.svg'> LOCATION</h5></div>";
+                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg'> LOCATION</h5></div>";
                     if($itemData['LocationStatusColorCode'] == '#61e02f'){
                         $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='completed'>COMPLETED</span>";
                     }
@@ -1924,7 +1924,7 @@ function _TCT_item_page( $atts ) {
                         $provenance = array_unique(explode(' || ', $itemData['StorydctermsProvenance']));
                         $content .= "<span class='meta-p'>". implode('</br>' , $provenance) ."</span>";
                     $content .= "</div>";
-                }  
+                }
                 // Type
                 if($itemData['StorydcType']) {
                     $content .= "<div class='single-meta-htr'>";
@@ -2107,7 +2107,7 @@ function _TCT_item_page( $atts ) {
                 // people
                 $content .= "<h6 class='enrich-headers'>People</h6>";
                 if($itemData['Persons']) {
-                    
+
                     $content .= "<div class='person-container' id='personAccord'>";
                     foreach($itemData['Persons'] as $persona) {
                         $personBDate = strtotime($persona['BirthDate']);
@@ -2122,7 +2122,7 @@ function _TCT_item_page( $atts ) {
                                     $content .= " (" . $pBirthDate;
                                     if($persona['BirthPlace'] != Null) {
                                         $content .= ', ' . $persona['BirthPlace'];
-                                    } 
+                                    }
                                     $content .= " - " . $pDeathDate;
                                     if($persona['DeathPlace'] != Null) {
                                         $content .= ', ' . $persona['DeathPlace'];
@@ -2138,7 +2138,7 @@ function _TCT_item_page( $atts ) {
                                     $content .= " (Death: " . $pDeathDate;
                                     if($persona['DeathPlace'] != Null) {
                                         $content .= ", " . $persona['DeathPlace'];
-                                    } 
+                                    }
                                     $content .= ")";
                                 }
                                 if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
@@ -2149,7 +2149,7 @@ function _TCT_item_page( $atts ) {
                                 }
                             $content .= "</div>";
 
-                            
+
                         $content .= "</div>";
                     }
                     $content .= "</div>";
@@ -2179,7 +2179,7 @@ function _TCT_item_page( $atts ) {
                     $content .= "<div class='link-container js-check'>";
                     foreach($itemData['Properties'] as $property){
                         if($property['PropertyType'] == 'Link' ) {
-                            
+
                             $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
                             $content .= "<p class='link-description'>" . $property['PropertyDescription'] . "</p>";
                             $content .= "</div>";
@@ -2281,7 +2281,7 @@ function _TCT_item_page( $atts ) {
                             $provenance = array_unique(explode(' || ', $itemData['StorydctermsProvenance']));
                             $content .= "<p class='meta-p'>". implode(';' , $provenance) ."</p>";
                         $content .= "</div>";
-                    }  
+                    }
                     // Type
                     if($itemData['StorydcType']) {
                         $content .= "<div class='single-meta'>";
