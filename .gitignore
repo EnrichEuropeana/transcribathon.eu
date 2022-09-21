@@ -1,5 +1,5 @@
 # ignore most of the installation
-public_html/**
+public_html/*
 !public_html/htr-import
 !public_html/Layouteditor
 !public_html/transkribus-texteditor
