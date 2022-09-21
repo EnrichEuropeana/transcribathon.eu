@@ -50,11 +50,11 @@ function dump($data) {
 }
 
 function get_main_url() {
-    return get_site_url();
+    return get_home_url();
 }
 
 function get_europeana_url() {
-    return get_site_url(11);
+    return get_home_url(11);
 }
 
 function get_text_from_pagexml($xmlString, $break = '') {

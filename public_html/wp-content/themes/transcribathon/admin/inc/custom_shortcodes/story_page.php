@@ -301,7 +301,7 @@ function _TCT_get_document_data( $atts ) {
 		        					map.addControl(new mapboxgl.NavigationControl());
 
                                     fetch(
-                                        '". $home_url . "/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',
+                                        '". get_home_url() . "/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',
                                         {
                                             method: 'POST',
                                             body: JSON.stringify({
