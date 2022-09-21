@@ -1790,7 +1790,7 @@ function _TCT_item_page( $atts ) {
                     }
                     // Location
                     $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:20px 0;'>";
-                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/uploads/location-icon.svg'> LOCATION</h5></div>";
+                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg'> LOCATION</h5></div>";
                     if($itemData['LocationStatusColorCode'] == '#61e02f'){
                         $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='completed'>COMPLETED</span>";
                     }
@@ -1833,12 +1833,12 @@ function _TCT_item_page( $atts ) {
 
                 $content .= "<div style='clear:both;'></div>";
                 //Metadata
-                $content .= "<div id='item-meta-collapse' class='dl-enrichments' style='padding-left:25px;padding-right:calc(25px + 2%);'>";
+                $content .= "<div id='item-meta-collapse' class='dl-enrichments' style='padding: 0 50px'>";
                     $content .= "<div class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;background-color:#f8f8f8;' role='button' aria-expanded='false'>";
                         $content .= "<span><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span>";
                      $content .= "</div>";
                 $content .= "</div>";
-                $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;padding: 0 25px;margin-left:50px;margin-right: calc(50px + 2%);'>";
+                $content .= "<div class='htr-dl-enrichments'>";
                 /////////
                 //Contributor
                 if($itemData['StorydcContributor']) {
@@ -2067,7 +2067,7 @@ function _TCT_item_page( $atts ) {
                     }
                 $content .= "</div>";
                 //Download Enrichments Button/Div
-                    $content .= '<a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;color:#0a72cc;cursor:pointer;" type="button" target="_blank" href="' . get_main_url() . '/htr-import/example/form-example.php?itemId=' . $_GET['item']  . '">';
+                    $content .= '<a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;color:#0a72cc;cursor:pointer;margin-bottom:23px;margin-top:24px;" type="button" target="_blank" href="' . get_main_url() . '/htr-import/example/form-example.php?itemId=' . $_GET['item']  . '">';
                     $content .= "<span><h5 style='color:#0a72cc;'>Test Transkribus HTR Transcription</h5></span>";
                     $content .= "<span><i style='position:relative;top:50%;transform:translateY(-50%);font-size:20px;' class='fa fa-download' aria-hidden='true'></i></span>";
                 $content .= "</a>";
