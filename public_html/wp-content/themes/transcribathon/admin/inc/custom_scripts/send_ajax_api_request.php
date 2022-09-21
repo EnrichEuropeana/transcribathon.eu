@@ -1,12 +1,11 @@
 <?php
+
 require_once( $_SERVER["DOCUMENT_ROOT"].'/wp-load.php' );
 require_once( $_SERVER["DOCUMENT_ROOT"].'/wp-admin/includes/post.php' );
 
-$post = file_get_contents('php://input');
-$post = $post ? json_decode($post, true) : $_POST;
+$post = count($_POST) > 0 ? $_POST : json_decode(file_get_contents('php://input'), true);
 
 if (!empty($post['type']) && !empty($post['url'])) {
-
 
     // Set Post content
     $data = array();
