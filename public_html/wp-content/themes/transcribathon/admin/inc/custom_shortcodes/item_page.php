@@ -1558,7 +1558,7 @@ function _TCT_item_page( $atts ) {
                 $content .= "<div id='htr-transcription' style='height:580px;'>";
                 //HTR Transcription
                 $htrTranscription = get_text_from_pagexml($htrData, '<br />');
-                $content .= "<div id='htrTranscription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:20px;'>";
+                $content .= "<a href='".home_url()."/documents/story/item/item_page_htr/?story=".$_GET['story']."&item=".$_GET['item']."' target='_blank'><div id='htrTranscription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:20px;'>";
                 $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> HTR TRANSCRIPTION</h5></div>";
                 if(strlen($htrTranscription) > 1){
                     $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='edited'>EDIT</span>";
@@ -1566,7 +1566,7 @@ function _TCT_item_page( $atts ) {
                     $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='not-started'>NOT STARTED</span>";
                 }
                 $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
-                $content .= "</div>";
+                $content .= "</div></a>";
                 $content .= "<div class='trans-toggle' style='padding-left:50px;padding-top:20px;'>";
                 $content .= "<div class='togglePara' style='height:401px;'>";
                     $content .= "<p>" . str_replace("<br /><br />", "<br />", $htrTranscription) . "</p>";
@@ -1647,10 +1647,10 @@ function _TCT_item_page( $atts ) {
                                     $content .= ")";
                                 }
                                 if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
-                                    $content .= "<div class='person-description'>Description: <span style='font-weight:600;'>" . $persona['Description'] . "</span></div>";
+                                    $content .= "<div class='person-description'><span style='font-weight:400;font-size:14px;'>" . $persona['Description'] . "</span></div>";
                                 }
                                 if($persona['Link'] != Null && $persona['Link'] != 'NULL') {
-                                    $content .= "<div class='person-description'>Wikidata Id: <span style='font-weight:600;'><a href='https://www.wikidata.org/wiki/".$persona['Link']."' target='_blank'>".$persona['Link']."</a></span></div>";
+                                    $content .= "<div class='person-description'>Wikidata ID: <span style='font-weight:400;font-size:14px;'><a href='https://www.wikidata.org/wiki/".$persona['Link']."' target='_blank'>".$persona['Link']."</a></span></div>";
                                 }
                             $content .= "</div>";
 
@@ -1833,12 +1833,12 @@ function _TCT_item_page( $atts ) {
 
                 $content .= "<div style='clear:both;'></div>";
                 //Metadata
-                $content .= "<div id='item-meta-collapse' class='dl-enrichments' style='padding-left:50px;padding-right:calc(50px + 2%);'>";
+                $content .= "<div id='item-meta-collapse' class='dl-enrichments' style='padding-left:25px;padding-right:calc(25px + 2%);'>";
                     $content .= "<div class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;background-color:#f8f8f8;' role='button' aria-expanded='false'>";
                         $content .= "<span><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span>";
                      $content .= "</div>";
                 $content .= "</div>";
-                $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;padding: 0 50px;margin-left:50px;margin-right: calc(50px + 2%);'>";
+                $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;padding: 0 25px;margin-left:50px;margin-right: calc(50px + 2%);'>";
                 /////////
                 //Contributor
                 if($itemData['StorydcContributor']) {
@@ -2117,7 +2117,7 @@ function _TCT_item_page( $atts ) {
 
                         $content .= "<div class='single-person'>";
                             $content .= "<div class='person-info'>";
-                                $content .= "<span style='font-weight:400;'>" . $persona['FirstName'] . ' ' . $persona['LastName'] . "</span>";
+                                $content .= "<span style='font-weight:600;'>" . $persona['FirstName'] . ' ' . $persona['LastName'] . "</span>";
                                 if($personBDate != Null && $personDDate != Null) {
                                     $content .= " (" . $pBirthDate;
                                     if($persona['BirthPlace'] != Null) {
@@ -2142,10 +2142,10 @@ function _TCT_item_page( $atts ) {
                                     $content .= ")";
                                 }
                                 if($persona['Description'] != Null && $persona['Description'] != 'NULL') {
-                                    $content .= "<div class='person-description'>Description: <span style='font-weight:600;'>" . $persona['Description'] . "</span></div>";
+                                    $content .= "<div class='person-description'><span style='font-weight:400;font-size:13px;'>" . $persona['Description'] . "</span></div>";
                                 }
                                 if($persona['Link'] != Null && $persona['Link'] != 'NULL') {
-                                    $content .= "<div class='person-description'>Wikidata Id: <span style='font-weight:600;'><a href='https://www.wikidata.org/wiki/".$persona['Link']."' target='_blank'>".$persona['Link']."</a></span></div>";
+                                    $content .= "<div class='person-description'>Wikidata ID: <span style='font-weight:400;font-size:13px;'><a href='https://www.wikidata.org/wiki/".$persona['Link']."' target='_blank'>".$persona['Link']."</a></span></div>";
                                 }
                             $content .= "</div>";
 
@@ -2191,24 +2191,24 @@ function _TCT_item_page( $atts ) {
                 //Metadata
                 $content .= "<div id='item-meta-collapse' class='dl-enrichments' style='background-color:#f8f8f8;'>";
                     $content .= "<div class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;' role='button' aria-expanded='false'>";
-                        $content .= "<span><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span>";
+                        $content .= "<span><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</span><span style='float:right;padding-right:10px;'><i style='font-size:25px;' class='fas fa-angle-down'></i></span>";
                     $content .= "</div>";
                 $content .= "</div>";
                 //var_dump($itemData);
 
-                $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;padding: 0 50px;'>";
+                $content .= "<div class='dl-enrichments' style='height: 300px;overflow:hidden;padding: 0 25px;'>";
                     //Contributor
                     if($itemData['StorydcContributor']) {
                         $content .= "<div class='single-meta'>";
                             $content .= "<span class='mb-1'>Contributor</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcContributor']) . "</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydcContributor']) . "</span>";
                         $content .= "</div>";
                     }
                     //Creator
                     if($itemData['StorydcCreator']) {
                         $content .= "<div class='single-meta'>";
                             $content .= "<span class='mb-1'>Creator</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $itemData['StorydcCreator']) . "</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydcCreator']) . "</span>";
                         $content .= "</div>";
                     }
                     // Date
@@ -2221,7 +2221,7 @@ function _TCT_item_page( $atts ) {
                                     // $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
                                     continue;
                                 } else {
-                                    $content .= "<span class='meta-p'>" . $date . "</span>";
+                                    $content .= "<span class='meta-p'>" . $date . ";</span>";
                                 }
                             }
                         $content .= "</div>";
@@ -2238,7 +2238,7 @@ function _TCT_item_page( $atts ) {
                         $content .= "<div class='single-meta'>";
                             $content .= "<span class='mb-1'>Identifier</span>";
                             if(substr($itemData['StoryExternalRecordId'], 0, 4) == 'http'){
-                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . $itemData['StoryExternalRecordId'] . "</a></span>";
+                                $content .= "<span class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . substr($itemData['StoryExternalRecordId'], 0, 16) . "</a></span>";
                             } else {
                                 $content .= "<span class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</span>";
                             }
@@ -2249,21 +2249,21 @@ function _TCT_item_page( $atts ) {
                         $content .= "<div class='single-meta'>";
                             $content .= "<span class='mb-1'>Document Language</span>";
                             $dcLanguage = array_unique(explode(' || ', $itemData['StorydcLanguage']));
-                            $content .= "<span class='meta-p'>" . implode(' / ', $dcLanguage) . "</span>";
+                            $content .= "<span class='meta-p'>" . implode(';', $dcLanguage) . "</span>";
                         $content .= "</div>";
                     }
                     // Creation Start
                     if($itemData['StoryedmBegin']) {
                         $content .= "<div class='single-meta'>";
                             $content .= "<span class='mb-1'>Creation Start</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmBegin']) . "</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ";", $itemData['StoryedmBegin']) . "</span>";
                         $content .= "</div>";
                     }
                     // Creation End
                     if($itemData['StoryedmEnd']) {
                         $content .= "<div class='single-meta'>";
                             $content .= "<span class='mb-1'>Creation End</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', " / ", $itemData['StoryedmEnd']) . "</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ";", $itemData['StoryedmEnd']) . "</span>";
                         $content .= "</div>";
                     }
                     // Story Source
@@ -2279,14 +2279,14 @@ function _TCT_item_page( $atts ) {
                         $content .= "<div class='meta-sticker'>";
                             $content .= "<p class='mb-1'><b>Provenance</b></p>";
                             $provenance = array_unique(explode(' || ', $itemData['StorydctermsProvenance']));
-                            $content .= "<p class='meta-p'>". implode('</br>' , $provenance) ."</p>";
+                            $content .= "<p class='meta-p'>". implode(';' , $provenance) ."</p>";
                         $content .= "</div>";
                     }  
                     // Type
                     if($itemData['StorydcType']) {
                         $content .= "<div class='single-meta'>";
                             $content .= "<span class='mb-1'>Type</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydcType']) . "</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydcType']) . "</span>";
                         $content .= "</div>";
                     }
                     // Rights
@@ -2296,9 +2296,9 @@ function _TCT_item_page( $atts ) {
                             $edmRights = array_unique(explode(' || ', $itemData['StoryedmRights']));
                             foreach($edmRights as $right) {
                                 if(substr($right, 0, 4) == 'http'){
-                                    $content .= "<span class='meta-p'><a target='_blank' href='".$right."'>" . $right . "</a></span>";
+                                    $content .= "<span class='meta-p'><a target='_blank' href='".$right."'>" . $right . ";</a></span>";
                                 } else {
-                                    $content .= "<span class='meta-p'>" . $right . "</span>";
+                                    $content .= "<span class='meta-p'>" . $right . ";</span>";
                                 }
                             }
                         $content .= "</div>";
@@ -2312,7 +2312,7 @@ function _TCT_item_page( $atts ) {
                                 if(substr($iRight, 0, 4) == 'http'){
                                     $content .= "<span class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></span>";
                                 } else {
-                                    $content .= "<span class='meta-p'>" . $iRight . "</span>";
+                                    $content .= "<span class='meta-p'>" . $iRight . ";</span>";
                                 }
                             }
                         $content .= "</div>";
@@ -2360,7 +2360,7 @@ function _TCT_item_page( $atts ) {
                     if($itemData['StorydctermsMedium']) {
                         $content .= "<div class='single-meta'>";
                             $content .= "<span class='mb-1'>Medium</span>";
-                            $content .= "<span class='meta-p'>" . str_replace(' || ', ' / ', $itemData['StorydctermsMedium']) . "</span>";
+                            $content .= "<span class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydctermsMedium']) . "</span>";
                         $content .= "</div>";
                     }
                     // Source Url
@@ -2377,7 +2377,7 @@ function _TCT_item_page( $atts ) {
                     // Story Title
                     $content .= "<div class='single-meta'>";
                         $content .= "<span class='mb-1'>Story Title</span>";
-                        $content .= "<span class='meta-p'>". str_replace(' || ', "</br>", $itemData['StorydcTitle']) . "</span>";
+                        $content .= "<span class='meta-p'>". str_replace(' || ', ";", $itemData['StorydcTitle']) . "</span>";
                     $content .= "</div>";
                     // Story Landing Page
                     if($itemData['StoryedmLandingPage']) {
@@ -2495,7 +2495,7 @@ function _TCT_item_page( $atts ) {
                     }
                     // Location
                     $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:20px 0;'>";
-                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/uploads/location-icon.svg'> LOCATION</h5></div>";
+                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg'> LOCATION</h5></div>";
                     if($itemData['LocationStatusColorCode'] == '#61e02f'){
                         $content .= "<div style='display:inline-block;'><span style='display:inline-block;font-weight:600!important;' class='completed'>COMPLETED</span>";
                     }
@@ -2536,6 +2536,7 @@ function _TCT_item_page( $atts ) {
                     $content .= $infoTab;
                 $content .= "</div>";
             }
+            $content .= "<div style='clear:both;height:50px;'>&nbsp</div>";
             $content .= "</div>";
         // Splitscreen container
         $content .= "<div id='image-view-container' class='panel-container-horizontal' style='display:none'>";
@@ -2642,17 +2643,17 @@ function _TCT_item_page( $atts ) {
 
                     $content .= "<li>";
                         $content .= '<div id="popout" class="view-switcher-icons" style="display:inline-block;width: 20px;"
-                    onclick="switchItemView(event, \'popout\')"><img src="'.home_url().'/wp-content/uploads/icon_float.svg"></div>';
+                    onclick="switchItemView(event, \'popout\')"><img src="'.home_url().'/wp-content/themes/transcribathon/images/icon_float.svg"></div>';
                     $content .= "</li>";
 
                     $content .= "<li>";
                         $content .= '<div id="vertical-split" class="view-switcher-icons" style="display:inline-block;width: 20px;"
-                    onclick="switchItemView(event, \'vertical\')"><img src="'.home_url().'/wp-content/uploads/icon_below.svg"></div>';
+                    onclick="switchItemView(event, \'vertical\')"><img src="'.home_url().'/wp-content/themes/transcribathon/images/icon_below.svg"></div>';
                     $content .= "</li>";
 
                     $content .= "<li>";
                         $content .= '<div id="horizontal-split" class="view-switcher-icons active theme-color" style="font-size:12px;display:inline-block;width: 20px;"
-                    onclick="switchItemView(event, \'horizontal\')"><img src="'.home_url().'/wp-content/uploads/icon_side.svg"></div>';
+                    onclick="switchItemView(event, \'horizontal\')"><img src="'.home_url().'/wp-content/themes/transcribathon/images/icon_side.svg"></div>';
                     $content .= "</li>";
 
                     $content .= "<li style='position:relative;bottom:2px;'>";
