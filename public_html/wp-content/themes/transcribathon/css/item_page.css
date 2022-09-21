@@ -1324,7 +1324,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .single-meta-htr {
     display: inline-block;
-    width: 49%;
+    width: 48%;
     padding: 5px 10px;
     border-bottom: 1px solid #f8f8f8;
     margin-bottom: 10px;
@@ -1803,6 +1803,16 @@ p.link-description {
     margin-top: 17px;
     margin-bottom: 17px;
 }
+.htr-dl-enrichments {
+    flex-flow: wrap;
+    height: 300px;
+    overflow: hidden;
+    padding: 0 25px 0 50px;
+    margin-left: 25px;
+    margin-right: 75px;
+    display: flex;
+    justify-content: space-between;
+}
 /* Enrichments Table */
 .not-started {
     width: 100px;
@@ -2247,12 +2257,11 @@ span.edited, span.completed, span.reviewed , span.not-started {
 }
 #full-view-r {
     float: right;
-    width:48%;
-    margin-right:2%;
+    width:49%;
 }
 #full-view-l {
     float:left;
-    width:48%;
+    width:49%;
     margin-right:1%;
 }
 .cover-up {
