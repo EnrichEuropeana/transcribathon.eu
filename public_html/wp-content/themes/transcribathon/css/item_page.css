@@ -30,20 +30,20 @@ Description: Stylesheet for Item Page
     z-index: 1;
 }
 #inner-slider {
+    top: 50%;
+    transform: translate( 0px, -50%);
     overflow-x: hidden;
     overflow-y: hidden;
-    height: 90%;
     width: 100%;
     display: flex;
     justify-content: center;
     position: relative;
-    bottom: 10%;
-
 }
 #slider-container {
-    height: 100%;
+    height: 300px;
     background-color: #f8f8f8;
     margin-bottom: 10px;
+    position: relative;
 }
 .slide-sticker {
     width: 11%;
@@ -55,27 +55,27 @@ Description: Stylesheet for Item Page
 }
 .prev-slide {
     font-size: 15px;
-    position: relative;
+    position: absolute;
     width: 25px;
     height: 50px;
     padding: 5px;
-    float: left;
+    left: 0;
     top: 40%;
     color: #fff;
     background: #0a72cc;
-    z-index: 99;
+    z-index: 999;
 }
 .next-slide {
     font-size: 15px;
-    position: relative;
+    position: absolute;
     width: 25px;
     height: 50px;
     padding: 5px;
-    float: right;
+    right: 0;
     top: 40%;
     color: #fff;
     background: #0a72cc;
-    z-index: 99;
+    z-index: 999;
 }
 .next-set {
     position: relative;
@@ -102,7 +102,7 @@ Description: Stylesheet for Item Page
     font-weight: bold;
 }
 #img-slider {
-    height: 275px;
+    height: 300px;
     margin-bottom: 30px;
 }
 .next-slide:focus, .prev-slide:focus {
@@ -291,7 +291,7 @@ ul.item-navigation-content-container div {
     font-family: 'Dosis', sans-serif;
 }
 #startTranscription {
-    padding: 15px 50px;
+    padding: 15px 25px;
     background: #f8f8f8;
 }
 #startTranscription h5 {
@@ -304,6 +304,9 @@ ul.item-navigation-content-container div {
 }
 #startTranscription i {
     margin-right: 14px;
+}
+#startTranscription i.right-i {
+    margin-right: 0px;
 }
 /* #startTranscription span {
     height: 25px;
@@ -461,6 +464,9 @@ div.openseadragon-canvas > canvas > svg {
     width: 59%!important;
     margin-right: 5%;
     float: right;
+}
+.location-output {
+    margin-bottom: 50px;
 }
 .wiki-input {
     float: right;
@@ -1311,7 +1317,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-weight: 400;
 }
 .single-meta {
-    padding: 5px 10px;
+    padding: 5px 0px;
     border-bottom: 1px solid #f8f8f8;
     margin-bottom: 10px;
     font-weight: 400;
@@ -1375,6 +1381,10 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     resize: none;
     outline: none;
     width: 100%;
+}
+p.link-description {
+    margin: 0!important;
+    font-size: 13px;
 }
 #help-tab .tutorial-right {
     position: relative;
@@ -1790,8 +1800,8 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .dl-enrichments {
     position: relative;
     /* left: -25px; */
-    margin-top: 2%;
-    margin-bottom: 25px;
+    margin-top: 17px;
+    margin-bottom: 17px;
 }
 /* Enrichments Table */
 .not-started {
@@ -1803,7 +1813,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .enrich-headers {
     margin-bottom: 15px!important;
-    padding-left: 50px;
+    padding-left: 25px;
     color: #0a72cc!important;
     font-family: 'Dosis', sans-serif;
 }
@@ -1824,13 +1834,13 @@ h6.enrich-headers {
 }
 .mb-1 {
     color: #0a72cc;
-    font-weight: 600;
+    font-weight: 400;
     padding: 0!important;
-    font-size: 14px;
+    font-size: 13px;
 }
 .meta-p {
     margin: 0 0 0 5px!important;
-    font-weight: 600;
+    font-weight: 400;
     float: right;
     font-size: 13px;
 }
@@ -2260,11 +2270,11 @@ span.edited, span.completed, span.reviewed , span.not-started {
     display: none;
 }
 .enrich-header {
-    padding: 15px 50px;
+    padding: 15px 25px;
     background: #f8f8f8;
     letter-spacing: 0.025em;
 }
-.enrich-header i {
+.enrich-header h5 i {
     margin-right: 14px;
 }
 .enrich-header span {
@@ -2356,7 +2366,7 @@ span.edited, span.completed, span.reviewed , span.not-started {
 }
 /* Location */
 .location-single {
-    padding: 5px 50px;
+    padding: 5px 25px;
     background: #f8f8f8;
     margin-bottom: 10px;
     font-weight: 400;
@@ -2365,7 +2375,7 @@ span.edited, span.completed, span.reviewed , span.not-started {
     height: 28px!important;
     fill: #0a72cc;
     color: #0a72cc;
-    margin-right: 14px;
+    margin-right: 5px;
 }
 /* Back to story button at top of the page */
 .back-to-story {
@@ -2376,7 +2386,6 @@ span.edited, span.completed, span.reviewed , span.not-started {
     bottom: 36px;
     padding: 10px;
     left: 40px;
-    background: #f8f8f8;
     font-family: 'Dosis', sans-serif;
 }
 .back-to-story a, .back-to-story i {
@@ -2386,23 +2395,32 @@ span.edited, span.completed, span.reviewed , span.not-started {
     display: block;
 }
 .doc-date-container, .person-container, .keyword-container, .language-container, .link-container {
-    padding-left: 50px;
+    padding-left: 25px;
 }
 .person-container, .link-container {
-    padding-right: 50px;
+    padding-right: 25px;
 }
-.date-top {
+.date-top div {
     font-weight: 400;
+    font-size: 13px!important;
 }
 .date-bottom {
-    font-weight: 300;
+    font-weight: 400;
 }
 .person-info {
-    font-weight: 300;
+    font-weight: 400;
+    padding: 7px 0;
+}
+.person-info div:first-of-type{
+    border-top: 1px solid #EBEBEB;
+    margin-top: 3px;
 }
 .person-description {
-    font-size: 14px;
+    font-size: 13px;
+    height: 18px;
+    margin: 0;
 }
 .location-single p {
     margin-bottom: 0px!important;
+    margin-top: 0px!important;
 }

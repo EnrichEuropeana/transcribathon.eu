@@ -3294,14 +3294,8 @@ ready(() => {
         metaBtn.addEventListener('click', function() {
             if(metaContainer.style.height <= '170px') {
                 metaContainer.style.height = 'unset';
-                for(const sticker of metaStickers) {
-                    sticker.style.marginBottom = '10px';
-                }
             } else {
                 metaContainer.style.height = '170px';
-                for(const sticker of metaStickers) {
-                    sticker.style.marginBottom = '50px';
-                }
             }
         })
     }
