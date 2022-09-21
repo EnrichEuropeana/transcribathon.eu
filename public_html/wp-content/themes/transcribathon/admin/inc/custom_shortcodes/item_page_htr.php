@@ -117,7 +117,7 @@ function _TCT_item_page_htr( $atts) {
 >
 </div>
 <script src="{$textEditorUrl}js/chunk-vendors.8c83230e.js"></script>
-<script src="{$textEditorUrl}js/app.dba0aef6.js"></script>
+<script src="{$textEditorUrl}js/app.eb1eb66c.js"></script>
 <script>
 		const loc = window.location;
 		const pathname =  '/wp-content/themes/transcribathon/htr-client/request.php';
