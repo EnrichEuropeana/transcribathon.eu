@@ -300,8 +300,18 @@ function _TCT_get_document_data( $atts ) {
 		        						var bounds = new mapboxgl.LngLatBounds();
 		        					map.addControl(new mapboxgl.NavigationControl());
 
-                                    fetch(TP_API_HOST + '/tp-api/stories/' + storyId)
+                                    fetch(
+                                        '". $home_url . "/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',
+                                        {
+                                            method: 'POST',
+                                            body: JSON.stringify({
+                                                type: 'GET',
+                                                url: TP_API_HOST + '/tp-api/stories/' + storyId
+                                            })
+                                        }
+                                    )
                                     .then(function(response) {
+console.log(response);
                                         return response.json();
                                     })
                                     .then(function(places) {
@@ -451,7 +461,7 @@ function _TCT_get_document_data( $atts ) {
                                     $content .= "<span class='meta-p'>" . $creationEnds ."</span>";
                             $content .= "</div>";
                             unset($creationEnds);
-                        }   
+                        }
                         // Source
                         if($storyData['dcSource']) {
                             $content .= "<div class='meta-sticker'>";
@@ -460,7 +470,7 @@ function _TCT_get_document_data( $atts ) {
                                     $content .= "<span class='meta-p'>". implode('</br>', $itemProvenances) ."</span>";
                             $content .= "</div>";
                             unset($itemProvenances);
-                        } 
+                        }
                         // dctermsProvenance
                         if($storyData['dctermsProvenance']) {
                             $content .= "<div class='meta-sticker'>";
@@ -468,7 +478,7 @@ function _TCT_get_document_data( $atts ) {
                                 $provenance = array_unique(explode(' || ', $storyData['dctermsProvenance']));
                                     $content .= "<span class='meta-p'>". implode('</br>' , $provenance) ."</span>";
                             $content .= "</div>";
-                        }  
+                        }
                         // Type
                         if($storyData['dcType']) {
                             $content .= "<div class='meta-sticker'>";
