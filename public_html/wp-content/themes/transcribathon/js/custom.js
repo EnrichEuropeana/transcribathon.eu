@@ -35,6 +35,28 @@ function installEventListeners() {
             }
         })
     }
+    if(locInput) {
+        document.querySelector('#location-name-display input').addEventListener('keyup', function() {
+            if(document.querySelector('#location-name-display input').value != ''){
+                document.querySelector('#loc-name-check i').style.display = 'block';
+            } else {
+                document.querySelector('#loc-name-check i').style.display = 'none';
+            }
+        })
+        document.querySelector('#loc-save-i').addEventListener('click', function() {
+            document.querySelector('.location-save-btn').click();
+        })
+    }
+    // Location clear input button
+    const clearLocation = document.querySelector('#clear-loc-input');
+    if(clearLocation) {
+        clearLocation.addEventListener('click', function() {
+            document.querySelector('#location-name-display input').value = '';
+            document.querySelector('.location-input-coordinates-container input').value = '';
+            document.querySelector('#location-input-geonames-search-container input').value = '';
+            document.querySelector('.location-input-description-container textarea').value = '';
+        } )
+    }
     // Probably to be removed, ads label when description language is already selected
     const descLangLabel = document.querySelector('.desc-lang-label');
     if(descLangLabel) {
