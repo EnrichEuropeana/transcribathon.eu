@@ -703,14 +703,14 @@ function _TCT_item_page( $atts ) {
                         $mapTab .=    '<span class="required-field">*</span>';
                         // $mapTab .=    '<br/>';
                         $mapTab .= '<input type="text" name="" placeholder="&nbsp&nbsp&nbsp e.g.: Berlin" style="display:inline-block;">';
-                        $mapTab .= '<div class="loc-input-fa"><i class="fas fa-check" style="float:right;color:#00E44D;"></i></div>';
+                        $mapTab .= '<div id="loc-name-check" class="loc-input-fa"><i class="fas fa-check" style="float:right;color:#61e02f;display:none;"></i></div>';
                     $mapTab .= '</div>';
                     $mapTab .= '<div class="location-display location-input-coordinates-container location-input-container">';
                         $mapTab .=    '<label>Coordinates: </label>';
                         $mapTab .=    '<span class="required-field">*</span>';
                         // $mapTab .=    '<br/>';
                         $mapTab .=    '<input type="text" name="" placeholder="&nbsp&nbsp&nbsp e.g.: 10.0123, 15.2345">';
-                        $mapTab .= '<div class="loc-input-fa"><i class="fas fa-save" style="float:right;"></i></div>';
+                        $mapTab .= '<div id="loc-save-i" class="loc-input-fa"><i class="fas fa-save" style="float:right;"></i></div>';
                     $mapTab .= '</div>';
                     $mapTab .= '<div style="clear:both;"></div>';
                 $mapTab .= '</div>';
@@ -718,11 +718,11 @@ function _TCT_item_page( $atts ) {
                 $mapTab .= '<div id="location-input-geonames-search-container" class="location-input-container location-search-container" style="margin-top:9px;">';
                 $mapTab .= '<label>WikiData Reference:
                 <i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Identify this location by searching its name or code on Wikidata"></i></label>';
-                $mapTab .= '<input type="text" id="lgns" class="wiki-input" placeholder="" name="">';
+                $mapTab .= '<input type="text" id="lgns" class="wiki-input" placeholder="&nbsp&nbsp&nbsp e.g.: Q64" name="">';
                 //$taggingTab .= '<a id="geonames-search-button" href="">';
                     //$taggingTab .= '<i class="far fa-search"></i>';
                 //$taggingTab .= '</a>';
-                $mapTab .= '<div class="loc-input-fa" style="right:17px;"><i class="fas fa-times" style="float:right;"></i></div>';
+                $mapTab .= '<div id="clear-loc-input" class="loc-input-fa" style="right:17px;cursor:pointer;"><i class="fas fa-times" style="float:right;"></i></div>';
                 $mapTab .= '</div>';
 
                 $mapTab .= '<div class="location-input-description-container location-input-container">';

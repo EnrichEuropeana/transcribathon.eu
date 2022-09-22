@@ -35,6 +35,28 @@ function installEventListeners() {
             }
         })
     }
+    if(locInput) {
+        document.querySelector('#location-name-display input').addEventListener('keyup', function() {
+            if(document.querySelector('#location-name-display input').value != ''){
+                document.querySelector('#loc-name-check i').style.display = 'block';
+            } else {
+                document.querySelector('#loc-name-check i').style.display = 'none';
+            }
+        })
+        document.querySelector('#loc-save-i').addEventListener('click', function() {
+            document.querySelector('.location-save-btn').click();
+        })
+    }
+    // Location clear input button
+    const clearLocation = document.querySelector('#clear-loc-input');
+    if(clearLocation) {
+        clearLocation.addEventListener('click', function() {
+            document.querySelector('#location-name-display input').value = '';
+            document.querySelector('.location-input-coordinates-container input').value = '';
+            document.querySelector('#location-input-geonames-search-container input').value = '';
+            document.querySelector('.location-input-description-container textarea').value = '';
+        } )
+    }
     // Probably to be removed, ads label when description language is already selected
     const descLangLabel = document.querySelector('.desc-lang-label');
     if(descLangLabel) {
@@ -216,100 +238,100 @@ function installEventListeners() {
         }
     })
     // Not sure where is this on site, needs more testing
-    const singleResultDescriptions = document.querySelectorAll('.search-page-single-result-description');
+    // const singleResultDescriptions = document.querySelectorAll('.search-page-single-result-description');
 
-    if(singleResultDescriptions) {
-        for(const singleResult of singleResultDescriptions) {
-            if(singleResult.scrollHeight > singleResult.clientHeight) {
-                singleResult.siblings.style.display = '-webkit-inline-box';
-            }
-        }
-    }
-    // switcher between stories and items on search documents page
-    const itemTabBtn = document.querySelector('.search-page-item-tab-button');
-    const storyTabBtn = document.querySelector('.search-page-story-tab-button');
-    if(itemTabBtn) {
-        // Switch to Item view
-        itemTabBtn.addEventListener('click', function() {
-            document.querySelector('#search-page-item-tab').style.display = 'block';
-            document.querySelector('#search-page-story-tab').style.display = 'none';
-            itemTabBtn.classList.add('theme-color-background');
-            storyTabBtn.classList.remove('theme-color-background');
-            document.querySelector('.story-results').style.display = 'none';
-            document.querySelector('.item-results').style.display = 'block';
-            document.querySelector('.story-facet-content').style.display = 'none';
-            document.querySelector('.item-facet-content').style.display = 'block';
-            // document.querySelector('.story-search-f').style.display = 'none';
-            // document.querySelector('.item-search-f').style.display = 'block';
-        });
-        // Switch to Story view
-        storyTabBtn.addEventListener('click', function() {
-            document.querySelector('#search-page-item-tab').style.display = 'none';
-            document.querySelector('#search-page-story-tab').style.display = 'block';
-            storyTabBtn.classList.add('theme-color-background');
-            itemTabBtn.classList.remove('theme-color-background');
-            document.querySelector('.story-results').style.display = 'block';
-            document.querySelector('.item-results').style.display = 'none';
-            document.querySelector('.story-facet-content').style.display = 'block';
-            document.querySelector('.item-facet-content').style.display = 'none';
-            // document.querySelector('.story-search-f').style.display = 'block';
-            // document.querySelector('.item-search-f').style.display = 'none';
-        });
-    }
-    // List/Grid Switch - Document Search Page
-    const gridRadioBtn = document.querySelector('.search-results-grid-radio');
-    const listRdioBtn = document.querySelector('.search-results-list-radio');
-    const singleSearchResults = document.querySelectorAll('.search-page-single-result');
+    // if(singleResultDescriptions) {
+    //     for(const singleResult of singleResultDescriptions) {
+    //         if(singleResult.scrollHeight > singleResult.clientHeight) {
+    //             singleResult.siblings.style.display = '-webkit-inline-box';
+    //         }
+    //     }
+    // }
+    // // switcher between stories and items on search documents page
+    // const itemTabBtn = document.querySelector('.search-page-item-tab-button');
+    // const storyTabBtn = document.querySelector('.search-page-story-tab-button');
+    // if(itemTabBtn) {
+    //     // Switch to Item view
+    //     itemTabBtn.addEventListener('click', function() {
+    //         document.querySelector('#search-page-item-tab').style.display = 'block';
+    //         document.querySelector('#search-page-story-tab').style.display = 'none';
+    //         itemTabBtn.classList.add('theme-color-background');
+    //         storyTabBtn.classList.remove('theme-color-background');
+    //         document.querySelector('.story-results').style.display = 'none';
+    //         document.querySelector('.item-results').style.display = 'block';
+    //         document.querySelector('.story-facet-content').style.display = 'none';
+    //         document.querySelector('.item-facet-content').style.display = 'block';
+    //         document.querySelector('.story-search-f').style.display = 'none';
+    //         document.querySelector('.item-search-f').style.display = 'block';
+    //     });
+    //     // Switch to Story view
+    //     storyTabBtn.addEventListener('click', function() {
+    //         document.querySelector('#search-page-item-tab').style.display = 'none';
+    //         document.querySelector('#search-page-story-tab').style.display = 'block';
+    //         storyTabBtn.classList.add('theme-color-background');
+    //         itemTabBtn.classList.remove('theme-color-background');
+    //         document.querySelector('.story-results').style.display = 'block';
+    //         document.querySelector('.item-results').style.display = 'none';
+    //         document.querySelector('.story-facet-content').style.display = 'block';
+    //         document.querySelector('.item-facet-content').style.display = 'none';
+    //         document.querySelector('.story-search-f').style.display = 'block';
+    //         document.querySelector('.item-search-f').style.display = 'none';
+    //     });
+    // }
+    // // List/Grid Switch - Document Search Page
+    // const gridRadioBtn = document.querySelector('.search-results-grid-radio');
+    // const listRdioBtn = document.querySelector('.search-results-list-radio');
+    // const singleSearchResults = document.querySelectorAll('.search-page-single-result');
 
-    if(gridRadioBtn) {
-        // switch to grid view
-        gridRadioBtn.addEventListener('click', function() {
-            // replace classes of the single result item to get list view instead of grid
-            for(const singleResult of singleSearchResults) {
-                singleResult.classList.replace('list-overview', 'maingridview');
-            }
-            gridRadioBtn.querySelector('label').classList.add('theme-color-background');
-            gridRadioBtn.querySelector('i').classList.remove('theme-color');
-            listRdioBtn.querySelector('label').classList.remove('theme-color-background');
-            listRdioBtn.querySelector('i').classList.add('theme-color');
-        })
-        // switch back to list view
-        listRdioBtn.addEventListener('click', function() {
-            for(const singleResult of singleSearchResults) {
-                singleResult.classList.replace('maingridview', 'list-overview');
-            }
-            gridRadioBtn.querySelector('label').classList.remove('theme-color-background');
-            gridRadioBtn.querySelector('i').classList.add('theme-color');
-            listRdioBtn.querySelector('label').classList.add('theme-color-background');
-            listRdioBtn.querySelector('i').classList.remove('theme-color');
-        })
-    }
-    const url = new URL(window.location.href);
-    const itemPagination = url.searchParams.get('pi');
-    if(itemPagination) {
-        itemTabBtn.classList.add('theme-color-background');
-        storyTabBtn.classList.remove('theme-color-background');
-        document.querySelector('.story-results').style.display = 'none';
-        document.querySelector('.item-results').style.display = 'block';
-        document.querySelector('.story-facet-content').style.display = 'none';
-        document.querySelector('.item-facet-content').style.display = 'block';
-    }
-    // Search Test
-    const searchInput = document.querySelector('#storySearch');
-    const searchHidden = document.querySelector('#itemSearch');
-    const subBtn = document.querySelector('.search-submit');
-    subBtn.addEventListener('click', function() {
-        searchHidden.value = searchInput.value;
-    }, false);
-    ////////
-    const searchInputV = document.querySelector('#storySearchV');
-    const searchHiddenV = document.querySelector('#itemSearchV');
-    const subBtnV = document.querySelector('.search-submitV');
-    if(searchInputV) {
-        subBtnV.addEventListener('click', function() {
-            searchHiddenV.value = searchInputV.value;
-        }, false);
-    }
+    // if(gridRadioBtn) {
+    //     // switch to grid view
+    //     gridRadioBtn.addEventListener('click', function() {
+    //         // replace classes of the single result item to get list view instead of grid
+    //         for(const singleResult of singleSearchResults) {
+    //             singleResult.classList.replace('list-overview', 'maingridview');
+    //         }
+    //         gridRadioBtn.querySelector('label').classList.add('theme-color-background');
+    //         gridRadioBtn.querySelector('i').classList.remove('theme-color');
+    //         listRdioBtn.querySelector('label').classList.remove('theme-color-background');
+    //         listRdioBtn.querySelector('i').classList.add('theme-color');
+    //     })
+    //     // switch back to list view
+    //     listRdioBtn.addEventListener('click', function() {
+    //         for(const singleResult of singleSearchResults) {
+    //             singleResult.classList.replace('maingridview', 'list-overview');
+    //         }
+    //         gridRadioBtn.querySelector('label').classList.remove('theme-color-background');
+    //         gridRadioBtn.querySelector('i').classList.add('theme-color');
+    //         listRdioBtn.querySelector('label').classList.add('theme-color-background');
+    //         listRdioBtn.querySelector('i').classList.remove('theme-color');
+    //     })
+    // }
+    // const url = new URL(window.location.href);
+    // const itemPagination = url.searchParams.get('pi');
+    // if(itemPagination) {
+    //     itemTabBtn.classList.add('theme-color-background');
+    //     storyTabBtn.classList.remove('theme-color-background');
+    //     document.querySelector('.story-results').style.display = 'none';
+    //     document.querySelector('.item-results').style.display = 'block';
+    //     document.querySelector('.story-facet-content').style.display = 'none';
+    //     document.querySelector('.item-facet-content').style.display = 'block';
+    // }
+    // // Search Test
+    // const searchInput = document.querySelector('#storySearch');
+    // const searchHidden = document.querySelector('#itemSearch');
+    // const subBtn = document.querySelector('.search-submit');
+    // subBtn.addEventListener('click', function() {
+    //     searchHidden.value = searchInput.value;
+    // }, false);
+    // ////////
+    // const searchInputV = document.querySelector('#storySearchV');
+    // const searchHiddenV = document.querySelector('#itemSearchV');
+    // const subBtnV = document.querySelector('.search-submitV');
+    // if(searchInputV) {
+    //     subBtnV.addEventListener('click', function() {
+    //         searchHiddenV.value = searchInputV.value;
+    //     }, false);
+    // }
 
 //   const itemPageKeyWords = document.querySelector('#keyword-input');
 //   let flag = true;
@@ -3270,6 +3292,102 @@ ready(() => {
     //         }
     //     }
     // }
+    /// Search page fix
+        // Not sure where is this on site, needs more testing
+        const singleResultDescriptions = document.querySelectorAll('.search-page-single-result-description');
+
+        if(singleResultDescriptions) {
+            for(const singleResult of singleResultDescriptions) {
+                if(singleResult.scrollHeight > singleResult.clientHeight) {
+                    singleResult.siblings.style.display = '-webkit-inline-box';
+                }
+            }
+        }
+        // switcher between stories and items on search documents page
+        const itemTabBtn = document.querySelector('.search-page-item-tab-button');
+        const storyTabBtn = document.querySelector('.search-page-story-tab-button');
+        if(itemTabBtn) {
+            // Switch to Item view
+            itemTabBtn.addEventListener('click', function() {
+                document.querySelector('#search-page-item-tab').style.display = 'block';
+                document.querySelector('#search-page-story-tab').style.display = 'none';
+                itemTabBtn.classList.add('theme-color-background');
+                storyTabBtn.classList.remove('theme-color-background');
+                document.querySelector('.story-results').style.display = 'none';
+                document.querySelector('.item-results').style.display = 'block';
+                document.querySelector('.story-facet-content').style.display = 'none';
+                document.querySelector('.item-facet-content').style.display = 'block';
+                // document.querySelector('.story-search-f').style.display = 'none';
+                // document.querySelector('.item-search-f').style.display = 'block';
+            });
+            // Switch to Story view
+            storyTabBtn.addEventListener('click', function() {
+                document.querySelector('#search-page-item-tab').style.display = 'none';
+                document.querySelector('#search-page-story-tab').style.display = 'block';
+                storyTabBtn.classList.add('theme-color-background');
+                itemTabBtn.classList.remove('theme-color-background');
+                document.querySelector('.story-results').style.display = 'block';
+                document.querySelector('.item-results').style.display = 'none';
+                document.querySelector('.story-facet-content').style.display = 'block';
+                document.querySelector('.item-facet-content').style.display = 'none';
+                // document.querySelector('.story-search-f').style.display = 'block';
+                // document.querySelector('.item-search-f').style.display = 'none';
+            });
+        }
+        // List/Grid Switch - Document Search Page
+        const gridRadioBtn = document.querySelector('.search-results-grid-radio');
+        const listRdioBtn = document.querySelector('.search-results-list-radio');
+        const singleSearchResults = document.querySelectorAll('.search-page-single-result');
+    
+        if(gridRadioBtn) {
+            // switch to grid view
+            gridRadioBtn.addEventListener('click', function() {
+                // replace classes of the single result item to get list view instead of grid
+                for(const singleResult of singleSearchResults) {
+                    singleResult.classList.replace('list-overview', 'maingridview');
+                }
+                gridRadioBtn.querySelector('label').classList.add('theme-color-background');
+                gridRadioBtn.querySelector('i').classList.remove('theme-color');
+                listRdioBtn.querySelector('label').classList.remove('theme-color-background');
+                listRdioBtn.querySelector('i').classList.add('theme-color');
+            })
+            // switch back to list view
+            listRdioBtn.addEventListener('click', function() {
+                for(const singleResult of singleSearchResults) {
+                    singleResult.classList.replace('maingridview', 'list-overview');
+                }
+                gridRadioBtn.querySelector('label').classList.remove('theme-color-background');
+                gridRadioBtn.querySelector('i').classList.add('theme-color');
+                listRdioBtn.querySelector('label').classList.add('theme-color-background');
+                listRdioBtn.querySelector('i').classList.remove('theme-color');
+            })
+        }
+        const url = new URL(window.location.href);
+        const itemPagination = url.searchParams.get('pi');
+        if(itemPagination) {
+            itemTabBtn.classList.add('theme-color-background');
+            storyTabBtn.classList.remove('theme-color-background');
+            document.querySelector('.story-results').style.display = 'none';
+            document.querySelector('.item-results').style.display = 'block';
+            document.querySelector('.story-facet-content').style.display = 'none';
+            document.querySelector('.item-facet-content').style.display = 'block';
+        }
+        // Search Test
+        const searchInput = document.querySelector('#storySearch');
+        const searchHidden = document.querySelector('#itemSearch');
+        const subBtn = document.querySelector('.search-submit');
+        subBtn.addEventListener('click', function() {
+            searchHidden.value = searchInput.value;
+        }, false);
+        ////////
+        const searchInputV = document.querySelector('#storySearchV');
+        const searchHiddenV = document.querySelector('#itemSearchV');
+        const subBtnV = document.querySelector('.search-submitV');
+        if(searchInputV) {
+            subBtnV.addEventListener('click', function() {
+                searchHiddenV.value = searchInputV.value;
+            }, false);
+        }
 
     // const singleLinks = document.querySelectorAll('.link-single');
     // if(singleLinks) {

@@ -4315,6 +4315,7 @@ a#new-temporary-prof:hover {
   position: relative;
 }
 .search-form-style input {
+  border-radius: 0;
   height: 50px;
   font-size: 20px;
   padding: 3px 4px;
@@ -4324,11 +4325,11 @@ a#new-temporary-prof:hover {
 }
 .search-form-style a {
   color: white;
-  font-size: 20px;
-  bottom: 1px;
+  font-size: 18.8px;
+  bottom: 2.5px;
   position: relative;
   padding: 9.5px 5px 12px;
-  border-radius: 0 10% 0 0;
+  border-radius: 0;
   border: 0.1px solid;
   border-left: none;
 }
