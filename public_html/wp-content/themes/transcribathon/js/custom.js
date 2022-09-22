@@ -3292,10 +3292,12 @@ ready(() => {
     const metaStickers = document.querySelectorAll('.meta-sticker');
     if(metaBtn){
         metaBtn.addEventListener('click', function() {
-            if(metaContainer.style.height <= '100px') {
+            if(metaContainer.style.height <= '110px') {
                 metaContainer.style.height = 'unset';
+                document.querySelector('#meta-show-more').style.display = 'none';
             } else {
-                metaContainer.style.height = '100px';
+                metaContainer.style.height = '110px';
+                document.querySelector('#meta-show-more').style.display = 'block';
             }
         })
     }

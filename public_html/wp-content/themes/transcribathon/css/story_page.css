@@ -349,6 +349,15 @@ ul.story-navigation-content-container li {
     float: right;
     font-size: 13px;
 }
+#meta-show-more {
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #fff;
+    color: #0a72cc;
+}
 /* End of Metadata */
 /* Responsivness */
 /* @media screen and (max-width: 920px) {
