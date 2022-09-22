@@ -3292,10 +3292,12 @@ ready(() => {
     const metaStickers = document.querySelectorAll('.meta-sticker');
     if(metaBtn){
         metaBtn.addEventListener('click', function() {
-            if(metaContainer.style.height <= '100px') {
+            if(metaContainer.style.height <= '110px') {
                 metaContainer.style.height = 'unset';
+                document.querySelector('#meta-show-more').style.display = 'none';
             } else {
-                metaContainer.style.height = '100px';
+                metaContainer.style.height = '110px';
+                document.querySelector('#meta-show-more').style.display = 'block';
             }
         })
     }
@@ -3309,7 +3311,7 @@ ready(() => {
                 itemTrBtn.textContent = 'Show Less';
             } else {
                 itemTrBtn.previousSibling.style.height = '401px';
-                document.querySelector('#transcription-container').style.height = '580px';
+                document.querySelector('#transcription-container').style.height = '588px';
                 itemTrBtn.textContent = 'Show More';
             }
         })
@@ -3324,7 +3326,7 @@ ready(() => {
                 itemHtrBtn.textContent = 'Show Less';
             } else {
                 itemHtrBtn.previousSibling.style.height = '401px';
-                document.querySelector('#htr-transcription').style.height = '580px';
+                document.querySelector('#htr-transcription').style.height = '588px';
                 itemHtrBtn.textContent = 'Show More';
             }
         })

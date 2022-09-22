@@ -354,9 +354,9 @@ console.log(response);
 
                 // metadata
                 $content .= "<section class='meta-section'>";
-                    $content .= "<p id='meta-collapse-btn' class='metadata-h' role='button'><span><b><i style='margin-right:5px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</b></span><span><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span></p>";
+                    $content .= "<p id='meta-collapse-btn' class='metadata-h' role='button' style='cursor:pointer;'><span><b><i style='margin-right:5px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</b></span><span><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span></p>";
 
-                    $content .= "<div class='metadata-container js-container' style='height:100px;'>";
+                    $content .= "<div class='metadata-container js-container' style='height:110px;'>";
 
                         // Contributor
                         if(sizeof($storyContributors) > 0) {
@@ -625,6 +625,8 @@ console.log(response);
                                     $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $storyData['dctermsMedium']) . "</span>";
                             $content .= "</div>";
                         }
+
+                        $content .= "<div id='meta-show-more'><i class=\"fas fa-chevron-double-down\"></i></div>";
 
 
 

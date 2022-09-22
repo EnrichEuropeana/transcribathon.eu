@@ -887,7 +887,7 @@ div.openseadragon-canvas > canvas > svg {
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
     width: 25px;
-    background: url(admin/inc/custom_shortcodes/upload-images/splitter.png) center center no-repeat;
+    background: url(../images/splitter.png) center center no-repeat;
     cursor: col-resize;
 }
 .splitter-horizontal {
@@ -901,7 +901,7 @@ div.openseadragon-canvas > canvas > svg {
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
     height: 25px;
-    background: url(admin/inc/custom_shortcodes/upload-images/splitter_2.png) center center no-repeat;
+    background: url(../images/splitter_2.png) center center no-repeat;
     cursor: row-resize;
 
 }
