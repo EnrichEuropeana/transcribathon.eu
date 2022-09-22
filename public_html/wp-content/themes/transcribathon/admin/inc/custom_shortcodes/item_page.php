@@ -1917,6 +1917,11 @@ function _TCT_item_page( $atts ) {
                         $content .= "<span class='meta-p'>" . implode('</br>', $source) . "</span>";
                     $content .= "</div>";
                 }
+                // Story Title
+                $content .= "<div class='single-meta-htr'>";
+                    $content .= "<span class='mb-1'>Story Title</span>";
+                    $content .= "<span class='meta-p'>". str_replace(' || ', "</br>", $itemData['StorydcTitle']) . "</span>";
+                $content .= "</div>";
                 // dctermsProvenance
                 if($itemData['StorydctermsProvenance']) {
                     $content .= "<div class='single-meta-htr'>";
@@ -2017,11 +2022,6 @@ function _TCT_item_page( $atts ) {
                         }
                     $content .= "</div>";
                 }
-                // Story Title
-                $content .= "<div class='single-meta-htr'>";
-                    $content .= "<span class='mb-1'>Story Title</span>";
-                    $content .= "<span class='meta-p'>". str_replace(' || ', "</br>", $itemData['StorydcTitle']) . "</span>";
-                $content .= "</div>";
                 // Story Landing Page
                 if($itemData['StoryedmLandingPage']) {
                     $content .= "<div class='single-meta-htr'>";
@@ -2274,6 +2274,11 @@ function _TCT_item_page( $atts ) {
                             $content .= "<span class='meta-p'>" . implode('</br>', $source) . "</span>";
                         $content .= "</div>";
                     }
+                    // Story Title
+                    $content .= "<div class='single-meta'>";
+                        $content .= "<span class='mb-1'>Story Title</span>";
+                        $content .= "<span class='meta-p'>". str_replace(' || ', ";", $itemData['StorydcTitle']) . "</span>";
+                    $content .= "</div>";
                     // dctermsProvenance
                     if($itemData['StorydctermsProvenance']) {
                         $content .= "<div class='meta-sticker'>";
@@ -2374,11 +2379,7 @@ function _TCT_item_page( $atts ) {
                             }
                         $content .= "</div>";
                     }
-                    // Story Title
-                    $content .= "<div class='single-meta'>";
-                        $content .= "<span class='mb-1'>Story Title</span>";
-                        $content .= "<span class='meta-p'>". str_replace(' || ', ";", $itemData['StorydcTitle']) . "</span>";
-                    $content .= "</div>";
+
                     // Story Landing Page
                     if($itemData['StoryedmLandingPage']) {
                         $content .= "<div class='single-meta'>";
@@ -2631,7 +2632,7 @@ function _TCT_item_page( $atts ) {
                 $content .= '</div>';
             $content .= "</div>";
             // Resize slider
-            $content .= '<div id="item-splitter" class="splitter-vertical"></div>';
+            $content .= '<div id="item-splitter" class="splitter-vertical"><img src="'.home_url().'/wp-content/themes/transcribathon/images/splitter.png" style="position:relative;left:-10px;max-width:50px;height:100px;"></div>';
             // Info/Transcription section
             $content .= "<div id='item-data-section' class='panel-right'>";
                 $content .= "<div id='item-data-header'>";

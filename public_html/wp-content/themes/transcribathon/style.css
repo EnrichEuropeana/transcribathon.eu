@@ -220,6 +220,9 @@ nav[role=navigation].main-navigation .menu {
   max-width: 100%;
   margin-bottom: 20px;
 }
+ul#menu-main-menu {
+  background: #fff;
+}
 #_transcribathon_topmenu > li > a {
   padding: 0 10px;
 }
