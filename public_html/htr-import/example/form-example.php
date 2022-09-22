@@ -98,6 +98,9 @@ $storyId = sanitizeDigit($_GET['storyId']);
 			justify-content: space-between;
 		}
 		.back-button{
+			position: absolute;
+			top: 344px;
+			float: left;
 			display: block;
 			text-align: center;
 			font-weight: 600;
@@ -133,7 +136,7 @@ $storyId = sanitizeDigit($_GET['storyId']);
 						<label>Item ID<input type="number" x-model.number="itemId" /></label>
 					<?php } ?>
 	    		<label>HTR Model ID
-	    			<input type="text" x-model="htrId" list="htrList"/>
+	    			<input id="id-input" type="text" x-model="htrId" list="htrList"/>
 	    			<datalist id="htrList">
 	    				<option></option>
 	    				<template x-for="model in htrModels.trpModelMetadata" :key="model.modelId">
@@ -454,7 +457,23 @@ document.addEventListener('alpine:init', () => {
 	}));
 
 });
-
+// fill model ID by clicking on card
+var ready = (callback) => {
+    if (document.readyState != "loading") callback();
+    else document.addEventListener("DOMContentLoaded", callback);
+}
+// Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
+ready(() => {
+const cards = document.querySelectorAll('.card');
+console.log(cards);
+for(let card of cards) {
+	card.addEventListener('click', function() {
+		let cardID = card.querySelector('.card-text').textContent;
+		let cleanId = cardID.replace('Id: ', '');
+		document.querySelector('#id-input').value = cleanId;
+	})
+}
+})
 </script>
 </body>
 </html>
