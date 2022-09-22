@@ -116,6 +116,16 @@ function _TCT_item_page_htr( $atts) {
     data-xml='{$transcription}'
 >
 </div>
+<script>
+var ready = (callback) => {
+    if (document.readyState != "loading") callback();
+    else document.addEventListener("DOMContentLoaded", callback);
+}
+// Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
+ready(() => {
+    document.querySelector('button[title="Switch view"]').click();
+})
+</script>
 <script src="{$textEditorUrl}js/chunk-vendors.8c83230e.js"></script>
 <script src="{$textEditorUrl}js/app.eb1eb66c.js"></script>
 <script>
