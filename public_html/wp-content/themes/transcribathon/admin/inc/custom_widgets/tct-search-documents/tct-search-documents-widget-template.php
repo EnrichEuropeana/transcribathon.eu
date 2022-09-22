@@ -255,7 +255,7 @@ if (isset($_GET['qs']) || isset($_GET['qi']))  {
                 $searchContent .= "<div style='width:400px;'>";
                     $searchContent .= "<input type='text' id='storySearchV' name='qs' form='story-facet-form' value='".htmlspecialchars($_GET['qs'])."' placeholder='Add a search term' class='search-text'>";
                     $searchContent .= "<input type='text' id='itemSearchV' name='qi' form='story-facet-form' value='".htmlspecialchars($_GET['qs'])."' hidden>";
-                    $searchContent .= "<input type='submit' form='story-facet-form' value='🔎︎' class='search-submitV theme-color-background' >";
+                    $searchContent .= "<input type='submit' form='story-facet-form' value='🔎︎' class='search-submitV theme-color-background' style='position:relative;height:49px;bottom:1.5px;'>";
                     $searchContent .= "<a href='/map' target='_blank' class='theme-color-background'><i class='fal fa-globe-europe' style='font-size: 20px;'></i></a>";
                 $searchContent .= "</div>";
         //    $searchContent .= "</form>";
