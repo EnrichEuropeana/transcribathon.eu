@@ -63,7 +63,7 @@ Description: Stylesheet for Item Page
     top: 40%;
     color: #fff;
     background: #0a72cc;
-    z-index: 999;
+    z-index: 99;
 }
 .next-slide {
     font-size: 15px;
@@ -75,7 +75,7 @@ Description: Stylesheet for Item Page
     top: 40%;
     color: #fff;
     background: #0a72cc;
-    z-index: 999;
+    z-index: 99;
 }
 .next-set {
     position: relative;

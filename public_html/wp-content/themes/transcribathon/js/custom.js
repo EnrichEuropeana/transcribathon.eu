@@ -3292,10 +3292,10 @@ ready(() => {
     const metaStickers = document.querySelectorAll('.meta-sticker');
     if(metaBtn){
         metaBtn.addEventListener('click', function() {
-            if(metaContainer.style.height <= '170px') {
+            if(metaContainer.style.height <= '100px') {
                 metaContainer.style.height = 'unset';
             } else {
-                metaContainer.style.height = '170px';
+                metaContainer.style.height = '100px';
             }
         })
     }

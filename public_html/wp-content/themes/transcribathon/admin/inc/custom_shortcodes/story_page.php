@@ -356,7 +356,7 @@ console.log(response);
                 $content .= "<section class='meta-section'>";
                     $content .= "<p id='meta-collapse-btn' class='metadata-h' role='button'><span><b><i style='margin-right:5px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>METADATA</b></span><span><i style='font-size:25px;margin-right:10px;' class='fas fa-angle-down'></i></span></p>";
 
-                    $content .= "<div class='metadata-container js-container' style='height:170px;'>";
+                    $content .= "<div class='metadata-container js-container' style='height:100px;'>";
 
                         // Contributor
                         if(sizeof($storyContributors) > 0) {
