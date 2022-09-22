@@ -76,7 +76,7 @@ function _TCT_get_document_data( $atts ) {
 
         $content .= "<div id='controls-div'>";
 
-            $content .= "<button class='prev-set' type='button'><i class=\"fas fa-chevron-double-left\"></i></button>";
+            $content .= "<button class='prev-set' type='button' style='display:none;'><i class=\"fas fa-chevron-double-left\"></i></button>";
             $content .= "<div id='dot-indicators'>";
             // placeholder for dot indicators
             $content .= "</div>";
@@ -84,7 +84,7 @@ function _TCT_get_document_data( $atts ) {
                 $content .= "<span id='left-num'>1</span> - <span id='right-num'></span> of ";
                 $content .="<span>". $numbPhotos ."</span>";
             $content .="</div>";
-            $content .= "<button class='next-set' type='button'><i class=\"fas fa-chevron-double-right\"></i></button>";
+            $content .= "<button class='next-set' type='button' style='display:none;'><i class=\"fas fa-chevron-double-right\"></i></button>";
             //// To be discussed if we keep dots or numbers /////
         $content .= "</div>";
 
@@ -181,7 +181,12 @@ function _TCT_get_document_data( $atts ) {
             $content .= "</section>";
             $content .= "<div style='clear:both;'></div>";
 
-
+            // Htr Import Link
+            $content .= '<div style="width:49%;float:left;"><a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;color:#0a72cc;cursor:pointer;margin-bottom:10px;margin-top:10px;" type="button" target="_blank" href="' . get_main_url() . '/htr-import/example/form-example.php?storyId=' . $_GET['story']  . '">';
+                $content .= "<span><h5 style='color:#0a72cc;'>Run Transkribus automatic text recognition (HTR) </h5></span>";
+                $content .= "<span><i style='position:relative;top:50%;transform:translateY(-50%);font-size:20px;' class='fas fa-desktop' aria-hidden='true'></i></span>";
+            $content .= "</a></div>";
+            $content .= "<div style='clear:both;'></div>";
             //Status Chart
             $content .= "<div class='storypg-chart'>";
 

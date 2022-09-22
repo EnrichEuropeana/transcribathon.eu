@@ -563,3 +563,9 @@ ul.story-navigation-content-container li {
         bottom: 0;
     }
 }
+.dl-enrichments {
+    position: relative;
+    /* left: -25px; */
+    margin-top: 0px!important;
+    margin-bottom: 0px!important;
+}

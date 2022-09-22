@@ -237,101 +237,6 @@ function installEventListeners() {
             jQuery(this).parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'inline-block');
         }
     })
-    // Not sure where is this on site, needs more testing
-    // const singleResultDescriptions = document.querySelectorAll('.search-page-single-result-description');
-
-    // if(singleResultDescriptions) {
-    //     for(const singleResult of singleResultDescriptions) {
-    //         if(singleResult.scrollHeight > singleResult.clientHeight) {
-    //             singleResult.siblings.style.display = '-webkit-inline-box';
-    //         }
-    //     }
-    // }
-    // // switcher between stories and items on search documents page
-    // const itemTabBtn = document.querySelector('.search-page-item-tab-button');
-    // const storyTabBtn = document.querySelector('.search-page-story-tab-button');
-    // if(itemTabBtn) {
-    //     // Switch to Item view
-    //     itemTabBtn.addEventListener('click', function() {
-    //         document.querySelector('#search-page-item-tab').style.display = 'block';
-    //         document.querySelector('#search-page-story-tab').style.display = 'none';
-    //         itemTabBtn.classList.add('theme-color-background');
-    //         storyTabBtn.classList.remove('theme-color-background');
-    //         document.querySelector('.story-results').style.display = 'none';
-    //         document.querySelector('.item-results').style.display = 'block';
-    //         document.querySelector('.story-facet-content').style.display = 'none';
-    //         document.querySelector('.item-facet-content').style.display = 'block';
-    //         document.querySelector('.story-search-f').style.display = 'none';
-    //         document.querySelector('.item-search-f').style.display = 'block';
-    //     });
-    //     // Switch to Story view
-    //     storyTabBtn.addEventListener('click', function() {
-    //         document.querySelector('#search-page-item-tab').style.display = 'none';
-    //         document.querySelector('#search-page-story-tab').style.display = 'block';
-    //         storyTabBtn.classList.add('theme-color-background');
-    //         itemTabBtn.classList.remove('theme-color-background');
-    //         document.querySelector('.story-results').style.display = 'block';
-    //         document.querySelector('.item-results').style.display = 'none';
-    //         document.querySelector('.story-facet-content').style.display = 'block';
-    //         document.querySelector('.item-facet-content').style.display = 'none';
-    //         document.querySelector('.story-search-f').style.display = 'block';
-    //         document.querySelector('.item-search-f').style.display = 'none';
-    //     });
-    // }
-    // // List/Grid Switch - Document Search Page
-    // const gridRadioBtn = document.querySelector('.search-results-grid-radio');
-    // const listRdioBtn = document.querySelector('.search-results-list-radio');
-    // const singleSearchResults = document.querySelectorAll('.search-page-single-result');
-
-    // if(gridRadioBtn) {
-    //     // switch to grid view
-    //     gridRadioBtn.addEventListener('click', function() {
-    //         // replace classes of the single result item to get list view instead of grid
-    //         for(const singleResult of singleSearchResults) {
-    //             singleResult.classList.replace('list-overview', 'maingridview');
-    //         }
-    //         gridRadioBtn.querySelector('label').classList.add('theme-color-background');
-    //         gridRadioBtn.querySelector('i').classList.remove('theme-color');
-    //         listRdioBtn.querySelector('label').classList.remove('theme-color-background');
-    //         listRdioBtn.querySelector('i').classList.add('theme-color');
-    //     })
-    //     // switch back to list view
-    //     listRdioBtn.addEventListener('click', function() {
-    //         for(const singleResult of singleSearchResults) {
-    //             singleResult.classList.replace('maingridview', 'list-overview');
-    //         }
-    //         gridRadioBtn.querySelector('label').classList.remove('theme-color-background');
-    //         gridRadioBtn.querySelector('i').classList.add('theme-color');
-    //         listRdioBtn.querySelector('label').classList.add('theme-color-background');
-    //         listRdioBtn.querySelector('i').classList.remove('theme-color');
-    //     })
-    // }
-    // const url = new URL(window.location.href);
-    // const itemPagination = url.searchParams.get('pi');
-    // if(itemPagination) {
-    //     itemTabBtn.classList.add('theme-color-background');
-    //     storyTabBtn.classList.remove('theme-color-background');
-    //     document.querySelector('.story-results').style.display = 'none';
-    //     document.querySelector('.item-results').style.display = 'block';
-    //     document.querySelector('.story-facet-content').style.display = 'none';
-    //     document.querySelector('.item-facet-content').style.display = 'block';
-    // }
-    // // Search Test
-    // const searchInput = document.querySelector('#storySearch');
-    // const searchHidden = document.querySelector('#itemSearch');
-    // const subBtn = document.querySelector('.search-submit');
-    // subBtn.addEventListener('click', function() {
-    //     searchHidden.value = searchInput.value;
-    // }, false);
-    // ////////
-    // const searchInputV = document.querySelector('#storySearchV');
-    // const searchHiddenV = document.querySelector('#itemSearchV');
-    // const subBtnV = document.querySelector('.search-submitV');
-    // if(searchInputV) {
-    //     subBtnV.addEventListener('click', function() {
-    //         searchHiddenV.value = searchInputV.value;
-    //     }, false);
-    // }
 
 //   const itemPageKeyWords = document.querySelector('#keyword-input');
 //   let flag = true;
@@ -3470,14 +3375,14 @@ ready(() => {
         })
     }
     // Item Page, check if the property is Empty and hide the header
-    const itemProperties = document.querySelectorAll('.js-check');
-    if(itemProperties) {
-        for(const property of itemProperties) {
-            if(!property.firstChild) {
-                property.previousSibling.setAttribute('hidden', 'true');
-            }
-        }
-    }
+    // const itemProperties = document.querySelectorAll('.js-check');
+    // if(itemProperties) {
+    //     for(const property of itemProperties) {
+    //         if(!property.firstChild) {
+    //             property.previousSibling.setAttribute('hidden', 'true');
+    //         }
+    //     }
+    // }
     // Item Page, metadata collapse controller
     const itemMetaBtn = document.querySelector('#item-meta-collapse');
     if(itemMetaBtn) {
@@ -3622,11 +3527,11 @@ ready(() => {
           sliderStart = parseInt(document.querySelector('#slide-start').textContent) + 1;
         } 
         // Buttons to move by 1
-        const prevBtn = document.querySelector('.prev-slide');
-        const nextBtn = document.querySelector('.next-slide');
+        const prevBtn = document.querySelector('.prev-set');
+        const nextBtn = document.querySelector('.next-set');
         // Buttons to move by step size
-        const nextSet = document.querySelector('.next-set');
-        const prevSet = document.querySelector('.prev-set');
+        const nextSet = document.querySelector('.next-slide');
+        const prevSet = document.querySelector('.prev-slide');
         // Spans showing current images on the screen
         const leftSpanNumb = document.querySelector('#left-num');
         const rightSpanNumb = document.querySelector('#right-num');
@@ -3691,8 +3596,10 @@ ready(() => {
                     slideN = imgSticker.length - 1;
                     
                     for(let y = imgSticker.length-1; y > imgSticker.length - (step+1); y--) {
-                        imgSticker[y-step].style.display = 'none';
+                        if(imgSticker[y-step]){
+                            imgSticker[y-step].style.display = 'none';
                         imgSticker[y].style.display = 'inline-block';
+                    }
                     }
                 }
             })
@@ -3708,8 +3615,10 @@ ready(() => {
                     rightSpanNumb.textContent = slideN + 1;
                 } else {
                     for(let z = 0; z < step; z++) {
-                        imgSticker[z+step].style.display = 'none';
-                        imgSticker[z].style.display = 'inline-block';
+                        if(imgSticker[z+step]){
+                            imgSticker[z+step].style.display = 'none';
+                            imgSticker[z].style.display = 'inline-block';
+                        }
                     }
                     leftSpanNumb.textContent = 1;
                     rightSpanNumb.textContent = step;

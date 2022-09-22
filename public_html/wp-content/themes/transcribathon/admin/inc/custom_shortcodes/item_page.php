@@ -1478,7 +1478,7 @@ function _TCT_item_page( $atts ) {
 
 
             $content .= "<div id='controls-div'>";
-                $content .= "<button class='prev-set' type='button'><i class=\"fas fa-chevron-double-left\"></i></button>";
+                $content .= "<button class='prev-set' type='button' style='display:none;'><i class=\"fas fa-chevron-double-left\"></i></button>";
                 // $content .= "<div id='dot-indicators'>";
                 // // placeholder for dot indicators
                 // $content .= "</div>";
@@ -1486,7 +1486,7 @@ function _TCT_item_page( $atts ) {
                     $content .= "<span id='left-num'>1</span> - <span id='right-num'></span> of ";
                     $content .="<span>". $numbPhotos ."</span>";
                 $content .="</div>";
-                $content .= "<button class='next-set' type='button'><i class=\"fas fa-chevron-double-right\"></i></button>";
+                $content .= "<button class='next-set' type='button' style='display:none;'><i class=\"fas fa-chevron-double-right\"></i></button>";
                 //// To be discussed if we keep dots or numbers /////
             $content .= "</div>";
 
@@ -1661,37 +1661,43 @@ function _TCT_item_page( $atts ) {
                 }
                 // key words
                 // js-check class is used to check if the property field is empty, so we can hide the header if it is empty
-                if($itemData['Properties']) {
+                
                     // Category
                     $content .= "<h6 class='enrich-headers'>Type of Media</h6>";
-                    $content .= "<div class='keyword-container js-check'>";
-                    foreach($itemData['Properties'] as $property) {
-                        if($property['PropertyType'] == "Category") {
-                            $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                    if($itemData['Properties']) {
+                        $content .= "<div class='keyword-container js-check'>";
+                        foreach($itemData['Properties'] as $property) {
+                            if($property['PropertyType'] == "Category") {
+                                $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                            }
                         }
+                        $content .= "</div>";
                     }
-                    $content .= "</div>";
                     $content .= "<h6 class='enrich-headers'>Keywords</h6>";
-                    $content .= "<div class='keyword-container js-check'>";
-                    foreach($itemData['Properties'] as $properti){
-                        if($properti['PropertyType'] == "Keyword"){
-                            $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
+                    if($itemData['Properties']) {
+                        $content .= "<div class='keyword-container js-check'>";
+                        foreach($itemData['Properties'] as $properti){
+                            if($properti['PropertyType'] == "Keyword"){
+                                $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
+                            }
                         }
+                        $content .= "</div>";
                     }
-                    $content .= "</div>";
                     // other sources
                     $content .= "<h6 class='enrich-headers'>Other Sources</h6>";
-                    $content .= "<div class='link-container js-check'>";
-                    foreach($itemData['Properties'] as $property){
-                        if($property['PropertyType'] == 'Link' ) {
+                    if($itemData['Properties']) {
+                        $content .= "<div class='link-container js-check'>";
+                        foreach($itemData['Properties'] as $property){
+                            if($property['PropertyType'] == 'Link' ) {
 
-                            $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
-                            $content .= "<p class='link-description'>" . $property['PropertyDescription'] . "</p>";
-                            $content .= "</div>";
+                                $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
+                                $content .= "<p class='link-description'>" . $property['PropertyDescription'] . "</p>";
+                                $content .= "</div>";
+                            }
                         }
+                        $content .= "</div>";
                     }
-                    $content .= "</div>";
-                }
+                
                 $content .= "</div>";
 
             $content .= "</div>";
@@ -2067,9 +2073,9 @@ function _TCT_item_page( $atts ) {
                     }
                 $content .= "</div>";
                 //Download Enrichments Button/Div
-                    $content .= '<a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;color:#0a72cc;cursor:pointer;margin-bottom:23px;margin-top:24px;" type="button" target="_blank" href="' . get_main_url() . '/htr-import/example/form-example.php?itemId=' . $_GET['item']  . '">';
-                    $content .= "<span><h5 style='color:#0a72cc;'>Test Transkribus HTR Transcription</h5></span>";
-                    $content .= "<span><i style='position:relative;top:50%;transform:translateY(-50%);font-size:20px;' class='fa fa-download' aria-hidden='true'></i></span>";
+                $content .= '<a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;color:#0a72cc;cursor:pointer;margin-bottom:23px;margin-top:24px;" type="button" target="_blank" href="' . get_main_url() . '/htr-import/example/form-example.php?itemId=' . $_GET['item']  . '">';
+                    $content .= "<span><h5 style='color:#0a72cc;'>Run Transkribus automatic text recognition (HTR) </h5></span>";
+                    $content .= "<span><i style='position:relative;top:50%;transform:translateY(-50%);font-size:20px;' class='fas fa-desktop' aria-hidden='true'></i></span>";
                 $content .= "</a>";
                 //Enrichments
                 $content .= "<div class='dl-enrichments'>";
@@ -2156,37 +2162,42 @@ function _TCT_item_page( $atts ) {
                 }
                 // key words
                 // js-check class is used to check if the property field is empty, so we can hide the header if it is empty
-                if($itemData['Properties']) {
+                // if($itemData['Properties']) {
                     // Category
                     $content .= "<h6 class='enrich-headers'>Type of Media</h6>";
-                    $content .= "<div class='keyword-container js-check'>";
-                    foreach($itemData['Properties'] as $property) {
-                        if($property['PropertyType'] == "Category") {
-                            $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                    if($itemData['Properties']) {
+                        $content .= "<div class='keyword-container js-check'>";
+                        foreach($itemData['Properties'] as $property) {
+                            if($property['PropertyType'] == "Category") {
+                                $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                            }
                         }
+                        $content .= "</div>";
                     }
-                    $content .= "</div>";
                     $content .= "<h6 class='enrich-headers'>Keywords</h6>";
-                    $content .= "<div class='keyword-container js-check'>";
-                    foreach($itemData['Properties'] as $properti){
-                        if($properti['PropertyType'] == "Keyword"){
-                            $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
+                    if($itemData['Properties']) {
+                        $content .= "<div class='keyword-container js-check'>";
+                        foreach($itemData['Properties'] as $properti){
+                            if($properti['PropertyType'] == "Keyword"){
+                                $content .= "<div class='keyword-single'>".$properti['PropertyValue']."</div>";
+                            }
                         }
+                        $content .= "</div>";
                     }
-                    $content .= "</div>";
                     // other sources
                     $content .= "<h6 class='enrich-headers'>Other Sources</h6>";
-                    $content .= "<div class='link-container js-check'>";
-                    foreach($itemData['Properties'] as $property){
-                        if($property['PropertyType'] == 'Link' ) {
+                    if($itemData['Properties']) {
+                        $content .= "<div class='link-container js-check'>";
+                        foreach($itemData['Properties'] as $property){
+                            if($property['PropertyType'] == 'Link' ) {
 
-                            $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
-                            $content .= "<p class='link-description'>" . $property['PropertyDescription'] . "</p>";
-                            $content .= "</div>";
+                                $content .= "<div class='link-single' title=".$property['PropertyType']."><a href='".$property['PropertyValue']."' style='color:#fff;'>".$property['PropertyValue']."</a>";
+                                $content .= "<p class='link-description'>" . $property['PropertyDescription'] . "</p>";
+                                $content .= "</div>";
+                            }
                         }
+                        $content .= "</div>";
                     }
-                    $content .= "</div>";
-                }
                 $content .= "</div>";
                 //Metadata
                 $content .= "<div id='item-meta-collapse' class='dl-enrichments' style='background-color:#f8f8f8;'>";
