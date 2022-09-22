@@ -3309,7 +3309,7 @@ ready(() => {
                 itemTrBtn.textContent = 'Show Less';
             } else {
                 itemTrBtn.previousSibling.style.height = '401px';
-                document.querySelector('#transcription-container').style.height = '580px';
+                document.querySelector('#transcription-container').style.height = '588px';
                 itemTrBtn.textContent = 'Show More';
             }
         })
@@ -3324,7 +3324,7 @@ ready(() => {
                 itemHtrBtn.textContent = 'Show Less';
             } else {
                 itemHtrBtn.previousSibling.style.height = '401px';
-                document.querySelector('#htr-transcription').style.height = '580px';
+                document.querySelector('#htr-transcription').style.height = '588px';
                 itemHtrBtn.textContent = 'Show More';
             }
         })

@@ -1555,7 +1555,7 @@ function _TCT_item_page( $atts ) {
                     }
                 $content .= "</div>";
                 //Download Enrichments Button/Div
-                $content .= "<div id='htr-transcription' style='height:580px;'>";
+                $content .= "<div id='htr-transcription' style='height:588px;'>";
                 //HTR Transcription
                 $htrTranscription = get_text_from_pagexml($htrData, '<br />');
                 $content .= "<a href='".home_url()."/documents/story/item/item_page_htr/?story=".$_GET['story']."&item=".$_GET['item']."' target='_blank'><div id='htrTranscription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:20px;'>";
@@ -1704,7 +1704,7 @@ function _TCT_item_page( $atts ) {
             $content .= $mapTab;
          $content .= "</div></div>";
 
-                $content .= "<div id='transcription-container' style='height:580px;'>";
+                $content .= "<div id='transcription-container' style='height:588px;'>";
                     $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;' title='click to open editor'>";
                     $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         if($itemData['TranscriptionStatusColorCode'] == '#61e02f'){
@@ -2410,7 +2410,7 @@ function _TCT_item_page( $atts ) {
             // right side
             $content .= "<div id='full-view-r' >";
 
-                $content .= "<div id='transcription-container' style='min-height:575px;'>";
+                $content .= "<div id='transcription-container' style='height:588px;'>";
                     $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;' title='click to open editor'>";
                     $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         if($itemData['TranscriptionStatusColorCode'] == '#61e02f'){
@@ -2545,8 +2545,8 @@ function _TCT_item_page( $atts ) {
             $content .= "<div id='item-image-section' class='panel-left'>";
                 $content .= '<div id="openseadragonFS">';
                     // Save All at once button
-                    $content .= "<div id='save-all-btn'>Save All</div>";
-                    $content .= "<div id='save-all-spinner'>Saving...</div>";
+                    // $content .= "<div id='save-all-btn'>Save All</div>";
+                    // $content .= "<div id='save-all-spinner'>Saving...</div>";
                     // Temporary Js
                 //    $content .= "<script>
                 //         document.querySelector('#save-all-btn').addEventListener('click', () => {
@@ -2570,34 +2570,34 @@ function _TCT_item_page( $atts ) {
 
 
                     // Temporary css
-                    $content .= "<style>
-                        #save-all-btn {
-                            position: absolute;
-                            height: 25px;
-                            width: 80px;
-                            background: #0a72cc;
-                            top: 1%;
-                            right: 5%;
-                            z-index: 9999;
-                            color: white;
-                            text-align: center;
-                            cursor: pointer;
-                        }
-                        #save-all-spinner {
-                            display: none;
-                            position: absolute;
-                            height: 150px;
-                            width: 250px;
-                            background: grey;
-                            border: 5px solid #000;
-                            text-align: center;
-                            padding-top: 50px;
-                            font-size: 20px;
-                            top: 50%;
-                            left: 50%;
-                            z-index: 9999;
-                        }
-                    </style>";
+                    // $content .= "<style>
+                    //     #save-all-btn {
+                    //         position: absolute;
+                    //         height: 25px;
+                    //         width: 80px;
+                    //         background: #0a72cc;
+                    //         top: 1%;
+                    //         right: 5%;
+                    //         z-index: 9999;
+                    //         color: white;
+                    //         text-align: center;
+                    //         cursor: pointer;
+                    //     }
+                    //     #save-all-spinner {
+                    //         display: none;
+                    //         position: absolute;
+                    //         height: 150px;
+                    //         width: 250px;
+                    //         background: grey;
+                    //         border: 5px solid #000;
+                    //         text-align: center;
+                    //         padding-top: 50px;
+                    //         font-size: 20px;
+                    //         top: 50%;
+                    //         left: 50%;
+                    //         z-index: 9999;
+                    //     }
+                    // </style>";
                     // viewer buttons at fullscreen
                     $content .= '<div class="buttons" id="buttonsFS">';
                         $content .= '<div id="zoom-inFS" class="theme-color theme-color-hover"><i class="far fa-plus"></i></div>';
@@ -2632,7 +2632,7 @@ function _TCT_item_page( $atts ) {
                 $content .= '</div>';
             $content .= "</div>";
             // Resize slider
-            $content .= '<div id="item-splitter" class="splitter-vertical"><img src="'.home_url().'/wp-content/themes/transcribathon/images/splitter.png" style="position:relative;left:-10px;max-width:50px;height:100px;"></div>';
+            $content .= '<div id="item-splitter" class="splitter-vertical"></div>';
             // Info/Transcription section
             $content .= "<div id='item-data-section' class='panel-right'>";
                 $content .= "<div id='item-data-header'>";
