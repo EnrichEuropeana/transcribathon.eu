@@ -95,7 +95,6 @@ function _TCT_get_document_data( $atts ) {
 
         $content .= "<div id='total-storypg' class='storypg-container'>";
             $content .= "<div class='main-storypg'>";
-
                 // added image to description
             $content .= "<section>";
                 $content .= "<div class='storypg-info'>";
