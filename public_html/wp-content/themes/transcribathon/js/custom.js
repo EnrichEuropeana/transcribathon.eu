@@ -43,8 +43,16 @@ function installEventListeners() {
                 document.querySelector('#loc-name-check i').style.display = 'none';
             }
         })
-        document.querySelector('#loc-save-i').addEventListener('click', function() {
-            document.querySelector('.location-save-btn').click();
+        document.querySelector('#loc-save-lock').addEventListener('click', function() {
+            if(document.querySelector('#loc-save-lock i').classList.contains('fa-lock-open')) {
+                document.querySelector('#loc-save-lock i').classList.remove('fa-lock-open');
+                document.querySelector('#loc-save-lock i').classList.add('fa-lock');
+                document.querySelector('#loc-coord').disabled = true;
+            } else {
+                document.querySelector('#loc-save-lock i').classList.remove('fa-lock');
+                document.querySelector('#loc-save-lock i').classList.add('fa-lock-open');
+                document.querySelector('#loc-coord').disabled = false;
+            }
         })
     }
     // Location clear input button
@@ -102,12 +110,12 @@ function installEventListeners() {
         let trHistory = document.querySelector('#transcription-history');
         historyTr.parentElement.addEventListener('click', function () {
             if(trHistory.style.display === 'none') {
-                trView.style.maxHeight = '100px';
+                trView.style.height = '100px';
                 trView.style.overflowY = 'hidden';
                 trHistory.style.display = 'block';
             } else {
-                trView.style.maxHeight = 'unset';
-                trView.style.overflowY = 'scroll';
+                trView.style.height = '500px';
+                trView.style.overflowY = 'auto';
                 trHistory.style.display = 'none';
             }
         })
@@ -1162,7 +1170,8 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
   jQuery('#item-location-spinner-container').css('display', 'block')
   // Prepare data and send API request
   locationName = jQuery('#location-name-display input').val();
-  [latitude, longitude] = jQuery('#location-input-section .location-input-coordinates-container input').val().split(',');
+  // Change saving selector so we can lock coordinates with button
+  [latitude, longitude] = jQuery('#loc-coord').val().split(',');
   if (latitude != null) {
     latitude = latitude.trim();
   }
@@ -1607,13 +1616,12 @@ function loadPlaceData(itemId, userId) {
                                 '</div>' +
 
                                 "<div class='form-buttons-right'>" +
-                                    "<button onClick='editItemLocation(" + content[i]['PlaceId'] + ", " + itemId + ", " + userId + ")' " +
-                                                "class='item-page-save-button edit-location-save theme-color-background'>" +
-                                        "SAVE" +
-                                    "</button>" +
-
-                                    "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
+                                    "<button class='theme-color-background edit-location-save' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
                                         "CANCEL" +
+                                    "</button>" +
+                                    "<button onClick='editItemLocation(" + content[i]['PlaceId'] + ", " + itemId + ", " + userId + ")' " +
+                                                "class='item-page-save-button edit-location-cancel theme-color-background'>" +
+                                        "SAVE" +
                                     "</button>" +
 
                                     '<div id="item-location-' + content[i]['PlaceId'] +'-spinner-container" class="spinner-container spinner-container-right">' +
@@ -3116,7 +3124,9 @@ function initializeMap() {
         .setLngLat(res.result.geometry.coordinates)
         .addTo(map);
         var lngLat = marker.getLngLat();
-      coordinates.value = lngLat.lat + ', ' + lngLat.lng;
+      if(jQuery('#loc-save-lock i').hasClass('fa-lock-open')) {
+          coordinates.value = lngLat.lat + ', ' + lngLat.lng;
+      }
       marker.on('dragend', onDragEnd);
     })
 
@@ -3197,6 +3207,27 @@ ready(() => {
     //         }
     //     }
     // }
+    // Active Transcription Toggle on Item Page
+    const htrActive = document.querySelector('#hActiveCheck');
+    const mtrActive = document.querySelector('#mActiveCheck');
+    if(htrActive) {
+        htrActive.addEventListener('click', function() {
+            if(htrActive.querySelector('input').checked) {
+                htrActive.classList.remove('checkbox-inactive');
+                htrActive.classList.add('checkbox-active');
+                htrActive.querySelector('input').style.display = 'none';
+                mtrActive.style.display = 'none';
+            }
+        })
+        mtrActive.addEventListener('click', function() {
+            if(mtrActive.querySelector('input').checked) {
+                mtrActive.classList.remove('checkbox-inactive');
+                mtrActive.classList.add('checkbox-active');
+                mtrActive.querySelector('input').style.display = 'none';
+                htrActive.style.display = 'none';
+            }
+        })
+    }
     /// Search page fix
         // Not sure where is this on site, needs more testing
         const singleResultDescriptions = document.querySelectorAll('.search-page-single-result-description');
@@ -3697,20 +3728,20 @@ ready(() => {
 
     // When the user scrolls down 60px from the top of the document, resize the navbar's padding
     //and the logo's font size
-    if(document.querySelector('#_transcribathon_partnerlogo')) {
-        window.onscroll = function() {scrollFunction()};
+    // if(document.querySelector('#_transcribathon_partnerlogo')) {
+    //     window.onscroll = function() {scrollFunction()};
 
-        function scrollFunction() {
-            if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
-                document.getElementById("_transcribathon_partnerlogo").style.height = "56px";
-                document.getElementById("_transcribathon_partnerlogo").style.width = "56px";
-                document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "33px";
-            } else {
-                document.getElementById("_transcribathon_partnerlogo").style.height = "120px";
-                document.getElementById("_transcribathon_partnerlogo").style.width = "120px";
-                document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
-            }
-        }}
+    //     function scrollFunction() {
+    //         if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
+    //             document.getElementById("_transcribathon_partnerlogo").style.height = "56px";
+    //             document.getElementById("_transcribathon_partnerlogo").style.width = "56px";
+    //             document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "33px";
+    //         } else {
+    //             document.getElementById("_transcribathon_partnerlogo").style.height = "120px";
+    //             document.getElementById("_transcribathon_partnerlogo").style.width = "120px";
+    //             document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
+    //         }
+    //     }}
         // if(itemDateCheck === true) {
         //     installEventListeners();
         //     itemDateCheck = false;

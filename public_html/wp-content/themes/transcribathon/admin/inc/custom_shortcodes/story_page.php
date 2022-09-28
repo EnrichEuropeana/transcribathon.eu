@@ -27,8 +27,8 @@ function _TCT_get_document_data( $atts ) {
         //dd($storyData);
         $storyData = $storyData[0];
     }
-
-    $imgDescription = json_decode($storyData['Items'][rand(0,(count($storyData['Items'])-1))]['ImageLink'], true);
+    $randomItem = rand(0,(count($storyData['Items'])-1));
+    $imgDescription = json_decode($storyData['Items'][$randomItem]['ImageLink'], true);
     if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
         $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
     } else {
@@ -36,7 +36,6 @@ function _TCT_get_document_data( $atts ) {
     }
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
-    //dd(array_keys($storyData));
 
     /////////////////////////
     $numbPhotos = count($storyData['Items']);
@@ -91,7 +90,7 @@ function _TCT_get_document_data( $atts ) {
     $content .= "</section>";
 
         /* New- Start Transcription button */
-        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$descrLink."' style='font-family:\"Dosis\";margin-top:6px;'><b>🖉  Start Transcription</b></a>";
+        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$storyData['Items'][$randomItem]['ItemId']."' style='font-family:\"Dosis\";margin-top:6px;'><b>🖉  Start Transcription</b></a>";
 
         $content .= "<div id='total-storypg' class='storypg-container'>";
             $content .= "<div class='main-storypg'>";
@@ -101,7 +100,7 @@ function _TCT_get_document_data( $atts ) {
 
                     $content .= "<div class='story-description-left'>";
                     //    $content .= "<div id='desc-img-wrap'>";
-                    $content .= "<a href='".home_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$descrLink."'><img class=\"description-img\" src='".$imgDescriptionLink."' alt=\"story-img\"></a>";
+                    $content .= "<a href='".home_url()."/documents/story/item?story=".$storyData['StoryId']."&item=".$storyData['Items'][$randomItem]['ItemId']."'><img class=\"description-img\" src='".$imgDescriptionLink."' alt=\"story-img\"></a>";
                     unset($imgDescriptionLink);
                     //    $content .= "</div>";
 
@@ -126,6 +125,27 @@ function _TCT_get_document_data( $atts ) {
                                 array_push($storyKeyWords, $description);
                             }
                         }
+                        //Get start date of enrichments
+                        $startDate = '';
+                        $nrUserArr = [];
+                        $timeStamp = [];
+                       // var_dump($storyData['Items'][0]);
+                        foreach($storyData['Items'] as $itm) {
+                            $tmpDate = explode(' ',$itm['LockedTime']);
+                            if($tmpDate[0] != ""){
+                                array_push($timeStamp, $tmpDate[0]);
+                            }
+                            foreach($itm['Places'] as $pl){
+                               // var_dump($pl['UserId']);
+                                array_push($nrUserArr, $pl['UserId']);
+                            }
+                        }
+                        $nrUsers = count(array_unique($nrUserArr));
+                        if($timeStamp != null) {
+                            $startDate = min($timeStamp);
+                        } else {
+                            $startDate = $storyData['Items'][0]['Timestamp'];
+                        }
 
                         if((strlen($storyText) > 0) && (strlen($storyText) < 570) ) {
 
@@ -138,7 +158,7 @@ function _TCT_get_document_data( $atts ) {
                                 $content .= "<div id='progress-wrap'>";
                                 $content .= "<h5 class='progress-h'><i class=\"fa fa-flag-checkered\" aria-hidden=\"true\"></i>  PROGRESS</h5>";
                                     $content .= "<div class='progress-div'>";
-                                        $content .= "<p class='progress-p'><span class='table-l'>START DATE</span><span class='tabler-lm'>&nbsp;12/05/22</span><span class='table-rm'>&nbsp;TRANSCRIBERS</span><span class='table-r'>49</span></p>";
+                                        $content .= "<p class='progress-p'><span class='table-l'>START DATE</span><span class='tabler-lm'>&nbsp;". $startDate ."</span><span class='table-rm'>&nbsp;TRANSCRIBERS</span><span class='table-r'>". $nrUsers ."</span></p>";
                                         $content .= "<p class='progress-p'><span class='table-l'>CHARACTERS</span><span class='tabler-lm'>&nbsp;2.132.122</span><span class='table-rm'>&nbsp;ENRICHMENTS</span><span class='table-r'>89</span></p>";
                                 $content .= "</div>";
                                 $content .= "</div>";
@@ -159,7 +179,7 @@ function _TCT_get_document_data( $atts ) {
                             $content .= "<div id='progress-wrap'>";
                             $content .= "<h5 class='progress-h'><i class=\"fa fa-flag-checkered\" aria-hidden=\"true\"></i>  PROGRESS</h5>";
                                 $content .= "<div class='progress-div'>";
-                                    $content .= "<p class='progress-p'><span class='table-l'>START DATE</span><span class='tabler-lm'>&nbsp;12/05/22</span><span class='table-rm'>&nbsp;TRANSCRIBERS</span><span class='table-r'>49</span></p>";
+                                    $content .= "<p class='progress-p'><span class='table-l'>START DATE</span><span class='tabler-lm'>&nbsp;". $startDate ."</span><span class='table-rm'>&nbsp;TRANSCRIBERS</span><span class='table-r'>". $nrUsers ."</span></p>";
                                     $content .= "<p class='progress-p'><span class='table-l'>CHARACTERS</span><span class='tabler-lm'>&nbsp;2.132.122</span><span class='table-rm'>&nbsp;ENRICHMENTS</span><span class='table-r'>89</span></p>";
                             $content .= "</div>";
                             $content .= "</div>";
@@ -168,7 +188,7 @@ function _TCT_get_document_data( $atts ) {
                             $content .= "<div id='progress-wrap'>";
                             $content .= "<h5 class='progress-h'><i class=\"fa fa-flag-checkered\" aria-hidden=\"true\"></i>  PROGRESS</h5>";
                                 $content .= "<div class='progress-div'>";
-                                    $content .= "<p class='progress-p'><span class='table-l'>START DATE</span><span class='tabler-lm'>&nbsp;12/05/22</span><span class='table-rm'>&nbsp;TRANSCRIBERS</span><span class='table-r'>49</span></p>";
+                                    $content .= "<p class='progress-p'><span class='table-l'>START DATE</span><span class='tabler-lm'>&nbsp;". $startDate ."</span><span class='table-rm'>&nbsp;TRANSCRIBERS</span><span class='table-r'>". $nrUsers ."</span></p>";
                                     $content .= "<p class='progress-p'><span class='table-l'>CHARACTERS</span><span class='tabler-lm'>&nbsp;2.132.122</span><span class='table-rm'>&nbsp;ENRICHMENTS</span><span class='table-r'>89</span></p>";
                             $content .= "</div>";
                             $content .= "</div>";
@@ -269,10 +289,18 @@ function _TCT_get_document_data( $atts ) {
 
             // Short Info Data under the status bar
             $content .= "<div class='story-info'>";
-                if(count($storyContributors) > 0) {
-                    $content .= "<div style='padding:2%;'><span class='story-info-s'>CONTRIBUTOR</span></br>" . implode('</br>', $storyContributors) . "</div>";
+                if(count($storyContributors) > 0 || $storyData['dcContributor']) {
+                    if(count($storyContributors) > 0) {
+                        $content .= "<div style='padding:2%;'><span class='story-info-s'>CONTRIBUTOR</span></br>" . implode('</br>', $storyContributors) . "</div>";
+                    } else {
+                        $content .= "<div style='padding:2%;'><span class='story-info-s'>CONTRIBUTOR</span></br>" . str_replace(' || ', '</br>', $storyData['dcContributor']) . "</div>";
+                    }
                 } else {
-                    $content .= "<div style='padding:2%;'><span class='story-info-s'>CREATOR</span></br>" . implode('</br>', $storyPersons) . "</div>";
+                    if(count($storyPersons) > 0) {
+                        $content .= "<div style='padding:2%;'><span class='story-info-s'>CREATOR</span></br>" . implode('</br>', $storyPersons) . "</div>";
+                    } else {
+                        $content .= "<div style='padding:2%;'><span class='story-info-s'>CREATOR</span></br>" . str_replace(' || ','</br>', $storyData['dcCreator']) . "</div>";
+                    }
                 }
                 $content .= "<div style='padding:2%;'><span class='story-info-s'>DATE</span></br>".substr($storyData['edmBegin'],0,4)."-".substr($storyData['edmEnd'],0,4)."</div>";
                 $storyLang = explode(" || ", $storyData['dcLanguage']);
@@ -309,7 +337,7 @@ function _TCT_get_document_data( $atts ) {
                                         {
                                             method: 'POST',
                                             body: JSON.stringify({
-                                                type: 'GET',
+                                                 type: 'GET',
                                                 url: TP_API_HOST + '/tp-api/stories/' + storyId
                                             })
                                         }
@@ -369,6 +397,11 @@ console.log(response);
                                 foreach($storyContributors as $contributor) {
                                     $content .= "<span class='meta-p'>". $contributor ."</span>";
                                 }
+                            $content .= "</div>";
+                        } elseif ($storyData['dcContributor']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<span class='mb-1'>Contributor</span>";
+                                $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $storyData['dcContributor']) . "</span>"; 
                             $content .= "</div>";
                         }
 

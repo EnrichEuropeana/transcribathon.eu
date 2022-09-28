@@ -290,11 +290,11 @@ ul.item-navigation-content-container div {
     color: #0a72cc;
     font-family: 'Dosis', sans-serif;
 }
-#startTranscription {
+#startTranscription, #startHtrTranscription {
     padding: 15px 25px;
     background: #f8f8f8;
 }
-#startTranscription h5 {
+#startTranscription h5, #startHtrTranscription h5 {
     position: relative;
     top: 5px;
     margin: 0!important;
@@ -302,10 +302,10 @@ ul.item-navigation-content-container div {
     font-family: 'Dosis', sans-serif;
     letter-spacing: 0.025em;
 }
-#startTranscription i {
+#startTranscription i, #startHtrTranscription i {
     margin-right: 14px;
 }
-#startTranscription i.right-i {
+#startTranscription i.right-i, #startHtrTranscription i.right-i {
     margin-right: 0px;
 }
 /* #startTranscription span {
@@ -608,7 +608,7 @@ div.openseadragon-canvas > canvas > svg {
     border-radius: 0;
 }
 #transcription-history {
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 450px;
     padding-left: 25px;
 }
@@ -1069,10 +1069,10 @@ div.openseadragon-canvas > canvas > svg {
 }
 .tab-status {
     border-radius: 50%;
-    border: 1px solid;
-    font-size: 6px;
+    border: 1px solid grey;
+    font-size: 9px;
     position: relative;
-    bottom: 2px;
+    bottom: 1px;
     margin-right: 3px;
 }
 .tab-list div.active {
@@ -1440,6 +1440,7 @@ p.link-description {
     line-height: 1.6em;
     height: 500px;
     overflow-y: scroll;
+    transition: height 2s;
 }
 #editor-tab.tabcontent {
     overflow: hidden!important;
@@ -2191,7 +2192,7 @@ h6.enrich-headers {
 .tabcontent::-webkit-scrollbar-thumb:hover {
     background: #c4c4c4;
 }
-#startTranscription span {
+#startTranscription span, #startHtrTranscription span {
     display: inline-block;
     bottom: 0px!important;
 }
@@ -2432,4 +2433,25 @@ span.edited, span.completed, span.reviewed , span.not-started {
 .location-single p {
     margin-bottom: 0px!important;
     margin-top: 0px!important;
+}
+#loc-save-lock {
+    cursor: pointer;
+}
+.checkbox-inactive {
+    float:right;
+    background-color:#f8f8f8;
+    padding: 1px 3px;
+}
+.checkbox-inactive label {
+    color: darkgray;
+    font-size: 12px;
+}
+.checkbox-active {
+    float: right;
+    background-color: #0a72cc;
+    padding: 1px 5px 1px 2px;
+}
+.checkbox-active label {
+    color: #fff;
+    font-size: 12px;
 }
