@@ -152,7 +152,9 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/tct-image-viewer.js');
             wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
         }
-
+        if(is_page('htr-transcription')) {
+            wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/tct-htr-viewer.js');
+        }
         // if(!is_page('story')){
         wp_enqueue_style('child-style', get_stylesheet_directory_uri() .'/style.css', array('parent-style'));
         // }

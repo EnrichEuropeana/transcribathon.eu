@@ -38,6 +38,7 @@ Description: Stylesheet for Item Page
     display: flex;
     justify-content: center;
     position: relative;
+    padding: 0 2%;
 }
 #slider-container {
     height: 300px;
@@ -54,28 +55,35 @@ Description: Stylesheet for Item Page
     border: 2px solid #5cb85c;
 }
 .prev-slide {
-    font-size: 15px;
+    font-size: 40px;
     position: absolute;
     width: 25px;
-    height: 50px;
+    height: 87%;
     padding: 5px;
-    left: 0;
-    top: 40%;
+    left: 0.5%;
+    top: 1.2%;
     color: #fff;
-    background: #0a72cc;
+    background: #f8f8f8;
     z-index: 99;
+    border: none;
+    border-radius: 0!important;
+}
+.prev-slide i {
+    color: #0a72cc;
 }
 .next-slide {
     font-size: 15px;
     position: absolute;
     width: 25px;
-    height: 50px;
+    height: 87%;
     padding: 5px;
     right: 0;
-    top: 40%;
+    top: 1.2%;
     color: #fff;
     background: #0a72cc;
     z-index: 99;
+    border: none;
+    border-radius: 0!important;
 }
 .next-set {
     position: relative;
@@ -104,6 +112,7 @@ Description: Stylesheet for Item Page
 #img-slider {
     height: 300px;
     margin-bottom: 30px;
+    position: relative;
 }
 .next-slide:focus, .prev-slide:focus {
     background: #0a72cc;
@@ -111,6 +120,10 @@ Description: Stylesheet for Item Page
 #dot-indicators {
     display: inline-flex;
     justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
 }
 .indicator-dot {
     display: inline-block;
@@ -2205,9 +2218,10 @@ h6.enrich-headers {
     margin: 0 25px!important;
 }
 span.edited, span.completed, span.reviewed , span.not-started {
-    font-family: 'Open Sans'!important;
+    font-family: 'Dosis'!important;
     font-weight: 600;
     font-size: 10px;
+    letter-spacing: 0.025em;
 }
 .person-data-output-buttom i {
     float: right;
@@ -2454,4 +2468,47 @@ span.edited, span.completed, span.reviewed , span.not-started {
 .checkbox-active label {
     color: #fff;
     font-size: 12px;
+}
+.slider-dot {
+    height: 10px;
+    width: 10px;
+    margin: 5px 4px;
+    border-radius: 50%;
+    background-color: #c4c4c4;
+}
+.slider-dot.current {
+    background-color: #7e7e7e;
+}
+#no-text-placeholder {
+    background-color:#f8f8f8;
+    text-align:center;
+    height:430px;
+    margin-top:14px;
+}
+#no-text-placeholder p {
+    font-family: 'Dosis', sans-serif;
+    letter-spacing: 0.025em;
+    font-size: 32px;
+    font-weight: 700;
+    color: #0a72cc;
+}
+#no-text-placeholder span{
+    line-height: 1;
+    display: inline-block;
+    width: 30%;
+    text-align: left;
+    margin-left: 20px;
+}
+#no-text-placeholder img{
+    height: 70px;
+    vertical-align: unset;
+    position: relative;
+    top: 5px;
+}
+#no-text-placeholder i {
+    color: #61e02f;
+    font-size: 70px;
+    position: relative;
+    top: 30px;
+    margin-right: 15px;
 }

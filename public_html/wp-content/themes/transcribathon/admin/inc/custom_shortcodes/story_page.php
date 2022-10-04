@@ -72,13 +72,13 @@ function _TCT_get_document_data( $atts ) {
 
         $content .= "</div>";
     $content .= "</div>";
-
+    $content .= "<div id='dot-indicators'>";
+    // placeholder for dot indicators
+    $content .= "</div>";
         $content .= "<div id='controls-div'>";
 
             $content .= "<button class='prev-set' type='button' style='display:none;'><i class=\"fas fa-chevron-double-left\"></i></button>";
-            $content .= "<div id='dot-indicators'>";
-            // placeholder for dot indicators
-            $content .= "</div>";
+
             $content .= "<div class='num-indicators'>";
                 $content .= "<span id='left-num'>1</span> - <span id='right-num'></span> of ";
                 $content .="<span>". $numbPhotos ."</span>";

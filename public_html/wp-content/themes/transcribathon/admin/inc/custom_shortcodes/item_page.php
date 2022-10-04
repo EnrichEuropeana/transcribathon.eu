@@ -1439,10 +1439,12 @@ function _TCT_item_page( $atts ) {
 
         $content .= "<section id='img-slider'>";
         $content .= "<div id='slider-container'>";
-            $content .= "<button class='prev-slide' type='button'><i class=\"fas fa-chevron-left\"></i></button>";
-            $content .= "<button class='next-slide' type='button'><i class=\"fas fa-chevron-right\"></i></button>";
+            // $content .= "<button class='prev-slide' type='button'><i class=\"fas fa-chevron-left\"></i></button>";
+            // $content .= "<button class='next-slide' type='button'><i class=\"fas fa-chevron-right\"></i></button>";
 
             $content .= "<div id='inner-slider'>";
+            $content .= "<button class='prev-slide' type='button'><i class=\"fas fa-chevron-left\"></i></button>";
+            $content .= "<button class='next-slide' type='button'><i class=\"fas fa-chevron-right\"></i></button>";
                 for($x = 0; $x < $numbPhotos; $x++) {
                     $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
                     $dimensions = 0;
@@ -1475,13 +1477,13 @@ function _TCT_item_page( $atts ) {
                 }
             $content .= "</div>";
             $content .= "</div>";
-
+            $content .= "<div id='dot-indicators'>";
+            // placeholder for dot indicators
+            $content .= "</div>";
 
             $content .= "<div id='controls-div'>";
                 $content .= "<button class='prev-set' type='button' style='display:none;'><i class=\"fas fa-chevron-double-left\"></i></button>";
-                // $content .= "<div id='dot-indicators'>";
-                // // placeholder for dot indicators
-                // $content .= "</div>";
+
                 $content .= "<div class='num-indicators'>";
                     $content .= "<span id='left-num'>1</span> - <span id='right-num'></span> of ";
                     $content .="<span>". $numbPhotos ."</span>";
@@ -2925,41 +2927,51 @@ function _TCT_item_page( $atts ) {
                         }
                         $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
                     $content .= "</div>";
-                    if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
-                        $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
-                    }
-                    $trLanguage = $currentTranscription['Languages'][0]['Name'];
-                    if(strlen($formattedTranscription) < 700) {
-
-                        $content .= "<div style='padding-left:50px;padding-right:20px;padding-top:20px;'>";
-                            $content .= $formattedTranscription;
-                        $content .= "</div>";
-
-                        if($trLanguage){
-                            $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
-                            $content .= "<div class='language-container'>";
-                            foreach($currentTranscription['Languages'] as $trLang) {
-                                $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
-                            }
-                                // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
-                            $content .= "</div>";
-                        }
-                        $content .= "</div>";
+                    if($itemData['Transcriptions'][0]['NoText'] == '1'){
+                        $content .= "<div id='no-text-placeholder'>";
+                            $content .= "<p style='position:relative;top:30%;'><i class=\"far fa-check-circle\" ></i> <b>ITEM CONTAINS <br> NO TEXT</b></p>";
+                        $content .= "</div></div>";
                     } else {
-                    $content .= "<div class='trans-toggle'>";
-                        $content .= "<div id='itemTranscription' class='togglePara' style='padding-left:50px;padding-right:20px;height:401px;padding-top:20px;'>".$formattedTranscription."</div>";
-                        $content .= "<div id='itemBtn' class=''>Show More</div>";
-                        if($trLanguage){
-                            $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
-                            $content .= "<div class='language-container'>";
-                            foreach($currentTranscription['Languages'] as $trLang) {
-                                $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
-                            }
-                                // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
-                            $content .= "</div>";
+                        if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
+                            $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
                         }
-                    $content .= "</div>";
-                    $content .= "</div>";
+                        $trLanguage = $currentTranscription['Languages'][0]['Name'];
+                        if(strlen($formattedTranscription) < 700 && strlen($formattedTranscription) != 0) {
+
+                            $content .= "<div style='padding-left:50px;padding-right:20px;padding-top:20px;'>";
+                                $content .= $formattedTranscription;
+                            $content .= "</div>";
+
+                            if($trLanguage){
+                                $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
+                                $content .= "<div class='language-container'>";
+                                foreach($currentTranscription['Languages'] as $trLang) {
+                                    $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
+                                }
+                                // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
+                                $content .= "</div>";
+                            }
+                            $content .= "</div>";
+                        } else if(strlen($formattedTranscription) != 0) {
+                        $content .= "<div class='trans-toggle'>";
+                            $content .= "<div id='itemTranscription' class='togglePara' style='padding-left:50px;padding-right:20px;height:401px;padding-top:20px;'>".$formattedTranscription."</div>";
+                            $content .= "<div id='itemBtn' class=''>Show More</div>";
+                            if($trLanguage){
+                                $content .= "<h6 class='enrich-headers'>Language(s) of Transcription</h6>";
+                                $content .= "<div class='language-container'>";
+                                foreach($currentTranscription['Languages'] as $trLang) {
+                                    $content .= "<div class='language-single'>" . $trLang['Name'] . "</div>";
+                                }
+                                    // $content .= "<div class='card-header' style='position:relative;left:-5px;'>".$trLanguage."</div>";
+                                $content .= "</div>";
+                            }
+                        $content .= "</div>";
+                        $content .= "</div>";
+                        } else {
+                            $content .= "<div id='no-text-placeholder'>";
+                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'><span>START TRANSCRIPTION</span></p>";
+                            $content .= "</div></div>";
+                        }
                     }
                     // description
                     $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:20px;'>";
