@@ -253,7 +253,7 @@ function _TCT_item_page( $atts ) {
                     $editorTab .= '</div>';
                     // change view/editor button
                     $editorTab .= "<div role='button' id='tr-view-start-transcription'>";
-                        $editorTab .= "<i id='tr-view-btn-i' style=\"font-size:15px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>";
+                        $editorTab .= "<i id='tr-view-btn-i' style=\"font-size:20px;\" class=\"fa fa-pencil\" aria-hidden=\"true\"></i>";
                     $editorTab .= "</div>";
                             //
                         $editorTab .= "</div>";
@@ -1509,28 +1509,28 @@ function _TCT_item_page( $atts ) {
                 // }
                 //viewer buttons out of fullscreen
                 $imageViewer .= '<div class="buttons" id="buttons">';
-                    $imageViewer .= '<div id="zoom-in" class="theme-color theme-color-hover"><i class="far fa-plus"></i></div>';
-                    $imageViewer .= '<div id="zoom-out" class="theme-color theme-color-hover"><i class="far fa-minus"></i></div>';
-                    $imageViewer .= '<div id="home" title="View full image" class="theme-color theme-color-hover"><i class="far fa-home"></i></div>';
-                    $imageViewer .= '<div id="full-width" title="Fit image width to frame" class="theme-color theme-color-hover"><i class="far fa-arrows-alt-h"></i></div>';
-                    $imageViewer .= '<div id="rotate-right" class="theme-color theme-color-hover"><i class="far fa-redo"></i></div>';
-                    $imageViewer .= '<div id="rotate-left" class="theme-color theme-color-hover"><i class="far fa-undo"></i></div>';
-                    $imageViewer .= '<div id="filterButton" title="Edit image" class="theme-color theme-color-hover"><i class="far fa-sliders-h"></i></div>';
-                    $imageViewer .= '<div id="full-page" title="Full screen" class="theme-color theme-color-hover"><i class="far fa-expand-arrows-alt"></i></div>';
+                    $imageViewer .= '<div id="zoom-in" class="theme-color theme-color-hover"><i class="fas fa-plus"></i></div>';
+                    $imageViewer .= '<div id="zoom-out" class="theme-color theme-color-hover"><i class="fas fa-minus"></i></div>';
+                    $imageViewer .= '<div id="home" title="View full image" class="theme-color theme-color-hover"><i class="fas fa-home"></i></div>';
+                    $imageViewer .= '<div id="full-width" title="Fit image width to frame" class="theme-color theme-color-hover"><i class="fas fa-arrows-alt-h"></i></div>';
+                    $imageViewer .= '<div id="rotate-right" class="theme-color theme-color-hover"><i class="fas fa-redo"></i></div>';
+                    $imageViewer .= '<div id="rotate-left" class="theme-color theme-color-hover"><i class="fas fa-undo"></i></div>';
+                    $imageViewer .= '<div id="filterButton" title="Edit image" class="theme-color theme-color-hover"><i class="fas fa-sliders-h"></i></div>';
+                    $imageViewer .= '<div id="full-page" title="Full screen" class="theme-color theme-color-hover"><i class="fas fa-expand-arrows-alt"></i></div>';
                 $imageViewer .= '</div>';
-                $imageViewer .= '<div class="buttons new-grid-button" id="buttons">';
-                    if($isLoggedIn) {
-                        if ($locked) {
-                            $imageViewer .= '<div id="transcribeLock" class="theme-color theme-color-hover"><i class="far fa-lock"></i></div>';
-                        }
-                        else {
-                            $imageViewer .= '<div id="transcribe" title="Enrich item" class="theme-color theme-color-hover"><i class="far fa-pen"></i></div>';
-                        }
-                    } else {
-                        $imageViewer .= '<div id="transcribe-locked" class="theme-color theme-color-hover"><i class="far fa-pen" id="lock-login"></i></div>';
-                    }
-                    //$imageViewer .= '<div id="transcribe locked"><i class="far fa-lock" id="lock-login"></i></div>';
-                $imageViewer .= '</div>';
+                // $imageViewer .= '<div class="buttons new-grid-button" id="buttons">';
+                //     if($isLoggedIn) {
+                //         if ($locked) {
+                //             $imageViewer .= '<div id="transcribeLock" class="theme-color theme-color-hover"><i class="fas fa-lock"></i></div>';
+                //         }
+                //         else {
+                //             $imageViewer .= '<div id="transcribe" title="Enrich item" class="theme-color theme-color-hover"><i class="fas fa-pen"></i></div>';
+                //         }
+                //     } else {
+                //         $imageViewer .= '<div id="transcribe-locked" class="theme-color theme-color-hover"><i class="fas fa-pen" id="lock-login"></i></div>';
+                //     }
+                //     //$imageViewer .= '<div id="transcribe locked"><i class="far fa-lock" id="lock-login"></i></div>';
+                // $imageViewer .= '</div>';
             $imageViewer .= '</div>';
         $content .= "<div id='full-view-container'>";
 
@@ -2654,16 +2654,16 @@ function _TCT_item_page( $atts ) {
                 // js-check class is used to check if the property field is empty, so we can hide the header if it is empty
                 // if($itemData['Properties']) {
                     // Category
-                    $content .= "<h6 class='enrich-headers'>Type of Media</h6>";
-                    if($itemData['Properties']) {
-                        $content .= "<div class='keyword-container js-check'>";
-                        foreach($itemData['Properties'] as $property) {
-                            if($property['PropertyType'] == "Category") {
-                                $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
-                            }
-                        }
-                        $content .= "</div>";
-                    }
+                    // $content .= "<h6 class='enrich-headers'>Type of Media</h6>";
+                    // if($itemData['Properties']) {
+                    //     $content .= "<div class='keyword-container js-check'>";
+                    //     foreach($itemData['Properties'] as $property) {
+                    //         if($property['PropertyType'] == "Category") {
+                    //             $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                    //         }
+                    //     }
+                    //     $content .= "</div>";
+                    // }
                     $content .= "<h6 class='enrich-headers'>Keywords</h6>";
                     if($itemData['Properties']) {
                         $content .= "<div class='keyword-container js-check'>";
@@ -2990,6 +2990,16 @@ function _TCT_item_page( $atts ) {
                         $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i></div>";
                     $content .= "</div>";
 
+                    $content .= "<h6 class='enrich-headers'>Type of Media</h6>";
+                        $content .= "<div class='keyword-container js-check'>";
+                        foreach($itemData['Properties'] as $property) {
+                            if($property['PropertyType'] == "Category") {
+                                $content .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                            }
+                        }
+                        $content .= "</div>";
+
+
                     $content .= "<p style='padding-left:50px;padding-right:20px;'>".$itemData['Description']."</p>";
                     $dcLang = array();
                     foreach($languages as $language){
@@ -3111,26 +3121,26 @@ function _TCT_item_page( $atts ) {
                     // </style>";
                     // viewer buttons at fullscreen
                     $content .= '<div class="buttons" id="buttonsFS">';
-                        $content .= '<div id="zoom-inFS" class="theme-color theme-color-hover"><i class="far fa-plus"></i></div>';
-                        $content .= '<div id="zoom-outFS" class="theme-color theme-color-hover"><i class="far fa-minus"></i></div>';
-                        $content .= '<div id="homeFS" title="View full image" class="theme-color theme-color-hover"><i class="far fa-home"></i></div>';
-                        $content .= '<div id="full-widthFS" title="Fit image width to frame" class="theme-color theme-color-hover"><i class="far fa-arrows-alt-h"></i></div>';
-                        $content .= '<div id="rotate-rightFS" class="theme-color theme-color-hover"><i class="far fa-redo"></i></div>';
-                        $content .= '<div id="rotate-leftFS" class="theme-color theme-color-hover"><i class="far fa-undo"></i></div>';
-                        $content .= '<div id="filterButtonFS" title="Edit image" class="theme-color theme-color-hover"><i class="far fa-sliders-h"></i></div>';
-                        $content .= '<div id="full-pageFS" title="Exit full screen" class="theme-color theme-color-hover"><i class="far fa-expand-arrows-alt"></i></div>';
+                        $content .= '<div id="zoom-inFS" class="theme-color theme-color-hover"><i class="fas fa-plus"></i></div>';
+                        $content .= '<div id="zoom-outFS" class="theme-color theme-color-hover"><i class="fas fa-minus"></i></div>';
+                        $content .= '<div id="homeFS" title="View full image" class="theme-color theme-color-hover"><i class="fas fa-home"></i></div>';
+                        $content .= '<div id="full-widthFS" title="Fit image width to frame" class="theme-color theme-color-hover"><i class="fas fa-arrows-alt-h"></i></div>';
+                        $content .= '<div id="rotate-rightFS" class="theme-color theme-color-hover"><i class="fas fa-redo"></i></div>';
+                        $content .= '<div id="rotate-leftFS" class="theme-color theme-color-hover"><i class="fas fa-undo"></i></div>';
+                        $content .= '<div id="filterButtonFS" title="Edit image" class="theme-color theme-color-hover"><i class="fas fa-sliders-h"></i></div>';
+                        $content .= '<div id="full-pageFS" title="Exit full screen" class="theme-color theme-color-hover"><i class="fas fa-expand-arrows-alt"></i></div>';
                     $content .= '</div>';
                     $content .= '<div class="buttons new-grid-button" id="buttonsFS">';
-                        if($isLoggedIn) {
-                            if ($locked) {
-                                $content .= '<div id="transcribeLockFS" class="theme-color theme-color-hover"><i class="far fa-lock"></i></div>';
-                            }
-                            else {
-                                $content .= '<div id="transcribeFS"  title="Enrich item" class="theme-color theme-color-hover"><i class="far fa-pen"></i></div>';
-                            }
-                        } else {
-                            $content .= '<div id="transcribe-lockedFS" class="theme-color theme-color-hover"><i class="far fa-pen" id="lock-loginFS"></i></div>';
-                        }
+                        // if($isLoggedIn) {
+                        //     if ($locked) {
+                        //         $content .= '<div id="transcribeLockFS" class="theme-color theme-color-hover"><i class="far fa-lock"></i></div>';
+                        //     }
+                        //     else {
+                        //         $content .= '<div id="transcribeFS"  title="Enrich item" class="theme-color theme-color-hover"><i class="far fa-pen"></i></div>';
+                        //     }
+                        // } else {
+                        //     $content .= '<div id="transcribe-lockedFS" class="theme-color theme-color-hover"><i class="far fa-pen" id="lock-loginFS"></i></div>';
+                        // }
                         //$imageViewer .= '<div id="transcribe locked"><i class="far fa-lock" id="lock-login"></i></div>';
                     $content .= '</div>';
                     // Next/Previous Item full screen
@@ -3174,7 +3184,7 @@ function _TCT_item_page( $atts ) {
                     $content .= "</li>";
 
                     $content .= "<li style='position:relative;bottom:2px;'>";
-                        $content .= '<div class="switch-i"><i id="close-window-view" class="fas fa-times view-switcher-icons" onClick="switchItemPageView()" style="position:relative;bottom:2px;"></i></div>';
+                        $content .= '<div class="switch-i"><i id="close-window-view" class="fas fa-times view-switcher-icons" onClick="switchItemPageView()" style="position:relative;bottom:1px;color:#2b2b2b;"></i></div>';
                         $content .= '<script>document.querySelector("#close-window-view").addEventListener("click",function(){location.reload()})</script>';
                     $content .= "</li>";
 

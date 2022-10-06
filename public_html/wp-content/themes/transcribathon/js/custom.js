@@ -3892,12 +3892,12 @@ ready(() => {
     //Quick fix to move languages until finding long term solution
     const fullScreenBtn = document.querySelector('#full-page');
     
-    if(fullScreenBtn) {
-        const langContainer = document.querySelector('#lang-holder');
-        const langSelecta = document.querySelector('.transcription-mini-metadata');
-        // move languages below title
-        langContainer.appendChild(langSelecta);
-    }
+    // if(fullScreenBtn) { !!!!! Disabled only for testing of new item page
+    //     const langContainer = document.querySelector('#lang-holder');
+    //     const langSelecta = document.querySelector('.transcription-mini-metadata');
+    //     // move languages below title
+    //     langContainer.appendChild(langSelecta);
+    // }
 
     // When the user scrolls down 60px from the top of the document, resize the navbar's padding
     //and the logo's font size

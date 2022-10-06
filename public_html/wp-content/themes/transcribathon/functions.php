@@ -106,6 +106,7 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/get_word_document.p
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_htr.php'); // Adds HTR Editor
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_transcription.php'); // Adds HTR Transcription Page
+require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/mtr_item.php'); // Adds manual TR Transcription Page
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tct_new_search.php'); // Adds New Search Page
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_item_slider.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_menu.php');
@@ -142,7 +143,7 @@ function embedd_custom_javascripts_and_css() {
         if(is_page('story')){
             wp_enqueue_style( 'storystyle', CHILD_TEMPLATE_DIR . '/css/story_page.css');
         }
-        if(is_page('item')){
+        if(is_page('item') || is_page('manual-transcription-page')){
             wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item_page.css');
 
             /* TinyMCE */
