@@ -211,6 +211,8 @@
 
 #buttons i {
 	font-size: 17px;
+  position: relative;
+  top: 2px;
 }
 
 #buttons > div, #buttons > a {

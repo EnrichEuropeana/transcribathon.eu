@@ -43,7 +43,7 @@ Description: Stylesheet for Item Page
 #slider-container {
     height: 300px;
     background-color: #f8f8f8;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     position: relative;
 }
 .slide-sticker {
@@ -68,19 +68,23 @@ Description: Stylesheet for Item Page
     border: none;
     border-radius: 0!important;
 }
-.prev-slide i {
+.prev-slide i, .next-slide i {
     color: #0a72cc;
 }
+.next-slide i {
+    position: relative;
+    right: 4px;
+}
 .next-slide {
-    font-size: 15px;
+    font-size: 40px;
     position: absolute;
     width: 25px;
     height: 87%;
     padding: 5px;
-    right: 0;
+    right: 0.5%;
     top: 1.2%;
     color: #fff;
-    background: #0a72cc;
+    background: #f8f8f8;
     z-index: 99;
     border: none;
     border-radius: 0!important;
@@ -115,7 +119,10 @@ Description: Stylesheet for Item Page
     position: relative;
 }
 .next-slide:focus, .prev-slide:focus {
-    background: #0a72cc;
+    background: none;
+    border: none!important;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }
 #dot-indicators {
     display: inline-flex;
@@ -291,22 +298,22 @@ ul.item-navigation-content-container div {
 }
 /* --- End of Navi --- */
 /* --- Item Title --- */
-.title-n-btn {
+/* .title-n-btn {
     display: flex;
     width: 100%;
-    padding-left: 50px;
     justify-content: flex-start;
-}
+} */
 #item-header {
     position: relative;
     display: inline-block;
     color: #0a72cc;
     font-family: 'Dosis', sans-serif;
+    font-size: 20px;
+    margin-bottom: 20px;
 }
 #startTranscription, #startHtrTranscription {
     padding: 15px 25px;
     background: #fff;
-    box-shadow: 1px 7px 11px rgba(235, 235, 235, 0.4);
 }
 #startTranscription h5, #startHtrTranscription h5 {
     position: relative;
@@ -344,7 +351,8 @@ ul.item-navigation-content-container div {
 } */
 /* --- Left Half of Item Page --- */
 #openseadragon {
-    background: #f8f8f8;
+    cursor: pointer;
+    background-color: #f8f8f8;
 }
 .openseadragon-canvas {
     box-shadow: 1px 1px #000;
@@ -1337,10 +1345,17 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     padding-bottom: 18px;
 }
 .single-person, .link-single {
-    padding: 5px 10px;
-    background: #f8f8f8;
+    padding: 5px 0px;
+    background: #fff;
     margin-bottom: 10px;
     font-weight: 400;
+    width: 91%;
+}
+.single-person {
+    border-bottom: 1px;
+    border-image: linear-gradient(to right, black, white);
+    border-style: solid;
+    border-width: 80%;
 }
 .single-meta {
     padding: 5px 0px;
@@ -1849,11 +1864,11 @@ p.link-description {
     border-radius: 10px;
 }
 .enrich-headers {
-    margin-bottom: 15px!important;
+    margin-bottom: 0px!important;
     padding-left: 25px;
     color: #0a72cc!important;
     font-family: 'Dosis', sans-serif;
-    margin-top: 0!important;
+    margin-top: 20px!important;
 }
 h6.enrich-headers {
     font-weight: 600!important;
@@ -1879,7 +1894,6 @@ h6.enrich-headers {
 .meta-p {
     margin: 0 0 0 5px!important;
     font-weight: 400;
-    float: right;
     font-size: 13px;
 }
 .meta-sticker {
@@ -2227,13 +2241,20 @@ h6.enrich-headers {
     margin: 0 25px!important;
 }
 span.edited, span.completed, span.reviewed , span.not-started {
+    padding-top: 2px;
     font-family: 'Dosis'!important;
     font-weight: 600;
     font-size: 10px;
     letter-spacing: 0.025em;
+    height: 25px;
 }
 .person-data-output-buttom i {
     float: right;
+}
+.person-data {
+    margin-bottom: 1px!important;
+    border-bottom: 1px solid #f8f8f8;
+    padding-bottom: 1px;
 }
 .person-input-names-container input {
     background-color: #f8f8f8;
@@ -2306,7 +2327,6 @@ span.edited, span.completed, span.reviewed , span.not-started {
     padding: 15px 25px;
     background: #fff;
     letter-spacing: 0.025em;
-    box-shadow: 1px 7px 11px rgba(235, 235, 235, 0.4);
     cursor: pointer;
     margin: 50px 0px;
 }
@@ -2399,11 +2419,12 @@ span.edited, span.completed, span.reviewed , span.not-started {
     padding: 5px 10px;
     margin-right: 5px;
     margin-bottom: 5px;
+    margin-top: 10px;
 }
 /* Location */
 .location-single {
     padding: 5px 25px;
-    background: #f8f8f8;
+    background: #fff;
     margin-bottom: 10px;
     font-weight: 400;
 }
@@ -2415,13 +2436,11 @@ span.edited, span.completed, span.reviewed , span.not-started {
 }
 /* Back to story button at top of the page */
 .back-to-story {
-    float: left;
     font-size: 14px;
     margin-left: 10px;
     position: relative;
-    bottom: 36px;
-    padding: 10px;
-    left: 40px;
+    bottom: 16px;
+    padding: 10px 0;
     font-family: 'Dosis', sans-serif;
 }
 .back-to-story a, .back-to-story i {
@@ -2440,8 +2459,13 @@ span.edited, span.completed, span.reviewed , span.not-started {
     font-weight: 400;
     font-size: 13px!important;
 }
+.date-top {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
 .date-bottom {
     font-weight: 400;
+    margin-top: 5px;
 }
 .person-info {
     font-weight: 400;
@@ -2453,8 +2477,10 @@ span.edited, span.completed, span.reviewed , span.not-started {
 }
 .person-description {
     font-size: 13px;
-    height: 18px;
-    margin: 0;
+    height: 15px;
+    margin: 0!important;
+    position: relative;
+    bottom: 3px;
 }
 .location-single p {
     margin-bottom: 0px!important;
@@ -2525,11 +2551,59 @@ span.edited, span.completed, span.reviewed , span.not-started {
     margin-right: 15px;
 }
 .current-transcription {
-    height: calc(100% - 227px);
+    height: calc(100% - 205px);
     overflow: hidden;
     margin-top: 25px;
 }
-.transcription-language {
-    height: 119.5px;
+.current-transcription p {
+    margin-bottom: 2px;
+}
+
+/* MANUAL TRANSCRIPTION PAGE */
+section {
+    padding: 0 100px;
+}
+#viewer-n-transcription {
+    height: 600px;
     position: relative;
+}
+#full-view-container, #full-view-l, #full-view-r {
+    height: 100%;
+}
+.transcription-language {
+    position: absolute;
+    bottom: 0;
+}
+#transcription-collapse-btn {
+    margin-top: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: #0a72cc;
+}
+#story-info {
+    overflow: hidden;
+}
+.title-n-btn {
+    display: inline-block;
+}
+.item-progress {
+    display: inline-block;
+    bottom: 20px;
+    margin-left: 10px;
+    width: 200px;
+    background-color: #828282;
+    position: relative;
+}
+.item-status {
+    display: inline-block;
+    min-height: 25px;
+    max-height: 25px;
+    border-radius: 15px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 10px;
+    text-align: end;
+    padding-right: 5px;
+    padding-top: 3px;
 }
