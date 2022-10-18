@@ -36,7 +36,6 @@ function _TCT_get_document_data( $atts ) {
     }
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
-
     /////////////////////////
     $numbPhotos = count($storyData['Items']);
     // $numbSlides = floor($numbPhotos / 9);
@@ -608,7 +607,7 @@ console.log(response);
                         // edmIsShownAt
                         if($storyData['edmIsShownAt']) {
                             $content .= "<div class='meta-sticker'>";
-                                $content .= "<span class='mb-1'>>Shown At</span>";
+                                $content .= "<span class='mb-1'>Shown At</span>";
                                 if(substr($storyData['edmIsShownAt'], 0, 4) == 'http'){
                                     $content .= "<span class='meta-p'><a target='_blank' href='".$storyData['edmIsShownAt']."'>" . $storyData['edmIsShownAt'] . "</a></span>";
                                 } else {
