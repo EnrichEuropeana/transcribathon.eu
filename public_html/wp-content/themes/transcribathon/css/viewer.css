@@ -211,16 +211,12 @@
 
 #buttons i {
 	font-size: 17px;
-  position: relative;
-  top: 2px;
 }
 
 #buttons > div, #buttons > a {
-  height: 25px;
-  width: 25px;
-  margin: 4px;
-  padding: 2px;
+  padding: 4px 2px 0px 2px;
   background-color: #fff;
+  margin: 1px;
   text-align: center;
 }
 
@@ -249,11 +245,9 @@
 }
 
 #buttonsFS > div {
-  height: 25px;
-  width: 25px;
-  margin: 4px;
-  padding: 2px;
+  padding: 4px 2px 0px 2px;
   background-color: #fff;
+  margin: 1px;
   text-align: center;
 }
 
@@ -278,10 +272,6 @@ body > div.tox.tox-tinymce.tox-tinymce-inline.tox-toolbar-dock-transition.tox-to
 
 body > div.tox.tox-silver-sink.tox-tinymce-aux {
   z-index: 999999;
-}
-
-#transcribe{
-  margin-left: 10px!important;
 }
 
 #transcribeIcon {

@@ -43,16 +43,8 @@ function installEventListeners() {
                 document.querySelector('#loc-name-check i').style.display = 'none';
             }
         })
-        document.querySelector('#loc-save-lock').addEventListener('click', function() {
-            if(document.querySelector('#loc-save-lock i').classList.contains('fa-lock-open')) {
-                document.querySelector('#loc-save-lock i').classList.remove('fa-lock-open');
-                document.querySelector('#loc-save-lock i').classList.add('fa-lock');
-                document.querySelector('#loc-coord').disabled = true;
-            } else {
-                document.querySelector('#loc-save-lock i').classList.remove('fa-lock');
-                document.querySelector('#loc-save-lock i').classList.add('fa-lock-open');
-                document.querySelector('#loc-coord').disabled = false;
-            }
+        document.querySelector('#loc-save-i').addEventListener('click', function() {
+            document.querySelector('.location-save-btn').click();
         })
     }
     // Location clear input button
@@ -110,12 +102,12 @@ function installEventListeners() {
         let trHistory = document.querySelector('#transcription-history');
         historyTr.parentElement.addEventListener('click', function () {
             if(trHistory.style.display === 'none') {
-                trView.style.height = '100px';
+                trView.style.maxHeight = '100px';
                 trView.style.overflowY = 'hidden';
                 trHistory.style.display = 'block';
             } else {
-                trView.style.height = '500px';
-                trView.style.overflowY = 'auto';
+                trView.style.maxHeight = 'unset';
+                trView.style.overflowY = 'scroll';
                 trHistory.style.display = 'none';
             }
         })
@@ -1170,8 +1162,7 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
   jQuery('#item-location-spinner-container').css('display', 'block')
   // Prepare data and send API request
   locationName = jQuery('#location-name-display input').val();
-  // Change saving selector so we can lock coordinates with button
-  [latitude, longitude] = jQuery('#loc-coord').val().split(',');
+  [latitude, longitude] = jQuery('#location-input-section .location-input-coordinates-container input').val().split(',');
   if (latitude != null) {
     latitude = latitude.trim();
   }
@@ -1616,12 +1607,13 @@ function loadPlaceData(itemId, userId) {
                                 '</div>' +
 
                                 "<div class='form-buttons-right'>" +
-                                    "<button class='theme-color-background edit-location-save' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
-                                        "CANCEL" +
-                                    "</button>" +
                                     "<button onClick='editItemLocation(" + content[i]['PlaceId'] + ", " + itemId + ", " + userId + ")' " +
-                                                "class='item-page-save-button edit-location-cancel theme-color-background'>" +
+                                                "class='item-page-save-button edit-location-save theme-color-background'>" +
                                         "SAVE" +
+                                    "</button>" +
+
+                                    "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
+                                        "CANCEL" +
                                     "</button>" +
 
                                     '<div id="item-location-' + content[i]['PlaceId'] +'-spinner-container" class="spinner-container spinner-container-right">' +
@@ -3124,9 +3116,7 @@ function initializeMap() {
         .setLngLat(res.result.geometry.coordinates)
         .addTo(map);
         var lngLat = marker.getLngLat();
-      if(jQuery('#loc-save-lock i').hasClass('fa-lock-open')) {
-          coordinates.value = lngLat.lat + ', ' + lngLat.lng;
-      }
+      coordinates.value = lngLat.lat + ', ' + lngLat.lng;
       marker.on('dragend', onDragEnd);
     })
 
@@ -3207,27 +3197,6 @@ ready(() => {
     //         }
     //     }
     // }
-    // Active Transcription Toggle on Item Page
-    const htrActive = document.querySelector('#hActiveCheck');
-    const mtrActive = document.querySelector('#mActiveCheck');
-    if(htrActive) {
-        htrActive.addEventListener('click', function() {
-            if(htrActive.querySelector('input').checked) {
-                htrActive.classList.remove('checkbox-inactive');
-                htrActive.classList.add('checkbox-active');
-                htrActive.querySelector('input').style.display = 'none';
-                mtrActive.style.display = 'none';
-            }
-        })
-        mtrActive.addEventListener('click', function() {
-            if(mtrActive.querySelector('input').checked) {
-                mtrActive.classList.remove('checkbox-inactive');
-                mtrActive.classList.add('checkbox-active');
-                mtrActive.querySelector('input').style.display = 'none';
-                htrActive.style.display = 'none';
-            }
-        })
-    }
     /// Search page fix
         // Not sure where is this on site, needs more testing
         const singleResultDescriptions = document.querySelectorAll('.search-page-single-result-description');
@@ -3548,330 +3517,157 @@ ready(() => {
         languageSelector[i].appendChild(optionDiv);
     }
     // Start of Image slider functions
-    // New Js for Image slider
+    // Image slider on top of the story and item page
     const imgSliderCheck = document.querySelector('#img-slider');
     if(imgSliderCheck) {
-        // function to show/hide images
-        function showImages(start, end, images) {
-            for(let img of images) {
-                if(img.getAttribute('data-value') < start || img.getAttribute('data-value') > end) {
-                    img.style.display = 'none';
-                } else {
-                    img.style.display = 'inline-block';
-                }
-            }
-        }
-        const imgStickers = document.querySelectorAll('.slide-sticker');
+        const imgSticker = document.querySelectorAll('.slide-sticker');
         const windowWidth = document.querySelector('#img-slider').clientWidth;
-        let sliderStart = 1; // First Image to the left
-        let sliderEnd = 0; // Last Image to the right
+        let sliderStart = null;
+        if(document.querySelector('#slide-start')){
+          sliderStart = parseInt(document.querySelector('#slide-start').textContent) + 1;
+        } 
+        // Buttons to move by 1
+        const prevBtn = document.querySelector('.prev-set');
+        const nextBtn = document.querySelector('.next-set');
+        // Buttons to move by step size
         const nextSet = document.querySelector('.next-slide');
         const prevSet = document.querySelector('.prev-slide');
+        // Spans showing current images on the screen
         const leftSpanNumb = document.querySelector('#left-num');
         const rightSpanNumb = document.querySelector('#right-num');
-        let currentDot = 1;
-        let step = 0; // number of images on screen
+        // change number of visible images based on screen width
+        let slideN; // follows current images
+        let step; // holds the step for moving right/left(increment/decrement)
         if(windowWidth > 1200) {
+            slideN = 9;
             step = 9;
         } else if(windowWidth > 800) {
+            slideN = 5;
             step = 5;
         } else {
+            slideN = 3;
             step = 3;
         }
-        sliderEnd = step;
-        if(imgStickers.length <= step){
+        // Remove buttons if there is less images than step
+        if(imgSticker.length <= step){
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
             prevSet.style.display = 'none';
             nextSet.style.display = 'none';
         }
-        leftSpanNumb.textContent = sliderStart;
-        rightSpanNumb.textContent = sliderEnd;
-        // check if there are more images than it fits on the screen
-        if(nextSet.style.display != 'none') {
-            showImages(sliderStart, sliderEnd, imgStickers);
-        }
-        // Slider dots
-        const dotContainer = document.querySelector('#dot-indicators');
-        const numberDots = Math.ceil(imgStickers.length / step);
-        for(let i = 0; i < numberDots; i++) {
-            const sliderDot = document.createElement('div');
-            sliderDot.classList.add('slider-dot');
-            sliderDot.setAttribute('data-value', (i+1));
-            dotContainer.appendChild(sliderDot);
-        }
-        dotContainer.querySelector('.slider-dot').classList.add('current');
-        const sliderDots = document.querySelectorAll('.slider-dot');
-        for(let dot of sliderDots) {
-            dot.addEventListener('click', function() {
-                currentDot = parseInt(dot.getAttribute('data-value'));
-                dot.classList.add('current');
-                if(dot.getAttribute('data-value') * step > imgStickers.length) {
-                    sliderStart = (imgStickers.length - step) + 1;
-                    sliderEnd = imgStickers.length;
-                } else {
-                    sliderEnd = parseInt(dot.getAttribute('data-value')) * step;
-                    sliderStart = (sliderEnd - step) + 1;
+        // Check if the slider is on current page, by checking if there is nextSet button
+        if(nextSet) {
+            // Add number to show what is the last image on screen
+            if(imgSticker.length <= step) {
+                rightSpanNumb.textContent = imgSticker.length;
+            } else {
+                rightSpanNumb.textContent = step;
+            }
+            if(sliderStart != null) {
+              if(slideN > sliderStart) {
+                slideN = slideN;
+              } else {
+                slideN = sliderStart;
+              
+              for(let img of imgSticker){
+                if(img.getAttribute('data-value') < (slideN-step)+1 || img.getAttribute('data-value') > slideN) {
+                  img.style.display = 'none';
+                  img.setAttribute('loading', 'lazy');
                 }
-                showImages(sliderStart, sliderEnd, imgStickers);
-                leftSpanNumb.textContent = sliderStart;
-                rightSpanNumb.textContent = sliderEnd;
-                for(let dot of sliderDots) {
-                    if(dot.getAttribute('data-value') < currentDot || dot.getAttribute('data-value') > currentDot) {
-                        if(dot.classList.contains('current')){
-                            dot.classList.remove('current');
-                        }
+                leftSpanNumb.textContent = slideN - step + 1;
+                rightSpanNumb.textContent = slideN;
+              }}
+            }
+            
+            // Sliding images by value of slideN(number of slides that depends on screen width) -- right (+)
+            nextSet.addEventListener('click', function() {
+                if(slideN + step < imgSticker.length) {
+                    leftSpanNumb.textContent = slideN + 1;
+                    rightSpanNumb.textContent = slideN + step;
+                    for(let x = 0; x < step; x++) {
+                        imgSticker[x + (slideN)].style.display = 'inline-block';
+                        imgSticker[(slideN-1) - x].style.display = 'none';
+                    }
+                    console.log(slideN);
+                    slideN += step;
+                } else {
+                    leftSpanNumb.textContent = imgSticker.length - step + 1;
+                    rightSpanNumb.textContent = imgSticker.length;
+                    slideN = imgSticker.length - 1;
+                    
+                    for(let y = imgSticker.length-1; y > imgSticker.length - (step+1); y--) {
+                        if(imgSticker[y-step]){
+                            imgSticker[y-step].style.display = 'none';
+                        imgSticker[y].style.display = 'inline-block';
+                    }
                     }
                 }
             })
-        }
-        nextSet.addEventListener('click', function() {
-            currentDot += 1;
-            if(currentDot > numberDots ) {
-                currentDot = 1;
-            }
-            if(rightSpanNumb.textContent == imgStickers.length) {
-                sliderStart = 1;
-                sliderEnd = step;
-            } else if(sliderEnd + step <= imgStickers.length) {
-                sliderStart = sliderStart + step;
-                sliderEnd = sliderEnd + step;
-            } else {
-                sliderStart = (imgStickers.length - step) + 1;
-                sliderEnd = imgStickers.length;
-            }
-            showImages(sliderStart, sliderEnd, imgStickers);
-            leftSpanNumb.textContent = sliderStart;
-            rightSpanNumb.textContent = sliderEnd;
-            for(let dot of sliderDots) {
-                if(parseInt(dot.getAttribute('data-value')) < currentDot || parseInt(dot.getAttribute('data-value')) > currentDot) {
-                    if(dot.classList.contains('current')){
-                        dot.classList.remove('current');
+            // Sliding images by value of slideN(number of slides that depends on screen width) -- left (-)
+            prevSet.addEventListener('click', function() {
+                if(slideN - step > step) {
+                    for(let c = slideN; c > slideN-step; c--){
+                        imgSticker[c].style.display = 'none';
+                        imgSticker[c-step].style.display = 'inline-block';
                     }
+                    slideN -= step;
+                    leftSpanNumb.textContent = slideN - step +2;
+                    rightSpanNumb.textContent = slideN + 1;
                 } else {
-                    dot.classList.add('current');
+                    for(let z = 0; z < step; z++) {
+                        if(imgSticker[z+step]){
+                            imgSticker[z+step].style.display = 'none';
+                            imgSticker[z].style.display = 'inline-block';
+                        }
+                    }
+                    leftSpanNumb.textContent = 1;
+                    rightSpanNumb.textContent = step;
+                    slideN = step;
+                }
+            })
+            // Hide all images that are not supossed to be on the screen
+            for(const img of imgSticker) {
+                if(img.getAttribute('data-value') > slideN) {
+                    img.style.display = 'none';
+                    img.setAttribute('loading', 'lazy');
                 }
             }
-        })
-        prevSet.addEventListener('click', function() {
-            if(currentDot - 1 < 1) {
-                currentDot = numberDots;
-            } else {
-                currentDot -= 1;
-            }
-            if(leftSpanNumb.textContent == '1') {
-                sliderEnd = imgStickers.length;
-                sliderStart = (imgStickers.length - step) + 1;
-            } else if(sliderStart - step < 1) {
-                sliderStart = 1;
-                sliderEnd = step;
-            } else {
-                sliderEnd = sliderEnd - step;
-                sliderStart = sliderStart - step;
-            }
-            showImages(sliderStart, sliderEnd, imgStickers);
-            leftSpanNumb.textContent = sliderStart;
-            rightSpanNumb.textContent = sliderEnd;
-            for(let dot of sliderDots) {
-                if(parseInt(dot.getAttribute('data-value')) < currentDot || parseInt(dot.getAttribute('data-value')) > currentDot) {
-                    if(dot.classList.contains('current')){
-                        dot.classList.remove('current');
-                    }
-                } else {
-                    dot.classList.add('current');
-                }
-            }
-        })
-    }
 
-
-
-    // Image slider on top of the story and item page
-    // const imgSliderCheck = document.querySelector('#img-slider');
-    // if(imgSliderCheck) {
-    //     const imgSticker = document.querySelectorAll('.slide-sticker');
-    //     const windowWidth = document.querySelector('#img-slider').clientWidth;
-    //     let sliderStart = null;
-    //     if(document.querySelector('#slide-start')){
-    //       sliderStart = parseInt(document.querySelector('#slide-start').textContent) + 1;
-    //     } 
-        // // Buttons to move by 1
-        // const prevBtn = document.querySelector('.prev-set');
-        // const nextBtn = document.querySelector('.next-set');
-        // // Buttons to move by step size
-        // const nextSet = document.querySelector('.next-slide');
-        // const prevSet = document.querySelector('.prev-slide');
-        // Spans showing current images on the screen
-        // const leftSpanNumb = document.querySelector('#left-num');
-        // const rightSpanNumb = document.querySelector('#right-num');
-        // change number of visible images based on screen width
-        // let slideN; // follows current images
-        // let step; // holds the step for moving right/left(increment/decrement)
-        // if(windowWidth > 1200) {
-        //     slideN = 9;
-        //     step = 9;
-        // } else if(windowWidth > 800) {
-        //     slideN = 5;
-        //     step = 5;
-        // } else {
-        //     slideN = 3;
-        //     step = 3;
-        // }
-        // Remove buttons if there is less images than step
-        // if(imgSticker.length <= step){
-        //     prevSet.style.display = 'none';
-        //     nextSet.style.display = 'none';
-        // }
-        // Check if the slider is on current page, by checking if there is nextSet button
-        // if(nextSet) {
-        //     // Add number to show what is the last image on screen
-        //     if(imgSticker.length <= step) {
-        //         rightSpanNumb.textContent = imgSticker.length;
-        //     } else {
-        //         rightSpanNumb.textContent = step;
-        //     }
-        //     if(sliderStart != null) {
-        //       if(slideN > sliderStart) {
-        //         slideN = slideN;
-        //       } else {
-        //         slideN = sliderStart;
-              
-        //       for(let img of imgSticker){
-        //         if(img.getAttribute('data-value') < (slideN-step)+1 || img.getAttribute('data-value') > slideN) {
-        //           img.style.display = 'none';
-        //           img.setAttribute('loading', 'lazy');
-        //         }
-        //         leftSpanNumb.textContent = slideN - step + 1;
-        //         rightSpanNumb.textContent = slideN;
-        //       }}
-        //     }
-            
-        //     // Sliding images by value of slideN(number of slides that depends on screen width) -- right (+)
-        //     nextSet.addEventListener('click', function() {
-        //         if(slideN + step < imgSticker.length) {
-        //             leftSpanNumb.textContent = slideN + 1;
-        //             rightSpanNumb.textContent = slideN + step;
-        //             for(let x = 0; x < step; x++) {
-        //                 imgSticker[x + (slideN)].style.display = 'inline-block';
-        //                 imgSticker[(slideN-1) - x].style.display = 'none';
-        //             }
-        //             console.log(slideN);
-        //             slideN += step;
-        //         } else {
-        //             leftSpanNumb.textContent = imgSticker.length - step + 1;
-        //             rightSpanNumb.textContent = imgSticker.length;
-        //             slideN = imgSticker.length - 1;
-                    
-        //             for(let y = imgSticker.length-1; y > imgSticker.length - (step+1); y--) {
-        //                 if(imgSticker[y-step]){
-        //                     imgSticker[y-step].style.display = 'none';
-        //                 imgSticker[y].style.display = 'inline-block';
-        //             }
-        //             }
-        //         }
-        //     })
-        //     // Sliding images by value of slideN(number of slides that depends on screen width) -- left (-)
-        //     prevSet.addEventListener('click', function() {
-        //         if(slideN - step > step) {
-        //             for(let c = slideN; c > slideN-step; c--){
-        //                 imgSticker[c].style.display = 'none';
-        //                 imgSticker[c-step].style.display = 'inline-block';
-        //             }
-        //             slideN -= step;
-        //             leftSpanNumb.textContent = slideN - step +2;
-        //             rightSpanNumb.textContent = slideN + 1;
-        //         } else {
-        //             for(let z = 0; z < step; z++) {
-        //                 if(imgSticker[z+step]){
-        //                     imgSticker[z+step].style.display = 'none';
-        //                     imgSticker[z].style.display = 'inline-block';
-        //                 }
-        //             }
-        //             leftSpanNumb.textContent = 1;
-        //             rightSpanNumb.textContent = step;
-        //             slideN = step;
-        //         }
-        //     })
-        //     // Hide all images that are not supossed to be on the screen
-        //     for(const img of imgSticker) {
-        //         if(img.getAttribute('data-value') > slideN) {
-        //             img.style.display = 'none';
-        //             img.setAttribute('loading', 'lazy');
-        //         }
-        //     }
-        //     // Slider dots
-        //     const dotContainer = document.querySelector('#dot-indicators');
-        //     const numberDots = Math.ceil(imgSticker.length / step);
-        //     for(let i = 0; i < numberDots; i++) {
-        //         const sliderDot = document.createElement('div');
-        //         sliderDot.classList.add('slider-dot');
-        //         sliderDot.setAttribute('data-value', (i+1));
-        //         dotContainer.appendChild(sliderDot);
-        //     }
-        //     const sliderDots = document.querySelectorAll('.slider-dot');
-        //     for(let dot of sliderDots) {
-        //         dot.addEventListener('click', function() {
-        //             let sliderEnd = dot.getAttribute('data-value') * step;
-        //             let sliderStart = sliderEnd - step;
-        //             let currentDot = dot.getAttribute('data-value');
-        //             dot.classList.add('current');
-        //             for(let img of imgSticker) {
-        //                 if(sliderEnd > imgSticker.length) {
-        //                     sliderEnd = imgSticker.length;
-        //                     sliderStart = sliderEnd - step;
-        //                 }
-        //                 if(img.getAttribute('data-value') < sliderStart + 1 || img.getAttribute('data-value') > sliderEnd) {
-        //                     img.style.display = 'none';
-        //                 } else if (img.getAttribute('data-value') > sliderStart && img.getAttribute('data-value') <= sliderEnd) {
-        //                     img.style.display = 'inline-block';
-        //                 }
-        //             }
-        //             for(let dot of sliderDots) {
-        //                 if(dot.getAttribute('data-value') < currentDot || dot.getAttribute('data-value') > currentDot) {
-        //                     if(dot.classList.contains('current')){
-        //                         dot.classList.remove('current');
-        //                     }
-        //                 }
-        //             }
-        //             slideN = sliderEnd - 1;
-
-        //         })
-        //     }
-
-
-            // // Sliding images by 1 slide -- right (+)
-            // nextBtn.addEventListener('click', function() {
-            //     imgSticker[slideN].style.display = 'inline-block';
-            //     imgSticker[slideN - step].style.display = 'none';
-            //     leftSpanNumb.textContent = slideN + 2 - step;
-            //     rightSpanNumb.textContent = slideN + 1;
+            // Sliding images by 1 slide -- right (+)
+            nextBtn.addEventListener('click', function() {
+                imgSticker[slideN].style.display = 'inline-block';
+                imgSticker[slideN - step].style.display = 'none';
+                leftSpanNumb.textContent = slideN + 2 - step;
+                rightSpanNumb.textContent = slideN + 1;
     
-            //     slideN += 1;
-            //     if(slideN >= imgSticker.length -1) {
-            //         slideN = imgSticker.length - 1;
-            //     }
-            // })
-            // // Sliding images by 1 slide -- left (-)
-            // prevBtn.addEventListener('click', function() {
-            //     if(slideN >= imgSticker.length-1 && imgSticker[slideN].style.display === 'inline-block'){
-            //         imgSticker[slideN].style.display = 'none';
-            //         imgSticker[slideN-step].style.display = 'inline-block';
-            //         slideN = imgSticker.length-1;
-            //     } else {
-            //         slideN -= 1;
-            //         if(slideN < step) {
-            //             slideN = step;
-            //         }
-            //         imgSticker[slideN].style.display = 'none';
-            //         imgSticker[slideN-step].style.display = 'inline-block';
-            //     }
-            //     leftSpanNumb.textContent = slideN - step +1;
-            //     rightSpanNumb.textContent = slideN;
-            // })
+                slideN += 1;
+                if(slideN >= imgSticker.length -1) {
+                    slideN = imgSticker.length - 1;
+                }
+            })
+            // Sliding images by 1 slide -- left (-)
+            prevBtn.addEventListener('click', function() {
+                if(slideN >= imgSticker.length-1 && imgSticker[slideN].style.display === 'inline-block'){
+                    imgSticker[slideN].style.display = 'none';
+                    imgSticker[slideN-step].style.display = 'inline-block';
+                    slideN = imgSticker.length-1;
+                } else {
+                    slideN -= 1;
+                    if(slideN < step) {
+                        slideN = step;
+                    }
+                    imgSticker[slideN].style.display = 'none';
+                    imgSticker[slideN-step].style.display = 'inline-block';
+                }
+                leftSpanNumb.textContent = slideN - step +1;
+                rightSpanNumb.textContent = slideN;
+            })
             // If it's last item, move slider to the end
-            // if(slideN == imgSticker.length){
-            //   nextSet.click();
-            // }
-    //     } // End of slider functions
-    // }
+            if(slideN == imgSticker.length){
+              nextSet.click();
+            }
+        } // End of slider functions
+    }
     // Cover up at the end of Item Metadata
     const coverUp = document.querySelector('.cover-up');
     if(coverUp) {
@@ -3892,29 +3688,29 @@ ready(() => {
     //Quick fix to move languages until finding long term solution
     const fullScreenBtn = document.querySelector('#full-page');
     
-    // if(fullScreenBtn) { !!!!! Disabled only for testing of new item page
-    //     const langContainer = document.querySelector('#lang-holder');
-    //     const langSelecta = document.querySelector('.transcription-mini-metadata');
-    //     // move languages below title
-    //     langContainer.appendChild(langSelecta);
-    // }
+    if(fullScreenBtn) {
+        const langContainer = document.querySelector('#lang-holder');
+        const langSelecta = document.querySelector('.transcription-mini-metadata');
+        // move languages below title
+        langContainer.appendChild(langSelecta);
+    }
 
     // When the user scrolls down 60px from the top of the document, resize the navbar's padding
     //and the logo's font size
-    // if(document.querySelector('#_transcribathon_partnerlogo')) {
-    //     window.onscroll = function() {scrollFunction()};
+    if(document.querySelector('#_transcribathon_partnerlogo')) {
+        window.onscroll = function() {scrollFunction()};
 
-    //     function scrollFunction() {
-    //         if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
-    //             document.getElementById("_transcribathon_partnerlogo").style.height = "56px";
-    //             document.getElementById("_transcribathon_partnerlogo").style.width = "56px";
-    //             document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "33px";
-    //         } else {
-    //             document.getElementById("_transcribathon_partnerlogo").style.height = "120px";
-    //             document.getElementById("_transcribathon_partnerlogo").style.width = "120px";
-    //             document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
-    //         }
-    //     }}
+        function scrollFunction() {
+            if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
+                document.getElementById("_transcribathon_partnerlogo").style.height = "56px";
+                document.getElementById("_transcribathon_partnerlogo").style.width = "56px";
+                document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "33px";
+            } else {
+                document.getElementById("_transcribathon_partnerlogo").style.height = "120px";
+                document.getElementById("_transcribathon_partnerlogo").style.width = "120px";
+                document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
+            }
+        }}
         // if(itemDateCheck === true) {
         //     installEventListeners();
         //     itemDateCheck = false;
