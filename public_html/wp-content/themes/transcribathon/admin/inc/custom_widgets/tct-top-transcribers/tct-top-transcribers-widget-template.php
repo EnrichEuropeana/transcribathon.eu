@@ -266,8 +266,6 @@ if($instance['tct-top-transcribers-headline'] != ""){ echo "<h1>".str_replace("\
 		echo "<p>".$instance['tct-top-transcribers-nothingtoshow']."</p>";
 		
 	}
-
-	
 	//Show own rank below ranking
 	/*
 	if($subject != "teams"){
@@ -389,6 +387,5 @@ if($instance['tct-top-transcribers-headline'] != ""){ echo "<h1>".str_replace("\
 		}
 	}
 	*/
-	
 	echo $content;
 ?>

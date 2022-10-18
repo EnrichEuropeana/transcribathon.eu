@@ -80,8 +80,7 @@ function _TCT_item_page_htr( $atts) {
     }
 
     $transcription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
-    // $transcription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
-    $transcription = htmlspecialchars($transcription);
+    /* $transcription = htmlspecialchars($transcription); */
     /* dd($transcription); */
 
     $wpUserId = get_current_user_id();
@@ -159,23 +158,6 @@ ready(() => {
         }
     });
 </script>
-<style> 
-body {
-    min-height: 100vh;
-}
-button.is-success {
-    background-color: #0a72cc!important;
-}
-#transkribusEditor {
-    height: 100vh;
-}
-#colophon, ._tct_footer {
-    display:none!important;
-}
-.editor__header nav {
-    overflow: hidden!important;
-}
-</style>
 HED;
 
         $content .= $htrEditor;

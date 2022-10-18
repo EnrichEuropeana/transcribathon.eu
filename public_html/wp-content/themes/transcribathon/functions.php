@@ -105,8 +105,6 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/get_word_document.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_htr.php'); // Adds HTR Editor
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_transcription.php'); // Adds HTR Transcription Page
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/mtr_item.php'); // Adds manual TR Transcription Page
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tct_new_search.php'); // Adds New Search Page
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_item_slider.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_menu.php');
@@ -130,7 +128,7 @@ function embedd_custom_javascripts_and_css() {
      if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
         /* jQuery */
         /* Don't enqueue following scripts if it's HTR editor */
-        if(!is_page('item_page_htr') && !is_page('manual-transcription-page')){
+        if(!is_page('item_page_htr')){
             wp_enqueue_script( 'jquery' );
 
             /* custom JS and CSS*/
@@ -153,28 +151,7 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/tct-image-viewer.js');
             wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
         }
-        if(is_page('manual-transcription-page')) {
-            wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/mtr_item.css');
 
-            /* TinyMCE */
-            wp_enqueue_script( 'tinymce', CHILD_TEMPLATE_DIR . '/js/tinymce/js/tinymce/tinymce.js');
-
-            /* iiif viewer */
-            wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/mtr-image-viewer.js');
-            wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
-
-            wp_enqueue_script( 'jquery' );
-
-            /* custom JS and CSS*/
-            /* openseadragon */
-            wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon.js');
-            /*osdSelection plugin*/
-            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
-            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/mtr-item.js');
-        }
-        if(is_page('htr-transcription')) {
-            wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/tct-htr-viewer.js');
-        }
         // if(!is_page('story')){
         wp_enqueue_style('child-style', get_stylesheet_directory_uri() .'/style.css', array('parent-style'));
         // }
