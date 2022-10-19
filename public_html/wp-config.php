@@ -108,6 +108,22 @@ define('COOKIEHASH', md5(getenv('DOMAIN_CURRENT_SITE')));
 define('TP_API_HOST', getenv('TP_API_HOST'));
 define('TP_API_TOKEN', getenv('TP_API_TOKEN'));
 
+/*
+ * define auth for Transkribus
+ */
+define('HTR_TOKEN_URI', getenv('HTR_TOKEN_URI'));
+define('HTR_USER', getenv('HTR_USER'));
+define('HTR_PASS', getenv('HTR_PASS'));
+define('HTR_CLIENT_ID', getenv('HTR_CLIENT_ID'));
+define('HTR_ENDPOINT', getenv('HTR_ENDPOINT'));
+define('HTR_MODEL_ENDPOINT', getenv('HTR_MODEL_ENDPOINT'));
+
+/*
+ * define endpoint and token for TP API V2
+ */
+define('TP_API_V2_TOKEN', getenv('TP_API_V2_TOKEN'));
+define('TP_API_V2_ENDPOINT', getenv('TP_API_V2_ENDPOINT'));
+
 /**
  * Solr
  */
@@ -118,7 +134,6 @@ define('TP_SOLR', getenv('TP_SOLR'));
 /** Absolute path to the WordPress directory. */
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
-
 
 define('FS_METHOD', 'direct');
 /** Sets up WordPress vars and included files. */
