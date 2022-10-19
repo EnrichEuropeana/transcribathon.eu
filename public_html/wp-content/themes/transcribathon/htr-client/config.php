@@ -1,5 +1,7 @@
 <?php
 
+require_once($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
+
 $config = array(
 	'transkribus' => array(
 		'htrModelEndpoint' => HTR_MODEL_ENDPOINT,
