@@ -84,10 +84,11 @@ function _TCT_item_page_htr( $atts) {
     /* dd($transcription); */
 
     $wpUserId = get_current_user_id();
-    // for now we assume no user as empty in TEST
-    // do not set live with this data
-    // we need an endpoint for retreiving UserId
-    $userId = 'null'; // API endpoint to retreive UserId here
+    $url = TP_API_HOST."/tp-api/users/".$wpUserId;
+    $requestType = "GET";
+    include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
+    $userData = json_decode($result, true);
+    $userId = $userData[0]['UserId'];
     $itemId = $_GET['item'];
 
     $content = '';
@@ -136,7 +137,7 @@ ready(() => {
 
         const payload = {
             item_id: {$itemId},
-            userId: {$userId},
+            user_id: {$userId},
             transcription_data: data.xml
         };
 
