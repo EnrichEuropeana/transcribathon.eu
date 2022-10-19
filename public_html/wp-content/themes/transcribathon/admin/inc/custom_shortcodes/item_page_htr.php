@@ -17,8 +17,8 @@ use FactsAndFiles\Transcribathon\TranskribusClient;
 function _TCT_item_page_htr( $atts) {
     global $config;
 
-    $textEditorUrl = get_europeana_url() . '/transkribus-texteditor/transkribus-texteditor-velehanden/';
-    $layoutEditorUrl = get_europeana_url() . '/Layouteditor/dist/';
+    $textEditorUrl = get_stylesheet_directory_uri() . '/htr-client/texteditor/';
+    $layoutEditorUrl = get_stylesheet_directory_uri() . '/htr-client/layouteditor/';
 
     $isLoggedIn = is_user_logged_in();
 
