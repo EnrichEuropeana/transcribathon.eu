@@ -19,6 +19,7 @@ function _TCT_item_page_htr( $atts) {
 
     $textEditorUrl = get_stylesheet_directory_uri() . '/htr-client/texteditor/';
     $layoutEditorUrl = get_stylesheet_directory_uri() . '/htr-client/layouteditor/';
+    $requestUri = get_stylesheet_directory_uri() . '/htr-client/request.php';
 
     $isLoggedIn = is_user_logged_in();
 
@@ -130,9 +131,6 @@ ready(() => {
 <script src="{$textEditorUrl}js/chunk-vendors.8c83230e.js"></script>
 <script src="{$textEditorUrl}js/app.eb1eb66c.js"></script>
 <script>
-		const loc = window.location;
-		const pathname =  '/wp-content/themes/transcribathon/htr-client/request.php';
-
     window.eventBus.\$on('save', async (data) => {
 
         const payload = {
@@ -141,7 +139,7 @@ ready(() => {
             transcription_data: data.xml
         };
 
-        const sendData = await fetch(loc.origin + pathname, {
+        const sendData = await fetch('{$requestUri}', {
             method: 'POST',
             body: JSON.stringify(payload)
         });

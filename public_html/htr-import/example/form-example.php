@@ -1,5 +1,7 @@
 <?php
 
+require_once($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
+
 function sanitizeDigit ($string) {
 	return filter_var($string, FILTER_VALIDATE_INT, array('options' => array('min_range' => 1))) ?: null;
 }
@@ -361,8 +363,7 @@ document.addEventListener('alpine:init', () => {
 
 	Alpine.data('htrForm', () => ({
 
-		loc: window.location,
-		pathname: '/wp-content/themes/transcribathon/htr-client/request.php',
+		requestUri: '<?php echo get_stylesheet_directory_uri() . "/htr-client/request.php"; ?>',
 		htrModels: {},
 		storyId: <?php e($storyId ?? 'null'); ?>,
 		itemId: <?php e($itemId ?? 'null'); ?>,
@@ -384,7 +385,7 @@ document.addEventListener('alpine:init', () => {
 			const params = new URLSearchParams({
 				htrModel: '1'
 			});
-			const url = this.loc.origin + this.pathname + '?' + params;
+			const url = this.requestUri + '?' + params;
 
 			this.htrModels = await (await fetch(url)).json();
 
@@ -409,7 +410,7 @@ document.addEventListener('alpine:init', () => {
 				itemId: this.itemId,
 				htrId: this.htrId
 			});
-			const url = this.loc.origin + this.pathname + '?' + params;
+			const url = this.requestUri + '?' + params;
 
 			this.disabled = true;
 			this.processing = true;
@@ -465,7 +466,6 @@ var ready = (callback) => {
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
 const cards = document.querySelectorAll('.card');
-console.log(cards);
 for(let card of cards) {
 	card.addEventListener('click', function() {
 		let cardID = card.querySelector('.card-text').textContent;
