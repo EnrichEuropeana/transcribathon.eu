@@ -1,55 +1,18 @@
 <?php
 
-define('ENVIRONMENT_DEV', 'dev');
-define('ENVIRONMENT_STAGE', 'stage');
-define('ENVIRONMENT_PROD', 'prod');
-define('ENVIRONMENT', getenv('ENVIRONMENT'));
+/**
+ * database
+ */
+define('DB_NAME', getenv('DB_NAME'));
+define('DB_USER', getenv('DB_USER'));
+define('DB_PASSWORD', getenv('DB_PASSWORD'));
+define('DB_HOST', getenv('DB_HOST'));
+define('DB_CHARSET', 'utf8');
+define('DB_COLLATE', '');
+$table_prefix = getenv('DB_PREFIX');
 
 /**
- * The base configuration for WordPress
- *
- * The wp-config.php creation script uses this file during the
- * installation. You don't have to use the web site, you can
- * copy this file to "wp-config.php" and fill in the values.
- *
- * This file contains the following configurations:
- *
- * * MySQL settings
- * * Secret keys
- * * Database table prefix
- * * ABSPATH
- *
- * @link https://codex.wordpress.org/Editing_wp-config.php
- *
- * @package WordPress
- */
-// ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define('DB_NAME', getenv('DB_NAME'));
-
-/** MySQL database username */
-define('DB_USER', getenv('DB_USER'));
-
-/** MySQL database password */
-define('DB_PASSWORD', getenv('DB_PASSWORD'));
-
-/** MySQL hostname */
-define('DB_HOST', getenv('DB_HOST'));
-
-/** Database Charset to use in creating database tables. */
-define('DB_CHARSET', 'utf8');
-
-/** The Database Collate type. Don't change this if in doubt. */
-define('DB_COLLATE', '');
-
-/**#@+
- * Authentication Unique Keys and Salts.
- *
- * Change these to different unique phrases!
- * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
- * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
- *
- * @since 2.6.0
+ * keys/salts
  */
 define('AUTH_KEY',         getenv('AUTH_KEY'));
 define('SECURE_AUTH_KEY',  getenv('SECURE_AUTH_KEY'));
@@ -60,36 +23,9 @@ define('SECURE_AUTH_SALT', getenv('SECURE_AUTH_SALT'));
 define('LOGGED_IN_SALT',   getenv('LOGGED_IN_SALT'));
 define('NONCE_SALT',       getenv('NONCE_SALT'));
 
-/**#@-*/
-
 /**
- * WordPress Database Table prefix.
- *
- * You can have multiple installations in one database if you give each
- * a unique prefix. Only numbers, letters, and underscores please!
+ * site setup
  */
-$table_prefix = getenv('DB_PREFIX');
-
-/**
- * For developers: WordPress debugging mode.
- *
- * Change this to true to enable the display of notices during development.
- * It is strongly recommended that plugin and theme developers use WP_DEBUG
- * in their development environments.
- *
- * For information on other constants that can be used for debugging,
- * visit the Codex.
- *
- * @link https://codex.wordpress.org/Debugging_in_WordPress
- */
-define('WP_DEBUG', (bool) getenv('WP_DEBUG'));
-
-/*
- * auto update
- */
-define('WP_AUTO_UPDATE_CORE', false);
-
-/* Multisite */
 define('WP_ALLOW_MULTISITE', true);
 define('MULTISITE', true);
 define('SUBDOMAIN_INSTALL', false);
@@ -102,24 +38,50 @@ define('COOKIEPATH', '/');
 define('COOKIEHASH', md5(getenv('DOMAIN_CURRENT_SITE')));
 
 /**
- * define TP-API endoint host
- * transcribathon.local for development
+ * debug
  */
-define('TP_API_HOST', getenv('TP_API_HOST'));
-define('TP_API_TOKEN', getenv('TP_API_TOKEN'));
+define('WP_DEBUG', (bool) getenv('WP_DEBUG'));
+
+/**
+ * file access method
+ */
+define('FS_METHOD', 'direct');
+
+/**
+ * autoupdate
+ */
+define('WP_AUTO_UPDATE_CORE', false);
 
 /**
  * Solr
  */
 define('TP_SOLR', getenv('TP_SOLR'));
 
-/* That's all, stop editing! Happy blogging. */
+/**
+ * define TP-API V1
+ */
+define('TP_API_HOST', getenv('TP_API_HOST'));
+define('TP_API_TOKEN', getenv('TP_API_TOKEN'));
+
+/**
+ * define auth for Transkribus
+ */
+define('HTR_TOKEN_URI', getenv('HTR_TOKEN_URI'));
+define('HTR_USER', getenv('HTR_USER'));
+define('HTR_PASS', getenv('HTR_PASS'));
+define('HTR_CLIENT_ID', getenv('HTR_CLIENT_ID'));
+define('HTR_ENDPOINT', getenv('HTR_ENDPOINT'));
+define('HTR_MODEL_ENDPOINT', getenv('HTR_MODEL_ENDPOINT'));
+
+/**
+ * define endpoint and token for TP API V2
+ */
+define('TP_API_V2_TOKEN', getenv('TP_API_V2_TOKEN'));
+define('TP_API_V2_ENDPOINT', getenv('TP_API_V2_ENDPOINT'));
 
 /** Absolute path to the WordPress directory. */
 if ( !defined('ABSPATH') )
 	define('ABSPATH', dirname(__FILE__) . '/');
 
-
-define('FS_METHOD', 'direct');
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');

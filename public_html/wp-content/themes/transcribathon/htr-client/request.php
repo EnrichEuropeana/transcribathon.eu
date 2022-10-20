@@ -1,8 +1,8 @@
 <?php
 
-require 'config.php';
-require 'lib/HtrData.php';
-require 'lib/TranskribusClient.php';
+require_once('config.php');
+require_once('lib/HtrData.php');
+require_once('lib/TranskribusClient.php');
 
 use FactsAndFiles\Transcribathon\TranskribusClient;
 

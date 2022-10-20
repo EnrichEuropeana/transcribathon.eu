@@ -92,7 +92,6 @@ class HtrData
 		$itemId = intval($item['ItemId']);
 		$htrId = intval($htrId);
 
-		// check item existence in db here
 		$itemResultJson = $this->transkribusClient->getDataFromTranscribathon(
 			null,
 			array(
@@ -103,11 +102,10 @@ class HtrData
 			)
 		);
 		$storedHtr = json_decode($itemResultJson, true);
-		$isItemInHtrDb = !empty($storedHtr['data'][0]['id']) ? true : false;
-		$isDifferentHtrModel = $htrId !== $storedHtr['data'][0]['htr_id'];
+		$isItemWithHtrIdInHtrDb = !empty($storedHtr['data'][0]['id']) ? true : false;
 
-		// add new transcription if is not in DB or the HTR model is another
-		if (!$isItemInHtrDb || $isDifferentHtrModel) {
+		// check item existence in db here by itemId and $htrId
+		if (!$isItemWithHtrIdInHtrDb) {
 
 			if (!array_key_exists('ImageLink', $item)) {
 				$this->currentErrors += 1;

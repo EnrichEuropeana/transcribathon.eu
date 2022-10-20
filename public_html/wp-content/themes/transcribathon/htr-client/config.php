@@ -1,22 +1,24 @@
 <?php
 
+require_once($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
+
 $config = array(
 	'transkribus' => array(
-		'htrModelEndpoint' => getenv('HTR_MODEL_ENDPOINT'),
-		'endpoint'         => getenv('HTR_ENDPOINT'),
-		'user'             => getenv('HTR_USER'),
-		'pass'             => getenv('HTR_PASS'),
-		'clientId'         => getenv('HTR_CLIENT_ID'),
-		'urlAccessToken'   => getenv('HTR_TOKEN_URI'),
+		'htrModelEndpoint' => HTR_MODEL_ENDPOINT,
+		'endpoint'         => HTR_ENDPOINT,
+		'user'             => HTR_USER,
+		'pass'             => HTR_PASS,
+		'clientId'         => HTR_CLIENT_ID,
+		'urlAccessToken'   => HTR_TOKEN_URI,
 		'scope'            => array('openid profile'),
 		'grantType'        => 'password'
 	),
 	'transcribathon' => array(
-		'endpoint' => getenv('TP_API_V2_ENDPOINT'),
-		'apiToken' => getenv('TP_API_V2_TOKEN')
+		'endpoint' => TP_API_V2_ENDPOINT,
+		'apiToken' => TP_API_V2_TOKEN
 	),
 	'verifySSL' => false
 );
 
-$oldApiEndpoint = getenv('OLD_API_ENDPOINT');
+$oldApiEndpoint = TP_API_HOST . '/tp-api' ;
 
