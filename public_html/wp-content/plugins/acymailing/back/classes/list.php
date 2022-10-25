@@ -545,9 +545,9 @@ class ListClass extends acymClass
         acym_query('UPDATE #__acym_list SET visible = '.intval($status).' WHERE id IN ('.implode(',', $elements).')');
     }
 
-    public function sendWelcome($userID, $listIDs)
+    public function sendWelcome($userID, $listIDs, $forceFront = false)
     {
-        if (acym_isAdmin()) {
+        if (!$forceFront && acym_isAdmin()) {
             return;
         }
 

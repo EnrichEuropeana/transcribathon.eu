@@ -153,4 +153,7 @@ return array(
     'AcyMailing\\Views\\SegmentsViewSegments' => $baseDir . '/back/views/segments/view.html.php',
     'AcyMailing\\Views\\StatsViewStats' => $baseDir . '/back/views/stats/view.html.php',
     'AcyMailing\\Views\\UsersViewUsers' => $baseDir . '/back/views/users/view.html.php',
+    'Psr\\Container\\ContainerExceptionInterface' => $vendorDir . '/psr/container/src/ContainerExceptionInterface.php',
+    'Psr\\Container\\ContainerInterface' => $vendorDir . '/psr/container/src/ContainerInterface.php',
+    'Psr\\Container\\NotFoundExceptionInterface' => $vendorDir . '/psr/container/src/NotFoundExceptionInterface.php',
 );

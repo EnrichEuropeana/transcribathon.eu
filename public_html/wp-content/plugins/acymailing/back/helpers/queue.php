@@ -61,6 +61,21 @@ class QueueHelper extends acymObject
 
     public function process()
     {
+        $creditsLeft = 10000;
+        acym_trigger('onAcymCreditsLeft', [&$creditsLeft]);
+
+        if (empty($creditsLeft)) {
+            $this->finish = true;
+            if ($this->report) {
+                acym_display(acym_translation('ACYM_NOT_ENOUGH_CREDITS'), 'info');
+            }
+
+            return false;
+        }
+        if ($this->send_limit > $creditsLeft) {
+            $this->send_limit = $creditsLeft;
+        }
+
         $queueClass = new QueueClass();
         $queueClass->emailtypes = $this->emailtypes;
         $queueElements = $queueClass->getReady($this->send_limit, $this->id);
@@ -365,7 +380,6 @@ class QueueHelper extends acymObject
         $time = acym_date('now', 'Y-m-d H:i:s');
 
         foreach ($statsAdd as $mailId => $infos) {
-
             $mailId = intval($mailId);
 
             foreach ($infos as $status => $subscribers) {

@@ -93,7 +93,6 @@ function acym_setLanguage($lang)
     return $previousLanguage;
 }
 
-
 function acym_translationSprintf()
 {
     $args = func_get_args();

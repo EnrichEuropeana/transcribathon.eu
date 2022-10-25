@@ -9,9 +9,9 @@
 	Donate link: https://monzillamedia.com/donate.html
 	Contributors: specialk
 	Requires at least: 4.9
-	Tested up to: 6.0
-	Stable tag: 2.7
-	Version: 2.7
+	Tested up to: 6.1
+	Stable tag: 2.8
+	Version: 2.8
 	Requires PHP: 5.6.20
 	Text Domain: disable-gutenberg
 	Domain Path: /languages
@@ -50,6 +50,7 @@ if (!class_exists('DisableGutenberg')) {
 			add_action('init',                array($this, 'load_i18n'));
 			add_filter('plugin_action_links', array($this, 'action_links'), 10, 2);
 			add_filter('plugin_row_meta',     array($this, 'plugin_links'), 10, 2);
+			add_filter('admin_footer_text',   array($this, 'footer_text'), 10, 1);
 			
 			add_action('admin_enqueue_scripts', 'disable_gutenberg_admin_enqueue_scripts');
 			add_action('admin_print_scripts',   'disable_gutenberg_admin_print_scripts');
@@ -69,7 +70,7 @@ if (!class_exists('DisableGutenberg')) {
 		
 		function constants() {
 			
-			if (!defined('DISABLE_GUTENBERG_VERSION')) define('DISABLE_GUTENBERG_VERSION', '2.7');
+			if (!defined('DISABLE_GUTENBERG_VERSION')) define('DISABLE_GUTENBERG_VERSION', '2.8');
 			if (!defined('DISABLE_GUTENBERG_REQUIRE')) define('DISABLE_GUTENBERG_REQUIRE', '4.9');
 			if (!defined('DISABLE_GUTENBERG_AUTHOR'))  define('DISABLE_GUTENBERG_AUTHOR',  'Jeff Starr');
 			if (!defined('DISABLE_GUTENBERG_NAME'))    define('DISABLE_GUTENBERG_NAME',    __('Disable Gutenberg', 'disable-gutenberg'));
@@ -182,6 +183,26 @@ if (!class_exists('DisableGutenberg')) {
 			}
 			
 			return $links;
+			
+		}
+		
+		function footer_text($text) {
+			
+			$screen = get_current_screen();
+			
+			$ids = array('settings_page_disable-gutenberg');
+			
+			if (isset($screen->id) && apply_filters('disable_gutenberg_admin_footer_text', in_array($screen->id, $ids))) {
+				
+				$text = __('Like this plugin? Give it a', 'disable-gutenberg');
+				
+				$text .= ' <a target="_blank" rel="noopener noreferrer" href="https://wordpress.org/support/plugin/disable-gutenberg/reviews/?rate=5#new-post">';
+				
+				$text .= __('★★★★★ rating&nbsp;&raquo;', 'disable-gutenberg') .'</a>';
+				
+			}
+			
+			return $text;
 			
 		}
 		

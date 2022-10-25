@@ -5935,6 +5935,30 @@ module.exports = Backbone.View.extend( {
 			silent: false
 		}, options );
 
+		// Allow for external field validation when attempting to close a widget.
+		if ( typeof this.widgetView == 'object' ) {
+			var values = this.getFormValues();
+			if ( typeof values.widgets == 'object' ) {
+				validSave = $( document ).triggerHandler(
+					'close_dialog_validation',
+					[
+						// Widget values.
+						values.widgets[ this.model.cid ],
+						// Widget Class
+						this.model.attributes.class,
+						// Model instance - used for finding field markup.
+						this.model.cid,
+						// Instance.
+						this
+					]
+				);
+			}
+
+			if ( typeof validSave == 'boolean' && ! validSave ) {
+				return false;
+			}
+		}
+
 		if ( ! options.silent ) {
 			this.trigger( 'close_dialog' );
 		}
@@ -7242,7 +7266,7 @@ module.exports = Backbone.View.extend( {
 					// Create the media frame.
 					frame = wp.media( {
 						// Set the title of the modal.
-						title: 'choose',
+						title: panelsOptions.add_media,
 
 						// Tell the modal to show only images.
 						library: {

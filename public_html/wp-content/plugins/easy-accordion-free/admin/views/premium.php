@@ -45,7 +45,7 @@ class Easy_Accordion_Premium {
 	 * @return void
 	 */
 	public function premium_admin_menu() {
-		$landing_page = 'https://shapedplugin.com/easy-accordion/?ref=1';
+		$landing_page = 'https://shapedplugin.com/easy-accordion/pricing/?ref=1';
 		add_submenu_page(
 			'edit.php?post_type=sp_easy_accordion',
 			__( 'Easy Accordion Premium', 'easy-accordion-free' ),

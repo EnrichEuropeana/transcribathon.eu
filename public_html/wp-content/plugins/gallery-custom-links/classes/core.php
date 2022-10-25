@@ -1,6 +1,6 @@
 <?php
 
-require MGCL_PATH . '/vendor/autoload.php';
+require trailingslashit( MGCL_PATH ) . 'vendor/autoload.php';
 
 class Meow_MGCL_Core
 {
@@ -214,24 +214,48 @@ class Meow_MGCL_Core
 		?>
 			<script>
 				// Used by Gallery Custom Links to handle tenacious Lightboxes
-				jQuery(document).ready(function () {
+				//jQuery(document).ready(function () {
 
 					function mgclInit() {
-						if (jQuery.fn.off) {
-							jQuery('.no-lightbox, .no-lightbox img').off('click'); // jQuery 1.7+
-						}
-						else {
-							jQuery('.no-lightbox, .no-lightbox img').unbind('click'); // < jQuery 1.7
-						}
-						jQuery('a.no-lightbox').click(mgclOnClick);
+						
+						// In jQuery:
+						// if (jQuery.fn.off) {
+						// 	jQuery('.no-lightbox, .no-lightbox img').off('click'); // jQuery 1.7+
+						// }
+						// else {
+						// 	jQuery('.no-lightbox, .no-lightbox img').unbind('click'); // < jQuery 1.7
+						// }
 
-						if (jQuery.fn.off) {
-							jQuery('a.set-target').off('click'); // jQuery 1.7+
+						// 2022/10/24: In Vanilla JS
+						var elements = document.querySelectorAll('.no-lightbox, .no-lightbox img');
+						for (var i = 0; i < elements.length; i++) {
+						 	elements[i].onclick = null;
 						}
-						else {
-							jQuery('a.set-target').unbind('click'); // < jQuery 1.7
+
+
+						// In jQuery:
+						//jQuery('a.no-lightbox').click(mgclOnClick);
+
+						// 2022/10/24: In Vanilla JS:
+						var elements = document.querySelectorAll('a.no-lightbox');
+						for (var i = 0; i < elements.length; i++) {
+						 	elements[i].onclick = mgclOnClick;
 						}
-						jQuery('a.set-target').click(mgclOnClick);
+
+						// in jQuery:
+						// if (jQuery.fn.off) {
+						// 	jQuery('a.set-target').off('click'); // jQuery 1.7+
+						// }
+						// else {
+						// 	jQuery('a.set-target').unbind('click'); // < jQuery 1.7
+						// }
+						// jQuery('a.set-target').click(mgclOnClick);
+
+						// 2022/10/24: In Vanilla JS:
+						var elements = document.querySelectorAll('a.set-target');
+						for (var i = 0; i < elements.length; i++) {
+						 	elements[i].onclick = mgclOnClick;
+						}
 					}
 
 					function mgclOnClick() {
@@ -259,7 +283,7 @@ class Meow_MGCL_Core
 					mgclAddLoadEvent(mgclInit);
 					mgclInit();
 
-				});
+				//});
 			</script>
 		<?php
 	}

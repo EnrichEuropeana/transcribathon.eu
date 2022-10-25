@@ -5,7 +5,7 @@
  * Description: The best Responsive and Touch-friendly drag & drop <strong>Accordion FAQ</strong> builder plugin for WordPress.
  * Author:      ShapedPlugin
  * Author URI:  https://shapedplugin.com/
- * Version:     2.1.17
+ * Version:     2.1.19
  * Text Domain: easy-accordion-free
  * Domain Path: /languages/
  *
@@ -51,7 +51,7 @@ class SP_EASY_ACCORDION_FREE {
 	 *
 	 * @var string
 	 */
-	public $version = '2.1.17';
+	public $version = '2.1.19';
 
 	/**
 	 * The name of the plugin.
@@ -150,18 +150,17 @@ class SP_EASY_ACCORDION_FREE {
 		$this->loader->add_filter( 'admin_footer_text', $plugin_admin, 'sp_eap_review_text', 10, 2 );
 		$this->loader->add_filter( 'plugin_row_meta', $plugin_admin, 'after_easy_accodion_row_meta', 10, 4 );
 		$this->loader->add_action( 'activated_plugin', $plugin_admin, 'sp_ea_redirect_after_activation', 10, 2 );
+		// import export tools.
+		$import_export = new Easy_Accordion_Import_Export( SP_PLUGIN_NAME, SP_EA_VERSION );
+		$this->loader->add_action( 'wp_ajax_eap_export_accordions', $import_export, 'export_accordions' );
+		$this->loader->add_action( 'wp_ajax_eap_import_accordions', $import_export, 'import_accordions' );
 		// Help Page.
 		$help_page = new Easy_Accordion_Free_Help( SP_PLUGIN_NAME, SP_EA_VERSION );
 		$this->loader->add_action( 'admin_menu', $help_page, 'help_admin_menu', 50 );
 		$this->loader->add_filter( 'plugin_action_links', $help_page, 'add_plugin_action_links', 10, 2 );
 		// Premium page.
 		$premium_page = new Easy_Accordion_Premium( SP_PLUGIN_NAME, SP_EA_VERSION );
-		$this->loader->add_action( 'admin_menu', $premium_page, 'premium_admin_menu', 40 );
-		// import export tools.
-		$import_export = new Easy_Accordion_Import_Export( SP_PLUGIN_NAME, SP_EA_VERSION );
-		$this->loader->add_action( 'wp_ajax_eap_export_accordions', $import_export, 'export_accordions' );
-		$this->loader->add_action( 'wp_ajax_eap_import_accordions', $import_export, 'import_accordions' );
-
+		$this->loader->add_action( 'admin_menu', $premium_page, 'premium_admin_menu', 51 );
 		if ( version_compare( $GLOBALS['wp_version'], '5.3', '>=' ) ) {
 			// Gutenberg block.
 			new Easy_Accordion_Free_Gutenberg_Block();

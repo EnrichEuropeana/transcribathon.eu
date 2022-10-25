@@ -269,6 +269,7 @@ class MetaLayerSlide extends MetaSlide
         $this->tag_slide_to_slider();
 
         // finally, return the admin table row HTML
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_admin_slide();
 
         wp_die();
@@ -285,16 +286,18 @@ class MetaLayerSlide extends MetaSlide
         $attachment_id = $this->get_attachment_id();
 
         ob_start();
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_delete_button_html();
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_update_image_button_html();
         do_action('metaslider-slide-edit-buttons', $this->identifier, $this->slide->ID);
         $edit_buttons = ob_get_clean();
 
-        $row = "<tr id='slide-{$this->slide->ID}' class='slide layer_slide flex responsive'>";
+        $row = "<tr id='slide-" . esc_attr($this->slide->ID) . "' class='slide layer_slide flex responsive'>";
         $row .= "    <td class='col-1'>";
         $row .= "       <div class='metaslider-ui-controls ui-sortable-handle'>";
         $row .= "           <h4 class='slide-details'>";
-        $row .= __("Layer Slide", 'ml-slider-pro');
+        $row .= esc_html__("Layer Slide", 'ml-slider-pro');
         $row .= "           </h4>";
         if (metaslider_this_is_trash($this->slide)) {
             $row .= '<div class="row-actions trash-btns">';
@@ -313,8 +316,8 @@ class MetaLayerSlide extends MetaSlide
             ) . "' title='" . esc_attr__(
                 "Update slide image",
                 "ml-slider"
-            ) . "' data-slide-id='{$this->slide->ID}' data-attachment-id='{$attachment_id}'>";
-        $row .= "               <div class='thumb' style='background-image: url({$thumb})'></div>";
+            ) . "' data-slide-id='" . esc_attr($this->slide->ID) . "' data-attachment-id='" . esc_attr($attachment_id) . "'>";
+        $row .= "               <div class='thumb' style='background-image: url(" . esc_attr($thumb) . "'></div>";
         $row .= "           </button>";
         $row .= "       </div>";
         $row .= "    </td>";
@@ -324,12 +327,12 @@ class MetaLayerSlide extends MetaSlide
         if (method_exists($this, 'get_admin_slide_tabs_html')) {
             $row .= $this->get_admin_slide_tabs_html();
         } else {
-            $row .= "<p>" . __("Please update to MetaSlider to version 3.2 or above.", "ml-slider-pro") . "</p>";
+            $row .= "<p>" . esc_html__("Please update to MetaSlider to version 3.2 or above.", "ml-slider-pro") . "</p>";
         }
 
-        $row .= "        <input type='hidden' name='attachment[{$this->slide->ID}][type]' value='html_overlay' />";
-        $row .= "        <input type='hidden' name='attachment[{$this->slide->ID}][menu_order]' class='menu_order' value='{$this->slide->menu_order}' />";
-        $row .= "        <input type='hidden' name='resize_slide_id' data-slide_id='{$this->slide->ID}' data-width='{$this->settings['width']}' data-height='{$this->settings['height']}' />";
+        $row .= "        <input type='hidden' name='attachment[" . esc_attr($this->slide->ID) . "][type]' value='html_overlay' />";
+        $row .= "        <input type='hidden' name='attachment[" . esc_attr($this->slide->ID) . "][menu_order]' class='menu_order' value='" . esc_attr($this->slide->menu_order) . "' />";
+        $row .= "        <input type='hidden' name='resize_slide_id' data-slide_id='" . esc_attr($this->slide->ID) . "' data-width='" . esc_attr($this->settings['width']) . "' data-height='" . esc_attr($this->settings['height']) . "' />";
         $row .= "       </div>";
         $row .= "    </td>";
         $row .= "</tr>";
@@ -361,55 +364,56 @@ class MetaLayerSlide extends MetaSlide
 
         $background_url = $imageHelper->get_image_url();
 
-        $general_tab = "<button class='openLayerEditor button button-primary' data-thumb='{$background_url}' data-width='{$this->settings['width']}' data-height='{$this->settings['height']}' data-editor_id='editor{$slide_id}' type='button'>Launch Layer Editor</button>
+        $general_tab = "<button class='openLayerEditor button button-primary' data-thumb='" . esc_attr($background_url) . "' data-width='" . esc_attr($this->settings['width']) . "' data-height='" . esc_attr($this->settings['height']) . "' data-editor_id='editor" . esc_attr($slide_id) . "' type='button'>" . esc_html__('Launch Layer Editor', 'ml-slider-pro') . "</button>
                         <div class='rawEdit'></div>"; // vantage backwards compatibility";
 
-        $seo_tab = "<div class='row'><label>" . __("Background Image Title Text", "ml-slider-pro") . "</label></div>
-                    <div class='row'><input type='text' size='50' name='attachment[{$slide_id}][title]' value='{$title}' /></div>
-                    <div class='row'><label>" . __("Background Image Alt Text", "ml-slider-pro") . "</label></div>
-                    <div class='row'><input type='text' size='50' name='attachment[{$slide_id}][alt]' value='{$alt}' /></div>";
+        $seo_tab = "<div class='row'><label>" . esc_html__("Background Image Title Text", "ml-slider-pro") . "</label></div>
+                    <div class='row'><input type='text' size='50' name='attachment[" . esc_attr($slide_id) . "][title]' value='" . esc_attr($title) . "' /></div>
+                    <div class='row'><label>" . esc_html__("Background Image Alt Text", "ml-slider-pro") . "</label></div>
+                    <div class='row'><input type='text' size='50' name='attachment[" . esc_attr($slide_id) . "][alt]' value='" . esc_attr($alt) . "' /></div>";
 
-        $extra_tab = "<div class='row'><label>" . __("Background Image Link", "ml-slider-pro") . "</label></div>
-                        <input class='url' type='text' name='attachment[{$slide_id}][url]' placeholder='" . __(
+        $extra_tab = "<div class='row'><label>" . esc_html__("Background Image Link", "ml-slider-pro") . "</label></div>
+                        <input class='url' type='text' name='attachment[" . esc_attr($slide_id) . "][url]' placeholder='" . esc_attr__(
                 "URL",
                 'ml-slider-pro'
-            ) . "' value='{$url}' />
+            ) . "' value='" . esc_attr($url) . "' />
                         <div class='new_window'>
-                                <label>" . __("New Window", 'ml-slider-pro') . "<input type='checkbox' name='attachment[{$slide_id}][new_window]' {$target} /></label>
+                                <label>" . esc_html__("New Window", 'ml-slider-pro') . "<input type='checkbox' name='attachment[" . esc_attr($slide_id) . "][new_window]' {$target} /></label>
                         </div>";
 
-        $video_tab = "<div class='row'><label>" . __("MP4 Source", "ml-slider-pro") . "</label></div>
-                        <input class='url' type='text' name='attachment[{$slide_id}][mp4]' placeholder='" . __(
+        $video_tab = "<div class='row'><label>" . esc_html__("MP4 Source", "ml-slider-pro") . "</label></div>
+                        <input class='url' type='text' name='attachment[" . esc_attr($slide_id) . "][mp4]' placeholder='" . esc_attr__(
                 "URL",
                 'ml-slider-pro'
-            ) . "' value='{$mp4}' />
-                        <div class='row'><label>" . __("WebM Source", "ml-slider-pro") . "</label></div>
-                        <input class='url' type='text' name='attachment[{$slide_id}][webm]' placeholder='" . __(
+            ) . "' value='" . esc_attr($mp4) . "' />
+                        <div class='row'><label>" . esc_html__("WebM Source", "ml-slider-pro") . "</label></div>
+                        <input class='url' type='text' name='attachment[" . esc_attr($slide_id) . "][webm]' placeholder='" . esc_attr__(
                 "URL",
                 'ml-slider-pro'
-            ) . "' value='{$webm}' />";
+            ) . "' value='" . esc_attr($webm) . "' />";
 
-        $source_tab = "<textarea class='h-full' id='editor{$slide_id}' name='attachment[{$slide_id}][html]'>{$html}</textarea>";
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        $source_tab = "<textarea class='h-full' id='editor" . esc_attr($slide_id) . "' name='attachment[" . esc_attr($slide_id) . "][html]'>{$html}</textarea>";
 
         $tabs = array(
             'general' => array(
-                'title' => __("General", "ml-slider-pro"),
+                'title' => esc_html__("General", "ml-slider-pro"),
                 'content' => $general_tab
             ),
             'seo' => array(
-                'title' => __("SEO", "ml-slider-pro"),
+                'title' => esc_html__("SEO", "ml-slider-pro"),
                 'content' => $seo_tab
             ),
             'extra' => array(
-                'title' => __("Extra", "ml-slider-pro"),
+                'title' => esc_html__("Extra", "ml-slider-pro"),
                 'content' => $extra_tab
             ),
             'video' => array(
-                'title' => __("Video Background", "ml-slider-pro"),
+                'title' => esc_html__("Video Background", "ml-slider-pro"),
                 'content' => $video_tab
             ),
             'source' => array(
-                'title' => __("Edit Source", "ml-slider-pro"),
+                'title' => esc_html__("Edit Source", "ml-slider-pro"),
                 'content' => $source_tab
             ),
         );
@@ -421,42 +425,42 @@ class MetaLayerSlide extends MetaSlide
                 $crop_position = 'center-center';
             }
 
-            $crop_tab = "<div class='row'><label>" . __("Crop Position", "ml-slider") . "</label></div>
+            $crop_tab = "<div class='row'><label>" . esc_html__("Crop Position", "ml-slider") . "</label></div>
                 <div class='row'>
-                    <select class='crop_position' name='attachment[{$slide_id}][crop_position]'>
-                        <option value='left-top' " . selected($crop_position, 'left-top', false) . ">" . __(
+                    <select class='crop_position' name='attachment[" . esc_attr($slide_id) . "][crop_position]'>
+                        <option value='left-top' " . selected($crop_position, 'left-top', false) . ">" . esc_html__(
                     "Top Left",
                     "ml-slider"
                 ) . "</option>
-                        <option value='center-top' " . selected($crop_position, 'center-top', false) . ">" . __(
+                        <option value='center-top' " . selected($crop_position, 'center-top', false) . ">" . esc_html__(
                     "Top Center",
                     "ml-slider"
                 ) . "</option>
-                        <option value='right-top' " . selected($crop_position, 'right-top', false) . ">" . __(
+                        <option value='right-top' " . selected($crop_position, 'right-top', false) . ">" . esc_html__(
                     "Top Right",
                     "ml-slider"
                 ) . "</option>
-                        <option value='left-center' " . selected($crop_position, 'left-center', false) . ">" . __(
+                        <option value='left-center' " . selected($crop_position, 'left-center', false) . ">" . esc_html__(
                     "Center Left",
                     "ml-slider"
                 ) . "</option>
-                        <option value='center-center' " . selected($crop_position, 'center-center', false) . ">" . __(
+                        <option value='center-center' " . selected($crop_position, 'center-center', false) . ">" . esc_html__(
                     "Center Center",
                     "ml-slider"
                 ) . "</option>
-                        <option value='right-center' " . selected($crop_position, 'right-center', false) . ">" . __(
+                        <option value='right-center' " . selected($crop_position, 'right-center', false) . ">" . esc_html__(
                     "Center Right",
                     "ml-slider"
                 ) . "</option>
-                        <option value='left-bottom' " . selected($crop_position, 'left-bottom', false) . ">" . __(
+                        <option value='left-bottom' " . selected($crop_position, 'left-bottom', false) . ">" . esc_html__(
                     "Bottom Left",
                     "ml-slider"
                 ) . "</option>
-                        <option value='center-bottom' " . selected($crop_position, 'center-bottom', false) . ">" . __(
+                        <option value='center-bottom' " . selected($crop_position, 'center-bottom', false) . ">" . esc_html__(
                     "Bottom Center",
                     "ml-slider"
                 ) . "</option>
-                        <option value='right-bottom' " . selected($crop_position, 'right-bottom', false) . ">" . __(
+                        <option value='right-bottom' " . selected($crop_position, 'right-bottom', false) . ">" . esc_html__(
                     "Bottom Right",
                     "ml-slider"
                 ) . "</option>
@@ -464,7 +468,7 @@ class MetaLayerSlide extends MetaSlide
                 </div>";
 
             $tabs['crop'] = array(
-                'title' => __("Crop", "ml-slider"),
+                'title' => esc_html__("Crop", "ml-slider"),
                 'content' => $crop_tab
             );
         }
@@ -503,7 +507,7 @@ class MetaLayerSlide extends MetaSlide
         $layer_html = get_post_meta($this->slide->ID, 'ml-slider_html', true);
         $target = get_post_meta($this->slide->ID, 'ml-slider_new_window', true) ? '_blank' : '_self';
         $url = get_post_meta($this->slide->ID, 'ml-slider_url', true);
-        $slide_link = strlen($url) ? " data-link='{$url}' data-target='{$target}'" : '';
+        $slide_link = strlen($url) ? " data-link='" . esc_attr($url) . "' data-target='" . esc_attr($target) . "'" : '';
 
         $inline_styles = apply_filters("metaslider_mshtmloverlay_inline_styles", array(
             'display' => 'none',
@@ -523,7 +527,7 @@ class MetaLayerSlide extends MetaSlide
         $return = "";
 
         if (strlen($layer_html)) {
-            $return = "<div class='msHtmlOverlay' style='{$inline}' {$slide_link}>" . __(
+            $return = "<div class='msHtmlOverlay' style='" . esc_attr($inline) . "' {$slide_link}>" . __(
                     do_shortcode($layer_html)
                 ) . "</div>";
         }
@@ -627,8 +631,8 @@ class MetaLayerSlide extends MetaSlide
         }
 
         return "<video {$attributes}>
-                    <source src='{$mp4}' type='video/mp4' />
-                    <source src='{$webm}' type='video/webm' />
+                    <source src='" . esc_attr($mp4) . "' type='video/mp4' />
+                    <source src='" . esc_attr($webm) . "' type='video/webm' />
                 </video>";
     }
 

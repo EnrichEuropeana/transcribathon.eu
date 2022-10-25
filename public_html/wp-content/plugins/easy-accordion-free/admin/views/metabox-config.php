@@ -175,7 +175,7 @@ SP_EAP::createSection(
 				'type'       => 'theme_select',
 				'title'      => __( 'Choose a Theme', 'easy-accordion-free' ),
 				'class'      => 'sp_eap_accordion_theme',
-				'subtitle'   => __('Select an accordion theme style.To unlock 16+ Premium Accordion Themes,  <a href="https://shapedplugin.com/easy-accordion/?ref=1" target="_blank"> <b>Upgrade To Pro!</b> </a>', 'easy-accordion-free'),
+				'subtitle'   => __( 'Select an accordion theme style.To unlock 16+ Premium Accordion Themes,  <a href="https://shapedplugin.com/easy-accordion/pricing/?ref=1" target="_blank"> <b>Upgrade To Pro!</b> </a>', 'easy-accordion-free' ),
 				'desc'       => __( 'Check out <a href="https://shapedplugin.com/easy-accordion/all-accordion-themes/"  target="_blank"><b>16+ Premium Pre-designed</b></a> Accordion Themes!', 'easy-accordion-free' ),
 				'options'    => array(
 					'sp-ea-one' => array(
@@ -238,6 +238,12 @@ SP_EAP::createSection(
 				'title'    => __( 'Fixed Content Height', 'easy-accordion-free' ),
 				'subtitle' => __( 'Check to display collapsible accordion content in a limited amount of space.', 'easy-accordion-free' ),
 				'default'  => false,
+			),
+			array(
+				'id'      => 'eap_nofollow_link',
+				'type'    => 'checkbox',
+				'title'   => __( 'Add rel="nofollow" to Link', 'easy-accordion-free' ),
+				'default' => false,
 			),
 			array(
 				'id'              => 'eap_accordion_fillspace_height',
@@ -590,7 +596,7 @@ SP_EAP::createSection(
 			array(
 				'type'    => 'notice',
 				'class'   => 'only_pro_notice',
-				'content' => __( 'To unlock the more settings for <b>Accordion Item Title & Description, Animation, Ajax Pagination</b>, <a href="//shapedplugin.com/easy-accordion/?ref=1" target="_blank"><b>Upgrade To Pro!</b></a>', 'easy-accordion-free' ),
+				'content' => __( 'To unlock the more settings for <b>Accordion Item Title & Description, Animation, Ajax Pagination</b>, https://shapedplugin.com/easy-accordion/pricing/?ref=1" target="_blank"><b>Upgrade To Pro!</b></a>', 'easy-accordion-free' ),
 			),
 			array(
 				'type'    => 'subheading',
@@ -715,7 +721,7 @@ SP_EAP::createSection(
 		'fields'          => array(
 			array(
 				'type'    => 'notice',
-				'content' => __('To unlock These Typography (940+ Google Fonts) options,<a href="https://shapedplugin.com/easy-accordion/?ref=1" target="_blank"> <b>Upgrade To Pro!</b></a> P.S. Note: The color fields work in the lite version.', 'easy-accordion-free'),
+				'content' => __( 'To unlock These Typography (940+ Google Fonts) options,<a href="https://shapedplugin.com/easy-accordion/pricing/?ref=1" target="_blank"> <b>Upgrade To Pro!</b></a> P.S. Note: The color fields work in the lite version.', 'easy-accordion-free' ),
 			),
 			array(
 				'id'         => 'section_title_font_load',

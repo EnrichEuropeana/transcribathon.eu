@@ -330,32 +330,33 @@ window.jQuery(function ($) {
         // Some things shouldn't happen when we're about to reload
         if (window.metaslider.about_to_reload) {
             return
-
-            // Set this tab as active
-            $(this).addClass('active').siblings().removeClass('active')
-
-            // If the image api container exists we don't want to create it again
-            if ($('#image-api-container').length) {
-                return
-
-                // Move the content and trigger vue to fetch the data
-                // Add a container to house the content
-                $(this).parents('.media-frame-router').siblings('.media-frame-content').append('<div id="image-api-container"></div>')
-
-                // Add content to the container
-                $('#image-api-container').append('<metaslider-external source="unsplash" :slideshow-id="' + window.parent.metaslider_slider_id + '" :slide-id="' + window.metaslider.slide_id + '" slide-type="' + (window.metaslider.slide_type || 'image') + '"></metaslider-external>')
-
-                // Tell our app to render a new component
-                $(window).trigger('metaslider/initialize_external_api', {
-                    'selector': '#image-api-container'
-                })
-
-                // Discard these
-                delete window.metaslider.slide_id
-                delete window.metaslider.slide_type
-            }
         }
+
+        // Set this tab as active
+        $(this).addClass('active').siblings().removeClass('active')
+
+        // If the image api container exists we don't want to create it again
+        if ($('#image-api-container').length) {
+            return
+        }
+
+        // Move the content and trigger vue to fetch the data
+        // Add a container to house the content
+        $(this).parents('.media-frame-router').siblings('.media-frame-content').append('<div id="image-api-container"></div>')
+
+        // Add content to the container
+        $('#image-api-container').append('<metaslider-external source="unsplash" :slideshow-id="' + window.parent.metaslider_slider_id + '" :slide-id="' + window.metaslider.slide_id + '" slide-type="' + (window.metaslider.slide_type || 'image') + '"></metaslider-external>')
+
+        // Tell our app to render a new component
+        $(window).trigger('metaslider/initialize_external_api', {
+            'selector': '#image-api-container'
+        })
+
+        // Discard these
+        delete window.metaslider.slide_id
+        delete window.metaslider.slide_type
     }
+
     var add_image_apis = function (slide_type, slide_id) {
 
         // This is the pro layer screen (not currently used)
@@ -363,9 +364,9 @@ window.jQuery(function ($) {
             // If this is the layer slide screen and pro isnt installed, exit
             if (!window.metaslider.pro_supports_imports) {
                 return
-                window.metaslider.slide_type = 'layer'
             }
         }
+        window.metaslider.slide_type = 'layer'
 
         // If slide type is set then override the above because we're just updating an image
         if (slide_type) {
@@ -398,16 +399,16 @@ window.jQuery(function ($) {
         // Some things shouldn't happen when we're about to reload
         if (window.metaslider.about_to_reload) {
             return
-
-            // Tell tell components they are about to be removed
-            $(window).trigger('metaslider/destroy_external_api')
-
-            $('.toplevel_page_metaslider').off('click', '.unsplash-tab', unsplash_api_events)
-            $('.unsplash-tab').remove()
-
-            // Since we will destroy the container each time we should add the active class to whatever is first
-            $('.media-frame-router .media-router > a').first().trigger('click')
         }
+
+        // Tell tell components they are about to be removed
+        $(window).trigger('metaslider/destroy_external_api')
+
+        $('.toplevel_page_metaslider').off('click', '.unsplash-tab', unsplash_api_events)
+        $('.unsplash-tab').remove()
+
+        // Since we will destroy the container each time we should add the active class to whatever is first
+        $('.media-frame-router .media-router > a').first().trigger('click')
     }
 
     /**

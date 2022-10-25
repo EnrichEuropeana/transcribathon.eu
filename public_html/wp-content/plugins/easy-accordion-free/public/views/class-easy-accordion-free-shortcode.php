@@ -98,11 +98,14 @@ class Easy_Accordion_Free_Shortcode {
 		$accordion_item_class    = 'sp-ea-single';
 		$eap_schema_markup       = isset( $shortcode_data['eap_schema_markup'] ) ? $shortcode_data['eap_schema_markup'] : false;
 		// Accordion settings.
-		$eap_preloader                   = isset( $shortcode_data['eap_preloader'] ) ? $shortcode_data['eap_preloader'] : false;
-		$eap_active_event                = isset( $shortcode_data['eap_accordion_event'] ) ? $shortcode_data['eap_accordion_event'] : '';
-		$eap_accordion_mode              = isset( $shortcode_data['eap_accordion_mode'] ) ? $shortcode_data['eap_accordion_mode'] : '';
-		$eap_mutliple_collapse           = isset( $shortcode_data['eap_mutliple_collapse'] ) ? $shortcode_data['eap_mutliple_collapse'] : '';
-		$eap_accordion_fillspace         = isset( $shortcode_data['eap_accordion_fillspace'] ) ? $shortcode_data['eap_accordion_fillspace'] : '';
+		$eap_preloader           = isset( $shortcode_data['eap_preloader'] ) ? $shortcode_data['eap_preloader'] : false;
+		$eap_active_event        = isset( $shortcode_data['eap_accordion_event'] ) ? $shortcode_data['eap_accordion_event'] : '';
+		$eap_accordion_mode      = isset( $shortcode_data['eap_accordion_mode'] ) ? $shortcode_data['eap_accordion_mode'] : '';
+		$eap_mutliple_collapse   = isset( $shortcode_data['eap_mutliple_collapse'] ) ? $shortcode_data['eap_mutliple_collapse'] : '';
+		$eap_accordion_fillspace = isset( $shortcode_data['eap_accordion_fillspace'] ) ? $shortcode_data['eap_accordion_fillspace'] : '';
+		$eap_nofollow_link       = isset( $shortcode_data['eap_nofollow_link'] ) ? $shortcode_data['eap_nofollow_link'] : false;
+		$nofollow_link_text      = $eap_nofollow_link ? 'rel=nofollow' : '';
+
 		$eap_accordion_fillspace_height  = isset( $shortcode_data['eap_accordion_fillspace_height']['all'] ) ? $shortcode_data['eap_accordion_fillspace_height']['all'] : $shortcode_data['eap_accordion_fillspace_height'];
 		$acc_section_title               = isset( $shortcode_data['section_title'] ) ? $shortcode_data['section_title'] : '';
 		$acc_section_title_margin_bottom = isset( $shortcode_data['section_title_margin_bottom']['all'] ) ? $shortcode_data['section_title_margin_bottom']['all'] : $shortcode_data['section_title_margin_bottom'];

@@ -2,8 +2,8 @@
 Contributors: acyba
 Tags: newsletter, Sendinblue, SMTP newsletter, Mailgun, marketing newsletter
 Requires at least: 4.7
-Tested up to: 6.0.1
-Stable tag: 7.9.4
+Tested up to: 6.0.3
+Stable tag: 7.9.6
 Requires PHP: 5.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -196,22 +196,19 @@ You can even send emails from your own PHP Mail server or another SMTP of your c
 
 == Changelog ==
 
-= 7.9.4 - August 29, 2022 =
-* [add-on] You can now filter on subscription variations, automatic renewals and renewal frequency in the WooCommerce subscription filter
+= 7.9.6 - October 24, 2022 =
+* You can now allow users to delete their data
+* You can now edit the title of the unsubscribe page and you can select if you want to display only the lists of the campaign in the unsubscribe page
+* You can now use an image as background in the popup subscription form
 
-* [editor] It is now possible to choose an image when saving custom zones in the editor
-* You can now change the thumbnail of your templates
-* The ElasticEmail API has changed, we updated our integration to let you send emails using their new API
-* [Mailgun] You can now use sending API keys
-* You can now filter on AcyMailing custom fields when adding conditional displays in your emails
-
-* [editor] fixed the relative date field display
-* In the mail setting configuration the server field is now case-insensitive
-* Fixed the condition step when filling both condition types on save condition were merged
-* Fixed the custom zone insertion having special characters
-* Fixed empty alt attribute on image Built with AcyMailing
-* [Sendinblue] The campaigns aren't blocked anymore when one of the recipients is disabled in AcyMailing
-* [editor] Fixed the editor image edition
+* [Acy sending service] The error messages were hidden when removing a domain or refreshing domain statuses
+* Dynamic texts are not visible anymore in generated template thumbnails
+* Fix article image width when displaying in columns
+* Fixed a warning message on campaign previews
+* Fixed error on migration when migrating custom field without options
+* The default automations are not duplicated anymore when updating AcyMailing
+* [Editor] Fixed the global font select that was not updating
+* [Gmail] The connection to the Gmail SMTP service could not refresh the token
 
 
 

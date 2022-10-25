@@ -3,8 +3,8 @@ Tags: widget, button, slider, hero, google maps, image, carousel, lottie, featur
 Requires at least: 4.2
 Tested up to: 6.0
 Requires PHP: 5.6.20
-Stable tag: 1.41.0
-Build time: 2022-09-13T20:32:07+02:00
+Stable tag: 1.43.0
+Build time: 2022-10-13T13:43:05+02:00
 License: GPLv3 or later
 Contributors: gpriday, braam-genis, alexgso
 Donate link: https://siteorigin.com/downloads/premium/
@@ -106,10 +106,39 @@ The Widgets Bundle global interface is available at Plugins > SiteOrigin Widgets
 
 == Changelog ==
 
+= 1.43.0 - 13 October 2022 =
+* Blog: Improved `Continue reading` output when non-Latin characters are present.
+* Blog: Fixed the Grid template responsive collapse behavior.
+* Blog: Added a new Post Tags setting.
+* Contact Form: Prevented a potential notice when inserting a new form.
+* Post Carousel: Ensured navigation dots can appear when arrows are disabled.
+* Post Carousel: Increased `Post Title > Color` specificity to avoid potential theme conflicts.
+* Widget Block: Removed the Widget Type field label.
+
+= 1.42.2 - 06 October 2022 =
+* Blog: Resolved potential incorrect Widget Block pagination URL.
+* Blog: Removed the Blog Widget from the Widgets Block cache.
+* Updated Google Fonts list.
+* Updated Font Awesome 6.1.1 to 6.2.0.
+
+= 1.42.1 - 23 September 2022 =
+* Blog: Updated settings CSS specificity.
+* Blog: Resolved error when loading posts using Ajax.
+* Google Maps: Prevented Google logo from being hidden by theme styles.
+
+= 1.42.0 - 21 September 2022 =
+* Blog: Added a `Featured Image Size` setting.
+* Blog: Increased Alternate template featured image to full-width on mobile.
+* Carousels: Update to only allow positive values in the `Slides to Scroll` and `Slides to Show` settings.
+* Contact Form: Added `Honeypot` and `Browser Check` spam prevention settings.
+* Editor: Prevented potential error by passing all expected `widget_text` arguments.
+* Image Grid: Added `Display Image Title` setting and related options.
+* Post Carousel: Added widget preview support.
+
 = 1.41.0 - 13 September 2022 =
 * Blog: Adjusted `article` tag CSS to ensure priority over theme styling.
 * Blog: Removed featured image center alignment for the Alternate template.
-* Blog: Added featured image image sizes for the Grid, Alternate, and Portfolio templates.
+* Blog: Added featured image sizes for the Grid, Alternate, and Portfolio templates.
 * Features: Added a new setting `Bottom align More link text.`
 * Google Maps: Only setup consent if Google Maps not already setup.
 * LiteSpeed Cache: Ensured purge header isn't set if headers already sent.

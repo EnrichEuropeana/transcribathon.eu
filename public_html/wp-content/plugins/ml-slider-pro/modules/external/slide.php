@@ -72,6 +72,7 @@ class MetaExternalSlide extends MetaSlide
 
         $slider_id = intval($_POST['slider_id']);
         $this->create_slide($slider_id);
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_admin_slide();
         die(); // this is required to return a proper result
     }
@@ -105,15 +106,15 @@ class MetaExternalSlide extends MetaSlide
         echo "<div class='metaslider'>
                     <div class='media-embed'>
                         <div class='embed-link-settings'>" . sprintf(
-                __("Press 'Add to slideshow' to create a new %s slide.", 'ml-slider'),
-                $this->name
+                esc_html__("Press 'Add to slideshow' to create a new %s slide.", 'ml-slider'),
+                esc_html($this->name)
             ) . "</div>
                     </div>
             </div>
             <div class='media-frame-toolbar'>
                 <div class='media-toolbar'>
                     <div class='media-toolbar-primary'>
-                        <a href='#' class='button media-button button-primary button-large'>" . __(
+                        <a href='#' class='button media-button button-primary button-large'>" . esc_html__(
                 'Add to slideshow',
                 'ml-slider'
             ) . "</a>
@@ -196,17 +197,19 @@ class MetaExternalSlide extends MetaSlide
         $target = get_post_meta($this->slide->ID, 'ml-slider_new_window', true) ? 'checked=checked' : '';
 
         ob_start();
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_delete_button_html();
         do_action('metaslider-slide-edit-buttons', $this->identifier, $this->slide->ID);
         $edit_buttons = ob_get_clean();
 
         // slide row HTML
-        $row = "<tr id='slide-{$this->slide->ID}' class='slide external flex responsive nivo coin'>";
+        $row = "<tr id='slide-" . esc_attr($this->slide->ID) . "' class='slide external flex responsive nivo coin'>";
         $row .= "    <td class='col-1'>";
         $row .= "       <div class='metaslider-ui-controls ui-sortable-handle'>";
-        $row .= "           <h4 class='slide-details'>" . __('External URL', 'ml-slider-pro') . "</h4>";
+        $row .= "           <h4 class='slide-details'>" . esc_html__('External URL', 'ml-slider-pro') . "</h4>";
         if (metaslider_this_is_trash($this->slide)) {
             $row .= '<div class="row-actions trash-btns">';
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             $row .= "<span class='untrash'>{$this->get_undelete_button_html()}</span>";
             // $row .= ' | ';
             // $row .= "<span class='delete'>{$this->get_perminant_delete_button_html()}</span>";
@@ -216,20 +219,21 @@ class MetaExternalSlide extends MetaSlide
         }
         $row .= "       </div>";
         $row .= "       <div class='metaslider-ui-inner'>";
-        $row .= "           <div class='thumb' style='background-image: url({$extimgurl})'></div>";
+        $row .= "           <div class='thumb' style='background-image: url(" . esc_url($extimgurl) . ")'></div>";
         $row .= "       </div>";
         $row .= "    </td>";
         $row .= "    <td class='col-2'>";
         $row .= "       <div class='metaslider-ui-inner flex flex-col h-full'>";
 
         if (method_exists($this, 'get_admin_slide_tabs_html')) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
             $row .= $this->get_admin_slide_tabs_html();
         } else {
-            $row .= "<p>" . __("Please update to MetaSlider to version 3.2 or above.", "ml-slider-pro") . "</p>";
+            $row .= "<p>" . esc_html__("Please update to MetaSlider to version 3.2 or above.", "ml-slider-pro") . "</p>";
         }
 
-        $row .= "           <input type='hidden' name='attachment[{$this->slide->ID}][type]' value='{$this->identifier}' />";
-        $row .= "           <input type='hidden' class='menu_order' name='attachment[{$this->slide->ID}][menu_order]' value='{$this->slide->menu_order}' />";
+        $row .= "           <input type='hidden' name='attachment[" . esc_attr($this->slide->ID) . "][type]' value='" . esc_attr($this->identifier) . "' />";
+        $row .= "           <input type='hidden' class='menu_order' name='attachment[" . esc_attr($this->slide->ID) . "][menu_order]' value='" . esc_attr($this->slide->menu_order) . "' />";
         $row .= "       </div>";
         $row .= "    </td>";
         $row .= "</tr>";

@@ -89,6 +89,7 @@ class MetaPostFeedSlide extends MetaSlide
 
         $slider_id = intval($_POST['slider_id']);
         $this->create_slide($slider_id);
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_admin_slide();
         die(); // this is required to return a proper result
 
@@ -115,14 +116,15 @@ class MetaPostFeedSlide extends MetaSlide
     protected function get_admin_slide()
     {
         ob_start();
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_delete_button_html();
         do_action('metaslider-slide-edit-buttons', $this->identifier, $this->slide->ID);
         $edit_buttons = ob_get_clean();
 
-        $row = "<tr id='slide-{$this->slide->ID}' class='slide post_feed flex responsive coin nivo'>";
+        $row = "<tr id='slide-" . esc_attr($this->slide->ID) . "' class='slide post_feed flex responsive coin nivo'>";
         $row .= "    <td class='col-1'>";
         $row .= "       <div class='metaslider-ui-controls ui-sortable-handle'>";
-        $row .= "           <h4 class='slide-details'>" . __("Post Feed Slide", "ml-slider-pro") . "</h4>";
+        $row .= "           <h4 class='slide-details'>" . esc_html__("Post Feed Slide", "ml-slider-pro") . "</h4>";
         if (metaslider_this_is_trash($this->slide)) {
             $row .= '<div class="row-actions trash-btns">';
             $row .= "<span class='untrash'>{$this->get_undelete_button_html()}</span>";
@@ -143,11 +145,11 @@ class MetaPostFeedSlide extends MetaSlide
         if (method_exists($this, 'get_admin_slide_tabs_html')) {
             $row .= $this->get_admin_slide_tabs_html();
         } else {
-            $row .= "<p>" . __("Please update to MetaSlider to version 3.0 or above.", "ml-slider-pro") . "</p>";
+            $row .= "<p>" . esc_html__("Please update to MetaSlider to version 3.0 or above.", "ml-slider-pro") . "</p>";
         }
 
-        $row .= "        <input type='hidden' name='attachment[{$this->slide->ID}][type]' value='post_feed' />";
-        $row .= "        <input type='hidden' class='menu_order' name='attachment[{$this->slide->ID}][menu_order]' value='{$this->slide->menu_order}' />";
+        $row .= "        <input type='hidden' name='attachment[" . esc_attr($this->slide->ID) . "][type]' value='post_feed' />";
+        $row .= "        <input type='hidden' class='menu_order' name='attachment[" . esc_attr($this->slide->ID) . "][menu_order]' value='" . esc_attr($this->slide->menu_order) . "' />";
         $row .= "       </div>";
         $row .= "    </td>";
         $row .= "</tr>";
@@ -262,7 +264,7 @@ class MetaPostFeedSlide extends MetaSlide
             ]);
 
             if (! empty($terms)) {
-                echo "<ul><li class='header'>{$taxonomy->label}</li>";
+                echo "<ul><li class='header'>" . esc_html($taxonomy->label) . "</li>";
 
                 $args = apply_filters("metaslider_post_feed_wp_terms_checklist_args", array(
                     'taxonomy' => $taxonomy->name,
@@ -445,13 +447,16 @@ class MetaPostFeedSlide extends MetaSlide
         $limit = (int)apply_filters('postmeta_form_limit', 30);
 
         $keys = $wpdb->get_col(
-            "
+            $wpdb->prepare(
+                "
             SELECT meta_key
             FROM $wpdb->postmeta
             GROUP BY meta_key
             HAVING meta_key NOT LIKE '\_%'
             ORDER BY meta_key
-            LIMIT $limit"
+            LIMIT %d",
+                $limit
+            )
         );
 
         if ($keys) {
@@ -1227,7 +1232,7 @@ class MetaPostFeedSlide extends MetaSlide
 
         echo "<div class='metaslider'>
                     <div class='media-embed'>
-                        <div class='embed-link-settings'>" . __(
+                        <div class='embed-link-settings'>" . esc_html__(
                 "Click 'Add to slideshow' to create a new post feed slide.",
                 "ml-slider-pro"
             ) . "</div>
@@ -1236,7 +1241,7 @@ class MetaPostFeedSlide extends MetaSlide
             <div class='media-frame-toolbar'>
                 <div class='media-toolbar'>
                     <div class='media-toolbar-primary'>
-                        <a href='#' class='button media-button button-primary button-large'>" . __(
+                        <a href='#' class='button media-button button-primary button-large'>" . esc_html__(
                 "Add to slideshow",
                 "ml-slider-pro"
             ) . "</a>

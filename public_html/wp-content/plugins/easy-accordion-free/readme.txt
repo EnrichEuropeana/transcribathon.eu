@@ -3,8 +3,8 @@ Contributors: shapedplugin, khalilu, rubel_miah, shamimmiashuhagh
 Donate link: https://shapedplugin.com/donate
 Tags: accordion, accordions, accordion faq, vertical accordion, faq, faqs, faq widget, accordion widget, accordion menu, wordpress faq plugin, easy accordion, premium accordion, bootstrap accordion, horizontal accordion, responsive accordion, accordion jquery, css3 accordion, accordion shortcode, collapsible content, toggle, toggle accordion, wordpress accordion plugin, wordpress accordion, bootstrap collapse, post accordion, post faq, custom post accordion, accordion grid, accordion bar, product faq, woocommerce product accordion, woocommerce accordion, wordpress post accordion, content hide, hidden content, expand content
 Requires at least: 4.3
-Tested up to: 6.0.1
-Stable tag: 2.1.17
+Tested up to: 6.0.2
+Stable tag: 2.1.19
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,14 +20,14 @@ We believe that you shouldn’t be a programmer or hire a developer to create a 
 [youtube https://www.youtube.com/watch?v=jQwLyM0Zb3M&list=PLoUb-7uG-5jPBSfjZalo6KKrc4jniAuix]
 
 
-[__Live Demo__](https://shapedplugin.com/easy-accordion/easy-accordion-free-demo/) | [__Docs__](https://docs.shapedplugin.com/docs/easy-accordion/introduction/) | [__Support__](https://shapedplugin.com/support/?user=lite) | [__Upgrade to Pro!__](https://shapedplugin.com/easy-accordion/?ref=1)
+[__Live Demo__](https://shapedplugin.com/easy-accordion/easy-accordion-free-demo/) | [__Docs__](https://docs.shapedplugin.com/docs/easy-accordion/introduction/) | [__Support__](https://shapedplugin.com/support/?user=lite) | [__Upgrade to Pro!__](https://shapedplugin.com/easy-accordion/pricing/?ref=1)
 
 
 = Easy Accordion 2.0 =
 
 **Easy Accordion 2.0** has completely been rebuilt and this provides you now many improvements and new amazing features. In this version, you get a totally usable accordion plugin with One Theme (Default Theme) which is the product of many hours development. 
 
-If you want [__16+ Extra Beautiful Premium Themes__](https://shapedplugin.com/easy-accordion/all-accordion-themes/) with their own customizable settings and lot of stunning features with excellent support, please purchase the [__PRO version__](https://shapedplugin.com/easy-accordion/?ref=1). 
+If you want [__16+ Extra Beautiful Premium Themes__](https://shapedplugin.com/easy-accordion/all-accordion-themes/) with their own customizable settings and lot of stunning features with excellent support, please purchase the [__PRO version__](https://shapedplugin.com/easy-accordion/pricing/?ref=1). 
 
 
 = Key Features = 
@@ -163,8 +163,6 @@ clicking "Install Now" and then "Activate".
 * Upload the easy-accordion-free directory to the /wp-content/plugins/ directory
 * Activate the plugin in the Plugin dashboard
 
-The WordPress codex contains <a href="https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation">instructions</a> on how to install a WordPress plugin.
-
 
 
 == Frequently Asked Questions ==
@@ -208,11 +206,11 @@ For including on the template, copy and paste the PHP code into your template fi
 
 
 = Q. I’d like access to more features. How can I get them? =
-**A.** You can get access to more features when you purchase a license of the plugin. Purchasing a license of [__Easy Accordion Pro__](https://shapedplugin.com/easy-accordion/?ref=1) gets you to access the full version of Easy Accordion, including 16+ Premium Themes, Automatic Lifetime Updates, and Dedicated Support.
+**A.** You can get access to more features when you purchase a license of the plugin. Purchasing a license of [__Easy Accordion Pro__](https://shapedplugin.com/easy-accordion/pricing/?ref=1) gets you to access the full version of Easy Accordion, including 16+ Premium Themes, Automatic Lifetime Updates, and Dedicated Support.
 
 
 = Q. What if I update to Premium version? =
-**A.** Your existing accordion content will work with [__Premium Version__](https://shapedplugin.com/easy-accordion/?ref=1). So you won’t lose your developed contents.
+**A.** Your existing accordion content will work with [__Premium Version__](https://shapedplugin.com/easy-accordion/pricing/?ref=1). So you won’t lose your developed contents.
 
 
 = Q. Is Easy Accordion is totally responsive? =
@@ -264,6 +262,12 @@ Thank you!
 
 
 == Changelog ==
+
+= 2.1.19 - Oct 14, 2022 =
+* Fix: PHP 5.6 compatibility issue.
+
+= 2.1.18 - Sept 30, 2022 =
+* New: The option to add 'rel=nofollow' in the accordion title to avoid search engine crawling.
 
 = 2.1.17 - Aug 30, 2022 =
 * Fix: Few Deprecated JS warnings in plugin admin page.
