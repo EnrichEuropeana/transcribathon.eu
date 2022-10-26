@@ -2,7 +2,7 @@
 
 Requires at least: 4.6
 Tested up to: 6.0
-Stable tag: 2.18.6
+Stable tag: 2.19.0
 Requires PHP: 5.6
 
 Extends MetaSlider, adding features such as video slides, layer slides and include additional CSS.
@@ -11,6 +11,22 @@ Extends MetaSlider, adding features such as video slides, layer slides and inclu
 
 The format is based on [Keep a Changelog recommendations](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+= [2.19.0] - 11 Oct, 2022 =
+
+* FIXED: Code review improving output escaping and input data sanitization, #51;
+* CHANGED: Update simba-plugin-manager-updated to 1.8.15, and plugin-update-checker to 4.13.*;
+
+= [2.18.8] - 26 Sep, 2022 =
+
+* FIXED: Fix Vimeo thumbnails not updating, #44;
+* FIXED: Fix YouTube thumbnails not updating, #35;
+* FIXED: Fix error 404, file not found: metaslider-pro/modules/layer/assets/codemirror/mode/xml/xml.js, #43;
+* CHANGED: Added and updated translations for ES, FR, and IR (Thanks to @wocmultimedia), #30;
+
+= [2.18.7] - 16 Sep, 2022 =
+
+* FIXED: Fix the auto-hiding slides, #39;
 
 = [2.18.6] - 15 Sep, 2022 =
 

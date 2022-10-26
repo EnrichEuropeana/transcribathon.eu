@@ -58,7 +58,7 @@ class MetaSliderLoop
         if (isset($settings['loop']) && 'stopOnFirst' === $settings['loop']) {
             $options['slideshowEnd'] = isset($options['slideshowEnd']) ? $options['slideshowEnd'] : array();
             $options['slideshowEnd'] = array_merge($options['slideshowEnd'], array(
-                "$('#metaslider_{$slider_id}').data('nivoslider').stop();"
+                "$('#metaslider_" . esc_js($slider_id) . "').data('nivoslider').stop();"
             ));
         }
 
@@ -66,7 +66,7 @@ class MetaSliderLoop
             $options['lastSlide'] = isset($options['lastSlide']) ? $options['lastSlide'] : array();
             $options['lastSlide'] = array_merge(
                 $options['lastSlide'],
-                array("$('#metaslider_{$slider_id}').data('nivoslider').stop();")
+                array("$('#metaslider_" . esc_js($slider_id) . "').data('nivoslider').stop();")
             );
         }
 

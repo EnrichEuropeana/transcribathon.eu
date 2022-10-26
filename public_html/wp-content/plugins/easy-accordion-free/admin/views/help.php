@@ -161,7 +161,7 @@ class Easy_Accordion_Free_Help {
 								</div>
 							</div>
 							<div class="pro-btn">
-								<a href="https://shapedplugin.com/easy-accordion/?ref=1" target="_blank">Upgrade To Pro Now</a>
+								<a href="https://shapedplugin.com/easy-accordion/pricing/?ref=1" target="_blank">Upgrade To Pro Now</a>
 							</div>
 						</div>
 					</div>
@@ -230,7 +230,7 @@ class Easy_Accordion_Free_Help {
 				sprintf( '<a href="%s">%s</a>', admin_url( 'post-new.php?post_type=sp_easy_accordion' ), __( 'Add Accordion', 'easy-accordion-free' ) );
 			array_unshift( $links, $new_links );
 
-			$links['go_pro'] = sprintf( '<a target="_blank" href="%1$s" style="color: #35b747; font-weight: 700;">Go Pro!</a>', 'https://shapedplugin.com/easy-accordion/?ref=1' );
+			$links['go_pro'] = sprintf( '<a target="_blank" href="%1$s" style="color: #35b747; font-weight: 700;">Go Pro!</a>', 'https://shapedplugin.com/easy-accordion/pricing/?ref=1' );
 		}
 
 		return $links;

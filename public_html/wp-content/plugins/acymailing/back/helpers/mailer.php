@@ -37,6 +37,7 @@ class MailerHelper extends acyPHPMailer
     var $errorNumber = 0;
     var $errorNewTry = [1, 6];
     var $autoAddUser = false;
+    var $userCreationTriggers = true;
     var $reportMessage = '';
 
     var $trackEmail = false;
@@ -128,7 +129,7 @@ class MailerHelper extends acyPHPMailer
                         'clientId' => $this->clientId,
                         'refreshToken' => $this->refreshToken,
                         'expiredIn' => $this->expiredIn,
-                        'host'=>$hostName
+                        'host' => $hostName,
                     ]
                 );
                 $this->setOAuth($oauth);
@@ -249,19 +250,17 @@ class MailerHelper extends acyPHPMailer
 
         $data = [
             &$response,
-            $this->externalMailer,
+            $this,
             ['email' => $this->to[0][0], 'name' => $this->to[0][1]],
-            $this->Subject,
             ['email' => $this->From, 'name' => $fromName],
             ['email' => $reply_to[0], 'name' => $reply_to[1]],
-            $this->Body,
             $bcc,
             $attachments,
             empty($this->id) ? null : $this->id,
         ];
         acym_trigger('onAcymSendEmail', $data);
 
-        if ($response['error']) {
+        if (!empty($response['error'])) {
             $this->setError($response['message']);
 
             return false;
@@ -363,6 +362,10 @@ class MailerHelper extends acyPHPMailer
             }
         }
 
+        if ($this->config->get('save_body') === '1') {
+            @file_put_contents(ACYM_ROOT.'acydebug_mail.html', $this->Body);
+        }
+
         if (function_exists('mb_convert_encoding')) {
             $this->Body = mb_convert_encoding($this->Body, 'HTML-ENTITIES', 'UTF-8');
             $this->Body = str_replace(['&amp;', '&sigmaf;'], ['&', 'ς'], $this->Body);
@@ -389,7 +392,7 @@ class MailerHelper extends acyPHPMailer
 
         $mailClass = new MailClass();
         $isTransactional = $this->isBounceForward || $this->isTest || $this->isSpamTest;
-        if(!empty($this->id) && !empty($this->defaultMail[$this->id]) && $mailClass->isTransactionalMail($this->defaultMail[$this->id])){
+        if (!empty($this->id) && !empty($this->defaultMail[$this->id]) && $mailClass->isTransactionalMail($this->defaultMail[$this->id])) {
             $isTransactional = true;
         }
 
@@ -510,7 +513,10 @@ class MailerHelper extends acyPHPMailer
                 } else {
                     $key = $this->userLanguage;
                 }
-                if (isset($mails[$key])) $this->defaultMail[$mailId] = $mails[$key];
+
+                if (isset($mails[$key])) {
+                    $this->defaultMail[$mailId] = $mails[$key];
+                }
             } else {
                 unset($this->defaultMail[$mailId]);
 
@@ -637,6 +643,7 @@ class MailerHelper extends acyPHPMailer
                 $this->userClass->checkVisitor = false;
                 $this->userClass->sendConf = false;
                 acym_setVar('acy_source', 'When sending a test');
+                $this->userClass->triggers = $this->userCreationTriggers;
                 $userId = $this->userClass->save($newUser);
                 $receiver = $this->userClass->getOneById($userId);
             }

@@ -1,13 +1,220 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: AcyMailing 7.9.4\n"
+"Project-Id-Version: AcyMailing 7.9.6\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/acymailing\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-08-29\n"
+"POT-Creation-Date: 2022-10-24\n"
 "X-Domain: acymailing\n"
 
+
+msgid "Save new custom view version"
+msgstr ""
+
+msgid "Change the title of the unsubscribe page"
+msgstr ""
+
+msgid "Display only the lists of the campaign"
+msgstr ""
+
+msgid "Please set a licence key to access the AcyMailing sending service configuration."
+msgstr ""
+
+msgid "Thanks but I don't use AcyMailing sending service"
+msgstr ""
+
+msgid "If you have AcyMailing Starter version with AcyMailing sending service please enter your license key"
+msgstr ""
+
+msgid "Allow users to delete their data from their profile page"
+msgstr ""
+
+msgid "Background repeat"
+msgstr ""
+
+msgid "Contain"
+msgstr ""
+
+msgid "Cover"
+msgstr ""
+
+msgid "Background size"
+msgstr ""
+
+msgid "Top"
+msgstr ""
+
+msgid "Bottom"
+msgstr ""
+
+msgid "Right and top"
+msgstr ""
+
+msgid "Right and bottom"
+msgstr ""
+
+msgid "Left and top"
+msgstr ""
+
+msgid "Left and bottom"
+msgstr ""
+
+msgid "Fourth"
+msgstr ""
+
+msgid "Replace shortcodes"
+msgstr ""
+
+msgid "Contact support"
+msgstr ""
+
+msgid "Check domain validation"
+msgstr ""
+
+msgid "Domain has been successfully validated. You can now start sending emails using our services 🙂"
+msgstr ""
+
+msgid "Unfortunately, we couldn't find the CNAME entries you set in your server DNS. If you have issues, feel free to contact the support"
+msgstr ""
+
+msgid "Waiting for CNAME entries to be added into your DNS entries"
+msgstr ""
+
+msgid "Domain status:"
+msgstr ""
+
+msgid "You can still use the \"Skip\" button at the top-right corner. It will lead you to the configuration page so you can start using AcyMailing by using an other sending service while the DNS entries validation is being processed."
+msgstr ""
+
+msgid "Don't want to wait any further and want to start sending emails while approval process is on its way?"
+msgstr ""
+
+msgid "DNS propagation might take a few minutes to some days depending on the server configuration. If it still isn't validated after some days, feel free to contact us using the button bellow."
+msgstr ""
+
+msgid "Please add these CNAME entries in your DNS then click on the \"Check domain validation\" button once it is done."
+msgstr ""
+
+msgid "Don't know how to do it?"
+msgstr ""
+
+msgid "We won't be able to send emails from our sending service using your domain name (@%s) without this step."
+msgstr ""
+
+msgid "To send emails you need to add some CNAME entries into the DNS configuration of your server."
+msgstr ""
+
+msgid "AcyMailing Sending Service configuration"
+msgstr ""
+
+msgid "Get a license"
+msgstr ""
+
+msgid "Switch my license"
+msgstr ""
+
+msgid "No license key found in the \"License\" tab of the configuration."
+msgstr ""
+
+msgid "The AcyMailing license key used doesn't match one of our sending service offers. You can switch your license plan from your subscriptions listing on our website."
+msgstr ""
+
+msgid "See the sending method"
+msgstr ""
+
+msgid "The license key you entered enables you to send emails with our service, would you like to activate this sending method?"
+msgstr ""
+
+msgid "You don't have any domain yet"
+msgstr ""
+
+msgid "Update domains statuses"
+msgstr ""
+
+msgid "License blocked, contact us for more information"
+msgstr ""
+
+msgid "Invalid API-KEY"
+msgstr ""
+
+msgid "An error occurred, please see details in the browser console"
+msgstr ""
+
+msgid "Please install the latest version of AcyMailing, or at least the version %s"
+msgstr ""
+
+msgid "An error occurred when trying to send the email. See details in the browser console"
+msgstr ""
+
+msgid "This domain is not attached to this site"
+msgstr ""
+
+msgid "You are not allowed to delete this domain"
+msgstr ""
+
+msgid "This domain doesn't exist"
+msgstr ""
+
+msgid "Domain status successfully obtained"
+msgstr ""
+
+msgid "An error related to the remaining credits occurred when trying to send an email"
+msgstr ""
+
+msgid "License expired"
+msgstr ""
+
+msgid "Identity created"
+msgstr ""
+
+msgid "The domain already exists for this website"
+msgstr ""
+
+msgid "The domain already exists and it doesn't belong to you"
+msgstr ""
+
+msgid "No domain to check"
+msgstr ""
+
+msgid "Domains verified"
+msgstr ""
+
+msgid "Error while checking domains"
+msgstr ""
+
+msgid "Your license is blocked"
+msgstr ""
+
+msgid "The email is missing"
+msgstr ""
+
+msgid "Missing arguments"
+msgstr ""
+
+msgid "No credits left"
+msgstr ""
+
+msgid "Here is our step by step guide"
+msgstr ""
+
+msgid "Show DNS entries (CNAME) settings"
+msgstr ""
+
+msgid "You have domains waiting for validation, this means that you need to add the CNAME entries to your DNS configuration."
+msgstr ""
+
+msgid "Approval failed"
+msgstr ""
+
+msgid "Validated"
+msgstr ""
+
+msgid "Domain name"
+msgstr ""
+
+msgid "Check this tutorial to add them"
+msgstr ""
 
 msgid "Upload image"
 msgstr ""
@@ -40,6 +247,57 @@ msgid "Ordering"
 msgstr ""
 
 msgid "Open inside the site's template"
+msgstr ""
+
+msgid "There is a syntax error for the CNAME entry %1$s on domain %2$s"
+msgstr ""
+
+msgid "This domain has already been sent for approval"
+msgstr ""
+
+msgid "The domain %s is not valid"
+msgstr ""
+
+msgid "Our recommendations"
+msgstr ""
+
+msgid "Other sending methods"
+msgstr ""
+
+msgid "The domain: %s doesn't exist"
+msgstr ""
+
+msgid "Not enough credits to send this email"
+msgstr ""
+
+msgid "Your site couldn't contact acymailing.com"
+msgstr ""
+
+msgid "Get more credits"
+msgstr ""
+
+msgid "You have unverified domains preventing emails from being sent, please verify them: %s"
+msgstr ""
+
+msgid "Add a domain"
+msgstr ""
+
+msgid "%s domain already exists"
+msgstr ""
+
+msgid "Too many request please wait few minutes and try again"
+msgstr ""
+
+msgid "You don't have the right to delete this domain"
+msgstr ""
+
+msgid "Something went wrong, please contact our support service"
+msgstr ""
+
+msgid "Here are the DNS entries (CNAME) you need to add in order to allow our sending service to send emails using your domain"
+msgstr ""
+
+msgid "Missing API key"
 msgstr ""
 
 msgid "Organizations"

@@ -52,6 +52,7 @@ function disable_gutenberg_register_settings() {
 	add_settings_field('acf-enable',      __('ACF Support',         'disable-gutenberg'), 'disable_gutenberg_callback_checkbox', 'disable_gutenberg_options', 'settings_7', array('id' => 'acf-enable',      'label' => esc_html__('Enable Custom Fields Meta Box (ACF disables by default),', 'disable-gutenberg') .' <a target="_blank" rel="noopener noreferrer" href="https://m0n.co/acf">'. esc_html__('learn more', 'disable-gutenberg') .'</a>'));
 	add_settings_field('reset_options',   __('Reset Options',       'disable-gutenberg'), 'disable_gutenberg_callback_reset',    'disable_gutenberg_options', 'settings_7', array('id' => 'reset_options',   'label' => esc_html__('Restore default plugin options', 'disable-gutenberg')));
 	add_settings_field('rate_plugin',     __('Rate Plugin',         'disable-gutenberg'), 'disable_gutenberg_callback_rate',     'disable_gutenberg_options', 'settings_7', array('id' => 'rate_plugin',     'label' => esc_html__('Show support with a 5-star rating&nbsp;&raquo;', 'disable-gutenberg')));
+	add_settings_field('show_support',    __('Show Support',        'disable-gutenberg'), 'disable_gutenberg_callback_support',  'disable_gutenberg_options', 'settings_7', array('id' => 'show_support',    'label' => esc_html__('Show support with a small donation&nbsp;&raquo;', 'disable-gutenberg')));
 	
 }
 
@@ -233,5 +234,15 @@ function disable_gutenberg_callback_rate($args) {
 	$text  = isset($args['label']) ? $args['label'] : esc_html__('Show support with a 5-star rating&nbsp;&raquo;', 'disable-gutenberg');
 	
 	echo '<a target="_blank" rel="noopener noreferrer" class="disable-gutenberg-rate-plugin" href="'. $href .'" title="'. $title .'">'. $text .'</a>';
+	
+}
+
+function disable_gutenberg_callback_support($args) {
+	
+	$href  = 'https://monzillamedia.com/donate.html';
+	$title = esc_attr__('Donate via PayPal, credit card, or cryptocurrency', 'disable-gutenberg');
+	$text  = isset($args['label']) ? $args['label'] : esc_html__('Show support with a small donation&nbsp;&raquo;', 'disable-gutenberg');
+	
+	echo '<a target="_blank" rel="noopener noreferrer" class="disable-gutenberg-show-support" href="'. $href .'" title="'. $title .'">'. $text .'</a>';
 	
 }

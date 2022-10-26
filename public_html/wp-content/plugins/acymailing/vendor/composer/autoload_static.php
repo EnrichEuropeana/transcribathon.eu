@@ -3,9 +3,13 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit621c9c90031d23133d364b119f138ba8
+class ComposerStaticInitc37f9f5f7f274dbfba2a93728b23e703
 {
     public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'Psr\\Container\\' => 14,
+        ),
         'A' => 
         array (
             'AcyMailing\\' => 11,
@@ -13,6 +17,10 @@ class ComposerStaticInit621c9c90031d23133d364b119f138ba8
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
         'AcyMailing\\' => 
         array (
             0 => __DIR__ . '/../..' . '/',
@@ -168,14 +176,17 @@ class ComposerStaticInit621c9c90031d23133d364b119f138ba8
         'AcyMailing\\Views\\SegmentsViewSegments' => __DIR__ . '/../..' . '/back/views/segments/view.html.php',
         'AcyMailing\\Views\\StatsViewStats' => __DIR__ . '/../..' . '/back/views/stats/view.html.php',
         'AcyMailing\\Views\\UsersViewUsers' => __DIR__ . '/../..' . '/back/views/users/view.html.php',
+        'Psr\\Container\\ContainerExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerExceptionInterface.php',
+        'Psr\\Container\\ContainerInterface' => __DIR__ . '/..' . '/psr/container/src/ContainerInterface.php',
+        'Psr\\Container\\NotFoundExceptionInterface' => __DIR__ . '/..' . '/psr/container/src/NotFoundExceptionInterface.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit621c9c90031d23133d364b119f138ba8::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit621c9c90031d23133d364b119f138ba8::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit621c9c90031d23133d364b119f138ba8::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc37f9f5f7f274dbfba2a93728b23e703::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc37f9f5f7f274dbfba2a93728b23e703::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitc37f9f5f7f274dbfba2a93728b23e703::$classMap;
 
         }, null, ClassLoader::class);
     }

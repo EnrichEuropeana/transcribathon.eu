@@ -2,7 +2,7 @@
 /*
 Plugin Name: SiteOrigin CSS
 Description: An advanced CSS editor from SiteOrigin.
-Version: 1.5.3
+Version: 1.5.5
 Author: SiteOrigin
 Author URI: https://siteorigin.com
 Plugin URI: https://siteorigin.com/css/
@@ -14,7 +14,7 @@ Text Domain: so-css
 // Handle the legacy CSS editor that came with SiteOrigin themes
 include plugin_dir_path( __FILE__ ) . 'inc/legacy.php';
 
-define( 'SOCSS_VERSION', '1.5.3' );
+define( 'SOCSS_VERSION', '1.5.5' );
 define( 'SOCSS_JS_SUFFIX', '.min' );
 
 /**
@@ -23,6 +23,7 @@ define( 'SOCSS_JS_SUFFIX', '.min' );
 class SiteOrigin_CSS {
 	private $theme;
 	private $snippet_paths;
+	private $css_file;
 	
 	function __construct() {
 		$this->theme = basename( get_template_directory() );
@@ -30,6 +31,12 @@ class SiteOrigin_CSS {
 		
 		// Main header actions
 		add_action( 'plugins_loaded', array( $this, 'set_plugin_textdomain' ) );
+
+		global $wp_filesystem;
+		if ( ! class_exists( 'wp_filesystem' ) ) {
+			require_once( ABSPATH . '/wp-admin/includes/file.php' );
+			WP_Filesystem();
+		}
 		
 		// Priority 20 is necessary to ensure our CSS takes precedence.
 		add_action( 'wp_head', array( $this, 'enqueue_css' ), 20 );
@@ -89,13 +96,52 @@ class SiteOrigin_CSS {
 	 */
 	function get_custom_css( $theme, $post_id = null ) {
 		$css_key = 'siteorigin_custom_css[' . $theme . ']';
-		if ( empty( $post_id ) ) {
-			return get_option( $css_key, '' );
+		if ( empty( $post_id ) && WP_Filesystem() ) {
+			$custom_css_file = apply_filters( 'siteorigin_custom_css_file', false );
+			if (
+				! empty( $custom_css_file ) &&
+				! empty( $custom_css_file['file'] )
+			) {
+				// Did we previously load the CSS file? If not, load it.
+				if ( empty( $this->css_file ) || isset( $_POST['siteorigin_custom_css'] ) ) {
+					global $wp_filesystem;
+
+					// If custom file doesn't exist, create it.
+					if ( ! $wp_filesystem->exists( $custom_css_file['file'] ) ) {
+						$wp_filesystem->touch( $custom_css_file['file'] );
+					}
+
+					if ( empty( get_option( 'siteorigin_custom_file' ) ) ) {
+						update_option( 'siteorigin_custom_file', true, true );
+					}
+
+					if ( $wp_filesystem->is_writable( $custom_css_file['file'] ) ) {
+						$this->css_file = $wp_filesystem->get_contents( $custom_css_file['file'] );
+					}
+				}
+				return $this->css_file;
+			} elseif ( ! empty( get_option( 'siteorigin_custom_file' ) ) ) {
+				// If the custom file filter was previously active we need to
+				// generate the global CSS file to avoid no CSS outputting
+				// without modification.
+				delete_option( 'siteorigin_custom_file', true );
+				$css_file_path = $this->get_css_file_name( $theme );
+				
+				global $wp_filesystem;
+				$wp_filesystem->put_contents(
+					$css_file_path,
+					get_option( $css_key, '' )
+				);
+			}
+		}
+
+		if ( ! empty( $post_id ) ) {
+			return get_post_meta( $post_id, $css_key, true );
 		}
 		
-		return get_post_meta( $post_id, $css_key, true );
+		return get_option( $css_key, '' );
 	}
-	
+
 	/**
 	 * Save custom CSS for a given theme and post id combination.
 	 *
@@ -122,7 +168,26 @@ class SiteOrigin_CSS {
 		
 		return add_post_meta( $post_id, $css_key, $custom_css );
 	}
-	
+
+	/**
+	 * Returns the file name of the CSS file we're editing.
+	 *
+	 * @param $theme
+	 * @param null $post_id
+	 */
+	function get_css_file_name( $theme, $post_id = null ) {
+		global $wp_filesystem;
+		$upload_dir = wp_upload_dir();
+		$upload_dir_path = $upload_dir['basedir'] . '/so-css/';
+
+		if ( ! $wp_filesystem->is_dir( $upload_dir_path ) ) {
+			$wp_filesystem->mkdir( $upload_dir_path );
+		}
+
+		$css_file_name = 'so-css-' . $theme . ( ! empty( $post_id ) ? '_' . $post_id : '' );
+		return $upload_dir_path . $css_file_name . '.css';
+	}
+
 	/**
 	 * Save custom CSS for a given theme and post id combination to a file in the uploads directory to allow for caching.
 	 *
@@ -133,20 +198,23 @@ class SiteOrigin_CSS {
 	function save_custom_css_file( $custom_css, $theme, $post_id = null ) {
 		if ( WP_Filesystem() ) {
 			global $wp_filesystem;
-			$upload_dir = wp_upload_dir();
-			$upload_dir_path = $upload_dir['basedir'] . '/so-css/';
-			
-			if ( ! $wp_filesystem->is_dir( $upload_dir_path ) ) {
-				$wp_filesystem->mkdir( $upload_dir_path );
+			$css_file_path = apply_filters( 'siteorigin_custom_css_file', false );
+
+			if (
+				empty( $css_file_path ) ||
+				empty( $css_file_path['file'] ) ||
+				! $wp_filesystem->is_writable( $css_file_path['file'] )
+			) {
+				$css_file_path = $this->get_css_file_name( $theme, $post_id );
+				
+				if ( file_exists( $css_file_path ) ) {
+					$wp_filesystem->delete( $css_file_path );
+				}
+			} else {
+				$css_file_path = $css_file_path['file'];
+				$this->css_file = $custom_css;
 			}
-			
-			$css_file_name = 'so-css-' . $theme . ( ! empty( $post_id ) ? '_' . $post_id : '' );
-			$css_file_path = $upload_dir_path . $css_file_name . '.css';
-			
-			if ( file_exists( $css_file_path ) ) {
-				$wp_filesystem->delete( $css_file_path );
-			}
-			
+
 			$wp_filesystem->put_contents(
 				$css_file_path,
 				$custom_css
@@ -227,21 +295,32 @@ class SiteOrigin_CSS {
 	 *
 	 */
 	function enqueue_custom_css( $theme, $post_id = null ) {
-		
-		$upload_dir = wp_upload_dir();
-		$upload_dir_path = $upload_dir['basedir'] . '/so-css/';
-		
 		$css_id = $theme . ( ! empty( $post_id ) ? '_' . $post_id : '' );
-		$css_file_name = 'so-css-' . $css_id;
-		$css_file_path = $upload_dir_path . $css_file_name . '.css';
-		
-		if ( empty( $_GET['so_css_preview'] ) && ! is_admin() && file_exists( $css_file_path ) ) {
-			wp_enqueue_style(
-				'so-css-' . $css_id,
-				set_url_scheme( $upload_dir['baseurl'] . '/so-css/' . $css_file_name . '.css' ),
-				array(),
-				$this->get_latest_revision_timestamp()
-			);
+		if (
+			empty( $_GET['so_css_preview'] ) &&
+			! is_admin() &&
+			apply_filters( 'siteorigin_css_enqueue_css', true )
+		) {
+			$custom_css_file = apply_filters( 'siteorigin_custom_css_file', array() );
+			if ( ! empty( $post_id ) || empty( $custom_css_file ) ) {
+				$upload_dir = wp_upload_dir();
+				$upload_dir_path = $upload_dir['basedir'] . '/so-css/';
+				$css_file_name = 'so-css-' . $css_id;
+				$css_file_path = $upload_dir_path . $css_file_name . '.css';
+				$css_file_url = $upload_dir['baseurl'] . '/so-css/' . $css_file_name . '.css';
+			} elseif ( isset( $custom_css_file['url'] ) ) {
+				$css_file_path = $custom_css_file['file'];
+				$css_file_url = $custom_css_file['url'];
+			}
+			
+			if ( ! empty( $css_file_path ) && file_exists( $css_file_path ) ) {
+				wp_enqueue_style(
+					'so-css-' . $css_id,
+					set_url_scheme( $css_file_url ),
+					array(),
+					$this->get_latest_revision_timestamp()
+				);
+			}
 		} else {
 			$custom_css = $this->get_custom_css( $theme, $post_id );
 			// We just need to enqueue a dummy style
@@ -273,8 +352,12 @@ class SiteOrigin_CSS {
 			$custom_css = self::sanitize_css( filter_input( INPUT_POST, 'siteorigin_custom_css' ) );
 			$socss_post_id = filter_input( INPUT_GET, 'socss_post_id', FILTER_VALIDATE_INT );
 			
-			$current = $this->get_custom_css( $this->theme, $socss_post_id );
-			$this->save_custom_css( $custom_css, $this->theme, $socss_post_id );
+			if ( empty( $this->css_file ) ) {
+				$current = $this->get_custom_css( $this->theme, $socss_post_id );
+				$this->save_custom_css( $custom_css, $this->theme, $socss_post_id );
+			} else {
+				$current = $this->css_file;
+			}
 			
 			// If this has changed, then add a revision.
 			if ( $current != $custom_css ) {
@@ -594,9 +677,13 @@ class SiteOrigin_CSS {
 		if ( current_user_can( 'edit_theme_options' ) && isset( $_POST['css'] ) ) {
 			// Sanitize CSS input. Should keep most tags, apart from script and style tags.
 			$custom_css = self::sanitize_css( stripslashes( $_POST['css'] ) );
-			
-			$current = $this->get_custom_css( $this->theme );
-			$this->save_custom_css( $custom_css, $this->theme );
+
+			if ( empty( $this->css_file ) ) {
+				$current = $this->get_custom_css( $this->theme );
+				$this->save_custom_css( $custom_css, $this->theme );
+			} else {
+				$current = $this->css_file;
+			}
 			
 			// If this has changed, then add a revision.
 			if ( $current != $custom_css ) {

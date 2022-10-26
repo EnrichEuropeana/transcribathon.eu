@@ -4,7 +4,7 @@
  * Plugin Name: MetaSlider - Pro Add-on Pack
  * Plugin URI: https://www.metaslider.com
  * Description: This Add-on pack unlocks the power of video slides, layer slides, post type slides as well as many other features.
- * Version: 2.18.6
+ * Version: 2.19.0
  * Author: MetaSlider
  * Author URI: https://www.metaslider.com
  * Copyright: 2020- MetaSlider LLC
@@ -34,7 +34,7 @@ if (! class_exists('MetaSliderPro')) :
          *
          * @var string $version
          */
-        public $version = '2.18.6';
+        public $version = '2.19.0';
 
         /**
          * Minimum required version

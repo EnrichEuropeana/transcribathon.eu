@@ -401,13 +401,13 @@ class MetaSliderThemeEditor
      */
     private function process()
     {
-        if (isset($_REQUEST['save_theme'])) {
+        if (isset($_REQUEST['save_theme']) && isset($_REQUEST['theme_slug']) && isset($_REQUEST['theme'])) {
             $slug = $_REQUEST['theme_slug'];
             $theme = $_REQUEST['theme'];
             $this->save_theme($slug, $theme);
         }
 
-        if (isset($_REQUEST['delete_theme'])) {
+        if (isset($_REQUEST['delete_theme']) && isset($_REQUEST['theme_slug'])) {
             $slug = $_REQUEST['theme_slug'];
             $this->delete_theme($slug);
         }
@@ -445,7 +445,7 @@ class MetaSliderThemeEditor
 
             <?php
             if (isset($_REQUEST['save_theme'])) {
-                echo "<div class='updated'><p>" . __(
+                echo "<div class='updated'><p>" . esc_html__(
                         "Theme Saved. To apply the theme to a slideshow, edit the slideshow and select this theme from the theme dropdown menu.",
                         "ml-slider-pro"
                     ) . "</p></div>";
@@ -453,14 +453,15 @@ class MetaSliderThemeEditor
 
             if ($sliders = $this->get_sliders_for_preview()) {
                 echo "<form style='position: absolute; right: 20px; top: 0;' accept-charset='UTF-8' action='?page=metaslider-theme-editor' method='post'>";
-                echo "<input type='hidden' name='theme_slug' value='{$this->theme_slug}' />";
+                echo "<input type='hidden' name='theme_slug' value=" . esc_attr($this->theme_slug) . "' />";
                 echo "<select name='slider_id'>";
                 foreach ($sliders as $slider) {
                     $selected = $slider['id'] == $this->slider_id ? 'selected=selected' : '';
-                    echo "<option value='{$slider['id']}' {$selected}>{$slider['title']}</option>";
+                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                    echo "<option value='" . esc_attr($slider['id']) . "' {$selected}>" . esc_html($slider['title']) . "</option>";
                 }
                 echo "</select>";
-                echo "<input type='submit' class='button button-secondary' value='" . __(
+                echo "<input type='submit' class='button button-secondary' value='" . esc_attr__(
                         "Switch Preview Slider",
                         "ml-slider-pro"
                     ) . "' /></form>";
@@ -474,9 +475,9 @@ class MetaSliderThemeEditor
                     if ($this->themes_available()) {
                         foreach ($this->get_themes() as $slug => $theme) {
                             if ($this->theme_slug == $slug) {
-                                echo "<div class='nav-tab nav-tab-active'><input type='text' name='theme[title]'  value='" . $theme['title'] . "' onfocus='this.style.width = ((this.value.length + 1) * 9) + \"px\"' /></div>";
+                                echo "<div class='nav-tab nav-tab-active'><input type='text' name='theme[title]'  value='" . esc_attr($theme['title']) . "' onfocus='this.style.width = ((this.value.length + 1) * 9) + \"px\"' /></div>";
                             } else {
-                                echo "<a href='?page=metaslider-theme-editor&theme_slug={$slug}' class='nav-tab'>{$theme['title']}</a>";
+                                echo "<a href='?page=metaslider-theme-editor&theme_slug=" . esc_attr($slug) . "' class='nav-tab'>" . esc_html($theme['title']) . "</a>";
                             }
                         }
                     }
@@ -492,41 +493,34 @@ class MetaSliderThemeEditor
                 } ?>
 
                 <div class='theme_editor_left'>
-                    <input type='hidden' name='theme_slug' value='<?php
-                    echo $this->theme_slug ?>'/>
-                    <input type='hidden' name='slider_id' value='<?php
-                    echo $this->slider_id ?>'/>
+                    <input type='hidden' name='theme_slug' value='<?php echo esc_attr($this->theme_slug); ?>'/>
+                    <input type='hidden' name='slider_id' value='<?php echo esc_attr($this->slider_id); ?>'/>
                     <table class='widefat settings'>
                         <thead>
                         <tr>
-                            <th width='40%'><?php
-                                _e("Theme Settings", 'ml-slider-pro') ?></th>
-                            <th><input type='submit' name='save_theme' value='<?php
-                                _e("Save", "ml-slider-pro") ?>' class='alignright button button-primary'/></th>
+                            <th width='40%'><?php echo esc_html__("Theme Settings", 'ml-slider-pro') ?></th>
+                            <th><input type='submit' name='save_theme' value='<?php echo esc_attr__("Save", "ml-slider-pro") ?>' class='alignright button button-primary'/></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td colspan='2' class='highlight'>
-                                <?php
-                                _e("Slideshow", 'ml-slider-pro') ?>
+                                <?php echo esc_html__("Slideshow", 'ml-slider-pro') ?>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Outer Border Radius", 'ml-slider-pro') ?></td>
+                            <td><?php esc_html__("Outer Border Radius", 'ml-slider-pro') ?></td>
                             <td>
                                 <input class='number' type='number' min='0' max='50' id='theme_outer_border_radius'
                                        name='theme[outer_border_radius]' value='<?php
-                                echo $this->get_setting('outer_border_radius'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span>
+                                echo esc_attr($this->get_setting('outer_border_radius')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("CSS3 Shadow", 'ml-slider-pro') ?><br/>
+                            <td><?php echo esc_html__("CSS3 Shadow", 'ml-slider-pro') ?><br/>
                                 <small><i><?php
-                                        _e(
+                                        echo esc_html__(
                                             "Note: Not compatible with 'thumbnail' navigation type",
                                             'ml-slider-pro'
                                         ) ?></i></small>
@@ -535,37 +529,35 @@ class MetaSliderThemeEditor
                                 <select id='shadow' name='theme[shadow]'>
                                     <option value='none' <?php
                                     if ($this->get_setting('shadow') == 'none') echo 'selected=selected' ?>><?php
-                                        _e("None", "ml-slider-pro") ?></option>
+                                        echo esc_html__("None", "ml-slider-pro") ?></option>
                                     <option value='effect0' <?php
                                     if ($this->get_setting('shadow') == 'effect0') echo 'selected=selected' ?>><?php
-                                        _e("Default", "ml-slider-pro") ?></option>
+                                        echo esc_html__("Default", "ml-slider-pro") ?></option>
                                     <option value='effect1' <?php
                                     if ($this->get_setting('shadow') == 'effect1') echo 'selected=selected' ?>><?php
-                                        _e("Bottom", "ml-slider-pro") ?></option>
+                                        echo esc_html__("Bottom", "ml-slider-pro") ?></option>
                                     <option value='effect2' <?php
                                     if ($this->get_setting('shadow') == 'effect2') echo 'selected=selected' ?>><?php
-                                        _e("Page Curl", "ml-slider-pro") ?></option>
+                                        echo esc_html__("Page Curl", "ml-slider-pro") ?></option>
                                     <option value='effect3' <?php
                                     if ($this->get_setting('shadow') == 'effect3') echo 'selected=selected' ?>><?php
-                                        _e("Bottom Curve", "ml-slider-pro") ?></option>
+                                        echo esc_html__("Bottom Curve", "ml-slider-pro") ?></option>
                                     <option value='effect4' <?php
                                     if ($this->get_setting('shadow') == 'effect4') echo 'selected=selected' ?>><?php
-                                        _e("Top and Bottom Curve", "ml-slider-pro") ?></option>
+                                        echo esc_html__("Top and Bottom Curve", "ml-slider-pro") ?></option>
                                     <option value='effect5' <?php
                                     if ($this->get_setting('shadow') == 'effect5') echo 'selected=selected' ?>><?php
-                                        _e("Sides", "ml-slider-pro") ?></option>
+                                        echo esc_html__("Sides", "ml-slider-pro") ?></option>
                                 </select><br/>
                             </td>
                         </tr>
                         <tr>
                             <td colspan='2' class='highlight'>
-                                <?php
-                                _e("Caption", 'ml-slider-pro') ?>
+                                <?php echo esc_html__("Caption", 'ml-slider-pro') ?>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Enable Custom Caption", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Enable Custom Caption", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='checkbox' id='enable_custom_caption'
                                        name='theme[enable_custom_caption]' <?php
@@ -575,65 +567,60 @@ class MetaSliderThemeEditor
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Position", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Position", 'ml-slider-pro') ?></td>
                             <td>
                                 <select id='caption_position' name='theme[caption_position]'>
                                     <option value='bottomLeft' <?php
                                     if ($this->get_setting(
                                             'caption_position'
                                         ) == 'bottomLeft') echo 'selected=selected' ?>><?php
-                                        _e("Bottom Left", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Bottom Left", 'ml-slider-pro') ?></option>
                                     <option value='bottomRight' <?php
                                     if ($this->get_setting(
                                             'caption_position'
                                         ) == 'bottomRight') echo 'selected=selected' ?>><?php
-                                        _e("Bottom Right", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Bottom Right", 'ml-slider-pro') ?></option>
                                     <option value='topLeft' <?php
                                     if ($this->get_setting(
                                             'caption_position'
                                         ) == 'topLeft') echo 'selected=selected' ?>><?php
-                                        _e("Top Left", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Top Left", 'ml-slider-pro') ?></option>
                                     <option value='topRight' <?php
                                     if ($this->get_setting(
                                             'caption_position'
                                         ) == 'topRight') echo 'selected=selected' ?>><?php
-                                        _e("Top Right", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Top Right", 'ml-slider-pro') ?></option>
                                     <option value='underneath' <?php
                                     if ($this->get_setting(
                                             'caption_position'
                                         ) == 'underneath') echo 'selected=selected' ?>><?php
-                                        _e("Underneath", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Underneath", 'ml-slider-pro') ?></option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Width", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Width", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='100' id='theme_caption_width'
                                        name='theme[caption_width]' value='<?php
-                                echo $this->get_setting('caption_width'); ?>'/><span class='after'>%</span></td>
+                                echo esc_attr($this->get_setting('caption_width')); ?>'/><span class='after'>%</span></td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Border Radius", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Border Radius", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='100' id='theme_caption_border_radius'
                                        name='theme[caption_border_radius]' value='<?php
-                                echo $this->get_setting('caption_border_radius'); ?>'/><span class='after'>px</span>
+                                echo esc_attr($this->get_setting('caption_border_radius')); ?>'/><span class='after'>px</span>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Text Color", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Text Color", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='text' class='colorpicker' id='colourpicker-caption-text-colour'
                                        name='theme[caption_text_colour]' value='<?php
-                                echo $this->get_setting('caption_text_colour'); ?>'/>
+                                echo esc_attr($this->get_setting('caption_text_colour')); ?>'/>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Text Align", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Text Align", 'ml-slider-pro') ?></td>
                             <td>
                                 <select id='caption_align' name='theme[caption_align]'>
                                     <option value='left' <?php
@@ -653,40 +640,36 @@ class MetaSliderThemeEditor
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Background Color", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Background Color", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='text' class='colorpicker' id='colourpicker-caption-background-colour'
                                        name='theme[caption_background_colour]' value='<?php
-                                echo $this->get_setting('caption_background_colour') ?>'/>
+                                echo esc_attr($this->get_setting('caption_background_colour')) ?>'/>
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Vertical Margin", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Vertical Margin", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='500' id='theme_caption_vertical_margin'
                                        name='theme[caption_vertical_margin]' value='<?php
-                                echo $this->get_setting('caption_vertical_margin'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span></td>
+                                echo esc_attr($this->get_setting('caption_vertical_margin')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span></td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Horizontal Margin", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Horizontal Margin", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='500'
                                        id='theme_caption_horizontal_margin' name='theme[caption_horizontal_margin]'
                                        value='<?php
-                                       echo $this->get_setting('caption_horizontal_margin'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span></td>
+                                       echo esc_attr($this->get_setting('caption_horizontal_margin')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span></td>
                         </tr>
                         <tr>
                             <td colspan='2' class='highlight'>
-                                <?php
-                                _e("Arrows", 'ml-slider-pro') ?>
+                                <?php echo esc_html__("Arrows", 'ml-slider-pro') ?>
                             </td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Enable Custom Arrows", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Enable Custom Arrows", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='checkbox' id='enable_custom_arrows'
                                        name='theme[enable_custom_arrows]' <?php
@@ -697,39 +680,41 @@ class MetaSliderThemeEditor
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Built In Styles", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Built In Styles", 'ml-slider-pro') ?></td>
                             <td>
                                 <select id='arrow_style' name='theme[arrow_type]'><?php
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                     echo $arrow_style ?></select>
                                 <select id='arrow_colour' name='theme[arrow_colour]'><?php
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                                     echo $arrow_colour ?></select>
                             </td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Custom Prev Arrow", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Custom Prev Arrow", 'ml-slider-pro') ?></td>
                             <td>
                                 <?php
                                 $custom_prev_arrow = $this->get_setting('custom_prev_arrow');
 
                                 if ($custom_prev_arrow > 0) {
                                     $url = wp_get_attachment_image_src($custom_prev_arrow, 'full');
-                                    echo "<button id='open_media_manager_prev' style='display: none;'>" . __(
+                                    echo "<button id='open_media_manager_prev' style='display: none;'>" . esc_html__(
                                             "Select",
                                             'ml-slider-pro'
                                         ) . "</button>";
-                                    echo "<button id='remove_custom_prev_arrow'>" . __(
+                                    echo "<button id='remove_custom_prev_arrow'>" . esc_html__(
                                             "Remove",
                                             'ml-slider-pro'
                                         ) . "</button>";
-                                    echo "<div id='custom_prev_arrow'><img src='{$url[0]}' width='{$url[1]}' height='{$url[2]}' /></div>";
-                                    echo "<input type='hidden' id='custom_prev_arrow_input' name='theme[custom_prev_arrow]' value='{$custom_prev_arrow}'>";
+                                    echo "<div id='custom_prev_arrow'><img src='" . esc_url($url[0]) . "' width='" . esc_attr($url[1]) . "' height='" . esc_attr($url[2]) . "' /></div>";
+                                    echo "<input type='hidden' id='custom_prev_arrow_input' name='theme[custom_prev_arrow]' value='" . esc_attr($custom_prev_arrow) . "'>";
                                 } else {
-                                    echo "<button id='open_media_manager_prev'>" . __(
+                                    echo "<button id='open_media_manager_prev'>" . esc_html__(
                                             "Select",
                                             'ml-slider-pro'
                                         ) . "</button>";
-                                    echo "<button id='remove_custom_prev_arrow' style='display: none;'>" . __(
+                                    echo "<button id='remove_custom_prev_arrow' style='display: none;'>" . esc_html__(
                                             "Remove",
                                             'ml-slider-pro'
                                         ) . "</button>";
@@ -740,30 +725,29 @@ class MetaSliderThemeEditor
                             </td>
                         </tr>
                         <tr>
-                            <td><?php
-                                _e("Custom Next Arrow", 'ml-slider-pro') ?></td>
+                            <td><?php echo esc_html__("Custom Next Arrow", 'ml-slider-pro') ?></td>
                             <td>
                                 <?php
                                 $custom_next_arrow = $this->get_setting('custom_next_arrow');
 
                                 if ($custom_next_arrow > 0) {
                                     $url = wp_get_attachment_image_src($custom_next_arrow, 'full');
-                                    echo "<button id='open_media_manager_next' style='display: none;'>" . __(
+                                    echo "<button id='open_media_manager_next' style='display: none;'>" . esc_html__(
                                             "Select",
                                             'ml-slider-pro'
                                         ) . "</button>";
-                                    echo "<button id='remove_custom_next_arrow'>" . __(
+                                    echo "<button id='remove_custom_next_arrow'>" . esc_html__(
                                             "Remove",
                                             'ml-slider-pro'
                                         ) . "</button>";
-                                    echo "<div id='custom_next_arrow'><img src='{$url[0]}' width='{$url[1]}' height='{$url[2]}' /></div>";
-                                    echo "<input type='hidden' id='custom_next_arrow_input' name='theme[custom_next_arrow]' value='{$custom_next_arrow}'>";
+                                    echo "<div id='custom_next_arrow'><img src='" . esc_url($url[0]) . "' width='" . esc_attr($url[1]) . "' height='" . esc_attr($url[2]) . "' /></div>";
+                                    echo "<input type='hidden' id='custom_next_arrow_input' name='theme[custom_next_arrow]' value='" . esc_attr($custom_next_arrow) . "'>";
                                 } else {
-                                    echo "<button id='open_media_manager_next'>" . __(
+                                    echo "<button id='open_media_manager_next'>" . esc_html__(
                                             "Select",
                                             'ml-slider-pro'
                                         ) . "</button>";
-                                    echo "<button id='remove_custom_next_arrow' style='display: none;'>" . __(
+                                    echo "<button id='remove_custom_next_arrow' style='display: none;'>" . esc_html__(
                                             "Remove",
                                             'ml-slider-pro'
                                         ) . "</button>";
@@ -775,22 +759,22 @@ class MetaSliderThemeEditor
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Opacity", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Opacity", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='100' step='1' id='theme_arrow_opacity'
                                        name='theme[arrow_opacity]' value='<?php
-                                echo $this->get_setting('arrow_opacity'); ?>'/><span class='after'>%</span></td>
+                                echo esc_attr($this->get_setting('arrow_opacity')); ?>'/><span class='after'>%</span></td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Distance from edge", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Distance from edge", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='-50' max='50' id='theme_arrow_indent'
                                        name='theme[arrow_indent]' value='<?php
-                                echo $this->get_setting('arrow_indent'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span></td>
+                                echo esc_attr($this->get_setting('arrow_indent')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span></td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Always show", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Always show", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='checkbox' id='arrows_always_show' name='theme[arrows_always_show]' <?php
                                 if ($this->get_setting('arrows_always_show') == 'enabled') echo 'checked=checked' ?> />
@@ -800,12 +784,12 @@ class MetaSliderThemeEditor
                         <tr>
                             <td colspan='2' class='highlight'>
                                 <?php
-                                _e("Navigation", 'ml-slider-pro') ?>
+                                echo esc_html__("Navigation", 'ml-slider-pro') ?>
                             </td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Enable Custom Navigation", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Enable Custom Navigation", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='checkbox' id='enable_custom_navigation'
                                        name='theme[enable_custom_navigation]' <?php
@@ -816,147 +800,147 @@ class MetaSliderThemeEditor
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Position", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Position", 'ml-slider-pro') ?></td>
                             <td>
                                 <select id='nav_position' name='theme[nav_position]'>
                                     <option value='default' <?php
                                     if ($this->get_setting(
                                             'nav_position'
                                         ) == 'default') echo 'selected=selected' ?>><?php
-                                        _e("Default", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Default", 'ml-slider-pro') ?></option>
                                     <option value='topLeft' <?php
                                     if ($this->get_setting(
                                             'nav_position'
                                         ) == 'topLeft') echo 'selected=selected' ?>><?php
-                                        _e("Top Left", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Top Left", 'ml-slider-pro') ?></option>
                                     <option value='topCenter' <?php
                                     if ($this->get_setting(
                                             'nav_position'
                                         ) == 'topCenter') echo 'selected=selected' ?>><?php
-                                        _e("Top Center", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Top Center", 'ml-slider-pro') ?></option>
                                     <option value='topRight' <?php
                                     if ($this->get_setting(
                                             'nav_position'
                                         ) == 'topRight') echo 'selected=selected' ?>><?php
-                                        _e("Top Right", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Top Right", 'ml-slider-pro') ?></option>
                                     <option value='bottomLeft' <?php
                                     if ($this->get_setting(
                                             'nav_position'
                                         ) == 'bottomLeft') echo 'selected=selected' ?>><?php
-                                        _e("Bottom Left", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Bottom Left", 'ml-slider-pro') ?></option>
                                     <option value='bottomCenter' <?php
                                     if ($this->get_setting(
                                             'nav_position'
                                         ) == 'bottomCenter') echo 'selected=selected' ?>><?php
-                                        _e("Bottom Center", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Bottom Center", 'ml-slider-pro') ?></option>
                                     <option value='bottomRight' <?php
                                     if ($this->get_setting(
                                             'nav_position'
                                         ) == 'bottomRight') echo 'selected=selected' ?>><?php
-                                        _e("Bottom Right", 'ml-slider-pro') ?></option>
+                                        echo esc_html__("Bottom Right", 'ml-slider-pro') ?></option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Vertical Margin", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Vertical Margin", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='500' id='theme_nav_vertical_margin'
                                        name='theme[nav_vertical_margin]' value='<?php
-                                echo $this->get_setting('nav_vertical_margin'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span></td>
+                                echo esc_attr($this->get_setting('nav_vertical_margin')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span></td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Horizontal Margin", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Horizontal Margin", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='500' id='theme_nav_horizontal_margin'
                                        name='theme[nav_horizontal_margin]' value='<?php
-                                echo $this->get_setting('nav_horizontal_margin'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span></td>
+                                echo esc_attr($this->get_setting('nav_horizontal_margin')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span></td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Fill Color", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Fill Color", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='text' class='colorpicker' id='colourpicker-fill-start'
                                        name='theme[dot_fill_colour_start]' value='<?php
-                                echo $this->get_setting('dot_fill_colour_start'); ?>'/>
+                                echo esc_attr($this->get_setting('dot_fill_colour_start')); ?>'/>
                                 <input type='text' class='colorpicker' id='colourpicker-fill-end'
                                        name='theme[dot_fill_colour_end]' value='<?php
-                                echo $this->get_setting('dot_fill_colour_end'); ?>'/>
+                                echo esc_attr($this->get_setting('dot_fill_colour_end')); ?>'/>
                             </td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Fill Color (Active)", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Fill Color (Active)", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='text' class='colorpicker' id='colourpicker-active-fill-start'
                                        name='theme[active_dot_fill_colour_start]' value='<?php
-                                echo $this->get_setting('active_dot_fill_colour_start'); ?>'/>
+                                echo esc_attr($this->get_setting('active_dot_fill_colour_start')); ?>'/>
                                 <input type='text' class='colorpicker' id='colourpicker-active-fill-end'
                                        name='theme[active_dot_fill_colour_end]' value='<?php
-                                echo $this->get_setting('active_dot_fill_colour_end'); ?>'/>
+                                echo esc_attr($this->get_setting('active_dot_fill_colour_end')); ?>'/>
                             </td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Border Color", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Border Color", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='text' class='colorpicker' id='colourpicker-border-colour'
                                        name='theme[dot_border_colour]' value='<?php
-                                echo $this->get_setting('dot_border_colour'); ?>'/>
+                                echo esc_attr($this->get_setting('dot_border_colour')); ?>'/>
                             </td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Border Color (Active)", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Border Color (Active)", 'ml-slider-pro') ?></td>
                             <td>
                                 <input type='text' class='colorpicker' id='colourpicker-active-border-colour'
                                        name='theme[active_dot_border_colour]' value='<?php
-                                echo $this->get_setting('active_dot_border_colour'); ?>'/>
+                                echo esc_attr($this->get_setting('active_dot_border_colour')); ?>'/>
                             </td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Size", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Size", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='50' id='theme_dot_size'
                                        name='theme[dot_size]' value='<?php
-                                echo $this->get_setting('dot_size'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span></td>
+                                echo esc_attr($this->get_setting('dot_size')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span></td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Spacing", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Spacing", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='50' id='theme_dot_spacing'
                                        name='theme[dot_spacing]' value='<?php
-                                echo $this->get_setting('dot_spacing'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span></td>
+                                echo esc_attr($this->get_setting('dot_spacing')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span></td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Border Width", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Border Width", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='50' id='theme_dot_border_width'
                                        name='theme[dot_border_width]' value='<?php
-                                echo $this->get_setting('dot_border_width'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span></td>
+                                echo esc_attr($this->get_setting('dot_border_width')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span></td>
                         </tr>
                         <tr>
                             <td><?php
-                                _e("Border Radius", 'ml-slider-pro') ?></td>
+                                echo esc_html__("Border Radius", 'ml-slider-pro') ?></td>
                             <td><input class='number' type='number' min='0' max='50' id='theme_dot_border_radius'
                                        name='theme[dot_border_radius]' value='<?php
-                                echo $this->get_setting('dot_border_radius'); ?>'/><span class='after'><?php
-                                    _e("px", 'ml-slider-pro') ?></span></td>
+                                echo esc_attr($this->get_setting('dot_border_radius')); ?>'/><span class='after'><?php
+                                    echo esc_html__("px", 'ml-slider-pro') ?></span></td>
                         </tr>
                         </tbody>
                     </table>
                     <input type='submit' class='confirm button button-secondary' name='delete_theme' value='<?php
-                    _e("Delete Theme", "ml-slider-pro"); ?>'/>
+                    echo esc_attr__("Delete Theme", "ml-slider-pro"); ?>'/>
                 </div>
 
                 <div class='theme_editor_right'>
                     <div style='width: 90%'>
                         <?php
-                        echo do_shortcode("[metaslider id=" . $this->slider_id . "]") ?>
+                        echo do_shortcode("[metaslider id=" . (int)$this->slider_id . "]") ?>
                     </div>
                 </div>
             </form>
@@ -1861,13 +1845,13 @@ class MetaSliderThemeEditor
         $arrows = $this->get_arrows();
 
         foreach ($arrows as $id => $vals) {
-            $arrow_select_options .= "<option value='{$id}' data-height='{$vals['height']}' data-width='{$vals['width']}' data-offset='{$vals['offset']}'";
+            $arrow_select_options .= "<option value='" . esc_attr($id) . "' data-height='" . esc_attr($vals['height']) . "' data-width='" . esc_attr($vals['width']) . "' data-offset='" . esc_attr($vals['offset']) . "'";
 
             if ($id == $selected_arrow_type) {
                 $arrow_select_options .= " selected=selected";
             }
 
-            $arrow_select_options .= ">" . __("Type", 'ml-slider-pro') . " {$id}</option>";
+            $arrow_select_options .= ">" . esc_html__("Type", 'ml-slider-pro') . " " . esc_html($id) . "</option>";
         }
 
         return $arrow_select_options;
@@ -1897,16 +1881,16 @@ class MetaSliderThemeEditor
         $arrow_colour_options = "";
 
         foreach ($colours as $name => $colour) {
-            $arrow_colour_options .= "<option value='{$colour}' data-url='" . plugins_url(
+            $arrow_colour_options .= "<option value='" . esc_attr($colour) . "' data-url='" . esc_url(plugins_url(
                     'assets/arrows/',
                     __FILE__
-                ) . $colour . ".png'";
+                ) . $colour . ".png") . "'";
 
             if ($colour == $selected_arrow_colour) {
                 $arrow_colour_options .= " selected=selected";
             }
 
-            $arrow_colour_options .= ">" . $name . "</option>";
+            $arrow_colour_options .= ">" . esc_html($name) . "</option>";
         }
 
         return $arrow_colour_options;

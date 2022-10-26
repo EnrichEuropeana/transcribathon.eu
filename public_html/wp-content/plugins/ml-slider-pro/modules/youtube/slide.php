@@ -24,11 +24,46 @@ class MetaYouTubeSlide extends MetaSlide
             add_filter('media_upload_tabs', array($this, 'custom_media_upload_tab_name'), 999, 1);
             add_action("media_upload_{$this->identifier}", array($this, 'get_iframe'));
             add_action("wp_ajax_create_{$this->identifier}_slide", array($this, 'ajax_create_slide'));
+            add_action("wp_ajax_update_{$this->identifier}_thumbnail", array($this, 'ajax_update_thumbnail'));
             add_action('metaslider_register_admin_styles', array($this, 'register_admin_styles'), 10, 1);
+            add_action('metaslider_register_admin_components', array($this, 'add_components'));
         }
 
         add_action("metaslider_save_{$this->identifier}_slide", array($this, 'save_slide'), 5, 3);
+        add_action("metaslider_save_{$this->identifier}_slide", array($this, 'update_slide_thumb'), 4, 3);
         add_filter("metaslider_get_{$this->identifier}_slide", array($this, 'get_slide'), 10, 2);
+    }
+
+    /**
+     * Saving the new settings
+     *
+     * @param int $slide_id Slide ID
+     * @param int $slider_id Slider ID
+     * @param array $fields Fields saved
+     *
+     * @return void;
+     */
+    public function update_slide_thumb($slide_id, $slider_id, $fields)
+    {
+        $youtube_url = sanitize_url($fields['youtube_url']);
+
+        $current_url = get_post_meta($slide_id, 'ml-slider_youtube_url', true);
+        if ($youtube_url === $current_url) {
+            return;
+        }
+
+        preg_match(
+            '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
+            $youtube_url,
+            $match
+        );
+        $video_id = $match[1];
+
+        // Continuing, since the url has changed...
+        $media_id = $this->create_slide_thumb($video_id, 999);
+
+        // Set the image to the slide
+        set_post_thumbnail($slide_id, $media_id);
     }
 
     /**
@@ -53,6 +88,19 @@ class MetaYouTubeSlide extends MetaSlide
             false,
             METASLIDERPRO_VERSION
         );
+    }
+
+    public function add_components()
+    {
+        wp_enqueue_script(
+            "metasliderpro-{$this->identifier}-admin-script",
+            plugins_url('assets/admin.js', __FILE__),
+            array('jquery'),
+            METASLIDERPRO_VERSION
+        );
+        wp_localize_script("metasliderpro-{$this->identifier}-admin-script", 'metaslider_youtube', array(
+            'nonce' => wp_create_nonce('youtube-slide-nonce'),
+        ));
     }
 
     /**
@@ -93,9 +141,34 @@ class MetaYouTubeSlide extends MetaSlide
         $fields['menu_order'] = 9999;
         $fields['video_id'] = sanitize_text_field($_POST['video_id']);
         $this->create_slide($slider_id, $fields);
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_admin_slide();
         die(); // this is required to return a proper result
 
+    }
+
+    /**
+     * Update the slide's thumbnail
+     */
+    public function ajax_update_thumbnail()
+    {
+        if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_key($_POST['nonce']), 'youtube-slide-nonce')) {
+            wp_send_json_error(esc_html__('Invalid nonce', 'ml-slider-pro'), 403);
+        }
+
+        if (! isset($_POST['video_id']) || ! isset($_POST['slide_id'])) {
+            wp_send_json_error(esc_html__('Bad request', 'ml-slider-pro'), 400);
+        }
+
+        $slide_id = intval($_POST['slide_id']);
+        $video_id = sanitize_text_field($_POST['video_id']);
+
+        $media_id = $this->create_slide_thumb($video_id, 999);
+
+        wp_send_json_success([
+            'slide_id' => $slide_id,
+            'thumbnail' => wp_get_attachment_url($media_id),
+        ]);
     }
 
     /**
@@ -116,6 +189,43 @@ class MetaYouTubeSlide extends MetaSlide
         return $this->get_iframe();
     }
 
+    private function create_slide_thumb($video_id, $menu_order)
+    {
+        $post_info = array(
+            'post_title' => "MetaSlider - YouTube Thumbnail - {$video_id}",
+            'post_mime_type' => 'image/jpeg',
+            'post_status' => 'inherit',
+            'post_content' => '',
+            'guid' => "https://www.youtube.com/watch?v={$video_id}",
+            'menu_order' => $menu_order,
+            'post_name' => $video_id
+        );
+
+        $youtube_thumb = new WP_Http();
+        $youtube_thumb = $youtube_thumb->request("https://img.youtube.com/vi/{$video_id}/0.jpg");
+
+        if (
+            ! is_wp_error($youtube_thumb)
+            && isset($youtube_thumb['response']['code'])
+            && $youtube_thumb['response']['code'] == 200
+        ) {
+            $attachment = wp_upload_bits("youtube_{$video_id}.jpg", null, $youtube_thumb['body']);
+            $filename = $attachment['file'];
+            $media_id = wp_insert_attachment($post_info, $filename);
+
+            if (! function_exists('wp_generate_attachment_metadata')) {
+                include( ABSPATH . 'wp-admin/includes/image.php' );
+            }
+
+            $attach_data = wp_generate_attachment_metadata($media_id, $filename);
+            wp_update_attachment_metadata($media_id, $attach_data);
+
+            return $media_id;
+        }
+
+        return wp_insert_attachment($post_info);
+    }
+
     /**
      * Create a new YouTube slide
      *
@@ -127,47 +237,25 @@ class MetaYouTubeSlide extends MetaSlide
     {
         $this->set_slider($slider_id);
 
-        $postinfo = array(
-            'post_title' => "MetaSlider - YouTube Thumbnail - {$fields['video_id']}",
-            'post_mime_type' => 'image/jpeg',
-            'post_status' => 'inherit',
-            'post_content' => '',
-            'guid' => "https://www.youtube.com/watch?v={$fields['video_id']}",
-            'menu_order' => $fields['menu_order'],
-            'post_name' => $fields['video_id']
-        );
 
-        $youtube_thumb = new WP_Http();
-        $youtube_thumb = $youtube_thumb->request("https://img.youtube.com/vi/{$fields['video_id']}/0.jpg");
-
-        if (! is_wp_error(
-                $youtube_thumb
-            ) && isset($youtube_thumb['response']['code']) && $youtube_thumb['response']['code'] == 200) {
-            $attachment = wp_upload_bits("youtube_{$fields['video_id']}.jpg", null, $youtube_thumb['body']);
-            $filename = $attachment['file'];
-            $slide_id = wp_insert_attachment($postinfo, $filename);
-            $attach_data = wp_generate_attachment_metadata($slide_id, $filename);
-            wp_update_attachment_metadata($slide_id, $attach_data);
-        } else {
-            $slide_id = wp_insert_attachment($postinfo);
-        }
+        $media_id = $this->create_slide_thumb($fields['video_id'], $fields['menu_order']);
+        $slide_id = null;
 
         if (method_exists($this, 'insert_slide')) {
-            $slide_id = $this->insert_slide($slide_id, $this->identifier, $slider_id);
+            $slide_id = $this->insert_slide($media_id, $this->identifier, $slider_id);
             $this->add_or_update_or_delete_meta(
                 $slide_id,
                 'youtube_url',
                 "https://www.youtube.com/watch?v={$fields['video_id']}"
             );
         } else {
-            $this->add_or_update_or_delete_meta($slide_id, 'type', $this->identifier);
+            $this->add_or_update_or_delete_meta($media_id, 'type', $this->identifier);
         }
 
-        // store the type as a meta field against the attachment
-        $this->set_slide($slide_id);
+        $this->set_slide(! is_null($slide_id) ? $slide_id : $media_id);
         $this->tag_slide_to_slider();
 
-        return $slide_id;
+        return ! is_null($slide_id) ? $slide_id : $media_id;
     }
 
     /**
@@ -189,12 +277,14 @@ class MetaYouTubeSlide extends MetaSlide
         }
 
         ob_start();
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_delete_button_html();
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_update_image_button_html();
         do_action('metaslider-slide-edit-buttons', $this->identifier, $this->slide->ID);
         $edit_buttons = ob_get_clean();
 
-        $row = "<tr id='slide-{$this->slide->ID}' class='slide {$this->identifier} flex responsive'>";
+        $row = "<tr id='slide-" . esc_attr($this->slide->ID) . "' class='slide " . esc_attr($this->identifier) . " flex responsive'>";
         $row .= "    <td class='col-1'>";
         $row .= "        <div class='metaslider-ui-controls ui-sortable-handle'>";
         $row .= "           <h4 class='slide-details'><span class='youtube'>YouTube Slide</span></h4>";
@@ -208,12 +298,12 @@ class MetaYouTubeSlide extends MetaSlide
             $row .= $edit_buttons;
         }
         $row .= "        </div>";
-        $row .= "        <div class='metaslider-ui-inner'>";
+        $row .= "        <div class='metaslider-ui-inner metaslider-slide-thumb' data-slide-id='" . esc_attr($this->slide->ID) . "'>";
         $row .= "           <button class='update-image image-button' data-button-text='" . esc_attr__(
                 "Update slide image",
                 "ml-slider"
-            ) . "' title='" . esc_attr__("Update Slide Image", "ml-slider") . "' data-slide-id='{$this->slide->ID}'>";
-        $row .= "           <div class='thumb' style='background-image: url({$thumb})'></div>";
+            ) . "' title='" . esc_attr__("Update Slide Image", "ml-slider") . "' data-slide-id='" . esc_attr($this->slide->ID) . "'>";
+        $row .= "           <div class='thumb' style='background-image: url(" . esc_attr($thumb) . ")'></div>";
         $row .= "           </button>";
         $row .= "        </div>";
         $row .= "    </td>";
@@ -223,11 +313,11 @@ class MetaYouTubeSlide extends MetaSlide
         if (method_exists($this, 'get_admin_slide_tabs_html')) {
             $row .= $this->get_admin_slide_tabs_html();
         } else {
-            $row .= "<p>" . __("Please update to MetaSlider to version 3.2 or above.", "ml-slider-pro") . "</p>";
+            $row .= "<p>" . esc_html__("Please update to MetaSlider to version 3.2 or above.", "ml-slider-pro") . "</p>";
         }
 
-        $row .= "        <input type='hidden' name='attachment[{$this->slide->ID}][type]' value='youtube' />";
-        $row .= "        <input type='hidden' class='menu_order' name='attachment[{$this->slide->ID}][menu_order]' value='{$this->slide->menu_order}' />";
+        $row .= "        <input type='hidden' name='attachment[" . esc_attr($this->slide->ID) . "][type]' value='youtube' />";
+        $row .= "        <input type='hidden' class='menu_order' name='attachment[" . esc_attr($this->slide->ID) . "][menu_order]' value='" . esc_attr($this->slide->menu_order) . "' />";
         $row .= "       </div>";
         $row .= "    </td>";
         $row .= "</tr>";
@@ -250,42 +340,49 @@ class MetaYouTubeSlide extends MetaSlide
         $lazy_load = ! isset($this->slide_settings['lazyLoad']) || $this->slide_settings['lazyLoad'] == 'on' ? 'checked=checked' : '';
         $video_url = get_post_meta($slide_id, 'ml-slider_youtube_url', true);
 
-        $general_tab = "<input style='padding:7px 10px;max-width:500px' data-lpignore='true' class='ms-super-wide' name='attachment[{$slide_id}][youtube_url]' value='{$video_url}'>";
+        $general_tab = "<input style='padding:7px 10px;max-width:500px' data-lpignore='true' class='ms-super-wide metaslider-pro-youtube_url' name='attachment[" . esc_attr($slide_id) . "][youtube_url]' value='" . esc_attr($video_url) . "' data-slide-id='" . esc_attr($slide_id) . "'>";
+
+        $label_show_related = sprintf(
+            esc_html__('Show related videos (disabling this may instead show only recommend videos from the channel, %ssee here%s)', 'ml-slider-pro'),
+            '<a href="https://developers.google.com/youtube/player_parameters#playsinline" target="_blank">',
+            '</a>'
+        );
+
+        $label_mute = sprintf(
+            esc_html__('Mute video on start (enabling this may help with auto play, %ssee here%s)', 'ml-slider-pro'),
+            '<a href="https://developers.google.com/web/updates/2017/09/autoplay-policy-changes" target="_blank">',
+            '</a>'
+        );
+
         $general_tab .= "<ul class='ms-split-li'>
-							<li><label><input type='checkbox' name='attachment[{$slide_id}][settings][showRelated]' {$show_related_checked}/><span>" . __(
-                'Show related videos (disabling this may instead show only recommend videos from the channel, <a href="https://developers.google.com/youtube/player_parameters#playsinline" target="_blank">see here</a>)',
-                'ml-slider-pro'
-            ) . "</span></label></li>
-							<li><label><input type='checkbox' name='attachment[{$slide_id}][settings][mute]' {$mute_checked}/><span>" . __(
-                'Mute video on start (enabling this may help with auto play, <a href="https://developers.google.com/web/updates/2017/09/autoplay-policy-changes" target="_blank">see here</a>)',
-                'ml-slider-pro'
-            ) . "</span></label></li>
-							<li><label><input type='checkbox' name='attachment[{$slide_id}][settings][showControls]' {$showControls_checked}/><span>" . __(
+							<li><label><input type='checkbox' name='attachment[" . esc_attr($slide_id) . "][settings][showRelated]' {$show_related_checked}/><span>{$label_show_related}</span></label></li>
+							<li><label><input type='checkbox' name='attachment[" . esc_attr($slide_id) . "][settings][mute]' {$mute_checked}/><span>{$label_mute}</span></label></li>
+							<li><label><input type='checkbox' name='attachment[" . esc_attr($slide_id) . "][settings][showControls]' {$showControls_checked}/><span>" . esc_html__(
                 'Enable controls',
                 'ml-slider-pro'
             ) . "</span></label></li>
-							<li><label><input type='checkbox' name='attachment[{$slide_id}][settings][autoPlay]' {$auto_play_checked}/><span>" . __(
+							<li><label><input type='checkbox' name='attachment[" . esc_attr($slide_id) . "][settings][autoPlay]' {$auto_play_checked}/><span>" . esc_html__(
                 'Auto play video',
                 'ml-slider-pro'
             ) . "</span></label></li>
-							<li><label><input type='checkbox' name='attachment[{$slide_id}][settings][lazyLoad]' {$lazy_load}/><span>" . __(
+							<li><label><input type='checkbox' name='attachment[" . esc_attr($slide_id) . "][settings][lazyLoad]' {$lazy_load}/><span>" . esc_html__(
                 'Lazy load video',
                 'ml-slider-pro'
             ) . "</span></label></li>
                         </ul>";
 
         $theme_tab = "<div class='row'>
-                            <label>" . __("Theme", 'ml-slider-pro') . "</label>
-                            <select name='attachment[{$slide_id}][settings][theme]'>
-                                <option value='dark'>" . __('Dark', 'ml-slider-pro') . "</option>
-                                <option value='light' {$light_theme_selected}>" . __('Light', 'ml-slider-pro') . "</option>
+                            <label>" . esc_html__("Theme", 'ml-slider-pro') . "</label>
+                            <select name='attachment[" . esc_attr($slide_id) . "][settings][theme]'>
+                                <option value='dark'>" . esc_html__('Dark', 'ml-slider-pro') . "</option>
+                                <option value='light' {$light_theme_selected}>" . esc_html__('Light', 'ml-slider-pro') . "</option>
                             </select>
                         </div>
                         <div class='row'>
-                            <label>" . __("Color", 'ml-slider-pro') . "</label>
-                            <select name='attachment[{$slide_id}][settings][color]'>
-                                <option value='red'>" . __('Red', 'ml-slider-pro') . "</option>
-                                <option value='white' {$white_color_selected}>" . __('White', 'ml-slider-pro') . "</option>
+                            <label>" . esc_html__("Color", 'ml-slider-pro') . "</label>
+                            <select name='attachment[" . esc_attr($slide_id) . "][settings][color]'>
+                                <option value='red'>" . esc_html__('Red', 'ml-slider-pro') . "</option>
+                                <option value='white' {$white_color_selected}>" . esc_html__('White', 'ml-slider-pro') . "</option>
                             </select>
                         </div>";
 
@@ -788,7 +885,7 @@ class MetaYouTubeSlide extends MetaSlide
             <div class='media-frame-toolbar'>
                 <div class='media-toolbar'>
                     <div class='media-toolbar-primary'>
-                        <a href='#' class='button media-button button-primary button-large' disabled='disabled'>" . __(
+                        <a href='#' class='button media-button button-primary button-large' disabled='disabled'>" . esc_html__(
                 "Add to slideshow",
                 "ml-slider-pro"
             ) . "</a>

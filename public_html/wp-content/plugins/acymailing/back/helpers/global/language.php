@@ -68,3 +68,12 @@ function acym_displayLanguageRadio($languages, $name, $translation, $info, $defa
 
     return $return;
 }
+
+function acym_translationVsprintf($key, $messageData, $isKey = true)
+{
+    if ($isKey) {
+        return vsprintf(acym_translation($key), $messageData);
+    } else {
+        return vsprintf($key, $messageData);
+    }
+}

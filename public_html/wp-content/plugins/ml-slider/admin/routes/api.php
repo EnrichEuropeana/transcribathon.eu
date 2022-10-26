@@ -557,17 +557,49 @@ class MetaSlider_Api
 
     private function sanitize_files_array($fields)
     {
-        $fields['caption_source'] = sanitize_text_field($fields['caption_source']);
-        $fields['post_excerpt'] = wp_filter_post_kses($fields['post_excerpt']);
-        $fields['url'] = sanitize_url($fields['url']);
-        $fields['inherit_image_title'] = sanitize_text_field($fields['inherit_image_title']);
-        $fields['title'] = sanitize_text_field($fields['title']);
-        $fields['inherit_image_alt'] = sanitize_text_field($fields['inherit_image_alt']);
-        $fields['alt'] = sanitize_text_field($fields['alt']);
-        $fields['crop_position'] = sanitize_text_field($fields['crop_position']);
-        $fields['type'] = sanitize_text_field($fields['type']);
-        $fields['menu_order'] = sanitize_text_field($fields['menu_order']);
-        $fields['new_window'] = sanitize_text_field($fields['new_window']);
+        if (isset($fields['caption_source'])) {
+            $fields['caption_source'] = sanitize_text_field($fields['caption_source']);
+        }
+
+        if (isset($fields['post_excerpt'])) {
+            $fields['post_excerpt'] = wp_filter_post_kses($fields['post_excerpt']);
+        }
+
+        if (isset($fields['url'])) {
+            $fields['url'] = sanitize_url($fields['url']);
+        }
+
+        if (isset($fields['inherit_image_title'])) {
+            $fields['inherit_image_title'] = sanitize_text_field($fields['inherit_image_title']);
+        }
+
+        if (isset($fields['title'])) {
+            $fields['title'] = sanitize_text_field($fields['title']);
+        }
+
+        if (isset($fields['inherit_image_alt'])) {
+            $fields['inherit_image_alt'] = sanitize_text_field($fields['inherit_image_alt']);
+        }
+
+        if (isset($fields['alt'])) {
+            $fields['alt'] = sanitize_text_field($fields['alt']);
+        }
+
+        if (isset($fields['crop_position'])) {
+            $fields['crop_position'] = sanitize_text_field($fields['crop_position']);
+        }
+
+        if (isset($fields['type'])) {
+            $fields['type'] = sanitize_text_field($fields['type']);
+        }
+
+        if (isset($fields['menu_order'])) {
+            $fields['menu_order'] = sanitize_text_field($fields['menu_order']);
+        }
+
+        if (isset($fields['new_window'])) {
+            $fields['new_window'] = sanitize_text_field($fields['new_window']);
+        }
 
         return $fields;
     }

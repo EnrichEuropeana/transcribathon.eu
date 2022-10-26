@@ -9,17 +9,17 @@ $current_time = current_time('timestamp');
             class="schedule-slide mr-0"
             type="checkbox"
             id="schedule-select-<?php
-            echo $post->ID ?>"
+            echo esc_attr($post->ID) ?>"
             name="attachment[<?php
-            echo $post->ID ?>][schedule]"
+            echo esc_attr($post->ID) ?>][schedule]"
             value="on"
         <?php
         echo $is_scheduled ? 'checked="checked"' : ''; ?>
     >
     <label class="schedule-slide" for="schedule-select-<?php
-    echo $post->ID ?>">
+    echo esc_attr($post->ID) ?>">
         <?php
-        _e('Schedule this slide', 'ml-slider-pro'); ?>
+        echo esc_html__('Schedule this slide', 'ml-slider-pro'); ?>
     </label>
     <div class="relative bg-gray-lightest border border-gray-light border-l-8 rtl:border-r-8 rtl:border-l-0 rtl:pl-0 rtl:pr-4 flex flex-col hide-if-notchecked mt-3 pl-4 py-2">
         <div class="flex flex-nowrap -mx-2">
@@ -27,12 +27,12 @@ $current_time = current_time('timestamp');
                 <thead>
                 <tr>
                     <th colspan="3"><?php
-                        _e('Show slide:'); ?></th>
+                        echo esc_html__('Show slide:'); ?></th>
                     <th><?php
-                        _e('Hour'); ?></th>
+                        echo esc_html__('Hour'); ?></th>
                     <th></th>
                     <th><?php
-                        _e('Minute'); ?></th>
+                        echo esc_html__('Minute'); ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,7 +42,7 @@ $current_time = current_time('timestamp');
                     'from' => _x('From', 'As in "From January 7th to April 2nd..."', 'ml-slider-pro'),
                     'to' => _x('To', 'As in "From January 7th to April 2nd..."', 'ml-slider-pro')
                 );
-                foreach (array('from' => $schedule_start, 'to' => $schedule_end) as $id => $date) :
+                foreach (array('from' => $schedule_start, 'to' => $schedule_end) as $field_id => $date) :
 
                     // By default use the current time
                     $start_real = $date ? mysql2date('Y-m-d', $date, false) : gmdate('Y-m-d', $current_time);
@@ -55,39 +55,39 @@ $current_time = current_time('timestamp');
                     ?>
                     <tr>
                         <td class="text-right"><?php
-                            echo $texts[$id]; ?></td>
+                            echo esc_html($texts[$field_id]); ?></td>
                         <td>
                             <label class="mx-1 mb-0">
                                 <span class="screen-reader-text"><?php
-                                    _e('Date'); ?></span>
+                                    echo esc_html__('Date'); ?></span>
                                 <input
                                         data-lpignore="true"
                                         type="text"
                                         class="datepicker m-0 p-0 px-1 w-auto min-h-0 h-6"
                                         name="attachment[<?php
-                                        echo $post->ID; ?>][<?php
-                                        echo $id; ?>][date]"
+                                        echo esc_attr($post->ID); ?>][<?php
+                                        echo esc_attr($field_id); ?>][date]"
                                         value="<?php
-                                        echo $start_real; ?>"
+                                        echo esc_attr($start_real); ?>"
                                 >
                             </label>
                         </td>
                         <td><span class="mx-1"><?php
-                                _ex('at', 'As in "your slide will display Tuesday at 5pm"', 'ml-slider-pro'); ?></span>
+                                echo esc_html_x('at', 'As in "your slide will display Tuesday at 5pm"', 'ml-slider-pro'); ?></span>
                         </td>
                         <td>
                             <label class="m-0 ml-1">
                                 <span class="screen-reader-text text-center"><?php
-                                    _e('Hour'); ?></span>
+                                    echo esc_html__('Hour'); ?></span>
                                 <input
                                         data-lpignore="true"
                                         type="text"
                                         class="m-0 p-0 px-1 w-auto min-h-0 h-6"
                                         name="attachment[<?php
-                                        echo $post->ID; ?>][<?php
-                                        echo $id; ?>][hh]"
+                                        echo esc_attr($post->ID); ?>][<?php
+                                        echo esc_attr($field_id); ?>][hh]"
                                         value="<?php
-                                        echo $hh; ?>"
+                                        echo esc_attr($hh); ?>"
                                         size="2"
                                         maxlength="2"
                                         autocomplete="off"
@@ -98,16 +98,16 @@ $current_time = current_time('timestamp');
                         <td>
                             <label class="m-0 text-center">
                                 <span class="screen-reader-text"><?php
-                                    _e('Minute'); ?></span>
+                                    echo esc_html__('Minute'); ?></span>
                                 <input
                                         data-lpignore="true"
                                         type="text"
                                         class="m-0 p-0 px-1 w-auto min-h-0 h-6"
                                         name="attachment[<?php
-                                        echo $post->ID; ?>][<?php
-                                        echo $id; ?>][mn]"
+                                        echo esc_attr($post->ID); ?>][<?php
+                                        echo esc_attr($field_id); ?>][mn]"
                                         value="<?php
-                                        echo $mn; ?>"
+                                        echo esc_attr($mn); ?>"
                                         size="2"
                                         maxlength="2"
                                         autocomplete="off"
@@ -116,10 +116,10 @@ $current_time = current_time('timestamp');
                             <input
                                     type="hidden"
                                     name="attachment[<?php
-                                    echo $post->ID; ?>][<?php
-                                    echo $id; ?>][ss]"
+                                    echo esc_attr($post->ID); ?>][<?php
+                                    echo esc_attr($field_id); ?>][ss]"
                                     value="<?php
-                                    echo $ss; ?>"
+                                    echo esc_attr($ss); ?>"
                             >
                         </td>
                     </tr>
@@ -131,7 +131,7 @@ $current_time = current_time('timestamp');
                 <thead>
                 <tr>
                     <th><?php
-                        _e('Show on:', 'ml-slider-pro'); ?></th>
+                        echo esc_html__('Show on:', 'ml-slider-pro'); ?></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -145,12 +145,12 @@ $current_time = current_time('timestamp');
                                     type="checkbox"
                                     class="mx-auto"
                                     name="attachment[<?php
-                                    echo $post->ID; ?>][days][<?php
-                                    echo $day_id; ?>]"
+                                    echo esc_attr($post->ID); ?>][days][<?php
+                                    echo esc_attr($day_id); ?>]"
                                 <?php
                                 echo in_array($day_id, $days_scheduled) ? 'checked="checked"' : ''; ?>
                             ><label><?php
-                                echo $day_abbr ?></label>
+                                echo esc_html($day_abbr) ?></label>
                         </td>
                     <?php
                     endforeach; ?>
@@ -184,37 +184,41 @@ $current_time = current_time('timestamp');
                                 class="relative m-0 mr-2 rtl:ml-2 rtl:mr-0"
                                 style="top:-1px"
                                 id="all-day-<?php
-                                echo $post->ID; ?>"
+                                echo esc_attr($post->ID); ?>"
                                 value="on"
                                 name="attachment[<?php
-                                echo $post->ID; ?>][all_day]"
+                                echo esc_attr($post->ID); ?>][all_day]"
                             <?php
                             echo $all_day ? 'checked="checked"' : ''; ?>
                         ><label
                                 for="all-day-<?php
-                                echo $post->ID; ?>"
+                                echo esc_attr($post->ID); ?>"
                                 class="tipsy-tooltip-top m-0" title="<?php
-                        _e('If checked, the folowing time constraints will be ignored', 'ml-slider-pro'); ?>">
+                        echo esc_attr__('If checked, the following time constraints will be ignored', 'ml-slider-pro'); ?>">
                             <?php
-                            _e('All day (<span class="text-blue">?</span>)', 'ml-slider-pro'); ?>
+                            echo sprintf(
+                                esc_html__('All day (%s?%s)', 'ml-slider-pro'),
+                                '<span class="text-blue">',
+                                '</span>'
+                            ); ?>
                         </label>
                     </td>
                 </tr>
                 <tr>
                     <td class="text-right"><?php
-                        echo $texts['from']; ?></td>
+                        echo esc_html($texts['from']); ?></td>
                     <td>
                         <label class="m-0">
                             <span class="screen-reader-text"><?php
-                                _e('Hour'); ?></span>
+                                echo esc_html__('Hour'); ?></span>
                             <input
                                     data-lpignore="true"
                                     type="text"
                                     class="m-0 ml-1 p-0 px-1 w-auto min-h-0 h-6"
                                     name="attachment[<?php
-                                    echo $post->ID; ?>][constraint_from][hh]"
+                                    echo esc_attr($post->ID); ?>][constraint_from][hh]"
                                     value="<?php
-                                    echo $hh_from; ?>"
+                                    echo esc_attr($hh_from); ?>"
                                     size="2"
                                     maxlength="2"
                                     autocomplete="off"
@@ -225,15 +229,15 @@ $current_time = current_time('timestamp');
                     <td>
                         <label class="m-0">
                             <span class="screen-reader-text"><?php
-                                _e('Minute'); ?></span>
+                                echo esc_html__('Minute'); ?></span>
                             <input
                                     data-lpignore="true"
                                     type="text"
                                     class="m-0 p-0 px-1 w-auto min-h-0 h-6"
                                     name="attachment[<?php
-                                    echo $post->ID; ?>][constraint_from][mn]"
+                                    echo esc_attr($post->ID); ?>][constraint_from][mn]"
                                     value="<?php
-                                    echo $mn_from; ?>"
+                                    echo esc_attr($mn_from); ?>"
                                     size="2"
                                     maxlength="2"
                                     autocomplete="off"
@@ -241,19 +245,19 @@ $current_time = current_time('timestamp');
                         </label>
                     </td>
                     <td><span class="mx-1 px-1"><?php
-                            _ex('until', 'As in "1:00 until 2:30..."', 'ml-slider-pro') ?></span></td>
+                            echo esc_html_x('until', 'As in "1:00 until 2:30..."', 'ml-slider-pro') ?></span></td>
                     <td>
                         <label class="m-0">
                             <span class="screen-reader-text"><?php
-                                _e('Hour'); ?></span>
+                                echo esc_html__('Hour'); ?></span>
                             <input
                                     data-lpignore="true"
                                     type="text"
                                     class="m-0 p-0 px-1 w-auto min-h-0 h-6"
                                     name="attachment[<?php
-                                    echo $post->ID; ?>][constraint_to][hh]"
+                                    echo esc_attr($post->ID); ?>][constraint_to][hh]"
                                     value="<?php
-                                    echo $hh_until; ?>"
+                                    echo esc_attr($hh_until); ?>"
                                     size="2"
                                     maxlength="2"
                                     autocomplete="off"
@@ -264,15 +268,15 @@ $current_time = current_time('timestamp');
                     <td>
                         <label class="m-0">
                             <span class="screen-reader-text"><?php
-                                _e('Minute'); ?></span>
+                                echo esc_html__('Minute'); ?></span>
                             <input
                                     data-lpignore="true"
                                     type="text"
                                     class="m-0 p-0 px-1 w-auto min-h-0 h-6"
                                     name="attachment[<?php
-                                    echo $post->ID; ?>][constraint_to][mn]"
+                                    echo esc_attr($post->ID); ?>][constraint_to][mn]"
                                     value="<?php
-                                    echo $mn_until; ?>"
+                                    echo esc_attr($mn_until); ?>"
                                     size="2"
                                     maxlength="2"
                                     autocomplete="off"
@@ -284,26 +288,26 @@ $current_time = current_time('timestamp');
                                 type="checkbox"
                                 style="top:-1px"
                                 id="show-hide-<?php
-                                echo $post->ID; ?>"
+                                echo esc_attr($post->ID); ?>"
                                 value="on"
                                 name="attachment[<?php
-                                echo $post->ID; ?>][show_during_constraint]"
+                                echo esc_attr($post->ID); ?>][show_during_constraint]"
                             <?php
                             echo $constraint_time_show ? 'checked="checked"' : ''; ?>
                                 class="relative m-0 ml-2 rtl:ml-0 rtl:mr-2"
                         >
                         <label
                                 for="show-hide-<?php
-                                echo $post->ID; ?>"
+                                echo esc_attr($post->ID); ?>"
                                 class="relative tipsy-tooltip-top m-0"
                                 title="<?php
-                                _e(
+                                echo esc_attr__(
                                     'If unchecked, the slide will be hidden during this time constraint',
                                     'ml-slider-pro'
                                 ); ?>"
                         >
                             <?php
-                            _e('Show (<span class="text-blue">?</span>)', 'ml-slider-pro'); ?>
+                            echo sprintf(esc_html__('Show (%s?%s)', 'ml-slider-pro'), '<span class="text-blue">', '</span>'); ?>
                         </label>
                     </td>
                 </tr>
@@ -313,8 +317,8 @@ $current_time = current_time('timestamp');
 
         <span class="tipsy-tooltip-top ms-time-helper absolute bottom-0 m-1 right-0 rtl:left-0 rtl:right-auto text-gray tipsy-tooltip-top"
               data-time="<?php
-              echo gmdate('Y-m-d h:i:s', $current_time); ?>" data-now-text="<?php
-        _e('Current server time', 'ml-slider-pro') ?>"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+              echo esc_attr(gmdate('Y-m-d h:i:s', $current_time)); ?>" data-now-text="<?php
+        echo esc_attr__('Current server time', 'ml-slider-pro') ?>"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                             viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                             stroke-width="2" stroke-linecap="round"
                                                             stroke-linejoin="round" class="feather feather-clock"><circle

@@ -153,101 +153,6 @@
 .siteorigin-panels-builder .so-rows-container {
   padding: 20px 15px 0 15px;
 }
-.siteorigin-panels-builder .so-rows-container .so-row-color-1.so-row-color {
-  background-color: #CDE2EC;
-  border: 1px solid #a4cadd;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-color-1.so-row-color.so-row-color-selected:before {
-  background: #a8cdde;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-1 .so-cells .cell .cell-wrapper {
-  background-color: #CDE2EC;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-1 .so-cells .cell.cell-selected .cell-wrapper {
-  background-color: #99c4d8;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-1 .so-cells .cell .resize-handle {
-  background-color: #e7f1f6;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-1 .so-cells .cell .resize-handle:hover {
-  background-color: #dcebf2;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-color-2.so-row-color {
-  background-color: #F2C2BE;
-  border: 1px solid #e9968f;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-color-2.so-row-color.so-row-color-selected:before {
-  background: #ea9a93;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-2 .so-cells .cell .cell-wrapper {
-  background-color: #F2C2BE;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-2 .so-cells .cell.cell-selected .cell-wrapper {
-  background-color: #e68a83;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-2 .so-cells .cell .resize-handle {
-  background-color: #f8dedc;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-2 .so-cells .cell .resize-handle:hover {
-  background-color: #f5d2cf;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-color-3.so-row-color {
-  background-color: #D5CCDF;
-  border: 1px solid #b9aac9;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-color-3.so-row-color.so-row-color-selected:before {
-  background: #bbadcb;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-3 .so-cells .cell .cell-wrapper {
-  background-color: #D5CCDF;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-3 .so-cells .cell.cell-selected .cell-wrapper {
-  background-color: #b1a0c3;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-3 .so-cells .cell .resize-handle {
-  background-color: #e7e2ed;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-3 .so-cells .cell .resize-handle:hover {
-  background-color: #dfd9e7;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-color-4.so-row-color {
-  background-color: #CAE7CD;
-  border: 1px solid #a3d6a9;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-color-4.so-row-color.so-row-color-selected:before {
-  background: #a7d7ac;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-4 .so-cells .cell .cell-wrapper {
-  background-color: #CAE7CD;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-4 .so-cells .cell.cell-selected .cell-wrapper {
-  background-color: #99d19f;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-4 .so-cells .cell .resize-handle {
-  background-color: #e3f2e4;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-4 .so-cells .cell .resize-handle:hover {
-  background-color: #d8edda;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-color-5.so-row-color {
-  background-color: #E2DCB1;
-  border: 1px solid #d3ca88;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-color-5.so-row-color.so-row-color-selected:before {
-  background: #d4cb8c;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-5 .so-cells .cell .cell-wrapper {
-  background-color: #E2DCB1;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-5 .so-cells .cell.cell-selected .cell-wrapper {
-  background-color: #cfc57d;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-5 .so-cells .cell .resize-handle {
-  background-color: #ece8cb;
-}
-.siteorigin-panels-builder .so-rows-container .so-row-container.so-row-color-5 .so-cells .cell .resize-handle:hover {
-  background-color: #e8e3c0;
-}
 .siteorigin-panels-builder .so-rows-container h3.so-row-label {
   display: inline-block;
   font-size: 1em;
@@ -318,6 +223,7 @@
   background: #a00;
 }
 .siteorigin-panels-builder .so-rows-container .so-row-toolbar .so-dropdown-wrapper .so-dropdown-links-wrapper ul li.so-row-colors-container {
+  clear: both;
   display: flex;
   justify-content: space-around;
   padding: 5px;

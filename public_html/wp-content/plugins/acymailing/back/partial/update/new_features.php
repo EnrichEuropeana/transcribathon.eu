@@ -10,14 +10,14 @@
                 <?php
                 if (!acym_level(ACYM_ESSENTIAL)) {
                     ?>
-					<a href="<?php echo ACYM_ACYMAILLING_WEBSITE.'pricing/'; ?>" class="cell shrink button">Purchase a license!</a>
+					<a href="<?php echo ACYM_ACYMAILING_WEBSITE.'pricing/'; ?>" class="cell shrink button">Purchase a license!</a>
                     <?php
                 }
                 ?>
 			</div>
 		</div>
 		<div class="cell grid-x align-center margin-top-3">
-			<a href="<?php echo ACYM_ACYMAILLING_WEBSITE.'change-log/'; ?>"
+			<a href="<?php echo ACYM_ACYMAILING_WEBSITE.'change-log/'; ?>"
 			   class="margin-right-1 cell shrink button-secondary button margin-left-1"
 			   target="_blank">
                 <?php echo acym_translation('ACYM_SEE_FULL_CHANGELOG'); ?>
@@ -108,7 +108,7 @@
 			</div>
 		</div>
 		<div class="cell grid-x align-center margin-top-1 margin-bottom-2">
-			<a href="<?php echo ACYM_ACYMAILLING_WEBSITE.'change-log/'; ?>"
+			<a href="<?php echo ACYM_ACYMAILING_WEBSITE.'change-log/'; ?>"
 			   class="margin-right-1 cell shrink button-secondary button margin-left-1"
 			   target="_blank"><?php echo acym_translation('ACYM_SEE_FULL_CHANGELOG'); ?></a>
 			<button class="cell shrink button acy_button_submit" type="button" data-task="listing"><?php echo acym_translation('ACYM_SKIP'); ?></button>

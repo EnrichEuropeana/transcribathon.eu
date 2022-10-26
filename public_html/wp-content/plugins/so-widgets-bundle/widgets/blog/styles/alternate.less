@@ -53,18 +53,17 @@
 	.sow-blog-posts article {
 		background: @post_background;
 		border: 1px solid @post_border_color;
-	}
-
-	article {
-		background: @post_background;
-		border: 1px solid @post_border_color;
 		margin-left: 0;
 		margin-right: 0;
 		margin-top: 0;
 		width: 100%;
 
-		.sow-entry-thumbnail {
-			width: 100%;
+		@media (max-width: @responsive_breakpoint) {
+			.sow-entry-thumbnail,
+			.sow-entry-thumbnail .wp-post-image {
+				height: auto;
+				width: 100%;
+			}
 		}
 
 		// Alternating featured image alignment.

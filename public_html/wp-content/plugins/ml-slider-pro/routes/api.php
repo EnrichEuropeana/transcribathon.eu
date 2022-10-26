@@ -72,7 +72,7 @@ class MetaSliderPro_Api
      */
     public function deny_access()
     {
-        return wp_send_json_error(array(
+        wp_send_json_error(array(
             'message' => __('You do not have access to this resource.', 'ml-slider')
         ), 401);
     }

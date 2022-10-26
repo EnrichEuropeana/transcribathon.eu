@@ -2,7 +2,7 @@
 Contributors: matchalabs, DavidAnderson, dnutbourne, kbat82, andergmartins, htmgarcia
 Tags: slideshow, slider, image slider, carousel, gallery, flexslider, wordpress slider, nivoslider, rotating banner, responsive slideshow, seo slideshow, unsplash
 Requires at least: 3.5
-Stable tag: 3.27.12
+Stable tag: 3.27.13
 Requires PHP: 5.4
 Tested up to: 6.0
 License: GPLv2 or later
@@ -323,6 +323,14 @@ See https://www.metaslider.com/documentation/image-cropping/
 
 The format is based on [Keep a Changelog recommendations](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+= [3.27.13] - 22 Sep, 2022 =
+
+* FIXED: Fix Unsplash library, #248;
+* FIXED: Fix PHP warnings about undefined array keys: "post_excerpt", "new_window", #246;
+* FIXED: Fix error on PHP 8: Fatal error: uncaught TypeError: floor(): Argument 1 must be of type int|float, #247;
+* FIXED: Advanced settings processing, fixing the field Open in lightbox added by the lightbox plugin, #251;
+* CHANGED: Updated IT and FR translations (Thanks to @wocmultimedia), #245;
 
 = [3.27.12] - 08 Sep, 2022 =
 

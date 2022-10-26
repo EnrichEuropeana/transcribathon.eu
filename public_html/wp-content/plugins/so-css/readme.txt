@@ -2,8 +2,8 @@
 Tags: css, visual css, css editor, design, customize
 Requires at least: 3.9
 Tested up to: 6.0
-Stable tag: 1.5.3
-Build time: 2022-05-25T19:48:01+02:00
+Stable tag: 1.5.5
+Build time: 2022-09-30T16:02:18+02:00
 License: GPLv2 or later
 Contributors: gpriday, alexgso
 Donate link: https://siteorigin.com/downloads/premium/
@@ -70,6 +70,12 @@ Free support is available on the [SiteOrigin support forums](https://siteorigin.
 SiteOrigin Premium includes access to our professional email support service, perfect for those times when you need fast and effective technical support. We're standing by to assist you in any way we can.
 
 == Changelog ==
+
+= 1.5.5 - 30 September 2022 =
+* Added a check to ensure WP Filesystem is setup. 
+
+= 1.5.4 - 28 September 2022 =
+* Developer: Introduced definable Custom CSS file name and location using `siteorigin_custom_css_file` and `siteorigin_css_enqueue_css`.
 
 = 1.5.3 - 25 May 2022 =
 * Updated WordPress `Tested up to` tag.

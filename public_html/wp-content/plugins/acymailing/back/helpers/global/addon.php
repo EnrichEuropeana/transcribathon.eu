@@ -20,7 +20,10 @@ function acym_trigger($method, $args = [], $plugin = null, $callbackOnePlugin = 
 
     $result = [];
     $listAddons = $acymPlugins;
-    if ($method == 'onAcymAddSettings') $listAddons = $acymAddonsForSettings;
+    if ($method == 'onAcymAddSettings') {
+        $listAddons = $acymAddonsForSettings;
+    }
+
     foreach ($listAddons as $class => $onePlugin) {
         if (is_callable($callbackOnePlugin)) $callbackOnePlugin($onePlugin);
         if (!method_exists($onePlugin, $method)) continue;

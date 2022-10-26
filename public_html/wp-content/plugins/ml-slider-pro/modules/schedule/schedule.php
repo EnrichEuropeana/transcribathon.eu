@@ -86,6 +86,7 @@ class MetaSliderPro_Schedule_Slides
                 // Redirect if on the MetaSlider page
                 if (isset($_REQUEST['page']) && 'metaslider' === $_REQUEST['page']) {
                     wp_safe_redirect(admin_url("admin.php?page=metaslider"));
+                    exit;
                 }
             }
         }
@@ -195,6 +196,7 @@ class MetaSliderPro_Schedule_Slides
 
         // Check if it's available today. 0 = Sunday, etc ('w' gets a 1-6 representation of the day)
         $visible_days = get_post_meta($slide_id, '_meta_slider_slide_scheduled_days', true);
+        // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
         if (! is_array($visible_days) || ! in_array(date('w', $now), $visible_days)) {
             return array();
         }
@@ -283,35 +285,55 @@ class MetaSliderPro_Schedule_Slides
      */
     private function option_is_enabled($value)
     {
-        return $value === 'yes' || $value === 'no' || $value === true || $value == 1;
+        return $value === 'yes' || $value === 'on' || $value === true || $value == 1;
     }
 
     public function sanitize_fields_array($fields)
     {
-        $fields['hide_slide'] = sanitize_text_field($fields['hide_slide']);
-        $fields['schedule'] = sanitize_text_field($fields['schedule']);
-
-        foreach ($fields['from'] as &$item) {
-            $item = sanitize_text_field($item);
+        if (isset($fields['hide_slide'])) {
+            $fields['hide_slide'] = sanitize_text_field($fields['hide_slide']);
         }
 
-        foreach ($fields['to'] as &$item) {
-            $item = sanitize_text_field($item);
+        if (isset($fields['schedule'])) {
+            $fields['schedule'] = sanitize_text_field($fields['schedule']);
         }
 
-        foreach ($fields['days'] as &$item) {
-            $item = sanitize_text_field($item);
+        if (isset($fields['from'])) {
+            foreach ($fields['from'] as &$item) {
+                $item = sanitize_text_field($item);
+            }
         }
 
-        $fields['all_day'] = sanitize_text_field($fields['all_day']);
-        $fields['show_during_constraint'] = sanitize_text_field($fields['show_during_constraint']);
-
-        foreach ($fields['constraint_from'] as &$item) {
-            $item = sanitize_text_field($item);
+        if (isset($fields['to'])) {
+            foreach ($fields['to'] as &$item) {
+                $item = sanitize_text_field($item);
+            }
         }
 
-        foreach ($fields['constraint_to'] as &$item) {
-            $item = sanitize_text_field($item);
+        if (isset($fields['days'])) {
+            foreach ($fields['days'] as &$item) {
+                $item = sanitize_text_field($item);
+            }
+        }
+
+        if (isset($fields['all_day'])) {
+            $fields['all_day'] = sanitize_text_field($fields['all_day']);
+        }
+
+        if (isset($fields['show_during_constraint'])) {
+            $fields['show_during_constraint'] = sanitize_text_field($fields['show_during_constraint']);
+        }
+
+        if (isset($fields['constraint_from'])) {
+            foreach ($fields['constraint_from'] as &$item) {
+                $item = sanitize_text_field($item);
+            }
+        }
+
+        if (isset($fields['constraint_to'])) {
+            foreach ($fields['constraint_to'] as &$item) {
+                $item = sanitize_text_field($item);
+            }
         }
 
         return $fields;
@@ -389,7 +411,7 @@ class MetaSliderPro_Schedule_Slides
         <button type="button" title="<?php
         _e('Hide slide', 'ml-slider-pro'); ?>" class="hide-slide toolbar-button alignright tipsy-tooltip-top">
             <input class="hide-slide" type="checkbox" name="attachment[<?php
-            echo $slide_id; ?>][hide_slide]" <?php
+            echo esc_attr($slide_id); ?>][hide_slide]" <?php
             echo($hide_slide ? 'checked="checked"' : ''); ?>>
             <svg class="feather feather-eye" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

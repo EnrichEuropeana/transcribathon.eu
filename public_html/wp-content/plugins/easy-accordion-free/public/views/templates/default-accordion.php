@@ -68,11 +68,12 @@ foreach ( $content_sources as $key => $content_source ) {
 	}
 	echo '<div class="ea-card ' . esc_attr( $expand_class . ' ' . $accordion_item_class ) . '">';
 		echo sprintf(
-			'<h3 class="ea-header"><a class="collapsed" data-sptoggle="spcollapse" %1$s href="javascript:void(0)" aria-expanded="%4$s">%2$s %3$s</a></h3>',
+			'<h3 class="ea-header"><a class="collapsed" data-sptoggle="spcollapse" %1$s href="javascript:void(0)" %5$s aria-expanded="%4$s">%2$s %3$s</a></h3>',
 			esc_attr( $data_sptarget ),
 			wp_kses_post( $eap_icon_markup ),
 			wp_kses_post( $content_title ),
-			esc_attr( $aria_expanded )
+			esc_attr( $aria_expanded ),
+			esc_attr( $nofollow_link_text )
 		);
 	echo '<div class="sp-collapse spcollapse ' . esc_attr( $a_open_first ) . '" id="collapse' . esc_attr( $post_id . $key ) . '" ' . esc_attr( $data_parent_id ) . '>';
 	echo $content_description_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

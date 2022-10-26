@@ -24,10 +24,13 @@ class MetaVimeoSlide extends MetaSlide
             add_filter("media_upload_tabs", array($this, 'custom_media_upload_tab_name'), 999, 1);
             add_action("media_upload_{$this->identifier}", array($this, 'get_iframe'));
             add_action("wp_ajax_create_{$this->identifier}_slide", array($this, 'ajax_create_slide'));
+            add_action("wp_ajax_update_{$this->identifier}_thumbnail", array($this, 'ajax_update_thumbnail'));
             add_action("metaslider_register_admin_styles", array($this, 'register_admin_styles'), 10, 1);
+            add_action('metaslider_register_admin_components', array($this, 'add_components'));
         }
 
         add_action("metaslider_save_{$this->identifier}_slide", array($this, 'save_slide'), 5, 3);
+        add_action("metaslider_save_{$this->identifier}_slide", array($this, 'update_slide_thumb'), 4, 3);
         add_filter("metaslider_get_{$this->identifier}_slide", array($this, 'get_slide'), 10, 2);
     }
 
@@ -42,6 +45,51 @@ class MetaVimeoSlide extends MetaSlide
             false,
             METASLIDERPRO_VERSION
         );
+    }
+
+    public function add_components()
+    {
+        wp_enqueue_script(
+            "metasliderpro-{$this->identifier}-admin-script",
+            plugins_url('assets/admin.js', __FILE__),
+            array('jquery'),
+            METASLIDERPRO_VERSION
+        );
+        wp_localize_script("metasliderpro-{$this->identifier}-admin-script", 'metaslider_vimeo', array(
+            'nonce' => wp_create_nonce('vimeo-slide-nonce'),
+        ));
+    }
+
+    /**
+     * Saving the new settings
+     *
+     * @param int $slide_id Slide ID
+     * @param int $slider_id Slider ID
+     * @param array $fields Fields saved
+     *
+     * @return void;
+     */
+    public function update_slide_thumb($slide_id, $slider_id, $fields)
+    {
+        $vimeo_url = sanitize_url($fields['vimeo_url']);
+
+        $current_url = get_post_meta($slide_id, 'ml-slider_vimeo_url', true);
+        if ($vimeo_url === $current_url) {
+            return;
+        }
+
+        preg_match(
+            '%^https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\#?)(?:[?]?.*)$%im',
+            $vimeo_url,
+            $match
+        );
+        $video_id = $match[3];
+
+        // Continuing, since the url has changed...
+        $media_id = $this->create_slide_thumb($video_id, 999);
+
+        // Set the image to the slide
+        set_post_thumbnail($slide_id, $media_id);
     }
 
     /**
@@ -93,8 +141,33 @@ class MetaVimeoSlide extends MetaSlide
         $fields['menu_order'] = 9999;
         $fields['video_id'] = sanitize_text_field($_POST['video_id']);
         $this->create_slide($slider_id, $fields);
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_admin_slide();
         die(); // this is required to return a proper result
+    }
+
+    /**
+     * Update the slide's thumbnail
+     */
+    public function ajax_update_thumbnail()
+    {
+        if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_key($_POST['nonce']), 'vimeo-slide-nonce')) {
+            wp_send_json_error(esc_html__('Invalid nonce', 'ml-slider-pro'), 403);
+        }
+
+        if (! isset($_POST['video_id']) || ! isset($_POST['slide_id'])) {
+            wp_send_json_error(esc_html__('Bad request', 'ml-slider-pro'), 400);
+        }
+
+        $slide_id = intval($_POST['slide_id']);
+        $video_id = sanitize_text_field($_POST['video_id']);
+
+        $media_id = $this->create_slide_thumb($video_id, 999);
+
+        wp_send_json_success([
+            'slide_id' => $slide_id,
+            'thumbnail' => wp_get_attachment_url($media_id),
+        ]);
     }
 
     /**
@@ -127,6 +200,49 @@ class MetaVimeoSlide extends MetaSlide
         return false;
     }
 
+    private function create_slide_thumb($video_id, $menu_order)
+    {
+        $post_info = array(
+            'post_title' => "MetaSlider - Vimeo Thumbnail - {$video_id}",
+            'post_mime_type' => 'image/jpeg',
+            'post_status' => 'inherit',
+            'post_content' => '',
+            'guid' => "https://www.vimeo.com/{$video_id}",
+            'menu_order' => $menu_order,
+            'post_name' => $video_id
+        );
+
+        $thumb_url = $this->get_thumb_url($video_id);
+
+        $vimeo_thumb = false;
+
+        if ($thumb_url) {
+            $vimeo_thumb = new WP_Http();
+            $vimeo_thumb = $vimeo_thumb->request($thumb_url);
+        }
+
+        if (
+            ! is_wp_error($vimeo_thumb)
+            && isset($vimeo_thumb['response']['code'])
+            && $vimeo_thumb['response']['code'] == 200
+        ) {
+            $attachment = wp_upload_bits("vimeo_{$video_id}.jpg", null, $vimeo_thumb['body']);
+            $filename = $attachment['file'];
+            $media_id = wp_insert_attachment($post_info, $filename);
+
+            if (! function_exists('wp_generate_attachment_metadata')) {
+                include( ABSPATH . 'wp-admin/includes/image.php' );
+            }
+
+            $attach_data = wp_generate_attachment_metadata($media_id, $filename);
+            wp_update_attachment_metadata($media_id, $attach_data);
+
+            return $media_id;
+        }
+
+        return wp_insert_attachment($post_info);
+    }
+
     /**
      * Create a new vimeo slide
      *
@@ -138,45 +254,24 @@ class MetaVimeoSlide extends MetaSlide
     {
         $this->set_slider($slider_id);
 
-        $postinfo = array(
-            'post_title' => "MetaSlider - Vimeo Thumbnail - {$fields['video_id']}",
-            'post_mime_type' => 'image/jpeg',
-            'post_status' => 'inherit',
-            'post_content' => '',
-            'guid' => "http://www.vimeo.com/{$fields['video_id']}",
-            'menu_order' => $fields['menu_order'],
-            'post_name' => $fields['video_id']
-        );
-
-        $thumb_url = $this->get_thumb_url($fields['video_id']);
-        $vimeo_thumb = false;
-
-        if ($thumb_url) {
-            $vimeo_thumb = new WP_Http();
-            $vimeo_thumb = $vimeo_thumb->request($thumb_url);
-        }
-
-        if (! $vimeo_thumb || is_wp_error($vimeo_thumb) || $vimeo_thumb['response']['code'] != 200) {
-            $slide_id = wp_insert_attachment($postinfo);
-        } else {
-            $attachment = wp_upload_bits("vimeo_{$fields['video_id']}.jpg", null, $vimeo_thumb['body']);
-            $filename = $attachment['file'];
-            $slide_id = wp_insert_attachment($postinfo, $filename);
-            $attach_data = wp_generate_attachment_metadata($slide_id, $filename);
-            wp_update_attachment_metadata($slide_id, $attach_data);
-        }
+        $media_id = $this->create_slide_thumb($fields['video_id'], $fields['menu_order']);
+        $slide_id = null;
 
         if (method_exists($this, 'insert_slide')) {
-            $slide_id = $this->insert_slide($slide_id, $this->identifier, $slider_id);
-            $this->add_or_update_or_delete_meta($slide_id, 'vimeo_url', "http://www.vimeo.com/{$fields['video_id']}");
+            $slide_id = $this->insert_slide($media_id, $this->identifier, $slider_id);
+            $this->add_or_update_or_delete_meta(
+                $slide_id,
+                'vimeo_url',
+                "https://www.vimeo.com/{$fields['video_id']}"
+            );
         } else {
-            $this->add_or_update_or_delete_meta($slide_id, 'type', $this->identifier);
+            $this->add_or_update_or_delete_meta($media_id, 'type', $this->identifier);
         }
-        // store the type as a meta field against the attachment
-        $this->set_slide($slide_id);
+
+        $this->set_slide(! is_null($slide_id) ? $slide_id : $media_id);
         $this->tag_slide_to_slider();
 
-        return $slide_id;
+        return ! is_null($slide_id) ? $slide_id : $media_id;
     }
 
     /**
@@ -198,12 +293,14 @@ class MetaVimeoSlide extends MetaSlide
         }
 
         ob_start();
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_delete_button_html();
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $this->get_update_image_button_html();
         do_action('metaslider-slide-edit-buttons', $this->identifier, $this->slide->ID);
         $edit_buttons = ob_get_clean();
 
-        $row = "<tr id='slide-{$this->slide->ID}' class='slide {$this->identifier} flex responsive'>";
+        $row = "<tr id='slide-" . esc_attr($this->slide->ID) . "' class='slide " . esc_attr($this->identifier) . " flex responsive'>";
         $row .= "    <td class='col-1'>";
         $row .= "       <div class='metaslider-ui-controls ui-sortable-handle'>";
         $row .= "           <h4 class='slide-details'><span class='vimeo'>Vimeo Slide</span></h4>";
@@ -217,12 +314,12 @@ class MetaVimeoSlide extends MetaSlide
             $row .= $edit_buttons;
         }
         $row .= "       </div>";
-        $row .= "       <div class='metaslider-ui-inner'>";
+        $row .= "       <div class='metaslider-ui-inner metaslider-slide-thumb' data-slide-id='" . esc_attr($this->slide->ID) . "'>";
         $row .= "           <button class='update-image image-button' data-button-text='" . esc_attr__(
                 "Update slide image",
                 "ml-slider"
-            ) . "' title='" . esc_attr__("Update slide image", "ml-slider") . "' data-slide-id='{$this->slide->ID}'>";
-        $row .= "           <div class='thumb' style='background-image: url({$thumb})'></div>";
+            ) . "' title='" . esc_attr__("Update slide image", "ml-slider") . "' data-slide-id='" . esc_attr($this->slide->ID) . "'>";
+        $row .= "           <div class='thumb' style='background-image: url(" . esc_url($thumb) . ")'></div>";
         $row .= "           </button>";
         $row .= "       </div>";
         $row .= "    </td>";
@@ -232,11 +329,11 @@ class MetaVimeoSlide extends MetaSlide
         if (method_exists($this, 'get_admin_slide_tabs_html')) {
             $row .= $this->get_admin_slide_tabs_html();
         } else {
-            $row .= "<p>" . __("Please update to MetaSlider to version 3.2 or above.", "ml-slider-pro") . "</p>";
+            $row .= "<p>" . esc_html__("Please update to MetaSlider to version 3.2 or above.", "ml-slider-pro") . "</p>";
         }
 
-        $row .= "        <input type='hidden' name='attachment[{$this->slide->ID}][type]' value='vimeo' />";
-        $row .= "        <input type='hidden' class='menu_order' name='attachment[{$this->slide->ID}][menu_order]' value='{$this->slide->menu_order}' />";
+        $row .= "        <input type='hidden' name='attachment[" . esc_attr($this->slide->ID) . "][type]' value='vimeo' />";
+        $row .= "        <input type='hidden' class='menu_order' name='attachment[" . esc_attr($this->slide->ID) . "][menu_order]' value='" . esc_attr($this->slide->menu_order) . "' />";
         $row .= "       </div>";
         $row .= "    </td>";
         $row .= "</tr>";
@@ -277,7 +374,7 @@ class MetaVimeoSlide extends MetaSlide
         ) ? 'checked=checked' : '';
         $video_url = get_post_meta($slide_id, 'ml-slider_vimeo_url', true);
 
-        $general_tab = "<input style='padding:7px 10px;max-width:500px' class='ms-super-wide' name='attachment[{$slide_id}][vimeo_url]' value='{$video_url}'>";
+        $general_tab = "<input style='padding:7px 10px;max-width:500px' class='ms-super-wide metaslider-pro-vimeo_url' name='attachment[{$slide_id}][vimeo_url]' value='{$video_url}' data-slide-id='{$slide_id}'>";
         $general_tab .= "<ul class='ms-split-li'>
                             <li><label><input type='checkbox' name='attachment[{$slide_id}][settings][title]' {$title_checked}/><span>" . __(
                 'Show the title on the video',
@@ -718,7 +815,7 @@ class MetaVimeoSlide extends MetaSlide
             <div class='media-frame-toolbar'>
                 <div class='media-toolbar'>
                     <div class='media-toolbar-primary'>
-                        <a href='#' class='button media-button button-primary button-large' disabled='disabled'>" . __(
+                        <a href='#' class='button media-button button-primary button-large' disabled='disabled'>" . esc_html__(
                 "Add to slideshow",
                 "ml-slider-pro"
             ) . "</a>

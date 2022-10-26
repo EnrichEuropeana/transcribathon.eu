@@ -99,6 +99,7 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/documents-admin-pa
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/datasets-admin-page.php'); // Adds documents admin page
 
 // Custom shortcodes
+require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_import.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/story_page.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page.php');
 /* require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test_ad.php'); */
@@ -128,7 +129,7 @@ function embedd_custom_javascripts_and_css() {
      if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
         /* jQuery */
         /* Don't enqueue following scripts if it's HTR editor */
-        if(!is_page('item_page_htr')){
+        if(!is_page('item_page_htr' && !is_page('import-htr-transcription'))){
             wp_enqueue_script( 'jquery' );
 
             /* custom JS and CSS*/
@@ -180,7 +181,7 @@ function embedd_custom_javascripts_and_css() {
 
 
         /* Don't enqueue following scripts if it's HTR editor page */
-        if(!is_page('item_page_htr')){
+        if(!is_page('item_page_htr') && !is_page('import-htr-transcription')){
         /* jQuery UI CSS*/
         wp_enqueue_style( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/css/jquery-ui.min.css');
         /* jQuery UI JS*/

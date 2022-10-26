@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: so-css.php:3, so-css.php:457
+#: so-css.php:3, so-css.php:540
 msgid "SiteOrigin CSS"
 msgstr ""
 
@@ -36,87 +36,87 @@ msgstr ""
 msgid "https://siteorigin.com/css/"
 msgstr ""
 
-#: so-css.php:264, so-css.php:264, so-css.php:303
+#: so-css.php:343, so-css.php:343, so-css.php:386
 msgid "Custom CSS"
 msgstr ""
 
-#: so-css.php:305
+#: so-css.php:388
 msgid "SiteOrigin CSS adds any custom CSS you enter here into your site's header. "
 msgstr ""
 
-#: so-css.php:306
+#: so-css.php:389
 msgid "These changes will persist across updates so it's best to make all your changes here. "
 msgstr ""
 
-#: so-css.php:371
+#: so-css.php:454
 msgid "Unchanged"
 msgstr ""
 
-#: so-css.php:372
+#: so-css.php:455
 msgid "Select"
 msgstr ""
 
-#: so-css.php:373
+#: so-css.php:456
 msgid "Select Image"
 msgstr ""
 
-#: so-css.php:374
+#: so-css.php:457
 msgid "Are you sure you want to leave without saving?"
 msgstr ""
 
-#: so-css.php:443
+#: so-css.php:526
 msgid "CSS Editor"
 msgstr ""
 
-#: so-css.php:444
+#: so-css.php:527
 msgid "Support"
 msgstr ""
 
-#: so-css.php:446
+#: so-css.php:529
 msgid "Addons"
 msgstr ""
 
-#: so-css.php:460
+#: so-css.php:543
 msgid "Changes apply to %s and its child themes"
 msgstr ""
 
-#: so-css.php:461, tpl/page.php:114, tpl/page.php:144
+#: so-css.php:544, tpl/page.php:114, tpl/page.php:144
 msgid "Save CSS"
 msgstr ""
 
-#: so-css.php:468
+#: so-css.php:551
 msgid "Editing CSS for: %s"
 msgstr ""
 
-#: so-css.php:473
+#: so-css.php:556
 msgid "Changes apply to the %s %s when the current theme is %s or its child themes"
 msgstr ""
 
-#: so-css.php:480
+#: so-css.php:563
 msgid "Save %s CSS"
 msgstr ""
 
-#: so-css.php:493
+#: so-css.php:576
 msgid "Revert to this revision"
 msgstr ""
 
-#: so-css.php:548, so-css.php:569, so-css.php:588
+#: so-css.php:631, so-css.php:652, so-css.php:671
 msgid "The supplied nonce is invalid."
 msgstr ""
 
-#: so-css.php:549, so-css.php:570, so-css.php:589
+#: so-css.php:632, so-css.php:653, so-css.php:672
 msgid "Invalid nonce."
 msgstr ""
 
-#: so-css.php:635
+#: so-css.php:722
 msgid "%d chars"
 msgstr ""
 
-#: so-css.php:635
+#: so-css.php:722
 msgid "Latest"
 msgstr ""
 
-#: so-css.php:641
+#: so-css.php:728
 msgid "No revisions yet."
 msgstr ""
 

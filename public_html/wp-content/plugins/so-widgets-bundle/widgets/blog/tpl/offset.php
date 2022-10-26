@@ -38,6 +38,13 @@
 			</div>
 		<?php endif; ?>
 
+		<?php if ( ! empty( $settings['tags'] ) && has_tag() ) : ?>
+			<div class="sow-entry-tags">
+				<span class="sow-meta-text"><?php esc_html_e( 'Tags', 'so-widgets-bundle' ); ?></span>
+				<?php the_tags( '' ); ?>
+			</div>
+		<?php endif; ?>
+
 		<?php if ( comments_open() && $settings['comment_count'] ) : ?>
 			<div class="sow-entry-comments">
 				<span class="sow-meta-text"><?php esc_html_e( 'Comments', 'so-widgets-bundle' ); ?></span>
@@ -52,7 +59,7 @@
 		<?php endif; ?>
 	</div>
 	<div class="sow-blog-entry" style="width: 78%;">
-		<?php $this->post_featured_image( $settings ); ?>
+		<?php SiteOrigin_Widget_Blog_Widget::post_featured_image( $settings ); ?>
 		<div class="sow-blog-content-wrapper" style="padding: 25px 30px 33px;">
 			<header class="sow-entry-header" style="margin-bottom: 20px;">
 				<?php

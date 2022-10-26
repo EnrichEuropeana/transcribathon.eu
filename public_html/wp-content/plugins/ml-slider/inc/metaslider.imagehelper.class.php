@@ -105,15 +105,24 @@ $image_id = $slide_id;
     private function get_crop_dimensions($image_width, $image_height)
     {
         if ($this->crop_type == 'standard') {
-            return array( 'width' => absint($this->container_width), 'height' => absint($this->container_height) );
+            return [
+                'width' => absint($this->container_width),
+                'height' => absint($this->container_height),
+            ];
         }
 
         if ($this->crop_type == 'disabled') {
-            return array( 'width' => absint($image_width), 'height' => absint($image_height) );
+            return [
+                'width' => absint($image_width),
+                'height' => absint($image_height),
+            ];
         }
 
         $container_width = $this->container_width;
         $container_height = $this->container_height;
+
+        $new_slide_width = null;
+        $new_slide_height = null;
 
         /**
          * Slideshow Width == Slide Width
@@ -213,7 +222,10 @@ $image_id = $slide_id;
             $new_slide_height = $container_height;
         }
 
-        return array( 'width' => floor($new_slide_width), 'height' => floor($new_slide_height) );
+        return [
+            'width' => floor((float)$new_slide_width),
+            'height' => floor((float)$new_slide_height)
+        ];
     }
 
 

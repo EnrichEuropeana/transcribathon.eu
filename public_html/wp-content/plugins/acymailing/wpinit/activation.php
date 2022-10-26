@@ -105,7 +105,9 @@ class acyActivation
             }
         }
         $updateHelper->installFields();
-        $updateHelper->installAdminNotif();
+        if (!$installClass->update) {
+            $updateHelper->installDefaultAutomations();
+        }
         $updateHelper->installAddons();
         $updateHelper->installOverrideEmails();
 
