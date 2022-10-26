@@ -6,7 +6,6 @@ Description: Gets item data and builds the item page
 
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
-// include($_SERVER["DOCUMENT_ROOT"].'/htr-import/vendor/autoload.php');
 
 require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
 require_once(get_stylesheet_directory() . '/htr-client/config.php');
@@ -1661,7 +1660,7 @@ function _TCT_item_page( $atts ) {
                 }
                 // key words
                 // js-check class is used to check if the property field is empty, so we can hide the header if it is empty
-                
+
                     // Category
                     $content .= "<h6 class='enrich-headers'>Type of Media</h6>";
                     if($itemData['Properties']) {
@@ -1697,7 +1696,7 @@ function _TCT_item_page( $atts ) {
                         }
                         $content .= "</div>";
                     }
-                
+
                 $content .= "</div>";
 
             $content .= "</div>";
@@ -2073,7 +2072,7 @@ function _TCT_item_page( $atts ) {
                     }
                 $content .= "</div>";
                 //Download Enrichments Button/Div
-                $content .= '<a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;color:#0a72cc;cursor:pointer;margin-bottom:23px;margin-top:24px;" type="button" target="_blank" href="' . get_main_url() . '/htr-import/example/form-example.php?itemId=' . $_GET['item']  . '">';
+                $content .= '<a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;color:#0a72cc;cursor:pointer;margin-bottom:23px;margin-top:24px;" type="button" href="' . get_europeana_url() . '/import-htr-transcription/?itemId=' . $_GET['item']  . '">';
                     $content .= "<span><h5 style='color:#0a72cc;'>Run Transkribus automatic text recognition (HTR) </h5></span>";
                     $content .= "<span><i style='position:relative;top:50%;transform:translateY(-50%);font-size:20px;' class='fas fa-desktop' aria-hidden='true'></i></span>";
                 $content .= "</a>";
