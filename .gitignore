@@ -1,5 +1,5 @@
 # ignore most of the installation
-public_html/*
+public_html/wp-content/*
 !public_html/wp-content/themes
 
 # do not track environment variables
