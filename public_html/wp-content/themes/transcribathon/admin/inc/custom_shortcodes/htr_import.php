@@ -40,7 +40,7 @@ button:focus {
 
 .card {
 	position: relative;
-	flex: 1 1 30%;
+	flex: 0 1 32%;
 	cursor: pointer;
 }
 
