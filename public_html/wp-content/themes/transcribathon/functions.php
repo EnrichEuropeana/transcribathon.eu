@@ -129,7 +129,7 @@ function embedd_custom_javascripts_and_css() {
      if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
         /* jQuery */
         /* Don't enqueue following scripts if it's HTR editor */
-        if(!is_page('item_page_htr' && !is_page('import-htr-transcription'))){
+        if(!is_page('item_page_htr') && !is_page('import-htr-transcription')) {
             wp_enqueue_script( 'jquery' );
 
             /* custom JS and CSS*/
