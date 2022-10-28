@@ -1,1 +1,0 @@
-import widgets from './partials/widgets/index.js';
