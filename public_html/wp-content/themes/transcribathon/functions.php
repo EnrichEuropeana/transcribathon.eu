@@ -10,7 +10,74 @@ define( 'TCT_THEME_DIR_PATH', plugin_dir_path( __FILE__ ) );
 /* Disable WordPress Admin Bar for all users but admins. */
 show_admin_bar(false);
 
-function dd ($data) {
+function extractImageService($imageData) {
+    $extractedService = $imageData['service'];
+
+    if (is_array($imageData['service']) && empty($imageData['service']['@id'])) {
+        $extractedService = $imageData['service'][0];
+    }
+
+    return $extractedService;
+}
+
+/**
+ * $request as array with IIIF image request API:
+ * region, size, rotation, quality, format
+ */
+function createImageLinkFromData($imageData, $request = array()) {
+    $imageData['service'] = extractImageService($imageData);
+    $imageId = $imageData['service']['@id'];
+    $imageWidth = $imageData['width'];
+    $imageHeight = $imageData['height'];
+
+    $delim = '/';
+
+    $imageLink = filter_var($imageId, FILTER_VALIDATE_URL)
+        ? $imageId
+        : 'https://' . $imageId;
+
+    $size = $request['size'] ?: 'full'; // full is deprecated IIIF 3.0 uses 'max'
+    $rotation = $request['rotation'] ?: '0';
+    $quality = $request['quality'] ?: 'default';
+    $format = $request['format'] ?: 'jpg';
+
+    $region = $request['region'];
+    if (empty($region)) {
+        $region = 'full';
+        if (!empty($imageWidth) || !empty($imageHeight)) {
+            $region = round(($imageWidth - $imageHeight) / 2) .',0,' .round($imageHeight * 2) .',' . $imageHeight;
+            if ($imageWidth <= $imageHeight * 2) {
+                $region = '0,0,' . $imageWidth . ',' .round($imageWidth / 2);
+            }
+        }
+    }
+
+    $imageLink .= $delim
+        . $region
+        . $delim
+        . $size
+        . $delim
+        . $rotation
+        . $delim
+        . $quality
+        . '.'
+        . $format;
+
+    return $imageLink;
+}
+
+function get_http_response_code($url) {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return $httpCode;
+}
+
+function dd($data) {
     dump($data);
     die();
 }

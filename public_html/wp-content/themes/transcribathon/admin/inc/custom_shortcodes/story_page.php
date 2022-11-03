@@ -29,14 +29,8 @@ function _TCT_get_document_data( $atts ) {
     }
 
     $imgDescription = json_decode($storyData['Items'][rand(0,(count($storyData['Items'])-1))]['ImageLink'], true);
-    if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
-        $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    } else {
-        $imgDescriptionLink = str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    }
+    $imgDescriptionLink = createImageLinkFromData($imgDescription);
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
-
-    //dd(array_keys($storyData));
 
     /////////////////////////
     $numbPhotos = count($storyData['Items']);
@@ -50,18 +44,9 @@ function _TCT_get_document_data( $atts ) {
         $content .= "<div id='inner-slider'>";
             for($x = 0; $x < $numbPhotos; $x++) {
                 $sliderImg = json_decode($storyData['Items'][$x]['ImageLink'], true);
-                $dimensions = 0;
-                if($sliderImg["height"] < $sliderImg["width"]) {
-                    $dimensions = $sliderImg["height"];
-                } else {
-                    $dimensions = $sliderImg["width"];
-                }
 
-                if(substr($sliderImg['service']['@id'],0,4) == 'rhus'){
-                   $sliderImgLink ='http://'. str_replace(' ','_',$sliderImg['service']["@id"]) . '/0,0,'.$dimensions.','.$dimensions.'/200,200/0/default.jpg';
-                } else {
-                    $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . '/0,0,'.$dimensions.','.$dimensions.'/200,200/0/default.jpg';
-                }
+                $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
+
                 $content .= "<div class='slide-sticker' data-value='". ($x+1) ."'>";
                     $content .= "<div class='slide-img-wrap'>";
                         $content .= "<a href='".home_url()."/documents/story/item/?story=".$storyData['StoryId']."&item=".$storyData['Items'][$x]['ItemId']."'><img src=".$sliderImgLink." class='slider-image' alt='slider-image' width='200' height='200' loading='lazy'></a>";

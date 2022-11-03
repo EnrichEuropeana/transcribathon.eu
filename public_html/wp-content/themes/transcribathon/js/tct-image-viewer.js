@@ -1,7 +1,7 @@
 var home_url = WP_URLs.home_url;
 
 var tct_viewer = (function($, document, window) {
-	
+
 	var osdViewer,
 			osdViewerFS,
 			imageData,
@@ -26,7 +26,7 @@ var tct_viewer = (function($, document, window) {
 								    '    <input type="range" min="-100" max="100" value="0" class="iiifSlider" id="saturationRange">' +
 								    '    <div id="saturationValue" class="sliderValue">0</div>' +
 								    '  </div>' +
-										'  <div class="slidecontainer invert">' +										   
+										'  <div class="slidecontainer invert">' +
 										    '    <input type="checkbox" class="iiifCheckbox" id="invertRange">' +
  										    '    <div id="inverteIcon" class="sliderIcon">invert</div>' +
 										    '  </div>' +
@@ -105,7 +105,7 @@ var tct_viewer = (function($, document, window) {
 
 		jQuery('#transcribe').click(function() {
 			if(!jQuery(this).children('i').hasClass('locked')) {
-				toggleFS(); 
+				toggleFS();
 				if (jQuery('#transcription-section').width() >= 495) {
 				//   jQuery('#mytoolbar-transcription').css('height', '1px');
 				}
@@ -172,16 +172,17 @@ var tct_viewer = (function($, document, window) {
 			rotateLeftButton: "rotate-left",
 			rotateRightButton: "rotate-right",
 			prefixUrl: home_url + "/wp-content/themes/transcribathon/images/osdImages/",
-			tileSources: {
-				"@context": "http://iiif.io/api/image/2/context.json",
-				"@id": imageLink,
-				"height": imageHeight,
-				"width": imageWidth,
-				"profile": [
-					"http://iiif.io/api/image/2/level2.json"
-				],
-				"protocol": "http://iiif.io/api/image"
-			},
+			tileSources: imageLink + '/info.json',
+			// tileSources: {
+			// 	"@context": "http://iiif.io/api/image/2/context.json",
+			// 	"@id": imageLink,
+			// 	"height": imageHeight,
+			// 	"width": imageWidth,
+			// 	"profile": [
+			// 		"http://iiif.io/api/image/2/level2.json"
+			// 	],
+			// 	"protocol": "http://iiif.io/api/image"
+			// },
 			maxZoomLevel: 8,
 			minZoomLevel: 0.3,
 			autoHideControls: false
@@ -199,16 +200,17 @@ var tct_viewer = (function($, document, window) {
 			rotateLeftButton: "rotate-leftFS",
 			rotateRightButton: "rotate-rightFS",
 			prefixUrl: home_url + "/wp-content/themes/transcribathon/images/osdImages/",
-			tileSources: {
-				"@context": "http://iiif.io/api/image/2/context.json",
-				"@id": imageLink,
-				"height": imageHeight,
-				"width": imageWidth,
-				"profile": [
-					"http://iiif.io/api/image/2/level2.json"
-				],
-				"protocol": "http://iiif.io/api/image"
-			},
+			tileSources: imageLink + '/info.json',
+			// tileSources: {
+			// 	"@context": "http://iiif.io/api/image/2/context.json",
+			// 	"@id": imageLink,
+			// 	"height": imageHeight,
+			// 	"width": imageWidth,
+			// 	"profile": [
+			// 		"http://iiif.io/api/image/2/level2.json"
+			// 	],
+			// 	"protocol": "http://iiif.io/api/image"
+			// },
 			maxZoomLevel: 8,
 			minZoomLevel: 0.3,
 			autoHideControls: false,
@@ -464,7 +466,7 @@ var tct_viewer = (function($, document, window) {
 		if(document.querySelector('.tox-tinymce')){
 			document.querySelector('.tox-tinymce').style.display = 'block';
 		}
-		
+
 	},
 	getUrlParameter = function(sParam) {
 		var sPageURL = window.location.search.substring(1),
@@ -508,7 +510,7 @@ var tct_viewer = (function($, document, window) {
 		forced_root_block : false,
 	    body_id: 'htranscriptor',
 			init_instance_callback: function (editor) {
-        
+
 				editor.on('focus', function (e) {
 					// jQuery('#mytoolbar-transcription').height('1px');
 					console.log('focusing');
@@ -525,7 +527,7 @@ var tct_viewer = (function($, document, window) {
 
 			},
 			setup: function (editor) {
-				
+
 				editor.on('keydown',function(evt){
 					if (evt.keyCode==9) {
 						editor.execCommand('mceInsertContent', false, '&emsp;&emsp;'); // inserts tab
