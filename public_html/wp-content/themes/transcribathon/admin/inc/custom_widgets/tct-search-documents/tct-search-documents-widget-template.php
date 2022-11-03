@@ -567,31 +567,11 @@ if (isset($_GET['qs']) || isset($_GET['qi']))  {
                     for ($i = 0; $i < sizeof($solrStoryData['response']['docs']); $i++) {
                         $storyTabContent .= '<div class="search-page-single-result maingridview">';
 
+                        // Single story image
+                        $storyTabContent .= '<div class="search-page-single-result-image">';
+                        $image = json_decode($solrStoryData['response']['docs'][$i]['PreviewImageLink'], true);
 
-                            // Single story image
-                            $storyTabContent .= '<div class="search-page-single-result-image">';
-                                $image = json_decode($solrStoryData['response']['docs'][$i]['PreviewImageLink'], true);
-
-
-                                if (substr($image['service']['@id'], 0, 4) == "http") {
-                                    $gridImageLink = $image['service']['@id'];
-                                }
-                                else {
-                                    $gridImageLink = "http://".$image['service']['@id'];
-                                }
-
-                                if ($image["width"] != null || $image["height"] != null) {
-                                    if ($image["width"] <= ($image["height"] * 2)) {
-                                        $gridImageLink .= "/0,0,".$image["width"].",".round($image["width"] / 2);
-                                    }
-                                    else {
-                                        $gridImageLink .= "/".round(($image["width"] - $image["height"]) / 2).",0,".round($image["height"] * 2).",".$image["height"];
-                                    }
-                                }
-                                else {
-                                    $gridImageLink .= "/full";
-                                }
-                                $gridImageLink .= "/280,140/0/default.jpg";
+                        $gridImageLink = createImageLinkFromData($image, array('size' => '280,140'));
 
                                 // $storyTabContent .= "<a class='list-view-image' style='display:none' href='".home_url( $wp->request )."/story?story=".$solrStoryData['response']['docs'][$i]['StoryId']."'>";
                                  //   $storyTabContent .= '<img src='.$listImageLink.'>';
@@ -810,25 +790,7 @@ if (isset($_GET['qs']) || isset($_GET['qi']))  {
 
                                 $image = json_decode($item['PreviewImageLink'], true);
 
-                                if (substr($image['service']['@id'], 0, 4) == "http") {
-                                    $gridImageLink = $image['service']['@id'];
-                                }
-                                else {
-                                    $gridImageLink = "http://".$image['service']['@id'];
-                                }
-
-                                if ($image["width"] != null || $image["height"] != null) {
-                                    if ($image["width"] <= ($image["height"] * 2)) {
-                                        $gridImageLink .= "/0,0,".$image["width"].",".round($image["width"] / 2);
-                                    }
-                                    else {
-                                        $gridImageLink .= "/".round(($image["width"] - $image["height"]) / 2).",0,".round($image["height"] * 2).",".$image["height"];
-                                    }
-                                }
-                                else {
-                                    $gridImageLink .= "/full";
-                                }
-                                $gridImageLink .= "/280,140/0/default.jpg";
+                                $gridImageLink = createImageLinkFromData($image, array('size' => '280,140'));
 
                                 $itemTabContent .= "<a class='list-view-image' style='display:none' href='".home_url( $wp->request )."/item?item=".$item['ItemId']."'>";
                                     //$itemTabContent .= '<img src='.$listImageLink.'>';

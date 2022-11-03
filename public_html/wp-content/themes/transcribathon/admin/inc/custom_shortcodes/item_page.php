@@ -1444,21 +1444,7 @@ function _TCT_item_page( $atts ) {
             $content .= "<div id='inner-slider'>";
                 for($x = 0; $x < $numbPhotos; $x++) {
                     $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
-                    $dimensions = 0;
-                    if($sliderImg["height"] || $sliderImg["width"]) {
-                        if($sliderImg["width"] <= $sliderImg["height"]) {
-                            $dimensions = '/0,0,'.$sliderImg["width"].','.$sliderImg["width"];
-                        } else {
-                            $dimensions = '/0,0,'.$sliderImg["height"].','.$sliderImg["height"];
-                        }
-                    } else {
-                        $dimensions = 'full';
-                    }
-                    if(substr($sliderImg['service']['@id'],0,4) == 'rhus'){
-                       $sliderImgLink ='http://'. str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
-                    } else {
-                        $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
-                    }
+                    $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
 
                     $content .= "<div class='slide-sticker' data-value='". ($x+1) ."'>";
                     if($x == $startingSlide) {
@@ -1494,9 +1480,13 @@ function _TCT_item_page( $atts ) {
         $content .= "</section>";
 /* -------------------------------------------- End of Old Image slider -----------------------  */
     // Image viewer
+    $imageData = json_decode($itemData['ImageLink'], true);
+    $imageData['service'] = extractImageService($imageData);
+    $imageDataJson = json_encode($imageData);
+
     $imageViewer = "";
             $imageViewer .= '<div id="openseadragon">';
-                $imageViewer .= '<input type="hidden" id="image-data-holder" value=\''.$itemData['ImageLink'].'\'>';
+                $imageViewer .= '<input type="hidden" id="image-data-holder" value=\''.$imageDataJson.'\'>';
                 // Next/Previous Item Buttons
                 // if($prevItem) {
                 //     $imageViewer .= '<div id="previous-item" title="Previous Item" class="theme-color theme-color-hover"><a href="'.home_url()."/documents/story/item/?story=". $itemData['StoryId']."&item=". $prevItem .'" class="theme-color-hover"><i class="fas fa-step-backward"></i></a></div>';
