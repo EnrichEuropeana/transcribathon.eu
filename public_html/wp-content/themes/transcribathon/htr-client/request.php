@@ -6,6 +6,11 @@ require_once('lib/TranskribusClient.php');
 
 use FactsAndFiles\Transcribathon\TranskribusClient;
 
+if (!is_user_logged_in()) {
+	echo '{"error":"We think it is not safe to do this right now."}';
+	exit(1);
+}
+
 $TranskribusClient = new TranskribusClient($config);
 
 $itemId = ($_GET['itemId'] && $_GET['itemId'] !== 'null')
@@ -77,14 +82,14 @@ if ($htrModel) {
 if ($htrUserData) {
 
 	$htrUserDataArray = json_decode($htrUserData, true);
-	$htrUserTranscritpion = $TranskribusClient->postToTranscribathon($htrUserDataArray);
+	$htrUserTranscription = $TranskribusClient->postToTranscribathon($htrUserDataArray);
 
-	if (!$htrUserTranscritpion) {
+	if (!$htrUserTranscription) {
 		echo '{ "error": ' . $TranskribusClient->getLastError() . '}';
 		exit(1);
 	}
 
-	echo $htrUserTranscritpion;
+	echo $htrUserTranscription;
 
 	exit(0);
 
