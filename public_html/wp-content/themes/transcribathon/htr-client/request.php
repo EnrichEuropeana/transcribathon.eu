@@ -77,14 +77,14 @@ if ($htrModel) {
 if ($htrUserData) {
 
 	$htrUserDataArray = json_decode($htrUserData, true);
-	$htrUserTranscritpion = $TranskribusClient->postToTranscribathon($htrUserDataArray);
+	$htrUserTranscription = $TranskribusClient->postToTranscribathon($htrUserDataArray);
 
-	if (!$htrUserTranscritpion) {
+	if (!$htrUserTranscription) {
 		echo '{ "error": ' . $TranskribusClient->getLastError() . '}';
 		exit(1);
 	}
 
-	echo $htrUserTranscritpion;
+	echo $htrUserTranscription;
 
 	exit(0);
 
