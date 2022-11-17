@@ -6,6 +6,11 @@ require_once('lib/TranskribusClient.php');
 
 use FactsAndFiles\Transcribathon\TranskribusClient;
 
+if (!is_user_logged_in()) {
+	echo '{"error":"We think it is not safe to do this right now."}';
+	exit(1);
+}
+
 $TranskribusClient = new TranskribusClient($config);
 
 $itemId = ($_GET['itemId'] && $_GET['itemId'] !== 'null')
