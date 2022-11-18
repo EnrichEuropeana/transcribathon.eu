@@ -50,8 +50,8 @@ class ApiRequest
 	public static function send($url, $options)
 	{
 		$options['ssl'] = [
-			'verify_peer' => $options['ssl']['verify_peer'] ?: false,
-      'verify_peer_name' => $options['ssl']['verify_peer_name'] ?: false
+			'verify_peer' => $options['ssl']['verify_peer'] ?? false,
+      'verify_peer_name' => $options['ssl']['verify_peer_name'] ?? false
 		];
 
 		$options['http']['ignore_errors'] = true;
