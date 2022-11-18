@@ -10,7 +10,7 @@ include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
 date_default_timezone_set('Europe/Berlin');
 
-function _TCT_item_page( $atts) {
+function _TCT_mtr_transcription( $atts) {
     global $ultimatemember, $config;
     if (isset($_GET['item']) && $_GET['item'] != "") {
         // Set request parameters for image data
@@ -712,7 +712,7 @@ function _TCT_item_page( $atts) {
 
                                     $enrichmentTab .= '<div class="person-description-input">';
                                         // $taggingTab .= '<label>Description:<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i></label><br/>';
-                                        $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-description-edit" class="input-response person-edit-field" value="'.$description.'">';
+                                        $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-description-edit" class="input-response person-edit-field" placeholder="&nbsp Add more information to this person..." value="'.$description.'">';
                                     $enrichmentTab .= '</div>';
 
                                     $enrichmentTab .= '<div class="person-description-input">';
@@ -994,7 +994,7 @@ function _TCT_item_page( $atts) {
         }
         if($itemData['StoryPlaceName'] != null || $itemData['StoryPlaceName'] != "") {
             $locationDisplay .= "<div class='location-single'>";
-                $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;'>";
+                $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;filter:saturate(0.4)'>";
                 $locationDisplay .= "<p><b>" . $itemData['StoryPlaceName'] . "</b> (" . $itemData['StoryPlaceLatitude'] . ", " . $itemData['StoryPlaceLongitude'] . ")</p>";
                 $locationDisplay .= "<p style='font-size:13px;'>Story Location</p>";
             $locationDisplay .= "</div>";
@@ -1120,7 +1120,7 @@ function _TCT_item_page( $atts) {
         $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
             // MCE Editor
             $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
-                $editorTab .= "<div id='mytoolbar-transcription' style='max-width:500px;'></div>";
+                $editorTab .= "<div id='mytoolbar-transcription'></div>";
                 $editorTab .= "<div id='item-page-transcription-text' rows='8'>";
                     if($currentTranscription != null) {
                         $editorTab .= $currentTranscription['Text'];
@@ -1378,7 +1378,7 @@ function _TCT_item_page( $atts) {
                             $imageSlider .= "<a href='" . home_url() . "/documents/story/item-page-beta/?story=" . $itemData['StoryId'] . "&item=" . $itemImages[$x]['ItemId'] . "'>";
                                 $imageSlider .= "<img src='" . $sliderImgLink . "' class='slider-image' alt='slider-img-" . ($x + 1) . "' width='200' height='200' loading='". $loadingImg ."'>";
                             $imageSlider .= "</a>";
-                            $imageSlider .= "<div class='image-completion-status' style='bottom:20px;border-color:" . $itemImages[$x]['CompletionStatusColorCode'] . ";'></div>";
+                            $imageSlider .= "<div class='image-completion-status' style='bottom:30px;border-color:" . $itemImages[$x]['CompletionStatusColorCode'] . ";'></div>";
                         $imageSlider .= "</div>";
                         $imageSlider .= "<div class='slide-number-wrap'>" . ($x + 1) . "</div>";
                     $imageSlider .= "</div>";
@@ -1388,6 +1388,8 @@ function _TCT_item_page( $atts) {
             $imageSlider .= "</div>";
         $imageSlider .= "</div>";
 
+        // Back-to-story
+        //$imageSlider .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
         // Slider dots and numbers
         $imageSlider .= "<div id='dot-indicators'></div>";
 
@@ -1658,13 +1660,13 @@ function _TCT_item_page( $atts) {
         // Build Page Layout
     $content .= "<section id='image-slider-section' style='padding:0;'>";
         $content .= $imageSlider;
+        //$content .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
     $content .= "</section>";
     
         // Title
     $content .= "<section id='title-n-progress'>";
-    $content .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
         $content .= "<div class='title-n-btn'>";
-            $content .= "<h4 id='item-header'><b>" . $itemData['Title'] . "</b></h4>";
+            $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
         $content .= "</div>";
         
         $content .= "<div class='item-progress'>";
@@ -1749,7 +1751,7 @@ function _TCT_item_page( $atts) {
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         $content .= "<div>";
                             $content .= "<div class='status-display' style='line-height: normal;background-color:".$itemData['TranscriptionStatusColorCode']."'>";
-                                $content .= "<span class='status-indicator-view' style='position:relative;bottom:1px;'>" . $itemData['TranscriptionStatusName'] . "</span>";
+                                $content .= "<span class='status-indicator-view' style='position:relative;bottom:-1px;'>" . $itemData['TranscriptionStatusName'] . "</span>";
                             $content .= "</div>";
                             $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i>";
                         $content .= "</div>";
@@ -1965,7 +1967,7 @@ function _TCT_item_page( $atts) {
             // Data Section
             $content .= "<div id='item-data-section' class='panel-right'>";
                 $content .= "<div id='item-data-header'>";
-                    $content .= "<div class='back-to-story'><a href='".home_url()."/documents/story?story=".$itemData['StoryId']."'><i class=\"fas fa-arrow-left\" style='margin-right:7.5px;'></i> Back to the Story</a></div>";
+                    $content .= "<div class='fs-title'>" . $itemData['Title'] . "</div>";
 
                     $content .= '<div class="view-switcher" id="switcher-casephase" style="display:inline-block;">';
                         $content .= '<ul id="item-switch-list" class="switch-list" style="z-index:10;top:0;right:0;">';
@@ -2012,7 +2014,7 @@ function _TCT_item_page( $atts) {
                         $content .= "<li>";
                             $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
                                         onclick='switchItemTab(event, \"tagging-tab\");map.resize()'>";
-                                $content .= '<i class="fa fa-map-marker tab-i" style="background-color:#fff;"></i>';
+                                $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:27px;position:relative;'>";
                                 $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
                                 $content .= "<span><b> LOCATION</b></span></p>";
                             $content .= "</div>";
@@ -2042,7 +2044,7 @@ function _TCT_item_page( $atts) {
                             $content .= "<div class='theme-color tablinks' title='More Information'
                                             onclick='switchItemTab(event, \"info-tab\")'>";
                                 $content .= '<i class="fa fa-info-circle tab-i"></i>';
-                                $content .= "<p class='tab-h it'><b> INFO</b></p>";
+                                $content .= "<p class='tab-h it'><b> STORY INFO</b></p>";
                             $content .= "</div>";
                         $content .= "</li>";
 
@@ -2189,6 +2191,6 @@ function _TCT_item_page( $atts) {
     }
 }
 
-add_shortcode( 'item_page', '_TCT_item_page' );
+add_shortcode( 'item_page', '_TCT_mtr_transcription' );
 
 ?>

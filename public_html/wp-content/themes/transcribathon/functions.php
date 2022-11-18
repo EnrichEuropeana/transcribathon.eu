@@ -213,7 +213,7 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_script( 'jquery' );
 
             /* TinyMCE */
-            wp_enqueue_script( 'tinymce', CHILD_TEMPLATE_DIR . '/js/tinymce/js/tinymce/tinymce.js');
+            wp_enqueue_script( 'tinymce', CHILD_TEMPLATE_DIR . '/js/tinymce/js/tinymce/tinymce.min.js');
 
             /* iiif viewer */
             wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon.js');

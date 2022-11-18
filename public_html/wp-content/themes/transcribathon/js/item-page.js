@@ -633,6 +633,7 @@ function switchItemPageView() {
      //
      //switch to image view
      imgViewer.style.height = '100vh';
+     
      fSContainer.appendChild(imgViewer);
      jQuery('.site-footer').css('display', 'none')
      jQuery('#full-view-container').css('display', 'none')
@@ -660,6 +661,7 @@ function switchItemPageView() {
       let newUrl = '?' + urlParameter.toString()
       console.log(urlParameter.toString());
       window.history.replaceState(null, null, newUrl);
+      document.querySelector('#full-width').click();
  
    } else {
      var descriptionText = jQuery('#item-page-description-text').val();
@@ -693,7 +695,6 @@ function switchItemPageView() {
     console.log(urlParameter.toString());
     window.history.replaceState(null, null, newUrl);
     // console.log(document.location.pathname);
-     
  
    }
     installEventListeners();
@@ -835,11 +836,13 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
       }
       console.log(currentTranscription);
       
+      const wordcount = tinymce.get('item-page-transcription-text').plugins.wordcount;
       // var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
       // var newTranscriptionLength = tinyMCE.editors.get([jQuery('#item-page-transcription-text').attr('id')]).getContent({format : 'text'}).length;
       if(jQuery('#item-page-transcription-text').text()) {
-        var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
+        var newTranscriptionLength = wordcount.body.getCharacterCountWithoutSpaces();
       }     
+      console.log(newTranscriptionLength);
       // Prepare data and send API request
       data = {
           UserId: userId,
@@ -850,8 +853,8 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
           }
       
       if (jQuery('#item-page-transcription-text').html()) {
-        data['Text'] = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'html'}).replace(/'/g, "\\'");
-        data['TextNoTags'] = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).replace(/'/g, "\\'");
+        data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'}).replace(/'/g, "\\'");
+        data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
         
       }
       else {
@@ -876,7 +879,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
         else { 
           amount = 0;
         }
-  
+        console.log('ammount' + amount);
         scoreData = {
                       ItemId: itemId,
                       UserId: userId,
@@ -1693,13 +1696,13 @@ function loadPersonData(itemId, userId) {
   
                 '<div class="person-description-input">' +
                       //   '<label>Description:</label><br/>' +
-                        '<input type="text" id="person-' + content[i]['PersonId'] + '-description-edit" class="input-response person-input-field" value="' + description + '">' +
+                        '<input type="text" id="person-' + content[i]['PersonId'] + '-description-edit" class="input-response person-input-field" placeholder="&nbsp Add more information to this person..." value="' + description + '">' +
                       //   '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
                 '</div>' +
   
                 '<div class="person-description-input">' +
                 //   '<label>Description:</label><br/>' +
-                  '<input type="text" id="person-' + content[i]['PersonId'] + '-wiki-edit" class="input-response person-input-field" value="' + wikidata + '">' +
+                  '<input type="text" id="person-' + content[i]['PersonId'] + '-wiki-edit" class="input-response person-input-field" placeholder="&nbsp Add Wikidata ID to this person..." value="' + wikidata + '">' +
                 //   '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
                 '</div>' +
   
@@ -2096,7 +2099,7 @@ function setToolbarHeight() {
         jQuery('#item-page-transcription-text').mousedown(function(e){
             e.preventDefault;
             tinymce.activeEditor.focus();
-            jQuery('.tox-tinymce').css('width', jQuery('#mytoolbar-transcription').css('width'))
+            jQuery('.tox-toolbar__group').css('width', jQuery('#mytoolbar-transcription').css('width'))
             
             if(document.querySelector('.tox-tinymce')){
                 document.querySelector('.tox-tinymce').style.display = 'block';

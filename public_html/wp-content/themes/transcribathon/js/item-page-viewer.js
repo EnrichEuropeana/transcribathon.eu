@@ -181,10 +181,15 @@ var tct_viewer = (function($, document, window) {
 			tileSources: imageLink + '/info.json',
 			maxZoomLevel: 8,
 			minZoomLevel: 0.3,
-			autoHideControls: false
+			autoHideControls: false,
+			preserveImageSizeOnResize: true
 		});
 		
 		sliderInit();
+
+		osdViewer.addHandler('open',function() { 
+			fullWidth() 
+		});
 	},
 	fullWidth = function() {
 	  var oldBounds = osdViewer.viewport.getBounds();
@@ -193,6 +198,9 @@ var tct_viewer = (function($, document, window) {
 	},
 	toggleFS = function() {
 		switchItemPageView();
+		setTimeout(() => {
+			fullWidth()
+		}, 20);
 	},
 	// filter functionality
   // create Filter overlay button
@@ -265,10 +273,10 @@ var tct_viewer = (function($, document, window) {
 	},
 	initTiny = function() {
 		//none fs ones
-		initTinyWithConfig('#full-view-editor #item-page-transcription-text');
-		if(document.querySelector('.tox-tinymce')){
-			document.querySelector('.tox-tinymce').style.display = 'block';
-		}
+		initTinyWithConfig('#item-page-transcription-text');
+		// if(document.querySelector('.tox-tinymce')){
+		// 	document.querySelector('.tox-tinymce').style.display = 'block';
+		// }
 		
 	},
 	getUrlParameter = function(sParam) {
@@ -297,35 +305,15 @@ var tct_viewer = (function($, document, window) {
 	initTinyWithConfig = function(selector) {
 	  tinymce.init({
 	    selector: selector,
-	    inline: true,
-		fixed_toolbar_container: selector + '#tcttoolbar',
-	    height:120,
-	    plugins: ['charmap','paste', 'autoresize', 'table'],
-	    toolbar: 'bold italic underline strikethrough removeformat | alignleft aligncenter alignright | missbut unsure side-info | charmap | table',
-			resize: true,
-	    menubar: false,
-		browser_spellcheck: true,
-		object_resizing : false,
-		paste_auto_cleanup_on_paste : true,
-		forced_root_block : false,
-	    body_id: 'htranscriptor',
-			init_instance_callback: function (editor) {
-        
-				editor.on('focus', function (e) {
-					// jQuery('#mytoolbar-transcription').height('1px');
-					console.log('focusing');
-				});
-		 		// editor.on('blur', function (e) {
-				// 	// jQuery('#mytoolbar-transcription').height('1px');
-				// });
-				editor.on('blur', function(e) {
-					if(document.querySelector('.tox-tinymce')){
-                        document.querySelector('.tox-tinymce').style.display = 'none';
-					}
-				});
-
-
-			},
+		menubar: false,
+        inline: true,
+		//height: '400px',
+		resize: true,
+		plugins: 'wordcount table charmap',
+		toolbar: 'bold italic underline strikethrough removeformat alignleft aligncenter alignright alignjustify missbut unsure side-info charmap table wordcount undo redo subscript superscript indent',
+		    resize: true,
+		placeholder:' Start transcribing...',
+	
 			setup: function (editor) {
 				
 				editor.on('keydown',function(evt){
@@ -409,7 +397,7 @@ var tct_viewer = (function($, document, window) {
 	    strikethrough: { inline: 'del' },
 	    },
 	  })
-	};
+	}; // End of Tinymce
 	$(document).ready(function($) {
 		if (jQuery('#image-data-holder').length) {
 			init();

@@ -14,14 +14,13 @@ body {
 
 /* --- Image Slider ---*/
 #img-slider {
-    height: 300px;
-    margin-bottom: 30px;
+    height: 275px;
+    margin-bottom: 10px;
     position: relative;
 }
 #slider-container {
-    height: 300px;
+    height: 270px;
     background-color: #f8f8f8;
-    margin-bottom: 20px;
     position: relative;
 }
 .prev-slide {
@@ -84,6 +83,7 @@ body {
     width: 11%;
     height: 90%;
     display: inline-block;
+    position: relative;
 }
 .slide-img-wrap {
     border: 2.5px solid transparent;
@@ -96,13 +96,18 @@ body {
     float: right;
     width: 10px;
     height: 10px;
-    border: 10px solid;
+    border: 15px solid;
     position: relative;
     z-index: 1;
 }
 .slide-number-wrap {
-    position: relative;
-    left: 50%;
+    position: absolute;
+    right: 9px;
+    bottom: 30px;
+    z-index: 9;
+    font-family: 'Dosis', sans-serif;
+    color: #0a72cc;
+    font-weight: 700;
 }
 #dot-indicators {
     display: inline-flex;
@@ -128,10 +133,11 @@ body {
 }
 /* --- Back to story Button -- */
 .back-to-story {
-    font-size: 14px;
-    position: relative;
-    bottom: 16px;
-    padding: 10px 0;
+    display: inline-block;
+    font-size: 18px;
+    position: absolute;
+    bottom: 10px;
+    left: 100px;
     font-family: 'Dosis', sans-serif;
 }
 .back-to-story:hover a, .back-to-story:hover i {
@@ -425,7 +431,7 @@ p.mb-1 {
     color: #0a72cc;
     font-weight: 600;
     padding: 0!important;
-    font-size: 13px;
+    font-size: 14px;
     font-family: 'Dosis', sans-serif;
     margin: 0!important;
     margin-bottom: 0!important;
@@ -433,7 +439,7 @@ p.mb-1 {
 .meta-p {
     margin: 0!important;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 14px;
 }
 #story-info {
     overflow: hidden;
@@ -500,7 +506,9 @@ p.mb-1 {
 }
 .status-indicator {
     cursor: pointer;
-    font-size: 10px;
+    font-size: 10px!important;
+    border: none!important;
+    border-radius: unset!important;
     display: inline-block;
     width: 80px;
     font-family: 'Dosis';
@@ -577,10 +585,10 @@ p.mb-1 {
     margin-bottom: 50px;
 }
 .wiki-input {
-    float: right;
-    margin-right: 49px;
-    width: 55%;
-    background-color: #f8f8f8;
+    float: right!important;
+    margin-right: 49px!important;
+    width: 55%!important;
+    background-color: #f8f8f8!important;
     border: 0!important;
     border-radius: 0!important;
 }
@@ -910,7 +918,7 @@ p.mb-1 {
     min-height: 100%;
     width: 55%;
     min-width: 250px;
-    max-width: calc(100% - 420px);
+    max-width: calc(100% - 33vw)!important;
     white-space: nowrap;
     background: #eeeeee;
     color: white;
@@ -971,6 +979,7 @@ p.mb-1 {
     flex: 1 1 auto;
     overflow: hidden;
     width: 33vw;
+    min-width: 33vw!important;
     height: 100%!important;
     align-content: space-evenly;
 }
@@ -1004,6 +1013,7 @@ p.mb-1 {
     padding-bottom: 0;
 }
 .panel-right .back-to-story {
+    font-size: 14px;
     float: none;
     margin-left: 10px;
     bottom: 0;
@@ -1050,7 +1060,6 @@ p.mb-1 {
     margin-top: 45px;
 }
 .panel-right #full-view-map {
-    padding-left: 30px;
     width: 99%;
 }
 .loc-input-fa {
@@ -1063,6 +1072,12 @@ p.mb-1 {
 #tagging-tab label {
     color: #0a72cc;
     font-family: 'Dosis', sans-serif;
+}
+#tagging-tab {
+    padding-left: 30px!important;
+}
+#location-section.item-page-section {
+    margin-left: 0!important;
 }
 .mapboxgl-ctrl-geocoder--input {
     width: 100%!important;
@@ -1084,6 +1099,8 @@ p.mb-1 {
     bottom: 0px;
     cursor: pointer;
     text-align: center;
+    margin-bottom: 10px;
+    margin-right: 35px;
 }
 .panel-bottom #save-all-tags, .data-popout #save-all-tags {
     width: 100%;
@@ -1108,12 +1125,15 @@ p.mb-1 {
 }
 .tab-list div {
     color: #2b2b2b!important;
+    background-color: #fff!important;
     position: relative;
     font-size: 25px;
     -webkit-transition: 0.3s;
     transition: 0.3s;
     display: inline-block;
     cursor: pointer;
+    height: unset!important;
+    width: unset!important;
 }
 .tablinks {
     border: none;
@@ -1142,6 +1162,9 @@ p.mb-1 {
     font-family: 'Dosis', sans-serif;
     font-weight: 600;
     letter-spacing: 0.025em;
+}
+.tab-list i {
+    border: none!important;
 }
 .view-switcher {
     height: 25px;
@@ -1266,24 +1289,27 @@ button.ui-datepicker-trigger {
     margin-bottom: 20px;
 }
 .person-item-data-container div:first-of-type {
-    margin-bottom: 10px;
+    margin-bottom: 10px!important;
 }
 .delete-item-datas {
     position: relative;
     top: 1px;
 }
 .person-item-data-container input:not(:first-of-type) {
-    margin-left: 9px;
+    margin-left: 9px!important;
 }
 .person-description-input {
     margin-bottom: 10px;
 }
 .person-description-input input {
-    width: 100%;
+    width: 100%!important;
     background-color: #f8f8f8;
 }
+#save-personinfo-button {
+    float: unset!important;
+}
 .person-re-edit {
-    width: 48%;
+    width: 48%!important;
     background-color: #f8f8f8;
 }
 .person-re-edit-right {
@@ -1302,9 +1328,13 @@ button.ui-datepicker-trigger {
 .person-data-edit-container .edit-location-cancel, .link-data-edit-container .edit-location-cancel {
     margin-right: 0!important;
 }
+.person-location-birth-inputs {
+    padding-bottom: 0!important;
+}
 input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-input, #person-deathDate-input, 
 .link-description-input textarea, .link-url-input input  {
     width: 49%;
+    margin-right: 0!important;
     display: inline-block;
     background-color: #f8f8f8;
     border-radius: 0;
@@ -1669,7 +1699,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .location-input-description-container textarea {
     float: right;
     margin-right: 49px;
-    width: 55%;
+    width: 55%!important;
     background-color: #f8f8f8;
     border: 0!important;
     border-radius: 0!important;
@@ -1690,8 +1720,8 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     display: none;
 }
 .location-display {
-    display: block;
-    width: 100%;
+    display: block!important;
+    width: 100%!important;
 }
 #location-input-geonames-search-container {
     position: relative;
@@ -1894,7 +1924,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     padding-right: 70px;
 }
 #person-description-input-field, #item-page-description-text, #person-wiki-input-field {
-    width: 100%;
+    width: 100%!important;
     background-color: #f8f8f8;
     border: none;
 }
@@ -1999,7 +2029,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
         bottom: 0;
     }
 }
-
+.location-input-coordinates-container {
+    display: block!important;
+}
 .location-single p {
     margin-bottom: 0px!important;
     margin-top: 0px!important;
@@ -2089,7 +2121,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     text-transform: uppercase;
     letter-spacing: 0.025em;
     position: relative;
-    bottom: 1px;
+    bottom: -1px;
 }
 .status-display {
     display: inline-block;
@@ -2492,15 +2524,28 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-weight: 700!important;
     letter-spacing: 0.025em;
 }
-/* Tiny MCE Editor adjustments */
+/* Tiny MCE Editor adjustments !!!! After update even more important */ 
 div.tox-toolbar {
     height: inherit!important;
 }
-div.tox-editor-container {
-    height: 55px!important;
+.tox.tox-tinymce-inline .tox-editor-header {
+    background-color: unset!important;
+    border: none!important;
+    border-radius: 0!important;
 }
-div.tox.tox-tinymce.tox-toolbar-dock-transition {
-    height: 55px;
+div.tox.tox-tinymce {
+    z-index: 999;
+}
+#item-page-transcription-text table,
+#item-page-transcription-text td,
+#item-page-transcription-text tr {
+    border: 1px solid #000;
+}
+.fs-title {
+    display: inline-block;
+    color: #0a72cc;
+    font-weight: 600;
+    margin-left: 40px;
 }
 /* -- Compare Transcriptions Css -- */
 #full-width-viewer {
