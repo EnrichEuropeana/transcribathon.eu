@@ -188,7 +188,9 @@ var tct_viewer = (function($, document, window) {
 		sliderInit();
 
 		osdViewer.addHandler('open',function() { 
-			fullWidth() 
+			setTimeout(() => {
+                fullWidth();
+			}, 20);
 		});
 	},
 	fullWidth = function() {

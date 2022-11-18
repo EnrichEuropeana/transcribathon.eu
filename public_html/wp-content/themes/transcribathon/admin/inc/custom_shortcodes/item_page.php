@@ -2,7 +2,7 @@
 
 /*
 Shortcode: item_page_htr
-Description: Gets item data and builds the item page with htr editor
+Description: Gets item data and builds the item page without htr editor
 */
 
 // include required files
@@ -2014,8 +2014,8 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "<li>";
                             $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
                                         onclick='switchItemTab(event, \"tagging-tab\");map.resize()'>";
-                                $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:27px;position:relative;'>";
-                                $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
+                                $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;position:relative;bottom:3px;'>";
+                                $content .= "<p class='tab-h' style='position:relative;bottom:4px;'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
                                 $content .= "<span><b> LOCATION</b></span></p>";
                             $content .= "</div>";
                         $content .= "</li>";
@@ -2044,7 +2044,7 @@ function _TCT_mtr_transcription( $atts) {
                             $content .= "<div class='theme-color tablinks' title='More Information'
                                             onclick='switchItemTab(event, \"info-tab\")'>";
                                 $content .= '<i class="fa fa-info-circle tab-i"></i>';
-                                $content .= "<p class='tab-h it'><b> STORY INFO</b></p>";
+                                $content .= "<p class='tab-h it'><span><b> STORY INFO</b></span></p>";
                             $content .= "</div>";
                         $content .= "</li>";
 
@@ -2052,7 +2052,7 @@ function _TCT_mtr_transcription( $atts) {
                             $content .= "<div class='theme-color tablinks' title='Tutorial'
                                             onclick='switchItemTab(event, \"help-tab\")'>";
                                 $content .= '<i class="fa fa-question-circle tab-i"></i>';
-                                $content .= "<p class='tab-h it'><b> TUTORIAL</b></p>";
+                                $content .= "<p class='tab-h it'><span><b> TUTORIAL</b></span></p>";
                             $content .= "</div>";
                         $content .= "</li>";
                     $content .= '</ul>';

@@ -1491,6 +1491,11 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     background-color: #f8f8f8;
     font-weight: 600;
 }
+.panel-right .tablinks {
+    height: 65px!important;
+    min-width: 30px!important;
+    overflow: hidden;
+}
 /* Horizontal Split */
 #item-data-section.panel-bottom .tablinks {
     height: 30px;

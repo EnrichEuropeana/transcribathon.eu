@@ -2326,6 +2326,35 @@ ready(() => {
         paraToggler.addEventListener('click', descToggler, false);
     }
  
+    // Item Page/Full Screen - Hide tab names when they start to break
+    const tabHeadList = document.querySelector('#item-tab-list');
+    const tabNames = tabHeadList.querySelectorAll('.tab-h span');
+    const resizeImage = document.querySelector('#item-image-section');
+    
+
+    
+    // Item page full screen image splitter, remove 'editor bar' while resizing screen - item page only
+    // Add listener to hide tab names when resizing below min width
+    const splitter = document.querySelector('#item-splitter');
+    if(splitter) {
+        splitter.addEventListener('mousedown', function() {
+            tinymce.remove();
+            tct_viewer.initTinyWithConfig('#item-page-transcription-text');
+        }, false);
+        // Hide Tab Names when they start to break
+        splitter.addEventListener('mouseleave', function() {
+          if(tabHeadList.clientWidth < 730) {
+            for(let nameT of tabNames) {
+              nameT.style.display = 'none';
+            }
+          } else if(tabNames[0].style.display = 'none') {
+            for(let nameT of tabNames) {
+              nameT.style.display = 'inline-block';
+            }
+          }
+        })
+    }
+
   ///////////Login Container Toggler -over the whole site
     const logContainer = document.querySelector('#default-login-container');
     const logButton = document.querySelector('#default-lock-login');
@@ -2340,14 +2369,7 @@ ready(() => {
         }, false);
     }
  
-    //Item page full screen image splitter, remove 'editor bar' while resizing screen - item page only
-    const splitter = document.querySelector('#item-splitter');
-    if(splitter) {
-        splitter.addEventListener('mousedown', function() {
-            tinymce.remove();
-            tct_viewer.initTinyWithConfig('#item-page-transcription-text');
-        }, false);
-    }
+
     // Item page, bind 'escape' key to close login warning if open, or full screen view(if open)
     //const escape = new KeyboardEvent('keydown');
     document.addEventListener('keydown',function(escape) {
@@ -2677,7 +2699,9 @@ ready(() => {
     const splitResize = document.querySelector('#item-splitter');
     if(splitResize) {
         splitResize.addEventListener('mouseup', function() {
+          if(map) {
             map.resize();
+          }
         })
     }
     
