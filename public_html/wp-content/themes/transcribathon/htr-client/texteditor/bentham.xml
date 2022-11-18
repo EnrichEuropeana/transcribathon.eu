@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2013-07-15/pagecontent.xsd">
+    <Metadata>
+        <Creator>prov=University of Rostock/Institute of Mathematics/CITlab|PLANET AI GmbH/Gundram Leifert/gundram.leifert@planet-ai.de:name=Transkribus Polish Model 1(htr_id=33744)::::v=2.6.7
+prov=University of Rostock/Institute of Mathematics/CITlab|PLANET AI GmbH/Tobias Gruening/tobias.gruening@planet-ai.de:name=de.uros.citlab.module.baseline2polygon.B2PSeamMultiOriented:v=2.6.7
+prov=READ-COOP:name=PyLaia@TranskribusPlatform:version=0.6.3:model_id=35909:lm=none:date=08_02_2022_08:29
+prov=READ-COOP:name=PyLaia@Transkribus:version=0.6.3:model_id=35909:date=08_02_2022_08:29
+prov=University of Rostock/Institute of Mathematics/CITlab|PLANET AI GmbH/Tobias Gruening/tobias.gruening@planet-ai.de:name=de.uros.citlab.module.baseline2polygon.B2PSeamMultiOriented:v=2.6.7</Creator>
+        <Created>2015-03-26T10:23:21.380+01:00</Created>
+        <LastChange>2022-02-14T12:37:28.308+01:00</LastChange>
+        <TranskribusMetadata docId="910880" pageId="34724348" pageNr="1" tsid="74504157" status="NEW" userId="43" imgUrl="https://files.transkribus.eu/Get?id=UHUTDPIDQXAGCYEIWHWQVPOJ&amp;fileType=view" xmlUrl="https://files.transkribus.eu/Get?id=NKQDDCIQGLTSHTJKPGGIWEUX" imageId="27886155">
+            <Property key="mdSetName" value="aasd"/>
+            <Property key="test" value="my test value"/>
+        </TranskribusMetadata>
+    </Metadata>
+    <Page imageFilename="34724348.jpg" imageWidth="2731" imageHeight="4096">
+        <ReadingOrder>
+            <OrderedGroup id="ro_1644838648321" caption="Regions reading order">
+                <RegionRefIndexed index="0" regionRef="r1"/>
+                <RegionRefIndexed index="1" regionRef="r2"/>
+                <RegionRefIndexed index="2" regionRef="r3"/>
+            </OrderedGroup>
+        </ReadingOrder>
+        <TextRegion orientation="0.0" id="r1" custom="readingOrder {index:0;}">
+            <Coords points="234,122 234,272 267,272 267,122"/>
+            <TextLine id="r1l1" custom="readingOrder {index:0;}">
+                <Coords points="223,272 238,270 248,260 252,264 266,254 276,254 276,180 254,178 233,195 223,195"/>
+                <Baseline points="234,222 267,222"/>
+                <TextEquiv>
+                    <Unicode>.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode>.</Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion orientation="0.0" id="r2" custom="readingOrder {index:1;}">
+            <Coords points="282,151 282,2517 1944,2517 1944,151"/>
+            <TextLine id="r2l1" custom="readingOrder {index:0;}">
+                <Coords points="349,245 503,235 544,261 624,268 638,253 671,269 700,244 731,260 777,237 808,247 824,240 823,146 725,166 623,151 588,176 523,175 477,151 451,166 426,146 348,159"/>
+                <Baseline points="360,206 385,206 410,204 435,204 460,204 485,204 511,203 536,203 561,203 586,201 611,201 636,201 662,201 687,201 712,200 737,200 762,200 787,200 813,200"/>
+                <TextEquiv>
+                    <Unicode>16 Aug 1800</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l2" custom="readingOrder {index:1;}">
+                <Coords points="315,478 997,527 1144,465 1370,511 1597,469 1710,516 1902,474 1902,396 1842,382 1664,436 1574,391 1001,437 315,384"/>
+                <Baseline points="326,462 404,464 482,464 560,464 639,464 717,464 795,464 874,462 952,462 1030,462 1109,461 1187,461 1265,461 1343,459 1422,459 1500,459 1578,459 1657,459 1735,459 1813,461 1892,461"/>
+                <TextEquiv>
+                    <Unicode>6. The widenee o to engagement, conszgnid to a postałło</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l3" custom="readingOrder {index:2;}">
+                <Coords points="317,593 1533,609 1846,565 1872,503 316,530"/>
+                <Baseline points="327,572 403,570 480,569 557,569 634,569 710,569 787,570 864,570 941,570 1017,570 1094,572 1171,570 1248,570 1324,570 1401,569 1478,567 1555,565 1631,561 1708,558 1785,552 1862,548"/>
+                <TextEquiv>
+                    <Unicode>mobument nostead of a pized Book. Taken piom Ezche.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l4" custom="readingOrder {index:3;}">
+                <Coords points="317,719 573,688 723,743 1404,682 1575,723 1896,672 1895,603 1789,645 317,648"/>
+                <Baseline points="327,681 409,683 491,683 573,683 655,683 737,683 819,681 901,681 983,680 1065,678 1147,677 1229,675 1311,675 1393,674 1475,672 1557,671 1639,669 1721,669 1803,669 1886,668"/>
+                <TextEquiv>
+                    <Unicode>quer Bills- Differs fiom Stock Annintus Agrees with</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l5" custom="readingOrder {index:4;}">
+                <Coords points="308,821 1145,787 1588,841 1866,780 1865,731 1776,706 1662,754 1025,726 813,772 419,726 307,770"/>
+                <Baseline points="318,800 394,798 471,797 548,795 625,794 702,792 778,791 855,790 932,789 1009,788 1086,786 1162,785 1239,783 1316,782 1393,780 1470,777 1546,776 1623,773 1700,771 1777,768 1854,765"/>
+                <TextEquiv>
+                    <Unicode>Trsk Debentwies and s nów dionsio Nawy Pict</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l6" custom="readingOrder {index:5;}">
+                <Coords points="297,935 418,980 540,907 798,890 1832,928 1860,828 296,849"/>
+                <Baseline points="306,908 383,905 460,903 537,902 615,900 692,897 769,897 846,896 924,894 1001,894 1078,893 1155,893 1233,891 1310,891 1387,891 1464,891 1542,890 1619,890 1696,890 1773,890 1851,888"/>
+                <TextEquiv>
+                    <Unicode>alling Franoport and ordnanie Billo or Debentus:</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l7" custom="readingOrder {index:6;}">
+                <Coords points="311,1037 1527,1007 1863,1056 1928,1026 1928,959 310,957"/>
+                <Baseline points="321,1016 400,1015 480,1014 560,1013 640,1013 720,1011 799,1010 879,1010 959,1008 1039,1007 1119,1007 1198,1005 1278,1004 1358,1004 1438,1003 1518,1002 1597,1002 1677,1002 1757,1002 1837,1004 1917,1004"/>
+                <TextEquiv>
+                    <Unicode>abo wiłk India Bonds Bank Nolis Bankeis Pomissowy</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l8" custom="readingOrder {index:7;}">
+                <Coords points="298,1150 1955,1143 1954,1076 1864,1054 298,1097"/>
+                <Baseline points="309,1121 390,1122 472,1124 554,1124 636,1124 717,1122 799,1122 881,1120 963,1118 1044,1116 1126,1115 1208,1112 1290,1111 1371,1110 1453,1109 1535,1109 1617,1109 1698,1109 1780,1111 1862,1114 1944,1118"/>
+                <TextEquiv>
+                    <Unicode>Notis and piwate Promissocy Nolis and Bills of Exchang.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l9" custom="readingOrder {index:8;}">
+                <Coords points="283,1276 684,1297 788,1251 885,1300 1497,1248 1681,1294 1902,1203 282,1196"/>
+                <Baseline points="293,1247 377,1245 461,1244 545,1244 629,1244 713,1244 797,1244 882,1244 966,1245 1050,1245 1134,1245 1218,1245 1302,1245 1387,1245 1471,1244 1555,1242 1639,1241 1723,1238 1807,1235 1892,1230"/>
+                <TextEquiv>
+                    <Unicode>J. Tho Papir, by sto siże, skapi, teatnie, anid thinejs par</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l10" custom="readingOrder {index:9;}">
+                <Coords points="307,1358 504,1418 805,1361 1925,1383 1925,1315 1818,1266 1417,1329 1313,1288 1224,1331 307,1301"/>
+                <Baseline points="317,1346 396,1346 476,1347 556,1347 636,1349 716,1350 796,1351 875,1352 955,1353 1035,1353 1115,1355 1195,1355 1275,1355 1355,1355 1434,1354 1514,1353 1594,1352 1674,1350 1754,1349 1834,1346 1914,1343"/>
+                <TextEquiv>
+                    <Unicode>henlarty fitud for cmulatioń Jakin from Bank Paper</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l11" custom="readingOrder {index:10;}">
+                <Coords points="292,1510 384,1462 636,1463 752,1520 851,1462 1746,1495 1809,1487 1810,1409 1664,1453 1251,1405 1173,1449 1026,1390 485,1439 293,1390"/>
+                <Baseline points="302,1452 376,1455 451,1457 526,1458 601,1460 676,1461 751,1463 826,1464 901,1464 976,1466 1051,1466 1125,1467 1200,1467 1275,1469 1350,1469 1425,1469 1500,1470 1575,1470 1650,1470 1725,1472 1800,1472"/>
+                <TextEquiv>
+                    <Unicode>Agries more or lefs witk Bankers Paper and with</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l12" custom="readingOrder {index:11;}">
+                <Coords points="283,1579 725,1631 842,1579 1181,1629 1350,1583 1888,1589 1888,1542 1645,1509 1319,1560 1225,1518 1157,1557 1047,1513 283,1511"/>
+                <Baseline points="293,1563 372,1563 451,1565 530,1566 610,1568 689,1569 768,1570 847,1572 927,1573 1006,1575 1085,1575 1164,1577 1244,1578 1323,1578 1402,1578 1481,1578 1561,1577 1640,1575 1719,1574 1798,1572 1878,1568"/>
+                <TextEquiv>
+                    <Unicode>the Frenck Afsignats. Differs fiom ale te other abowe</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l13" custom="readingOrder {index:12;}">
+                <Coords points="971,1632 991,1630 1001,1638 1016,1638 1016,1585 999,1585 995,1583 987,1591 971,1591"/>
+                <Baseline points="980,1619 1005,1619"/>
+                <TextEquiv>
+                    <Unicode>R</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l14" custom="readingOrder {index:13;}">
+                <Coords points="287,1695 511,1691 633,1760 830,1695 1186,1744 1618,1700 1696,1748 1885,1659 1758,1619 1481,1667 288,1637"/>
+                <Baseline points="297,1680 375,1682 454,1684 533,1685 612,1686 691,1688 770,1689 848,1689 927,1691 1006,1691 1085,1691 1164,1691 1243,1691 1322,1691 1400,1691 1479,1691 1558,1691 1637,1689 1716,1689 1795,1689 1874,1689"/>
+                <TextEquiv>
+                    <Unicode>misckwned Engagements Eacept szom some Całe ifones</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l15" custom="readingOrder {index:14;}">
+                <Coords points="272,1843 385,1799 503,1840 629,1800 720,1838 975,1809 1398,1866 1411,1784 1242,1735 1135,1779 771,1741 582,1779 400,1721 273,1754"/>
+                <Baseline points="282,1790 340,1791 399,1793 458,1794 517,1796 576,1797 635,1799 694,1800 753,1802 812,1802 870,1803 929,1803 988,1804 1047,1805 1106,1805 1165,1805 1224,1805 1283,1805 1342,1805 1401,1803"/>
+                <TextEquiv>
+                    <Unicode>of Cacheguur Bills in rispiet of sięo.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l16" custom="readingOrder {index:15;}">
+                <Coords points="288,1939 1428,1959 1875,1931 1875,1851 1388,1903 563,1828 487,1887 288,1880"/>
+                <Baseline points="299,1916 377,1914 455,1913 533,1913 612,1913 690,1913 768,1914 847,1916 925,1917 1003,1919 1082,1920 1160,1922 1238,1923 1316,1925 1395,1925 1473,1925 1551,1924 1630,1923 1708,1920 1786,1917 1865,1913"/>
+                <TextEquiv>
+                    <Unicode> Applicałiów of kie profił of the miaswie towardo Ke</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l17" custom="readingOrder {index:16;}">
+                <Coords points="290,2063 1138,2090 1357,2048 1451,2087 1887,2045 1888,1970 291,1995"/>
+                <Baseline points="300,2027 378,2024 457,2024 536,2024 615,2024 694,2026 773,2027 851,2030 930,2031 1009,2033 1088,2035 1167,2036 1246,2037 1325,2037 1403,2037 1482,2037 1561,2034 1640,2031 1719,2027 1798,2021 1877,2013"/>
+                <TextEquiv>
+                    <Unicode>idnetzon of wie Nationab Debl. Jakin fiom to Sale</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l18" custom="readingOrder {index:17;}">
+                <Coords points="274,2188 1043,2153 1232,2221 1479,2152 1641,2201 1735,2144 1930,2168 1930,2088 1318,2130 361,2063 273,2123"/>
+                <Baseline points="284,2138 365,2139 447,2139 529,2141 611,2142 692,2144 774,2145 856,2147 938,2148 1019,2148 1101,2150 1183,2150 1265,2150 1346,2150 1428,2148 1510,2147 1592,2144 1673,2141 1755,2135 1837,2130 1919,2123"/>
+                <TextEquiv>
+                    <Unicode>o the Land Iaa iie: to cachangi of do many postłów</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l19" custom="readingOrder {index:18;}">
+                <Coords points="278,2299 466,2255 1019,2303 1078,2260 1748,2312 1844,2285 1844,2197 277,2213"/>
+                <Baseline points="287,2255 364,2255 441,2256 518,2256 596,2256 673,2256 750,2258 828,2258 905,2258 982,2258 1060,2259 1137,2259 1214,2259 1291,2258 1369,2258 1446,2256 1523,2256 1601,2255 1678,2252 1755,2250 1833,2247"/>
+                <TextEquiv>
+                    <Unicode>os me annnał produce of that Tax for posiom of</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l20" custom="readingOrder {index:19;}">
+                <Coords points="283,2390 805,2385 898,2431 1495,2376 1631,2417 1923,2373 1941,2315 1418,2301 1192,2358 282,2325"/>
+                <Baseline points="294,2376 375,2376 457,2378 539,2378 621,2378 703,2378 785,2378 866,2378 948,2378 1030,2376 1112,2376 1194,2375 1276,2373 1358,2372 1439,2370 1521,2367 1603,2366 1685,2363 1767,2360 1849,2357 1931,2354"/>
+                <TextEquiv>
+                    <Unicode>Stock amntus. Differs fiom ale she other ingacement</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r2l21" custom="readingOrder {index:20;}">
+                <Coords points="283,2520 351,2497 471,2518 611,2499 664,2525 848,2494 848,2460 801,2441 727,2437 662,2460 584,2450 549,2468 361,2426 283,2436"/>
+                <Baseline points="294,2489 321,2489 348,2490 375,2490 402,2492 429,2492 456,2492 484,2492 511,2493 538,2493 565,2493 592,2492 619,2492 646,2492 674,2492 701,2492 728,2490 755,2490 782,2489 809,2489 837,2487"/>
+                <TextEquiv>
+                    <Unicode>abore mestronid</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode>16 Aa 1002
+6. The widenee o to engagement, conszgnid to a postałło
+mobument nostead of a pized Book. Taken piom Ezche.
+quer Bills- Differs fiom Stock Annintus Agrees with
+Trsk Debentwies and s nów dionsio Nawy Pict
+alling Franoport and ordnanie Billo or Debentus:
+abo wiłk India Bonds Bank Nolis Bankeis Pomissowy
+Notis and piwate Promissocy Nolis and Bills of Exchang.
+J. Tho Papir, by sto siże, skapi, teatnie, anid thinejs par
+henlarty fitud for cmulatioń Jakin from Bank Paper
+Agries more or lefs witk Bankers Paper and with
+the Frenck Afsignats. Differs fiom ale te other abowe
+R
+misckwned Engagements Eacept szom some Całe ifones
+of Cacheguur Bills in rispiet of sięo.
+ Applicałiów of kie profił of the miaswie towardo Ke
+idnetzon of wie Nationab Debl. Jakin fiom to Sale
+o the Land Iaa iie: to cachangi of do many postłów
+os me annnał produce of that Tax for posiom of
+Stock amntus. Differs fiom ale she other ingacement
+abore mestronid</Unicode>
+            </TextEquiv>
+        </TextRegion>
+        <TextRegion orientation="0.0" id="r3" custom="readingOrder {index:2;}">
+            <Coords points="1925,168 1925,609 2540,609 2540,168"/>
+            <TextLine id="r3l1" custom="readingOrder {index:0;}">
+                <Coords points="2456,214 2467,215 2472,221 2481,221 2491,212 2501,214 2507,221 2528,221 2540,214 2551,214 2554,138 2525,137 2506,147 2494,142 2486,150 2459,151"/>
+                <Baseline points="2468,201 2504,204 2540,204"/>
+                <TextEquiv>
+                    <Unicode>36</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r3l2" custom="readingOrder {index:1;}">
+                <Coords points="1916,300 2063,277 2123,298 2167,264 2246,290 2374,270 2439,299 2435,194 2344,162 2258,167 2180,210 2153,195 2076,220 1914,216"/>
+                <Baseline points="1925,278 1950,278 1975,276 2000,276 2025,275 2050,273 2075,271 2100,269 2125,267 2150,266 2176,264 2201,261 2226,261 2251,260 2276,260 2301,260 2326,261 2351,263 2376,266 2401,269 2427,273"/>
+                <TextEquiv>
+                    <Unicode>Zumil Dr</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r3l3" custom="readingOrder {index:2;}">
+                <Coords points="2173,334 2232,339 2257,332 2275,340 2283,334 2298,339 2306,333 2320,338 2323,280 2302,281 2294,289 2272,284 2251,295 2239,284 2226,284 2207,266 2176,271"/>
+                <Baseline points="2183,327 2208,329 2233,329 2258,329 2283,331 2309,336"/>
+                <TextEquiv>
+                    <Unicode>Zaca</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r3l4" custom="readingOrder {index:3;}">
+                <Coords points="2059,360 2084,359 2090,365 2102,360 2126,378 2150,375 2146,291 2134,291 2128,298 2116,298 2107,290 2083,298 2056,297"/>
+                <Baseline points="2069,335 2103,335 2138,332"/>
+                <TextEquiv>
+                    <Unicode>P.</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r3l5" custom="readingOrder {index:4;}">
+                <Coords points="2271,387 2281,386 2298,369 2313,376 2327,370 2340,373 2360,368 2372,359 2382,359 2380,312 2359,315 2344,330 2331,326 2322,337 2307,334 2289,339 2268,337"/>
+                <Baseline points="2279,362 2310,363 2341,360 2372,359"/>
+                <TextEquiv>
+                    <Unicode>Za</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r3l6" custom="readingOrder {index:5;}">
+                <Coords points="1999,480 2039,464 2075,479 2094,465 2114,482 2147,479 2168,462 2194,480 2209,467 2236,483 2284,453 2359,463 2351,371 2303,371 2256,411 2149,369 2080,399 1992,403"/>
+                <Baseline points="2007,462 2033,462 2059,461 2085,459 2111,459 2137,457 2163,455 2189,453 2215,451 2241,448 2267,444 2293,439 2319,434 2345,428"/>
+                <TextEquiv>
+                    <Unicode>Pan der</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r3l7" custom="readingOrder {index:6;}">
+                <Coords points="2387,508 2411,510 2429,525 2441,528 2469,415 2453,413 2448,416 2445,411 2429,416 2423,406 2413,403"/>
+                <Baseline points="2408,467 2444,476"/>
+                <TextEquiv>
+                    <Unicode>3s</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r3l8" custom="readingOrder {index:7;}">
+                <Coords points="2249,500 2261,499 2288,507 2294,505 2298,509 2302,506 2317,512 2347,507 2346,454 2326,457 2307,467 2287,454 2279,458 2248,457"/>
+                <Baseline points="2259,498 2284,498 2310,500 2336,494"/>
+                <TextEquiv>
+                    <Unicode>41m</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextLine id="r3l9" custom="readingOrder {index:8;}">
+                <Coords points="1928,604 2170,633 2237,594 2323,591 2457,656 2497,627 2551,632 2549,552 2471,525 2359,549 2303,532 2191,569 2033,563 1986,535 1927,549"/>
+                <Baseline points="1937,590 1967,591 1997,593 2027,593 2057,593 2087,593 2117,593 2148,591 2178,591 2208,590 2238,589 2268,588 2298,586 2328,585 2359,585 2389,584 2419,584 2449,584 2479,584 2509,585 2540,587"/>
+                <TextEquiv>
+                    <Unicode>Compansów contlnn</Unicode>
+                </TextEquiv>
+            </TextLine>
+            <TextEquiv>
+                <Unicode>36
+Zumil Dr
+Zaca
+P.
+Za
+Pan der
+3s
+41m
+Compansów contlnn</Unicode>
+            </TextEquiv>
+        </TextRegion>
+    </Page>
+</PcGts>

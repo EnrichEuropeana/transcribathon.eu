@@ -1375,7 +1375,7 @@ function _TCT_mtr_transcription( $atts) {
                     } else {
                         $imageSlider .= "<div class='slide-img-wrap'>";
                     }
-                            $imageSlider .= "<a href='" . home_url() . "/documents/story/item-page-beta/?story=" . $itemData['StoryId'] . "&item=" . $itemImages[$x]['ItemId'] . "'>";
+                            $imageSlider .= "<a href='" . home_url() . "/documents/story/item/?story=" . $itemData['StoryId'] . "&item=" . $itemImages[$x]['ItemId'] . "'>";
                                 $imageSlider .= "<img src='" . $sliderImgLink . "' class='slider-image' alt='slider-img-" . ($x + 1) . "' width='200' height='200' loading='". $loadingImg ."'>";
                             $imageSlider .= "</a>";
                             $imageSlider .= "<div class='image-completion-status' style='bottom:30px;border-color:" . $itemImages[$x]['CompletionStatusColorCode'] . ";'></div>";

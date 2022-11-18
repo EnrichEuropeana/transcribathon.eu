@@ -20,6 +20,7 @@ function _TCT_item_page_htr( $atts) {
     $textEditorUrl = get_stylesheet_directory_uri() . '/htr-client/texteditor/';
     $layoutEditorUrl = get_stylesheet_directory_uri() . '/htr-client/layouteditor/';
     $requestUri = get_stylesheet_directory_uri() . '/htr-client/request.php';
+    $homeUri = home_url();
 
     $isLoggedIn = is_user_logged_in();
 
@@ -51,6 +52,7 @@ function _TCT_item_page_htr( $atts) {
     // extract the data itself
     $htrDataArray = json_decode($htrDataJson, true);
     $htrData = $htrDataArray['data'][0]['transcription_data'];
+    
 
     $minimalPageXML = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         . '<PcGts xmlns="" xmlns:xsi="" xsi:schemaLocation="">'
@@ -81,8 +83,13 @@ function _TCT_item_page_htr( $atts) {
     }
 
     $transcription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
-    /* $transcription = htmlspecialchars($transcription); */
-    /* dd($transcription); */
+    $transcription = htmlspecialchars($transcription);
+    
+    
+    
+
+    
+    
 
     $wpUserId = get_current_user_id();
     $url = TP_API_HOST."/tp-api/users/".$wpUserId;
@@ -91,6 +98,7 @@ function _TCT_item_page_htr( $atts) {
     $userData = json_decode($result, true);
     $userId = $userData[0]['UserId'];
     $itemId = $_GET['item'];
+    $storyId = $_GET['story'];
 
     $content = '';
     $content .= '<form id="changeEditor" action="'.get_europeana_url().'/documents/story/item/item_page_htr/" method="get" style="position:absolute;bottom:10%;z-index:9999;">';
@@ -105,17 +113,41 @@ function _TCT_item_page_htr( $atts) {
     if($_GET['editor'] == NULL || $_GET['editor'] == 'text') {
 
         $htrEditor = <<<HED
+<link href="{$textEditorUrl}css/app.c2e7a107.css" rel=preload as=style>
+<link href="{$textEditorUrl}css/chunk-vendors.3ee89ce5.css" rel=preload as=style>
+<link href="{$textEditorUrl}js/app.83160130.js" rel=preload as=script>
+<link href="{$textEditorUrl}js/chunk-vendors.8c83230e.js" rel=preload as=script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<style> 
+button.button.is-success {
+    background: #0a72cc!important;
+}
+footer._tct_footer, footer.site-footer {
+    display: none;
+}
+#go-home {
+    margin-top:8px;
+    height:39px;
+    padding:7px 5px 5px 5px;
+    text-decoration:none;
+    background:#0a72cc;
+    color:#fff;
+    text-transform:none;
+    font-size: 14px;
+    font-weight: bolder;
+}
+</style>
 <link href="{$textEditorUrl}css/app.c2e7a107.css" rel="stylesheet" />
 <link href="{$textEditorUrl}css/chunk-vendors.3ee89ce5.css" rel="stylesheet" />
 <link href="{$textEditorUrl}custom.css" rel="stylesheet" />
 <input form="changeEditor" name="editor" value="layout" hidden />
-<input form="changeEditor" type="submit" value="Layout Editor" style="position:absolute;bottom:5%;z-index:9999;width:100px;margin:0auto;" />
+<input form="changeEditor" type="submit" value="Layout Editor" style="display:none;" />
+<a id="go-home" href="{$homeUri}/documents/story/item/?story={$storyId}&item={$itemId}">Back to Item</a>;
 <div
     id="transkribusEditor"
     ref="editor"
-    data-iiif-url='{$imJLink}'
-    data-xml='{$transcription}'
+    data-iiif-url='{$imJLink}',
+    data-xml= "{$transcription}"
 >
 </div>
 <script>
@@ -126,11 +158,22 @@ var ready = (callback) => {
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
     document.querySelector('button[title="Switch view"]').click();
+
+    const backBtn = document.querySelector('#go-home');
+    const controlBar = document.querySelector('.editor__header');
+
+    controlBar.querySelector('nav').appendChild(backBtn);
+    controlBar.querySelector('nav').style.overflow = 'hidden';
+
 })
 </script>
 <script src="{$textEditorUrl}js/chunk-vendors.8c83230e.js"></script>
-<script src="{$textEditorUrl}js/app.eb1eb66c.js"></script>
+<script src="{$textEditorUrl}js/app.83160130.js"></script>
 <script>
+
+    
+
+
     window.eventBus.\$on('save', async (data) => {
 
         const payload = {
@@ -160,6 +203,7 @@ ready(() => {
 HED;
 
         $content .= $htrEditor;
+
 
     } else {
 

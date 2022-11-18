@@ -91,6 +91,7 @@ function reverseParseparseCustomAttribute(value) {
       JSON.stringify(temp.attributes).replaceAll('"', "").replaceAll(",", ";") +
       " ";
   }
+  customString = customString.trim()
   value.custom = customString;
 }
 
@@ -206,7 +207,7 @@ export function parseEditorOutput(editorJson, globalJson) {
         globalJson,
         "id",
         line.attrs.line.attributes.id,
-        " ",
+        "",
         customObjArr
       );
     }
