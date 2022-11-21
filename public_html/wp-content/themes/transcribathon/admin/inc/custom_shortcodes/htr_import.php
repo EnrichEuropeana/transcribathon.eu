@@ -34,7 +34,7 @@ button:focus {
 .row {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: flex-start;
 	gap: 1rem;
 }
 
