@@ -133,18 +133,12 @@ nav.navbar {
 }
 /* Die Logo-Datei (image) befindet sich in der Datei logos.css */
 ._transcribathon_partnerlogo {
-  display: block;
-  position: absolute;
-  float: left;
-  top: 40px;
+  position: relative;
+  bottom: -2px;
   width: 120px;
-  height: 120px;
+  height: 47px;
   background: #fff;
   z-index: 2;
-  -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
 }
 ._transcribathon_partnerlogo img {
   max-width: 100%;
@@ -1841,13 +1835,13 @@ div#comments ol.commentlist li.comment li.comment p {
 div#comments ol.commentlist li.comment article {
   margin-bottom: 0px !important;
 }
-/* Comment-Form */
+/* Comment-Form 
 div#comments div#respond {
-  /* background: #fff; */
-  /* margin: 10px 0px; */
-  /* padding: 0px 10px; */
-  /* border: 1px solid #eee; */
-}
+   background: #fff; 
+   margin: 10px 0px; 
+   padding: 0px 10px; 
+   border: 1px solid #eee; 
+}*/
 div#comments div#respond h3#reply-title {
   font-weight: 400;
   margin-bottom: 0px;

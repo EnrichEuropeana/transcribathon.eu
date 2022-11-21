@@ -3697,20 +3697,21 @@ ready(() => {
 
     // When the user scrolls down 60px from the top of the document, resize the navbar's padding
     //and the logo's font size
-    if(document.querySelector('#_transcribathon_partnerlogo')) {
-        window.onscroll = function() {scrollFunction()};
+    // !!!! Logo is not resizable anymore
+    // if(document.querySelector('#_transcribathon_partnerlogo')) {
+    //     window.onscroll = function() {scrollFunction()};
 
-        function scrollFunction() {
-            if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
-                document.getElementById("_transcribathon_partnerlogo").style.height = "56px";
-                document.getElementById("_transcribathon_partnerlogo").style.width = "56px";
-                document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "33px";
-            } else {
-                document.getElementById("_transcribathon_partnerlogo").style.height = "120px";
-                document.getElementById("_transcribathon_partnerlogo").style.width = "120px";
-                document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
-            }
-        }}
+    //     function scrollFunction() {
+    //         if (document.body.scrollTop > 60 || document.documentElement.scrollTop > 60) {
+    //             document.getElementById("_transcribathon_partnerlogo").style.height = "56px";
+    //             document.getElementById("_transcribathon_partnerlogo").style.width = "56px";
+    //             document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "33px";
+    //         } else {
+    //             document.getElementById("_transcribathon_partnerlogo").style.height = "120px";
+    //             document.getElementById("_transcribathon_partnerlogo").style.width = "120px";
+    //             document.getElementById("_transcribathon_partnerlogo").style.marginLeft = "0px";
+    //         }
+    //     }}
         // if(itemDateCheck === true) {
         //     installEventListeners();
         //     itemDateCheck = false;
