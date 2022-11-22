@@ -2560,3 +2560,9 @@ div.tox.tox-tinymce {
     width: 50vw;
     margin: 20px auto;
 }
+.link-single i.far.fa-external-link {
+    margin-left: 3px;
+    margin-right: 5px;
+    color: #0a72cc;
+    font-size: 14px;
+}

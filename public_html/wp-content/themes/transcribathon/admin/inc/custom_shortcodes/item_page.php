@@ -177,12 +177,15 @@ function _TCT_mtr_transcription( $atts) {
     foreach($progressData as $status) {
         $progressCount[$status] += 1;
     }
+    $imageData = json_decode($itemData['ImageLink'], true);
+    $imageData['service'] = extractImageService($imageData);
+    $imageDataJson = json_encode($imageData);
 
     // Image viewer
     $imageViewer = "";
     $imageViewer .= "<div id='openseadragon' style='height:600px;'>";
         // Pass Image to the viewer
-        $imageViewer .= "<input type='hidden' id='image-data-holder' value='".$itemData['ImageLink']."'>";
+        $imageViewer .= "<input type='hidden' id='image-data-holder' value='". $imageDataJson ."'>";
         // viewer buttons(regular viewe)
         $imageViewer .= "<div class='buttons' id='buttons'>";
             $imageViewer .= "<div id='zoom-in' class='theme-color theme-color-hover'><i class='fas fa-plus'></i></div>";
@@ -1351,23 +1354,14 @@ function _TCT_mtr_transcription( $atts) {
                     } else {
                         $loadingImg = 'lazy';
                     }
+
                     $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
-                    $dimensions = 0;
-                    if($sliderImg['height'] || $sliderImg['width']) {
-                        if($sliderImg['width'] <= $sliderImg['height']) {
-                            $dimensions = '/0,0,'.$sliderImg["width"].','.$sliderImg["width"];
-                        } else {
-                            $dimensions = '/0,0,'.$sliderImg["height"].','.$sliderImg["height"];
-                        }
-                    } else {
-                        $dimensions = "full";
+                    $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
+                    
+                    if($sliderImg['height'] == null) {
+                        $sliderImgLink = str_replace('full', '0,0,1800,1100', $sliderImgLink);
                     }
 
-                    if(substr($sliderImg['service']['@id'],0,4) == 'rhus'){
-                        $sliderImgLink ='https://'. str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
-                    } else {
-                        $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . $dimensions.'/200,200/0/default.jpg';
-                    }
 
                     $imageSlider .= "<div class='slide-sticker' data-value='" . ($x + 1) . "'>";
                     if($x == $startingSlide) {
@@ -1761,6 +1755,10 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "<div id='no-text-placeholder'>";
                             $content .= "<p style='position:relative;top:30%;'><i class=\"far fa-check-circle\" ></i> <b>ITEM CONTAINS <br> NO TEXT</b></p>";
                         $content .= "</div>";
+                        $content .= "<div class='current-transcription' style='display:none;'></div>";
+                        $content .= "<div class='transcription-language' style='display:none;'>";
+                            $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
+                        $content .= "</div>";
                     } else {
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
                             $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
@@ -1793,6 +1791,10 @@ function _TCT_mtr_transcription( $atts) {
                         } else {
                             $content .= "<div id='no-text-placeholder'>";
                                 $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'><span>START TRANSCRIPTION</span></p>";
+                            $content .= "</div>";
+                            $content .= "<div class='current-transcription' style='display:none;'></div>";
+                            $content .= "<div class='transcription-language' style='display:none;'>";
+                                $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
                             $content .= "</div>";
                         }
                     }
@@ -1896,8 +1898,8 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "</div>";
                         $content .= "<div style='clear:both;'></div>";
                         $content .= "<div class='date-bottom' style='padding-left:24px;'>";
-                            $content .= "<div style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
-                            $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
+                            $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
+                            $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
                         $content .= "</div>";
                         $content .= "<div style='clear:both;'></div>";
                     $content .= "</div>";

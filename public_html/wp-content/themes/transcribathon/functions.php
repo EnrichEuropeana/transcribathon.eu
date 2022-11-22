@@ -40,17 +40,29 @@ function createImageLinkFromData($imageData, $request = array()) {
     $rotation = $request['rotation'] ?: '0';
     $quality = $request['quality'] ?: 'default';
     $format = $request['format'] ?: 'jpg';
+    $page = $request['page']; // for now only used when it's search page, and 'search' should be passed in
 
     $region = $request['region'];
     if (empty($region)) {
         $region = 'full';
         if (!empty($imageWidth) || !empty($imageHeight)) {
-            $region = round(($imageWidth - $imageHeight) / 2) .',0,' .round($imageHeight * 2) .',' . $imageHeight;
-            if ($imageWidth <= $imageHeight * 2) {
-                $region = '0,0,' . $imageWidth . ',' .round($imageWidth / 2);
+            // Get regions for all the pages except 'search page'
+            if($page != 'search') {
+                $region = '0,0,' . $imageHeight . ',' . $imageHeight;
+                if ($imageWidth <= $imageHeight) {
+                    $region = '0,0,' . $imageWidth . ',' . $imageWidth;
+                }
+            // Get regions for 'search' page
+            } else if ($page == 'search') {
+                $region = round(($imageWidth - $imageHeight) / 2) .',0,' .round($imageHeight * 2) .',' . $imageHeight;
+
+                if($imageWidth <= ($imageHeight * 2) ) {
+                    $region = '0,0,' . $imageWidth . ',' .round($imageWidth / 2);
+                }
             }
         }
     }
+
 
     $imageLink .= $delim
         . $region
