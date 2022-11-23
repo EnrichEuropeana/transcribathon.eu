@@ -208,6 +208,127 @@ function _TCT_mtr_transcription( $atts) {
         $mapBox .= "<i class='fas fa-map map-placeholder'></i>";
     $mapBox .= "</div>";
 
+    // Location View
+    $locationView .= "<div class='location-view-container' style='margin-top:20px;'>";
+    foreach($itemData['Places'] as $place) {
+        $locationView .= "<div>";
+            $locationView .= "<div class='location-single'>";
+                $locationView .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;'>";
+                $locationView .= "<p><b>" . $place['Name'] . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
+                if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
+                    $locationView .= "<p style='margin-top:0px;font-size:13px;'>Description: <b>" . $place['Comment'] . "</b></p>";
+                }
+                if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
+                    $locationView .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
+                }
+            $locationView .= "</div>";
+        $locationView .= "</div>";
+    }
+    if($itemData['StoryPlaceName'] != null && $itemData['StoryPlaceName'] != "") {
+        $locationView .= "<div class='location-single story-location'>";
+            $locationView .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;filter:saturate(0.4)'>";
+            $locationView .= "<p><b>" . $itemData['StoryPlaceName'] . "</b> (" . $itemData['StoryPlaceLatitude'] . ", " . $itemData['StoryPlaceLongitude'] . ")</p>";
+            $locationView .= "<p style='font-size:13px;'>Story Location</p>";
+        $locationView .= "</div>";
+    }
+    $locationView .= "</div>";
+    // Locations Display
+    $locationDisplay = "";
+    $locationDisplay .= "<div class='location-display-container' style='margin-top:20px;'>";
+        foreach($itemData['Places'] as $place) {
+            $locationDisplay .= "<div id='location-" . $place['PlaceId'] . "'>";
+                $locationDisplay .= "<div id='location-data-output-" . $place['PlaceId'] . "' class='location-single'>";
+                    $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;'>";
+                    $locationDisplay .= "<p><b>" . $place['Name'] . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
+                    if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
+                        $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: <b>" . $place['Comment'] . "</b></p>";
+                    }
+                    if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
+                        $locationDisplay .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
+                    }
+
+                    $locationDisplay .= "<div class='edit-delete-btns'>";
+                        $locationDisplay .= "<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openLocationEdit(" . $place['PlaceId'] . ")'></i>";
+                        $locationDisplay .= "<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover'
+                                        onCLick='deleteItemData(\"places\", " . $place['PlaceId'] . ", " . $_GET['item'] . ", \"place\", " . get_current_user_id() . ")' ></i>";
+                    $locationDisplay .= "</div>";
+
+
+                $locationDisplay .= "</div>";
+
+                $locationDisplay .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container' style='display:none;'>";
+                    
+                    $locationDisplay .= "<div class='location-input-section-top'>";
+                        $locationDisplay .= "<div class='location-input-name-container' style='min-height:25px;'>";
+                            $locationDisplay .= "<label>Location Name: </label>";
+                            $locationDisplay .= "<input type='text' class='edit-input' value='" . $place['Name'] . "' name='' placeholder=''>";
+                        $locationDisplay .= "</div>";
+
+                        $locationDisplay .= "<div class='location-input-coordinates-container' style='min-height:25px;'>";
+                            $locationDisplay .= "<label>Coordinates: </label>";
+                            $locationDisplay .= "<span class='required-field'>*</span>";
+                            $locationDisplay .= "<input class='edit-input' type='text' value='" . htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') . ", "
+                                . htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') . "' name='' placeholder=''>";
+                        $locationDisplay .= "</div>";
+
+                        $locationDisplay .= "<div style='clear:both;'></div>";
+                    $locationDisplay .= "</div>";
+
+                    $locationDisplay .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
+                        $locationDisplay .= "<label>Wikidata Reference:";
+                            $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
+                        $locationDisplay .= "</label>";
+                        if($place['WikidataId'] != 'NULL' && $place['WikidataName'] != 'NULL') {
+                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='" 
+                                . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . "; "
+                                . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
+                        } else {
+                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
+                        }
+                    $locationDisplay .= "</div>";
+
+                    $locationDisplay .= "<div class='location-input-description-container' style='height:50px;'>";
+                        $locationDisplay .= "<label>";
+                            $locationDisplay .= "Description: ";
+                            $locationDisplay .= "<i class='fas fa-question-circle' style='font-size: 16px;cursor: pointer; margin-left: 4px;'
+                                            tite='Add more information about this location, e.g. building name, or it's significance to the item...'></i>";
+                        $locationDisplay .= "</label>";
+                        $locationDisplay .= "<textarea rows='2' class='edit-input gsearch-form' style='resize:none;' type='text' id='ldsc'>";
+                        if($place['Comment']) {
+                            $locationDisplay .= htmlspecialchars($place['Comment'], ENT_QUOTES, 'UTF-8');
+                        }
+                        $locationDisplay .= "</textarea>";
+                    $locationDisplay .= "</div>";
+
+                    $locationDisplay .= "<div class='form-buttons-right'>";
+                        $locationDisplay .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
+                            $locationDisplay .= "CANCEL";
+                        $locationDisplay .= "</button>";
+
+                        $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save' 
+                                        onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
+                            $locationDisplay .= "SAVE";
+                        $locationDisplay .= "</button>";
+
+                        $locationDisplay .= "<div id='item-location-" . $place['PlaceId'] . "-spinner-container' class='spinner-container spinner-container-right'>";
+                            $locationDisplay .= "<div class='spinner'></div>";
+                        $locationDisplay .= "</div>";
+                        $locationDisplay .= "<div style='clear:both;'></div>";
+                    $locationDisplay .= "</div>";
+
+                    $locationDisplay .= "<div style='clear:both;'></div>";
+                $locationDisplay .= "</div>";
+            $locationDisplay .= "</div>"; // End of single location
+        }
+        if($itemData['StoryPlaceName'] != null && $itemData['StoryPlaceName'] != "") {
+            $locationDisplay .= "<div class='location-single story-location'>";
+                $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;filter:saturate(0.4)'>";
+                $locationDisplay .= "<p><b>" . $itemData['StoryPlaceName'] . "</b> (" . $itemData['StoryPlaceLatitude'] . ", " . $itemData['StoryPlaceLongitude'] . ")</p>";
+                $locationDisplay .= "<p style='font-size:13px;'>Story Location</p>";
+            $locationDisplay .= "</div>";
+        }
+    $locationDisplay .= "</div>";
+
     // Map Editor
     $mapEditor = "";
     //$mapEditor .= "<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>";
@@ -307,104 +428,105 @@ function _TCT_mtr_transcription( $atts) {
 
         $mapEditor .= "<div style='clear:both;'></div>";
         // Editor Location Display and Location Edit/Delete
-        $mapEditor .= "<div id='item-location-list' class='item-data-output-list'>";
-            $mapEditor .= "<ul style='list-style-type: square;'>";
-                foreach($itemData['Places'] as $place) {
-                    if($place['Comment'] != 'NULL') {
-                        $comment = $place['Comment'];
-                    } else {
-                        $comment = "";
-                    }
-                    $mapEditor .= "<li id='location-" . $place['PlaceId'] . "'>";
-                        $mapEditor .= "<div class='item-data-output-element-header collapse-controller' data-toggle='collapse' href='#location-data-output-" . $place['PlaceId'] . "'>";
-                            $mapEditor .= "<h6>";
-                               $mapEditor .= $place['Name'];
-                            $mapEditor .= "</h6>";
-                            $mapEditor .= "<i class='fas fa-angle-down' style='float:right;'></i>";
-                            $mapEditor .= "<div style='clear:both;'></div>";
-                        $mapEditor .= "</div>";
+        $mapEditor .= $locationDisplay;
+        // $mapEditor .= "<div id='item-location-list' class='item-data-output-list'>";
+        //     $mapEditor .= "<ul style='list-style-type: square;'>";
+        //         foreach($itemData['Places'] as $place) {
+        //             if($place['Comment'] != 'NULL') {
+        //                 $comment = $place['Comment'];
+        //             } else {
+        //                 $comment = "";
+        //             }
+        //             $mapEditor .= "<li id='location-" . $place['PlaceId'] . "'>";
+        //                 $mapEditor .= "<div class='item-data-output-element-header collapse-controller' data-toggle='collapse' href='#location-data-output-" . $place['PlaceId'] . "'>";
+        //                     $mapEditor .= "<h6>";
+        //                        $mapEditor .= $place['Name'];
+        //                     $mapEditor .= "</h6>";
+        //                     $mapEditor .= "<i class='fas fa-angle-down' style='float:right;'></i>";
+        //                     $mapEditor .= "<div style='clear:both;'></div>";
+        //                 $mapEditor .= "</div>";
 
-                        $mapEditor .= "<div id='location-data-output-" . $place['PlaceId'] . "' class='collapse'>";
-                            $mapEditor .= "<div id='location-data-output-display-" . $place['PlaceId'] . "' class='location-data-output-content'>";
-                                $mapEditor .= "<span>";
-                                    $mapEditor .= "Description:";
-                                    $mapEditor .= $comment;
-                                $mapEditor .= "</span>";
-                                $mapEditor .= "</br>";
-                                $mapEditor .= "<span>";
-                                    $mapEditor .= "WikiData: ";
-                                    $mapEditor .= "<a href='http://www.wikidata.org/wiki/" . $place['WikidataId'] . "' style='text-decoration:none;' target='_blank'>";
-                                        $mapEditor .= $place['WikidataName'] . ", " . $place['WikidataId'];
-                                    $mapEditor .= "</a>"; 
-                                $mapEditor .= "</span>";
-                                $mapEditor .= "</br>";
-                                // Edit/Delete buttons
-                                $mapEditor .= "<div style='display:flex'>";
-                                    $mapEditor .= "<span style='width:86%;'></span>";
-                                    $mapEditor .= "<span style='width:14%;'>";
-                                        $mapEditor .= "<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openLocationEdit(" . $place['PlaceId'] . ")'></i>";
-                                        $mapEditor .= "<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover' onClick='deleteItemData(\"places\", " . $place['PlaceId'] . ", " . $_GET['item'] . ", \"place\", " . get_current_user_id() . ")'></i>";
-                                    $mapEditor .= "</span>";
-                                $mapEditor .= "</div>";
-                            $mapEditor .= "</div>";
+        //                 $mapEditor .= "<div id='location-data-output-" . $place['PlaceId'] . "' class='collapse'>";
+        //                     $mapEditor .= "<div id='location-data-output-display-" . $place['PlaceId'] . "' class='location-data-output-content'>";
+        //                         $mapEditor .= "<span>";
+        //                             $mapEditor .= "Description:";
+        //                             $mapEditor .= $comment;
+        //                         $mapEditor .= "</span>";
+        //                         $mapEditor .= "</br>";
+        //                         $mapEditor .= "<span>";
+        //                             $mapEditor .= "WikiData: ";
+        //                             $mapEditor .= "<a href='http://www.wikidata.org/wiki/" . $place['WikidataId'] . "' style='text-decoration:none;' target='_blank'>";
+        //                                 $mapEditor .= $place['WikidataName'] . ", " . $place['WikidataId'];
+        //                             $mapEditor .= "</a>"; 
+        //                         $mapEditor .= "</span>";
+        //                         $mapEditor .= "</br>";
+        //                         // Edit/Delete buttons
+        //                         $mapEditor .= "<div style='display:flex'>";
+        //                             $mapEditor .= "<span style='width:86%;'></span>";
+        //                             $mapEditor .= "<span style='width:14%;'>";
+        //                                 $mapEditor .= "<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openLocationEdit(" . $place['PlaceId'] . ")'></i>";
+        //                                 $mapEditor .= "<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover' onClick='deleteItemData(\"places\", " . $place['PlaceId'] . ", " . $_GET['item'] . ", \"place\", " . get_current_user_id() . ")'></i>";
+        //                             $mapEditor .= "</span>";
+        //                         $mapEditor .= "</div>";
+        //                     $mapEditor .= "</div>";
 
-                            $mapEditor .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container'>";
+        //                     $mapEditor .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container'>";
 
-                                $mapEditor .= "<div class='location-input-section-top'>";
-                                    $mapEditor .= "<div class='location-input-name-container' style='min-height:25px;'>";
-                                        $mapEditor .= "<label>Location Name:</label>";
-                                        $mapEditor .= "<input type='text' class='edit-input' value='" . $place['Name'] . "' name='' placeholder=''>";
-                                    $mapEditor .= "</div>";
+        //                         $mapEditor .= "<div class='location-input-section-top'>";
+        //                             $mapEditor .= "<div class='location-input-name-container' style='min-height:25px;'>";
+        //                                 $mapEditor .= "<label>Location Name:</label>";
+        //                                 $mapEditor .= "<input type='text' class='edit-input' value='" . $place['Name'] . "' name='' placeholder=''>";
+        //                             $mapEditor .= "</div>";
 
-                                    $mapEditor .= "<div class='location-input-coordinates-container' style='min-height:25px;'>";
-                                        $mapEditor .= "<label>Coordinates: </label>";
-                                        $mapEditor .= "<span class='required-field'>*</span>";
-                                        $mapEditor .= "<input class='edit-input' type='text' value='" . htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') . "," . htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') . "' name='' placeholder=''>"; 
-                                    $mapEditor .= "</div>";
-                                    $mapEditor .= "<div style='clear:both;'></div>";
-                                $mapEditor .= "</div>";
+        //                             $mapEditor .= "<div class='location-input-coordinates-container' style='min-height:25px;'>";
+        //                                 $mapEditor .= "<label>Coordinates: </label>";
+        //                                 $mapEditor .= "<span class='required-field'>*</span>";
+        //                                 $mapEditor .= "<input class='edit-input' type='text' value='" . htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') . "," . htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') . "' name='' placeholder=''>"; 
+        //                             $mapEditor .= "</div>";
+        //                             $mapEditor .= "<div style='clear:both;'></div>";
+        //                         $mapEditor .= "</div>";
 
-                                $mapEditor .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
-                                    $mapEditor .= "<label>WikiData:</label>";
-                                    if($place['WikidataName'] != 'NULL' && $place['WikidataId'] != 'NULL') {
-                                        $mapEditor .= "<input class='edit-input' type='text' placeholder='' name='' value='" . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "; " . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . "'>";
-                                    } else {
-                                        $mapEditor .= "<input class='edit-input' type='text' placeholder='' name=''>";
-                                    }
-                                $mapEditor .= "</div>";
+        //                         $mapEditor .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
+        //                             $mapEditor .= "<label>WikiData:</label>";
+        //                             if($place['WikidataName'] != 'NULL' && $place['WikidataId'] != 'NULL') {
+        //                                 $mapEditor .= "<input class='edit-input' type='text' placeholder='' name='' value='" . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "; " . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . "'>";
+        //                             } else {
+        //                                 $mapEditor .= "<input class='edit-input' type='text' placeholder='' name=''>";
+        //                             }
+        //                         $mapEditor .= "</div>";
 
-                                $mapEditor .= "<div class='location-input-description-container' style='height:50px;'>";
-                                    $mapEditor .= "<label>";
-                                        $mapEditor .= "Description:";
-                                        $mapEditor .= "<i class='fas fa-question-circle' style='font-size:16px; cursor:pointer; margin-left: 4px;' title='Add more information to this location, e.g. the building name, or its significance to the item'></i>";
-                                    $mapEditor .= "</label>";
-                                    $mapEditor .= "<textarea rows='2' class='edit-input' style='resize:none;' class='gsearch-form' type='text' id='ldsc'>" . htmlspecialchars($comment, ENT_QUOTES, 'UTF-8') . "</textarea>";
-                                $mapEditor .= "</div>";
+        //                         $mapEditor .= "<div class='location-input-description-container' style='height:50px;'>";
+        //                             $mapEditor .= "<label>";
+        //                                 $mapEditor .= "Description:";
+        //                                 $mapEditor .= "<i class='fas fa-question-circle' style='font-size:16px; cursor:pointer; margin-left: 4px;' title='Add more information to this location, e.g. the building name, or its significance to the item'></i>";
+        //                             $mapEditor .= "</label>";
+        //                             $mapEditor .= "<textarea rows='2' class='edit-input' style='resize:none;' class='gsearch-form' type='text' id='ldsc'>" . htmlspecialchars($comment, ENT_QUOTES, 'UTF-8') . "</textarea>";
+        //                         $mapEditor .= "</div>";
 
 
-                                $mapEditor .= "<div class='form-buttons-right'>";
-                                    $mapEditor .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
-                                        $mapEditor .= "CANCEL";
-                                    $mapEditor .= "</button>";
+        //                         $mapEditor .= "<div class='form-buttons-right'>";
+        //                             $mapEditor .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
+        //                                 $mapEditor .= "CANCEL";
+        //                             $mapEditor .= "</button>";
 
-                                    $mapEditor .= "<button class='item-page-save-button theme-color-background edit-location-save'
-                                                    onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
-                                        $mapEditor .= "SAVE";
-                                    $mapEditor .= "</button>";
+        //                             $mapEditor .= "<button class='item-page-save-button theme-color-background edit-location-save'
+        //                                             onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
+        //                                 $mapEditor .= "SAVE";
+        //                             $mapEditor .= "</button>";
 
-                                    $mapEditor .= "<div id='item-location-" . $place['PlaceId'] . "-spinner-container' class='spinner-container spinner-container-right'>";
-                                        $mapEditor .= "<div class='spinner'></div>";
-                                    $mapEditor .= "</div>";
-                                    $mapEditor .= "<div style='clear:both;'></div>";
-                                $mapEditor .= "</div>";
+        //                             $mapEditor .= "<div id='item-location-" . $place['PlaceId'] . "-spinner-container' class='spinner-container spinner-container-right'>";
+        //                                 $mapEditor .= "<div class='spinner'></div>";
+        //                             $mapEditor .= "</div>";
+        //                             $mapEditor .= "<div style='clear:both;'></div>";
+        //                         $mapEditor .= "</div>";
 
-                                $mapEditor .= "<div style='clear:both;'></div>";
-                            $mapEditor .= "</div>";
-                        $mapEditor .= "</div>";
-                    $mapEditor .= "</li>";
-                }
-            $mapEditor .= "</ul>";
-        $mapEditor .= "</div>";
+        //                         $mapEditor .= "<div style='clear:both;'></div>";
+        //                     $mapEditor .= "</div>";
+        //                 $mapEditor .= "</div>";
+        //             $mapEditor .= "</li>";
+        //         }
+        //     $mapEditor .= "</ul>";
+        // $mapEditor .= "</div>";
 
     $mapEditor .= "</div>";
 
@@ -980,29 +1102,6 @@ function _TCT_mtr_transcription( $atts) {
             }
         $peopleDisplay .= "</div>";
     $peopleDisplay .= "</div>";
-    // Locations Display
-    $locationDisplay = "";
-    $locationDisplay .= "<div class='location-display-container' style='margin-top:20px;'>";
-        foreach($itemData['Places'] as $place) {
-            $locationDisplay .= "<div class='location-single'>";
-                $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;'>";
-                $locationDisplay .= "<p><b>" . $place['Name'] . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
-                if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
-                    $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: <b>" . $place['Comment'] . "</b></p>";
-                }
-                if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
-                    $locationDisplay .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
-                }
-            $locationDisplay .= "</div>";
-        }
-        if($itemData['StoryPlaceName'] != null || $itemData['StoryPlaceName'] != "") {
-            $locationDisplay .= "<div class='location-single'>";
-                $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;filter:saturate(0.4)'>";
-                $locationDisplay .= "<p><b>" . $itemData['StoryPlaceName'] . "</b> (" . $itemData['StoryPlaceLatitude'] . ", " . $itemData['StoryPlaceLongitude'] . ")</p>";
-                $locationDisplay .= "<p style='font-size:13px;'>Story Location</p>";
-            $locationDisplay .= "</div>";
-        }
-    $locationDisplay .= "</div>";
     
     // Transcription History
     $trHistory = "";
@@ -1372,9 +1471,10 @@ function _TCT_mtr_transcription( $atts) {
                             $imageSlider .= "<a href='" . home_url() . "/documents/story/item/?story=" . $itemData['StoryId'] . "&item=" . $itemImages[$x]['ItemId'] . "'>";
                                 $imageSlider .= "<img src='" . $sliderImgLink . "' class='slider-image' alt='slider-img-" . ($x + 1) . "' width='200' height='200' loading='". $loadingImg ."'>";
                             $imageSlider .= "</a>";
-                            $imageSlider .= "<div class='image-completion-status' style='bottom:30px;border-color:" . $itemImages[$x]['CompletionStatusColorCode'] . ";'></div>";
+                            $imageSlider .= "<div class='image-completion-status' style='background-color:" . $itemImages[$x]['CompletionStatusColorCode'] . ";'>";
+                                $imageSlider .= "<div class='slide-number-wrap'>" . ($x + 1) . "</div>";
+                            $imageSlider .= "</div>";
                         $imageSlider .= "</div>";
-                        $imageSlider .= "<div class='slide-number-wrap'>" . ($x + 1) . "</div>";
                     $imageSlider .= "</div>";
                 }
 
@@ -1822,7 +1922,7 @@ function _TCT_mtr_transcription( $atts) {
                     $content .= $mapBox;
                 $content .= "</div>";
 
-                $content .= $locationDisplay;
+                $content .= $locationView;
 
         $content .= "</div>"; // end of left side
         $content .= "<div style='float:right;width:49%;'>";

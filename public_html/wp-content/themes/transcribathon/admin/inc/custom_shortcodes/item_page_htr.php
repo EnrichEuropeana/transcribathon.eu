@@ -225,7 +225,7 @@ HED;
 <div id="app"></div>
 <script>
     window.layoutEditorConfig = {
-        xml: '{$layoutTranscription}',
+        xml: `{$layoutTranscription}`,
         iiifJson: '{$cleanImage}'
     }
 </script>';

@@ -1073,51 +1073,51 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
     locationName = jQuery('#location-name-display input').val();
     [latitude, longitude] = jQuery('#location-input-section .location-input-coordinates-container input').val().split(',');
     if (latitude != null) {
-      latitude = latitude.trim();
+        latitude = latitude.trim();
     }
     if (longitude != null) {
-      longitude = longitude.trim();
+        longitude = longitude.trim();
     }
     if (isNaN(latitude) || isNaN(longitude)) {
-      jQuery('#location-input-section .location-input-coordinates-container span').css('display', 'block');
-      jQuery('#item-location-spinner-container').css('display', 'none')
-      return 0;
+        jQuery('#location-input-section .location-input-coordinates-container span').css('display', 'block');
+        jQuery('#item-location-spinner-container').css('display', 'none')
+        return 0;
     }
     if (locationName == null || locationName == "") {
-      jQuery('#location-name-display span').css('display', 'block');
-      jQuery('#item-location-spinner-container').css('display', 'none')
-      return 0;
+        jQuery('#location-name-display span').css('display', 'block');
+        jQuery('#item-location-spinner-container').css('display', 'none')
+        return 0;
     }
   
     if (jQuery('#location-input-section .location-input-name-container input').val() == "") {
-      jQuery('#location-input-section .location-input-name-container span').css('display', 'block');
-      jQuery('#item-location-spinner-container').css('display', 'none')
-      return 0;
+        jQuery('#location-input-section .location-input-name-container span').css('display', 'block');
+        jQuery('#item-location-spinner-container').css('display', 'none')
+        return 0;
     }
   
     description = jQuery('#location-input-section .location-input-description-container textarea').val();
     wikidata = jQuery('#location-input-geonames-search-container > input').val().split(";");
   
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-      'type': 'GET',
-      'url': TP_API_HOST + '/tp-api/items/' + itemId
+        'type': 'GET',
+        'url': TP_API_HOST + '/tp-api/items/' + itemId
     },
-      function(response) {
+    function(response) {
         var response = JSON.parse(response);
         var locationCompletion = JSON.parse(response.content)["LocationStatusName"];
         var data = {
-                  Name: locationName,
-                  Latitude: latitude,
-                  Longitude: longitude,
-                  ItemId: itemId,
-                  Link: "",
-                  Zoom: 10,
-                  Comment: description,
-                  WikidataName: wikidata[0],
-                  WikidataId: wikidata[1],
-                  UserId: userId,
-                  UserGenerated: 1
-                }
+            Name: locationName,
+            Latitude: latitude,
+            Longitude: longitude,
+            ItemId: itemId,
+            Link: "",
+            Zoom: 10,
+            Comment: description,
+            WikidataName: wikidata[0],
+            WikidataId: wikidata[1],
+            UserId: userId,
+            UserGenerated: 1
+        }
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
             'type': 'POST',
             'url': TP_API_HOST + '/tp-api/places',
@@ -1125,29 +1125,29 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
         },
         // Check success and create confirmation message
         function(response) {
-          scoreData = {
-                        ItemId: itemId,
-                        UserId: userId,
-                        ScoreType: "Location",
-                        Amount: 1
-                      }
-          jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-              'type': 'POST',
-              'url': TP_API_HOST + '/tp-api/scores',
-              'data': scoreData
-          },
-          // Check success and create confirmation message
-          function(response) {
-          })
+            scoreData = {
+                ItemId: itemId,
+                UserId: userId,
+                ScoreType: "Location",
+                Amount: 1
+            }
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/scores',
+                'data': scoreData
+            },
+            // Check success and create confirmation message
+            function(response) {
+            })
   
-          loadPlaceData(itemId, userId);
-          if (locationCompletion == "Not Started") {
-            changeStatus(itemId, "Not Started", "Edit", "LocationStatusId", 2, editStatusColor, statusCount)
-          }
-          jQuery('#location-input-section').removeClass('show')
-          jQuery('#location-input-section input').val("")
-          jQuery('#location-input-section textarea').val("")
-          jQuery('#item-location-spinner-container').css('display', 'none')
+            loadPlaceData(itemId, userId);
+            if (locationCompletion == "Not Started") {
+                changeStatus(itemId, "Not Started", "Edit", "LocationStatusId", 2, editStatusColor, statusCount)
+            }
+            jQuery('#location-input-section').removeClass('show')
+            jQuery('#location-input-section input').val("")
+            jQuery('#location-input-section textarea').val("")
+            jQuery('#item-location-spinner-container').css('display', 'none')
         });
     });
 }
@@ -1471,103 +1471,121 @@ function loadPlaceData(itemId, userId) {
         'url': TP_API_HOST + '/tp-api/places?ItemId=' + itemId
     },
     function(response) {
-      var response = JSON.parse(response);
-      if (response.code == "200") {
-        var content = JSON.parse(response.content);
-        jQuery('#item-location-list ul').html('')
-  
-        for (var i = 0; i < content.length; i++) {
-          if (content[i]['Comment'] != "NULL" && content[i]['Comment'] != null) {
-            var comment = content[i]['Comment'];
-          }
-          else {
-              var comment = "";
-          }
-          var placeHtml = "";
-          placeHtml +=
-            '<li id="location-' + content[i]['PlaceId'] + '">' +
-              '<div class="item-data-output-element-header collapse-controller" data-toggle="collapse" href="#location-data-output-' + content[i]['PlaceId'] + '">' +
-                  '<h6>' +
-                  escapeHtml(content[i]['Name']) +
-                  '</h6>' +
-                  '<i class="fas fa-angle-down"' +  'style= "float:right;"></i>' +
-                  '<div style="clear:both;"></div>' +
-                '</div>' +
-                              '<div id="location-data-output-' + content[i]['PlaceId'] + '" class="collapse">' +
-                              '<div id="location-data-output-display-' + content[i]['PlaceId'] + '" class="location-data-output-content">' +
-                                  '<span>' +
-                                      'Description: ' +
-                                      escapeHtml(comment) +
-                                  '</span></br>' +
-                                  '<span>' +
-                                      'Wikidata: ' +
-                                      '<a href="' + 'http://wikidata.org/wiki/' + content[i]['WikiDataId'] +'" style="text-decoration: none;" target="_blank">' +
-                                      content[i]['WikidataName'] + ', ' + content[i]['WikidataId'] +
-                                      '</a>' +
-                                  '</span>' +
-                                 '<div style="display:flex;"><span style="width:86%;"></span>' + '<span style="width:14%;">' +
-  
-                                  '<i class="edit-item-data-icon fas fa-pencil theme-color-hover login-required"' +
-                                                      'onClick="openLocationEdit(' + content[i]['PlaceId'] + ')"></i>' +
-                                  '<i class="edit-item-data-icon fas fa-trash-alt theme-color-hover login-required"' +
-                                                      'onClick="deleteItemData(\'places\', ' + content[i]['PlaceId'] + ', ' + itemId + ', \'place\', ' + userId + ')"></i>' +
-                                  '</span></div>' +
-                              '</div>' +
-                              '<div id="location-data-edit-' + escapeHtml(content[i]['PlaceId']) + '" class="location-data-edit-container">' +
-                                  '<div class="location-input-section-top">' +
-                                      '<div class="location-input-name-container">' +
-                                          '<label>Location Name:</label>' +
-                                          '<input type="text" class="edit-input" value="' + escapeHtml(content[i]['Name']) + '" name="" placeholder="">' +
-                                      '</div>' +
-                                      '<div class="location-input-coordinates-container">' +
-                                          '<label>Coordinates: </label>' +
-                                          '<span class="required-field">*</span>' +
-                                          '<input type="text" class="edit-input" value="' + escapeHtml(content[i]['Latitude']) + ', ' + escapeHtml(content[i]['Longitude']) + '" name="" placeholder="">' +
-                                      '</div>' +
-                                      "<div style='clear:both;'></div>" +
-                                  '</div>' +
-  
-                                  '<div class="location-input-geonames-container location-search-container" style="margin:5px 0;">' +
-                                  '<label>WikiData:</label>';
-                                  if (content[i]['WikidataName'] != "NULL" && content[i]['WikidataId'] != "NULL") {
-                                    placeHtml +=
-                                      '<input type="text" id="lgns" class="edit-input" placeholder="" name="" value="' + escapeHtml(content[i]['WikidataName']) + '; ' + escapeHtml(content[i]['WikidataId']) + '"/>';
-                                  }
-                                  else {
-                                    placeHtml +=
-                                      '<input type="text" id="lgns" class="edit-input" placeholder="" name=""/>';
-                                  }
-                                  placeHtml +=
-                                '</div>' +
-  
-                                  '<div class="location-input-description-container" style="height:50px;">' +
-                                      '<label>Description:<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this location, e.g. the building name, or its significance to the item"></i></label>' +
-                                      '<textarea rows= "2" style="resize:none;" class="gsearch-form edit-input" type="text" id="ldsc" placeholder="" name="">' + comment + '</textarea>' +
-                                  '</div>' +
-  
-                                  "<div class='form-buttons-right'>" +
-                                      "<button onClick='editItemLocation(" + content[i]['PlaceId'] + ", " + itemId + ", " + userId + ")' " +
-                                                  "class='item-page-save-button edit-location-save theme-color-background'>" +
-                                          "SAVE" +
-                                      "</button>" +
-  
-                                      "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
-                                          "CANCEL" +
-                                      "</button>" +
-  
-                                      '<div id="item-location-' + content[i]['PlaceId'] +'-spinner-container" class="spinner-container spinner-container-right">' +
-                                          '<div class="spinner"></div>' +
-                                      "</div>" +
-                                      "<div style='clear:both;'></div>" +
-                                  "</div>" +
-                                  "<div style='clear:both;'></div>" +
-                                 "</div>" +
-                          "</div>" +
-            '</li>';
-  
-          jQuery('#item-location-list ul').append(placeHtml);
+        var response = JSON.parse(response);
+        if (response.code == "200") {
+            const content = JSON.parse(response.content);
+            const locContainer = document.querySelector('.location-display-container');
+            const locViewCont = document.querySelector('.location-view-container');
+            const storyLoc = locContainer.querySelector('.story-location');
+            const viewStoryLoc = storyLoc.cloneNode(true);
+            // Empty the old location list
+            locContainer.innerHTML = "";
+            locViewCont.innerHTML = "";
+
+            for(let location of content) {
+                locContainer.innerHTML +=
+                    `<div id='location-${escapeHtml(location['PlaceId'])}' >` +
+                        `<div id='location-data-output-${location['PlaceId']}' class='location-single'>` +
+                            `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
+                            `<p><b>${escapeHtml(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
+                            // Check if there is description : don't add <p> if not
+                            `${location['Comment'] ?
+                                `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>` 
+                                :
+                                `` 
+                            }` +
+                            // Check for Wikidata : ^^
+                            `${location['WikidataId'] ?
+                                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/${location['WikidataId']} ` +
+                                `style='text-decoration:none;' target='_blank'>${escapeHtml(location['WikidataName'])}, ${escapeHtml(location['WikidataId'])}</a></b></p>`
+                                :
+                                ''
+                            }` +
+                            `<div class='edit-delete-btns'>` +
+                                `<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openLocationEdit(${escapeHtml(location['PlaceId'])})'></i>` +
+                                `<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover' onClick='deleteItemData("places", ${escapeHtml(location['PlaceId'])}, ${itemId}, "place", ${userId})'></i>` +
+                            `</div>` +
+                        `</div>` +
+
+                        `<div id='location-data-edit-${escapeHtml(location['PlaceId'])}' class='location-data-edit-container' style='display:none;'>` +
+                            // Input Top
+                            `<div class='location-input-section-top'>` +
+                                `<div class='location-input-name-container' style='min-height:25px;'>` +
+                                    `<label>Location Name:</label>` + 
+                                    `<input type='text' class='edit-input' value='${escapeHtml(location['Name'])}' name='' placeholder=''>` +
+                                `</div>` +
+                                `<div class='location-input-coordinates-container' style='min-height:25px;'>` +
+                                    `<label>Coordinates: </label>` +
+                                    `<span class='required-field'>*</span>` +
+                                    `<input type='text' class='edit-input' value='${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])}' name='' placeholder=''>` +
+                                `</div>` +
+                                `<div style='clear:both;'></div>` + 
+                            `</div>` +
+                            // Wikidata ref container
+                            `<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>` +
+                                `<label>Wikidata Reference:` +
+                                    `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>` +
+                                `</label>` +
+                                `${location['WikidataId'] ?
+                                    `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value='${escapeHtml(location['WikidataName'])}; ${escapeHtml(location['WikidataId'])}' >`
+                                    :
+                                    `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value=''>`
+                                }` +
+                            `</div>` +
+                            // Description
+                            `<div class='location-input-description-container' style='height:50px;'>` +
+                                `<label>Description: ` +
+                                    `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Add more information about this location, e.g. building name, or it's significance to the item...'></i>` +
+                                `</label>` +
+                                `<textarea rows='2' id='ldsc' class='edit-input gsearch-form' style='resize:none;' type='text'>` +
+                                `${location['Comment'] != 'NULL' ?
+                                `${escapeHtml(location['Comment'])}`
+                                :
+                                ``
+                                }` +
+                                `</textarea>` +
+                            `</div>` +
+                            // Buttons
+                            `<div class='form-buttons-right'>` +
+                                `<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(${location['PlaceId']})'>` +
+                                    `CANCEL` +
+                                `</button>` +
+                                `<button class='theme-color-bckground edit-location-save' onClick='editItemLocation(${location['PlaceId']}, ${itemId}, ${userId})'>` +
+                                    `SAVE` +
+                                `</button>` +
+                                // Spinner 
+                                `<div id='item-location-${location['PlaceId']}-spinner-container' class='spinner-container spinner-container-right'>` +
+                                    `<div class='spinner'></div>` +
+                                `</div>` +
+                                `<div style='clear:both;'></div>` +
+                            `</div>` +
+                            `<div style='clear:both;'></div>` +
+                        `</div>` +
+                    `</div>` ;
+
+                // Update the view out of full screen
+                locViewCont.innerHTML += 
+                    `<div class='location-single'>` +
+                        `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
+                        `<p><b>${escapeHtml(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
+                        // Check if there is description : don't add <p> if not
+                        `${location['Comment'] ?
+                            `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>` 
+                            :
+                            `` 
+                        }` +
+                        // Check for Wikidata : ^^
+                        `${location['WikidataId'] ?
+                            `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/${location['WikidataId']} ` +
+                            `style='text-decoration:none;' target='_blank'>${escapeHtml(location['WikidataName'])}, ${escapeHtml(location['WikidataId'])}</a></b></p>`
+                            :
+                            ''
+                        }` +
+                    `</div>` ;
+            }
+            locContainer.appendChild(storyLoc);
+            locViewCont.appendChild(viewStoryLoc);
         }
-      }
     });
 }
 // TODO there is better and more efficient way to do this
@@ -1973,18 +1991,20 @@ function stripHTML(dirtyString) {
 }
 
 function openLocationEdit(placeId) {
+    const locId = '#location-' + placeId;
+    const locSingle = document.querySelector(locId);
     if (jQuery('#transcribeLock').length) {
-      event.preventDefault();
-      lockWarning();
-      return 0;
+        e.preventDefault();
+        lockWarning();
+        return 0;
     }
-    if (jQuery('#location-data-edit-' + placeId).css('display') == 'none') {
-      jQuery('#location-data-edit-' + placeId).css('display', 'block');
-      jQuery('#location-data-output-display-' + placeId).css('display', 'none');
+    if (locSingle.querySelector('.location-data-edit-container').style.display == 'none') {
+        locSingle.querySelector('.location-data-edit-container').style.display = 'block';
+        locSingle.querySelector('.location-single').style.dispay = 'none';
     }
     else {
-      jQuery('#location-data-edit-' + placeId).css('display', 'none');
-      jQuery('#location-data-output-display-' + placeId).css('display', 'block');
+        locSingle.querySelector('.location-data-edit-container').style.display = 'none';
+        locSingle.querySelector('.location-single').style.dispay = 'block';
     }
 }
 
@@ -2432,15 +2452,12 @@ ready(() => {
     // Item page, bind 'escape' key to close login warning if open, or full screen view(if open)
     //const escape = new KeyboardEvent('keydown');
     document.addEventListener('keydown',function(escape) {
-        const itemLogContainer = document.querySelector('#item-page-login-container');
+        //const itemLogContainer = document.querySelector('#item-page-login-container');
         const fullScreen = document.querySelector('#image-view-container');
         const lockWarning = document.querySelector('#locked-warning-container');
 
         if(escape.key === 'Escape') {
-            if(itemLogContainer.style.display != 'none' || lockWarning.style.display != 'none') {
-                itemLogContainer.style.display = 'none';
-                lockWarning.style.display = 'none';
-            } else if(fullScreen.style.display != 'none') {
+            if(fullScreen.style.display != 'none') {
                 switchItemPageView();
             }
         }
