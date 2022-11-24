@@ -95,14 +95,14 @@ class HtrData
 		$itemResultJson = $this->transkribusClient->getDataFromTranscribathon(
 			null,
 			array(
-				'itemId' => $itemId,
-				'htrId' => $htrId,
-				'orderBy' => 'updated_at',
+				'ItemId' => $itemId,
+				'HtrId' => $htrId,
+				'orderBy' => 'LastUpdated',
 				'orderDir' => 'desc'
 			)
 		);
 		$storedHtr = json_decode($itemResultJson, true);
-		$isItemWithHtrIdInHtrDb = !empty($storedHtr['data'][0]['id']) ? true : false;
+		$isItemWithHtrIdInHtrDb = !empty($storedHtr['data'][0]['HtrDataId']) ? true : false;
 
 		// check item existence in db here by itemId and $htrId
 		if (!$isItemWithHtrIdInHtrDb) {
@@ -120,11 +120,11 @@ class HtrData
 		} else {
 
 			$storedHtrData = $storedHtr['data'][0];
-			$processId = intval($storedHtrData['process_id']);
-			$id = intval($storedHtrData['id']);
+			$processId = intval($storedHtrData['ProcessId']);
+			$id = intval($storedHtrData['HtrDataId']);
 
 			// can be updated
-			if (in_array($storedHtrData['htr_status'], array('CREATED', 'WAITING', 'RUNNING'))) {
+			if (in_array($storedHtrData['HtrStatus'], array('CREATED', 'WAITING', 'RUNNING'))) {
 
 				$transkribusData = $this->transkribusClient->getJSONDatafromTranskribus($processId);
 
@@ -153,8 +153,8 @@ class HtrData
 
 					// save the data
 					$updateData = array(
-						'htr_status'         => 'FINISHED',
-						'transcription_data' => $transkribusXmlData
+						'HtrStatus'         => 'FINISHED',
+						'TranscriptionData' => $transkribusXmlData
 					);
 
 					$updateQuery = $this->updateItem($id, $updateData);

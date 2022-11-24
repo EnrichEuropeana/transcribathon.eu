@@ -43,16 +43,16 @@ function _TCT_item_page_htr( $atts) {
     $htrDataJson = $transkribusClient->getDataFromTranscribathon(
         null,
         array(
-            'itemId' => $_GET['item'],
-		        'orderBy' => 'updated_at',
+            'ItemId' => $_GET['item'],
+		        'orderBy' => 'LastUpdated',
 		        'orderDir' => 'desc'
         )
     );
 
     // extract the data itself
     $htrDataArray = json_decode($htrDataJson, true);
-    $htrData = $htrDataArray['data'][0]['transcription_data'];
-    
+    $htrData = $htrDataArray['data'][0]['TranscriptionData'];
+
 
     $minimalPageXML = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         . '<PcGts xmlns="" xmlns:xsi="" xsi:schemaLocation="">'
@@ -84,12 +84,12 @@ function _TCT_item_page_htr( $atts) {
 
     $transcription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
     $transcription = htmlspecialchars($transcription);
-    
-    
-    
 
-    
-    
+
+
+
+
+
 
     $wpUserId = get_current_user_id();
     $url = TP_API_HOST."/tp-api/users/".$wpUserId;
@@ -118,7 +118,7 @@ function _TCT_item_page_htr( $atts) {
 <link href="{$textEditorUrl}js/app.83160130.js" rel=preload as=script>
 <link href="{$textEditorUrl}js/chunk-vendors.8c83230e.js" rel=preload as=script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<style> 
+<style>
 button.button.is-success {
     background: #0a72cc!important;
 }
@@ -171,15 +171,15 @@ ready(() => {
 <script src="{$textEditorUrl}js/app.83160130.js"></script>
 <script>
 
-    
+
 
 
     window.eventBus.\$on('save', async (data) => {
 
         const payload = {
-            item_id: {$itemId},
-            user_id: {$userId},
-            transcription_data: data.xml
+            ItemId: {$itemId},
+            UserId: {$userId},
+            TranscriptionData: data.xml
         };
 
         const sendData = await fetch('{$requestUri}', {
@@ -246,13 +246,13 @@ var ready = (callback) => {
     else document.addEventListener("DOMContentLoaded", callback);
 }
 ready(() => {
-    
+
     window.onLayoutSave = async (xml) => {
 
         const payload = {
-            item_id: {$itemId},
-            user_id: {$userId},
-            transcription_data: xml
+            ItemId: {$itemId},
+            UserId: {$userId},
+            TranscriptionData: xml
         };
 
         const sendData = await fetch('{$requestUri}', {

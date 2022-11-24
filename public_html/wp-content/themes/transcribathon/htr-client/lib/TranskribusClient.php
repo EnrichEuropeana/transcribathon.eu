@@ -117,10 +117,10 @@ class TranskribusClient
 		$status      = $resultArray['status'];
 
 		$postData = array(
-			'item_id' => $itemId,
-			'htr_id'  => $htrId,
-			'process_id' => $processId,
-			'htr_status' => $status
+			'ItemId' => $itemId,
+			'HtrId'  => $htrId,
+			'ProcessId' => $processId,
+			'HtrStatus' => $status
 		);
 
 		$tpResult = $this->postToTranscribathon($postData);
@@ -177,16 +177,16 @@ class TranskribusClient
  	 *
  	 * get data from HTR Transcribathon data
  	 *
- 	 * @param  integer $itemId  ID og the HTR entry
- 	 * @param  array  $what     nature parameters of endoint call
- 	 * @return mixed            string JSON response on success otherwise false
+ 	 * @param  integer $HtrDataId  ID og the HTR entry
+ 	 * @param  array   $what       nature parameters of endoint call
+ 	 * @return mixed               string JSON response on success otherwise false
  	 */
-	public function getDataFromTranscribathon($id = null, $what = array())
+	public function getDataFromTranscribathon($HtrDataId = null, $what = array())
 	{
 		$queryOptions = array(
-			'method' => 'GET',
-			'id'     => $id,
-			'what'   => $what
+			'method'    => 'GET',
+			'HtrDataId' => $HtrDataId,
+			'what'      => $what
 		);
 
 		$result = $this->queryTranscribathon($queryOptions);
@@ -202,26 +202,26 @@ class TranskribusClient
  	 * $data example:
  	 *
  	 * array(
- 	 * 	"htr_status" => $status,
- 	 * 	"transcription_data" => $data
+ 	 * 	"HtrStatus" => $status,
+ 	 * 	"TranscriptionData" => $data
  	 * );
  	 *
- 	 * @param  integer $id ID of the entry to be updated
- 	 * @param  array   $data   $data array with data to be updated
- 	 * @result mixed           response string on success otherwise false
+ 	 * @param  integer $HtrDataId ID of the entry to be updated
+ 	 * @param  array   $data      $data array with data to be updated
+ 	 * @result mixed              response string on success otherwise false
  	 */
-	public function updateDataToTranscribathon($id, $data)
+	public function updateDataToTranscribathon($HtrDataId, $data)
 	{
-		if (!$id || !$data) {
+		if (!$HtrDataId || !$data) {
 			return false;
 		}
 
 		$payload = json_encode($data);
 
 		$queryOptions = array(
-			'method' => 'PUT',
-			'id'     => $id,
-			'body'   => $payload
+			'method'    => 'PUT',
+			'HtrDataId' => $HtrDataId,
+			'body'      => $payload
 		);
 
 		$result = $this->queryTranscribathon($queryOptions);
@@ -237,19 +237,18 @@ class TranskribusClient
  	 * $data example for data from Transkribus:
  	 *
  	 * array(
- 	 *	"item_id"    => 1111,
- 	 *	"htr_id"     => 2025,
- 	 *	"process_id" => 3333,
- 	 *	"htr_status" => 'CREATED'
+ 	 *	"ItemId"    => 1111,
+ 	 *	"HtrId"     => 2025,
+ 	 *	"ProcessId" => 3333,
+ 	 *	"HtrStatus" => 'CREATED'
  	 * );
  	 *
  	 * $data example for data from Transcribathon user:
  	 *
  	 * array(
- 	 *	"item_id"                 => 1111,
- 	 *	"user_id"                 => 2222,
- 	 * 	"transcription_data"      => '<xml />'
- 	 * 	"europeana_annotation_id" => 'string'
+ 	 *	"ItemId"                 => 1111,
+ 	 *	"UserId"                 => 2222,
+ 	 * 	"TranscriptionData"      => '<xml />'
  	 * );
  	 *
  	 * @param  array $body array with entries for the payload
@@ -258,7 +257,7 @@ class TranskribusClient
 	public function postToTranscribathon($data = array())
 
 	{
-		if (empty($data['item_id'])) {
+		if (empty($data['ItemId'])) {
 			$this->error = 'No item ID in posted data';
 			return false;
 		}
@@ -287,10 +286,10 @@ class TranskribusClient
 	{
 		if (is_array($queryOptions)) {
 			$queryOptions = array(
-				'method' => $queryOptions['method'] ?? 'GET',
-				'id'     => $queryOptions['id']     ?? null,
-				'what'   => $queryOptions['what']   ?? array(),
-				'body'   => $queryOptions['body']   ?? null
+				'method'    => $queryOptions['method']    ?? 'GET',
+				'HtrDataId' => $queryOptions['HtrDataId'] ?? null,
+				'what'      => $queryOptions['what']      ?? array(),
+				'body'      => $queryOptions['body']      ?? null
 			);
 		} else {
 			return false;
@@ -314,7 +313,7 @@ class TranskribusClient
 
 		$idSep = $what ? '=' : '/';
 		$whatPath = count($what) > 0 ? '?' . http_build_query($what): '';
-		$idPath = $id ? $idSep . $id : '';
+		$idPath = $HtrDataId ? $idSep . $HtrDataId : '';
 		$url = $this->transcribathonEndpoint . '/htrdata' . $whatPath . $idPath;
 
 		$result = $this->sendQuery($url, $options);
