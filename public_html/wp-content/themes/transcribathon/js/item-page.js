@@ -911,7 +911,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 if (transcriptionCompletion == "Not Started") {
                     changeStatus(itemId, "Not Started", "Edit", "TranscriptionStatusId", 2, editStatusColor, statusCount)
                 }
-                document.querySelector('.current-transcription').textContent = data['TextNoTags'];
+                document.querySelector('.current-transcription').innerHTML = data['Text'];
                 // Remove old languages
                 for(let singleLang of oldLanguages) {
                     selLanCont.removeChild(singleLang);
@@ -931,7 +931,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                     document.querySelector('.current-transcription').style.display = 'block';
                     document.querySelector('.current-transcription').style.paddingLeft = '24px';
                 }
-                document.querySelector('#current-tr-view').textContent = data['TextNoTags'];
+                document.querySelector('#current-tr-view').innerHTML = data['Text'];
             }
             jQuery('#item-transcription-spinner-container').css('display', 'none')
         });
