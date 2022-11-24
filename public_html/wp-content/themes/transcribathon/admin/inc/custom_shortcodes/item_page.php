@@ -690,215 +690,317 @@ function _TCT_mtr_transcription( $atts) {
             $enrichmentTab .= "</div>";
 
             $enrichmentTab .= '<div id="item-person-list" class="item-data-output-list">';
-                $enrichmentTab .= '<ul>';
-                    foreach ($itemData['Persons'] as $person) {
-                        if ($person['FirstName'] != "NULL") {
-                            $firstName = $person['FirstName'];
-                        }
-                        else {
-                            $firstName = "";
-                        }
-                        if ($person['LastName'] != "NULL") {
-                            $lastName = $person['LastName'];
-                        }
-                        else {
-                            $lastName = "";
-                        }
-                        if ($person['BirthPlace'] != "NULL") {
-                            $birthPlace = $person['BirthPlace'];
-                        }
-                        else {
-                            $birthPlace = "";
-                        }
-                        if ($person['BirthDate'] != "NULL") {
-                            $birthTimestamp = strtotime($person['BirthDate']);
-                            $birthDate = date("d/m/Y", $birthTimestamp);
-                        }
-                        else {
-                            $birthDate = "";
-                        }
-                        if ($person['DeathPlace'] != "NULL") {
-                            $deathPlace = $person['DeathPlace'];
-                        }
-                        else {
-                            $deathPlace = "";
-                        }
-                        if ($person['DeathDate'] != "NULL") {
-                            $deathTimestamp = strtotime($person['DeathDate']);
-                            $deathDate = date("d/m/Y", $deathTimestamp);
-                        }
-                        else {
-                            $deathDate = "";
-                        }
-                        if ($person['Description'] != "NULL") {
-                            $description = $person['Description'];
-                        }
-                        else {
-                            $description = "";
-                        }
-                        if($person['Link'] != "NULL") {
-                            $wikidata = $person["Link"];
-                        } else {
-                            $wikidata = "";
-                        }
-                        $personHeadline = "";
-                           $personHeadline = '<span class="item-name-header">';
-                            $personHeadline .= $firstName . ' ' . $lastName . ' ';
-                           $personHeadline .= '</span>';
-                            if ($birthDate != "") {
-                                if ($deathDate != "") {
-                                    $personHeadline .= '<span class="item-name-header">(' . $birthDate . ' - ' . $deathDate . ')</span>';
-                                }
-                                else {
-                                    $personHeadline .= '<span class="item-name-header">(Birth: ' . $birthDate . ')</span>';
-                                }
-                            }
-                            else {
-                                if ($deathDate != "") {
-                                    $personHeadline .= '<span class="item-name-header">(Death: ' . $deathDate . ')</span>';
-                                }
-                                else {
-                                    if ($description != "") {
-                                        $personHeadline .= "<span class='person-output-description-headline'>".$description."</span>";
+                foreach($itemData['Persons'] as $person) {
+                    $enrichmentTab .= "<div id='person-" . $person['PersonId'] . "'>";
+                        $enrichmentTab .= "<div class='single-person'>";
+                            $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
+                            $enrichmentTab .= "<p class='person-data'>";
+                                $enrichmentTab .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . $person['LastName'] . "</span>";
+                                if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
+                                    $enrichmentTab .= " (" . $person['BirthDate'];
+                                    if($person['BirthPlace'] != 'NULL') {
+                                        $enrichmentTab .= ", " . $person['BirthPlace'];
                                     }
+                                    $enrichmentTab .= " - " . $person['DeathDate'];
+                                    if($person['DeathPlace'] != 'NULL') {
+                                        $enrichmentTab .= ", " . $person['DeathPlace'];
+                                    }
+                                    $enrichmentTab .= ")";
+                                } else if($person['BirthDate'] != 'NULL') {
+                                    $enrichmentTab .= " (Birth: " . $person['BirthDate'];
+                                    if($person['BirthPlace'] != 'NULL') {
+                                        $enrichmentTab .= ", " . $person['BirthPlace'];
+                                    }
+                                    $enrichmentTab .= ")";
+                                } else if($person['DeathDate'] != 'NULL') {
+                                    $enrichmentTab .= " (Death: " . $person['DeathDate'];
+                                    if($person['DeathPlace'] != 'NULL') {
+                                        $enrichmentTab .= ", " . $person['DeathPlace'];
+                                    }
+                                    $enrichmentTab .= ")";
                                 }
+                            $enrichmentTab .= "</p>";
+    
+                            if($person['Description'] != 'NULL' && $person['Description'] != null) {
+                                $enrichmentTab .= "<p class='person-description'>" . $person['Description'] . "</p>";
                             }
-                        $enrichmentTab .= '<li id="person-'.$person['PersonId'].'">';
-                            $enrichmentTab .= '<div class="item-data-output-element-header collapse-controller" data-toggle="collapse" href="#person-data-output-'.$person['PersonId'].'">';
-                                $enrichmentTab .= '<h6 class="person-data-ouput-headline">';
-                                    $enrichmentTab .= '<div class="item-name-header person-dots">';
-                                        $enrichmentTab .= $personHeadline;
-                                    $enrichmentTab .= '</div>';
-                                $enrichmentTab .= '</h6>';
-                                //$taggingTab .= '<div class="person-dots" style="width=10px; white-space: nowrap; text-overflow:ellipsis;"></span>';
-                                $enrichmentTab .= '<i class="fas fa-angle-down" style= "float:right;"></i>';
-                                $enrichmentTab .= '<div style="clear:both;"></div>';
-                            $enrichmentTab .= '</div>';
-    
-                            $enrichmentTab .= '<div id="person-data-output-'.$person['PersonId'].'" class="collapse">';
-                                $enrichmentTab .= '<div id="person-data-output-display-'.$person['PersonId'].'" class="person-data-output-content">';
-                                    $enrichmentTab .= '<div>';
-                                        $enrichmentTab .= '<table border="0">';
-                                            $enrichmentTab .= '<tr>';
-                                                $enrichmentTab .= '<th></th>';
-                                                $enrichmentTab .= '<th>Birth</th>';
-                                                $enrichmentTab .= '<th>Death</th>';
-                                            $enrichmentTab .= '</tr>';
-                                            $enrichmentTab .= '<tr>';
-                                                $enrichmentTab .= '<th>Date</th>';
-                                                $enrichmentTab .= '<td>';
-                                                $enrichmentTab .= $birthDate;
-                                                $enrichmentTab .= '</td>';
-                                                $enrichmentTab .= '<td>';
-                                                $enrichmentTab .= $deathDate;
-                                                $enrichmentTab .= '</td>';
-                                            $enrichmentTab .= '</tr>';
-                                            $enrichmentTab .= '<tr>';
-                                                $enrichmentTab .= '<th>Location</th>';
-                                                $enrichmentTab .= '<td>';
-                                                $enrichmentTab .= $birthPlace;
-                                                $enrichmentTab .= '</td>';
-                                                $enrichmentTab .= '<td>';
-                                                $enrichmentTab .= $deathPlace;
-                                                $enrichmentTab .= '</td>';
-                                            $enrichmentTab .= '</tr>';
-                                        $enrichmentTab .= '</table>';
-    
-                                    $enrichmentTab .= '</div>';
-                                    $enrichmentTab .= '<div class="person-data-output-button">';
-                                            $enrichmentTab .= '<span>';
-                                                $enrichmentTab .= 'Description: ';
-                                                $enrichmentTab .= $description;
-                                            $enrichmentTab .= '</span>';
-                                            $enrichmentTab .= '<i class="login-required edit-item-data-icon fas fa-pencil theme-color-hover"
-                                                                onClick="openPersonEdit('.$person['PersonId'].')"></i>';
-                                            $enrichmentTab .= '<i class="login-required edit-item-data-icon fas fa-times theme-color-hover"
-                                                                onClick="deleteItemData(\'persons\', '.$person['PersonId'].', '.$_GET['item'].', \'person\', '.get_current_user_id().')"></i>';
-                                    $enrichmentTab .= '</div>';
-                                    $enrichmentTab .= '<div style="clear:both;"></div>';
-                                $enrichmentTab .= '</div>';
+                            if($person['Link'] != 'NULL' && $person['Link'] != null) {
+                                $enrichmentTab .= "<p class='person-description'><a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . $person['Link'] . "</a></p>";
+                            }
+                            // Edit/Delete buttons
+                            $enrichmentTab .= "<div class='edit-del-person'>";
+                                $enrichmentTab .= "<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover'
+                                                onClick='openPersonEdit(" . $person['PersonId'] . ")'></i>";
+                                $enrichmentTab .= "<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover'
+                                                onClick='deleteItemData(\"persons\", " . $person['PersonId'] . ", " . $_GET['item'] . ", \"person\", " . get_current_user_id() . ")'></i>";
+                            $enrichmentTab .= "</div>";
+                            $enrichmentTab .= "<div style='clear:both;'></div>";
+                        $enrichmentTab .= "</div>";
 
-                                $enrichmentTab .= '<div class="person-data-edit-container person-item-data-container" id="person-data-edit-'.$person['PersonId'].'">';
-                                    $enrichmentTab .= '<div class="person-input-names-container">';
-                                        if ($firstName != "") {
-                                            $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-firstName-edit" class="input-response person-input-field person-re-edit" placeholder="&nbsp First Name" value="'.$firstName.'">';
-                                        }
-                                        else {
-                                            $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-firstName-edit" class="input-response person-input-field person-re-edit" placeholder="&nbsp First Name">';
-                                        }
-
-                                        if ($lastName != "") {
-                                            $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-lastName-edit" class="input-response person-input-field person-re-edit-right" value="'.$lastName.'" placeholder="&nbsp Last Name">';
-                                        }
-                                        else {
-                                            $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-lastName-edit" class="input-response person-input-field person-re-edit-right" placeholder="&nbsp Last Name">';
-                                        }
-                                    $enrichmentTab .= '</div>';
-
-                                    $enrichmentTab .= '<div class="person-description-input">';
-                                        // $taggingTab .= '<label>Description:<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i></label><br/>';
-                                        $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-description-edit" class="input-response person-edit-field" placeholder="&nbsp Add more information to this person..." value="'.$description.'">';
-                                    $enrichmentTab .= '</div>';
-
-                                    $enrichmentTab .= '<div class="person-description-input">';
-                                        $enrichmentTab .= '<input id="person-'.$person['PersonId'].'-wiki-edit" type="text" placeholder="&nbsp Add Wikidata Id to this person..." title="e.g. Wikidata Title Id" value="'. $wikidata .'">';
-                                    $enrichmentTab .= '</div>';
+                        $enrichmentTab .= "<div id='person-data-edit-". $person['PersonId'] . "' class='person-data-edit-container person-item-data-container'>";
+                            $enrichmentTab .= "<div class='person-input-names-container'>";
+                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-firstName-edit' class='input-response person-input-field person-re-edit'
+                                                placeholder='&nbsp First Name' value='" . $person['FirstName'] . "'>";
+                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
+                                                placeholder='&nbsp Last Name' value='" . $person['LastName'] . "'>";
+                            $enrichmentTab .= "</div>";
+                            
+                            $enrichmentTab .= "<div class='person-description-input'>";
+                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
+                                                placeholder='&nbsp Add more info to this person...' value='" . $person['Description'] . "'>";
+                            $enrichmentTab .= "</div>";
     
-                                    $enrichmentTab .= '<div class="person-location-birth-inputs" style="margin-top:5px;position:relative;">';
-                                        if ($birthPlace != "") {
-                                            $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-birthPlace-edit"   class="input-response person-input-field person-re-edit" value="'.$birthPlace.'"  placeholder="&nbsp Birth Location">';
-                                        }
-                                        else {
-                                            $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-birthPlace-edit"   class="input-response person-input-field person-re-edit" placeholder="&nbsp Birth Location">';
-                                        }
+                            $enrichmentTab .= "<div class='person-description-input'>";
+                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp Add Wikidata ID to this person'
+                                                title='e.g. Wikidata Title ID' value='" . $person['Link'] . "'>";
+                            $enrichmentTab .= "</div>";
     
-                                        if ($birthDate != "") {
-                                            $enrichmentTab .= '<span class="input-response"><input type="text" id="person-'.$person['PersonId'].'-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="'.$birthDate.'" placeholder="&nbsp Birth: dd/mm/yyyy"></span>';
-                                        }
-                                        else {
-                                            $enrichmentTab .= '<span class="input-response"><input type="text" id="person-'.$person['PersonId'].'-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="&nbsp Birth: dd/mm/yyyy"></span>';
-                                        }
-                                    $enrichmentTab .= '</div>';
+                            $enrichmentTab .= "<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>";
+                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-birthPlace-edit' class='input-response person-input-field person-re-edit'
+                                                value='" . $person['BirthPlace'] . "' placeholder='&nbsp Birth Location'>";
+                                $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-birthDate-edit'
+                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . $person['BirthDate'] .
+                                                "' placeholder='&nbsp Birth: dd/mm/yyyy'></span>";
+                            $enrichmentTab .= "</div>";
     
-                                    $enrichmentTab .= '<div class="person-location-death-inputs" style="margin-top:5px;position:relative;">';
-                                        if ($deathPlace != "") {
-                                            $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-deathPlace-edit"   class="input-response person-input-field person-re-edit" value="'.$deathPlace.'" placeholder="&nbsp Death Location">';
-                                        }
-                                        else {
-                                            $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-deathPlace-edit"   class="input-response person-input-field person-re-edit" placeholder="&nbsp Death Location">';
-                                        }
+                            $enrichmentTab .= "<div class='person-location-death-inputs' style='margin-top:5px;position:relative;'>";
+                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-deathPlace-edit' class='input-response person-input-field person-re-edit'
+                                                value='" . $person['DeathPlace'] . "' placeholder='&nbsp Death Location'>";
+                                $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-deathDate-edit'
+                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . $person['Deathdate'] .
+                                                "' placeholder='&nbsp Death: dd/mm/yyyy'></span>";
+                            $enrichmentTab .= "</div>";
     
-                                        if ($deathDate != "") {
-                                            $enrichmentTab .= '<span class=\'input-response\'> <input type="text" id="person-'.$person['PersonId'].'-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="'.$deathDate.'" placeholder="&nbsp Death: dd/mm/yyyy"></span>';
-                                        }
-                                        else {
-                                            $enrichmentTab .= '<span class=\'input-response\'><input type="text" id="person-'.$person['PersonId'].'-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="&nbsp Death: dd/mm/yyyy"></span>';
-                                        }
-                                    $enrichmentTab .= '</div>';
-    
-                                    $enrichmentTab .= '<div class="form-buttons-right">';
+                            $enrichmentTab .= "<div class='form-buttons-right'>";
+                                $enrichmentTab .= "<button class='theme-color-background edit-location-cancel' onClick='openPersonEdit(" . $person['PersonId'] . ")'>";
+                                    $enrichmentTab .= "CANCEL";
+                                $enrichmentTab .= "</button>";
+                                $enrichmentTab .= "<button class='theme-color-background edit-location-save'
+                                                onClick='editPerson(" . $person['PersonId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
+                                    $enrichmentTab .= "SAVE";
+                                $enrichmentTab .= "</button>";
+                                $enrichmentTab .= "<div id='item-person-" . $person['PersonId']  ."-spinner-container' class='spinner-container spinner-container-left'>";
+                                    $enrichmentTab .= "<div class='spinner'></div>";
+                                $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "<div style='clear:both;'></diV>";
+                            $enrichmentTab .= "</div>";
+                            $enrichmentTab .= "<div style='clear:both;'></div>";
+                        $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "</div>";
 
-                                        $enrichmentTab .= "<button class='theme-color-background edit-location-cancel' onClick='openPersonEdit(".$person['PersonId'].")'>";
-                                            $enrichmentTab .= "CANCEL";
-                                        $enrichmentTab .= "</button>";
-                                        $enrichmentTab .= "<button class='edit-location-save theme-color-background'
-                                                                onClick='editPerson(".$person['PersonId'].", ".$_GET['item'].", ".get_current_user_id().")'>";
-                                            $enrichmentTab .= "SAVE";
-                                        $enrichmentTab .= "</button>";
+                }
+            $enrichmentTab .= '</div>'; // End of people display container
 
-                                        $enrichmentTab .= '<div id="item-person-'.$person['PersonId'].'-spinner-container" class="spinner-container spinner-container-left">';
-                                            $enrichmentTab .= '<div class="spinner"></div>';
-                                        $enrichmentTab .= "</div>";
-                                        $enrichmentTab .= '<div style="clear:both;"></div>';
-                                    $enrichmentTab .= '</div>';
-                                    $enrichmentTab .= '<div style="clear:both;"></div>';
-                                $enrichmentTab .= '</div>';
-                            $enrichmentTab .= '</div>';
 
-                        $enrichmentTab .= '</li>';
-                    }
-                $enrichmentTab .= '</ul>';
-            $enrichmentTab .= '</div>';
+            //     $enrichmentTab .= '<ul>';
+            //         foreach ($itemData['Persons'] as $person) {
+            //             if ($person['FirstName'] != "NULL") {
+            //                 $firstName = $person['FirstName'];
+            //             }
+            //             else {
+            //                 $firstName = "";
+            //             }
+            //             if ($person['LastName'] != "NULL") {
+            //                 $lastName = $person['LastName'];
+            //             }
+            //             else {
+            //                 $lastName = "";
+            //             }
+            //             if ($person['BirthPlace'] != "NULL") {
+            //                 $birthPlace = $person['BirthPlace'];
+            //             }
+            //             else {
+            //                 $birthPlace = "";
+            //             }
+            //             if ($person['BirthDate'] != "NULL") {
+            //                 $birthTimestamp = strtotime($person['BirthDate']);
+            //                 $birthDate = date("d/m/Y", $birthTimestamp);
+            //             }
+            //             else {
+            //                 $birthDate = "";
+            //             }
+            //             if ($person['DeathPlace'] != "NULL") {
+            //                 $deathPlace = $person['DeathPlace'];
+            //             }
+            //             else {
+            //                 $deathPlace = "";
+            //             }
+            //             if ($person['DeathDate'] != "NULL") {
+            //                 $deathTimestamp = strtotime($person['DeathDate']);
+            //                 $deathDate = date("d/m/Y", $deathTimestamp);
+            //             }
+            //             else {
+            //                 $deathDate = "";
+            //             }
+            //             if ($person['Description'] != "NULL") {
+            //                 $description = $person['Description'];
+            //             }
+            //             else {
+            //                 $description = "";
+            //             }
+            //             if($person['Link'] != "NULL") {
+            //                 $wikidata = $person["Link"];
+            //             } else {
+            //                 $wikidata = "";
+            //             }
+            //             $personHeadline = "";
+            //                $personHeadline = '<span class="item-name-header">';
+            //                 $personHeadline .= $firstName . ' ' . $lastName . ' ';
+            //                $personHeadline .= '</span>';
+            //                 if ($birthDate != "") {
+            //                     if ($deathDate != "") {
+            //                         $personHeadline .= '<span class="item-name-header">(' . $birthDate . ' - ' . $deathDate . ')</span>';
+            //                     }
+            //                     else {
+            //                         $personHeadline .= '<span class="item-name-header">(Birth: ' . $birthDate . ')</span>';
+            //                     }
+            //                 }
+            //                 else {
+            //                     if ($deathDate != "") {
+            //                         $personHeadline .= '<span class="item-name-header">(Death: ' . $deathDate . ')</span>';
+            //                     }
+            //                     else {
+            //                         if ($description != "") {
+            //                             $personHeadline .= "<span class='person-output-description-headline'>".$description."</span>";
+            //                         }
+            //                     }
+            //                 }
+            //             $enrichmentTab .= '<li id="person-'.$person['PersonId'].'">';
+            //                 $enrichmentTab .= '<div class="item-data-output-element-header collapse-controller" data-toggle="collapse" href="#person-data-output-'.$person['PersonId'].'">';
+            //                     $enrichmentTab .= '<h6 class="person-data-ouput-headline">';
+            //                         $enrichmentTab .= '<div class="item-name-header person-dots">';
+            //                             $enrichmentTab .= $personHeadline;
+            //                         $enrichmentTab .= '</div>';
+            //                     $enrichmentTab .= '</h6>';
+            //                     //$taggingTab .= '<div class="person-dots" style="width=10px; white-space: nowrap; text-overflow:ellipsis;"></span>';
+            //                     $enrichmentTab .= '<i class="fas fa-angle-down" style= "float:right;"></i>';
+            //                     $enrichmentTab .= '<div style="clear:both;"></div>';
+            //                 $enrichmentTab .= '</div>';
+    
+            //                 $enrichmentTab .= '<div id="person-data-output-'.$person['PersonId'].'" class="collapse">';
+            //                     $enrichmentTab .= '<div id="person-data-output-display-'.$person['PersonId'].'" class="person-data-output-content">';
+            //                         $enrichmentTab .= '<div>';
+            //                             $enrichmentTab .= '<table border="0">';
+            //                                 $enrichmentTab .= '<tr>';
+            //                                     $enrichmentTab .= '<th></th>';
+            //                                     $enrichmentTab .= '<th>Birth</th>';
+            //                                     $enrichmentTab .= '<th>Death</th>';
+            //                                 $enrichmentTab .= '</tr>';
+            //                                 $enrichmentTab .= '<tr>';
+            //                                     $enrichmentTab .= '<th>Date</th>';
+            //                                     $enrichmentTab .= '<td>';
+            //                                     $enrichmentTab .= $birthDate;
+            //                                     $enrichmentTab .= '</td>';
+            //                                     $enrichmentTab .= '<td>';
+            //                                     $enrichmentTab .= $deathDate;
+            //                                     $enrichmentTab .= '</td>';
+            //                                 $enrichmentTab .= '</tr>';
+            //                                 $enrichmentTab .= '<tr>';
+            //                                     $enrichmentTab .= '<th>Location</th>';
+            //                                     $enrichmentTab .= '<td>';
+            //                                     $enrichmentTab .= $birthPlace;
+            //                                     $enrichmentTab .= '</td>';
+            //                                     $enrichmentTab .= '<td>';
+            //                                     $enrichmentTab .= $deathPlace;
+            //                                     $enrichmentTab .= '</td>';
+            //                                 $enrichmentTab .= '</tr>';
+            //                             $enrichmentTab .= '</table>';
+    
+            //                         $enrichmentTab .= '</div>';
+            //                         $enrichmentTab .= '<div class="person-data-output-button">';
+            //                                 $enrichmentTab .= '<span>';
+            //                                     $enrichmentTab .= 'Description: ';
+            //                                     $enrichmentTab .= $description;
+            //                                 $enrichmentTab .= '</span>';
+            //                                 $enrichmentTab .= '<i class="login-required edit-item-data-icon fas fa-pencil theme-color-hover"
+            //                                                     onClick="openPersonEdit('.$person['PersonId'].')"></i>';
+            //                                 $enrichmentTab .= '<i class="login-required edit-item-data-icon fas fa-times theme-color-hover"
+            //                                                     onClick="deleteItemData(\'persons\', '.$person['PersonId'].', '.$_GET['item'].', \'person\', '.get_current_user_id().')"></i>';
+            //                         $enrichmentTab .= '</div>';
+            //                         $enrichmentTab .= '<div style="clear:both;"></div>';
+            //                     $enrichmentTab .= '</div>';
+
+            //                     $enrichmentTab .= '<div class="person-data-edit-container person-item-data-container" id="person-data-edit-'.$person['PersonId'].'">';
+            //                         $enrichmentTab .= '<div class="person-input-names-container">';
+            //                             if ($firstName != "") {
+            //                                 $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-firstName-edit" class="input-response person-input-field person-re-edit" placeholder="&nbsp First Name" value="'.$firstName.'">';
+            //                             }
+            //                             else {
+            //                                 $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-firstName-edit" class="input-response person-input-field person-re-edit" placeholder="&nbsp First Name">';
+            //                             }
+
+            //                             if ($lastName != "") {
+            //                                 $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-lastName-edit" class="input-response person-input-field person-re-edit-right" value="'.$lastName.'" placeholder="&nbsp Last Name">';
+            //                             }
+            //                             else {
+            //                                 $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-lastName-edit" class="input-response person-input-field person-re-edit-right" placeholder="&nbsp Last Name">';
+            //                             }
+            //                         $enrichmentTab .= '</div>';
+
+            //                         $enrichmentTab .= '<div class="person-description-input">';
+            //                             // $taggingTab .= '<label>Description:<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i></label><br/>';
+            //                             $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-description-edit" class="input-response person-edit-field" placeholder="&nbsp Add more information to this person..." value="'.$description.'">';
+            //                         $enrichmentTab .= '</div>';
+
+            //                         $enrichmentTab .= '<div class="person-description-input">';
+            //                             $enrichmentTab .= '<input id="person-'.$person['PersonId'].'-wiki-edit" type="text" placeholder="&nbsp Add Wikidata Id to this person..." title="e.g. Wikidata Title Id" value="'. $wikidata .'">';
+            //                         $enrichmentTab .= '</div>';
+    
+            //                         $enrichmentTab .= '<div class="person-location-birth-inputs" style="margin-top:5px;position:relative;">';
+            //                             if ($birthPlace != "") {
+            //                                 $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-birthPlace-edit"   class="input-response person-input-field person-re-edit" value="'.$birthPlace.'"  placeholder="&nbsp Birth Location">';
+            //                             }
+            //                             else {
+            //                                 $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-birthPlace-edit"   class="input-response person-input-field person-re-edit" placeholder="&nbsp Birth Location">';
+            //                             }
+    
+            //                             if ($birthDate != "") {
+            //                                 $enrichmentTab .= '<span class="input-response"><input type="text" id="person-'.$person['PersonId'].'-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="'.$birthDate.'" placeholder="&nbsp Birth: dd/mm/yyyy"></span>';
+            //                             }
+            //                             else {
+            //                                 $enrichmentTab .= '<span class="input-response"><input type="text" id="person-'.$person['PersonId'].'-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="&nbsp Birth: dd/mm/yyyy"></span>';
+            //                             }
+            //                         $enrichmentTab .= '</div>';
+    
+            //                         $enrichmentTab .= '<div class="person-location-death-inputs" style="margin-top:5px;position:relative;">';
+            //                             if ($deathPlace != "") {
+            //                                 $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-deathPlace-edit"   class="input-response person-input-field person-re-edit" value="'.$deathPlace.'" placeholder="&nbsp Death Location">';
+            //                             }
+            //                             else {
+            //                                 $enrichmentTab .= '<input type="text" id="person-'.$person['PersonId'].'-deathPlace-edit"   class="input-response person-input-field person-re-edit" placeholder="&nbsp Death Location">';
+            //                             }
+    
+            //                             if ($deathDate != "") {
+            //                                 $enrichmentTab .= '<span class=\'input-response\'> <input type="text" id="person-'.$person['PersonId'].'-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="'.$deathDate.'" placeholder="&nbsp Death: dd/mm/yyyy"></span>';
+            //                             }
+            //                             else {
+            //                                 $enrichmentTab .= '<span class=\'input-response\'><input type="text" id="person-'.$person['PersonId'].'-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="&nbsp Death: dd/mm/yyyy"></span>';
+            //                             }
+            //                         $enrichmentTab .= '</div>';
+    
+            //                         $enrichmentTab .= '<div class="form-buttons-right">';
+
+            //                             $enrichmentTab .= "<button class='theme-color-background edit-location-cancel' onClick='openPersonEdit(".$person['PersonId'].")'>";
+            //                                 $enrichmentTab .= "CANCEL";
+            //                             $enrichmentTab .= "</button>";
+            //                             $enrichmentTab .= "<button class='edit-location-save theme-color-background'
+            //                                                     onClick='editPerson(".$person['PersonId'].", ".$_GET['item'].", ".get_current_user_id().")'>";
+            //                                 $enrichmentTab .= "SAVE";
+            //                             $enrichmentTab .= "</button>";
+
+            //                             $enrichmentTab .= '<div id="item-person-'.$person['PersonId'].'-spinner-container" class="spinner-container spinner-container-left">';
+            //                                 $enrichmentTab .= '<div class="spinner"></div>';
+            //                             $enrichmentTab .= "</div>";
+            //                             $enrichmentTab .= '<div style="clear:both;"></div>';
+            //                         $enrichmentTab .= '</div>';
+            //                         $enrichmentTab .= '<div style="clear:both;"></div>';
+            //                     $enrichmentTab .= '</div>';
+            //                 $enrichmentTab .= '</div>';
+
+            //             $enrichmentTab .= '</li>';
+            //         }
+            //     $enrichmentTab .= '</ul>';
+            // $enrichmentTab .= '</div>'; // End of people display container
 
         $enrichmentTab .= "</div>";
 

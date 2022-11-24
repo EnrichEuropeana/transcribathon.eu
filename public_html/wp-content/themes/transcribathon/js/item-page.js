@@ -1596,256 +1596,138 @@ function loadPersonData(itemId, userId) {
         'url': TP_API_HOST + '/tp-api/persons?ItemId=' + itemId
     },
     function(response) {
-      var response = JSON.parse(response);
-      if (response.code == "200") {
-        var content = JSON.parse(response.content);
-        jQuery('#item-person-list ul').html('')
+        var response = JSON.parse(response);
+        if (response.code == "200") {
+            var content = JSON.parse(response.content);
+            const personOutCont = document.querySelector('#item-person-list');
+            const personViewCont = document.querySelector('#people-view .people-container div');
+
+            personOutCont.innerHTML = '';
+            personViewCont.innerHTML = '';
   
-        for (var i = 0; i < content.length; i++) {
-          if (content[i]['FirstName'] != "NULL" && content[i]['FirstName'] != null) {
-            var firstName = escapeHtml(content[i]['FirstName']);
-          }
-          else {
-              var firstName = "";
-          }
-          if (content[i]['LastName'] != "NULL" && content[i]['LastName'] != null) {
-              var lastName = escapeHtml(content[i]['LastName']);
-          }
-          else {
-              var lastName = "";
-          }
-          if (content[i]['BirthPlace'] != "NULL" && content[i]['BirthPlace'] != null) {
-              var birthPlace = escapeHtml(content[i]['BirthPlace']);
-          }
-          else {
-              var birthPlace = "";
-          }
-          if (content[i]['BirthDate'] != "NULL" && content[i]['BirthDate'] != null) {
-              var birthTimestamp = Date.parse(content[i]['BirthDate']);
-              var birthDate = new Date(birthTimestamp);
-              birthDate = ("0" + birthDate.getDate()).slice(-2) + '/' + ("0" + (birthDate.getMonth() + 1)).slice(-2) + '/' + birthDate.getFullYear();
-          }
-          else {
-              var birthDate = "";
-          }
-          if (content[i]['DeathPlace'] != "NULL" && content[i]['DeathPlace'] != null) {
-              var deathPlace = escapeHtml(content[i]['DeathPlace']);
-          }
-          else {
-              var deathPlace = "";
-          }
-          if (content[i]['DeathDate'] != "NULL" && content[i]['DeathDate'] != null) {
-              var deathTimestamp = Date.parse(content[i]['DeathDate']);
-              var deathDate = new Date(deathTimestamp);
-              deathDate = ("0" + deathDate.getDate()).slice(-2) + '/' + ("0" + (deathDate.getMonth() + 1)).slice(-2) + '/' + deathDate.getFullYear();
-          }
-          else {
-              var deathDate = "";
-          }
-          if (content[i]['Description'] != "NULL" && content[i]['Description'] != null) {
-              var description = escapeHtml(content[i]['Description']);
-          }
-          else {
-              var description = "";
-          }
-          if (content[i]['Link'] != "NULL" && content[i]['Link'] != null) {
-              var wikidata = escapeHtml(content[i]['Link']);
-          }
-          else {
-              var wikidata = "";
-          }
-  
-          var personHeadline = '<span class="item-name-header">' +
-          firstName + ' ' + lastName + ' ' +
-          '</span>';
-          if (birthDate != "") {
-            if (deathDate != "") {
-              personHeadline += '<span class="item-name-header">(' + birthDate + ' - ' + deathDate + ')</span>';
+            for(let person of content) {
+                console.log(person);
+                personOutCont.innerHTML += 
+                    `<div id='person-${person['PersonId']}'>` +
+                        `<div class='single-person'>` +
+                            `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
+                            `<p class='person-data'>` +
+                                `<span style='font-weight:400;'>${person['FirstName'] ? escapeHtml(person['FirstName']) : ''} ${person['LastName'] ? escapeHtml(person['LastName']) : ''} </span>` +
+                                // Sorry for this one, but it looks like best solution for now xD
+                                `${person['BirthDate'] && person['DeathDate'] ?
+                                    ` (${escapeHtml(person['BirthDate'])}${person['BirthPlace'] ? `, ${escapeHtml(person['BirthPlace'])}` : ``} - ${escapeHtml(person['DeathDate'])}${person['DeathPlace'] ? `, ${escapeHtml(person['DeathPlace'])})` : `)`}`
+                                    :
+                                    `${person['BirthDate'] ? 
+                                        ` (Birth: ${escapeHtml(person['BirthDate'])}${person['BirthPlace'] ? `, ${escapeHtml(person['BirthPlace'])}` : ``})`
+                                        :
+                                        `${person['DeathDate'] ? 
+                                            ` (Death: ${escapeHtml(person['DeathDate'])}${person['DeathPlace'] ? `, ${escapeHtml(person['DeathPlace'])}` : ``})`
+                                            :
+                                            ``
+                                        }` 
+                                    }` 
+                                }` +
+                            `</p>` +
+                            `${person['Description'] ?
+                                `<p class='person-description'>${escapeHtml(person['Description'])}</p>`
+                                :
+                                ``
+                            }` +
+                            `${person['Link'] ?
+                                `<p class='person-description'><a href='http://www.wikidata.org/wiki/${escapeHtml(person['Link'])}' target='_blank'>${escapeHtml(person['Link'])}</a></p>`
+                                :
+                                ``
+                            }` +
+                            `<div class='edit-del-person'>` +
+                                `<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openPersonEdit(${person['PersonId']})'></i>` +
+                                `<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover onClick='deleteItemData("persons", ${person['PersonId']}, ${itemId}, "person", ${userId})'></i>` +
+                            `</div>` +
+                            `<div style='clear:both;'></div>` +
+                        `</div>` +
+
+                        `<div id='person-data-edit-${person['PersonId']}' class='person-data-edit-container person-item-data-container'>` +
+                            `<div class='person-input-names-container'>` +
+                                `<input type='text' id='person-${person['PersonId']}-firstName-edit' class='input-response person-input-field person-re-edit'
+                                    placeholder='&nbsp First Name' value='${person['FirstName'] ? escapeHtml(person['FirstName']) : ''}'>` +
+                                `<input type='text' id='person-${person['PersonId']}-lastName-edit' class='input-response person-input-field person-re-edit-right'
+                                    placeholder='&nbsp Last Name' value='${person['LastName'] ? escapeHtml(person['LastName']) : ''}'>` +
+                            `</div>` +
+
+                            `<div class='person-description-input'>` +
+                                `<input type='text' id='person-${person['PersonId']}-description-edit' class='input-response person-edit-field'
+                                    placeholder='&nbsp Add more info about this person...' value='${person['Descripiton'] ? escapeHtml(person['Description']) : ''}'>` +
+                            `</div>` +
+
+                            `<div class='person-description-input'>` +
+                                `<input type='text' id='person-${person['PersonId']}-wiki-edit' class='input-response person-edit-field'
+                                    placeholder='&nbsp Add Wikidata ID to this person' title='e.g. Wikidata Title ID' value='${person['Link'] ? escapeHtml(person['Link']) : ''}'>` +
+                            `</div>` +
+
+                            `<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>` +
+                                `<input type='text' id='person-${person['PersonId']}-birthPlace-edit' class='input-response person-input-field person-re-edit'
+                                    value='${person['BirthPlace'] ? escapeHtml(person['BirthPlace']) : ''}' placeholder='&nbsp Birth Location'>` +
+                                `<span class='input-response'><input type='text' id='person-${person['PersonId']}-birthDate-edit' 
+                                    class='date-input-response person-input-field datepicker-input-field person-re-edit-right'
+                                    value='${person['BirthDate'] ? escapeHtml(person['BirthDate']) : ''}' placeholder='&nbsp Birth: dd/mm/yyyy'>` +
+                            `</div>` +
+
+                            `<div class='person-location-death-inputs' style='margin-top:5px;position:relative;'>` +
+                                `<input type='text' id='person-${person['PersonId']}-deathPlace-edit' class='input-response person-input-field person-re-edit'
+                                    value='${person['DeathPlace'] ? escapeHtml(person['DeathPlace']) : ''}' placeholder='&nbsp Death Location'>` +
+                                `<span class='input-response'><input type='text' id='person-${person['PersonId']}-deathDate-edit'
+                                    class='date-input-response person-input-field datepicker-input-field person-re-edit-right'
+                                    value='${person['DeathDate'] ? escapeHtml(person['DeathDate']) : ''}' placeholder='&nbsp Death: dd/mm/yyyy'>` +
+                            `</div>` + 
+
+                            `<div class='form-buttons-right'>` +
+                                `<button class='theme-color-background edit-location-cancel' onClick='openPersonEdit(${person['PersonId']})'>` +
+                                    `CANCEL` +
+                                `</button>` +
+                                `<button class='theme-color-background edit-location-save' onClick='editPerson(${person['PersonId']}, ${itemId}, ${userId})'>` +
+                                    `SAVE` +
+                                `</button>` +
+                                `<div id='item-person-${person['PersonId']}-spinner-container' class='spinner-container spinner-container-left'>` +
+                                    `<div class='spinner'></div>` +
+                                `</div>` +
+                                `<div style='clear:both;'></div>` +
+                            `</div>` + 
+                            `<div style='clear:both;'></div>` +
+                        `</div>` +
+                    `</div>`;
+
+                personViewCont.innerHTML += 
+                    `<div class='single-person'>` +
+                        `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
+                        `<p class='person-data'>` +
+                            `<span style='font-weight:400;'>${person['FirstName'] ? escapeHtml(person['FirstName']) : ''} ${person['LastName'] ? escapeHtml(person['LastName']) : ''} </span>` +
+                            // Sorry for this one, but it looks like best solution for now xD
+                            `${person['BirthDate'] && person['DeathDate'] ?
+                                ` (${escapeHtml(person['BirthDate'])}${person['BirthPlace'] ? `, ${escapeHtml(person['BirthPlace'])}` : ``} - ${escapeHtml(person['DeathDate'])}${person['DeathPlace'] ? `, ${escapeHtml(person['DeathPlace'])})` : `)`}`
+                                :
+                                `${person['BirthDate'] ? 
+                                    ` (Birth: ${escapeHtml(person['BirthDate'])}${person['BirthPlace'] ? `, ${escapeHtml(person['BirthPlace'])}` : ``})`
+                                    :
+                                    `${person['DeathDate'] ? 
+                                        ` (Death: ${escapeHtml(person['DeathDate'])}${person['DeathPlace'] ? `, ${escapeHtml(person['DeathPlace'])}` : ``})`
+                                        :
+                                        ``
+                                    }` 
+                                }` 
+                            }` +
+                        `</p>` +
+                        `${person['Description'] ?
+                            `<p class='person-description'>${escapeHtml(person['Description'])}</p>`
+                            :
+                            ``
+                        }` +
+                        `${person['Link'] ?
+                            `<p class='person-description'><a href='http://www.wikidata.org/wiki/${escapeHtml(person['Link'])}' target='_blank'>${escapeHtml(person['Link'])}</a></p>`
+                            :
+                            ``
+                        }` +
+                    `</div>`;  
+                    
             }
-            else {
-              personHeadline += '<span class="item-name-header">(Birth: ' + birthDate + ')</span>';
-            }
-          }
-          else {
-            if (deathDate != "") {
-              personHeadline += '<span class="item-name-header">(Death: ' + deathDate + ')</span>';
-            }
-            else {
-              if (description != "") {
-                personHeadline += "<span class='person-dots'>(" + description + ")</span>";
-              }
-            }
-          }
-          var personHtml =
-          '<li id="person-' + content[i]['PersonId'] + '">' +
-            '<div class="item-data-output-element-header collapse-controller" data-toggle="collapse" href="#person-data-output-' + content[i]['PersonId'] + '">' +
-              '<h6 class="person-data-ouput-headline">' +
-              personHeadline +
-              '</h6>' +
-              '<span class="person-dots" style="width=10px; white-space: nowrap; text-overflow:ellipsis;"></span>' +
-              '<i class="fas fa-angle-down" style= "float:right;"></i>' +
-              '<div style="clear:both;"></div>' +
-            '</div>' +
-            '<div id="person-data-output-' + content[i]['PersonId'] + '" class="collapse">' +
-              '<div id="person-data-output-display-' + content[i]['PersonId'] + '" class="person-data-output-content">' +
-                '<div>' +
-                    '<table border="0">' +
-                      '<tr>' +
-                        '<th></th>' +
-                        '<th>Birth</th>' +
-                        '<th>Death</th>' +
-                      '</tr>' +
-                      '<tr>' +
-                        '<th>Date</th>' +
-                        '<td>' +
-                         birthDate +
-                        '</td>' +
-                        '<td>' +
-                        deathDate +
-                        '</td>' +
-                      '</tr>' +
-                      '<tr>' +
-                        '<th>Location</th>' +
-                        '<td>' +
-                        birthPlace +
-                        '</td>' +
-                        '<td>' +
-                        deathPlace +
-                        '</td>' +
-                      '</tr>' +
-                  '</table>' +
-                    /*'<div class="person-data-output-birthDeath">' +
-                        '<span>' +
-                            'Birth Location: ' +
-                            birthPlace +
-                        '</span>' +
-                          '</br>' +
-                        '<span>' +
-                            'Death Location: ' +
-                            deathPlace +
-                        '</span>' +
-                    '</div>' +
-                    '<div class="person-data-output-birthDeath">' +
-                        '<span>' +
-                            'Birth Date: ' +
-                            birthDate +
-                        '</span>' +
-                        '</br>' +
-                        '<span>' +
-                            'Death Date: ' +
-                            deathDate +
-                        '</span>' +
-  
-                        '</br>' +
-                    '</div>' +
-                    '<div style="clear:both;"></div>' +*/
-                '</div>' +
-                '<div class="person-data-output-button">'+
-                        '<span>'+
-                            'Description: '+
-                            description +
-                        '</span>' +
-                        '<i class="login-required edit-item-data-icon fas fa-pencil theme-color-hover"' +
-                                            'onClick="openPersonEdit(' + content[i]['PersonId'] +')"></i>' +
-                        '<i class="login-required edit-item-data-icon fas fa-trash-alt theme-color-hover"' +
-                                            'onClick="deleteItemData(\'persons\', ' + content[i]['PersonId'] + ', ' + itemId + ', \'person\', ' + userId + ')"></i>' +
-                '</div>' +
-                '<div style="clear:both;"></div>' +
-              '</div>' +
-  
-              '<div class="person-data-edit-container person-item-data-container" id="person-data-edit-' + content[i]['PersonId'] + '">' +
-                '<div class="person-input-names-container">';
-                  if (firstName != "") {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit"  placeholder="First Name" class="input-response person-input-field person-re-edit" value="' + firstName + '" style="outline:none;">'
-                  }
-                  else {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-firstName-edit" class="input-response person-input-field person-re-edit" placeholder="First Name" style="outline:none;">'
-                  }
-  
-                  if (lastName != "") {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field person-re-edit-right" placeholder="Last Name" value="' + lastName + '" style="outline:none;">'
-                  }
-                  else {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-lastName-edit" class="input-response person-input-field person-re-edit-right" placeholder="Last Name" style="outline:none;">'
-                  }
-                personHtml +=
-                '</div>' +
-  
-                '<div class="person-description-input">' +
-                      //   '<label>Description:</label><br/>' +
-                        '<input type="text" id="person-' + content[i]['PersonId'] + '-description-edit" class="input-response person-input-field" placeholder="&nbsp Add more information to this person..." value="' + description + '">' +
-                      //   '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
-                '</div>' +
-  
-                '<div class="person-description-input">' +
-                //   '<label>Description:</label><br/>' +
-                  '<input type="text" id="person-' + content[i]['PersonId'] + '-wiki-edit" class="input-response person-input-field" placeholder="&nbsp Add Wikidata ID to this person..." value="' + wikidata + '">' +
-                //   '<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this person, e.g. their profession, or their significance to the item"></i>' +
-                '</div>' +
-  
-                '<div class="person-location-birth-inputs" style="margin-top:5px;position:relative;">';
-                  if (birthPlace != "") {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field person-re-edit" value="' + birthPlace + '" placeholder="Birth Location" style="outline:none;">'
-                  }
-                  else {
-                    personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-birthPlace-edit" class="input-response person-input-field person-re-edit" placeholder="Birth Location" style="outline:none;">'
-                  }
-  
-                  if (birthDate != "") {
-                    personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="' + birthDate + '" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
-                  }
-                  else {
-                    personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-birthDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="Birth: dd/mm/yyyy" style="outline:none;"></span>'
-                  }
-                  personHtml +=
-                  '</div>' +
-  
-                  '<div class="person-location-death-inputs" style="margin-top:5px;position:relative;">';
-                    if (deathPlace != "") {
-                      personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field person-re-edit" value="' + deathPlace + '" placeholder="Death Location" style="outline:none;">'
-                    }
-                    else {
-                      personHtml += '<input type="text" id="person-' + content[i]['PersonId'] + '-deathPlace-edit" class="input-response person-input-field person-re-edit" placeholder="Death Location" style="outline:none;">'
-                    }
-  
-                    if (deathDate != "") {
-                      personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" value="' + deathDate + '" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
-                    }
-                    else {
-                      personHtml += '<span class="input-response"><input type="text" id="person-' + content[i]['PersonId'] + '-deathDate-edit" class="date-input-response person-input-field datepicker-input-field person-re-edit-right" placeholder="Death: dd/mm/yyyy" style="outline:none;"></span>'
-                    }
-                    personHtml +=
-                    '</div>' +
-  
-                    '<div class="form-buttons-right">' +
-                        "<button class='edit-location-save theme-color-background'" +
-                                    "onClick='editPerson(" + content[i]['PersonId'] + ", " + itemId + ", " + userId + ")'>" +
-                            "SAVE" +
-                        "</button>" +
-  
-                        "<button id='save-personinfo-button' class='theme-color-background edit-location-cancel' onClick='openPersonEdit(" + content[i]['PersonId'] + ")'>" +
-                            "CANCEL" +
-                        "</button>" +
-  
-                        '<div id="item-person-' + content[i]['PersonId'] + '-spinner-container" class="spinner-container spinner-container-left">' +
-                            '<div class="spinner"></div>' +
-                        "</div>" +
-                        '<div style="clear:both;"></div>' +
-                    '</div>' +
-                    '<div style="clear:both;"></div>' +
-                  '</div>' +
-                '</div>' +
-              '</li>'
-          jQuery('#item-person-list ul').append(personHtml)
-          jQuery( ".datepicker-input-field" ).datepicker({
-              dateFormat: "dd/mm/yy",
-              changeMonth: true,
-              changeYear: true,
-              yearRange: "100:+10",
-              showOn: "button",
-              buttonImage:  `${home_url}/public_html/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg`
-            });
-        }
       }
     });
 }
