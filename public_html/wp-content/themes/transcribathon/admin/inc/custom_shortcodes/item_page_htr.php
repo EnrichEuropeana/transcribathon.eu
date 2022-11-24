@@ -225,12 +225,56 @@ HED;
 <div id="app"></div>
 <script>
     window.layoutEditorConfig = {
-        xml: '{$layoutTranscription}',
+        xml: `{$layoutTranscription}`,
         iiifJson: '{$cleanImage}'
     }
 </script>';
 <script src="{$layoutEditorUrl}js/chunk-vendors.35d45b29.js"></script>
 <script src="{$layoutEditorUrl}js/app.159aa223.js"></script>
+<style>
+footer._tct_footer, footer.site-footer {
+    display: none;
+}
+body {
+    overflow-y: hidden;
+    height: 100vh;
+}
+</style>
+<script>
+var ready = (callback) => {
+    if (document.readyState != "loading") callback();
+    else document.addEventListener("DOMContentLoaded", callback);
+}
+ready(() => {
+    
+    window.onLayoutSave = async (xml) => {
+
+        const payload = {
+            item_id: {$itemId},
+            user_id: {$userId},
+            transcription_data: xml
+        };
+
+        const sendData = await fetch('{$requestUri}', {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+
+        const result = await sendData.json();
+
+        if (result && result.success === true) {
+
+            alert('The entry has been updated.');
+
+        } else {
+
+            alert('The entry could not be saved.');
+
+        }
+    };
+
+})
+</script>
 LED;
 
         $content .= $layoutEdtitor;

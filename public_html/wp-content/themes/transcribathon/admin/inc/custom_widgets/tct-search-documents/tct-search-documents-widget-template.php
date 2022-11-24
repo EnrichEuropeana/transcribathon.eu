@@ -571,7 +571,7 @@ if (isset($_GET['qs']) || isset($_GET['qi']))  {
                         $storyTabContent .= '<div class="search-page-single-result-image">';
                         $image = json_decode($solrStoryData['response']['docs'][$i]['PreviewImageLink'], true);
 
-                        $gridImageLink = createImageLinkFromData($image, array('size' => '280,140'));
+                        $gridImageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
 
                                 // $storyTabContent .= "<a class='list-view-image' style='display:none' href='".home_url( $wp->request )."/story?story=".$solrStoryData['response']['docs'][$i]['StoryId']."'>";
                                  //   $storyTabContent .= '<img src='.$listImageLink.'>';
@@ -790,7 +790,7 @@ if (isset($_GET['qs']) || isset($_GET['qi']))  {
 
                                 $image = json_decode($item['PreviewImageLink'], true);
 
-                                $gridImageLink = createImageLinkFromData($image, array('size' => '280,140'));
+                                $gridImageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
 
                                 $itemTabContent .= "<a class='list-view-image' style='display:none' href='".home_url( $wp->request )."/item?item=".$item['ItemId']."'>";
                                     //$itemTabContent .= '<img src='.$listImageLink.'>';

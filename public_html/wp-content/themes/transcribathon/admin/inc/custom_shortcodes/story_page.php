@@ -29,7 +29,7 @@ function _TCT_get_document_data( $atts ) {
     }
 
     $imgDescription = json_decode($storyData['Items'][rand(0,(count($storyData['Items'])-1))]['ImageLink'], true);
-    $imgDescriptionLink = createImageLinkFromData($imgDescription);
+    $imgDescriptionLink = createImageLinkFromData($imgDescription, array('region' => 'full'));
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
     /////////////////////////

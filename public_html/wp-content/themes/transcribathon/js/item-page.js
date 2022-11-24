@@ -162,7 +162,7 @@ function installEventListeners() {
             for (i = 0; i < s.length; i++) {
                 if (s.options[i].innerHTML == this.innerHTML) {
                     s.selectedIndex = i;
-                    h.innerHTML = this.innerHTML;
+                    //h.innerHTML = this.innerHTML;
                     y = this.parentNode.getElementsByClassName("same-as-selected");
                     for (k = 0; k < y.length; k++) {
                         y[k].removeAttribute("class");
@@ -727,251 +727,287 @@ function updateDataProperty(dataType, id, fieldName, value) {
 // Updates the item description
 function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-description-spinner-container').css('display', 'block')
-  
+
     var descriptionLanguage = jQuery('#description-language-selector select').val();
     updateDataProperty('items', itemId, 'DescriptionLanguage', descriptionLanguage);
-  
+
     var description = jQuery('#item-page-description-text').val()
-  
+
     // Prepare data and send API requestI
     data = {
-              Description: description
-            }
+        Description: description
+    }
     var dataString= JSON.stringify(data);
-  
-      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-          'type': 'GET',
-          'url': TP_API_HOST + '/tp-api/items/' + itemId
-      },
-      function(response) {
-          // Check success and create confirmation message
-          var response = JSON.parse(response);
-      var descriptionCompletion = JSON.parse(response.content)["DescriptionStatusName"];
-      var oldDescription = JSON.parse(response.content)["Description"];
-  
-      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-        'type': 'POST',
-        'url': TP_API_HOST + '/tp-api/items/' + itemId,
-        'data': data
-      },
-      // Check success and create confirmation message
-      function(response) {
-        /*
-        if (oldDescription != null) {
-          var amount = description.length - oldDescription.length;
-        }
-        else {
-          var amount = description.length;
-        }
-        if (amount > 0) {
-          amount = amount + 10;
-        }
-        else {
-          amount = 10;
-        }*/
-        amount = 1;
-  
-        scoreData = {
-                      ItemId: itemId,
-                      UserId: userId,
-                      ScoreType: "Description",
-                      Amount: amount
-                    }
+
+    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+        'type': 'GET',
+        'url': TP_API_HOST + '/tp-api/items/' + itemId
+    },
+    function(response) {
+        // Check success and create confirmation message
+        var response = JSON.parse(response);
+        var descriptionCompletion = JSON.parse(response.content)["DescriptionStatusName"];
+        var oldDescription = JSON.parse(response.content)["Description"];
+
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
             'type': 'POST',
-            'url': TP_API_HOST + '/tp-api/scores',
-            'data': scoreData
+            'url': TP_API_HOST + '/tp-api/items/' + itemId,
+            'data': data
         },
         // Check success and create confirmation message
         function(response) {
-          console.log(response);
-        })
-        var response = JSON.parse(response);
-        if (response.code == "200") {
-          if (descriptionCompletion == "Not Started") {
-            changeStatus(itemId, "Not Started", "Edit", "DescriptionStatusId", 2, editStatusColor, statusCount)
-          }
-          jQuery('#description-update-button').css('display', 'none')
-        }
-        jQuery('#item-description-spinner-container').css('display', 'none')
-      });
-      });
+
+            // Update description text and language out of full screen when saving new values
+            const descLangCont = document.querySelector('.description-language div');
+            var descLanguage = document.querySelector('#description-language-custom-selector').textContent;
+            // Update description
+            document.querySelector('.current-description').textContent = description;
+            // Update Language
+            if(descLangCont.querySelector('.language-single')) {
+              descLangCont.querySelector('.language-single').textContent = descLanguage;
+            } else {
+              var newDescLang = document.createElement('div');
+              newDescLang.textContent = descLanguage;
+              newDescLang.classList.add('language-single');
+              descLangCont.appendChild(newDescLang);
+            }
+            amount = 1;
+            //
+            scoreData = {
+                ItemId: itemId,
+                UserId: userId,
+                ScoreType: "Description",
+                Amount: amount
+            }
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/scores',
+                'data': scoreData
+            },
+            // Check success and create confirmation message
+            function(response) {
+                console.log(response);
+            })
+            var response = JSON.parse(response);
+            if (response.code == "200") {
+                if (descriptionCompletion == "Not Started") {
+                    changeStatus(itemId, "Not Started", "Edit", "DescriptionStatusId", 2, editStatusColor, statusCount)
+                }
+                jQuery('#description-update-button').css('display', 'none')
+            }
+            jQuery('#item-description-spinner-container').css('display', 'none')
+        });
+    });
 }
 
 // Updates the item transcription
 function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
-  jQuery('#transcription-update-button').removeClass('theme-color-background');
-  jQuery('#transcription-update-button').prop('disabled', true);
-  jQuery('#item-transcription-spinner-container').css('display', 'block')
+    jQuery('#transcription-update-button').removeClass('theme-color-background');
+    jQuery('#transcription-update-button').prop('disabled', true);
+    jQuery('#item-transcription-spinner-container').css('display', 'block')
 
-  // Get languages
-  var transcriptionLanguages = [];
-  jQuery("#transcription-language-selector option").each(function() {
-    var nextLanguage = {};
-    if (jQuery(this).prop('disabled') == true && jQuery(this).val() != "") {
-      nextLanguage.LanguageId = jQuery(this).val();
-      transcriptionLanguages.push(nextLanguage);
+    // Get languages
+    var transcriptionLanguages = [];
+    jQuery("#transcription-language-selector option").each(function() {
+        var nextLanguage = {};
+        if (jQuery(this).prop('disabled') == true && jQuery(this).val() != "") {
+            nextLanguage.LanguageId = jQuery(this).val();
+            transcriptionLanguages.push(nextLanguage);
+        }
+    });
+
+    var noText = 0;
+    if (jQuery('#no-text-checkbox').is(':checked') && document.querySelector('#item-page-transcription-text').textContent == '') {
+        noText = 1
     }
-  });
-  var noText = 0;
-  if (jQuery('#no-text-checkbox').is(':checked')) {
-    noText = 1
-  }
 
-  jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-    'type': 'GET',
-    'url': TP_API_HOST + '/tp-api/items/' + itemId
-  },
+    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+        'type': 'GET',
+        'url': TP_API_HOST + '/tp-api/items/' + itemId
+    },
     function(response) {
-      var response = JSON.parse(response);
-      var itemCompletion = JSON.parse(response.content)["CompletionStatusName"];
-      var transcriptionCompletion = JSON.parse(response.content)["TranscriptionStatusName"];
-      var currentTranscription = "";
-    
-      console.log(JSON.parse(response.content)["Transcriptions"]);
-      for (var i = 0; i < JSON.parse(response.content)["Transcriptions"].length; i++) {
-        if (JSON.parse(response.content)["Transcriptions"][i]["CurrentVersion"] == 1) {
-          currentTranscription = JSON.parse(response.content)["Transcriptions"][i]["TextNoTags"];
+        var response = JSON.parse(response);
+        var itemCompletion = JSON.parse(response.content)["CompletionStatusName"];
+        var transcriptionCompletion = JSON.parse(response.content)["TranscriptionStatusName"];
+        var currentTranscription = "";
+
+        for (var i = 0; i < JSON.parse(response.content)["Transcriptions"].length; i++) {
+            if (JSON.parse(response.content)["Transcriptions"][i]["CurrentVersion"] == 1) {
+                currentTranscription = JSON.parse(response.content)["Transcriptions"][i]["TextNoTags"];
+            }
         }
-      }
-      console.log(currentTranscription);
-      
-      const wordcount = tinymce.get('item-page-transcription-text').plugins.wordcount;
-      // var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
-      // var newTranscriptionLength = tinyMCE.editors.get([jQuery('#item-page-transcription-text').attr('id')]).getContent({format : 'text'}).length;
-      if(jQuery('#item-page-transcription-text').text()) {
-        var newTranscriptionLength = wordcount.body.getCharacterCountWithoutSpaces();
-      }     
-      console.log(newTranscriptionLength);
-      // Prepare data and send API request
-      data = {
-          UserId: userId,
-          ItemId: itemId,
-          CurrentVersion: 1,
-          NoText: noText,
-          Languages: transcriptionLanguages,
-          }
-      
-      if (jQuery('#item-page-transcription-text').html()) {
-        data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'}).replace(/'/g, "\\'");
-        data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
         
-      }
-      else {
-        data['Text'] = "";
-        data['TextNoTags'] = "";
-      }
-      
-      var dataString= JSON.stringify(data);
-      
-      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-        'type': 'POST',
-        'url': TP_API_HOST + '/tp-api/transcriptions',
-        'data': data
-      },
-      // Check success and create confirmation message
-      function(response) {
+        if(noText === 0) {
+            const wordcount = tinymce.get('item-page-transcription-text').plugins.wordcount;
+            // var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
+            // var newTranscriptionLength = tinyMCE.editors.get([jQuery('#item-page-transcription-text').attr('id')]).getContent({format : 'text'}).length;
+            if(jQuery('#item-page-transcription-text').text()) {
+                var newTranscriptionLength = wordcount.body.getCharacterCountWithoutSpaces();
+            }     
+        } else {
+            var newTranscriptionLength = 0;
+        }
         
-        var amount = newTranscriptionLength - currentTranscription.length
-        if (amount > 0) {
-          amount = amount;
+        // Prepare data and send API request
+        data = {
+            UserId: userId,
+            ItemId: itemId,
+            CurrentVersion: 1,
+            NoText: noText,
+            Languages: transcriptionLanguages,
         }
-        else { 
-          amount = 0;
+      
+        if (jQuery('#item-page-transcription-text').html()) {
+            data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'}).replace(/'/g, "\\'");
+            data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'"); 
+        } else {
+            data['Text'] = "";
+            data['TextNoTags'] = "";
         }
-        console.log('ammount' + amount);
-        scoreData = {
-                      ItemId: itemId,
-                      UserId: userId,
-                      ScoreType: "Transcription",
-                      Amount: amount
-                    }
+      
+        var dataString= JSON.stringify(data);
+      
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
             'type': 'POST',
-            'url': TP_API_HOST + '/tp-api/scores',
-            'data': scoreData
+            'url': TP_API_HOST + '/tp-api/transcriptions',
+            'data': data
         },
         // Check success and create confirmation message
         function(response) {
-        })
-        updateSolr();
+        
+            var amount = newTranscriptionLength - currentTranscription.length
+            if (amount > 0) {
+                amount = amount;
+            } else { 
+                amount = 0;
+            }
 
-        var response = JSON.parse(response);
-        if (response.code == "200") {
-          if (itemCompletion == "Not Started") {
-            changeStatus(itemId, "Not Started", "Edit", "CompletionStatusId", 2, editStatusColor, statusCount)
-          }
-          if (transcriptionCompletion == "Not Started") {
-            changeStatus(itemId, "Not Started", "Edit", "TranscriptionStatusId", 2, editStatusColor, statusCount)
-          }
-        }
-        jQuery('#item-transcription-spinner-container').css('display', 'none')
-      });
+            scoreData = {
+                ItemId: itemId,
+                UserId: userId,
+                ScoreType: "Transcription",
+                Amount: amount
+            }
+
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/scores',
+                'data': scoreData
+            },
+            // Check success and create confirmation message
+            function(response) {
+            })
+            updateSolr();
+
+            var response = JSON.parse(response);
+            const selTrLangs = document.querySelectorAll('#transcription-selected-languages ul li');
+            const selLanCont = document.querySelector('.transcription-language div');
+            const oldLanguages = selLanCont.querySelectorAll('.language-single');
+
+            if (response.code == "200") {
+                if (itemCompletion == "Not Started") {
+                    changeStatus(itemId, "Not Started", "Edit", "CompletionStatusId", 2, editStatusColor, statusCount)
+                }
+                if (transcriptionCompletion == "Not Started") {
+                    changeStatus(itemId, "Not Started", "Edit", "TranscriptionStatusId", 2, editStatusColor, statusCount)
+                }
+                document.querySelector('.current-transcription').textContent = data['TextNoTags'];
+                // Remove old languages
+                for(let singleLang of oldLanguages) {
+                    selLanCont.removeChild(singleLang);
+                }
+
+                // Add new Languages
+                for(let langSingle of selTrLangs) {
+                    let langEl = document.createElement('div');
+                    langEl.classList.add('language-single');
+                    let langName = langSingle.textContent.split(' ');
+                    langEl.textContent = langName[0];
+                    selLanCont.appendChild(langEl);
+                }
+
+                if(document.querySelector('#no-text-placeholder')) {
+                    document.querySelector('#no-text-placeholder').style.display = 'none';
+                    document.querySelector('.current-transcription').style.display = 'block';
+                    document.querySelector('.current-transcription').style.paddingLeft = '24px';
+                }
+                document.querySelector('#current-tr-view').textContent = data['TextNoTags'];
+            }
+            jQuery('#item-transcription-spinner-container').css('display', 'none')
+        });
     });
-  
 }
 
 // Adds an Item Property
 function addItemProperty(itemId, userId, type, editStatusColor, statusCount, propertyValue, e) {
     if (jQuery('#type-' + propertyValue + '-checkbox').is(':checked')) {
-      jQuery('#type-' + propertyValue + '-checkbox').attr("checked", true);
-    }
-    else {
-      jQuery('#type-' + propertyValue + '-checkbox').attr("checked", false);
+        jQuery('#type-' + propertyValue + '-checkbox').attr("checked", true);
+    } else {
+        jQuery('#type-' + propertyValue + '-checkbox').attr("checked", false);
     }
     // Prepare data and send API request
     propertyId = e.value;
     data = {
-              ItemId: itemId,
-              PropertyId: propertyId,
-              UserGenerated: 1
-            }
+        ItemId: itemId,
+        PropertyId: propertyId,
+        UserGenerated: 1
+    }
     var dataString= JSON.stringify(data);
     if (e.checked) {
-      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-          'type': 'POST',
-          'url': TP_API_HOST + '/tp-api/itemProperties',
-          'data': data
-      },
-      function(response) {
-      });
-    }
-    else {
-      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-          'type': 'GET',
-          'url': TP_API_HOST + '/tp-api/itemProperties?ItemId=' + itemId + '&PropertyId=' + propertyId,
-      },
-      // Check success and create confirmation message
-      function(response) {
-        var response = JSON.parse(response);
-        if (response.code == "200") {
-          var itemPropertyId = JSON.parse(response.content)[0]['ItemPropertyId'];
-          jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-            'type': 'DELETE',
-            'url': TP_API_HOST + '/tp-api/itemProperties/' + itemPropertyId
-          },
-          // Check success and create confirmation message
-          function(response) {
-          });
-        }
-        else {
-          alert(response.content);
-        }
-      });
+        jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+            'type': 'POST',
+            'url': TP_API_HOST + '/tp-api/itemProperties',
+            'data': data
+        },
+        function(response) {
+            const keyWordCont = document.querySelector('.type-of-media div');
+            let newKeyWord = document.createElement('div');
+            newKeyWord.classList.add('keyword-single');
+            newKeyWord.textContent = e.name;
+            keyWordCont.appendChild(newKeyWord);
+        });
+    } else {
+        jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+            'type': 'GET',
+            'url': TP_API_HOST + '/tp-api/itemProperties?ItemId=' + itemId + '&PropertyId=' + propertyId,
+        },
+        // Check success and create confirmation message
+        function(response) {
+            var response = JSON.parse(response);
+            if (response.code == "200") {
+                var itemPropertyId = JSON.parse(response.content)[0]['ItemPropertyId'];
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'DELETE',
+                    'url': TP_API_HOST + '/tp-api/itemProperties/' + itemPropertyId
+                },
+                // Check success and create confirmation message
+                function(response) {
+                    const keyWordCont = document.querySelector('.type-of-media div');
+                    const oldKeyWords = keyWordCont.querySelectorAll('.keyword-single');
+                    for(let keyW of oldKeyWords) {
+                        if(keyW.textContent === e.name) {
+                            keyWordCont.removeChild(keyW);
+                        }
+                    }
+                });
+            } else {
+                alert(response.content);
+            }
+        });
     }
     if (type == "category") {
-      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-        'type': 'GET',
-        'url': TP_API_HOST + '/tp-api/items/' + itemId
-      },
-      function(response) {
-        // Check success and create confirmation message
-        var response = JSON.parse(response);
-        var descriptionCompletion = JSON.parse(response.content)["DescriptionStatusName"];
-        if (descriptionCompletion == "Not Started") {
-          changeStatus(itemId, "Not Started", "Edit", "DescriptionStatusId", 2, editStatusColor, statusCount)
-        }
-      })
+        jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+            'type': 'GET',
+            'url': TP_API_HOST + '/tp-api/items/' + itemId
+        },
+        function(response) {
+            // Check success and create confirmation message
+            var response = JSON.parse(response);
+            var descriptionCompletion = JSON.parse(response.content)["DescriptionStatusName"];
+            if (descriptionCompletion == "Not Started") {
+                changeStatus(itemId, "Not Started", "Edit", "DescriptionStatusId", 2, editStatusColor, statusCount)
+            }
+        })
     }
 }
 // Change progress status
@@ -980,34 +1016,32 @@ function changeStatus (itemId, oldStatus, newStatus, fieldName, value, color, st
     jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').text(newStatus);
   
     if (fieldName != "CompletionStatusId") {
-      if (oldStatus == null) {
-        jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-          'type': 'GET',
-          'url': TP_API_HOST + '/tp-api/items/' + itemId
-        },
-        // Check success and create confirmation message
-        function(response) {
-          var response = JSON.parse(response);
-          if (response.code == "200") {
-            var content = JSON.parse(response.content);
+        if (oldStatus == null) {
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'GET',
+                'url': TP_API_HOST + '/tp-api/items/' + itemId
+            },
+            // Check success and create confirmation message
+            function(response) {
+                var response = JSON.parse(response);
+                if (response.code == "200") {
+                    var content = JSON.parse(response.content);
   
-            oldStatus = content[fieldName.replace("Id", "Name")];
+                    oldStatus = content[fieldName.replace("Id", "Name")];
+                    updateDataProperty("items", itemId , fieldName, value);
+                } else {
+                    alert(response.content);
+                    return 0;
+                }
+            });
+        } else {
             updateDataProperty("items", itemId , fieldName, value);
-          }
-          else {
-            alert(response.content);
-            return 0;
-          }
-        });
-      }
-      else {
-            updateDataProperty("items", itemId , fieldName, value);
-      }
+        }
+    } else {
+        updateDataProperty("items", itemId , fieldName, value);
+        jQuery('.status-dropdown-content').removeClass('show')
     }
-    else {
-      updateDataProperty("items", itemId , fieldName, value);
-      jQuery('.status-dropdown-content').removeClass('show')
-    }
+
     updateSolr();
 }
 
@@ -1018,18 +1052,17 @@ function removeTranscriptionLanguage(languageId, e) {
     var transcriptionText = jQuery('#item-page-transcription-text').text();
     var languages = jQuery('#transcription-selected-languages ul').children().length;
     if(transcriptionText.length != 0 && languages > 0) {
-      jQuery('#transcription-update-button').addClass('theme-color-background');
-      jQuery('#transcription-update-button').prop('disabled', false);
-      jQuery('#transcription-update-button .language-tooltip-text').css('display', 'none');
-      jQuery('#no-text-selector').css('display', 'none');
-    }
-    else {
-      jQuery('#transcription-update-button').removeClass('theme-color-background');
-      jQuery('#transcription-update-button').prop('disabled', true);
-      jQuery('#transcription-update-button .language-tooltip-text').css('display', 'block');
+        jQuery('#transcription-update-button').addClass('theme-color-background');
+        jQuery('#transcription-update-button').prop('disabled', false);
+        jQuery('#transcription-update-button .language-tooltip-text').css('display', 'none');
+        jQuery('#no-text-selector').css('display', 'none');
+    } else {
+        jQuery('#transcription-update-button').removeClass('theme-color-background');
+        jQuery('#transcription-update-button').prop('disabled', true);
+        jQuery('#transcription-update-button .language-tooltip-text').css('display', 'block');
     }
     if(transcriptionText.length == 0 && languages == 0) {
-      jQuery('#no-text-selector').css('display','block');
+        jQuery('#no-text-selector').css('display','block');
     }
 }
 
@@ -1040,51 +1073,51 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
     locationName = jQuery('#location-name-display input').val();
     [latitude, longitude] = jQuery('#location-input-section .location-input-coordinates-container input').val().split(',');
     if (latitude != null) {
-      latitude = latitude.trim();
+        latitude = latitude.trim();
     }
     if (longitude != null) {
-      longitude = longitude.trim();
+        longitude = longitude.trim();
     }
     if (isNaN(latitude) || isNaN(longitude)) {
-      jQuery('#location-input-section .location-input-coordinates-container span').css('display', 'block');
-      jQuery('#item-location-spinner-container').css('display', 'none')
-      return 0;
+        jQuery('#location-input-section .location-input-coordinates-container span').css('display', 'block');
+        jQuery('#item-location-spinner-container').css('display', 'none')
+        return 0;
     }
     if (locationName == null || locationName == "") {
-      jQuery('#location-name-display span').css('display', 'block');
-      jQuery('#item-location-spinner-container').css('display', 'none')
-      return 0;
+        jQuery('#location-name-display span').css('display', 'block');
+        jQuery('#item-location-spinner-container').css('display', 'none')
+        return 0;
     }
   
     if (jQuery('#location-input-section .location-input-name-container input').val() == "") {
-      jQuery('#location-input-section .location-input-name-container span').css('display', 'block');
-      jQuery('#item-location-spinner-container').css('display', 'none')
-      return 0;
+        jQuery('#location-input-section .location-input-name-container span').css('display', 'block');
+        jQuery('#item-location-spinner-container').css('display', 'none')
+        return 0;
     }
   
     description = jQuery('#location-input-section .location-input-description-container textarea').val();
     wikidata = jQuery('#location-input-geonames-search-container > input').val().split(";");
   
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-      'type': 'GET',
-      'url': TP_API_HOST + '/tp-api/items/' + itemId
+        'type': 'GET',
+        'url': TP_API_HOST + '/tp-api/items/' + itemId
     },
-      function(response) {
+    function(response) {
         var response = JSON.parse(response);
         var locationCompletion = JSON.parse(response.content)["LocationStatusName"];
         var data = {
-                  Name: locationName,
-                  Latitude: latitude,
-                  Longitude: longitude,
-                  ItemId: itemId,
-                  Link: "",
-                  Zoom: 10,
-                  Comment: description,
-                  WikidataName: wikidata[0],
-                  WikidataId: wikidata[1],
-                  UserId: userId,
-                  UserGenerated: 1
-                }
+            Name: locationName,
+            Latitude: latitude,
+            Longitude: longitude,
+            ItemId: itemId,
+            Link: "",
+            Zoom: 10,
+            Comment: description,
+            WikidataName: wikidata[0],
+            WikidataId: wikidata[1],
+            UserId: userId,
+            UserGenerated: 1
+        }
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
             'type': 'POST',
             'url': TP_API_HOST + '/tp-api/places',
@@ -1092,80 +1125,76 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
         },
         // Check success and create confirmation message
         function(response) {
-          scoreData = {
-                        ItemId: itemId,
-                        UserId: userId,
-                        ScoreType: "Location",
-                        Amount: 1
-                      }
-          jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-              'type': 'POST',
-              'url': TP_API_HOST + '/tp-api/scores',
-              'data': scoreData
-          },
-          // Check success and create confirmation message
-          function(response) {
-          })
+            scoreData = {
+                ItemId: itemId,
+                UserId: userId,
+                ScoreType: "Location",
+                Amount: 1
+            }
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/scores',
+                'data': scoreData
+            },
+            // Check success and create confirmation message
+            function(response) {
+            })
   
-          loadPlaceData(itemId, userId);
-          if (locationCompletion == "Not Started") {
-            changeStatus(itemId, "Not Started", "Edit", "LocationStatusId", 2, editStatusColor, statusCount)
-          }
-          jQuery('#location-input-section').removeClass('show')
-          jQuery('#location-input-section input').val("")
-          jQuery('#location-input-section textarea').val("")
-          jQuery('#item-location-spinner-container').css('display', 'none')
+            loadPlaceData(itemId, userId);
+            if (locationCompletion == "Not Started") {
+                changeStatus(itemId, "Not Started", "Edit", "LocationStatusId", 2, editStatusColor, statusCount)
+            }
+            jQuery('#location-input-section').removeClass('show')
+            jQuery('#location-input-section input').val("")
+            jQuery('#location-input-section textarea').val("")
+            jQuery('#item-location-spinner-container').css('display', 'none')
         });
     });
 }
 
 function saveItemDate(itemId, userId, editStatusColor, statusCount) {
     if (jQuery('#transcribeLock').length) {
-      lockWarning();
-      return 0;
+        lockWarning();
+        return 0;
     }
     jQuery('#item-date-spinner-container').css('display', 'block')
     // Prepare data and send API request
     data = {
-      DateStartDisplay: jQuery('#startdateentry').val(),
-      DateEndDisplay: jQuery('#enddateentry').val()
+        DateStartDisplay: jQuery('#startdateentry').val(),
+        DateEndDisplay: jQuery('#enddateentry').val()
     }
     startDate = jQuery('#startdateentry').val().split('/');
     if (!isNaN(startDate[2]) && !isNaN(startDate[1]) && !isNaN(startDate[0])) {
-      data['DateStart'] = startDate[2] + "-" + startDate[1] + "-" + startDate[0];
-    }
-    else if (startDate.length == 1 && startDate[0].length <= 4 && startDate[0].length > 0 && !isNaN(startDate[0])) {
-      data['DateStart'] = startDate[0] + "-01-01";
-    }
-    else {
-      if (startDate[0] != "" && startDate[0] != null) {
-        jQuery('#item-date-spinner-container').css('display', 'none')
-        alert("Please enter a valid date or year");
-        return 0
-      }
+        data['DateStart'] = startDate[2] + "-" + startDate[1] + "-" + startDate[0];
+    } else if (startDate.length == 1 && startDate[0].length <= 4 && startDate[0].length > 0 && !isNaN(startDate[0])) {
+        data['DateStart'] = startDate[0] + "-01-01";
+    } else {
+        if (startDate[0] != "" && startDate[0] != null) {
+            jQuery('#item-date-spinner-container').css('display', 'none')
+            alert("Please enter a valid date or year");
+            return 0
+        }
     }
   
     endDate = jQuery('#enddateentry').val().split('/');
     if (!isNaN(endDate[2]) && !isNaN(endDate[1]) && !isNaN(endDate[0])) {
-      data['DateEnd'] = endDate[2] + "-" + endDate[1] + "-" + endDate[0];
-    }
-    else if (endDate.length == 1 && endDate[0].length <=4 && endDate[0].length > 0 && !isNaN(endDate[0])) {
-      data['DateEnd'] = endDate[0] + "-01-01";
-    }
-    else {
-      if (endDate[0] != "" && endDate[0] != null) {
-        jQuery('#item-date-spinner-container').css('display', 'none')
-        alert("Please enter a valid date or year");
-        return 0
-      }
+        data['DateEnd'] = endDate[2] + "-" + endDate[1] + "-" + endDate[0];
+    } else if (endDate.length == 1 && endDate[0].length <=4 && endDate[0].length > 0 && !isNaN(endDate[0])) {
+        data['DateEnd'] = endDate[0] + "-01-01";
+    } else {
+        if (endDate[0] != "" && endDate[0] != null) {
+            jQuery('#item-date-spinner-container').css('display', 'none')
+            alert("Please enter a valid date or year");
+            return 0
+        }
     }
   
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-      'type': 'GET',
-      'url': TP_API_HOST + '/tp-api/items/' + itemId
+        'type': 'GET',
+        'url': TP_API_HOST + '/tp-api/items/' + itemId
     },
-      function(response) {
+    function(response) {
         var response = JSON.parse(response);
         var taggingCompletion = JSON.parse(response.content)["TaggingStatusName"];
         var oldStartDate = JSON.parse(response.content)["DateStart"];
@@ -1177,38 +1206,42 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
         },
         // Check success and create confirmation message
         function(response) {
-          if (startDate != "" && startDate != oldStartDate) {
-            jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
-            jQuery('#startdateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
-            jQuery('#startdateDisplay').html(jQuery('#startdateentry').val())
-          }
-          if (endDate != "" && endDate != oldEndDate) {
-            jQuery('#enddateDisplay').parent('.item-date-display-container').css('display', 'block')
-            jQuery('#enddateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
-            jQuery('#enddateDisplay').html(jQuery('#enddateentry').val())
-          }
-          scoreData = {
-                        ItemId: itemId,
-                        UserId: userId,
-                        ScoreType: "Enrichment",
-                        Amount: 1
-                      }
-          jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-              'type': 'POST',
-              'url': TP_API_HOST + '/tp-api/scores',
-              'data': scoreData
-          },
-          // Check success and create confirmation message
-          function(response) {
-          })
+            // Update date 'view' when changing date in editor
+            document.querySelector('.date-bottom .start-date').textContent = startDate.join('/');
+            document.querySelector('.date-bottom .end-date').textContent = endDate.join('/');
+
+            if (startDate != "" && startDate != oldStartDate) {
+                jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
+                jQuery('#startdateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
+                jQuery('#startdateDisplay').html(jQuery('#startdateentry').val())
+            }
+            if (endDate != "" && endDate != oldEndDate) {
+                jQuery('#enddateDisplay').parent('.item-date-display-container').css('display', 'block')
+                jQuery('#enddateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
+                jQuery('#enddateDisplay').html(jQuery('#enddateentry').val())
+            }
+            scoreData = {
+                ItemId: itemId,
+                UserId: userId,
+                ScoreType: "Enrichment",
+                Amount: 1
+            }
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/scores',
+                'data': scoreData
+            },
+            // Check success and create confirmation message
+            function(response) {
+            })
   
-          if (taggingCompletion == "Not Started") {
-            changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
-          }
-          jQuery('#item-date-save-button').css('display', 'none')
-          jQuery('#item-date-spinner-container').css('display', 'none')
+            if (taggingCompletion == "Not Started") {
+                changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
+            }
+            jQuery('#item-date-save-button').css('display', 'none')
+            jQuery('#item-date-spinner-container').css('display', 'none')
         });
-      });
+    });
 }
 
 function savePerson(itemId, userId, editStatusColor, statusCount) {
@@ -1224,76 +1257,77 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
     link = jQuery('#person-wiki-input-field').val();
   
     if (firstName == "" && lastName == "") {
-      return 0;
+        return 0;
     }
   
     // Prepare data and send API request
     data = {
-      FirstName: firstName,
-      LastName: lastName,
-      BirthPlace: birthPlace,
-      DeathPlace: deathPlace,
-      Link: link,
-      Description: description,
-      ItemId: itemId
+        FirstName: firstName,
+        LastName: lastName,
+        BirthPlace: birthPlace,
+        DeathPlace: deathPlace,
+        Link: link,
+        Description: description,
+        ItemId: itemId
     }
     if (!isNaN(birthDate[2]) && !isNaN(birthDate[1]) && !isNaN(birthDate[0])) {
-      data['BirthDate'] = birthDate[2] + "-" + birthDate[1] + "-" + birthDate[0];
+        data['BirthDate'] = birthDate[2] + "-" + birthDate[1] + "-" + birthDate[0];
     }
     else {
-      data['BirthDate'] = null;
+        data['BirthDate'] = null;
     }
     if (!isNaN(deathDate[2]) && !isNaN(deathDate[1]) && !isNaN(deathDate[0])) {
-      data['DeathDate'] = deathDate[2] + "-" + deathDate[1] + "-" + deathDate[0];
+        data['DeathDate'] = deathDate[2] + "-" + deathDate[1] + "-" + deathDate[0];
     }
     else {
-      data['DeathDate'] = null;
+        data['DeathDate'] = null;
     }
   
     for (var key in data) {
-      if (data[key] == "") {
-        data[key] = null;
-      }
+        if (data[key] == "") {
+            data[key] = null;
+        }
     }
   
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-      'type': 'GET',
-      'url': TP_API_HOST + '/tp-api/items/' + itemId
+        'type': 'GET',
+        'url': TP_API_HOST + '/tp-api/items/' + itemId
     },
     function(response) {
-      var response = JSON.parse(response);
-      var taggingCompletion = JSON.parse(response.content)["TaggingStatusName"];
-      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-          'type': 'POST',
-          'url': TP_API_HOST + '/tp-api/persons',
-          'data': data
-      },
-      // Check success and create confirmation message
-      function(response) {
-        scoreData = {
-                      ItemId: itemId,
-                      UserId: userId,
-                      ScoreType: "Enrichment",
-                      Amount: 1
-                    }
+        var response = JSON.parse(response);
+        var taggingCompletion = JSON.parse(response.content)["TaggingStatusName"];
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
             'type': 'POST',
-            'url': TP_API_HOST + '/tp-api/scores',
-            'data': scoreData
+            'url': TP_API_HOST + '/tp-api/persons',
+            'data': data
         },
         // Check success and create confirmation message
         function(response) {
-        })
+
+            scoreData = {
+                ItemId: itemId,
+                UserId: userId,
+                ScoreType: "Enrichment",
+                Amount: 1
+            }
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/scores',
+                'data': scoreData
+            },
+            // Check success and create confirmation message
+            function(response) {
+            })
   
-        loadPersonData(itemId, userId);
-        if (taggingCompletion == "Not Started") {
-          changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
-        }
-        jQuery('#person-input-container').removeClass('show')
-        jQuery('#person-input-container input').val("")
-        jQuery('#item-person-spinner-container').css('display', 'none')
-      });
+            loadPersonData(itemId, userId);
+            if (taggingCompletion == "Not Started") {
+                changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
+            }
+            jQuery('#person-input-container').removeClass('show')
+            jQuery('#person-input-container input').val("")
+            jQuery('#item-person-spinner-container').css('display', 'none')
+        });
     });
 }
 
@@ -1302,51 +1336,59 @@ function saveKeyword(itemId, userId, editStatusColor, statusCount) {
     value = jQuery('#keyword-input').val();
   
     if (value != "" && value != null) {
-      // Prepare data and send API request
-      data = {
-        PropertyValue: value,
-        PropertyType: "Keyword"
-      }
+        // Prepare data and send API request
+        data = {
+            PropertyValue: value,
+            PropertyType: "Keyword"
+        }
   
-      var dataString= JSON.stringify(data);
-      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-        'type': 'GET',
-        'url': TP_API_HOST + '/tp-api/items/' + itemId
-      },
-      function(response) {
-        var response = JSON.parse(response);
-        var taggingCompletion = JSON.parse(response.content)["TaggingStatusName"];
+        var dataString= JSON.stringify(data);
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-            'type': 'POST',
-            'url': TP_API_HOST + '/tp-api/properties?ItemId=' + itemId,
-            'data': data
+            'type': 'GET',
+            'url': TP_API_HOST + '/tp-api/items/' + itemId
         },
-        // Check success and create confirmation message
         function(response) {
-          scoreData = {
-                        ItemId: itemId,
-                        UserId: userId,
-                        ScoreType: "Enrichment",
-                        Amount: 1
-                      }
-          jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-              'type': 'POST',
-              'url': TP_API_HOST + '/tp-api/scores',
-              'data': scoreData
-          },
-          // Check success and create confirmation message
-          function(response) {
-          })
+            var response = JSON.parse(response);
+            var taggingCompletion = JSON.parse(response.content)["TaggingStatusName"];
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/properties?ItemId=' + itemId,
+                'data': data
+            },
+            // Check success and create confirmation message
+            function(response) {
+
+                // Add new keyword to the 'view'
+                const keyWordContainer = document.querySelector('.keywords-container div');
+                let newKW = document.createElement('div');
+                newKW.classList.add('keyword-single');
+                newKW.textContent = value;
+                keyWordContainer.appendChild(newKW);
+
+                scoreData = {
+                    ItemId: itemId,
+                    UserId: userId,
+                    ScoreType: "Enrichment",
+                    Amount: 1
+                }
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'url': TP_API_HOST + '/tp-api/scores',
+                    'data': scoreData
+                },
+                // Check success and create confirmation message
+                function(response) {
+                })
   
-          loadKeywordData(itemId, userId);
-          if (taggingCompletion == "Not Started") {
-            changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
-          }
-          jQuery('#keyword-input-container').removeClass('show')
-          jQuery('#keyword-input-container input').val("")
-          jQuery('#item-keyword-spinner-container').css('display', 'none')
+                loadKeywordData(itemId, userId);
+                if (taggingCompletion == "Not Started") {
+                    changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
+                }
+                jQuery('#keyword-input-container').removeClass('show')
+                jQuery('#keyword-input-container input').val("")
+                jQuery('#item-keyword-spinner-container').css('display', 'none')
+            });
         });
-      });
     }
 }
 
@@ -1356,52 +1398,69 @@ function saveLink(itemId, userId, editStatusColor, statusCount, e) {
     description = jQuery('#link-input-container .link-description-input textarea').val();
   
     if (url != "" && url != null) {
-      // Prepare data and send API request
-      data = {
-        PropertyValue: url,
-        PropertyDescription: description,
-        PropertyType: "Link"
-      }
-      var dataString= JSON.stringify(data);
-      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-        'type': 'GET',
-        'url': TP_API_HOST + '/tp-api/items/' + itemId
-      },
-      function(response) {
-        var response = JSON.parse(response);
-        var taggingCompletion = JSON.parse(response.content)["TaggingStatusName"];
+        // Prepare data and send API request
+        data = {
+            PropertyValue: url,
+            PropertyDescription: description,
+            PropertyType: "Link"
+        }
+        var dataString= JSON.stringify(data);
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-            'type': 'POST',
-            'url': TP_API_HOST + '/tp-api/properties?ItemId=' + itemId,
-            'data': data
+            'type': 'GET',
+            'url': TP_API_HOST + '/tp-api/items/' + itemId
         },
-        // Check success and create confirmation message
         function(response) {
-          scoreData = {
-                        ItemId: itemId,
-                        UserId: userId,
-                        ScoreType: "Enrichment",
-                        Amount: 1
-                      }
-          jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-              'type': 'POST',
-              'url': TP_API_HOST + '/tp-api/scores',
-              'data': scoreData
-          },
-          // Check success and create confirmation message
-          function(response) {
-          })
+            var response = JSON.parse(response);
+            var taggingCompletion = JSON.parse(response.content)["TaggingStatusName"];
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/properties?ItemId=' + itemId,
+                'data': data
+            },
+            // Check success and create confirmation message
+            function(response) {
+                // Update external web resources view
+                const linksCont = document.querySelector('.links-container div');
+                let newLink = document.createElement('div');
+                let linkIcon = document.createElement('i');
+                let linkUrl = document.createElement('a');
+                linkUrl.setAttribute('href', url);
+                linkUrl.setAttribute('target', '_blank');
+                linkUrl.textContent = url;
+
+                linkIcon.classList.add('far', 'fa-external-link');
+                newLink.classList.add('link-single');
+
+                newLink.appendChild(linkIcon);
+                newLink.appendChild(linkUrl);
+
+                linksCont.appendChild(newLink);
+
+                scoreData = {
+                    ItemId: itemId,
+                    UserId: userId,
+                    ScoreType: "Enrichment",
+                    Amount: 1
+                }
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'url': TP_API_HOST + '/tp-api/scores',
+                    'data': scoreData
+                },
+                // Check success and create confirmation message
+                function(response) {
+                })
   
-          loadLinkData(itemId, userId);
-          if (taggingCompletion == "Not Started") {
-            changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
-          }
-          jQuery('#link-input-container').removeClass('show')
-          jQuery('#link-input-container input').val("")
-          jQuery('#link-input-container textarea').val("")
-          jQuery('#item-link-spinner-container').css('display', 'none')
+                loadLinkData(itemId, userId);
+                if (taggingCompletion == "Not Started") {
+                    changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
+                }
+                jQuery('#link-input-container').removeClass('show')
+                jQuery('#link-input-container input').val("")
+                jQuery('#link-input-container textarea').val("")
+                jQuery('#item-link-spinner-container').css('display', 'none')
+            });
         });
-      });
     }
 }
 
@@ -1412,103 +1471,121 @@ function loadPlaceData(itemId, userId) {
         'url': TP_API_HOST + '/tp-api/places?ItemId=' + itemId
     },
     function(response) {
-      var response = JSON.parse(response);
-      if (response.code == "200") {
-        var content = JSON.parse(response.content);
-        jQuery('#item-location-list ul').html('')
-  
-        for (var i = 0; i < content.length; i++) {
-          if (content[i]['Comment'] != "NULL" && content[i]['Comment'] != null) {
-            var comment = content[i]['Comment'];
-          }
-          else {
-              var comment = "";
-          }
-          var placeHtml = "";
-          placeHtml +=
-            '<li id="location-' + content[i]['PlaceId'] + '">' +
-              '<div class="item-data-output-element-header collapse-controller" data-toggle="collapse" href="#location-data-output-' + content[i]['PlaceId'] + '">' +
-                  '<h6>' +
-                  escapeHtml(content[i]['Name']) +
-                  '</h6>' +
-                  '<i class="fas fa-angle-down"' +  'style= "float:right;"></i>' +
-                  '<div style="clear:both;"></div>' +
-                '</div>' +
-                              '<div id="location-data-output-' + content[i]['PlaceId'] + '" class="collapse">' +
-                              '<div id="location-data-output-display-' + content[i]['PlaceId'] + '" class="location-data-output-content">' +
-                                  '<span>' +
-                                      'Description: ' +
-                                      escapeHtml(comment) +
-                                  '</span></br>' +
-                                  '<span>' +
-                                      'Wikidata: ' +
-                                      '<a href="' + 'http://wikidata.org/wiki/' + content[i]['WikiDataId'] +'" style="text-decoration: none;" target="_blank">' +
-                                      content[i]['WikidataName'] + ', ' + content[i]['WikidataId'] +
-                                      '</a>' +
-                                  '</span>' +
-                                 '<div style="display:flex;"><span style="width:86%;"></span>' + '<span style="width:14%;">' +
-  
-                                  '<i class="edit-item-data-icon fas fa-pencil theme-color-hover login-required"' +
-                                                      'onClick="openLocationEdit(' + content[i]['PlaceId'] + ')"></i>' +
-                                  '<i class="edit-item-data-icon fas fa-trash-alt theme-color-hover login-required"' +
-                                                      'onClick="deleteItemData(\'places\', ' + content[i]['PlaceId'] + ', ' + itemId + ', \'place\', ' + userId + ')"></i>' +
-                                  '</span></div>' +
-                              '</div>' +
-                              '<div id="location-data-edit-' + escapeHtml(content[i]['PlaceId']) + '" class="location-data-edit-container">' +
-                                  '<div class="location-input-section-top">' +
-                                      '<div class="location-input-name-container">' +
-                                          '<label>Location Name:</label>' +
-                                          '<input type="text" class="edit-input" value="' + escapeHtml(content[i]['Name']) + '" name="" placeholder="">' +
-                                      '</div>' +
-                                      '<div class="location-input-coordinates-container">' +
-                                          '<label>Coordinates: </label>' +
-                                          '<span class="required-field">*</span>' +
-                                          '<input type="text" class="edit-input" value="' + escapeHtml(content[i]['Latitude']) + ', ' + escapeHtml(content[i]['Longitude']) + '" name="" placeholder="">' +
-                                      '</div>' +
-                                      "<div style='clear:both;'></div>" +
-                                  '</div>' +
-  
-                                  '<div class="location-input-geonames-container location-search-container" style="margin:5px 0;">' +
-                                  '<label>WikiData:</label>';
-                                  if (content[i]['WikidataName'] != "NULL" && content[i]['WikidataId'] != "NULL") {
-                                    placeHtml +=
-                                      '<input type="text" id="lgns" class="edit-input" placeholder="" name="" value="' + escapeHtml(content[i]['WikidataName']) + '; ' + escapeHtml(content[i]['WikidataId']) + '"/>';
-                                  }
-                                  else {
-                                    placeHtml +=
-                                      '<input type="text" id="lgns" class="edit-input" placeholder="" name=""/>';
-                                  }
-                                  placeHtml +=
-                                '</div>' +
-  
-                                  '<div class="location-input-description-container" style="height:50px;">' +
-                                      '<label>Description:<i class="fas fa-question-circle" style="font-size:16px; cursor:pointer; margin-left:4px;" title="Add more information to this location, e.g. the building name, or its significance to the item"></i></label>' +
-                                      '<textarea rows= "2" style="resize:none;" class="gsearch-form edit-input" type="text" id="ldsc" placeholder="" name="">' + comment + '</textarea>' +
-                                  '</div>' +
-  
-                                  "<div class='form-buttons-right'>" +
-                                      "<button onClick='editItemLocation(" + content[i]['PlaceId'] + ", " + itemId + ", " + userId + ")' " +
-                                                  "class='item-page-save-button edit-location-save theme-color-background'>" +
-                                          "SAVE" +
-                                      "</button>" +
-  
-                                      "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" + content[i]['PlaceId'] + ")'>" +
-                                          "CANCEL" +
-                                      "</button>" +
-  
-                                      '<div id="item-location-' + content[i]['PlaceId'] +'-spinner-container" class="spinner-container spinner-container-right">' +
-                                          '<div class="spinner"></div>' +
-                                      "</div>" +
-                                      "<div style='clear:both;'></div>" +
-                                  "</div>" +
-                                  "<div style='clear:both;'></div>" +
-                                 "</div>" +
-                          "</div>" +
-            '</li>';
-  
-          jQuery('#item-location-list ul').append(placeHtml);
+        var response = JSON.parse(response);
+        if (response.code == "200") {
+            const content = JSON.parse(response.content);
+            const locContainer = document.querySelector('.location-display-container');
+            const locViewCont = document.querySelector('.location-view-container');
+            const storyLoc = locContainer.querySelector('.story-location');
+            const viewStoryLoc = storyLoc.cloneNode(true);
+            // Empty the old location list
+            locContainer.innerHTML = "";
+            locViewCont.innerHTML = "";
+
+            for(let location of content) {
+                locContainer.innerHTML +=
+                    `<div id='location-${escapeHtml(location['PlaceId'])}' >` +
+                        `<div id='location-data-output-${location['PlaceId']}' class='location-single'>` +
+                            `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
+                            `<p><b>${escapeHtml(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
+                            // Check if there is description : don't add <p> if not
+                            `${location['Comment'] ?
+                                `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>` 
+                                :
+                                `` 
+                            }` +
+                            // Check for Wikidata : ^^
+                            `${location['WikidataId'] ?
+                                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/${location['WikidataId']} ` +
+                                `style='text-decoration:none;' target='_blank'>${escapeHtml(location['WikidataName'])}, ${escapeHtml(location['WikidataId'])}</a></b></p>`
+                                :
+                                ''
+                            }` +
+                            `<div class='edit-delete-btns'>` +
+                                `<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openLocationEdit(${escapeHtml(location['PlaceId'])})'></i>` +
+                                `<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover' onClick='deleteItemData("places", ${escapeHtml(location['PlaceId'])}, ${itemId}, "place", ${userId})'></i>` +
+                            `</div>` +
+                        `</div>` +
+
+                        `<div id='location-data-edit-${escapeHtml(location['PlaceId'])}' class='location-data-edit-container' style='display:none;'>` +
+                            // Input Top
+                            `<div class='location-input-section-top'>` +
+                                `<div class='location-input-name-container' style='min-height:25px;'>` +
+                                    `<label>Location Name:</label>` + 
+                                    `<input type='text' class='edit-input' value='${escapeHtml(location['Name'])}' name='' placeholder=''>` +
+                                `</div>` +
+                                `<div class='location-input-coordinates-container' style='min-height:25px;'>` +
+                                    `<label>Coordinates: </label>` +
+                                    `<span class='required-field'>*</span>` +
+                                    `<input type='text' class='edit-input' value='${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])}' name='' placeholder=''>` +
+                                `</div>` +
+                                `<div style='clear:both;'></div>` + 
+                            `</div>` +
+                            // Wikidata ref container
+                            `<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>` +
+                                `<label>Wikidata Reference:` +
+                                    `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>` +
+                                `</label>` +
+                                `${location['WikidataId'] ?
+                                    `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value='${escapeHtml(location['WikidataName'])}; ${escapeHtml(location['WikidataId'])}' >`
+                                    :
+                                    `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value=''>`
+                                }` +
+                            `</div>` +
+                            // Description
+                            `<div class='location-input-description-container' style='height:50px;'>` +
+                                `<label>Description: ` +
+                                    `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Add more information about this location, e.g. building name, or it's significance to the item...'></i>` +
+                                `</label>` +
+                                `<textarea rows='2' id='ldsc' class='edit-input gsearch-form' style='resize:none;' type='text'>` +
+                                `${location['Comment'] != 'NULL' ?
+                                `${escapeHtml(location['Comment'])}`
+                                :
+                                ``
+                                }` +
+                                `</textarea>` +
+                            `</div>` +
+                            // Buttons
+                            `<div class='form-buttons-right'>` +
+                                `<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(${location['PlaceId']})'>` +
+                                    `CANCEL` +
+                                `</button>` +
+                                `<button class='theme-color-bckground edit-location-save' onClick='editItemLocation(${location['PlaceId']}, ${itemId}, ${userId})'>` +
+                                    `SAVE` +
+                                `</button>` +
+                                // Spinner 
+                                `<div id='item-location-${location['PlaceId']}-spinner-container' class='spinner-container spinner-container-right'>` +
+                                    `<div class='spinner'></div>` +
+                                `</div>` +
+                                `<div style='clear:both;'></div>` +
+                            `</div>` +
+                            `<div style='clear:both;'></div>` +
+                        `</div>` +
+                    `</div>` ;
+
+                // Update the view out of full screen
+                locViewCont.innerHTML += 
+                    `<div class='location-single'>` +
+                        `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
+                        `<p><b>${escapeHtml(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
+                        // Check if there is description : don't add <p> if not
+                        `${location['Comment'] ?
+                            `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>` 
+                            :
+                            `` 
+                        }` +
+                        // Check for Wikidata : ^^
+                        `${location['WikidataId'] ?
+                            `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/${location['WikidataId']} ` +
+                            `style='text-decoration:none;' target='_blank'>${escapeHtml(location['WikidataName'])}, ${escapeHtml(location['WikidataId'])}</a></b></p>`
+                            :
+                            ''
+                        }` +
+                    `</div>` ;
+            }
+            locContainer.appendChild(storyLoc);
+            locViewCont.appendChild(viewStoryLoc);
         }
-      }
     });
 }
 // TODO there is better and more efficient way to do this
@@ -1914,18 +1991,20 @@ function stripHTML(dirtyString) {
 }
 
 function openLocationEdit(placeId) {
+    const locId = '#location-' + placeId;
+    const locSingle = document.querySelector(locId);
     if (jQuery('#transcribeLock').length) {
-      event.preventDefault();
-      lockWarning();
-      return 0;
+        e.preventDefault();
+        lockWarning();
+        return 0;
     }
-    if (jQuery('#location-data-edit-' + placeId).css('display') == 'none') {
-      jQuery('#location-data-edit-' + placeId).css('display', 'block');
-      jQuery('#location-data-output-display-' + placeId).css('display', 'none');
+    if (locSingle.querySelector('.location-data-edit-container').style.display == 'none') {
+        locSingle.querySelector('.location-data-edit-container').style.display = 'block';
+        locSingle.querySelector('.location-single').style.dispay = 'none';
     }
     else {
-      jQuery('#location-data-edit-' + placeId).css('display', 'none');
-      jQuery('#location-data-output-display-' + placeId).css('display', 'block');
+        locSingle.querySelector('.location-data-edit-container').style.display = 'none';
+        locSingle.querySelector('.location-single').style.dispay = 'block';
     }
 }
 
@@ -2048,34 +2127,6 @@ function editPerson(personId, itemId, userId) {
         data[key] = null;
       }
     }
-
-    function editLink(linkId, itemId, userId) {
-        jQuery('#item-link-' + linkId + '-spinner-container').css('display', 'block')
-        url = jQuery('#link-' + linkId + '-url-input input').val();
-        description = jQuery('#link-' + linkId + '-description-input textarea').val();
-      
-        if (url != "" && url != null) {
-          // Prepare data and send API request
-          data = {
-            PropertyValue: url,
-            PropertyDescription: description,
-            PropertyType: "Link"
-          }
-          var dataString= JSON.stringify(data);
-      
-          jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-              'type': 'POST',
-              'url': TP_API_HOST + '/tp-api/properties/' + linkId,
-              'data': data
-          },
-          // Check success and create confirmation message
-          function(response) {
-            loadLinkData(itemId, userId);
-            openLinksourceEdit(linkId);
-            jQuery('#item-link-' + linkId + '-spinner-container').css('display', 'none')
-          });
-        }
-    }
   
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'POST',
@@ -2088,6 +2139,34 @@ function editPerson(personId, itemId, userId) {
       openPersonEdit(personId);
       jQuery('#item-person-' + personId + '-spinner-container').css('display', 'none')
     });
+}
+
+function editLink(linkId, itemId, userId) {
+    jQuery('#item-link-' + linkId + '-spinner-container').css('display', 'block')
+    url = jQuery('#link-' + linkId + '-url-input input').val();
+    description = jQuery('#link-' + linkId + '-description-input textarea').val();
+  
+    if (url != "" && url != null) {
+      // Prepare data and send API request
+      data = {
+        PropertyValue: url,
+        PropertyDescription: description,
+        PropertyType: "Link"
+      }
+      var dataString= JSON.stringify(data);
+  
+      jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+          'type': 'POST',
+          'url': TP_API_HOST + '/tp-api/properties/' + linkId,
+          'data': data
+      },
+      // Check success and create confirmation message
+      function(response) {
+        loadLinkData(itemId, userId);
+        openLinksourceEdit(linkId);
+        jQuery('#item-link-' + linkId + '-spinner-container').css('display', 'none')
+      });
+    }
 }
 
 function lockWarning() {
@@ -2373,15 +2452,12 @@ ready(() => {
     // Item page, bind 'escape' key to close login warning if open, or full screen view(if open)
     //const escape = new KeyboardEvent('keydown');
     document.addEventListener('keydown',function(escape) {
-        const itemLogContainer = document.querySelector('#item-page-login-container');
+        //const itemLogContainer = document.querySelector('#item-page-login-container');
         const fullScreen = document.querySelector('#image-view-container');
         const lockWarning = document.querySelector('#locked-warning-container');
 
         if(escape.key === 'Escape') {
-            if(itemLogContainer.style.display != 'none' || lockWarning.style.display != 'none') {
-                itemLogContainer.style.display = 'none';
-                lockWarning.style.display = 'none';
-            } else if(fullScreen.style.display != 'none') {
+            if(fullScreen.style.display != 'none') {
                 switchItemPageView();
             }
         }
@@ -2409,33 +2485,64 @@ ready(() => {
     });
     // Item page, enrichments, language-selector
     // Get all elements with class 'language-selector-background'
-    const languageSelector = document.querySelectorAll('.language-selector-background');
-    for(i = 0; i < languageSelector.length; i++) {
-        const selectedElement = languageSelector[i].querySelector('select');
-        // For each element, create a new DIV that will act as the selected item
-        const selectorDiv = document.createElement('div');
-        selectorDiv.classList.add('language-select-selected');
-        // Separate transcription and description selectors
-        if(selectedElement.parentElement.id === 'transcription-language-selector') {
-            selectorDiv.id = 'transcription-language-custom-selector';
-        } else if(selectedElement.parentElement.id === 'description-language-selector') {
-            selectorDiv.id = 'description-language-custom-selector';
-        }
-        selectorDiv.textContent = selectedElement.options[selectedElement.selectedIndex].textContent;
-        languageSelector[i].appendChild(selectorDiv);
-        // For each element, create option list div
-        const optionDiv = document.createElement('div');
-        optionDiv.classList.add('language-item-select','select-hide');
+    // const languageSelector = document.querySelectorAll('.language-selector-background');
+    // for(i = 0; i < languageSelector.length; i++) {
+    //     const selectedElement = languageSelector[i].querySelector('select');
+    //     // For each element, create a new DIV that will act as the selected item
+    //     const selectorDiv = document.createElement('div');
+    //     selectorDiv.classList.add('language-select-selected');
+    //     // Separate transcription and description selectors
+    //     if(selectedElement.parentElement.id === 'transcription-language-selector') {
+    //         selectorDiv.id = 'transcription-language-custom-selector';
+    //     } else if(selectedElement.parentElement.id === 'description-language-selector') {
+    //         selectorDiv.id = 'description-language-custom-selector';
+    //     }
+    //     selectorDiv.textContent = selectedElement.options[selectedElement.selectedIndex].textContent;
+    //     languageSelector[i].appendChild(selectorDiv);
+    //     // For each element, create option list div
+    //     const optionDiv = document.createElement('div');
+    //     optionDiv.classList.add('language-item-select','select-hide');
 
-        for(j = 0; j < selectedElement.length; j++) {
-            if(selectedElement.options[j].textContent != 'Language(s) of the Document:'){// For each option, create DIV that will act as option item
-            const optionItemDiv = document.createElement('div');
-            optionItemDiv.classList.add('selected-option');
-            optionItemDiv.textContent = selectedElement.options[j].textContent;
-            optionDiv.appendChild(optionItemDiv);}
-        }
-        languageSelector[i].appendChild(optionDiv);
-    }
+    //     for(j = 0; j < selectedElement.length; j++) {
+    //         if(selectedElement.options[j].textContent != 'Language(s) of the Document:'){// For each option, create DIV that will act as option item
+    //         let optionItemDiv = document.createElement('div');
+    //         optionItemDiv.classList.add('selected-option');
+    //         optionItemDiv.textContent = selectedElement.options[j].textContent;
+    //         optionDiv.appendChild(optionItemDiv);}
+    //     }
+    //     languageSelector[i].appendChild(optionDiv);
+    // }
+    // TODO Rewrite language select
+    var x, i, j, selElmnt, a, b, c;
+    /*look for any elements with the class "language-selector-background":*/
+    x = document.getElementsByClassName("language-selector-background");
+    for (i = 0; i < x.length; i++) {
+      selElmnt = x[i].getElementsByTagName("select")[0];
+      /*for each element, create a new DIV that will act as the selected item:*/
+      a = document.createElement("div");
+      a.setAttribute("class", "language-select-selected");
+      if (jQuery(selElmnt).parent().attr('id') == "description-language-selector") {
+        a.setAttribute("id", "description-language-custom-selector");
+      }
+      if (jQuery(selElmnt).parent().attr('id') == "transcription-language-selector") {
+        a.setAttribute("id", "transcription-language-custom-selector");
+      }
+  
+      a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+      x[i].appendChild(a);
+      /*for each element, create a new DIV that will contain the option list:*/
+      b = document.createElement("div");
+      b.setAttribute("class", "language-item-select select-hide");
+      for (j = 1; j < selElmnt.length; j++) {
+        /*for each option in the original select element,
+        create a new DIV that will act as an option item:*/
+        c = document.createElement("div");
+        c.setAttribute("class", "selected-option");
+        c.innerHTML = selElmnt.options[j].innerHTML;
+        b.appendChild(c);
+      }
+      x[i].appendChild(b);
+    } 
     // Start of Image slider functions
     // New Js for Image slider
     const imgSliderCheck = document.querySelector('#img-slider');
