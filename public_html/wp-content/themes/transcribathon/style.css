@@ -4078,10 +4078,7 @@ a#new-temporary-prof:hover {
 .widget_tct-home-stats-widget .stat-number h3 {
   font-weight: 600;
 }
-/* Responsivness test - 06/05/2022 */
-.siteorigin-widget-tinymce.textwidget p {
-  padding: 0 10px 0 10px !important;
-}
+
 /*@media screen and (max-width: 780px) {*/
 .siteorigin-widget-tinymce.textwidget {
     width: 80%;

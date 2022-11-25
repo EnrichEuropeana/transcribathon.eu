@@ -355,11 +355,17 @@ h6.enrich-headers {
     background: #fff;
     font-weight: 400;
     width: 91%;
+    position: relative;
 }
 .person-data {
     margin: 0!important;
     border-bottom: 1px solid #f8f8f8;
-    padding-bottom: 1px;
+    height: 27px;
+}
+.edit-del-person {
+    position: absolute;
+    top: 5px;
+    right: 20px;
 }
 .person-i {
     font-size: 12px;
@@ -368,7 +374,7 @@ h6.enrich-headers {
     top: 6px;
 }
 .person-description {
-    font-size: 14px;
+    font-size: 13px;
     height: 15px;
     margin: 0!important;
     position: relative;
@@ -379,25 +385,33 @@ h6.enrich-headers {
 .location-display-container .location-single {
     padding: 5px 0;
 }
+.location-display-container .location-single p:first-of-type{
+    border-bottom: 0.5px solid #f8f8f8;
+    height: 27px;
+}
 .location-single {
     padding: 5px 25px;
     background: #fff;
     margin-bottom: 10px;
     font-weight: 400;
     line-height: 1em!important;
+    position: relative;
+}
+.location-single p {
+    margin-left: 25px!important;
 }
 .location-single img {
     float:left;
     height:20px;
-    margin-right:10px;
-    position:relative;
-    top:1px;
+    position:absolute;
+    top:7px;
 }
 .edit-delete-btns {
     width: 55px;
     float:right;
-    position: relative;
-    bottom: 20px;
+    position: absolute;
+    top: 0px;
+    right: 20px;
 }
 .edit-delete-btns i {
     display: inline-block;
@@ -618,6 +632,12 @@ p.mb-1 {
     cursor: pointer;
     padding: 0 5px;
     background: #f8f8f8;
+}
+#loc-tab img {
+    filter: brightness(0);
+}
+#loc-tab.active img {
+    filter: unset;
 }
 /*-- Full Screen Transcription/ Editor Tab ---*/
 #item-page-transcription-text {
@@ -1511,7 +1531,6 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .panel-right .tablinks {
     height: 65px!important;
     min-width: 30px!important;
-    overflow: hidden;
 }
 /* Horizontal Split */
 #item-data-section.panel-bottom .tablinks {

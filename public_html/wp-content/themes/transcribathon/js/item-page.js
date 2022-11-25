@@ -723,6 +723,16 @@ function updateDataProperty(dataType, id, fieldName, value) {
         }
     });
 }
+// Check if the tinymce contains invalid html tags
+function isWhitelisted(tinyText) {
+    // WIP
+    let tester = new DOMParser().parseFromString(tinyText, 'text/html');
+    if(tester.body.querySelector('*:not(p):not(div):not(br):not(span):not(table):not(col):not(colgroup):not(tbody):not(td):not(tr):not(sub):not(sup):not(img.tct_missing):not(del:has(span.underline))') != null) {
+        window.alert('Invalid Input');
+        return 0;
+    } 
+    return tinyText;
+}
 
 // Updates the item description
 function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
@@ -805,137 +815,143 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
     jQuery('#transcription-update-button').removeClass('theme-color-background');
     jQuery('#transcription-update-button').prop('disabled', true);
     jQuery('#item-transcription-spinner-container').css('display', 'block')
-
-    // Get languages
-    var transcriptionLanguages = [];
-    jQuery("#transcription-language-selector option").each(function() {
-        var nextLanguage = {};
-        if (jQuery(this).prop('disabled') == true && jQuery(this).val() != "") {
-            nextLanguage.LanguageId = jQuery(this).val();
-            transcriptionLanguages.push(nextLanguage);
-        }
-    });
-
-    var noText = 0;
-    if (jQuery('#no-text-checkbox').is(':checked') && document.querySelector('#item-page-transcription-text').textContent == '') {
-        noText = 1
-    }
-
-    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-        'type': 'GET',
-        'url': TP_API_HOST + '/tp-api/items/' + itemId
-    },
-    function(response) {
-        var response = JSON.parse(response);
-        var itemCompletion = JSON.parse(response.content)["CompletionStatusName"];
-        var transcriptionCompletion = JSON.parse(response.content)["TranscriptionStatusName"];
-        var currentTranscription = "";
-
-        for (var i = 0; i < JSON.parse(response.content)["Transcriptions"].length; i++) {
-            if (JSON.parse(response.content)["Transcriptions"][i]["CurrentVersion"] == 1) {
-                currentTranscription = JSON.parse(response.content)["Transcriptions"][i]["TextNoTags"];
+    let checkIfDirty = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
+    if(isWhitelisted(checkIfDirty) == 0){
+        jQuery('#item-transcription-spinner-container').css('display', 'none')
+        return null;
+    } else {
+        // Get languages
+        var transcriptionLanguages = [];
+        jQuery("#transcription-language-selector option").each(function() {
+            var nextLanguage = {};
+            if (jQuery(this).prop('disabled') == true && jQuery(this).val() != "") {
+                nextLanguage.LanguageId = jQuery(this).val();
+                transcriptionLanguages.push(nextLanguage);
             }
+        });
+    
+        var noText = 0;
+        if (jQuery('#no-text-checkbox').is(':checked') && document.querySelector('#item-page-transcription-text').textContent == '') {
+            noText = 1
         }
-        
-        if(noText === 0) {
-            const wordcount = tinymce.get('item-page-transcription-text').plugins.wordcount;
-            // var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
-            // var newTranscriptionLength = tinyMCE.editors.get([jQuery('#item-page-transcription-text').attr('id')]).getContent({format : 'text'}).length;
-            if(jQuery('#item-page-transcription-text').text()) {
-                var newTranscriptionLength = wordcount.body.getCharacterCountWithoutSpaces();
-            }     
-        } else {
-            var newTranscriptionLength = 0;
-        }
-        
-        // Prepare data and send API request
-        data = {
-            UserId: userId,
-            ItemId: itemId,
-            CurrentVersion: 1,
-            NoText: noText,
-            Languages: transcriptionLanguages,
-        }
-      
-        if (jQuery('#item-page-transcription-text').html()) {
-            data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'}).replace(/'/g, "\\'");
-            data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'"); 
-        } else {
-            data['Text'] = "";
-            data['TextNoTags'] = "";
-        }
-      
-        var dataString= JSON.stringify(data);
-      
+    
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-            'type': 'POST',
-            'url': TP_API_HOST + '/tp-api/transcriptions',
-            'data': data
+            'type': 'GET',
+            'url': TP_API_HOST + '/tp-api/items/' + itemId
         },
-        // Check success and create confirmation message
         function(response) {
-        
-            var amount = newTranscriptionLength - currentTranscription.length
-            if (amount > 0) {
-                amount = amount;
-            } else { 
-                amount = 0;
+            var response = JSON.parse(response);
+            var itemCompletion = JSON.parse(response.content)["CompletionStatusName"];
+            var transcriptionCompletion = JSON.parse(response.content)["TranscriptionStatusName"];
+            var currentTranscription = "";
+    
+            for (var i = 0; i < JSON.parse(response.content)["Transcriptions"].length; i++) {
+                if (JSON.parse(response.content)["Transcriptions"][i]["CurrentVersion"] == 1) {
+                    currentTranscription = JSON.parse(response.content)["Transcriptions"][i]["TextNoTags"];
+                }
             }
-
-            scoreData = {
-                ItemId: itemId,
+            
+            if(noText === 0) {
+                const wordcount = tinymce.get('item-page-transcription-text').plugins.wordcount;
+                // var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
+                // var newTranscriptionLength = tinyMCE.editors.get([jQuery('#item-page-transcription-text').attr('id')]).getContent({format : 'text'}).length;
+                if(jQuery('#item-page-transcription-text').text()) {
+                    var newTranscriptionLength = wordcount.body.getCharacterCountWithoutSpaces();
+                }     
+            } else {
+                var newTranscriptionLength = 0;
+            }
+            
+            // Prepare data and send API request
+            data = {
                 UserId: userId,
-                ScoreType: "Transcription",
-                Amount: amount
+                ItemId: itemId,
+                CurrentVersion: 1,
+                NoText: noText,
+                Languages: transcriptionLanguages,
             }
-
+          
+            if (jQuery('#item-page-transcription-text').html()) {
+                data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'}).replace(/'/g, "\\'");
+                data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'"); 
+            } else {
+                data['Text'] = "";
+                data['TextNoTags'] = "";
+            }
+          
+            var dataString= JSON.stringify(data);
+          
             jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                 'type': 'POST',
-                'url': TP_API_HOST + '/tp-api/scores',
-                'data': scoreData
+                'url': TP_API_HOST + '/tp-api/transcriptions',
+                'data': data
             },
             // Check success and create confirmation message
             function(response) {
-            })
-            updateSolr();
+            
+                var amount = newTranscriptionLength - currentTranscription.length
+                if (amount > 0) {
+                    amount = amount;
+                } else { 
+                    amount = 0;
+                }
+    
+                scoreData = {
+                    ItemId: itemId,
+                    UserId: userId,
+                    ScoreType: "Transcription",
+                    Amount: amount
+                }
+    
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'url': TP_API_HOST + '/tp-api/scores',
+                    'data': scoreData
+                },
+                // Check success and create confirmation message
+                function(response) {
+                })
+                updateSolr();
+    
+                var response = JSON.parse(response);
+                const selTrLangs = document.querySelectorAll('#transcription-selected-languages ul li');
+                const selLanCont = document.querySelector('.transcription-language div');
+                const oldLanguages = selLanCont.querySelectorAll('.language-single');
+    
+                if (response.code == "200") {
+                    if (itemCompletion == "Not Started") {
+                        changeStatus(itemId, "Not Started", "Edit", "CompletionStatusId", 2, editStatusColor, statusCount)
+                    }
+                    if (transcriptionCompletion == "Not Started") {
+                        changeStatus(itemId, "Not Started", "Edit", "TranscriptionStatusId", 2, editStatusColor, statusCount)
+                    }
+                    document.querySelector('.current-transcription').innerHTML = data['Text'];
+                    // Remove old languages
+                    for(let singleLang of oldLanguages) {
+                        selLanCont.removeChild(singleLang);
+                    }
+    
+                    // Add new Languages
+                    for(let langSingle of selTrLangs) {
+                        let langEl = document.createElement('div');
+                        langEl.classList.add('language-single');
+                        let langName = langSingle.textContent.split(' ');
+                        langEl.textContent = langName[0];
+                        selLanCont.appendChild(langEl);
+                    }
+    
+                    if(document.querySelector('#no-text-placeholder')) {
+                        document.querySelector('#no-text-placeholder').style.display = 'none';
+                        document.querySelector('.current-transcription').style.display = 'block';
+                        document.querySelector('.current-transcription').style.paddingLeft = '24px';
+                    }
+                    document.querySelector('#current-tr-view').innerHTML = data['Text'];
+                }
+                jQuery('#item-transcription-spinner-container').css('display', 'none')
 
-            var response = JSON.parse(response);
-            const selTrLangs = document.querySelectorAll('#transcription-selected-languages ul li');
-            const selLanCont = document.querySelector('.transcription-language div');
-            const oldLanguages = selLanCont.querySelectorAll('.language-single');
-
-            if (response.code == "200") {
-                if (itemCompletion == "Not Started") {
-                    changeStatus(itemId, "Not Started", "Edit", "CompletionStatusId", 2, editStatusColor, statusCount)
-                }
-                if (transcriptionCompletion == "Not Started") {
-                    changeStatus(itemId, "Not Started", "Edit", "TranscriptionStatusId", 2, editStatusColor, statusCount)
-                }
-                document.querySelector('.current-transcription').innerHTML = data['Text'];
-                // Remove old languages
-                for(let singleLang of oldLanguages) {
-                    selLanCont.removeChild(singleLang);
-                }
-
-                // Add new Languages
-                for(let langSingle of selTrLangs) {
-                    let langEl = document.createElement('div');
-                    langEl.classList.add('language-single');
-                    let langName = langSingle.textContent.split(' ');
-                    langEl.textContent = langName[0];
-                    selLanCont.appendChild(langEl);
-                }
-
-                if(document.querySelector('#no-text-placeholder')) {
-                    document.querySelector('#no-text-placeholder').style.display = 'none';
-                    document.querySelector('.current-transcription').style.display = 'block';
-                    document.querySelector('.current-transcription').style.paddingLeft = '24px';
-                }
-                document.querySelector('#current-tr-view').innerHTML = data['Text'];
-            }
-            jQuery('#item-transcription-spinner-container').css('display', 'none')
+            });
         });
-    });
+    }
 }
 
 // Adds an Item Property
@@ -1512,12 +1528,12 @@ function loadPlaceData(itemId, userId) {
                             `<div class='location-input-section-top'>` +
                                 `<div class='location-input-name-container' style='min-height:25px;'>` +
                                     `<label>Location Name:</label>` + 
-                                    `<input type='text' class='edit-input' value='${escapeHtml(location['Name'])}' name='' placeholder=''>` +
+                                    `<input type='text' class='edit-input' value='${isItString(location['Name'])}' name='' placeholder=''>` +
                                 `</div>` +
                                 `<div class='location-input-coordinates-container' style='min-height:25px;'>` +
                                     `<label>Coordinates: </label>` +
                                     `<span class='required-field'>*</span>` +
-                                    `<input type='text' class='edit-input' value='${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])}' name='' placeholder=''>` +
+                                    `<input type='text' class='edit-input' value='${isItString(location['Latitude'])}, ${isItString(location['Longitude'])}' name='' placeholder=''>` +
                                 `</div>` +
                                 `<div style='clear:both;'></div>` + 
                             `</div>` +
@@ -1526,11 +1542,7 @@ function loadPlaceData(itemId, userId) {
                                 `<label>Wikidata Reference:` +
                                     `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>` +
                                 `</label>` +
-                                `${location['WikidataId'] ?
-                                    `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value='${escapeHtml(location['WikidataName'])}; ${escapeHtml(location['WikidataId'])}' >`
-                                    :
-                                    `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value=''>`
-                                }` +
+                                `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value='${isItString(location['WikidataName'])}; ${isItString(location['WikidataId'])}' >` +
                             `</div>` +
                             // Description
                             `<div class='location-input-description-container' style='height:50px;'>` +
@@ -1550,7 +1562,7 @@ function loadPlaceData(itemId, userId) {
                                 `<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(${location['PlaceId']})'>` +
                                     `CANCEL` +
                                 `</button>` +
-                                `<button class='theme-color-bckground edit-location-save' onClick='editItemLocation(${location['PlaceId']}, ${itemId}, ${userId})'>` +
+                                `<button class='theme-color-background edit-location-save' onClick='editItemLocation(${location['PlaceId']}, ${itemId}, ${userId})'>` +
                                     `SAVE` +
                                 `</button>` +
                                 // Spinner 
@@ -1588,6 +1600,18 @@ function loadPlaceData(itemId, userId) {
         }
     });
 }
+// Function to check if it's a string and position to now if we need ',' in front or no
+function isItString(qStr, posInStr = 1) {
+    if(qStr != undefined && qStr != 'NULL') {
+        if(posInStr < 2) {
+            return escapeHtml(qStr);
+        } else {
+            return `, ${escapeHtml(qStr)}`;
+        }
+    } else {
+        return '';
+    }
+}
 // TODO there is better and more efficient way to do this
 function loadPersonData(itemId, userId) {
     // Get new person list
@@ -1614,14 +1638,14 @@ function loadPersonData(itemId, userId) {
                             `<p class='person-data'>` +
                                 `<span style='font-weight:400;'>${person['FirstName'] ? escapeHtml(person['FirstName']) : ''} ${person['LastName'] ? escapeHtml(person['LastName']) : ''} </span>` +
                                 // Sorry for this one, but it looks like best solution for now xD
-                                `${person['BirthDate'] && person['DeathDate'] ?
-                                    ` (${escapeHtml(person['BirthDate'])}${person['BirthPlace'] ? `, ${escapeHtml(person['BirthPlace'])}` : ``} - ${escapeHtml(person['DeathDate'])}${person['DeathPlace'] ? `, ${escapeHtml(person['DeathPlace'])})` : `)`}`
+                                `${(person['BirthDate'] != undefined && person['BirthDate'] != 'NULL') && (person['DeathDate'] != undefined && person['DeathDate'] != 'NULL') ?
+                                    ` (${escapeHtml(person['BirthDate'])}${isItString(person['BirthPlace'], 2)} - ${escapeHtml(person['DeathDate'])}${isItString(person['DeathPlace'], 2)})`
                                     :
-                                    `${person['BirthDate'] ? 
-                                        ` (Birth: ${escapeHtml(person['BirthDate'])}${person['BirthPlace'] ? `, ${escapeHtml(person['BirthPlace'])}` : ``})`
+                                    `${person['BirthDate'] || person['BirthPlace'] ? 
+                                        ` (Birth: ${isItString(person['BirthDate'])}${person['BirthDate'] ? ',' : ''}${isItString(person['BirthPlace'])})`
                                         :
-                                        `${person['DeathDate'] ? 
-                                            ` (Death: ${escapeHtml(person['DeathDate'])}${person['DeathPlace'] ? `, ${escapeHtml(person['DeathPlace'])}` : ``})`
+                                        `${person['DeathDate'] || person['DeathPlace'] ? 
+                                            ` (Death: ${isItString(person['DeathDate'])}${person['DeathDate'] ? ',' : ''}${isItString(person['DeathPlace'])})`
                                             :
                                             ``
                                         }` 
@@ -1640,7 +1664,7 @@ function loadPersonData(itemId, userId) {
                             }` +
                             `<div class='edit-del-person'>` +
                                 `<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openPersonEdit(${person['PersonId']})'></i>` +
-                                `<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover onClick='deleteItemData("persons", ${person['PersonId']}, ${itemId}, "person", ${userId})'></i>` +
+                                `<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover' onClick='deleteItemData("persons", ${person['PersonId']}, ${itemId}, "person", ${userId})'></i>` +
                             `</div>` +
                             `<div style='clear:both;'></div>` +
                         `</div>` +
@@ -1648,35 +1672,35 @@ function loadPersonData(itemId, userId) {
                         `<div id='person-data-edit-${person['PersonId']}' class='person-data-edit-container person-item-data-container'>` +
                             `<div class='person-input-names-container'>` +
                                 `<input type='text' id='person-${person['PersonId']}-firstName-edit' class='input-response person-input-field person-re-edit'
-                                    placeholder='&nbsp First Name' value='${person['FirstName'] ? escapeHtml(person['FirstName']) : ''}'>` +
+                                    placeholder='&nbsp First Name' value='${isItString(person['FirstName'])}'>` +
                                 `<input type='text' id='person-${person['PersonId']}-lastName-edit' class='input-response person-input-field person-re-edit-right'
-                                    placeholder='&nbsp Last Name' value='${person['LastName'] ? escapeHtml(person['LastName']) : ''}'>` +
+                                    placeholder='&nbsp Last Name' value='${isItString(person['LastName'])}'>` +
                             `</div>` +
 
                             `<div class='person-description-input'>` +
                                 `<input type='text' id='person-${person['PersonId']}-description-edit' class='input-response person-edit-field'
-                                    placeholder='&nbsp Add more info about this person...' value='${person['Descripiton'] ? escapeHtml(person['Description']) : ''}'>` +
+                                    placeholder='&nbsp Add more info about this person...' value='${isItString(person['Description'])}'>` +
                             `</div>` +
 
                             `<div class='person-description-input'>` +
                                 `<input type='text' id='person-${person['PersonId']}-wiki-edit' class='input-response person-edit-field'
-                                    placeholder='&nbsp Add Wikidata ID to this person' title='e.g. Wikidata Title ID' value='${person['Link'] ? escapeHtml(person['Link']) : ''}'>` +
+                                    placeholder='&nbsp Add Wikidata ID to this person' title='e.g. Wikidata Title ID' value='${isItString(person['Link'])}'>` +
                             `</div>` +
 
                             `<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>` +
                                 `<input type='text' id='person-${person['PersonId']}-birthPlace-edit' class='input-response person-input-field person-re-edit'
-                                    value='${person['BirthPlace'] ? escapeHtml(person['BirthPlace']) : ''}' placeholder='&nbsp Birth Location'>` +
+                                    value='${isItString(person['BirthPlace'])}' placeholder='&nbsp Birth Location'>` +
                                 `<span class='input-response'><input type='text' id='person-${person['PersonId']}-birthDate-edit' 
                                     class='date-input-response person-input-field datepicker-input-field person-re-edit-right'
-                                    value='${person['BirthDate'] ? escapeHtml(person['BirthDate']) : ''}' placeholder='&nbsp Birth: dd/mm/yyyy'>` +
+                                    value='${isItString(person['BirthDate'])}' placeholder='&nbsp Birth: dd/mm/yyyy'>` +
                             `</div>` +
 
                             `<div class='person-location-death-inputs' style='margin-top:5px;position:relative;'>` +
                                 `<input type='text' id='person-${person['PersonId']}-deathPlace-edit' class='input-response person-input-field person-re-edit'
-                                    value='${person['DeathPlace'] ? escapeHtml(person['DeathPlace']) : ''}' placeholder='&nbsp Death Location'>` +
+                                    value='${isItString(person['DeathPlace'])}' placeholder='&nbsp Death Location'>` +
                                 `<span class='input-response'><input type='text' id='person-${person['PersonId']}-deathDate-edit'
                                     class='date-input-response person-input-field datepicker-input-field person-re-edit-right'
-                                    value='${person['DeathDate'] ? escapeHtml(person['DeathDate']) : ''}' placeholder='&nbsp Death: dd/mm/yyyy'>` +
+                                    value='${isItString(person['DeathDate'])}' placeholder='&nbsp Death: dd/mm/yyyy'>` +
                             `</div>` + 
 
                             `<div class='form-buttons-right'>` +
@@ -1699,16 +1723,16 @@ function loadPersonData(itemId, userId) {
                     `<div class='single-person'>` +
                         `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
                         `<p class='person-data'>` +
-                            `<span style='font-weight:400;'>${person['FirstName'] ? escapeHtml(person['FirstName']) : ''} ${person['LastName'] ? escapeHtml(person['LastName']) : ''} </span>` +
+                            `<span style='font-weight:400;'>${isItString(person['FirstName'])}${person['FirstName'] ? ',' : ''}${isItString(person['LastName'])} </span>` +
                             // Sorry for this one, but it looks like best solution for now xD
-                            `${person['BirthDate'] && person['DeathDate'] ?
-                                ` (${escapeHtml(person['BirthDate'])}${person['BirthPlace'] ? `, ${escapeHtml(person['BirthPlace'])}` : ``} - ${escapeHtml(person['DeathDate'])}${person['DeathPlace'] ? `, ${escapeHtml(person['DeathPlace'])})` : `)`}`
+                            `${(person['BirthDate'] != undefined && person['BirthDate'] != 'NULL') && (person['DeathDate'] != undefined && person['DeathDate'] != 'NULL') ?
+                                ` (${escapeHtml(person['BirthDate'])}${isItString(person['BirthPlace'], 2)}- ${escapeHtml(person['DeathDate'])}${isItString(person['DeathPlace'], 2)})`
                                 :
                                 `${person['BirthDate'] ? 
-                                    ` (Birth: ${escapeHtml(person['BirthDate'])}${person['BirthPlace'] ? `, ${escapeHtml(person['BirthPlace'])}` : ``})`
+                                    ` (Birth: ${isItString(person['BirthDate'])}${person['BirthDate'] ? ',' : ''}${isItString(person['BirthPlace'])})`
                                     :
                                     `${person['DeathDate'] ? 
-                                        ` (Death: ${escapeHtml(person['DeathDate'])}${person['DeathPlace'] ? `, ${escapeHtml(person['DeathPlace'])}` : ``})`
+                                        ` (Death: ${isItString(person['DeathDate'])}${person['DeathDate'] ? ',' : ''}${isItString(person['DeathPlace'])})`
                                         :
                                         ``
                                     }` 

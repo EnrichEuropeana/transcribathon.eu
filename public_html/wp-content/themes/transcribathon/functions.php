@@ -181,7 +181,7 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/datasets-admin-pag
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_import.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/story_page.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page.php');
-/* require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test_ad.php'); */
+//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/solr_test.php'); // Solr test client
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/get_word_document.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_htr.php'); // Adds HTR Editor

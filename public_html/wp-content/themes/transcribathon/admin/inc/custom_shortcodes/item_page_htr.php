@@ -83,7 +83,7 @@ function _TCT_item_page_htr( $atts) {
     }
 
     $transcription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
-    $transcription = htmlspecialchars($transcription);
+    $transcription = htmlspecialchars($transcription, ENT_QUOTES, 'UTF-8');
 
 
 
@@ -147,7 +147,7 @@ footer._tct_footer, footer.site-footer {
     id="transkribusEditor"
     ref="editor"
     data-iiif-url='{$imJLink}',
-    data-xml= "{$transcription}"
+    data-xml= '{$transcription}'
 >
 </div>
 <script>
@@ -209,6 +209,7 @@ HED;
 
         // Remove line breaks, otherwise layoueditor doesn't work
         $layoutTranscription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
+        
         // Get json file from IIIF
         $layoutImage = file_get_contents($imJLink);
         // Remove line breaks
