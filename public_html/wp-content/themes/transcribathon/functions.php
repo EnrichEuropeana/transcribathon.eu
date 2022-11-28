@@ -183,6 +183,7 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/story_page.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page.php');
 //require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/solr_test.php'); // Solr test client
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/get_word_document.php');
+require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/compare_transcriptions.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_htr.php'); // Adds HTR Editor
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tct_new_search.php'); // Adds New Search Page
@@ -208,7 +209,7 @@ function embedd_custom_javascripts_and_css() {
      if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
         /* jQuery */
         /* Don't enqueue following scripts if it's HTR editor */
-        if(!is_page('item_page_htr') && !is_page('import-htr-transcription') && !is_page('item')) {
+        if(!is_page('item_page_htr') && !is_page('import-htr-transcription') && !is_page('item') && !is_page('transcription-comparison')) {
             wp_enqueue_script( 'jquery' );
             /* custom JS and CSS*/
             /* openseadragon */
@@ -219,6 +220,14 @@ function embedd_custom_javascripts_and_css() {
         }
         if(is_page('story')){
             wp_enqueue_style( 'storystyle', CHILD_TEMPLATE_DIR . '/css/story_page.css');
+        }
+        if(is_page('transcription-comparison')) {
+            wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/compare-tr-viewer.js');
+            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
+            wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon.js');
+            wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
+            wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css');
+            wp_enqueue_script( 'jquery' );
         }
         if(is_page('item')){
             wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css');

@@ -727,7 +727,7 @@ function updateDataProperty(dataType, id, fieldName, value) {
 function isWhitelisted(tinyText) {
     // WIP
     let tester = new DOMParser().parseFromString(tinyText, 'text/html');
-    if(tester.body.querySelector('*:not(p):not(div):not(br):not(span):not(table):not(col):not(colgroup):not(tbody):not(td):not(tr):not(sub):not(sup):not(img.tct_missing):not(del:has(span.underline))') != null) {
+    if(tester.body.querySelector('*:not(p)') != null) {
         window.alert('Invalid Input');
         return 0;
     } 
@@ -1653,7 +1653,7 @@ function loadPersonData(itemId, userId) {
                                 }` +
                             `</p>` +
                             `${person['Description'] ?
-                                `<p class='person-description'>${escapeHtml(person['Description'])}</p>`
+                                `<p class='person-description'>Description: ${escapeHtml(person['Description'])}</p>`
                                 :
                                 ``
                             }` +
@@ -1723,7 +1723,7 @@ function loadPersonData(itemId, userId) {
                     `<div class='single-person'>` +
                         `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
                         `<p class='person-data'>` +
-                            `<span style='font-weight:400;'>${isItString(person['FirstName'])}${person['FirstName'] ? ',' : ''}${isItString(person['LastName'])} </span>` +
+                            `<span style='font-weight:400;'>${isItString(person['FirstName'])} ${isItString(person['LastName'])} </span>` +
                             // Sorry for this one, but it looks like best solution for now xD
                             `${(person['BirthDate'] != undefined && person['BirthDate'] != 'NULL') && (person['DeathDate'] != undefined && person['DeathDate'] != 'NULL') ?
                                 ` (${escapeHtml(person['BirthDate'])}${isItString(person['BirthPlace'], 2)}- ${escapeHtml(person['DeathDate'])}${isItString(person['DeathPlace'], 2)})`
@@ -1789,80 +1789,79 @@ function loadLinkData(itemId, userId) {
         'url': TP_API_HOST + '/tp-api/items/' + itemId
     },
     function(response) {
-      var response = JSON.parse(response);
-      if (response.code == "200") {
-        var content = JSON.parse(response.content);
-        jQuery('#item-link-list ul').html('')
-        for (var i = 0; i < content['Properties'].length; i++) {
-          if (content['Properties'][i]['PropertyType'] == "Link") {
-            if (content['Properties'][i]['PropertyDescription'] != "NULL" && content['Properties'][i]['PropertyDescription'] != null) {
-              var description = escapeHtml(content['Properties'][i]['PropertyDescription']);
-            }
-            else {
-              var description = "";
-            }
-            jQuery('#item-link-list ul').append(
-              '<li id="link-' + content['Properties'][i]['PropertyId'] + '">' +
-                '<div id="link-data-output-' + content['Properties'][i]['PropertyId'] + '" class="">' +
-                  '<div id="link-data-output-display-' + content['Properties'][i]['PropertyId'] + '" class="link-data-output-content">' +
-                      '<div class="item-data-output-element-header">' +
-                          '<a href="' + content['Properties'][i]['PropertyValue'] + '" target="_blank" class="link-data-ouput-headline">' +
-                          escapeHtml(content['Properties'][i]['PropertyValue']) +
-                          '</a>' +
+        var response = JSON.parse(response);
+        if (response.code == "200") {
+            var content = JSON.parse(response.content);
+            jQuery('#item-link-list ul').html('')
+            for (var i = 0; i < content['Properties'].length; i++) {
+                if (content['Properties'][i]['PropertyType'] == "Link") {
+                    if (content['Properties'][i]['PropertyDescription'] != "NULL" && content['Properties'][i]['PropertyDescription'] != null) {
+                        var description = escapeHtml(content['Properties'][i]['PropertyDescription']);
+                    } else {
+                        var description = "";
+                    }
+                    jQuery('#item-link-list ul').append(
+                        '<li id="link-' + content['Properties'][i]['PropertyId'] + '">' +
+                            '<div id="link-data-output-' + content['Properties'][i]['PropertyId'] + '" class="">' +
+                                '<div id="link-data-output-display-' + content['Properties'][i]['PropertyId'] + '" class="link-data-output-content">' +
+                                    '<div class="item-data-output-element-header">' +
+                                        '<a href="' + content['Properties'][i]['PropertyValue'] + '" target="_blank" class="link-data-ouput-headline">' +
+                                            escapeHtml(content['Properties'][i]['PropertyValue']) +
+                                        '</a>' +
   
-                          '<i class="edit-item-data-icon fas fa-pencil theme-color-hover"' +
-                          'onClick="openLinksourceEdit(' + content['Properties'][i]['PropertyId'] + ')"></i>' +
-                          '<i class="edit-item-data-icon delete-item-data fas fa-times theme-color-hover"' +
+                                        '<i class="edit-item-data-icon fas fa-pencil theme-color-hover"' +
+                                        'onClick="openLinksourceEdit(' + content['Properties'][i]['PropertyId'] + ')"></i>' +
+                                        '<i class="edit-item-data-icon delete-item-data fas fa-times theme-color-hover"' +
                                         'onClick="deleteItemData(\'properties\', ' + content['Properties'][i]['PropertyId'] + ', ' + itemId + ', \'link\', ' + userId + ')"></i>' +
-                          '<div style="clear:both;"></div>' +
-                      '</div>' +
-                      '<div>' +
-                        '<span>' +
-                          'Description: ' +
-                          escapeHtml(description) +
-                        '</span>' +
-                      '</div>' +
-                    '</div>' +
+                                        '<div style="clear:both;"></div>' +
+                                    '</div>' +
+                                    '<div>' +
+                                        '<span>' +
+                                            'Description: ' +
+                                            escapeHtml(description) +
+                                        '</span>' +
+                                    '</div>' +
+                                '</div>' +
   
-                    '<div class="link-data-edit-container" id="link-data-edit-' + content['Properties'][i]['PropertyId'] +'">' +
-                        // '<div>' +
-                        //   "<span>Link:</span><br/>" +
-                        // '</div>' +
+                                '<div class="link-data-edit-container" id="link-data-edit-' + content['Properties'][i]['PropertyId'] +'">' +
+                                // '<div>' +
+                                //   "<span>Link:</span><br/>" +
+                                // '</div>' +
   
-                        '<div id="link-' + content['Properties'][i]['PropertyId'] +'-url-input" class="link-url-input">' +
-                          '<input type="url" value="' + escapeHtml(content['Properties'][i]['PropertyValue']) + '">' +
-                        '</div>' +
+                                    '<div id="link-' + content['Properties'][i]['PropertyId'] +'-url-input" class="link-url-input">' +
+                                        '<input type="url" value="' + escapeHtml(content['Properties'][i]['PropertyValue']) + '">' +
+                                    '</div>' +
   
-                        '<div id="link-' + content['Properties'][i]['PropertyId'] +'-description-input" class="link-description-input" >' +
-                          // '<label>Additional description:</label><br/>' +
-                          '<textarea rows= "3" type="text" placeholder="" name="">' + escapeHtml(description) + '</textarea>' +
-                        '</div>' +
+                                    '<div id="link-' + content['Properties'][i]['PropertyId'] +'-description-input" class="link-description-input" >' +
+                                    // '<label>Additional description:</label><br/>' +
+                                        '<textarea rows= "3" type="text" placeholder="" name="">' + escapeHtml(description) + '</textarea>' +
+                                    '</div>' +
   
-                        '<div class="form-buttons-right">' +
+                                    '<div class="form-buttons-right">' +
+    
+                                        "<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(" + content['Properties'][i]['PropertyId'] + ")'>" +
+                                            "CANCEL" +
+                                        "</button>" +
 
-                            "<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(" + content['Properties'][i]['PropertyId'] + ")'>" +
-                                "CANCEL" +
-                            "</button>" +
-
-                            "<button type='submit' class='theme-color-background edit-location-save' id='link-save-button'" +
-                                  "onClick='editLink(" + content['Properties'][i]['PropertyId'] + ", " + itemId + ", " + userId + ")'>" +
-                              "SAVE" +
-                            "</button>" +
+                                        "<button type='submit' class='theme-color-background edit-location-save' id='link-save-button'" +
+                                              "onClick='editLink(" + content['Properties'][i]['PropertyId'] + ", " + itemId + ", " + userId + ")'>" +
+                                          "SAVE" +
+                                        "</button>" +
 
   
-                            '<div id="item-link-' + content['Properties'][i]['PropertyId'] + '-spinner-container" class="spinner-container spinner-container-left">' +
-                            '<div class="spinner"></div>' +
-                            "</div>" +
-                            '<div style="clear:both;"></div>' +
-                        '</div>' +
-                        '<div style="clear:both;"></div>' +
-                    '</div>' +
-                '</div>' +
-              '</li>'
-            )
-          }
+                                        '<div id="item-link-' + content['Properties'][i]['PropertyId'] + '-spinner-container" class="spinner-container spinner-container-left">' +
+                                            '<div class="spinner"></div>' +
+                                        "</div>" +
+                                        '<div style="clear:both;"></div>' +
+                                    '</div>' +
+                                    '<div style="clear:both;"></div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</li>'
+                    )
+                }
+            }
         }
-      }
     });
 }
 
