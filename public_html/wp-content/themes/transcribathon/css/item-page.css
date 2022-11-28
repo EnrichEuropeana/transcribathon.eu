@@ -20,7 +20,7 @@ body {
 }
 #slider-container {
     height: 270px;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     position: relative;
 }
 .prev-slide {
@@ -32,13 +32,13 @@ body {
     left: 0.5%;
     top: 1.2%;
     color: #fff;
-    background: #f8f8f8;
+    background: var(--bg-main-color);
     z-index: 99;
     border: none;
     border-radius: 0!important;
 }
 .prev-slide i, .next-slide i {
-    color: #0a72cc;
+    color: var(--main-color);
     transform: translateY(10px);
 }
 .prev-slide:focus i, .next-slide:focus i, .prev-slide:active i, .next-slide:active i {
@@ -46,7 +46,7 @@ body {
 }
 .next-slide:focus, .prev-slide:focus, .next-slide:active, .prev-slide:active {
     border: none;
-    background: #f8f8f8;
+    background: var(--bg-main-color);
     -webkit-box-shadow: none;
     box-shadow: none;
 }
@@ -63,7 +63,7 @@ body {
     right: 0.5%;
     top: 1.2%;
     color: #fff;
-    background: #f8f8f8;
+    background: var(--bg-main-color);
     z-index: 99;
     border: none;
     border-radius: 0!important;
@@ -89,7 +89,7 @@ body {
     border: 2.5px solid transparent;
 }
 .slide-img-wrap:hover, .slide-img-wrap.active {
-    border: 5px solid #0a72cc;
+    border: 5px solid var(--main-color);
     transform: scale(1.01);
 }
 .image-completion-status {
@@ -102,8 +102,8 @@ body {
 }
 .slide-number-wrap {
     position: relative;
-    font-family: 'Dosis', sans-serif;
-    color: #0a72cc;
+    font-family: var(--h-font-family);
+    color: var(--main-color);
     font-weight: 700;
     text-align: center;
     margin-top: 2px;
@@ -137,11 +137,11 @@ body {
     position: absolute;
     bottom: 10px;
     left: 100px;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
 }
 .back-to-story:hover a, .back-to-story:hover i {
     text-decoration: none;
-    color: #0a72cc!important;
+    color: var(--main-color)!important;
 }
 .back-to-story a, .back-to-story i {
     color: #000!important;
@@ -150,8 +150,8 @@ body {
 #item-header {
     position: relative;
     display: inline-block;
-    color: #0a72cc;
-    font-family: 'Dosis', sans-serif;
+    color: var(--main-color);
+    font-family: var(--h-font-family);
     font-size: 20px;
     margin: 0 0 20px 0!important;
 }
@@ -172,16 +172,16 @@ body {
     background: #fff;
     z-index: 20;
     text-transform: uppercase;
-    border: 0.5px solid #0a72cc;
+    border: 0.5px solid var(--main-color);
 }
 .change-all-status,.tr-comp-btn {
     width: 150px;
-    border: 2px solid #0a72cc;
+    border: 2px solid var(--main-color);
     border-radius: 15px;
     font-size: 12px;
     text-align: center;
-    font-family: 'Dosis', sans-serif;
-    color: #0a72cc;
+    font-family: var(--h-font-family);
+    color: var(--main-color);
     height: 29px;
     font-weight: 600;
     padding: 5px 0;
@@ -252,7 +252,7 @@ body {
 /*--- Viewer ---*/
 #openseadragon {
     cursor: pointer;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
 }
 #viewer-n-transcription {
     position: relative;
@@ -281,7 +281,7 @@ body {
     margin-top: 10px;
     text-align: center;
     cursor: pointer;
-    color: #0a72cc;
+    color: var(--main-color);
 }
 #startTranscription, #startHtrTranscription {
     padding: 0 25px 15px 25px;
@@ -292,7 +292,7 @@ body {
     top: 5px;
     margin: 0!important;
     font-weight: 700;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     letter-spacing: 0.025em;
     font-size: 19.5px!important;
 }
@@ -306,7 +306,7 @@ body {
     font-size: 20px;
     margin-right:0px;
     margin-left:14px;
-    color:#0a72cc;
+    color:var(--main-color);
     position: relative;
     top: 5px;
 }
@@ -328,22 +328,22 @@ body {
     top: 3px;
     margin: 0!important;
     font-weight: 700!important;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     letter-spacing: 0.025em;
-    color: #0a72cc!important;
+    color: var(--main-color)!important;
 }
 .enrich-header img {
     height: 28px!important;
-    fill: #0a72cc;
-    color: #0a72cc;
+    fill: var(--main-color);
+    color: var(--main-color);
     margin-right: 5px;
 }
 /*-- smaller, subsection titles --*/
 .enrich-headers {
     height: 30px;
     padding-left: 25px;
-    color: #0a72cc!important;
-    font-family: 'Dosis', sans-serif;
+    color: var(--main-color)!important;
+    font-family: var(--h-font-family);
     margin: 15px 0px 0px 0px!important;
 }
 h6.enrich-headers {
@@ -362,7 +362,7 @@ h6.enrich-headers {
 }
 .person-data {
     margin: 0!important;
-    border-bottom: 1px solid #f8f8f8;
+    border-bottom: 1px solid var(--bg-main-color);
     height: 27px;
 }
 .edit-del-person {
@@ -372,7 +372,7 @@ h6.enrich-headers {
 }
 .person-i {
     font-size: 12px;
-    color: #0a72cc;
+    color: var(--main-color);
     position: relative;
     top: 6px;
 }
@@ -389,7 +389,7 @@ h6.enrich-headers {
     padding: 5px 0;
 }
 .location-display-container .location-single p:first-of-type{
-    border-bottom: 0.5px solid #f8f8f8;
+    border-bottom: 0.5px solid var(--bg-main-color);
     height: 27px;
 }
 .location-single {
@@ -422,14 +422,14 @@ h6.enrich-headers {
 .keyword-single:hover, .language-single:hover {
     display: inline-block;
     color: #fff;
-    background-color: #0a72cc;
+    background-color: var(--main-color);
     padding: 5px 10px;
     margin-right: 10px;
 }
 .keyword-single, .language-single {
     display: inline-block;
     color: #000;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     padding: 5px 10px;
     margin-right: 5px;
     margin-bottom: 5px;
@@ -459,15 +459,15 @@ h6.enrich-headers {
 /* --- Metadata --- */
 .single-meta {
     padding: 5px 0px;
-    border-bottom: 1px solid #f8f8f8;
+    border-bottom: 1px solid var(--bg-main-color);
     font-weight: 400;
 }
 p.mb-1 {
-    color: #0a72cc;
+    color: var(--main-color);
     font-weight: 600;
     padding: 0!important;
     font-size: 14px;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     margin: 0!important;
     margin-bottom: 0!important;
 }
@@ -499,7 +499,7 @@ p.mb-1 {
     font-size: 25px;
     background: #ffffff;
     position: absolute;
-    color: #0a72cc;
+    color: var(--main-color);
     text-align: center;
     z-index: 9;
     bottom: 0;
@@ -521,7 +521,7 @@ p.mb-1 {
     padding: 8px 0px;
     display: inline-block;
     text-transform: uppercase;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     font-weight: 700;
     letter-spacing: 0.025em;
 }
@@ -546,7 +546,7 @@ p.mb-1 {
     border-radius: unset!important;
     display: inline-block;
     width: 80px;
-    font-family: 'Dosis';
+    font-family: var(--h-font-family);
     font-weight: 600;
     letter-spacing: 0.025em;
     line-height: normal;
@@ -611,7 +611,7 @@ p.mb-1 {
 }
 .location-data-edit-container .edit-input {
     background-color: #fff!important;
-    border: 1px solid #0a72cc!important;
+    border: 1px solid var(--main-color)!important;
     width: 58%!important;
     float: unset;
 }
@@ -622,7 +622,7 @@ p.mb-1 {
     float: right!important;
     margin-right: 49px!important;
     width: 55%!important;
-    background-color: #f8f8f8!important;
+    background-color: var(--bg-main-color)!important;
     border: 0!important;
     border-radius: 0!important;
 }
@@ -634,7 +634,7 @@ p.mb-1 {
     right: 56px;
     cursor: pointer;
     padding: 0 5px;
-    background: #f8f8f8;
+    background: var(--bg-main-color);
 }
 #loc-tab img {
     filter: brightness(0);
@@ -651,15 +651,15 @@ p.mb-1 {
     overflow: auto;
     max-height: 350px;
     border: none;
-    background: #f8f8f8;
+    background: var(--bg-main-color);
     border-radius: 2px;
     outline: none;
-    border: 1px solid #f8f8f8;
+    border: 1px solid var(--bg-main-color);
     line-height: 1.6em;
 }
 #item-page-transcription-text:focus {
     background: #fff;
-    border: 1px solid #0a72cc;
+    border: 1px solid var(--main-color);
 }
 #item-page-transcription-text p {
     margin: 0!important;
@@ -678,12 +678,12 @@ p.mb-1 {
     cursor: pointer;
     user-select: none;
     letter-spacing: 0.025em;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     color: #2b2b2b;
 }
 .language-item-select {
     position: absolute;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     color: #2b2b2b;
     width: 200px;
     height: 200px;
@@ -707,7 +707,7 @@ p.mb-1 {
 }
 #transcription-selected-languages li {
     display: inline-block;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     color: #2b2b2b;
     margin: 0 0 6px 6px;
     list-style: none;
@@ -715,7 +715,7 @@ p.mb-1 {
     border-radius: 0!important;
 }
 #transcription-selected-languages li:hover {
-    background-color: #0a72cc!important;
+    background-color: var(--main-color)!important;
     color: #fff!important;
     border-radius: 0!important;
 }
@@ -817,7 +817,7 @@ p.mb-1 {
     left: -7px;
     height: 18px;
     width: 18px;
-    border: 2px solid #0a72cc;
+    border: 2px solid var(--main-color);
 }
 .spinner-container-right {
     float: right;
@@ -1035,7 +1035,7 @@ p.mb-1 {
     padding: 0 10px;
 }
 .panel-right #description-update-button {
-    border: 1px solid #0a72cc;
+    border: 1px solid var(--main-color);
 }
 #item-data-header {
     margin-top: 15px;
@@ -1089,10 +1089,10 @@ p.mb-1 {
 }
 .panel-right .location-save-btn {
     width: 100%;
-    background: #0a72cc;
+    background: var(--main-color);
     padding: 0px 10px;
     letter-spacing: 0.5px;
-    border: 1px solid #0a72cc;
+    border: 1px solid var(--main-color);
     font-size: 14px;
     font-weight: 700;
     height: 25px;
@@ -1110,8 +1110,8 @@ p.mb-1 {
     font-size: 14px!important;
 }
 #tagging-tab label {
-    color: #0a72cc;
-    font-family: 'Dosis', sans-serif;
+    color: var(--main-color);
+    font-family: var(--h-font-family);
 }
 #tagging-tab {
     padding-left: 30px!important;
@@ -1121,17 +1121,17 @@ p.mb-1 {
 }
 .mapboxgl-ctrl-geocoder--input {
     width: 100%!important;
-    border: 2px solid #0a72cc!important;
+    border: 2px solid var(--main-color)!important;
     border-radius: 0!important;
 }
 .panel-right #save-all-tags {
     width: -webkit-fill-available;
     width: -moz-available;
-    background-color: #0a72cc;
+    background-color: var(--main-color);
     color: #fff;
     padding: 0px 10px;
     letter-spacing: 0.5px;
-    border: 1px solid #0a72cc;
+    border: 1px solid var(--main-color);
     height: 25px;
     font-size: 14px;
     font-weight: 700;
@@ -1144,7 +1144,7 @@ p.mb-1 {
 }
 .panel-bottom #save-all-tags, .data-popout #save-all-tags {
     width: 100%;
-    background-color: #0a72cc;
+    background-color: var(--main-color);
     color: #fff;
     text-align: center;
 }
@@ -1196,10 +1196,10 @@ p.mb-1 {
     margin-right: 3px;
 }
 .tab-list div.active {
-    color: #0a72cc!important;
+    color: var(--main-color)!important;
 }
 .tab-list span {
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     font-weight: 600;
     letter-spacing: 0.025em;
 }
@@ -1270,7 +1270,7 @@ p.mb-1 {
 .item-data-input-headline {
     font-size: 1.1em;
     font-weight: 500;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     margin: 1em 0;
 }
 .item-date-inner-container {
@@ -1283,8 +1283,8 @@ p.mb-1 {
 .item-date-inner-container label {
     display: inline-block;
     margin-right: 10px;
-    color: #0a72cc;
-    font-family: 'Dosis', sans-serif;
+    color: var(--main-color);
+    font-family: var(--h-font-family);
 }
 .item-date-inner-container input {
     width: 94px;
@@ -1315,7 +1315,7 @@ button.ui-datepicker-trigger {
     margin-left: 4px;
 }
 #item-date-save-button {
-    color: #0a72cc;
+    color: var(--main-color);
     float: right;
     background: none;
     border: none;
@@ -1343,19 +1343,19 @@ button.ui-datepicker-trigger {
 }
 .person-description-input input {
     width: 100%!important;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
 }
 #save-personinfo-button {
     float: unset!important;
 }
 .person-re-edit {
     width: 48%!important;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
 }
 .person-re-edit-right {
     width: 48%;
     margin-left: 9px;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     float: right;
 }
 .person-data-edit-container .input-response button.ui-datepicker-trigger {
@@ -1376,7 +1376,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     width: 49%;
     margin-right: 0!important;
     display: inline-block;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     border-radius: 0;
     border: none;
 }
@@ -1387,7 +1387,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 #person-description-input-field:focus-visible, #person-birthPlace-input:focus-visible, .link-description-input textarea:focus-visible,
 #person-birthDate-input:focus-visible, #person-deathPlace-input:focus-visible, #person-deathDate-input:focus-visible,
 #item-page-description-text:focus-visible {
-    border: 1px solid #0a72cc;
+    border: 1px solid var(--main-color);
     background-color: #fff;
     outline: none;
 }
@@ -1409,13 +1409,13 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .link-data-edit-container .link-url-input input, .link-data-edit-container .link-description-input textarea {
     background-color: #fff;
-    border: 1px solid #0a72cc;
+    border: 1px solid var(--main-color);
 }
 #keyword-input {
     width: 100%!important;
     border-radius: 0;
     border: none;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     height: inherit;
 }
 .keyword-data-output-headlinee {
@@ -1455,7 +1455,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 #story-full-collapse {
     text-align: center;
-    color: #0a72cc;
+    color: var(--main-color);
     font-size: 12px;
 }
 #item-data-section {
@@ -1465,7 +1465,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 #transcription-language-custom-selector:hover {
     color: #fff!important;
-    background-color: #0a72cc!important;
+    background-color: var(--main-color)!important;
 }
 #people-view #fs-people {
     display: none;
@@ -1496,7 +1496,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 
 .selected-option:hover {
-    background-color: #0a72cc!important;
+    background-color: var(--main-color)!important;
     color: #fff!important;
 }
 .panel-right #transcription-language-custom-selector{
@@ -1504,7 +1504,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     padding: 7px 10px 0;
     width: unset;
     margin: 0;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     font-size: 14px;
     font-weight: 700;
     letter-spacing: -0.5px;
@@ -1528,7 +1528,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 40px;
     font-size: 14px;
     color: #2b2b2b;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     font-weight: 600;
 }
 .panel-right .tablinks {
@@ -1580,7 +1580,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-size: 11px;
     position: relative;
     padding: 1px 10px;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     font-weight: 700;
     z-index: 50;
     line-height: 1.3em;
@@ -1608,7 +1608,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 25px;
     width: 100px;
     font-size: 15px;
-    border: 5px solid #0a72cc;
+    border: 5px solid var(--main-color);
     margin-right: 5px;
     padding: 0 5px;
 }
@@ -1619,7 +1619,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .panel-bottom #description-update-button {
     height: 25px;
     width: 100px;
-    border: 5px solid #0a72cc;
+    border: 5px solid var(--main-color);
     font-size: 15px;
     padding: 0;
     float: right;
@@ -1744,7 +1744,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     float: right;
     margin-right: 49px;
     width: 55%!important;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     border: 0!important;
     border-radius: 0!important;
 }
@@ -1782,7 +1782,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 20px;
     width: 20px;
     background-color: transparent;
-    color: #0a72cc;
+    color: var(--main-color);
     margin-left: 5px;
     border: none!important;
     background: #fff;
@@ -1796,7 +1796,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     list-style: none;
     margin: 8px 0!important;
     padding: 10px 14px 4px 14px;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
 }
 .item-data-output-element-header h6 {
     float: left;
@@ -1818,7 +1818,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-size: 11px;
 }
 .edit-item-data-icon:hover {
-    color: #0a72cc;
+    color: var(--main-color);
 }
 .location-data-edit-container {
     display: none;
@@ -1961,7 +1961,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     margin: 0 25px!important;
 }
 .person-input-names-container input {
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     border-radius: 0!important;
 }
 .person-item-data-container {
@@ -1969,7 +1969,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 #person-description-input-field, #item-page-description-text, #person-wiki-input-field {
     width: 100%!important;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     border: none;
 }
 .tutorial-image-area img {
@@ -2046,7 +2046,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .tab-h.it {
     position: relative;
     left: 3px;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     letter-spacing: 0.025em;
 }
 @media screen and (min-width: 851px) and (max-width: 1200px) {
@@ -2088,7 +2088,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .checkbox-inactive {
     float:right;
-    background-color:#f8f8f8;
+    background-color:var(--bg-main-color);
     padding: 1px 3px;
 }
 .checkbox-inactive label {
@@ -2097,7 +2097,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .checkbox-active {
     float: right;
-    background-color: #0a72cc;
+    background-color: var(--main-color);
     padding: 1px 5px 1px 2px;
 }
 .checkbox-active label {
@@ -2105,18 +2105,18 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-size: 12px;
 }
 #no-text-placeholder, #htr-no-text-placeholder {
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     text-align: center;
     height: 539px;
     margin-top: 14px;
     cursor: pointer;
 }
 #no-text-placeholder p, #htr-no-text-placeholder p {
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     letter-spacing: 0.025em;
     font-size: 32px;
     font-weight: 700;
-    color: #0a72cc;
+    color: var(--main-color);
 }
 #no-text-placeholder span, #htr-no-text-placeholder span{
     line-height: 1;
@@ -2132,7 +2132,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     top: 5px;
 }
 #no-text-placeholder i, #htr-no-text-placeholder i {
-    color: #0a72cc;
+    color: var(--main-color);
     font-size: 70px;
     position: relative;
     top: 30px;
@@ -2160,7 +2160,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 /* only showing status, no functionality */
 .status-indicator-view {
     font-size: 10px;
-    font-family: 'Dosis';
+    font-family: var(--h-font-family);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.025em;
@@ -2203,7 +2203,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     padding: 0 10px!important;
     width: unset;
     margin: 0;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     color: #2b2b2b;
     text-transform: none;
     font-weight: 600;
@@ -2232,7 +2232,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 25px;
     width: 100px;
     font-size: 15px;
-    border: 2px solid #0a72cc;
+    border: 2px solid var(--main-color);
     padding: 0;
 }
 .data-popout #item-transcription-spinner-container {
@@ -2270,7 +2270,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     padding: 3px 10px!important;
     position: relative;
     z-index: 50;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     font-weight: 600;
     letter-spacing: 0.025em;
 }
@@ -2400,7 +2400,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-size: 13px;
     padding: 3px 10px;
     width: 200px;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     position: relative;
     z-index: 50;
     font-weight: 500;
@@ -2481,7 +2481,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 25px;
     padding: 3px 10px;
     width: unset;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     color: #2b2b2b;
     text-transform: initial;
 }
@@ -2564,7 +2564,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     padding: 8px 0px;
     display: inline-block;
     text-transform: uppercase;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     font-weight: 700!important;
     letter-spacing: 0.025em;
 }
@@ -2587,7 +2587,7 @@ div.tox.tox-tinymce {
 }
 .fs-title {
     display: inline-block;
-    color: #0a72cc;
+    color: var(--main-color);
     font-weight: 600;
     margin-left: 40px;
 }
@@ -2602,7 +2602,7 @@ div.tox.tox-tinymce {
 .link-single i.far.fa-external-link {
     margin-left: 3px;
     margin-right: 5px;
-    color: #0a72cc;
+    color: var(--main-color);
     font-size: 14px;
 }
 /* Item Page compare transcriptions btn */
