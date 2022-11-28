@@ -2591,6 +2591,18 @@ div.tox.tox-tinymce {
     font-weight: 600;
     margin-left: 40px;
 }
+.run-htr, .htr-editor {
+    display: inline-block;
+    color: var(--main-color);
+    font-family: var(--h-font-family);
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+}
+.htr-btns {
+    margin: 10px auto;
+    padding: 0 25px;
+}
 /* -- Compare Transcriptions Css -- */
 #full-width-viewer {
     margin-bottom: 50px;
