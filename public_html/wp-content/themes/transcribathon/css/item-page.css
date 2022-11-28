@@ -376,7 +376,7 @@ h6.enrich-headers {
     position: relative;
     top: 6px;
 }
-.person-description {
+.person-description, .prop-desc {
     font-size: 13px;
     height: 15px;
     margin: 0!important;

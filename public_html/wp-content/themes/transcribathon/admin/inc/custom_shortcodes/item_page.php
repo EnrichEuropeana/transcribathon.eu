@@ -780,70 +780,119 @@ function _TCT_mtr_transcription( $atts) {
             $enrichmentTab .=    "</div>";
 
             $enrichmentTab .= '<div id="item-link-list" class="item-data-output-list">';
-                $enrichmentTab .= '<ul>';
                 foreach ($itemData['Properties'] as $property) {
-                    if ($property['PropertyDescription'] != "NULL") {
-                        $description = $property['PropertyDescription'];
+                    if($property['PropertyDescription'] != 'NULL') {
+                        $propDescription = "Description: <b>" . $property['PropertyDescription'] . "</b>";
+                        $descPHolder = $property['PropertyDescription'];
                     } else {
-                        $description = "";
+                        $propDescription = "";
+                        $descPHolder = "";
                     }
-                    if ($property['PropertyType'] == "Link") {
-                        $enrichmentTab .= '<li id="link-'.$property['PropertyId'].'">';
-                            $enrichmentTab .= '<div id="link-data-output-'.$property['PropertyId'].'" class="">';
-                                $enrichmentTab .= '<div id="link-data-output-display-'.$property['PropertyId'].'" class="link-data-output-content">';
-                                    $enrichmentTab .= '<div class="item-data-output-element-header">';
-                                        $enrichmentTab .= '<a href="'.$property['PropertyValue'].'" target="_blank">';
-                                            $enrichmentTab .= $property['PropertyValue'];
-                                        $enrichmentTab .= '</a>';
-                                        $enrichmentTab .= '<i class="edit-item-data-icon fas fa-pencil theme-color-hover login-required"
-                                                        onClick="openLinksourceEdit('.$property['PropertyId'].')"></i>';
-                                        $enrichmentTab .= '<i class="edit-item-data-icon delete-item-datas fas fa-times theme-color-hover login-required"
-                                                        onClick="deleteItemData(\'Properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'link\', '.get_current_user_id().')"></i>';
-                                        $enrichmentTab .= '<div style="clear:both;"></div>';
-                                    $enrichmentTab .= '</div>';
-                                    $enrichmentTab .= '<div>';
-                                        $enrichmentTab .= '<span>';
-                                            $enrichmentTab .= 'Description: ';
-                                            $enrichmentTab .= $description;
-                                        $enrichmentTab .= '</span>';
-                                    $enrichmentTab .= '</div>';
-                                $enrichmentTab .= '</div>';
+                    if($property['PropertyType'] == "Link") {
+                        $enrichmentTab .= "<div id='link-" . $property['PropertyId'] . "'>";
+                            $enrichmentTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
+                                $enrichmentTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
+                                    $enrichmentTab .= "<i class='far fa-external-link' style='margin-left: 3px;margin-right:5px;color:#0a72cc;font-size:14px;'></i>";
+                                    $enrichmentTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
+                                $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "<div class='edit-del-link'>";
+                                    $enrichmentTab .= "<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required'
+                                        onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'></i>";
+                                    $enrichmentTab .= "<i class='edit-item-data-icon delete-item-data fas fa-trash-alt theme-color-hover login-required'
+                                        onClick='deleteItemData(\"properties\", " . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", \"link\", " . get_current_user_id() .")'></i>";
+                                $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "<div class='prop-desc' style='bottom:6px;padding-left:23px;'>" . $propDescription . "</div>";
+                            $enrichmentTab .= "</div>";
 
-                                $enrichmentTab .= '<div class="link-data-edit-container" id="link-data-edit-'.$property['PropertyId'].'">';
-                                // $taggingTab .= '<div>';
-                                //     $taggingTab .= "<span>Link:</span><br/>";
-                                // $taggingTab .= '</div>';
-
-                                    $enrichmentTab .= '<div id="link-'.$property['PropertyId'].'-url-input" class="link-url-input">';
-                                        $enrichmentTab .= '<input type="url" value="'.htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8').'" placeholder="Enter URL here">';
-                                    $enrichmentTab .= '</div>';
-
-                                    $enrichmentTab .= '<div id="link-'.$property['PropertyId'].'-description-input" class="link-description-input">';
-                                        // $taggingTab .= '<label>Additional description:</label><br/>';
-                                        $enrichmentTab .= '<textarea rows= "3" type="text" placeholder="" name="">'.htmlspecialchars($description, ENT_QUOTES, 'UTF-8').'</textarea>';
-                                    $enrichmentTab .= '</div>';
-                                    $enrichmentTab .= "<div class='form-buttons-right'>";
-                                        $enrichmentTab .= "<button class='theme-color-background edit-location-save'
-                                                        onClick='editLink(".$property['PropertyId'].", ".$_GET['item'].", ".get_current_user_id().")'>";
-                                            $enrichmentTab .= "SAVE";
-                                        $enrichmentTab .= "</button>";
-
-                                        $enrichmentTab .= "<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(".$property['PropertyId'].")'>";
-                                            $enrichmentTab .= "CANCEL";
-                                        $enrichmentTab .= "</button>";
-
-                                        $enrichmentTab .= '<div id="item-link-'.$property['PropertyId'].'-spinner-container" class="spinner-container spinner-container-left">';
-                                            $enrichmentTab .= '<div class="spinner"></div>';
-                                        $enrichmentTab .= "</div>";
-                                        $enrichmentTab .= '<div style="clear:both;"></div>';
-                                    $enrichmentTab .= '</div>';
-                                    $enrichmentTab .= '<div style="clear:both;"></div>';
-                                $enrichmentTab .= '</div>';
-                            $enrichmentTab .= '</div>';
-                        $enrichmentTab .= '</li>';
+                            $enrichmentTab .= "<div class='link-data-edit-container' id='link-data-edit-" . $property['PropertyId'] . "'>";
+                                $enrichmentTab .= "<div id='link-" . $property['PropertyId'] . "-url-input' class='link-url-input'>";
+                                    $enrichmentTab .= "<input type='url' value='" . htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
+                                $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "<div id='link-" . $property['PropertyId'] . "-description-input' class='link-description-input'>";
+                                    $enrichmentTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars($descPHolder, ENT_QUOTES, 'UTF-8') . "</textarea>";
+                                $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "<div class='form-buttons-right'>";
+                                    $enrichmentTab .= "<button class='theme-color-background edit-location-save'
+                                        onClick='editLink(" . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", " . get_current_user_id() . ")'>";
+                                        $enrichmentTab .= "SAVE";
+                                    $enrichmentTab .= "</button>";
+                                    $enrichmentTab .= "<button class='theme-color-background edit-location-cancel'
+                                        onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'>";
+                                        $enrichmentTab .= "CANCEL";
+                                    $enrichmentTab .= "</button>";
+                                    $enrichmentTab .= "<div id='item-link-" . $property['PropertyId'] . "-spinner-container' class='spinner-container spinner-container-left'>";
+                                        $enrichmentTab .= "<div class='spinner'></div>";
+                                    $enrichmentTab .= "</div>";
+                                    $enrichmentTab .= "<div style='clear:both;'></div>";
+                                $enrichmentTab .= "</div>";
+                            $enrichmentTab .= "</div>";
+                        $enrichmentTab .= "</div>";
                     }
                 }
-                $enrichmentTab .= '</ul>';
+                // $enrichmentTab .= '<ul>';
+                // foreach ($itemData['Properties'] as $property) {
+                //     if ($property['PropertyDescription'] != "NULL") {
+                //         $description = $property['PropertyDescription'];
+                //     } else {
+                //         $description = "";
+                //     }
+                //     if ($property['PropertyType'] == "Link") {
+                //         $enrichmentTab .= '<li id="link-'.$property['PropertyId'].'">';
+                //             $enrichmentTab .= '<div id="link-data-output-'.$property['PropertyId'].'" class="">';
+                //                 $enrichmentTab .= '<div id="link-data-output-display-'.$property['PropertyId'].'" class="link-data-output-content">';
+                //                     $enrichmentTab .= '<div class="item-data-output-element-header">';
+                //                         $enrichmentTab .= '<a href="'.$property['PropertyValue'].'" target="_blank">';
+                //                             $enrichmentTab .= $property['PropertyValue'];
+                //                         $enrichmentTab .= '</a>';
+                //                         $enrichmentTab .= '<i class="edit-item-data-icon fas fa-pencil theme-color-hover login-required"
+                //                                         onClick="openLinksourceEdit('.$property['PropertyId'].')"></i>';
+                //                         $enrichmentTab .= '<i class="edit-item-data-icon delete-item-datas fas fa-times theme-color-hover login-required"
+                //                                         onClick="deleteItemData(\'Properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'link\', '.get_current_user_id().')"></i>';
+                //                         $enrichmentTab .= '<div style="clear:both;"></div>';
+                //                     $enrichmentTab .= '</div>';
+                //                     $enrichmentTab .= '<div>';
+                //                         $enrichmentTab .= '<span>';
+                //                             $enrichmentTab .= 'Description: ';
+                //                             $enrichmentTab .= $description;
+                //                         $enrichmentTab .= '</span>';
+                //                     $enrichmentTab .= '</div>';
+                //                 $enrichmentTab .= '</div>';
+
+                //                 $enrichmentTab .= '<div class="link-data-edit-container" id="link-data-edit-'.$property['PropertyId'].'">';
+                //                 // $taggingTab .= '<div>';
+                //                 //     $taggingTab .= "<span>Link:</span><br/>";
+                //                 // $taggingTab .= '</div>';
+
+                //                     $enrichmentTab .= '<div id="link-'.$property['PropertyId'].'-url-input" class="link-url-input">';
+                //                         $enrichmentTab .= '<input type="url" value="'.htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8').'" placeholder="Enter URL here">';
+                //                     $enrichmentTab .= '</div>';
+
+                //                     $enrichmentTab .= '<div id="link-'.$property['PropertyId'].'-description-input" class="link-description-input">';
+                //                         // $taggingTab .= '<label>Additional description:</label><br/>';
+                //                         $enrichmentTab .= '<textarea rows= "3" type="text" placeholder="" name="">'.htmlspecialchars($description, ENT_QUOTES, 'UTF-8').'</textarea>';
+                //                     $enrichmentTab .= '</div>';
+                //                     $enrichmentTab .= "<div class='form-buttons-right'>";
+                //                         $enrichmentTab .= "<button class='theme-color-background edit-location-save'
+                //                                         onClick='editLink(".$property['PropertyId'].", ".$_GET['item'].", ".get_current_user_id().")'>";
+                //                             $enrichmentTab .= "SAVE";
+                //                         $enrichmentTab .= "</button>";
+
+                //                         $enrichmentTab .= "<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(".$property['PropertyId'].")'>";
+                //                             $enrichmentTab .= "CANCEL";
+                //                         $enrichmentTab .= "</button>";
+
+                //                         $enrichmentTab .= '<div id="item-link-'.$property['PropertyId'].'-spinner-container" class="spinner-container spinner-container-left">';
+                //                             $enrichmentTab .= '<div class="spinner"></div>';
+                //                         $enrichmentTab .= "</div>";
+                //                         $enrichmentTab .= '<div style="clear:both;"></div>';
+                //                     $enrichmentTab .= '</div>';
+                //                     $enrichmentTab .= '<div style="clear:both;"></div>';
+                //                 $enrichmentTab .= '</div>';
+                //             $enrichmentTab .= '</div>';
+                //         $enrichmentTab .= '</li>';
+                //     }
+                // }
+                // $enrichmentTab .= '</ul>';
             $enrichmentTab .= '</div>';
             $enrichmentTab .= "<div id='save-all-tags'>";
                 $enrichmentTab .= "<span style='display:inline-block;'>SAVE</span>";
