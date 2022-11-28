@@ -1533,16 +1533,16 @@ function _TCT_mtr_transcription( $atts) {
         }
     $storyDescription .= "</div>";
     // Item progress bar
-    $itemProgress = array(
-        'Not Started' => 0,
-        'Edit' => 0,
-        'Review' => 0,
-        'Completed' => 0
-    );
-    $itemProgress[$itemData['TranscriptionStatusName']] += 25;
-    $itemProgress[$itemData['DescriptionStatusName']] += 25;
-    $itemProgress[$itemData['LocationStatusName']] += 25;
-    $itemProgress[$itemData['TaggingStatusName']] += 25;
+    // $itemProgress = array(
+    //     'Not Started' => 0,
+    //     'Edit' => 0,
+    //     'Review' => 0,
+    //     'Completed' => 0
+    // );
+    // $itemProgress[$itemData['TranscriptionStatusName']] += 25;
+    // $itemProgress[$itemData['DescriptionStatusName']] += 25;
+    // $itemProgress[$itemData['LocationStatusName']] += 25;
+    // $itemProgress[$itemData['TaggingStatusName']] += 25;
 
     //$content .= "<div id='main-section'>";
         // Build Page Layout
@@ -1556,7 +1556,12 @@ function _TCT_mtr_transcription( $atts) {
         $content .= "<div class='title-n-btn'>";
             $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
         $content .= "</div>";
-        
+        if(current_user_can('administrator')) {
+            $content .= "<div class='tr-comp-btn' style='float:right;cursor:pointer;'>";
+                $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>COMPARE TRANSCRIPTIONS</a>";
+            $content .= "</div>";
+        }
+
         $content .= "<div class='item-progress'>";
             $content .= "<div class='change-all-status'>CHANGE ITEM STATUS</div>";
         
@@ -1696,8 +1701,9 @@ function _TCT_mtr_transcription( $atts) {
 
             $content .= "</div>"; // end of transcription
         $content .= "</div>";
+        $content .= "<div style='clear:both;'></div>";
     $content .= "</section>";
-    $content .= "<div style='clear:both;'></div>";
+   // $content .= "<div style='clear:both;'></div>";
 
     $content .= "<section id='location-n-enrichments'>";
         $content .= "<div style='float:left;width:49%;'>";
@@ -1834,8 +1840,9 @@ function _TCT_mtr_transcription( $atts) {
                 $content .= "</div>"; // end of enrichment
 
             $content .= "</div>"; // end of right side
-        $content .= "</section>";
-        $content .= "<div style='clear:both;'></div>";
+            $content .= "<div style='clear:both;'></div>";
+    $content .= "</section>";
+        
 
         $content .= "<section id='story-info' class='collapsed' style='height:325px;'>";
             $content .= "<div id='meta-collapse' class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;margin:25px 0;' role='button' aria-expanded='false'>";

@@ -174,7 +174,7 @@ body {
     text-transform: uppercase;
     border: 0.5px solid #0a72cc;
 }
-.change-all-status {
+.change-all-status,.tr-comp-btn {
     width: 150px;
     border: 2px solid #0a72cc;
     border-radius: 15px;
@@ -186,6 +186,9 @@ body {
     font-weight: 600;
     padding: 5px 0;
     line-height: normal;
+}
+.tr-comp-btn a:hover {
+    text-decoration: none;
 }
 /* --- Full Spinner Container --- */
 .full-spinner-container {
@@ -2602,3 +2605,11 @@ div.tox.tox-tinymce {
     color: #0a72cc;
     font-size: 14px;
 }
+/* Item Page compare transcriptions btn */
+/* .tr-comp-btn {
+    float: right;
+    font-size: 13px;
+    border: 2px solid #0a72cc;;
+    border-radius: 15px;
+    font-weight: ;
+} */

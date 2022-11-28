@@ -569,3 +569,12 @@ ul.story-navigation-content-container li {
     margin-top: 0px!important;
     margin-bottom: 0px!important;
 }
+.tr-comparison {
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px 0;
+    font-family: 'Dosis', sans-serif;
+    color: #0a72cc;
+    font-weight: 500;
+}
