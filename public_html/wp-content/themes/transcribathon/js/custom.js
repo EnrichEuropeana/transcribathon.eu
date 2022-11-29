@@ -3294,21 +3294,7 @@ ready(() => {
             }, false);
         }
 
-    // const singleLinks = document.querySelectorAll('.link-single');
-    // if(singleLinks) {
-    //     for(let link of singleLinks) {
-    //         if(link.querySelector('.link-description')) {
-    //             link.style.cursor = 'pointer';
-    //             link.addEventListener('click', function() {
-    //                 if(link.querySelector('.link-description').style.display === 'none') {
-    //                     link.querySelector('.link-description').style.display = 'block';
-    //                 } else {
-    //                     link.querySelector('.link-description').style.display = 'none';
-    //                 }
-    //             })
-    //         }
-    //     }
-    // }
+
     // Metadata collapse button on StoryPage
     const metaBtn = document.querySelector('#meta-collapse-btn');
     const metaContainer = document.querySelector('.js-container');
