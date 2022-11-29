@@ -19,6 +19,9 @@ date_default_timezone_set('Europe/Berlin');
 function _TCT_compare_transcriptions( $atts) {
     global $ultimatemember, $config;
     if (isset($_GET['item']) && $_GET['item'] != "") {
+
+	      $alpineJs = get_stylesheet_directory_uri(). '/js/alpinejs.3.10.4.min.js';
+
         // Set request parameters for image data
         $requestData = array(
             'key' => 'testKey'
@@ -51,10 +54,11 @@ function _TCT_compare_transcriptions( $atts) {
         // create new Transkribus client and inject configuration
         $transkribusClient = new TranskribusClient($config);
         // get the HTR-transcribed data from database if there is one
+        $itemId = intval($_GET['item']);
         $htrDataJson = $transkribusClient->getDataFromTranscribathon(
             null,
             array(
-                'ItemId' => $_GET['item'],
+                'ItemId' => $itemId,
 		            'orderBy' => 'LastUpdated',
 		            'orderDir' => 'desc'
             )
@@ -532,13 +536,13 @@ function _TCT_compare_transcriptions( $atts) {
     $content .= "<section id='viewer-n-transcription' class='collapsed'>";
         $content .= "<div id='full-view-container'>";
             // Mark as active checkboxes
-            $content .= "<div class='mark-active'>";
+            $content .= "<div class='mark-active' x-data='activeTranscription({$itemId})'>";
                 $content .= "<label>";
-                    $content .= "<input type='radio' name='mark_active' data-action='mark_active'>";
+                    $content .= "<input type='radio' name='mark_active' value='htr' x-model='source' :checked='source === \"htr\"'>";
                     $content .= "Mark HTR Transcription as active";
                 $content .= "</label>";
                     $content .= "<label>";
-                        $content .= "<input type='radio' name='mark_active' data-action='mark_active'>";
+                        $content .= "<input type='radio' name='mark_active' value='manual' x-model='source' :checked='source === \"manual\"'>";
                         $content .= "Mark Manual Transcription as active";
                     $content .= "</label>";
             $content .= "</div>";
@@ -744,6 +748,8 @@ function _TCT_compare_transcriptions( $atts) {
     </style>";
 
     //$content .= "</section>"; // End of main section
+
+    $content .= "<script src='{$alpineJs}'></script>";
 
     return $content;
     }
