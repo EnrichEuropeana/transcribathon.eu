@@ -2422,153 +2422,126 @@ ready(() => {
       x[i].appendChild(b);
     } 
     // Start of Image slider functions
-    // New Js for Image slider
-    const imgSliderCheck = document.querySelector('#img-slider');
-    if(imgSliderCheck) {
-        // function to show/hide images
-        function showImages(start, end, images) {
-            for(let img of images) {
-                if(img.getAttribute('data-value') < start || img.getAttribute('data-value') > end) {
-                    img.style.display = 'none';
-                } else {
-                    img.style.display = 'inline-block';
-                }
-            }
-        }
-        // Only item page(start slider with the item on the page)
-        const currentItem = document.querySelector('#slide-start');
-        //
-        const imgStickers = document.querySelectorAll('.slide-sticker');
-        const windowWidth = document.querySelector('#img-slider').clientWidth;
-        let sliderStart = 1; // First Image to the left
-        let sliderEnd = 0; // Last Image to the right
-        const nextSet = document.querySelector('.next-slide');
-        const prevSet = document.querySelector('.prev-slide');
-        const leftSpanNumb = document.querySelector('#left-num');
-        const rightSpanNumb = document.querySelector('#right-num');
-        let currentDot = 1;
-        let step = 0; // number of images on screen
-        if(windowWidth > 1200) {
-            step = 9;
-        } else if(windowWidth > 800) {
-            step = 5;
-        } else {
-            step = 3;
-        }
+   /// Test slider
+   const sliderContainer = document.querySelector('#inner-slider');
+   const sliderImages = JSON.parse(document.querySelector('#slider-images').innerHTML);
+   const sliderWidth = sliderContainer.offsetWidth;
+   const numOfStickers = Math.floor(sliderWidth/200);
+   const storyId = document.querySelector('#story-id').textContent;
 
-        sliderEnd = step;
+   const prevBtn = document.querySelector('.prev-slide');
+   const nextBtn = document.querySelector('.next-slide');
 
-        if(imgStickers.length <= step){
-            prevSet.style.display = 'none';
-            nextSet.style.display = 'none';
-        }
-        leftSpanNumb.textContent = sliderStart;
-        rightSpanNumb.textContent = sliderEnd;
-        // check if there are more images than it fits on the screen
-        if(nextSet.style.display != 'none') {
-            showImages(sliderStart, sliderEnd, imgStickers);
-        }
-        // Slider dots
-        const dotContainer = document.querySelector('#dot-indicators');
-        const numberDots = Math.ceil(imgStickers.length / step);
-        for(let i = 0; i < numberDots; i++) {
-            const sliderDot = document.createElement('div');
-            sliderDot.classList.add('slider-dot');
-            sliderDot.setAttribute('data-value', (i+1));
-            dotContainer.appendChild(sliderDot);
-        }
+   let startSlide = 0;
+   let endSlide = numOfStickers;
+   
+   // Create initial slides on the screen
+   for(let x=0; x < numOfStickers; x++) {
+       let imgInfo = sliderImages[x].split(' || ');
+       let imgUri = imgInfo[0];
+       let imgId = imgInfo[1];
+       let imgCompStatus = imgInfo[2];
 
-        const sliderDots = document.querySelectorAll('.slider-dot');
-        
-        for(let dot of sliderDots) {
-            dot.addEventListener('click', function() {
-                currentDot = parseInt(dot.getAttribute('data-value'));
-                dot.classList.add('current');
-                if(dot.getAttribute('data-value') * step > imgStickers.length) {
-                    sliderStart = (imgStickers.length - step) + 1;
-                    sliderEnd = imgStickers.length;
-                } else {
-                    sliderEnd = parseInt(dot.getAttribute('data-value')) * step;
-                    sliderStart = (sliderEnd - step) + 1;
-                }
-                showImages(sliderStart, sliderEnd, imgStickers);
-                leftSpanNumb.textContent = sliderStart;
-                rightSpanNumb.textContent = sliderEnd;
-                for(let dot of sliderDots) {
-                    if(dot.getAttribute('data-value') < currentDot || dot.getAttribute('data-value') > currentDot) {
-                        if(dot.classList.contains('current')){
-                            dot.classList.remove('current');
-                        }
-                    }
-                }
-            })
-        }
-        if(currentItem) {
-          let currentPosition = Math.floor(parseInt(currentItem.textContent) / step);
-          for(let dot of sliderDots) {
-            if(currentPosition + 1 === parseInt(dot.getAttribute('Data-value'))){
-              dot.click();
-            }
-          }
-        }
-        nextSet.addEventListener('click', function() {
-            currentDot += 1;
-            if(currentDot > numberDots ) {
-                currentDot = 1;
-            }
-            if(rightSpanNumb.textContent == imgStickers.length) {
-                sliderStart = 1;
-                sliderEnd = step;
-            } else if(sliderEnd + step <= imgStickers.length) {
-                sliderStart = sliderStart + step;
-                sliderEnd = sliderEnd + step;
-            } else {
-                sliderStart = (imgStickers.length - step) + 1;
-                sliderEnd = imgStickers.length;
-            }
-            showImages(sliderStart, sliderEnd, imgStickers);
-            leftSpanNumb.textContent = sliderStart;
-            rightSpanNumb.textContent = sliderEnd;
-            for(let dot of sliderDots) {
-                if(parseInt(dot.getAttribute('data-value')) < currentDot || parseInt(dot.getAttribute('data-value')) > currentDot) {
-                    if(dot.classList.contains('current')){
-                        dot.classList.remove('current');
-                    }
-                } else {
-                    dot.classList.add('current');
-                }
-            }
-        })
-        prevSet.addEventListener('click', function() {
-            if(currentDot - 1 < 1) {
-                currentDot = numberDots;
-            } else {
-                currentDot -= 1;
-            }
-            if(leftSpanNumb.textContent == '1') {
-                sliderEnd = imgStickers.length;
-                sliderStart = (imgStickers.length - step) + 1;
-            } else if(sliderStart - step < 1) {
-                sliderStart = 1;
-                sliderEnd = step;
-            } else {
-                sliderEnd = sliderEnd - step;
-                sliderStart = sliderStart - step;
-            }
-            showImages(sliderStart, sliderEnd, imgStickers);
-            leftSpanNumb.textContent = sliderStart;
-            rightSpanNumb.textContent = sliderEnd;
-            for(let dot of sliderDots) {
-                if(parseInt(dot.getAttribute('data-value')) < currentDot || parseInt(dot.getAttribute('data-value')) > currentDot) {
-                    if(dot.classList.contains('current')){
-                        dot.classList.remove('current');
-                    }
-                } else {
-                    dot.classList.add('current');
-                }
-            }
-        })
-    }
+       sliderContainer.innerHTML += 
+           `<div class='slide-sticker' data-value='${x + 1}'>` +
+               `<div class='slide-img-wrap'>` +
+                   `<a href='${home_url}/documents/story/item/?story=${storyId}&item=${imgId}' class='slider-link'>` +
+                       `<img src='${imgUri}' class='slider-image' alt='slider-img-${x+1}' width='200' height='200'>` +
+                   `</a>` +
+                   `<div class='image-completion-status' style='background-color:${imgCompStatus};'>` +
+                       `<div class='slide-number-wrap'>${x + 1}</div>` +
+                   `</div>` +
+               `</div>` +
+           `</div>`;
+   }
+   ////// Second set of variables, after initial slider is rendered
+   // Make nodelist of slides so we can manipulate them
+   const sliderSlides = sliderContainer.querySelectorAll('.slide-sticker');
+   // Get number of dots we need to show on screen
+   const numOfSlides = Math.ceil(sliderImages.length / numOfStickers);
+   const dotContainer = document.querySelector('#dot-indicators');
+   let currentDot = 1;
+
+   // Create dot indicators to jump to desired set of slides
+   for(let z = 1; z <= numOfSlides; z++) {
+       let singleDot = document.createElement('div');
+       singleDot.classList.add('slider-dot');
+       singleDot.setAttribute('data-value', (z));
+       // Add event to the dot
+       singleDot.addEventListener('click', function() {
+           currentDot = parseInt(this.getAttribute('data-value'));
+           this.classList.add('current');
+           
+           endSlide = numOfStickers * z;
+           if(endSlide > sliderImages.length) {
+               endSlide = sliderImages.length;
+           }
+           startSlide = endSlide - numOfStickers;
+           slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
+           activeDot(currentDot);
+       });
+       dotContainer.appendChild(singleDot);
+   }
+   dotContainer.querySelector('div').classList.add('current');
+
+
+   
+   function slideImages(slideStart, slideEnd, slides, imageInfo, storyid) {
+       let indexOfSlide = 0;
+       for(let i = slideStart; i < slideEnd; i++) {
+           let imgArr = imageInfo[i].split(' || ');
+           
+           slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
+           slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?story=${storyid}&item=${imgArr[1]}`);
+           slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
+           slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
+
+           indexOfSlide ++;
+       }
+   }
+
+   function activeDot(number) {
+       const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+       for(let dot of sliderDots) {
+           if(dot.getAttribute('data-value') < number || dot.getAttribute('data-value') > number) {
+               if(dot.classList.contains('current')) {
+                   dot.classList.remove('current');
+               }
+           }
+       }
+   }
+
+   nextBtn.addEventListener('click', function () {
+
+       if(endSlide === sliderImages.length) {
+           endSlide = numOfStickers;
+           startSlide = 0;
+       } else if((endSlide + numOfStickers) > sliderImages.length) {
+           endSlide = sliderImages.length;
+           startSlide = sliderImages.length - numOfStickers;
+       } else if ( (endSlide + numOfStickers) < sliderImages.length) {
+           endSlide = endSlide + numOfStickers;
+           startSlide = startSlide + numOfStickers;
+       }
+      
+       slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
+   });
+
+   prevBtn.addEventListener('click', function() {
+       if(startSlide === 0) {
+           endSlide = sliderImages.length;
+           startSlide = sliderImages.length - numOfStickers;
+       } else if((startSlide - numOfStickers) < 0) {
+           startSlide = 0;
+           endSlide = numOfStickers;
+       } else {
+           startSlide -= numOfStickers;
+           endSlide -= numOfStickers;
+       }
+       slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
+   });
+   
+   
 
     // Item Page, Open full screen if user comes to page from fullscreen viewer
     if(document.querySelector('#openseadragon')){

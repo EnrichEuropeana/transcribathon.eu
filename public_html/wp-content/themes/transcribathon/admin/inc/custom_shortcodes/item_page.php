@@ -1279,66 +1279,32 @@ function _TCT_mtr_transcription( $atts) {
     // Get the image of the Current Item
     $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
 
+    $allImages = [];
+    
+    for($x = 0; $x < $numOfPhotos; $x++) {
+        $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
+        $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
+                        
+        if($sliderImg['height'] == null) {
+            $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
+        }
+    
+        array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode']));
+    }
+    
     $imageSlider = "";
+    $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
+    $imageSlider .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
     $imageSlider .= "<div id='img-slider'>";
-        // Hidden span to get the current Image
-        $imageSlider .= "<span id='slide-start' style='display:none;'>" . $startingSlide . "</span>";
-
         $imageSlider .= "<div id='slider-container'>";
-            // Buttons to go through images
             $imageSlider .= "<button class='prev-slide' type='button' aria-label='Previous'><i class='fas fa-chevron-left'></i></button>";
             $imageSlider .= "<button class='next-slide' type='button' aria-label='Next'><i class='fas fa-chevron-right'></i></button>";
-            // Image container
-            $imageSlider .= "<div id='inner-slider'>";
-                for($x = 0; $x < $numOfPhotos; $x++) {
-                    if($x < 9) {
-                        $loadingImg = 'eager';
-                    } else {
-                        $loadingImg = 'lazy';
-                    }
-
-                    $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
-                    $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
-                    
-                    if($sliderImg['height'] == null) {
-                        $sliderImgLink = str_replace('full', '0,0,1800,1100', $sliderImgLink);
-                    }
-
-
-                    $imageSlider .= "<div class='slide-sticker' data-value='" . ($x + 1) . "'>";
-                    if($x == $startingSlide) {
-                        $imageSlider .= "<div class='slide-img-wrap active'>";
-                    } else {
-                        $imageSlider .= "<div class='slide-img-wrap'>";
-                    }
-                            $imageSlider .= "<a href='" . home_url() . "/documents/story/item/?story=" . $itemData['StoryId'] . "&item=" . $itemImages[$x]['ItemId'] . "'>";
-                                $imageSlider .= "<img src='" . $sliderImgLink . "' class='slider-image' alt='slider-img-" . ($x + 1) . "' width='200' height='200' loading='". $loadingImg ."'>";
-                            $imageSlider .= "</a>";
-                            $imageSlider .= "<div class='image-completion-status' style='background-color:" . $itemImages[$x]['CompletionStatusColorCode'] . ";'>";
-                                $imageSlider .= "<div class='slide-number-wrap'>" . ($x + 1) . "</div>";
-                            $imageSlider .= "</div>";
-                        $imageSlider .= "</div>";
-                    $imageSlider .= "</div>";
-                }
-
-
-            $imageSlider .= "</div>";
+            $imageSlider .= "<div id='inner-slider'></div>";
+            $imageSlider .= "<div id='dot-indicators'></div>";
         $imageSlider .= "</div>";
+    $imageSlider .= "</div>";
 
-        // Back-to-story
-        //$imageSlider .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
-        // Slider dots and numbers
-        $imageSlider .= "<div id='dot-indicators'></div>";
-
-        $imageSlider .= "<div id='controls-div'>";
-            $imageSlider .= "<div class='num-indicators' style='display:none;'>";
-                $imageSlider .= "<span id='left-num'>1</span> - <span id='right-num'></span> of <span>" . $numOfPhotos . "</span>";
-            $imageSlider .= "</div>";
-        $imageSlider .= "</div>";
-
-        //$imageSlider .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
-    $imageSlider .= "</div>"; // End of Image Slider
-
+    
     // Metadata
     $metaData .= "";
     $metaData .= "<div id='meta-container'>";
