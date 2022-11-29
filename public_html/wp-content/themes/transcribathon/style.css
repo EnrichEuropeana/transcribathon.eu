@@ -17,6 +17,14 @@ Version: 1.0
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
 
+/* Make some global variables */
+:root {
+  --main-color: #0a72cc;
+  --bg-main-color: #f8f8f8;
+  --h-font-family: 'Dosis', sans-serif;
+  --p-font-family: 'Open Sans', sans-serif;
+}
+
 /*  Icon font
 @font-face {
     font-family: 'Font Awesome 5 Pro';
@@ -4078,10 +4086,7 @@ a#new-temporary-prof:hover {
 .widget_tct-home-stats-widget .stat-number h3 {
   font-weight: 600;
 }
-/* Responsivness test - 06/05/2022 */
-.siteorigin-widget-tinymce.textwidget p {
-  padding: 0 10px 0 10px !important;
-}
+
 /*@media screen and (max-width: 780px) {*/
 .siteorigin-widget-tinymce.textwidget {
     width: 80%;

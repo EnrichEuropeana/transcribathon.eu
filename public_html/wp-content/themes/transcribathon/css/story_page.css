@@ -11,7 +11,7 @@ Description: Stylesheet for Story Page
     border: 2.5px solid transparent;
 }
 .slide-img-wrap:hover {
-    border: 5px solid #0a72cc;
+    border: 5px solid var(--main-color);
     transform: scale(1.01);
 }
 .slider-image {
@@ -23,10 +23,10 @@ Description: Stylesheet for Story Page
     left: 50%;
 }    
 .story-page-slider:hover button.slick-prev.slick-arrow {    
-    color: #0a72cc;
+    color: var(--main-color);
 }
 .story-page-slider:hover button.slick-next.slick-arrow {
-    color: #0a72cc;
+    color: var(--main-color);
 }
 .image-completion-status {
     float: right;
@@ -83,9 +83,9 @@ ul.story-navigation-content-container li {
     width: 15em;
     height: 2.5em;
     float: right;
-    border: 5px solid #0a72cc;
+    border: 5px solid var(--main-color);
     background: #fff;
-    color: #0a72cc!important;
+    color: var(--main-color)!important;
     margin-right: 5%;
     text-transform: uppercase;
     font-size: 20px;
@@ -95,7 +95,7 @@ ul.story-navigation-content-container li {
     bottom: 30px;
 }
 .start-transcription:hover {
-    background: #0a72cc;
+    background: var(--main-color);
     color: #fff!important;
     text-decoration: none;
 }
@@ -136,7 +136,7 @@ ul.story-navigation-content-container li {
     min-width: 49%;
     margin-right: 1%;
     height: 500px;
-    background: #f8f8f8;
+    background: var(--bg-main-color);
 }
 .description-img {
     position: relative;
@@ -157,7 +157,7 @@ ul.story-navigation-content-container li {
     position: relative;
 }
 .storypg-container h1 {
-    color: #0a72cc!important;
+    color: var(--main-color)!important;
     font-weight: 700;
     font-size: 1.6rem!important;
     margin-top: 0!important;
@@ -165,7 +165,7 @@ ul.story-navigation-content-container li {
 .descMore {
     text-align: center;
     cursor: pointer;
-    color: #0a72cc;
+    color: var(--main-color);
 }
 .togglePara {
     max-height: 202px;
@@ -181,28 +181,28 @@ ul.story-navigation-content-container li {
     background-color: #ffffff;
 }
 .progress-h {
-    color: #0a72cc!important;
+    color: var(--main-color)!important;
     font-weight: 700!important;
-    background-color: #f8f8f8!important;
+    background-color: var(--bg-main-color)!important;
     letter-spacing: 0.025em!important;
     width: 100%;
     padding: 15px 20px 15px 50px;
     margin-bottom: 13px!important;
 }
 .progress-t {
-    color: #0a72cc!important;
+    color: var(--main-color)!important;
     font-weight: 700!important;
-    background-color: #f8f8f8!important;
+    background-color: var(--bg-main-color)!important;
     letter-spacing: 0.025em!important;
     width: 100%;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
 }
 .progress-div {
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     padding: 10px 0 10px;
 }
 .progress-p {
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -211,13 +211,13 @@ ul.story-navigation-content-container li {
     width: 25%;
 }
 .table-l {
-    color: #0a72cc;
+    color: var(--main-color);
     font-weight: 600;
     margin-left: 50px;
     margin-right: 5px;
 }
 .table-rm {
-    color: #0a72cc;
+    color: var(--main-color);
     font-weight: 600;
     margin-left: 25px;
     margin-right: 5px;
@@ -227,7 +227,7 @@ ul.story-navigation-content-container li {
     text-align: center;
 }
 .table-label {
-    color: #0a72cc;
+    color: var(--main-color);
     text-transform: uppercase;
     font-weight: 600;
     padding: 7.5px 0 0 50px;
@@ -277,7 +277,7 @@ ul.story-navigation-content-container li {
 /* Story Info(between chart and map) */
 .story-info {
     position: relative;
-    font-family: 'Dosis', sans-serif;
+    font-family: var(--h-font-family);
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -289,7 +289,7 @@ ul.story-navigation-content-container li {
     font-weight: 450;
 }
 .story-info-s {
-    color: #0a72cc;
+    color: var(--main-color);
     font-weight: 650;
 }
 /* End of Info */
@@ -322,8 +322,8 @@ ul.story-navigation-content-container li {
 }
 .metadata-h {
     height: 40px;
-    color: #0a72cc;
-    background-color: #f8f8f8;
+    color: var(--main-color);
+    background-color: var(--bg-main-color);
     width: 100%;
     margin-top: 2%!important;
     margin-bottom: 2%!important;
@@ -338,7 +338,7 @@ ul.story-navigation-content-container li {
     height: 50%;
 }
 .mb-1 {
-    color: #0a72cc;
+    color: var(--main-color);
     font-weight: 400;
     padding: 0!important;
     font-size: 13px;
@@ -356,7 +356,7 @@ ul.story-navigation-content-container li {
     margin: 0 auto;
     text-align: center;
     background-color: #fff;
-    color: #0a72cc;
+    color: var(--main-color);
 }
 /* End of Metadata */
 /* Responsivness */
@@ -389,7 +389,7 @@ ul.story-navigation-content-container li {
 }
 #slider-container {
     height: 300px;
-    background-color: #f8f8f8;
+    background-color: var(--bg-main-color);
     margin-bottom: 10px;
     position: relative;
 }
@@ -407,7 +407,7 @@ ul.story-navigation-content-container li {
     left: 0;
     top: 40%;
     color: #fff;
-    background: #0a72cc;
+    background: var(--main-color);
     z-index: 999;
 }
 .next-slide {
@@ -419,7 +419,7 @@ ul.story-navigation-content-container li {
     right: 0;
     top: 40%;
     color: #fff;
-    background: #0a72cc;
+    background: var(--main-color);
     z-index: 999;
 }
 .next-set {
@@ -428,7 +428,7 @@ ul.story-navigation-content-container li {
     height: 20px;
     width: 30px;
     background: #fff;
-    color: #0a72cc;
+    color: var(--main-color);
     border: none;
     padding: 0%;
     font-size: 15px;
@@ -440,7 +440,7 @@ ul.story-navigation-content-container li {
     height: 20px;
     width: 30px;
     background: #fff;
-    color: #0a72cc;
+    color: var(--main-color);
     border: none;
     padding: 0;
     font-size: 15px;
@@ -451,7 +451,7 @@ ul.story-navigation-content-container li {
     margin-bottom: 30px;
 }
 .next-slide:focus, .prev-slide:focus {
-    background: #0a72cc;
+    background: var(--main-color);
 }
 #dot-indicators {
     display: inline-flex;
@@ -462,7 +462,7 @@ ul.story-navigation-content-container li {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    border: 2px solid #0a72cc;
+    border: 2px solid var(--main-color);
     margin-left: 2px;
     margin-right: 2px;
     top: 5px;
@@ -478,7 +478,7 @@ ul.story-navigation-content-container li {
     font-size: 15px;
     position: relative;
     bottom: 3px;
-    color: #0a72cc;
+    color: var(--main-color);
     font-weight: bold;
 }
 @media screen and (max-width: 850px) {
@@ -513,9 +513,9 @@ ul.story-navigation-content-container li {
         display: block;
         float: unset;
         height: unset;
-        border: 5px solid #0a72cc;
+        border: 5px solid var(--main-color);
         background: #fff;
-        color: #0a72cc!important;
+        color: var(--main-color)!important;
         text-transform: uppercase;
         font-size: 10px;
         text-align: center;
@@ -568,4 +568,13 @@ ul.story-navigation-content-container li {
     /* left: -25px; */
     margin-top: 0px!important;
     margin-bottom: 0px!important;
+}
+.tr-comparison {
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px 0;
+    font-family: var(--h-font-family);
+    color: var(--main-color);
+    font-weight: 500;
 }
