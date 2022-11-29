@@ -1873,7 +1873,13 @@ function _TCT_mtr_transcription( $atts) {
                         if($property['PropertyType'] == 'Keyword') {
                             $keywords .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
                         } else if ($property['PropertyType'] == 'Link') {
-                            $externalLinks .= "<div class='link-single'><i class='far fa-external-link' style='margin-left:3px;margin-right:5px;color:#0a72cc;font-size:14px;''></i><a href='" . $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a></div>";
+                            if($property['PropertyDescription'] != 'NULL') {
+                                $propDesc = "<div class='prop-desc' style='padding-left:24px;'>Description: <b>" . $property['PropertyDescription'] . "</b></div>";
+                            }
+                            $externalLinks .= "<div class='link-single'>";
+                                $externalLinks .= "<i class='far fa-external-link' style='margin-left:3px;margin-right:5px;color:#0a72cc;font-size:14px;''></i><a href='" . $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
+                                $externalLinks .= $propDesc;
+                            $externalLinks .= "</div>";
                         }
                     }
 

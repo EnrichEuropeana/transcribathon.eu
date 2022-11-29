@@ -1775,75 +1775,64 @@ function loadLinkData(itemId, userId) {
     function(response) {
         var response = JSON.parse(response);
         if (response.code == "200") {
+            const extLinkCont = document.querySelector('#item-link-list');
+            const extLinkView = document.querySelector('.links-container div');
             var content = JSON.parse(response.content);
-            jQuery('#item-link-list ul').html('')
-            for (var i = 0; i < content['Properties'].length; i++) {
-                if (content['Properties'][i]['PropertyType'] == "Link") {
-                    if (content['Properties'][i]['PropertyDescription'] != "NULL" && content['Properties'][i]['PropertyDescription'] != null) {
-                        var description = escapeHtml(content['Properties'][i]['PropertyDescription']);
-                    } else {
-                        var description = "";
+            let propDesc = null;
+            console.log(content['Properties']);
+            extLinkCont.innerHTML = '';
+            extLinkView.innerHTML = '';
+            for (let property of content['Properties']) {
+                if(property['PropertyType'] === 'Link') {
+                    if(property['PropertyDescription'] != 'NULL') {
+                        propDesc = `<div class='prop-desc' style='padding-left:23px;bottom:6px;'>Description: <b>${escapeHtml(property['PropertyDescription'])}</b></div>`;
                     }
-                    jQuery('#item-link-list ul').append(
-                        // '<li id="link-' + content['Properties'][i]['PropertyId'] + '">' +
-                        //     '<div id="link-data-output-' + content['Properties'][i]['PropertyId'] + '" class="">' +
-                        //         '<div id="link-data-output-display-' + content['Properties'][i]['PropertyId'] + '" class="link-data-output-content">' +
-                        //             '<div class="item-data-output-element-header">' +
-                        //                 '<a href="' + content['Properties'][i]['PropertyValue'] + '" target="_blank" class="link-data-ouput-headline">' +
-                        //                     escapeHtml(content['Properties'][i]['PropertyValue']) +
-                        //                 '</a>' +
-  
-                        //                 '<i class="edit-item-data-icon fas fa-pencil theme-color-hover"' +
-                        //                 'onClick="openLinksourceEdit(' + content['Properties'][i]['PropertyId'] + ')"></i>' +
-                        //                 '<i class="edit-item-data-icon delete-item-data fas fa-times theme-color-hover"' +
-                        //                 'onClick="deleteItemData(\'properties\', ' + content['Properties'][i]['PropertyId'] + ', ' + itemId + ', \'link\', ' + userId + ')"></i>' +
-                        //                 '<div style="clear:both;"></div>' +
-                        //             '</div>' +
-                        //             '<div>' +
-                        //                 '<span>' +
-                        //                     'Description: ' +
-                        //                     escapeHtml(description) +
-                        //                 '</span>' +
-                        //             '</div>' +
-                        //         '</div>' +
-  
-                        //         '<div class="link-data-edit-container" id="link-data-edit-' + content['Properties'][i]['PropertyId'] +'">' +
-                        //         // '<div>' +
-                        //         //   "<span>Link:</span><br/>" +
-                        //         // '</div>' +
-  
-                        //             '<div id="link-' + content['Properties'][i]['PropertyId'] +'-url-input" class="link-url-input">' +
-                        //                 '<input type="url" value="' + escapeHtml(content['Properties'][i]['PropertyValue']) + '">' +
-                        //             '</div>' +
-  
-                        //             '<div id="link-' + content['Properties'][i]['PropertyId'] +'-description-input" class="link-description-input" >' +
-                        //             // '<label>Additional description:</label><br/>' +
-                        //                 '<textarea rows= "3" type="text" placeholder="" name="">' + escapeHtml(description) + '</textarea>' +
-                        //             '</div>' +
-  
-                        //             '<div class="form-buttons-right">' +
-    
-                        //                 "<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(" + content['Properties'][i]['PropertyId'] + ")'>" +
-                        //                     "CANCEL" +
-                        //                 "</button>" +
+                    extLinkCont.innerHTML += 
+                        `<div id='link-${property['PropertyId']}'>` +
+                            `<div id='link-data-output-${property['PropertyId']}' class='link-single'>` +
+                                `<div id='link-data-output-display-${property['PropertyId']}' class='link-data-output-content'>` +
+                                    `<i class='far fa-external-link' style='margin-left: 3px;margin-right: 5px; color:#0a72cc;font-size:14px;'></i>` +
+                                    `<a href='${escapeHtml(property['PropertyValue'])}' target='_blank'>${escapeHtml(property['PropertyValue'])}</a>` +
+                                `</div>` +
+                                `<div class='edit-del-link'>` +
+                                    `<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required' onClick='openLinksourceEdit(${property['PropertyId']})'></i>` +
+                                    `<i class='edit-item-data-icon delete-item-data fas fa-trash-alt theme-color-hover login-required' onClick='deleteItemData(\"properties\", ${property['PropertyId']}, ${itemId}, \"link\", ${userId})'></i>` +
+                                `</div>` +
+                                `${propDesc ? propDesc : ''}` +
+                            `</div>` +
+                            // Edit Container 
+                            `<div class='link-data-edit-container' id='link-data-edit-${property['PropertyId']}'>` + 
+                                `<div id='link-${property['PropertyId']}-url-input' class='link-url-input'>` +
+                                    `<input type='url' value='${escapeHtml(property['PropertyValue'])}' placeholder='Enter URL Here'>` +
+                                `</div>` +
+                                `<div id='link-${property['PropertyId']}-description-input' class='link-description-input'>` +
+                                    `<textarea rows='3' type='text' placeholder='' name=''>${propDesc ? propDesc : ''}</textarea>` +
+                                `</div>` +
+                                `<div class='form-buttons-right'>` +
+                                    `<button class='theme-color-background edit-location-cancel' onClick='editLink(${property['PropertyId']}, ${itemId}, ${userId})'>` +
+                                        `SAVE` +
+                                    `</button>` +
+                                    `<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(${property['PropertyId']})'>` +
+                                        `CANCEL` +
+                                    `</button>` +
+                                    `<div id='item-link-${property['PropertyId']}-spinner-container' class='spinner-container spinner-container-left'>` +
+                                        `<div class='spinner'></div>` +
+                                    `</div>` +
+                                    `<div style='clear:both;'></div>` +
+                                `</div>` +
+                            `</div>` +
+                        `</div>` 
 
-                        //                 "<button type='submit' class='theme-color-background edit-location-save' id='link-save-button'" +
-                        //                       "onClick='editLink(" + content['Properties'][i]['PropertyId'] + ", " + itemId + ", " + userId + ")'>" +
-                        //                   "SAVE" +
-                        //                 "</button>" +
-
-  
-                        //                 '<div id="item-link-' + content['Properties'][i]['PropertyId'] + '-spinner-container" class="spinner-container spinner-container-left">' +
-                        //                     '<div class="spinner"></div>' +
-                        //                 "</div>" +
-                        //                 '<div style="clear:both;"></div>' +
-                        //             '</div>' +
-                        //             '<div style="clear:both;"></div>' +
-                        //         '</div>' +
-                        //     '</div>' +
-                        // '</li>'
-                    )
-                }
+                    extLinkView.innerHTML += 
+                        `<div>` +
+                        `<div class='link-single'>` +
+                            `<div class='link-data-output-content'>` +
+                                `<i class='far fa-external-link' style='margin-left: 3px;margin-right: 5px; color:#0a72cc;font-size:14px;'></i>` +
+                                `<a href='${escapeHtml(property['PropertyValue'])}' target='_blank'>${escapeHtml(property['PropertyValue'])}</a>` +
+                            `</div>` +
+                            `${propDesc ? propDesc : ''}` +
+                        `</div>`
+                }    
             }
         }
     });
