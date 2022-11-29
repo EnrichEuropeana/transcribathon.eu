@@ -3294,21 +3294,7 @@ ready(() => {
             }, false);
         }
 
-    // const singleLinks = document.querySelectorAll('.link-single');
-    // if(singleLinks) {
-    //     for(let link of singleLinks) {
-    //         if(link.querySelector('.link-description')) {
-    //             link.style.cursor = 'pointer';
-    //             link.addEventListener('click', function() {
-    //                 if(link.querySelector('.link-description').style.display === 'none') {
-    //                     link.querySelector('.link-description').style.display = 'block';
-    //                 } else {
-    //                     link.querySelector('.link-description').style.display = 'none';
-    //                 }
-    //             })
-    //         }
-    //     }
-    // }
+
     // Metadata collapse button on StoryPage
     const metaBtn = document.querySelector('#meta-collapse-btn');
     const metaContainer = document.querySelector('.js-container');
@@ -3527,8 +3513,8 @@ ready(() => {
           sliderStart = parseInt(document.querySelector('#slide-start').textContent) + 1;
         } 
         // Buttons to move by 1
-        const prevBtn = document.querySelector('.prev-set');
-        const nextBtn = document.querySelector('.next-set');
+        // const prevBtn = document.querySelector('.prev-set');
+        // const nextBtn = document.querySelector('.next-set');
         // Buttons to move by step size
         const nextSet = document.querySelector('.next-slide');
         const prevSet = document.querySelector('.prev-slide');
@@ -3550,8 +3536,8 @@ ready(() => {
         }
         // Remove buttons if there is less images than step
         if(imgSticker.length <= step){
-            prevBtn.style.display = 'none';
-            nextBtn.style.display = 'none';
+            // prevBtn.style.display = 'none';
+            // nextBtn.style.display = 'none';
             prevSet.style.display = 'none';
             nextSet.style.display = 'none';
         }
@@ -3633,35 +3619,35 @@ ready(() => {
                 }
             }
 
-            // Sliding images by 1 slide -- right (+)
-            nextBtn.addEventListener('click', function() {
-                imgSticker[slideN].style.display = 'inline-block';
-                imgSticker[slideN - step].style.display = 'none';
-                leftSpanNumb.textContent = slideN + 2 - step;
-                rightSpanNumb.textContent = slideN + 1;
+            // // Sliding images by 1 slide -- right (+)
+            // nextBtn.addEventListener('click', function() {
+            //     imgSticker[slideN].style.display = 'inline-block';
+            //     imgSticker[slideN - step].style.display = 'none';
+            //     leftSpanNumb.textContent = slideN + 2 - step;
+            //     rightSpanNumb.textContent = slideN + 1;
     
-                slideN += 1;
-                if(slideN >= imgSticker.length -1) {
-                    slideN = imgSticker.length - 1;
-                }
-            })
-            // Sliding images by 1 slide -- left (-)
-            prevBtn.addEventListener('click', function() {
-                if(slideN >= imgSticker.length-1 && imgSticker[slideN].style.display === 'inline-block'){
-                    imgSticker[slideN].style.display = 'none';
-                    imgSticker[slideN-step].style.display = 'inline-block';
-                    slideN = imgSticker.length-1;
-                } else {
-                    slideN -= 1;
-                    if(slideN < step) {
-                        slideN = step;
-                    }
-                    imgSticker[slideN].style.display = 'none';
-                    imgSticker[slideN-step].style.display = 'inline-block';
-                }
-                leftSpanNumb.textContent = slideN - step +1;
-                rightSpanNumb.textContent = slideN;
-            })
+            //     slideN += 1;
+            //     if(slideN >= imgSticker.length -1) {
+            //         slideN = imgSticker.length - 1;
+            //     }
+            // })
+            // // Sliding images by 1 slide -- left (-)
+            // prevBtn.addEventListener('click', function() {
+            //     if(slideN >= imgSticker.length-1 && imgSticker[slideN].style.display === 'inline-block'){
+            //         imgSticker[slideN].style.display = 'none';
+            //         imgSticker[slideN-step].style.display = 'inline-block';
+            //         slideN = imgSticker.length-1;
+            //     } else {
+            //         slideN -= 1;
+            //         if(slideN < step) {
+            //             slideN = step;
+            //         }
+            //         imgSticker[slideN].style.display = 'none';
+            //         imgSticker[slideN-step].style.display = 'inline-block';
+            //     }
+            //     leftSpanNumb.textContent = slideN - step +1;
+            //     rightSpanNumb.textContent = slideN;
+            // })
             // If it's last item, move slider to the end
             if(slideN == imgSticker.length){
               nextSet.click();
