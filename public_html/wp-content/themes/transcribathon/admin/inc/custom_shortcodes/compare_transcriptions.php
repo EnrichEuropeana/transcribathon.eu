@@ -19,6 +19,9 @@ date_default_timezone_set('Europe/Berlin');
 function _TCT_compare_transcriptions( $atts) {
     global $ultimatemember, $config;
     if (isset($_GET['item']) && $_GET['item'] != "") {
+
+	      $alpineJs = get_stylesheet_directory_uri(). '/js/alpinejs.3.10.4.min.js';
+
         // Set request parameters for image data
         $requestData = array(
             'key' => 'testKey'
@@ -51,17 +54,18 @@ function _TCT_compare_transcriptions( $atts) {
         // create new Transkribus client and inject configuration
         $transkribusClient = new TranskribusClient($config);
         // get the HTR-transcribed data from database if there is one
+        $itemId = intval($_GET['item']);
         $htrDataJson = $transkribusClient->getDataFromTranscribathon(
             null,
             array(
-                'itemId' => $_GET['item'],
-		            'orderBy' => 'updated_at',
+                'ItemId' => $itemId,
+		            'orderBy' => 'LastUpdated',
 		            'orderDir' => 'desc'
             )
         );
         // extract the data itself
         $htrDataArray = json_decode($htrDataJson, true);
-        $htrData = $htrDataArray['data'][0]['transcription_data'];
+        $htrData = $htrDataArray['data'][0]['TranscriptionData'];
 
     // Build required components for the page
     $content = "";
@@ -186,8 +190,8 @@ function _TCT_compare_transcriptions( $atts) {
             } else {
                 array_push($transcriptionList, $transcription);
             }
-        } 
-    } 
+        }
+    }
     // Get the progress data
     $progressData = array(
         $itemData['TranscriptionStatusName'],
@@ -228,7 +232,7 @@ function _TCT_compare_transcriptions( $atts) {
         $imageViewer .= "</div>";
     $imageViewer .= "</div>"; // End of Image Viewer
 
-    
+
     // Transcription History
     $trHistory = "";
     $trHistory .= "<div class='tr-history-section'>";
@@ -292,7 +296,7 @@ function _TCT_compare_transcriptions( $atts) {
                         $trHistory .= $transcription['TextNoTags'];
                     $trHistory .= "</p>";
                     $trHistory .= "<input class='transcription-comparison-button theme-color-background' type='button'
-                                    onClick='compareTranscription(" . htmlentities(json_encode($transcriptionList[$i]['TextNoTags']), ENT_QUOTES) . ", 
+                                    onClick='compareTranscription(" . htmlentities(json_encode($transcriptionList[$i]['TextNoTags']), ENT_QUOTES) . ",
                                     " . htmlentities(json_encode($currentTranscription['TextNoTags']), ENT_QUOTES)."," . $i . ")' value='Compare to current transcription'>";
                     $trHistory .= "<div id='transcription-comparison-output-" . $i . "' class='transcription-comparison-output'></div>";
                 $trHistory .= "</div>";
@@ -307,10 +311,10 @@ function _TCT_compare_transcriptions( $atts) {
         $editorTab .= "<div class='item-page-section-headline-container transcription-headline-header'>";
             $editorTab .= "<div class='theme-color item-page-section-headline'>";
                 $editorTab .= "<span class='headline-header'>TRANSCRIPTION</span>";
-            
+
                 $editorTab .= "<div id='transcription-status-changer' class='status-changer section-status-changer login-required' style='background-color:" . $itemData['TranscriptionStatusColorCode'] . ";'>";
                     $editorTab .= "<span id='transcription-status-indicator' class='status-indicator'
-                                
+
                                 onclick='event.stopPropagation(); document.getElementById(\"transcription-status-dropdown\").classList.toggle(\"show\")'> " .$itemData['TranscriptionStatusName'] . " </span>";
                     $editorTab .= "<div id='transcription-status-dropdown' class='sub-status status-dropdown-content'>";
 
@@ -323,7 +327,7 @@ function _TCT_compare_transcriptions( $atts) {
                                     $editorTab .= $statusTyp['Name'];
                                 $editorTab .= "</div>";
                             } else {
-                                $editorTab .= "<div class='status-dropdown-option' 
+                                $editorTab .= "<div class='status-dropdown-option'
                                             onclick='changeStatus(" . $_GET['item'] . ", null, \"" . $statusTyp['Name'] . "\", \"TranscriptionStatusId\", " . $statusTyp['CompletionStatusId'] . ", \"" . $statusTyp['ColorCode'] . "\", " . sizeof($progressData) . ", this)'>";
                                     $editorTab .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, " . $statusTyp['ColorCode'] . "), color-stop(1, " . $statusTyp['ColorCodeGradient'] . "));'></i>";
                                     $editorTab .= $statusTyp['Name'];
@@ -338,7 +342,7 @@ function _TCT_compare_transcriptions( $atts) {
             $editorTab .= "<div id='switch-tr-view' style='float:right;'><i class='fa fa-pencil' style='font-size:20px;color:#0a72cc;cursor:pointer;margin-top:5px;'></i></div>";
         $editorTab .= "</div>"; // End of header
         $editorTab .= "<div style='clear:both;'></div>";
-        
+
         // Editor and Language Selector
         $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
             // MCE Editor
@@ -383,12 +387,12 @@ function _TCT_compare_transcriptions( $atts) {
                 $editorTab .= "</div>";
 
                 $editorTab .= "<div class='transcription-metadata-container'>";
-                    $editorTab .= "<button disabled class='item-page-save-button language-tooltip' id='transcription-update-button' 
+                    $editorTab .= "<button disabled class='item-page-save-button language-tooltip' id='transcription-update-button'
                                     onClick='updateItemTranscription(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                         $editorTab .= "SAVE"; // Save transcription
                         $editorTab .= "<span class='language-tooltip-text'>Please select a language</span>";
                     $editorTab .= "</button>";
-    
+
                     if($currentTranscription['Text'] != null) {
                         $editorTab .= "<div id='no-text-selector' style='display:none;'>";
                     } else {
@@ -406,12 +410,12 @@ function _TCT_compare_transcriptions( $atts) {
                             $editorTab .= "<span class='theme-color-background item-checkmark checkmark'></span>";
                         $editorTab .= "</label>";
                     $editorTab .= "</div>";
-                    
-    
+
+
                     $editorTab .= "<div id='item-transcription-spinner-container' class='spinner-container spinner-container-right'>";
                         $editorTab .= "<div class='spinner'></div>";
                     $editorTab .= "</div>";
-    
+
                     $editorTab .= "<div style='clear:both;'></div>";
                 $editorTab .= "</div>";
                 $editorTab .= "<div style='clear:both;'></div>";
@@ -512,14 +516,14 @@ function _TCT_compare_transcriptions( $atts) {
     $content .= "<section id='image-slider-section' style='padding:0;'>";
         $content .= $imageSlider;
     $content .= "</section>";
-    
+
         // Title
     $content .= "<section id='title-n-progress'>";
     $content .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
         $content .= "<div class='title-n-btn'>";
             $content .= "<h4 id='item-header'><b>" . $itemData['Title'] . "</b></h4>";
         $content .= "</div>";
-        
+
         $content .= "<div class='item-progress'>";
                  // Status changer placeholder
         $content .= "</div>";
@@ -532,17 +536,16 @@ function _TCT_compare_transcriptions( $atts) {
     $content .= "<section id='viewer-n-transcription' class='collapsed'>";
         $content .= "<div id='full-view-container'>";
             // Mark as active checkboxes
-            $content .= "<div id='mark-active'>";
-                $content .= "<div id='htr-check' style='float:left;'>";
-                    $content .= "<input type='checkbox' id='htr-box' name='htr-box'>";
-                    $content .= "<label for='htr-box' style='margin-left: 10px;'>Mark HTR Transcription as active</label>";
-                $content .= "</div>";
-                $content .= "<div id='man-check' style='float:right;'>";
-                    $content .= "<input type='checkbox' id='man-box' name='man-box'>";
-                    $content .= "<label for='man-box' style='margin-left: 10px;'>Mark Manual Transcription as active</label>";
-                $content .= "</div>";
+            $content .= "<div class='mark-active' x-data='activeTranscription({$itemId})'>";
+                $content .= "<label>";
+                    $content .= "<input type='radio' name='mark_active' value='htr' x-model='source' :checked='source === \"htr\"'>";
+                    $content .= "Mark HTR Transcription as active";
+                $content .= "</label>";
+                    $content .= "<label>";
+                        $content .= "<input type='radio' name='mark_active' value='manual' x-model='source' :checked='source === \"manual\"'>";
+                        $content .= "Mark Manual Transcription as active";
+                    $content .= "</label>";
             $content .= "</div>";
-            $content .= "<div style='clear:both;'></div>";
         //$content .= "<section id='viewer-n-transcription'>";
             $content .= "<div id='full-view-l'>";
                 $content .= "<div id='htr-container' style='height:600px;'>";
@@ -555,24 +558,24 @@ function _TCT_compare_transcriptions( $atts) {
                             $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i>";
                         $content .= "</div>";
                     $content .= "</div>";
-                    $formattedHtrTranscription = trim(preg_replace('/\s+/', ' ', $htrData));
+                    $htrTranscriptionText = get_text_from_pagexml($htrData, '<br />');
                     $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px'> &nbsp </div>";
                     if($itemData['Transcriptions'][0]['NoText'] == '1') {
                         $content .= "<div id='htr-no-text-placeholder'>";
                             $content .= "<p style='position:relative;top:30%;'><i class=\"far fa-check-circle\" ></i> <b>ITEM CONTAINS <br> NO TEXT</b></p>";
                         $content .= "</div>";
                     } else {
-                       
-                        if(strlen($formattedHtrTranscription) < 700 && strlen($formattedHtrTranscription) != 0) {
+
+                        if(strlen($htrTranscriptionText) < 700 && strlen($htrTranscriptionText) != 0) {
                             $content .= "<div class='htr-current-transcription' style='padding-left:0px;'>";
-                                $content .= $formattedHtrTranscription;
+                                $content .= $htrTranscriptionText;
                             $content .= "</div>";
-        
-                        } else if(strlen($formattedHtrTranscription) != 0) {
+
+                        } else if(strlen($htrTranscriptionText) != 0) {
                             $content .= "<div class='htr-current-transcription' style='padding-left:0px;'>";
-                                $content .= $formattedHtrTranscription;
+                                $content .= $htrTranscriptionText;
                             $content .= "</div>";
-        
+
                         } else {
                             $content .= "<script>
                                 document.querySelector('#htr-status').style.backgroundColor = '#eeeeee';
@@ -584,9 +587,9 @@ function _TCT_compare_transcriptions( $atts) {
                         }
                     }
                 $content .= "</div>";
-    
+
             $content .= "</div>"; // end of transcription
-            
+
             $content .= "<div id='full-view-r'>";
             //var_dump($itemData);
                 // Transcription
@@ -650,7 +653,7 @@ function _TCT_compare_transcriptions( $atts) {
     if(strlen($formattedTranscription) > 700) {
         $content .= "<div id='transcription-collapse-btn' style='font-size:17px;font-weight:600;height:35px;width:150px;margin: 50px auto;background-color:#0a72cc;color:#fff;padding-top:7px;'> Show More </div>";
     }
-    
+
 
     // $content .= "<section id='location-n-enrichments' style='background-color:#f8f8f8;'>";
                 // Location and Enrichments placeholder
@@ -675,31 +678,31 @@ function _TCT_compare_transcriptions( $atts) {
 
                     $content .= '<div class="view-switcher" id="switcher-casephase" style="display:inline-block;">';
                         $content .= '<ul id="item-switch-list" class="switch-list" style="z-index:10;top:0;right:0;">';
-    
+
                             $content .= "<li>";
                                 $content .= '<div id="popout" class="view-switcher-icons" style="display:inline-block;width: 20px;"
                             onclick="switchItemView(event, \'popout\')"><img src="'.home_url().'/wp-content/themes/transcribathon/images/icon_float.svg"></div>';
                             $content .= "</li>";
-    
+
                             $content .= "<li>";
                                 $content .= '<div id="vertical-split" class="view-switcher-icons" style="display:inline-block;width: 20px;"
                             onclick="switchItemView(event, \'vertical\')"><img src="'.home_url().'/wp-content/themes/transcribathon/images/icon_below.svg"></div>';
                             $content .= "</li>";
-    
+
                             $content .= "<li>";
                                 $content .= '<div id="horizontal-split" class="view-switcher-icons active theme-color" style="font-size:12px;display:inline-block;width: 20px;"
                             onclick="switchItemView(event, \'horizontal\')"><img src="'.home_url().'/wp-content/themes/transcribathon/images/icon_side.svg"></div>';
                             $content .= "</li>";
-    
+
                             $content .= "<li style='position:relative;bottom:2px;'>";
                                 $content .= '<div class="switch-i"><i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons" style="position:relative;bottom:3px;"
                             onclick="switchItemView(event, \'closewindow\')"></i></div>';
                             $content .= "</li>";
-    
+
                             $content .= "<li style='position:relative;bottom:2px;'>";
                                 $content .= '<div class="switch-i"><i id="close-window-view" class="fas fa-times view-switcher-icons" onClick="switchItemPageView()" style="position:relative;bottom:1px;color:#2b2b2b;"></i></div>';
                             $content .= "</li>";
-    
+
                         $content .= '</ul>';
                     $content .= '</div>';
                     $content .= "<div style='clear:both;'></div>";
@@ -717,7 +720,7 @@ function _TCT_compare_transcriptions( $atts) {
 
                     $content .= '</ul>';
                 $content .= "</div>";
-            
+
                 $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
                     // Editor tab
                     $content .= "<div id='editor-tab' class='tabcontent'>";
@@ -736,207 +739,17 @@ function _TCT_compare_transcriptions( $atts) {
 
 
         $content .= "</div>"; // end of full-view-container
-    // JAVASCRIPT TODO put in a separate file
-    $content .= "<script>
-    
-    var ready = (callback) => {
-        if (document.readyState != \"loading\") callback();
-        else document.addEventListener(\"DOMContentLoaded\", callback);
-    }
-    // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
-    ready(() => {
-        const collapseBtn = document.querySelector('#transcription-collapse-btn');
-        const trSection = document.querySelector('#viewer-n-transcription');
-        // Transcription Collapse
-        if(collapseBtn) {
-            collapseBtn.addEventListener('click', function() {
-                if(trSection.classList.contains('collapsed')){
-                    trSection.classList.remove('collapsed');
-                    document.querySelector('#transcription-container').style.height = 'unset';
-                    document.querySelector('#htr-container').style.height = 'unset';
-                    collapseBtn.textContent = 'Show Less';
-                } else {
-                    trSection.classList.add('collapsed');
-                    trSection.style.height = '600px';
-                    document.querySelector('#transcription-container').style.height = '600px';
-                    document.querySelector('#htr-container').style.height = '600px';
-                    collapseBtn.textContent = 'Show More';
-                }
-            });
-        }
-        // New Js for Image slider
-        const imgSliderCheck = document.querySelector('#img-slider');
-        if(imgSliderCheck) {
-            // function to show/hide images
-            function showImages(start, end, images) {
-                for(let img of images) {
-                    if(img.getAttribute('data-value') < start || img.getAttribute('data-value') > end) {
-                        img.style.display = 'none';
-                    } else {
-                        img.style.display = 'inline-block';
-                    }
-                }
-            }
-            // Only item page(start slider with the item on the page)
-            const currentItem = document.querySelector('#slide-start');
-            //
-            const imgStickers = document.querySelectorAll('.slide-sticker');
-            const windowWidth = document.querySelector('#img-slider').clientWidth;
-            let sliderStart = 1; // First Image to the left
-            let sliderEnd = 0; // Last Image to the right
-            const nextSet = document.querySelector('.next-slide');
-            const prevSet = document.querySelector('.prev-slide');
-            const leftSpanNumb = document.querySelector('#left-num');
-            const rightSpanNumb = document.querySelector('#right-num');
-            let currentDot = 1;
-            let step = 0; // number of images on screen
-            if(windowWidth > 1200) {
-                step = 9;
-            } else if(windowWidth > 800) {
-                step = 5;
-            } else {
-                step = 3;
-            }
-    
-            sliderEnd = step;
-    
-            if(imgStickers.length <= step){
-                prevSet.style.display = 'none';
-                nextSet.style.display = 'none';
-            }
-            leftSpanNumb.textContent = sliderStart;
-            rightSpanNumb.textContent = sliderEnd;
-            // check if there are more images than it fits on the screen
-            if(nextSet.style.display != 'none') {
-                showImages(sliderStart, sliderEnd, imgStickers);
-            }
-            // Slider dots
-            const dotContainer = document.querySelector('#dot-indicators');
-            const numberDots = Math.ceil(imgStickers.length / step);
-            for(let i = 0; i < numberDots; i++) {
-                const sliderDot = document.createElement('div');
-                sliderDot.classList.add('slider-dot');
-                sliderDot.setAttribute('data-value', (i+1));
-                dotContainer.appendChild(sliderDot);
-            }
-    
-            const sliderDots = document.querySelectorAll('.slider-dot');
-            
-            for(let dot of sliderDots) {
-                dot.addEventListener('click', function() {
-                    currentDot = parseInt(dot.getAttribute('data-value'));
-                    dot.classList.add('current');
-                    if(dot.getAttribute('data-value') * step > imgStickers.length) {
-                        sliderStart = (imgStickers.length - step) + 1;
-                        sliderEnd = imgStickers.length;
-                    } else {
-                        sliderEnd = parseInt(dot.getAttribute('data-value')) * step;
-                        sliderStart = (sliderEnd - step) + 1;
-                    }
-                    showImages(sliderStart, sliderEnd, imgStickers);
-                    leftSpanNumb.textContent = sliderStart;
-                    rightSpanNumb.textContent = sliderEnd;
-                    for(let dot of sliderDots) {
-                        if(dot.getAttribute('data-value') < currentDot || dot.getAttribute('data-value') > currentDot) {
-                            if(dot.classList.contains('current')){
-                                dot.classList.remove('current');
-                            }
-                        }
-                    }
-                })
-            }
-            if(currentItem) {
-              let currentPosition = Math.floor(parseInt(currentItem.textContent) / step);
-              for(let dot of sliderDots) {
-                if(currentPosition + 1 === parseInt(dot.getAttribute('Data-value'))){
-                  dot.click();
-                }
-              }
-            }
-            nextSet.addEventListener('click', function() {
-                currentDot += 1;
-                if(currentDot > numberDots ) {
-                    currentDot = 1;
-                }
-                if(rightSpanNumb.textContent == imgStickers.length) {
-                    sliderStart = 1;
-                    sliderEnd = step;
-                } else if(sliderEnd + step <= imgStickers.length) {
-                    sliderStart = sliderStart + step;
-                    sliderEnd = sliderEnd + step;
-                } else {
-                    sliderStart = (imgStickers.length - step) + 1;
-                    sliderEnd = imgStickers.length;
-                }
-                showImages(sliderStart, sliderEnd, imgStickers);
-                leftSpanNumb.textContent = sliderStart;
-                rightSpanNumb.textContent = sliderEnd;
-                for(let dot of sliderDots) {
-                    if(parseInt(dot.getAttribute('data-value')) < currentDot || parseInt(dot.getAttribute('data-value')) > currentDot) {
-                        if(dot.classList.contains('current')){
-                            dot.classList.remove('current');
-                        }
-                    } else {
-                        dot.classList.add('current');
-                    }
-                }
-            })
-            prevSet.addEventListener('click', function() {
-                if(currentDot - 1 < 1) {
-                    currentDot = numberDots;
-                } else {
-                    currentDot -= 1;
-                }
-                if(leftSpanNumb.textContent == '1') {
-                    sliderEnd = imgStickers.length;
-                    sliderStart = (imgStickers.length - step) + 1;
-                } else if(sliderStart - step < 1) {
-                    sliderStart = 1;
-                    sliderEnd = step;
-                } else {
-                    sliderEnd = sliderEnd - step;
-                    sliderStart = sliderStart - step;
-                }
-                showImages(sliderStart, sliderEnd, imgStickers);
-                leftSpanNumb.textContent = sliderStart;
-                rightSpanNumb.textContent = sliderEnd;
-                for(let dot of sliderDots) {
-                    if(parseInt(dot.getAttribute('data-value')) < currentDot || parseInt(dot.getAttribute('data-value')) > currentDot) {
-                        if(dot.classList.contains('current')){
-                            dot.classList.remove('current');
-                        }
-                    } else {
-                        dot.classList.add('current');
-                    }
-                }
-            })
-        }
-
-    });
-    
-    
-    
-    </script>";
-
-    $content .= '<script>
-    jQuery("#item-image-section").resizable_split({
-        handleSelector: "#item-splitter",
-        resizeHeight: false
-    });
-    </script>';
-
-    $content .= "<style> 
-    #primary-full-width { padding: unset!important;} 
+    $content .= "<style>
+    #primary-full-width { padding: unset!important;}
     .highlight { color: #0a72cc;outline: 0.8px solid;}
     metadata {
         display: none;
     }
-    #mark-active {
-        width: 60vw;
-    }
-    </style>"; 
+    </style>";
 
     //$content .= "</section>"; // End of main section
+
+    $content .= "<script src='{$alpineJs}'></script>";
 
     return $content;
     }

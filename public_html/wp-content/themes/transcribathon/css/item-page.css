@@ -1371,7 +1371,7 @@ button.ui-datepicker-trigger {
 .person-location-birth-inputs {
     padding-bottom: 0!important;
 }
-input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-input, #person-deathDate-input, 
+input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-input, #person-deathDate-input,
 .link-description-input textarea, .link-url-input input  {
     width: 49%;
     margin-right: 0!important;
@@ -2011,8 +2011,8 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
         display: block;
         float: unset;
         margin: 0 auto;
-        width: 100%; 
-        max-width: 100%; 
+        width: 100%;
+        max-width: 100%;
         z-index: 10;
         position: relative;
         background: #fff;
@@ -2449,7 +2449,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     display: inline-block;
     height: 25px;
     position: absolute;
-    padding-left: 20px; 
+    padding-left: 20px;
     width: calc(100% - 215px);
 }
 .panel-bottom span.headline-header {
@@ -2568,7 +2568,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-weight: 700!important;
     letter-spacing: 0.025em;
 }
-/* Tiny MCE Editor adjustments !!!! After update even more important */ 
+/* Tiny MCE Editor adjustments !!!! After update even more important */
 div.tox-toolbar {
     height: inherit!important;
 }
@@ -2607,10 +2607,22 @@ div.tox.tox-tinymce {
 #full-width-viewer {
     margin-bottom: 50px;
 }
-#mark-active {
+
+.mark-active {
+    display: flex;
+    justify-content: space-between;
     width: 50vw;
     margin: 20px auto;
 }
+
+.mark-active label {
+    cursor: pointer;
+}
+
+.mark-active input {
+    margin-right: 10px;
+}
+
 .link-single i.far.fa-external-link {
     margin-left: 3px;
     margin-right: 5px;
