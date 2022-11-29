@@ -209,7 +209,7 @@ function embedd_custom_javascripts_and_css() {
      if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
         /* jQuery */
         /* Don't enqueue following scripts if it's HTR editor */
-        if(!is_page('item-page-htr') && !is_page('import-htr-transcription') && !is_page('item') && !is_page('transcription-comparison')) {
+        if(!is_page('item-page-htr') && !is_page('import-htr-transcription') && !is_page('item') && !is_page('transcription-comparison') && !is_page('story')) {
             wp_enqueue_script( 'jquery' );
             /* custom JS and CSS*/
             /* openseadragon */
@@ -220,6 +220,7 @@ function embedd_custom_javascripts_and_css() {
         }
         if(is_page('story')){
             wp_enqueue_style( 'storystyle', CHILD_TEMPLATE_DIR . '/css/story_page.css');
+            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/story-page.js');
         }
         if(is_page('transcription-comparison')) {
             wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/compare-tr-viewer.js');
