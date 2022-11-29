@@ -214,7 +214,7 @@ ul.story-navigation-content-container li {
     text-align: center;
     padding: 8px 5px 5px 5px;
     position: relative;
-    bottom: 30px;
+    bottom: 21px;
 }
 .start-transcription:hover {
     background: var(--main-color);
