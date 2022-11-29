@@ -224,11 +224,11 @@ function embedd_custom_javascripts_and_css() {
         }
         if(is_page('transcription-comparison')) {
             wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/compare-tr-viewer.js');
-            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
             wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon.min.js');
             wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
             wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css');
             wp_enqueue_script( 'jquery' );
+            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
         }
         if(is_page('item')){
             wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css');
