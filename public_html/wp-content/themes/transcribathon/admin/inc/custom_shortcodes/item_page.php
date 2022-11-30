@@ -1229,7 +1229,7 @@ function _TCT_mtr_transcription( $atts) {
             // New position for Description Language
             $descriptionTab .= "<div id='description-language-selector' class='language-selector-background language-selector login-required'>";
             if($itemData['DescriptionLanguage'] != null) {
-                $descriptionTab .= "<span class='language-select-selected' style='margin-right:5px;'>Language of Description: </span>";
+                $descriptionTab .= "<span id='language-sel-placeholder' class='language-select-selected' style='margin-right:5px;'>Language of Description: </span>";
             }
                 $descriptionTab .= "<select>";
                     if($itemData['DescriptionLanguage'] == null) {

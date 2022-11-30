@@ -162,7 +162,13 @@ function installEventListeners() {
             for (i = 0; i < s.length; i++) {
                 if (s.options[i].innerHTML == this.innerHTML) {
                     s.selectedIndex = i;
-                    //h.innerHTML = this.innerHTML;
+                    if(h.getAttribute('id') == 'description-language-custom-selector') {
+                        h.innerHTML = this.innerHTML;
+                        if(!document.querySelector('#language-sel-placeholder')) {
+                            h.insertAdjacentHTML('afterbegin', "<span id='language-sel-placeholder' class='language-select-selected'>Language of Description: </span><span class='desc-margin'>&nbsp</span>");
+                        }
+                        
+                    }
                     y = this.parentNode.getElementsByClassName("same-as-selected");
                     for (k = 0; k < y.length; k++) {
                         y[k].removeAttribute("class");

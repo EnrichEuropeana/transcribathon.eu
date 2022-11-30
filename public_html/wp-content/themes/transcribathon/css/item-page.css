@@ -691,6 +691,16 @@ p.mb-1 {
     border: 0.5px solid darkgray;
     bottom: 40px;
 }
+.desc-margin {
+    display: inline-block;
+    position: relative;
+    bottom: 4px;
+    height: 115%;
+    margin-right: 10px;
+    z-index: 10;
+    width: 10px;
+    background-color: #fff;
+}
 .select-hide {
     display: none;
 }
