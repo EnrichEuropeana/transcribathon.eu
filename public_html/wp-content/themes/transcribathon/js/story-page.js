@@ -150,7 +150,7 @@ ready(() => {
         } else if((endSlide + numOfStickers) > sliderImages.length) {
             endSlide = sliderImages.length;
             startSlide = sliderImages.length - numOfStickers;
-        } else if ( (endSlide + numOfStickers) < sliderImages.length) {
+        } else {
             endSlide = endSlide + numOfStickers;
             startSlide = startSlide + numOfStickers;
         }

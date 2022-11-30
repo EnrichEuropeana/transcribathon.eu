@@ -1289,12 +1289,14 @@ function _TCT_mtr_transcription( $atts) {
             $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
         }
     
-        array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode']));
+        array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || ' . $isActive));
     }
     
     $imageSlider = "";
     $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
     $imageSlider .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
+    $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
+    $imageSlider .= "<div id='current-itm' style='display:none;'>" . $startingSlide . "</div>";
     $imageSlider .= "<div id='img-slider'>";
         $imageSlider .= "<div id='slider-container'>";
             $imageSlider .= "<button class='prev-slide' type='button' aria-label='Previous'><i class='fas fa-chevron-left'></i></button>";
@@ -1548,16 +1550,6 @@ function _TCT_mtr_transcription( $atts) {
         }
     $storyDescription .= "</div>";
     // Item progress bar
-    // $itemProgress = array(
-    //     'Not Started' => 0,
-    //     'Edit' => 0,
-    //     'Review' => 0,
-    //     'Completed' => 0
-    // );
-    // $itemProgress[$itemData['TranscriptionStatusName']] += 25;
-    // $itemProgress[$itemData['DescriptionStatusName']] += 25;
-    // $itemProgress[$itemData['LocationStatusName']] += 25;
-    // $itemProgress[$itemData['TaggingStatusName']] += 25;
 
     //$content .= "<div id='main-section'>";
         // Build Page Layout
@@ -1572,7 +1564,7 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
         $content .= "</div>";
         if(current_user_can('administrator')) {
-            $content .= "<div class='tr-comp-btn' style='float:right;cursor:pointer;'>";
+            $content .= "<div class='tr-comp-btn' style='float:right;cursor:pointer;margin-right:25px;'>";
                 $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>COMPARE TRANSCRIPTIONS</a>";
             $content .= "</div>";
         }

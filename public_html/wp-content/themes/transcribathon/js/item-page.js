@@ -2422,124 +2422,137 @@ ready(() => {
       x[i].appendChild(b);
     } 
     // Start of Image slider functions
-   /// Test slider
-   const sliderContainer = document.querySelector('#inner-slider');
-   const sliderImages = JSON.parse(document.querySelector('#slider-images').innerHTML);
-   const sliderWidth = sliderContainer.offsetWidth;
-   const numOfStickers = Math.floor(sliderWidth/200);
-   const storyId = document.querySelector('#story-id').textContent;
+    /// Test slider
+    const sliderContainer = document.querySelector('#inner-slider');
+    const sliderImages = JSON.parse(document.querySelector('#slider-images').innerHTML);
+    const sliderWidth = sliderContainer.offsetWidth;
+    const numOfStickers = Math.floor(sliderWidth/200);
+    const storyId = document.querySelector('#story-id').textContent;
+    const currentItm = parseInt(document.querySelector('#current-itm').textContent);
 
-   const prevBtn = document.querySelector('.prev-slide');
-   const nextBtn = document.querySelector('.next-slide');
+    const prevBtn = document.querySelector('.prev-slide');
+    const nextBtn = document.querySelector('.next-slide');
 
-   let startSlide = 0;
-   let endSlide = numOfStickers;
+    let startSlide = 0;
+    let endSlide = numOfStickers;
    
-   // Create initial slides on the screen
-   for(let x=0; x < numOfStickers; x++) {
-       let imgInfo = sliderImages[x].split(' || ');
-       let imgUri = imgInfo[0];
-       let imgId = imgInfo[1];
-       let imgCompStatus = imgInfo[2];
+    // Create initial slides on the screen
+    for(let x=0; x < numOfStickers; x++) {
+        let imgInfo = sliderImages[x].split(' || ');
+        let imgUri = imgInfo[0];
+        let imgId = imgInfo[1];
+        let imgCompStatus = imgInfo[2];
 
-       sliderContainer.innerHTML += 
-           `<div class='slide-sticker' data-value='${x + 1}'>` +
-               `<div class='slide-img-wrap'>` +
-                   `<a href='${home_url}/documents/story/item/?story=${storyId}&item=${imgId}' class='slider-link'>` +
-                       `<img src='${imgUri}' class='slider-image' alt='slider-img-${x+1}' width='200' height='200'>` +
-                   `</a>` +
-                   `<div class='image-completion-status' style='background-color:${imgCompStatus};'>` +
-                       `<div class='slide-number-wrap'>${x + 1}</div>` +
-                   `</div>` +
-               `</div>` +
-           `</div>`;
-   }
-   ////// Second set of variables, after initial slider is rendered
-   // Make nodelist of slides so we can manipulate them
-   const sliderSlides = sliderContainer.querySelectorAll('.slide-sticker');
-   // Get number of dots we need to show on screen
-   const numOfSlides = Math.ceil(sliderImages.length / numOfStickers);
-   const dotContainer = document.querySelector('#dot-indicators');
-   let currentDot = 1;
+        sliderContainer.innerHTML += 
+            `<div class='slide-sticker' data-value='${x + 1}'>` +
+                `<div class='slide-img-wrap'>` +
+                    `<a href='${home_url}/documents/story/item/?story=${storyId}&item=${imgId}' class='slider-link'>` +
+                        `<img src='${imgUri}' class='slider-image' alt='slider-img-${x+1}' width='200' height='200'>` +
+                    `</a>` +
+                    `<div class='image-completion-status' style='background-color:${imgCompStatus};'>` +
+                        `<div class='slide-number-wrap'>${x + 1}</div>` +
+                    `</div>` +
+                `</div>` +
+            `</div>`;
+    }
+    ////// Second set of variables, after initial slider is rendered
+    // Make nodelist of slides so we can manipulate them
+    const sliderSlides = sliderContainer.querySelectorAll('.slide-sticker');
+    // Get number of dots we need to show on screen
+    const numOfSlides = Math.ceil(sliderImages.length / numOfStickers);
+    const dotContainer = document.querySelector('#dot-indicators');
+    let currentDot = 1;
 
-   // Create dot indicators to jump to desired set of slides
-   for(let z = 1; z <= numOfSlides; z++) {
-       let singleDot = document.createElement('div');
-       singleDot.classList.add('slider-dot');
-       singleDot.setAttribute('data-value', (z));
-       // Add event to the dot
-       singleDot.addEventListener('click', function() {
-           currentDot = parseInt(this.getAttribute('data-value'));
-           this.classList.add('current');
+    // Create dot indicators to jump to desired set of slides
+    for(let z = 1; z <= numOfSlides; z++) {
+        let singleDot = document.createElement('div');
+        singleDot.classList.add('slider-dot');
+        singleDot.setAttribute('data-value', (z));
+        // Add event to the dot
+        singleDot.addEventListener('click', function() {
+            currentDot = parseInt(this.getAttribute('data-value'));
+            this.classList.add('current');
            
-           endSlide = numOfStickers * z;
-           if(endSlide > sliderImages.length) {
-               endSlide = sliderImages.length;
-           }
-           startSlide = endSlide - numOfStickers;
-           slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
-           activeDot(currentDot);
-       });
-       dotContainer.appendChild(singleDot);
-   }
-   dotContainer.querySelector('div').classList.add('current');
-
-
-   
-   function slideImages(slideStart, slideEnd, slides, imageInfo, storyid) {
-       let indexOfSlide = 0;
-       for(let i = slideStart; i < slideEnd; i++) {
-           let imgArr = imageInfo[i].split(' || ');
+            endSlide = numOfStickers * z;
+            if(endSlide > sliderImages.length) {
+                endSlide = sliderImages.length;
+            }
+            startSlide = endSlide - numOfStickers;
+            slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+            activeDot(currentDot);
+        });
+        dotContainer.appendChild(singleDot);
+    }
+    // dotContainer.querySelector('div').classList.add('current');
+    if(currentItm) {  
+        let currPosition = Math.floor(currentItm/numOfStickers);
+        for(let dot of dotContainer.querySelectorAll('.slider-dot')) {
+            if(currPosition + 1 == parseInt(dot.getAttribute('data-value'))) {
+                dot.click();
+            }
+        }
+    }
+    
+    function slideImages(slideStart, slideEnd, slides, imageInfo, storyid, currItm) {
+        let indexOfSlide = 0;
+        for(let i = slideStart; i < slideEnd; i++) {
+            let imgArr = imageInfo[i].split(' || ');
            
-           slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
-           slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?story=${storyid}&item=${imgArr[1]}`);
-           slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
-           slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
+            slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
+            slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?story=${storyid}&item=${imgArr[1]}`);
+            slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
+            slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
+            if(i === currItm) {
+                slides[indexOfSlide].querySelector('.slide-img-wrap').classList.add('active');
+            } else if(slides[indexOfSlide].querySelector('.slide-img-wrap').classList.contains('active')) {
+                slides[indexOfSlide].querySelector('.slide-img-wrap').classList.remove('active');
+            }
+            console.log(i);
+            
+            indexOfSlide ++;
+        }
+    }
 
-           indexOfSlide ++;
-       }
-   }
+    function activeDot(number) {
+        const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+        for(let dot of sliderDots) {
+            if(dot.getAttribute('data-value') < number || dot.getAttribute('data-value') > number) {
+                if(dot.classList.contains('current')) {
+                    dot.classList.remove('current');
+                }
+            }
+        }
+    }
 
-   function activeDot(number) {
-       const sliderDots = dotContainer.querySelectorAll('.slider-dot');
-       for(let dot of sliderDots) {
-           if(dot.getAttribute('data-value') < number || dot.getAttribute('data-value') > number) {
-               if(dot.classList.contains('current')) {
-                   dot.classList.remove('current');
-               }
-           }
-       }
-   }
+    nextBtn.addEventListener('click', function () {
 
-   nextBtn.addEventListener('click', function () {
-
-       if(endSlide === sliderImages.length) {
-           endSlide = numOfStickers;
-           startSlide = 0;
-       } else if((endSlide + numOfStickers) > sliderImages.length) {
-           endSlide = sliderImages.length;
-           startSlide = sliderImages.length - numOfStickers;
-       } else if ( (endSlide + numOfStickers) < sliderImages.length) {
-           endSlide = endSlide + numOfStickers;
-           startSlide = startSlide + numOfStickers;
-       }
+        if(endSlide === sliderImages.length) {
+            endSlide = numOfStickers;
+            startSlide = 0;
+        } else if((endSlide + numOfStickers) > sliderImages.length) {
+            endSlide = sliderImages.length;
+            startSlide = sliderImages.length - numOfStickers;
+        } else {
+            endSlide = endSlide + numOfStickers;
+            startSlide = startSlide + numOfStickers;
+        }
       
-       slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
-   });
+        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+    });
 
-   prevBtn.addEventListener('click', function() {
-       if(startSlide === 0) {
-           endSlide = sliderImages.length;
-           startSlide = sliderImages.length - numOfStickers;
-       } else if((startSlide - numOfStickers) < 0) {
-           startSlide = 0;
-           endSlide = numOfStickers;
-       } else {
-           startSlide -= numOfStickers;
-           endSlide -= numOfStickers;
-       }
-       slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
-   });
+    prevBtn.addEventListener('click', function() {
+        if(startSlide === 0) {
+            endSlide = sliderImages.length;
+            startSlide = sliderImages.length - numOfStickers;
+        } else if((startSlide - numOfStickers) < 0) {
+            startSlide = 0;
+            endSlide = numOfStickers;
+        } else {
+            startSlide -= numOfStickers;
+            endSlide -= numOfStickers;
+        }
+        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+    });
    
    
 
