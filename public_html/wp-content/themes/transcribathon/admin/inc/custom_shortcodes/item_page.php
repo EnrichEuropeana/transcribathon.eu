@@ -1724,7 +1724,7 @@ function _TCT_mtr_transcription( $atts) {
    // $content .= "<div style='clear:both;'></div>";
 
     $content .= "<section id='location-n-enrichments'>";
-        $content .= "<div style='float:left;width:49%;'>";
+        $content .= "<div id='map-left'>";
              // Location Header
             $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:10px 0;'>";
                 $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' width='28px' height='28px'> LOCATION</h5></div>";
@@ -1741,7 +1741,7 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "</div>";
             $content .= $locationView;
         $content .= "</div>"; // end of left side
-        $content .= "<div style='float:right;width:49%;'>";
+        $content .= "<div id='enrich-right'>";
             // Right side
             $content .= "<div id='description-container'>";
                 $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:10px;margin-bottom:5px;'>";
@@ -1870,11 +1870,11 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "<span><h5><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>STORY INFORMATION</span><span style='float:right;padding-right:10px;'><i id='angle-i' style='font-size:25px;' class='fas fa-angle-down'></i></h5></span>";
         $content .= "</div>";
         $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:25px;'> &nbsp </div>";
-        $content .= "<div style='width:49%;float:left;'>";
+        $content .= "<div id='meta-left'>";
             // Metadata
             $content .= $metaData;
         $content .= "</div>";
-        $content .= "<div style='float:right;width:49%;'>";
+        $content .= "<div id='meta-right'>";
             $content .= $storyDescription;
         $content .= "</div>";
         $content .= "<div style='clear:both;'></div>";

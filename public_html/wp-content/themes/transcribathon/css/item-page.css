@@ -320,6 +320,14 @@ body {
     margin: 150px;
     color: #dddddd;
 }
+#map-left, #meta-left {
+    float: left;
+    width: 49%;
+}
+#enrich-right, #meta-right {
+    float: right;
+    width: 49%;
+}
 /*--- Sub Headers ---*/
 /*-- bigger, section titles --*/
 .enrich-header h5 {
@@ -2035,6 +2043,10 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
         width: 150px!important;
         height: 60%;
     }
+    #map-left, #enrich-right, #meta-left, #meta-right {
+        float: unset;
+        width: 100%;
+    }
 }
 @media screen and (max-width: 1400px) {
     .panel-right #item-tab-list .tablinks span {
@@ -2117,7 +2129,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 #no-text-placeholder, #htr-no-text-placeholder {
     background-color: var(--bg-main-color);
     text-align: center;
-    height: 539px;
+    height: 500px;
     margin-top: 14px;
     cursor: pointer;
 }
