@@ -300,14 +300,18 @@ function _TCT_mtr_transcription( $atts) {
                     $locationDisplay .= "</div>";
 
                     $locationDisplay .= "<div class='form-buttons-right'>";
-                        $locationDisplay .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
-                            $locationDisplay .= "CANCEL";
-                        $locationDisplay .= "</button>";
+                        $locationDisplay .= "<div class='form-btn-left'>";
+                            $locationDisplay .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
+                                $locationDisplay .= "CANCEL";
+                            $locationDisplay .= "</button>";
+                        $locationDisplay .= "</div>";
 
-                        $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save' 
-                                        onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
-                            $locationDisplay .= "SAVE";
-                        $locationDisplay .= "</button>";
+                        $locationDisplay .= "<div class='form-btn-right'>";
+                            $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save' 
+                                            onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
+                                $locationDisplay .= "SAVE";
+                            $locationDisplay .= "</button>";
+                        $locationDisplay .= "</div>";
 
                         $locationDisplay .= "<div id='item-location-" . $place['PlaceId'] . "-spinner-container' class='spinner-container spinner-container-right'>";
                             $locationDisplay .= "<div class='spinner'></div>";
@@ -675,13 +679,17 @@ function _TCT_mtr_transcription( $atts) {
                             $enrichmentTab .= "</div>";
     
                             $enrichmentTab .= "<div class='form-buttons-right'>";
-                                $enrichmentTab .= "<button class='theme-color-background edit-location-cancel' onClick='openPersonEdit(" . $person['PersonId'] . ")'>";
-                                    $enrichmentTab .= "CANCEL";
-                                $enrichmentTab .= "</button>";
-                                $enrichmentTab .= "<button class='theme-color-background edit-location-save'
-                                                onClick='editPerson(" . $person['PersonId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
-                                    $enrichmentTab .= "SAVE";
-                                $enrichmentTab .= "</button>";
+                                $enrichmentTab .= "<div class='person-btn-left'>";
+                                    $enrichmentTab .= "<button class='theme-color-background' onClick='openPersonEdit(" . $person['PersonId'] . ")'>";
+                                        $enrichmentTab .= "CANCEL";
+                                    $enrichmentTab .= "</button>";
+                                $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "<div class='person-btn-right'>";
+                                    $enrichmentTab .= "<button class='theme-color-background'
+                                                    onClick='editPerson(" . $person['PersonId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
+                                        $enrichmentTab .= "SAVE";
+                                    $enrichmentTab .= "</button>";
+                                $enrichmentTab .= "</div>";
                                 $enrichmentTab .= "<div id='item-person-" . $person['PersonId']  ."-spinner-container' class='spinner-container spinner-container-left'>";
                                     $enrichmentTab .= "<div class='spinner'></div>";
                                 $enrichmentTab .= "</div>";
@@ -812,14 +820,18 @@ function _TCT_mtr_transcription( $atts) {
                                     $enrichmentTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars($descPHolder, ENT_QUOTES, 'UTF-8') . "</textarea>";
                                 $enrichmentTab .= "</div>";
                                 $enrichmentTab .= "<div class='form-buttons-right'>";
-                                    $enrichmentTab .= "<button class='theme-color-background edit-location-save'
-                                        onClick='editLink(" . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", " . get_current_user_id() . ")'>";
-                                        $enrichmentTab .= "SAVE";
-                                    $enrichmentTab .= "</button>";
-                                    $enrichmentTab .= "<button class='theme-color-background edit-location-cancel'
-                                        onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'>";
-                                        $enrichmentTab .= "CANCEL";
-                                    $enrichmentTab .= "</button>";
+                                    $enrichmentTab .= "<div class='form-btn-left'>" ;
+                                        $enrichmentTab .= "<button class='theme-color-background'
+                                            onClick='editLink(" . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", " . get_current_user_id() . ")'>";
+                                            $enrichmentTab .= "SAVE";
+                                        $enrichmentTab .= "</button>";
+                                    $enrichmentTab .= "</div>";
+                                    $enrichmentTab .= "<div class='from-btn-right'>";
+                                        $enrichmentTab .= "<button class='theme-color-background'
+                                            onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'>";
+                                            $enrichmentTab .= "CANCEL";
+                                        $enrichmentTab .= "</button>";
+                                    $enrichmentTab .= "</div>";
                                     $enrichmentTab .= "<div id='item-link-" . $property['PropertyId'] . "-spinner-container' class='spinner-container spinner-container-left'>";
                                         $enrichmentTab .= "<div class='spinner'></div>";
                                     $enrichmentTab .= "</div>";
@@ -904,7 +916,7 @@ function _TCT_mtr_transcription( $atts) {
     // People Display
     $peopleDisplay .= "<div class='people-container'>";
         $peopleDisplay .= "<h6 id='fs-people' class='enrich-headers'> People <i title='Add Info' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-        $peopleDisplay .= "<div style='padding-left:24px;margin-top:10px;'>";
+        $peopleDisplay .= "<div style='padding-left:24px;'>";
             foreach($itemData['Persons'] as $person) {
                 $peopleDisplay .= "<div class='single-person'>";
                     $peopleDisplay .= "<i class='fas fa-user person-i' style='float:left;margin-right:5px;'></i>";
@@ -1561,7 +1573,7 @@ function _TCT_mtr_transcription( $atts) {
         // Title
     $content .= "<section id='title-n-progress'>";
         $content .= "<div class='title-n-btn'>";
-            $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
+            $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
         $content .= "</div>";
         if(current_user_can('administrator')) {
             $content .= "<div class='tr-comp-btn' style='float:right;cursor:pointer;margin-right:25px;'>";
@@ -1857,7 +1869,7 @@ function _TCT_mtr_transcription( $atts) {
                         // Keywords
                         $content .= "<div class='keywords-container'>";
                             $content .= "<h6 class='enrich-headers'> Keywords <i title='Add Info' id='keywords-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                            $content .= "<div style='padding-left:24px;margin-top:10px;'>";
+                            $content .= "<div style='padding-left:24px;'>";
                                 $content .= $keywords;
                             $content .= "</div>";
                         $content .= "</div>";

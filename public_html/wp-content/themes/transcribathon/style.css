@@ -3142,10 +3142,6 @@ a.ow-icon-placement-top.ow-button-hover {
   display: none;
   margin: 15px 0 5px 0;
 }
-.location-data-edit-container {
-  display: none;
-  margin: 15px 0 5px 0;
-}
 .link-data-edit-container {
   display: none;
   margin: 15px 0 5px 0;
@@ -4080,18 +4076,15 @@ a#new-temporary-prof:hover {
 .widget_headline-widget h3 {
   font-weight: 300;
 }
-.siteorigin-widget-tinymce.textwidget h6 {
-  font-weight: 300;
-}
 .widget_tct-home-stats-widget .stat-number h3 {
   font-weight: 600;
 }
 
 /*@media screen and (max-width: 780px) {*/
-.siteorigin-widget-tinymce.textwidget {
+/* .siteorigin-widget-tinymce.textwidget {
     width: 80%;
     margin: 0 auto;
-  }
+  } */
 /*}*/
 #project-items {
   color: #000;

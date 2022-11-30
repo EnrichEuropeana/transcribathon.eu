@@ -7,7 +7,6 @@ Description: Stylesheet for Story Page
 /* ---------------------------------- Story Page -------------------------------------------- */
 
 /* Image Slider */
-
 #img-slider {
     height: 275px;
     margin-bottom: 10px;
@@ -15,22 +14,23 @@ Description: Stylesheet for Story Page
 }
 #slider-container {
     height: 270px;
+    padding-top: 20px;
     background-color: var(--bg-main-color);
     position: relative;
 }
 .prev-slide {
     font-size: 40px;
     position: absolute;
-    width: 25px;
-    height: 87%;
+    left: 10px;
+    width: 40px;
+    height: 70%;
     padding: 5px;
-    left: 0.5%;
-    top: 1.2%;
     color: #fff;
-    background: var(--bg-main-color);
+    background: transparent;
     z-index: 99;
     border: none;
     border-radius: 0!important;
+    text-align: start;
 }
 .prev-slide i, .next-slide i {
     color: var(--main-color);
@@ -52,48 +52,56 @@ Description: Stylesheet for Story Page
 .next-slide {
     font-size: 40px;
     position: absolute;
-    width: 25px;
-    height: 87%;
+    right: 10px;
+    width: 40px;
+    height: 70%;
     padding: 5px;
-    right: 0.5%;
-    top: 1.2%;
     color: #fff;
-    background: var(--bg-main-color);
+    background: transparent;
     z-index: 99;
     border: none;
     border-radius: 0!important;
+    text-align: end;
 }
 #inner-slider {
-    top: 50%;
-    transform: translate( 0px, -50%);
+    width: 95vw;
+    margin: 0 auto;
+    height: inherit;
     overflow-x: hidden;
     overflow-y: hidden;
-    width: 100%;
     display: flex;
     justify-content: center;
     position: relative;
-    padding: 0 2%;
+    left: -2.5px;
 }
 .slide-sticker {
-    width: 11%;
+    width: 200px;
     height: 90%;
     display: inline-block;
     position: relative;
+    margin: 0 1px;
 }
 .slide-img-wrap {
+    position: relative;
     border: 2.5px solid transparent;
+    margin: 0 2px;
 }
 .slide-img-wrap:hover, .slide-img-wrap.active {
-    border: 5px solid var(--main-color);
-    transform: scale(1.01);
+    border: 1px solid var(--main-color);
+    outline: 4px solid var(--main-color);
+    position: relative;
+    top: 5px;
 }
 .image-completion-status {
-    float: right;
     width: 30px;
     height: 30px;
-    position: relative;
+    position: absolute;
     z-index: 1;
-    bottom: 30px;
+    bottom: 0px;
+    right: -3px;
+}
+.slide-img-wrap:hover .image-completion-status, .slide-img-wrap.active .image-completion-status {
+    right: 0;
 }
 .slide-number-wrap {
     position: relative;
@@ -122,13 +130,10 @@ Description: Stylesheet for Story Page
     background-color: #7e7e7e;
 }
 .slider-image {
-    width: 100%;
-    height: auto;
+    width: 194px!important;
+    height: 195px!important;
+    max-width: 200px!important;
 }
-
-
-
-
 /* .slide-img-wrap {
     border: 2.5px solid transparent;
 }
@@ -500,10 +505,6 @@ ul.story-navigation-content-container li {
 } */
 /* -------------------------------------------- End of Story Page -------------------------- */
 @media screen and (max-width: 850px) {
-    .slide-sticker {
-        width: 150px;
-        height: 60%;
-    }
     #primary-full-width {
         padding: 0;
     }
@@ -569,12 +570,6 @@ ul.story-navigation-content-container li {
         transform: unset;
     }
 
-}
-@media screen and (min-width: 851px) and (max-width: 1200px) {
-    .slide-sticker {
-        width: 150px;
-        height: 60%;
-    }
 }
 @media screen and (min-width: 1201px) and (max-width: 1550px) {
     #inner-slider {

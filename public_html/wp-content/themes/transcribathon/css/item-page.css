@@ -361,8 +361,7 @@ body {
     height: 30px;
     padding-left: 25px;
     color: var(--main-color)!important;
-    font-family: var(--h-font-family);
-    margin: 15px 0px 0px 0px!important;
+    margin: 10px 0px!important;
 }
 h6.enrich-headers {
     font-weight: 600!important;
@@ -370,7 +369,7 @@ h6.enrich-headers {
 /*-- Enrichments --*/
 #description-container {
     position: relative;
-    min-height: 400px;
+    min-height: 430px;
     padding: 10px 0;
     display: flex;
     flex-direction: column;
@@ -378,9 +377,6 @@ h6.enrich-headers {
 }
 .enrich-box {
     min-height: 65px;
-}
-.current-description {
-    margin-top: 10px;
 }
 .single-person, .link-single {
     padding: 5px 0px;
@@ -413,6 +409,16 @@ h6.enrich-headers {
     bottom: 3px;
     padding-left: 16px;
     line-height: normal;
+}
+.person-btn-left,.person-btn-right {
+    width: 50%;
+    display: inline-block;
+}
+.person-btn-left button {
+    float: left;
+}
+.person-btn-right button {
+    float: right;
 }
 .location-display-container .location-single {
     padding: 5px 0;
@@ -452,8 +458,6 @@ h6.enrich-headers {
     display: inline-block;
     color: #fff;
     background-color: var(--main-color);
-    padding: 5px 10px;
-    margin-right: 10px;
 }
 .keyword-single, .language-single {
     display: inline-block;
@@ -462,7 +466,6 @@ h6.enrich-headers {
     padding: 5px 10px;
     margin-right: 5px;
     margin-bottom: 5px;
-    margin-top: 10px;
 }
 .dl-enrichments {
     position: relative;
@@ -476,10 +479,6 @@ h6.enrich-headers {
 .date-top div {
     font-weight: 400;
     font-size: 13px!important;
-}
-.date-top {
-    margin-top: 15px;
-    margin-bottom: 10px;
 }
 .date-bottom {
     font-weight: 400;
@@ -623,20 +622,21 @@ p.mb-1 {
     top: 13px;
 }
 .edit-location-save {
-    float: right;
     border: none;
     border-radius: 0;
     font-weight: 700;
     font-size: 14px;
-    margin-right: 5%;
+    float: right;
 }
 .edit-location-cancel {
-    float: left;
     border: none;
+    width: 94px;
     border-radius: 0;
-    margin-right: 5%;
     font-weight: 700;
     font-size: 14px;
+    float: right;
+    position: relative;
+    right: -94px;
 }
 .location-data-edit-container .edit-input {
     background-color: #fff!important;
@@ -1322,6 +1322,7 @@ p.mb-1 {
 .item-date-inner-container label {
     display: inline-block;
     margin-right: 10px;
+    font-weight: 500;
     color: var(--main-color);
     font-family: var(--h-font-family);
 }
@@ -1815,6 +1816,16 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .form-buttons-right {
     margin-top: 12px;
 }
+.form-btn-left {
+    display: inline-block;
+    width: 30%;
+    background-color: transparent;
+}
+.form-btn-right {
+    display: inline-block;
+    width: 58%;
+    background-color: transparent;
+}
 .edit-data-save-right {
     padding: 0;
     letter-spacing: 0.5px;
@@ -2045,7 +2056,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 
 /* Css for smaller screens */
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1100px) {
     #full-view-r {
         display: block;
         float: unset;

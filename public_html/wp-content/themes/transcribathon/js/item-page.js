@@ -1556,12 +1556,16 @@ function loadPlaceData(itemId, userId) {
                             `</div>` +
                             // Buttons
                             `<div class='form-buttons-right'>` +
-                                `<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(${location['PlaceId']})'>` +
-                                    `CANCEL` +
-                                `</button>` +
-                                `<button class='theme-color-background edit-location-save' onClick='editItemLocation(${location['PlaceId']}, ${itemId}, ${userId})'>` +
-                                    `SAVE` +
-                                `</button>` +
+                                `<div class='form-btn-left'>` +
+                                    `<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(${location['PlaceId']})'>` +
+                                        `CANCEL` +
+                                    `</button>` +
+                                `</div>` +
+                                `<div class='form-btn-right'>` +
+                                    `<button class='theme-color-background edit-location-save' onClick='editItemLocation(${location['PlaceId']}, ${itemId}, ${userId})'>` +
+                                        `SAVE` +
+                                    `</button>` +
+                                `</div>` +
                                 // Spinner 
                                 `<div id='item-location-${location['PlaceId']}-spinner-container' class='spinner-container spinner-container-right'>` +
                                     `<div class='spinner'></div>` +
@@ -1700,12 +1704,16 @@ function loadPersonData(itemId, userId) {
                             `</div>` + 
 
                             `<div class='form-buttons-right'>` +
-                                `<button class='theme-color-background edit-location-cancel' onClick='openPersonEdit(${person['PersonId']})'>` +
-                                    `CANCEL` +
-                                `</button>` +
-                                `<button class='theme-color-background edit-location-save' onClick='editPerson(${person['PersonId']}, ${itemId}, ${userId})'>` +
-                                    `SAVE` +
-                                `</button>` +
+                                `<div class='person-btn-left'>` +
+                                    `<button class='theme-color-background prsn-edit-left' onClick='openPersonEdit(${person['PersonId']})'>` +
+                                        `CANCEL` +
+                                    `</button>` +
+                                `</div>` +
+                                `<div class='person-btn-right'>` +
+                                    `<button class='theme-color-background prsn-edit-right' onClick='editPerson(${person['PersonId']}, ${itemId}, ${userId})'>` +
+                                        `SAVE` +
+                                    `</button>` +
+                                `</div>` +
                                 `<div id='item-person-${person['PersonId']}-spinner-container' class='spinner-container spinner-container-left'>` +
                                     `<div class='spinner'></div>` +
                                 `</div>` +
@@ -1821,12 +1829,16 @@ function loadLinkData(itemId, userId) {
                                     `<textarea rows='3' type='text' placeholder='' name=''>${propDesc ? propDesc : ''}</textarea>` +
                                 `</div>` +
                                 `<div class='form-buttons-right'>` +
-                                    `<button class='theme-color-background edit-location-cancel' onClick='editLink(${property['PropertyId']}, ${itemId}, ${userId})'>` +
-                                        `SAVE` +
-                                    `</button>` +
-                                    `<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(${property['PropertyId']})'>` +
-                                        `CANCEL` +
-                                    `</button>` +
+                                    `<div class='form-btn-left'>` +
+                                        `<button class='theme-color-background' onClick='editLink(${property['PropertyId']}, ${itemId}, ${userId})'>` +
+                                            `SAVE` +
+                                        `</button>` +
+                                    `</div>` +
+                                    `<div class='form-btn-right'>` +
+                                        `<button class='theme-color-background' onClick='openLinksourceEdit(${property['PropertyId']})'>` +
+                                            `CANCEL` +
+                                        `</button>` +
+                                    `</div>` +
                                     `<div id='item-link-${property['PropertyId']}-spinner-container' class='spinner-container spinner-container-left'>` +
                                         `<div class='spinner'></div>` +
                                     `</div>` +
