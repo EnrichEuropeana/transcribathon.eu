@@ -1236,6 +1236,8 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
             // Update date 'view' when changing date in editor
             document.querySelector('.date-bottom .start-date').textContent = startDate.join('/');
             document.querySelector('.date-bottom .end-date').textContent = endDate.join('/');
+            document.querySelector('.date-bottom').style.display = 'block';
+            document.querySelector('.date-top').style.display = 'block';
 
             if (startDate != "" && startDate != oldStartDate) {
                 jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
@@ -2442,6 +2444,11 @@ ready(() => {
 
     const prevBtn = document.querySelector('.prev-slide');
     const nextBtn = document.querySelector('.next-slide');
+
+    if(sliderImages.length < numOfStickers) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+    }
 
     let startSlide = 0;
     let endSlide = numOfStickers;

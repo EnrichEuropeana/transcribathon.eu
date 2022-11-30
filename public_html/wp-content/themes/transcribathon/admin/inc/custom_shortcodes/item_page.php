@@ -1743,125 +1743,133 @@ function _TCT_mtr_transcription( $atts) {
         $content .= "</div>"; // end of left side
         $content .= "<div id='enrich-right'>";
             // Right side
-            $content .= "<div id='description-container'>";
-                $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:10px;margin-bottom:5px;'>";
-                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ABOUT THIS DOCUMENT</h5></div>";
-                    $content .= "<div>";
-                    if($itemData['DescriptionStatusId'] < $itemData['TaggingStatusId'] && $itemData['DescriptionStatusId'] != 1) {
-                        $content .= "<div class='status-display' style='background-color:".$itemData['DescriptionStatusColorCode']."'>";
-                            $content .= "<span class='status-indicator-view'>" . $itemData['DescriptionStatusName'] . "</span>";
-                        $content .= "</div>";
-                    } else if ($itemData['TaggingStatusId'] < $itemData['DescriptionStatusId'] && $itemData['TaggingStatusId'] != 1) {
-                        $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
-                            $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
-                        $content .= "</div>";
-                    } else {
-                        $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
-                            $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
-                        $content .= "</div>";
-                    }
-                        $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i>";
+            $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:10px;margin-bottom:5px;'>";
+                $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ABOUT THIS DOCUMENT</h5></div>";
+                $content .= "<div>";
+                if($itemData['DescriptionStatusId'] < $itemData['TaggingStatusId'] && $itemData['DescriptionStatusId'] != 1) {
+                    $content .= "<div class='status-display' style='background-color:".$itemData['DescriptionStatusColorCode']."'>";
+                        $content .= "<span class='status-indicator-view'>" . $itemData['DescriptionStatusName'] . "</span>";
                     $content .= "</div>";
-                $content .= "</div>";
-                $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
-
-                $content .= "<h6 class='enrich-headers'> Description  <i title='Add Info' id='description-open' style='margin-left:5px;font-size:1.1em;margin-bottom:10px;' class='fas fa-plus-circle'></i></h6>";
-
-                $content .= "<div class='current-description' style='padding-left:24px;'>";
-                    $content .= $itemData['Description'];
-                $content .= "</div>";
-                    
-                $descriptionLanguage = "";
-                foreach($languages as $language) {
-                    if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
-                        $descriptionLanguage = $language['Name'];
-                    }
-                }
-                if($descriptionLanguage != '') {
-                    $content .= "<div class='description-language'>";
+                } else if ($itemData['TaggingStatusId'] < $itemData['DescriptionStatusId'] && $itemData['TaggingStatusId'] != 1) {
+                    $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
+                        $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
+                    $content .= "</div>";
                 } else {
-                    $content .= "<div class='description-language' style='display:none;'>";
-                }
-                        $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
-                        $content .= "<div style='padding-left:24px;'>";
-                        if($descriptionLanguage != null || $descriptionLanguage != "")
-                            $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
-                        $content .= "</div>";
+                    $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
+                        $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
                     $content .= "</div>";
-                
-                $content .= "<div class='type-of-media'>";
-                    $content .= "<h6 class='enrich-headers'> Type of Media  <i title='Add Info' id='media-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                    $content .= "<div style='padding-left:24px;'>";
-                    foreach($itemData['Properties'] as $property) {
-                        if($property['PropertyType'] == "Category") {
-                            $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                }
+                    $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i>";
+                $content .= "</div>";
+            $content .= "</div>";
+            $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
+
+            $content .= "<div id='description-container'>";
+                $content .= "<div class='enrich-box'>";
+                    $content .= "<h6 class='enrich-headers'> Description  <i title='Add Info' id='description-open' style='margin-left:5px;font-size:1.1em;margin-bottom:10px;' class='fas fa-plus-circle'></i></h6>";
+    
+                    $content .= "<div class='current-description' style='padding-left:24px;'>";
+                        $content .= $itemData['Description'];
+                    $content .= "</div>";
+                        
+                    $descriptionLanguage = "";
+                    foreach($languages as $language) {
+                        if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                            $descriptionLanguage = $language['Name'];
                         }
                     }
+                    if($descriptionLanguage != '') {
+                        $content .= "<div class='description-language'>";
+                    } else {
+                        $content .= "<div class='description-language' style='display:none;'>";
+                    }
+                            $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
+                            $content .= "<div style='padding-left:24px;'>";
+                            if($descriptionLanguage != null || $descriptionLanguage != "")
+                                $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
+                            $content .= "</div>";
+                        $content .= "</div>";
+                $content .= "</div>";
+                $content .= "<div class='enrich-box'>";
+                    $content .= "<div class='type-of-media'>";
+                        $content .= "<h6 class='enrich-headers'> Type of Media  <i title='Add Info' id='media-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                        $content .= "<div style='padding-left:24px;'>";
+                        foreach($itemData['Properties'] as $property) {
+                            if($property['PropertyType'] == "Category") {
+                                $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                            }
+                        }
+                        $content .= "</div>";
                     $content .= "</div>";
                 $content .= "</div>";
-
-            $content .= "</div>"; // end of description
-
-            // Enrichments
-            $content .= "<div class='enrichment-container'>";
-                $content .= "<div class='dl-enrichments'>";
-
-                    // Document Date
-                    $content .= "<div class='document-date-container'>";
-                        $content .= "<h6 class='enrich-headers'> Document Creation Date <i title='Add Info' id='date-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                        $content .= "<div class='date-top' style='padding-left:24px;'>";
-                        if($itemData['DateStartDisplay'] != NULL || $itemData['DateEndDisplay'] != NULL) {
-                            $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
-                            $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
-                        $content .= "</div>";
-                        $content .= "<div style='clear:both;'></div>";
-                        $content .= "<div class='date-bottom' style='padding-left:24px;'>";
-                            $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
-                            $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
-                        }
-                        $content .= "</div>";
-                        $content .= "<div style='clear:both;'></div>";
-                    $content .= "</div>";
-
-                    // People
-                    $content .= "<div id='people-view'>";
-                        $content .= "<h6 class='enrich-headers'> People <i title='Add Info' id='people-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                        $content .= $peopleDisplay;
-                    $content .= "</div>";
-
-                    // Properties
-                    $keywords = "";
-                    $externalLinks = "";
-                    foreach($itemData['Properties'] as $property) {
-                        if($property['PropertyType'] == 'Keyword') {
-                            $keywords .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
-                        } else if ($property['PropertyType'] == 'Link') {
-                            if($property['PropertyDescription'] != 'NULL') {
-                                $propDesc = "<div class='prop-desc' style='padding-left:24px;'>Description: <b>" . $property['PropertyDescription'] . "</b></div>";
+                $content .= "<div class='enrich-box'>";   
+                        // Document Date
+                        $content .= "<div class='document-date-container'>";
+                            $content .= "<h6 class='enrich-headers'> Document Creation Date <i title='Add Info' id='date-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                            if($itemData['DateStartDisplay'] != NULL || $itemData['DateEndDisplay'] != NULL) {
+                                $content .= "<div class='date-top' style='padding-left:24px;'>";
+                                    $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                                    $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
+                                $content .= "</div>";
+                                $content .= "<div style='clear:both;'></div>";
+                                $content .= "<div class='date-bottom' style='padding-left:24px;'>";
+                                    $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
+                                    $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
+                                $content .= "</div>";
+                            } else {
+                                $content .= "<div class='date-top' style='padding-left:24px;display:none;'>";
+                                    $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                                    $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
+                                $content .= "</div>";
+                                $content .= "<div style='clear:both;'></div>";
+                                $content .= "<div class='date-bottom' style='padding-left:24px;display:none;'>";
+                                    $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
+                                    $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
+                                $content .= "</div>";
                             }
-                            $externalLinks .= "<div class='link-single'>";
-                                $externalLinks .= "<i class='far fa-external-link' style='margin-left:3px;margin-right:5px;color:#0a72cc;font-size:14px;''></i><a href='" . $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
-                                $externalLinks .= $propDesc;
-                            $externalLinks .= "</div>";
+                            $content .= "<div style='clear:both;'></div>";
+                        $content .= "</div>";
+                $content .= "</div>";
+                $content .= "<div class='enrich-box'>";
+                        // People
+                        $content .= "<div id='people-view'>";
+                            $content .= "<h6 class='enrich-headers'> People <i title='Add Info' id='people-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                            $content .= $peopleDisplay;
+                        $content .= "</div>";
+                $content .= "</div>";
+                        // Properties
+                        $keywords = "";
+                        $externalLinks = "";
+                        foreach($itemData['Properties'] as $property) {
+                            if($property['PropertyType'] == 'Keyword') {
+                                $keywords .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                            } else if ($property['PropertyType'] == 'Link') {
+                                if($property['PropertyDescription'] != 'NULL') {
+                                    $propDesc = "<div class='prop-desc' style='padding-left:24px;'>Description: <b>" . $property['PropertyDescription'] . "</b></div>";
+                                }
+                                $externalLinks .= "<div class='link-single'>";
+                                    $externalLinks .= "<i class='far fa-external-link' style='margin-left:3px;margin-right:5px;color:#0a72cc;font-size:14px;''></i><a href='" . $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
+                                    $externalLinks .= $propDesc;
+                                $externalLinks .= "</div>";
+                            }
                         }
-                    }
-
-                    // Keywords
-                    $content .= "<div class='keywords-container'>";
-                        $content .= "<h6 class='enrich-headers'> Keywords <i title='Add Info' id='keywords-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                        $content .= "<div style='padding-left:24px;margin-top:10px;'>";
-                            $content .= $keywords;
+                $content .= "<div class='enrich-box'>";
+                        // Keywords
+                        $content .= "<div class='keywords-container'>";
+                            $content .= "<h6 class='enrich-headers'> Keywords <i title='Add Info' id='keywords-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                            $content .= "<div style='padding-left:24px;margin-top:10px;'>";
+                                $content .= $keywords;
+                            $content .= "</div>";
                         $content .= "</div>";
-                    $content .= "</div>";
-
-                    // External Links
-                    $content .= "<div class='links-container'>";
-                        $content .= "<h6 class='enrich-headers'> External Web Resources <i title='Add Info' id='links-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                        $content .= "<div style='padding-left:24px;'>";
-                            $content .= $externalLinks;
+                $content .= "</div>";
+                $content .= "<div class='enrich-box'>";
+                        // External Links
+                        $content .= "<div class='links-container'>";
+                            $content .= "<h6 class='enrich-headers'> External Web Resources <i title='Add Info' id='links-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                            $content .= "<div style='padding-left:24px;'>";
+                                $content .= $externalLinks;
+                            $content .= "</div>";
                         $content .= "</div>";
-                    $content .= "</div>";
-
                 $content .= "</div>";
             $content .= "</div>"; // end of enrichment
 

@@ -64,6 +64,11 @@ ready(() => {
     const prevBtn = document.querySelector('.prev-slide');
     const nextBtn = document.querySelector('.next-slide');
 
+    if(sliderImages.length < numOfStickers) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+    }
+
     let startSlide = 0;
     let endSlide = numOfStickers;
     
