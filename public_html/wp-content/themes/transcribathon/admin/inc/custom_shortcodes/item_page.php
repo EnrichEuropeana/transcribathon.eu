@@ -1777,15 +1777,18 @@ function _TCT_mtr_transcription( $atts) {
                         $descriptionLanguage = $language['Name'];
                     }
                 }
-
-                $content .= "<div class='description-language'>";
-                    $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
-                    $content .= "<div style='padding-left:24px;'>";
-                    if($descriptionLanguage != null || $descriptionLanguage != "")
-                        $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
+                if($descriptionLanguage != '') {
+                    $content .= "<div class='description-language'>";
+                } else {
+                    $content .= "<div class='description-language' style='display:none;'>";
+                }
+                        $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
+                        $content .= "<div style='padding-left:24px;'>";
+                        if($descriptionLanguage != null || $descriptionLanguage != "")
+                            $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
+                        $content .= "</div>";
                     $content .= "</div>";
-                $content .= "</div>";
-
+                
                 $content .= "<div class='type-of-media'>";
                     $content .= "<h6 class='enrich-headers'> Type of Media  <i title='Add Info' id='media-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
                     $content .= "<div style='padding-left:24px;'>";
@@ -1807,6 +1810,7 @@ function _TCT_mtr_transcription( $atts) {
                     $content .= "<div class='document-date-container'>";
                         $content .= "<h6 class='enrich-headers'> Document Creation Date <i title='Add Info' id='date-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
                         $content .= "<div class='date-top' style='padding-left:24px;'>";
+                        if($itemData['DateStartDisplay'] != NULL || $itemData['DateEndDisplay'] != NULL) {
                             $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
                             $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
                         $content .= "</div>";
@@ -1814,6 +1818,7 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "<div class='date-bottom' style='padding-left:24px;'>";
                             $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
                             $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
+                        }
                         $content .= "</div>";
                         $content .= "<div style='clear:both;'></div>";
                     $content .= "</div>";

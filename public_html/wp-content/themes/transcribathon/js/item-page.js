@@ -676,8 +676,8 @@ function switchItemPageView() {
      const imgViewer = document.querySelector('#openseadragon');
      const nSContainer = document.querySelector('#full-view-l'); // out of full screen
      // Move viewer
-     imgViewer.style.height = '600px';
-     nSContainer.appendChild(imgViewer);
+     imgViewer.style.height = '560px';
+     nSContainer.prepend(imgViewer);
      //switch to full view
      jQuery('.site-footer').css('display', 'block')
      jQuery('.item-page-slider').css('visibility', 'unset')
@@ -775,9 +775,15 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
             // Update description text and language out of full screen when saving new values
             const descLangCont = document.querySelector('.description-language div');
             var descLanguage = document.querySelector('#description-language-custom-selector').textContent;
+
+            if(descLanguage.includes('Language of Description: ')) {
+                descLanguage = descLanguage.replace('Language of Description: ', '');
+            } 
             // Update description
             document.querySelector('.current-description').textContent = description;
             // Update Language
+            descLangCont.parentElement.style.display = 'block';
+
             if(descLangCont.querySelector('.language-single')) {
               descLangCont.querySelector('.language-single').textContent = descLanguage;
             } else {
