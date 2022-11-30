@@ -114,6 +114,7 @@ ready(() => {
         });
         dotContainer.appendChild(singleDot);
     }
+    dotContainer.querySelector('.slider-dot').classList.add('current');
 
 
     
@@ -156,6 +157,16 @@ ready(() => {
         }
        
         slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
+        // change active dot
+        const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+        let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
+        if(curDot == sliderDots.length) {
+            sliderDots[curDot-1].classList.remove('current');
+            sliderDots[0].classList.add('current');
+        } else {
+            sliderDots[curDot-1].classList.remove('current');
+            sliderDots[curDot].classList.add('current');
+        }
     });
 
     prevBtn.addEventListener('click', function() {
@@ -170,6 +181,16 @@ ready(() => {
             endSlide -= numOfStickers;
         }
         slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
+        // Change active dot
+        const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+        let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
+        if(curDot - 2 < 0) {
+            sliderDots[curDot - 1].classList.remove('current');
+            sliderDots[sliderDots.length-1].classList.add('current');
+        } else {
+            sliderDots[curDot - 1].classList.remove('current');
+            sliderDots[curDot - 2].classList.add('current');
+        }
     });
 
 
