@@ -400,6 +400,9 @@ function switchItemTab(event, tabName) {
     if(event.currentTarget) {
       event.currentTarget.className += " active";
     }
+    if(map) {
+        map.resize();
+    }
     
 }
 
@@ -1152,6 +1155,9 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
         },
         // Check success and create confirmation message
         function(response) {
+            if(document.querySelector('#location-input-section').style.display == 'block') {
+                document.querySelector('#location-input-section').style.display = 'none';
+            }
             scoreData = {
                 ItemId: itemId,
                 UserId: userId,
@@ -2239,7 +2245,6 @@ function initializeMap() {
       });
   
       geocoder.on('result', function(res) {
-        jQuery('#location-input-section').addClass('show');
         jQuery('#location-input-geonames-search-container > input').val(res.result['text_en-EN'] + '; ' + res.result.properties.wikidata);
         var el = document.createElement('div');
         el.className = 'marker';

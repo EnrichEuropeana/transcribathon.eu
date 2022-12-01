@@ -260,14 +260,14 @@ function _TCT_mtr_transcription( $atts) {
                     $locationDisplay .= "<div class='location-input-section-top'>";
                         $locationDisplay .= "<div class='location-input-name-container' style='min-height:25px;'>";
                             $locationDisplay .= "<label>Location Name: </label>";
-                            $locationDisplay .= "<input type='text' class='edit-input' value='" . $place['Name'] . "' name='' placeholder=''>";
+                            $locationDisplay .= "<input type='text' class='edit-input' value='" . ($place['Name'] != 'NULL' ? htmlspecialchars($place['Name'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
                         $locationDisplay .= "</div>";
 
                         $locationDisplay .= "<div class='location-input-coordinates-container' style='min-height:25px;'>";
                             $locationDisplay .= "<label>Coordinates: </label>";
                             $locationDisplay .= "<span class='required-field'>*</span>";
-                            $locationDisplay .= "<input class='edit-input' type='text' value='" . htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') . ", "
-                                . htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') . "' name='' placeholder=''>";
+                            $locationDisplay .= "<input class='edit-input' type='text' value='" . ($place['Latitude'] != 'NULL' ? htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') : '') . ", "
+                                . ($place['Longitude'] != 'NULL' ? htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
                         $locationDisplay .= "</div>";
 
                         $locationDisplay .= "<div style='clear:both;'></div>";
@@ -277,7 +277,7 @@ function _TCT_mtr_transcription( $atts) {
                         $locationDisplay .= "<label>Wikidata Reference:";
                             $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
                         $locationDisplay .= "</label>";
-                        if($place['WikidataId'] != 'NULL' && $place['WikidataName'] != 'NULL') {
+                        if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != '' && $place['WikidataName'] != 'NULL' && $place['WikidataName'] != '') {
                             $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='" 
                                 . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . "; "
                                 . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
@@ -285,7 +285,6 @@ function _TCT_mtr_transcription( $atts) {
                             $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
                         }
                     $locationDisplay .= "</div>";
-
                     $locationDisplay .= "<div class='location-input-description-container' style='height:50px;'>";
                         $locationDisplay .= "<label>";
                             $locationDisplay .= "Description: ";
@@ -601,7 +600,7 @@ function _TCT_mtr_transcription( $atts) {
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . $person['LastName'] . "</span>";
+                                $enrichmentTab .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . ($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
                                 if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                                     $enrichmentTab .= " (" . $person['BirthDate'];
                                     if($person['BirthPlace'] != 'NULL') {
@@ -654,27 +653,27 @@ function _TCT_mtr_transcription( $atts) {
                             
                             $enrichmentTab .= "<div class='person-description-input'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
-                                                placeholder='&nbsp Add more info to this person...' value='" . $person['Description'] . "'>";
+                                                placeholder='&nbsp Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars($person['Description']) : '') . "'>";
                             $enrichmentTab .= "</div>";
     
                             $enrichmentTab .= "<div class='person-description-input'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp Add Wikidata ID to this person'
-                                                title='e.g. Wikidata Title ID' value='" . $person['Link'] . "'>";
+                                                title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars($person['Link']) : '') . "'>";
                             $enrichmentTab .= "</div>";
     
                             $enrichmentTab .= "<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-birthPlace-edit' class='input-response person-input-field person-re-edit'
-                                                value='" . $person['BirthPlace'] . "' placeholder='&nbsp Birth Location'>";
+                                                value='" . ($person['BirthPlace'] != 'NULL' ? htmlspecialchars($person['BirthPlace']) : '') . "' placeholder='&nbsp Birth Location'>";
                                 $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-birthDate-edit'
-                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . $person['BirthDate'] .
+                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['BirthDate'] != 'NULL' ? htmlspecialchars($person['BirthDate']) : '') .
                                                 "' placeholder='&nbsp Birth: dd/mm/yyyy'></span>";
                             $enrichmentTab .= "</div>";
     
                             $enrichmentTab .= "<div class='person-location-death-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-deathPlace-edit' class='input-response person-input-field person-re-edit'
-                                                value='" . $person['DeathPlace'] . "' placeholder='&nbsp Death Location'>";
+                                                value='" . ($person['DeathPlace'] != 'NULL' ? htmlspecialchars($person['DeathPlace']) : '') . "' placeholder='&nbsp Death Location'>";
                                 $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-deathDate-edit'
-                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . $person['Deathdate'] .
+                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['DeathDate'] != 'NULL' ? htmlspecialchars($person['DeathDate']) : '') .
                                                 "' placeholder='&nbsp Death: dd/mm/yyyy'></span>";
                             $enrichmentTab .= "</div>";
     
@@ -820,13 +819,13 @@ function _TCT_mtr_transcription( $atts) {
                                     $enrichmentTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars($descPHolder, ENT_QUOTES, 'UTF-8') . "</textarea>";
                                 $enrichmentTab .= "</div>";
                                 $enrichmentTab .= "<div class='form-buttons-right'>";
-                                    $enrichmentTab .= "<div class='form-btn-left'>" ;
+                                    $enrichmentTab .= "<div class='link-btn-right'>" ;
                                         $enrichmentTab .= "<button class='theme-color-background'
                                             onClick='editLink(" . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", " . get_current_user_id() . ")'>";
                                             $enrichmentTab .= "SAVE";
                                         $enrichmentTab .= "</button>";
                                     $enrichmentTab .= "</div>";
-                                    $enrichmentTab .= "<div class='from-btn-right'>";
+                                    $enrichmentTab .= "<div class='link-btn-left'>";
                                         $enrichmentTab .= "<button class='theme-color-background'
                                             onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'>";
                                             $enrichmentTab .= "CANCEL";
@@ -841,69 +840,7 @@ function _TCT_mtr_transcription( $atts) {
                         $enrichmentTab .= "</div>";
                     }
                 }
-                // $enrichmentTab .= '<ul>';
-                // foreach ($itemData['Properties'] as $property) {
-                //     if ($property['PropertyDescription'] != "NULL") {
-                //         $description = $property['PropertyDescription'];
-                //     } else {
-                //         $description = "";
-                //     }
-                //     if ($property['PropertyType'] == "Link") {
-                //         $enrichmentTab .= '<li id="link-'.$property['PropertyId'].'">';
-                //             $enrichmentTab .= '<div id="link-data-output-'.$property['PropertyId'].'" class="">';
-                //                 $enrichmentTab .= '<div id="link-data-output-display-'.$property['PropertyId'].'" class="link-data-output-content">';
-                //                     $enrichmentTab .= '<div class="item-data-output-element-header">';
-                //                         $enrichmentTab .= '<a href="'.$property['PropertyValue'].'" target="_blank">';
-                //                             $enrichmentTab .= $property['PropertyValue'];
-                //                         $enrichmentTab .= '</a>';
-                //                         $enrichmentTab .= '<i class="edit-item-data-icon fas fa-pencil theme-color-hover login-required"
-                //                                         onClick="openLinksourceEdit('.$property['PropertyId'].')"></i>';
-                //                         $enrichmentTab .= '<i class="edit-item-data-icon delete-item-datas fas fa-times theme-color-hover login-required"
-                //                                         onClick="deleteItemData(\'Properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'link\', '.get_current_user_id().')"></i>';
-                //                         $enrichmentTab .= '<div style="clear:both;"></div>';
-                //                     $enrichmentTab .= '</div>';
-                //                     $enrichmentTab .= '<div>';
-                //                         $enrichmentTab .= '<span>';
-                //                             $enrichmentTab .= 'Description: ';
-                //                             $enrichmentTab .= $description;
-                //                         $enrichmentTab .= '</span>';
-                //                     $enrichmentTab .= '</div>';
-                //                 $enrichmentTab .= '</div>';
-
-                //                 $enrichmentTab .= '<div class="link-data-edit-container" id="link-data-edit-'.$property['PropertyId'].'">';
-                //                 // $taggingTab .= '<div>';
-                //                 //     $taggingTab .= "<span>Link:</span><br/>";
-                //                 // $taggingTab .= '</div>';
-
-                //                     $enrichmentTab .= '<div id="link-'.$property['PropertyId'].'-url-input" class="link-url-input">';
-                //                         $enrichmentTab .= '<input type="url" value="'.htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8').'" placeholder="Enter URL here">';
-                //                     $enrichmentTab .= '</div>';
-
-                //                     $enrichmentTab .= '<div id="link-'.$property['PropertyId'].'-description-input" class="link-description-input">';
-                //                         // $taggingTab .= '<label>Additional description:</label><br/>';
-                //                         $enrichmentTab .= '<textarea rows= "3" type="text" placeholder="" name="">'.htmlspecialchars($description, ENT_QUOTES, 'UTF-8').'</textarea>';
-                //                     $enrichmentTab .= '</div>';
-                //                     $enrichmentTab .= "<div class='form-buttons-right'>";
-                //                         $enrichmentTab .= "<button class='theme-color-background edit-location-save'
-                //                                         onClick='editLink(".$property['PropertyId'].", ".$_GET['item'].", ".get_current_user_id().")'>";
-                //                             $enrichmentTab .= "SAVE";
-                //                         $enrichmentTab .= "</button>";
-
-                //                         $enrichmentTab .= "<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(".$property['PropertyId'].")'>";
-                //                             $enrichmentTab .= "CANCEL";
-                //                         $enrichmentTab .= "</button>";
-
-                //                         $enrichmentTab .= '<div id="item-link-'.$property['PropertyId'].'-spinner-container" class="spinner-container spinner-container-left">';
-                //                             $enrichmentTab .= '<div class="spinner"></div>';
-                //                         $enrichmentTab .= "</div>";
-                //                         $enrichmentTab .= '<div style="clear:both;"></div>';
-                //                     $enrichmentTab .= '</div>';
-                //                     $enrichmentTab .= '<div style="clear:both;"></div>';
-                //                 $enrichmentTab .= '</div>';
-                //             $enrichmentTab .= '</div>';
-                //         $enrichmentTab .= '</li>';
-                //     }
-                // }
+                
                 // $enrichmentTab .= '</ul>';
             $enrichmentTab .= '</div>';
             $enrichmentTab .= "<div id='save-all-tags'>";
@@ -921,7 +858,7 @@ function _TCT_mtr_transcription( $atts) {
                 $peopleDisplay .= "<div class='single-person'>";
                     $peopleDisplay .= "<i class='fas fa-user person-i' style='float:left;margin-right:5px;'></i>";
                     $peopleDisplay .= "<p class='person-data'>";
-                        $peopleDisplay .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . $person['LastName'] . "</span>";
+                        $peopleDisplay .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . ($person['LastName'] != 'NULL' ? $person['LastName'] : '' ). "</span>";
                         if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                             $peopleDisplay .= " (" . $person['BirthDate'];
                             if($person['BirthPlace'] != 'NULL') {
@@ -1959,7 +1896,7 @@ function _TCT_mtr_transcription( $atts) {
                     $content .= "</li>";
                     $content .= "<li>";
                         $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
-                                    onclick='switchItemTab(event, \"tagging-tab\");map.resize()'>";
+                                    onclick='switchItemTab(event, \"tagging-tab\");'>";
                             $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;position:relative;bottom:3px;'>";
                             $content .= "<p class='tab-h' style='position:relative;bottom:4px;'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
                             $content .= "<span><b> LOCATION</b></span></p>";

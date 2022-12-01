@@ -375,24 +375,49 @@ h6.enrich-headers {
     flex-direction: column;
     justify-content: space-between;
 }
+.link-single {
+    background-color: #fff;
+    padding-bottom: 5px;
+    font-weight: 400;
+    position: relative;
+    width: 91%;
+}
 .enrich-box {
     min-height: 65px;
 }
-.single-person, .link-single {
+.single-person {
     padding: 5px 0px;
     background: #fff;
     font-weight: 400;
     width: 91%;
     position: relative;
 }
+.people-container .single-person:first-of-type {
+    padding-top: 2px;
+}
 .person-data {
     margin: 0!important;
     border-bottom: 1px solid var(--bg-main-color);
     height: 27px;
+    padding-right: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.person-data:hover {
+    overflow: visible;
+    height: auto;
+    min-height: 27px;
+    white-space: normal;
 }
 .edit-del-person {
     position: absolute;
     top: 5px;
+    right: 20px;
+}
+.edit-del-link {
+    position: absolute;
+    top: 3px;
     right: 20px;
 }
 .person-i {
@@ -416,9 +441,21 @@ h6.enrich-headers {
 }
 .person-btn-left button {
     float: left;
+    border-radius: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-weight: 700;
+    font-size: 14px;
 }
 .person-btn-right button {
     float: right;
+    border-radius: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-weight: 700;
+    font-size: 14px;
 }
 .location-display-container .location-single {
     padding: 5px 0;
@@ -464,6 +501,7 @@ h6.enrich-headers {
     color: #000;
     background-color: var(--bg-main-color);
     padding: 5px 10px;
+    margin-top: 2px;
     margin-right: 5px;
     margin-bottom: 5px;
 }
@@ -475,6 +513,8 @@ h6.enrich-headers {
 }
 .date-top, .date-bottom {
     display: block;
+    position: relative;
+    bottom: 3px;
 }
 .date-top div {
     font-weight: 400;
@@ -637,6 +677,9 @@ p.mb-1 {
     float: right;
     position: relative;
     right: -94px;
+}
+.edit-location-cancel:active, .edit-location-save:active, .edit-location-cancel:focus, .edit-location-save:focus {
+    border: none!important;
 }
 .location-data-edit-container .edit-input {
     background-color: #fff!important;
@@ -1151,6 +1194,7 @@ p.mb-1 {
 #tagging-tab label {
     color: var(--main-color);
     font-family: var(--h-font-family);
+    font-weight: 500!important;
 }
 #tagging-tab {
     padding-left: 30px!important;
@@ -1815,6 +1859,8 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .form-buttons-right {
     margin-top: 12px;
+    margin-bottom: 10px;
+    position: relative;
 }
 .form-btn-left {
     display: inline-block;
@@ -1882,6 +1928,21 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 #full-v-metadata .single-meta, #full-v-metadata .mb1 {
     margin-bottom: 0px!important;
+}
+.link-btn-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.link-btn-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.link-btn-left button, .link-btn-right button {
+    border-radius: 0;
+    font-weight: 700;
+    font-size: 14px;
 }
 /* colored status on section headers */
 .completed {
