@@ -600,7 +600,7 @@ function _TCT_mtr_transcription( $atts) {
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . ($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
+                                $enrichmentTab .= "<span style='font-weight:400;'>" . htmlspecialchars($person['FirstName']) . " " . ($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
                                 if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                                     $enrichmentTab .= " (" . $person['BirthDate'];
                                     if($person['BirthPlace'] != 'NULL') {
@@ -646,9 +646,9 @@ function _TCT_mtr_transcription( $atts) {
                         $enrichmentTab .= "<div id='person-data-edit-". $person['PersonId'] . "' class='person-data-edit-container person-item-data-container'>";
                             $enrichmentTab .= "<div class='person-input-names-container'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-firstName-edit' class='input-response person-input-field person-re-edit'
-                                                placeholder='&nbsp First Name' value='" . $person['FirstName'] . "'>";
+                                                placeholder='&nbsp First Name' value='" . htmlspecialchars($person['FirstName']) . "'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
-                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? htmlspecialchars($person['LastName']) : '') . "'>";
+                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? $person['LastName'] : '') . "'>";
                             $enrichmentTab .= "</div>";
                             
                             $enrichmentTab .= "<div class='person-description-input'>";

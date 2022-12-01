@@ -1940,11 +1940,11 @@ function openLinksourceEdit(propertyId) {
     }
     if (jQuery('#link-data-edit-' + propertyId).css('display') == 'none') {
       jQuery('#link-data-edit-' + propertyId).css('display', 'block');
-      jQuery('#link-data-output-display-' + propertyId).css('display', 'none');
+      jQuery('#link-data-output-' + propertyId).css('display', 'none');
     }
     else {
       jQuery('#link-data-edit-' + propertyId).css('display', 'none');
-      jQuery('#link-data-output-display-' + propertyId).css('display', 'block');
+      jQuery('#link-data-output-' + propertyId).css('display', 'block');
     }
 }
 

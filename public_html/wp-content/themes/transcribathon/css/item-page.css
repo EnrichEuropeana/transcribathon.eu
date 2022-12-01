@@ -957,6 +957,7 @@ p.mb-1 {
 #description-language-selector {
     display: inline-flex;
     margin: 0 0 20px;
+    position: relative;
 }
 #description-update-button {
     margin-bottom: 8px;
@@ -1352,7 +1353,7 @@ p.mb-1 {
 }
 .item-data-input-headline {
     font-size: 1.1em;
-    font-weight: 500;
+    font-weight: 600;
     font-family: var(--h-font-family);
     margin: 1em 0;
 }
@@ -1492,8 +1493,8 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     margin: 15px 0 5px 0;
 }
 .link-data-edit-container .link-url-input input, .link-data-edit-container .link-description-input textarea {
-    background-color: #fff;
-    border: 1px solid var(--main-color);
+    background-color: var(--bg-main-color);
+    border: 1px solid #ccc;
 }
 #keyword-input {
     width: 100%!important;
@@ -2497,11 +2498,13 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 /* Panel Right(Default View) */
 .panel-right .language-item-select {
-    position: relative;
+    position: absolute;
     bottom: unset;
+    top: 42px;
     height: 136px;
     width: 208px;
     overflow-x: hidden;
+    z-index: 9;
 }
 .panel-right .selected-option {
     font-size: 13px;
