@@ -7,8 +7,8 @@ jQuery(window).load(function() {
 });
 
 function uninstallEventListeners() {
-    jQuery(".datepicker-input-field").datepicker("destroy");
-    tinymce.remove();
+    // jQuery(".datepicker-input-field").datepicker("destroy");
+    // tinymce.remove();
     if(map){
         map.resize();
     }
@@ -705,7 +705,10 @@ function switchItemPageView() {
     // console.log(document.location.pathname);
  
    }
-    installEventListeners();
+    //installEventListeners();
+    if(map) {
+        map.resize();
+    }
 }
 
 // Updates specified data over the API
@@ -714,7 +717,7 @@ function updateDataProperty(dataType, id, fieldName, value) {
     data = {
         };
     data[fieldName] = value;
-  
+    
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'POST',
@@ -750,78 +753,84 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
     updateDataProperty('items', itemId, 'DescriptionLanguage', descriptionLanguage);
 
     var description = jQuery('#item-page-description-text').val()
-
-    // Prepare data and send API requestI
-    data = {
-        Description: description
-    }
-    var dataString= JSON.stringify(data);
-
-    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-        'type': 'GET',
-        'url': TP_API_HOST + '/tp-api/items/' + itemId
-    },
-    function(response) {
-        // Check success and create confirmation message
-        var response = JSON.parse(response);
-        var descriptionCompletion = JSON.parse(response.content)["DescriptionStatusName"];
-        var oldDescription = JSON.parse(response.content)["Description"];
-
+    
+    // Check for html tags
+    if(isWhitelisted(description) == 0) {
+        jQuery('#item-description-spinner-container').css('display', 'none')
+        return null;
+    } else {
+        // Prepare data and send API requestI
+        data = {
+            Description: description
+        }
+        var dataString= JSON.stringify(data);
+    
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-            'type': 'POST',
-            'url': TP_API_HOST + '/tp-api/items/' + itemId,
-            'data': data
+            'type': 'GET',
+            'url': TP_API_HOST + '/tp-api/items/' + itemId
         },
-        // Check success and create confirmation message
         function(response) {
-
-            // Update description text and language out of full screen when saving new values
-            const descLangCont = document.querySelector('.description-language div');
-            var descLanguage = document.querySelector('#description-language-custom-selector').textContent;
-
-            if(descLanguage.includes('Language of Description: ')) {
-                descLanguage = descLanguage.replace('Language of Description: ', '');
-            } 
-            // Update description
-            document.querySelector('.current-description').textContent = description;
-            // Update Language
-            descLangCont.parentElement.style.display = 'block';
-
-            if(descLangCont.querySelector('.language-single')) {
-              descLangCont.querySelector('.language-single').textContent = descLanguage;
-            } else {
-              var newDescLang = document.createElement('div');
-              newDescLang.textContent = descLanguage;
-              newDescLang.classList.add('language-single');
-              descLangCont.appendChild(newDescLang);
-            }
-            amount = 1;
-            //
-            scoreData = {
-                ItemId: itemId,
-                UserId: userId,
-                ScoreType: "Description",
-                Amount: amount
-            }
+            // Check success and create confirmation message
+            var response = JSON.parse(response);
+            var descriptionCompletion = JSON.parse(response.content)["DescriptionStatusName"];
+            var oldDescription = JSON.parse(response.content)["Description"];
+    
             jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                 'type': 'POST',
-                'url': TP_API_HOST + '/tp-api/scores',
-                'data': scoreData
+                'url': TP_API_HOST + '/tp-api/items/' + itemId,
+                'data': data
             },
             // Check success and create confirmation message
             function(response) {
-                console.log(response);
-            })
-            var response = JSON.parse(response);
-            if (response.code == "200") {
-                if (descriptionCompletion == "Not Started") {
-                    changeStatus(itemId, "Not Started", "Edit", "DescriptionStatusId", 2, editStatusColor, statusCount)
+    
+                // Update description text and language out of full screen when saving new values
+                const descLangCont = document.querySelector('.description-language div');
+                var descLanguage = document.querySelector('#description-language-custom-selector').textContent;
+    
+                if(descLanguage.includes('Language of Description: ')) {
+                    descLanguage = descLanguage.replace('Language of Description: ', '');
+                } 
+                // Update description
+                document.querySelector('.current-description').textContent = description;
+                // Update Language
+                descLangCont.parentElement.style.display = 'block';
+    
+                if(descLangCont.querySelector('.language-single')) {
+                  descLangCont.querySelector('.language-single').textContent = descLanguage;
+                } else {
+                  var newDescLang = document.createElement('div');
+                  newDescLang.textContent = descLanguage;
+                  newDescLang.classList.add('language-single');
+                  descLangCont.appendChild(newDescLang);
                 }
-                jQuery('#description-update-button').css('display', 'none')
-            }
-            jQuery('#item-description-spinner-container').css('display', 'none')
+                amount = 1;
+                //
+                scoreData = {
+                    ItemId: itemId,
+                    UserId: userId,
+                    ScoreType: "Description",
+                    Amount: amount
+                }
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'url': TP_API_HOST + '/tp-api/scores',
+                    'data': scoreData
+                },
+                // Check success and create confirmation message
+                function(response) {
+                    console.log(response);
+                })
+                var response = JSON.parse(response);
+                if (response.code == "200") {
+                    if (descriptionCompletion == "Not Started") {
+                        changeStatus(itemId, "Not Started", "Edit", "DescriptionStatusId", 2, editStatusColor, statusCount)
+                    }
+                    jQuery('#description-update-button').css('display', 'none')
+                }
+                jQuery('#item-description-spinner-container').css('display', 'none')
+            });
         });
-    });
+    }
 }
 
 // Updates the item transcription
@@ -2310,6 +2319,8 @@ var ready = (callback) => {
 
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
+
+   
     /////////// Paragraph Collapse Toggler, on Story Page and Item Page - story/item page only
     const paraToggler = document.querySelector('.descMore');
     if(paraToggler) {
@@ -2732,6 +2743,6 @@ ready(() => {
           }
         })
     }
-    
+    installEventListeners();
  
 });

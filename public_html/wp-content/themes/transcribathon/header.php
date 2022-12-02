@@ -22,6 +22,8 @@
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/wp-content/themes/transcribathon/images/apple-touch-icon-72x72-precomposed.png" />
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/wp-content/themes/transcribathon/images/apple-touch-icon-114x114-precomposed.png" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/wp-content/themes/transcribathon/images/apple-touch-icon-144x144-precomposed.png" />
+	<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel='preload' href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" as='font' onload="this.rel='stylesheet'">
 	<script>const TP_API_HOST = '<?php echo TP_API_HOST; ?>';</script>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163155192-1"></script>

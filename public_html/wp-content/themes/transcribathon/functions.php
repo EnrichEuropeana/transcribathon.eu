@@ -139,6 +139,7 @@ function get_europeana_url() {
 function get_text_from_pagexml($xmlString, $break = '') {
     $text = '';
     $xmlString = str_replace('xmlns=', 'ns=', $xmlString);
+    if($xmlString) {
     $xml = new SimpleXMLElement($xmlString);
     $textRegions = $xml->xpath('//Page/TextRegion');
 
@@ -151,6 +152,7 @@ function get_text_from_pagexml($xmlString, $break = '') {
         $text .= $break;
     }
     return $text;
+    }
 }
 
 function my_login_logo_one() {

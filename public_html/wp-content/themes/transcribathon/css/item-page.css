@@ -1,7 +1,7 @@
-/* Dosis and Open Sans */
+/* Dosis and Open Sans
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
-
+ */
 section {
     padding: 0 100px;
 }
@@ -47,7 +47,7 @@ body {
 }
 .next-slide:focus, .prev-slide:focus, .next-slide:active, .prev-slide:active {
     border: none;
-    background: var(--bg-main-color);
+    background: transparent;
     -webkit-box-shadow: none;
     box-shadow: none;
 }

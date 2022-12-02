@@ -1976,7 +1976,7 @@ function _TCT_mtr_transcription( $atts) {
                 $content .= "</div>";
                 // Help tab
                 $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";
-                    $content .= do_shortcode('[tutorial_item_slider]');
+                    //$content .= do_shortcode('[tutorial_item_slider]');
                 $content .= "</div>";
                 // Automatic enrichment tab
                 $content .= "<div id='autoEnrichment-tab' class='tabcontent' style='display:none;'>";
