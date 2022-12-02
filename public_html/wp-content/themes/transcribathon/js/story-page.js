@@ -58,7 +58,7 @@ ready(() => {
     const sliderContainer = document.querySelector('#inner-slider');
     const sliderImages = JSON.parse(document.querySelector('#slider-images').innerHTML);
     const sliderWidth = sliderContainer.offsetWidth;
-    const numOfStickers = Math.floor(sliderWidth/200);
+    let numOfStickers = Math.floor(sliderWidth/200);
     const storyId = document.querySelector('#story-id').textContent;
 
     const prevBtn = document.querySelector('.prev-slide');
@@ -67,6 +67,7 @@ ready(() => {
     if(sliderImages.length < numOfStickers) {
         prevBtn.style.display = 'none';
         nextBtn.style.display = 'none';
+        numOfStickers = sliderImages.length;
     }
 
     let startSlide = 0;

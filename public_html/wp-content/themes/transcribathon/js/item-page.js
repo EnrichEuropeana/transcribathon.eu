@@ -892,6 +892,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 data['Text'] = "";
                 data['TextNoTags'] = "";
             }
+            const curTrToUpdate = data['Text'];
           
             var dataString= JSON.stringify(data);
           
@@ -930,19 +931,22 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 var response = JSON.parse(response);
                 const selTrLangs = document.querySelectorAll('#transcription-selected-languages ul li');
                 const selLanCont = document.querySelector('.transcription-language div');
-                const oldLanguages = selLanCont.querySelectorAll('.language-single');
+                if(selLanCont) {
+                    const oldLanguages = selLanCont.querySelectorAll('.language-single');
+                }
     
                 if (response.code == "200") {
+                    console.log(data);
                     if (itemCompletion == "Not Started") {
                         changeStatus(itemId, "Not Started", "Edit", "CompletionStatusId", 2, editStatusColor, statusCount)
                     }
                     if (transcriptionCompletion == "Not Started") {
                         changeStatus(itemId, "Not Started", "Edit", "TranscriptionStatusId", 2, editStatusColor, statusCount)
                     }
-                    document.querySelector('.current-transcription').innerHTML = data['Text'];
+                    document.querySelector('.current-transcription').innerHTML = curTrToUpdate;
                     // Remove old languages
-                    for(let singleLang of oldLanguages) {
-                        selLanCont.removeChild(singleLang);
+                    if(selLanCont) {
+                        selLanCont.innerHTML = '';
                     }
     
                     // Add new Languages
@@ -959,7 +963,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                         document.querySelector('.current-transcription').style.display = 'block';
                         document.querySelector('.current-transcription').style.paddingLeft = '24px';
                     }
-                    document.querySelector('#current-tr-view').innerHTML = data['Text'];
+                    document.querySelector('#current-tr-view').innerHTML = curTrToUpdate;
                 }
                 jQuery('#item-transcription-spinner-container').css('display', 'none')
 
@@ -2455,7 +2459,7 @@ ready(() => {
     const sliderContainer = document.querySelector('#inner-slider');
     const sliderImages = JSON.parse(document.querySelector('#slider-images').innerHTML);
     const sliderWidth = sliderContainer.offsetWidth;
-    const numOfStickers = Math.floor(sliderWidth/200);
+    let numOfStickers = Math.floor(sliderWidth/200);
     const storyId = document.querySelector('#story-id').textContent;
     const currentItm = parseInt(document.querySelector('#current-itm').textContent);
 
@@ -2465,6 +2469,7 @@ ready(() => {
     if(sliderImages.length < numOfStickers) {
         prevBtn.style.display = 'none';
         nextBtn.style.display = 'none';
+        numOfStickers = sliderImages.length;
     }
 
     let startSlide = 0;

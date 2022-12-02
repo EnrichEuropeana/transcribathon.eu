@@ -1624,6 +1624,7 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "<div class='current-transcription' style='display:none;'></div>";
                         $content .= "<div class='transcription-language' style='display:none;'>";
                             $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
+                            $content .= "<div style='padding-left:24px;'></div>";
                         $content .= "</div>";
                     } else {
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
@@ -1661,6 +1662,7 @@ function _TCT_mtr_transcription( $atts) {
                             $content .= "<div class='current-transcription' style='display:none;'></div>";
                             $content .= "<div class='transcription-language' style='display:none;'>";
                                 $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
+                                $content .= "<div style='padding-left: 24px;'></div>";
                             $content .= "</div>";
                         }
                     }
