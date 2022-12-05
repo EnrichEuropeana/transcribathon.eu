@@ -29,11 +29,12 @@ function _TCT_get_document_data( $atts ) {
     }
     $randomItem = rand(0,(count($storyData['Items'])-1));
     $imgDescription = json_decode($storyData['Items'][$randomItem]['ImageLink'], true);
-    if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
-        $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    } else {
-        $imgDescriptionLink = str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    }
+    $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => 'full', 'region' => 'full'));
+    // if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
+    //     $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
+    // } else {
+    //     $imgDescriptionLink = str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
+    // }
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
     /////////////////////////
@@ -174,16 +175,14 @@ function _TCT_get_document_data( $atts ) {
                         }
                         unset($storyKeyWords);
                         $content .= "</div>";
-                        $content .= "<div class='tr-comparison'>";
-                            $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?item=".$storyData['Items'][$randomItem]['ItemId']."'>Compare Manual and HTR transcriptions</a>";
-                        $content .= "</div>";
+
                     $content .= "</div>"; //second column closing
                 $content .= "</div>"; //row closing
             $content .= "</section>";
             $content .= "<div style='clear:both;'></div>";
 
             // Htr Import Link
-            $content .= '<div style="width:49%;float:left;"><a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;color:#0a72cc;cursor:pointer;margin-bottom:10px;margin-top:10px;" type="button" href="' . get_main_url() . '/import-htr-transcription/?storyId=' . $_GET['story']  . '">';
+            $content .= '<div style="width:49%;float:left;"><a class="dl-enrichments" style="display:flex;flex-direction:row;justify-content:space-evenly;color:#0a72cc;cursor:pointer;margin-top:10px!important;" type="button" href="' . get_main_url() . '/import-htr-transcription/?storyId=' . $_GET['story']  . '">';
                 $content .= "<span><h5 style='color:#0a72cc;'>Run Transkribus automatic text recognition (HTR) </h5></span>";
                 $content .= "<span><i style='position:relative;top:50%;transform:translateY(-50%);font-size:20px;' class='fas fa-desktop' aria-hidden='true'></i></span>";
             $content .= "</a></div>";
