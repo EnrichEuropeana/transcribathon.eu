@@ -1,7 +1,4 @@
-/* Dosis and Open Sans
-@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap');
- */
+
 section {
     padding: 0 100px;
 }
@@ -1425,10 +1422,12 @@ button.ui-datepicker-trigger {
 }
 .person-description-input {
     margin-bottom: 10px;
+    border-radius: 0;
 }
 .person-description-input input {
     width: 100%!important;
     background-color: var(--bg-main-color);
+    border-radius: 0;
 }
 #save-personinfo-button {
     float: unset!important;
@@ -1456,6 +1455,12 @@ button.ui-datepicker-trigger {
 .person-location-birth-inputs {
     padding-bottom: 0!important;
 }
+.person-data-edit-container input:focus-visible, .person-data-edit-container textarea:focus-visible {
+    background-color: #fff;
+    outline: var(--main-color);
+    border-color: var(--main-color);
+    border-radius: 0;
+}
 input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-input, #person-deathDate-input,
 .link-description-input textarea, .link-url-input input  {
     width: 49%;
@@ -1471,10 +1476,11 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 #person-firstName-input:focus-visible, #person-lastName-input:focus-visible, #keyword-input:focus-visible, .link-url-input input:focus-visible,
 #person-description-input-field:focus-visible, #person-birthPlace-input:focus-visible, .link-description-input textarea:focus-visible,
 #person-birthDate-input:focus-visible, #person-deathPlace-input:focus-visible, #person-deathDate-input:focus-visible,
-#item-page-description-text:focus-visible {
+#item-page-description-text:focus-visible, #person-wiki-input-field:focus-visible {
     border: 1px solid var(--main-color);
     background-color: #fff;
     outline: none;
+    border-radius: 0!important;
 }
 .person-dots {
     white-space: nowrap;
@@ -2738,6 +2744,9 @@ div.tox.tox-tinymce {
     margin-right: 5px;
     color: var(--main-color);
     font-size: 14px;
+}
+.compare-tr {
+    display: inline-block;
 }
 /* Item Page compare transcriptions btn */
 /* .tr-comp-btn {
