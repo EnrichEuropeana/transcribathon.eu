@@ -7,8 +7,8 @@ jQuery(window).load(function() {
 });
 
 function uninstallEventListeners() {
-    jQuery(".datepicker-input-field").datepicker("destroy");
-    tinymce.remove();
+    // jQuery(".datepicker-input-field").datepicker("destroy");
+    // tinymce.remove();
     if(map){
         map.resize();
     }
@@ -162,7 +162,13 @@ function installEventListeners() {
             for (i = 0; i < s.length; i++) {
                 if (s.options[i].innerHTML == this.innerHTML) {
                     s.selectedIndex = i;
-                    //h.innerHTML = this.innerHTML;
+                    if(h.getAttribute('id') == 'description-language-custom-selector') {
+                        h.innerHTML = this.innerHTML;
+                        if(!document.querySelector('#language-sel-placeholder')) {
+                            h.insertAdjacentHTML('afterbegin', "<span id='language-sel-placeholder' class='language-select-selected'>Language of Description: </span><span class='desc-margin'>&nbsp</span>");
+                        }
+                        
+                    }
                     y = this.parentNode.getElementsByClassName("same-as-selected");
                     for (k = 0; k < y.length; k++) {
                         y[k].removeAttribute("class");
@@ -393,6 +399,9 @@ function switchItemTab(event, tabName) {
     document.getElementById(tabName).style.display = "block";
     if(event.currentTarget) {
       event.currentTarget.className += " active";
+    }
+    if(map) {
+        map.resize();
     }
     
 }
@@ -659,7 +668,7 @@ function switchItemPageView() {
           urlParameter.append('fs', true);
       }
       let newUrl = '?' + urlParameter.toString()
-      console.log(urlParameter.toString());
+
       window.history.replaceState(null, null, newUrl);
       document.querySelector('#full-width').click();
  
@@ -670,8 +679,8 @@ function switchItemPageView() {
      const imgViewer = document.querySelector('#openseadragon');
      const nSContainer = document.querySelector('#full-view-l'); // out of full screen
      // Move viewer
-     imgViewer.style.height = '600px';
-     nSContainer.appendChild(imgViewer);
+     imgViewer.style.height = '560px';
+     nSContainer.prepend(imgViewer);
      //switch to full view
      jQuery('.site-footer').css('display', 'block')
      jQuery('.item-page-slider').css('visibility', 'unset')
@@ -692,12 +701,14 @@ function switchItemPageView() {
     const urlParameter = new URLSearchParams(urlLocation.search);
     urlParameter.delete('fs');
     let newUrl = '?' + urlParameter.toString()
-    console.log(urlParameter.toString());
     window.history.replaceState(null, null, newUrl);
     // console.log(document.location.pathname);
  
    }
-    installEventListeners();
+    //installEventListeners();
+    if(map) {
+        map.resize();
+    }
 }
 
 // Updates specified data over the API
@@ -706,7 +717,7 @@ function updateDataProperty(dataType, id, fieldName, value) {
     data = {
         };
     data[fieldName] = value;
-  
+    
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'POST',
@@ -742,72 +753,84 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
     updateDataProperty('items', itemId, 'DescriptionLanguage', descriptionLanguage);
 
     var description = jQuery('#item-page-description-text').val()
-
-    // Prepare data and send API requestI
-    data = {
-        Description: description
-    }
-    var dataString= JSON.stringify(data);
-
-    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-        'type': 'GET',
-        'url': TP_API_HOST + '/tp-api/items/' + itemId
-    },
-    function(response) {
-        // Check success and create confirmation message
-        var response = JSON.parse(response);
-        var descriptionCompletion = JSON.parse(response.content)["DescriptionStatusName"];
-        var oldDescription = JSON.parse(response.content)["Description"];
-
+    
+    // Check for html tags
+    if(isWhitelisted(description) == 0) {
+        jQuery('#item-description-spinner-container').css('display', 'none')
+        return null;
+    } else {
+        // Prepare data and send API requestI
+        data = {
+            Description: description
+        }
+        var dataString= JSON.stringify(data);
+    
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-            'type': 'POST',
-            'url': TP_API_HOST + '/tp-api/items/' + itemId,
-            'data': data
+            'type': 'GET',
+            'url': TP_API_HOST + '/tp-api/items/' + itemId
         },
-        // Check success and create confirmation message
         function(response) {
-
-            // Update description text and language out of full screen when saving new values
-            const descLangCont = document.querySelector('.description-language div');
-            var descLanguage = document.querySelector('#description-language-custom-selector').textContent;
-            // Update description
-            document.querySelector('.current-description').textContent = description;
-            // Update Language
-            if(descLangCont.querySelector('.language-single')) {
-              descLangCont.querySelector('.language-single').textContent = descLanguage;
-            } else {
-              var newDescLang = document.createElement('div');
-              newDescLang.textContent = descLanguage;
-              newDescLang.classList.add('language-single');
-              descLangCont.appendChild(newDescLang);
-            }
-            amount = 1;
-            //
-            scoreData = {
-                ItemId: itemId,
-                UserId: userId,
-                ScoreType: "Description",
-                Amount: amount
-            }
+            // Check success and create confirmation message
+            var response = JSON.parse(response);
+            var descriptionCompletion = JSON.parse(response.content)["DescriptionStatusName"];
+            var oldDescription = JSON.parse(response.content)["Description"];
+    
             jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                 'type': 'POST',
-                'url': TP_API_HOST + '/tp-api/scores',
-                'data': scoreData
+                'url': TP_API_HOST + '/tp-api/items/' + itemId,
+                'data': data
             },
             // Check success and create confirmation message
             function(response) {
-                console.log(response);
-            })
-            var response = JSON.parse(response);
-            if (response.code == "200") {
-                if (descriptionCompletion == "Not Started") {
-                    changeStatus(itemId, "Not Started", "Edit", "DescriptionStatusId", 2, editStatusColor, statusCount)
+    
+                // Update description text and language out of full screen when saving new values
+                const descLangCont = document.querySelector('.description-language div');
+                var descLanguage = document.querySelector('#description-language-custom-selector').textContent;
+    
+                if(descLanguage.includes('Language of Description: ')) {
+                    descLanguage = descLanguage.replace('Language of Description: ', '');
+                } 
+                // Update description
+                document.querySelector('.current-description').textContent = description;
+                // Update Language
+                descLangCont.parentElement.style.display = 'block';
+    
+                if(descLangCont.querySelector('.language-single')) {
+                  descLangCont.querySelector('.language-single').textContent = descLanguage;
+                } else {
+                  var newDescLang = document.createElement('div');
+                  newDescLang.textContent = descLanguage;
+                  newDescLang.classList.add('language-single');
+                  descLangCont.appendChild(newDescLang);
                 }
-                jQuery('#description-update-button').css('display', 'none')
-            }
-            jQuery('#item-description-spinner-container').css('display', 'none')
+                amount = 1;
+                //
+                scoreData = {
+                    ItemId: itemId,
+                    UserId: userId,
+                    ScoreType: "Description",
+                    Amount: amount
+                }
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'url': TP_API_HOST + '/tp-api/scores',
+                    'data': scoreData
+                },
+                // Check success and create confirmation message
+                function(response) {
+                    console.log(response);
+                })
+                var response = JSON.parse(response);
+                if (response.code == "200") {
+                    if (descriptionCompletion == "Not Started") {
+                        changeStatus(itemId, "Not Started", "Edit", "DescriptionStatusId", 2, editStatusColor, statusCount)
+                    }
+                    jQuery('#description-update-button').css('display', 'none')
+                }
+                jQuery('#item-description-spinner-container').css('display', 'none')
+            });
         });
-    });
+    }
 }
 
 // Updates the item transcription
@@ -878,6 +901,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 data['Text'] = "";
                 data['TextNoTags'] = "";
             }
+            const curTrToUpdate = data['Text'];
           
             var dataString= JSON.stringify(data);
           
@@ -916,19 +940,22 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 var response = JSON.parse(response);
                 const selTrLangs = document.querySelectorAll('#transcription-selected-languages ul li');
                 const selLanCont = document.querySelector('.transcription-language div');
-                const oldLanguages = selLanCont.querySelectorAll('.language-single');
+                if(selLanCont) {
+                    const oldLanguages = selLanCont.querySelectorAll('.language-single');
+                }
     
                 if (response.code == "200") {
+                    console.log(data);
                     if (itemCompletion == "Not Started") {
                         changeStatus(itemId, "Not Started", "Edit", "CompletionStatusId", 2, editStatusColor, statusCount)
                     }
                     if (transcriptionCompletion == "Not Started") {
                         changeStatus(itemId, "Not Started", "Edit", "TranscriptionStatusId", 2, editStatusColor, statusCount)
                     }
-                    document.querySelector('.current-transcription').innerHTML = data['Text'];
+                    document.querySelector('.current-transcription').innerHTML = curTrToUpdate;
                     // Remove old languages
-                    for(let singleLang of oldLanguages) {
-                        selLanCont.removeChild(singleLang);
+                    if(selLanCont) {
+                        selLanCont.innerHTML = '';
                     }
     
                     // Add new Languages
@@ -945,7 +972,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                         document.querySelector('.current-transcription').style.display = 'block';
                         document.querySelector('.current-transcription').style.paddingLeft = '24px';
                     }
-                    document.querySelector('#current-tr-view').innerHTML = data['Text'];
+                    document.querySelector('#current-tr-view').innerHTML = curTrToUpdate;
                 }
                 jQuery('#item-transcription-spinner-container').css('display', 'none')
 
@@ -1141,6 +1168,9 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
         },
         // Check success and create confirmation message
         function(response) {
+            if(document.querySelector('#location-input-section').style.display == 'block') {
+                document.querySelector('#location-input-section').style.display = 'none';
+            }
             scoreData = {
                 ItemId: itemId,
                 UserId: userId,
@@ -1225,6 +1255,8 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
             // Update date 'view' when changing date in editor
             document.querySelector('.date-bottom .start-date').textContent = startDate.join('/');
             document.querySelector('.date-bottom .end-date').textContent = endDate.join('/');
+            document.querySelector('.date-bottom').style.display = 'block';
+            document.querySelector('.date-top').style.display = 'block';
 
             if (startDate != "" && startDate != oldStartDate) {
                 jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
@@ -1543,12 +1575,16 @@ function loadPlaceData(itemId, userId) {
                             `</div>` +
                             // Buttons
                             `<div class='form-buttons-right'>` +
-                                `<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(${location['PlaceId']})'>` +
-                                    `CANCEL` +
-                                `</button>` +
-                                `<button class='theme-color-background edit-location-save' onClick='editItemLocation(${location['PlaceId']}, ${itemId}, ${userId})'>` +
-                                    `SAVE` +
-                                `</button>` +
+                                `<div class='form-btn-left'>` +
+                                    `<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(${location['PlaceId']})'>` +
+                                        `CANCEL` +
+                                    `</button>` +
+                                `</div>` +
+                                `<div class='form-btn-right'>` +
+                                    `<button class='theme-color-background edit-location-save' onClick='editItemLocation(${location['PlaceId']}, ${itemId}, ${userId})'>` +
+                                        `SAVE` +
+                                    `</button>` +
+                                `</div>` +
                                 // Spinner 
                                 `<div id='item-location-${location['PlaceId']}-spinner-container' class='spinner-container spinner-container-right'>` +
                                     `<div class='spinner'></div>` +
@@ -1614,7 +1650,6 @@ function loadPersonData(itemId, userId) {
             personViewCont.innerHTML = '';
   
             for(let person of content) {
-                console.log(person);
                 personOutCont.innerHTML += 
                     `<div id='person-${person['PersonId']}'>` +
                         `<div class='single-person'>` +
@@ -1688,12 +1723,16 @@ function loadPersonData(itemId, userId) {
                             `</div>` + 
 
                             `<div class='form-buttons-right'>` +
-                                `<button class='theme-color-background edit-location-cancel' onClick='openPersonEdit(${person['PersonId']})'>` +
-                                    `CANCEL` +
-                                `</button>` +
-                                `<button class='theme-color-background edit-location-save' onClick='editPerson(${person['PersonId']}, ${itemId}, ${userId})'>` +
-                                    `SAVE` +
-                                `</button>` +
+                                `<div class='person-btn-left'>` +
+                                    `<button class='theme-color-background prsn-edit-left' onClick='openPersonEdit(${person['PersonId']})'>` +
+                                        `CANCEL` +
+                                    `</button>` +
+                                `</div>` +
+                                `<div class='person-btn-right'>` +
+                                    `<button class='theme-color-background prsn-edit-right' onClick='editPerson(${person['PersonId']}, ${itemId}, ${userId})'>` +
+                                        `SAVE` +
+                                    `</button>` +
+                                `</div>` +
                                 `<div id='item-person-${person['PersonId']}-spinner-container' class='spinner-container spinner-container-left'>` +
                                     `<div class='spinner'></div>` +
                                 `</div>` +
@@ -1779,7 +1818,7 @@ function loadLinkData(itemId, userId) {
             const extLinkView = document.querySelector('.links-container div');
             var content = JSON.parse(response.content);
             let propDesc = null;
-            console.log(content['Properties']);
+
             extLinkCont.innerHTML = '';
             extLinkView.innerHTML = '';
             for (let property of content['Properties']) {
@@ -1809,12 +1848,16 @@ function loadLinkData(itemId, userId) {
                                     `<textarea rows='3' type='text' placeholder='' name=''>${propDesc ? propDesc : ''}</textarea>` +
                                 `</div>` +
                                 `<div class='form-buttons-right'>` +
-                                    `<button class='theme-color-background edit-location-cancel' onClick='editLink(${property['PropertyId']}, ${itemId}, ${userId})'>` +
-                                        `SAVE` +
-                                    `</button>` +
-                                    `<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(${property['PropertyId']})'>` +
-                                        `CANCEL` +
-                                    `</button>` +
+                                    `<div class='form-btn-left'>` +
+                                        `<button class='theme-color-background' onClick='editLink(${property['PropertyId']}, ${itemId}, ${userId})'>` +
+                                            `SAVE` +
+                                        `</button>` +
+                                    `</div>` +
+                                    `<div class='form-btn-right'>` +
+                                        `<button class='theme-color-background' onClick='openLinksourceEdit(${property['PropertyId']})'>` +
+                                            `CANCEL` +
+                                        `</button>` +
+                                    `</div>` +
                                     `<div id='item-link-${property['PropertyId']}-spinner-container' class='spinner-container spinner-container-left'>` +
                                         `<div class='spinner'></div>` +
                                     `</div>` +
@@ -1910,11 +1953,11 @@ function openLinksourceEdit(propertyId) {
     }
     if (jQuery('#link-data-edit-' + propertyId).css('display') == 'none') {
       jQuery('#link-data-edit-' + propertyId).css('display', 'block');
-      jQuery('#link-data-output-display-' + propertyId).css('display', 'none');
+      jQuery('#link-data-output-' + propertyId).css('display', 'none');
     }
     else {
       jQuery('#link-data-edit-' + propertyId).css('display', 'none');
-      jQuery('#link-data-output-display-' + propertyId).css('display', 'block');
+      jQuery('#link-data-output-' + propertyId).css('display', 'block');
     }
 }
 
@@ -2215,7 +2258,6 @@ function initializeMap() {
       });
   
       geocoder.on('result', function(res) {
-        jQuery('#location-input-section').addClass('show');
         jQuery('#location-input-geonames-search-container > input').val(res.result['text_en-EN'] + '; ' + res.result.properties.wikidata);
         var el = document.createElement('div');
         el.className = 'marker';
@@ -2277,6 +2319,8 @@ var ready = (callback) => {
 
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
+
+   
     /////////// Paragraph Collapse Toggler, on Story Page and Item Page - story/item page only
     const paraToggler = document.querySelector('.descMore');
     if(paraToggler) {
@@ -2422,153 +2466,163 @@ ready(() => {
       x[i].appendChild(b);
     } 
     // Start of Image slider functions
-    // New Js for Image slider
-    const imgSliderCheck = document.querySelector('#img-slider');
-    if(imgSliderCheck) {
-        // function to show/hide images
-        function showImages(start, end, images) {
-            for(let img of images) {
-                if(img.getAttribute('data-value') < start || img.getAttribute('data-value') > end) {
-                    img.style.display = 'none';
-                } else {
-                    img.style.display = 'inline-block';
-                }
-            }
-        }
-        // Only item page(start slider with the item on the page)
-        const currentItem = document.querySelector('#slide-start');
-        //
-        const imgStickers = document.querySelectorAll('.slide-sticker');
-        const windowWidth = document.querySelector('#img-slider').clientWidth;
-        let sliderStart = 1; // First Image to the left
-        let sliderEnd = 0; // Last Image to the right
-        const nextSet = document.querySelector('.next-slide');
-        const prevSet = document.querySelector('.prev-slide');
-        const leftSpanNumb = document.querySelector('#left-num');
-        const rightSpanNumb = document.querySelector('#right-num');
-        let currentDot = 1;
-        let step = 0; // number of images on screen
-        if(windowWidth > 1200) {
-            step = 9;
-        } else if(windowWidth > 800) {
-            step = 5;
-        } else {
-            step = 3;
-        }
+    /// Test slider
+    const sliderContainer = document.querySelector('#inner-slider');
+    const sliderImages = JSON.parse(document.querySelector('#slider-images').innerHTML);
+    const sliderWidth = sliderContainer.offsetWidth;
+    let numOfStickers = Math.floor(sliderWidth/200);
+    const storyId = document.querySelector('#story-id').textContent;
+    const currentItm = parseInt(document.querySelector('#current-itm').textContent);
 
-        sliderEnd = step;
+    const prevBtn = document.querySelector('.prev-slide');
+    const nextBtn = document.querySelector('.next-slide');
 
-        if(imgStickers.length <= step){
-            prevSet.style.display = 'none';
-            nextSet.style.display = 'none';
-        }
-        leftSpanNumb.textContent = sliderStart;
-        rightSpanNumb.textContent = sliderEnd;
-        // check if there are more images than it fits on the screen
-        if(nextSet.style.display != 'none') {
-            showImages(sliderStart, sliderEnd, imgStickers);
-        }
-        // Slider dots
-        const dotContainer = document.querySelector('#dot-indicators');
-        const numberDots = Math.ceil(imgStickers.length / step);
-        for(let i = 0; i < numberDots; i++) {
-            const sliderDot = document.createElement('div');
-            sliderDot.classList.add('slider-dot');
-            sliderDot.setAttribute('data-value', (i+1));
-            dotContainer.appendChild(sliderDot);
-        }
-
-        const sliderDots = document.querySelectorAll('.slider-dot');
-        
-        for(let dot of sliderDots) {
-            dot.addEventListener('click', function() {
-                currentDot = parseInt(dot.getAttribute('data-value'));
-                dot.classList.add('current');
-                if(dot.getAttribute('data-value') * step > imgStickers.length) {
-                    sliderStart = (imgStickers.length - step) + 1;
-                    sliderEnd = imgStickers.length;
-                } else {
-                    sliderEnd = parseInt(dot.getAttribute('data-value')) * step;
-                    sliderStart = (sliderEnd - step) + 1;
-                }
-                showImages(sliderStart, sliderEnd, imgStickers);
-                leftSpanNumb.textContent = sliderStart;
-                rightSpanNumb.textContent = sliderEnd;
-                for(let dot of sliderDots) {
-                    if(dot.getAttribute('data-value') < currentDot || dot.getAttribute('data-value') > currentDot) {
-                        if(dot.classList.contains('current')){
-                            dot.classList.remove('current');
-                        }
-                    }
-                }
-            })
-        }
-        if(currentItem) {
-          let currentPosition = Math.floor(parseInt(currentItem.textContent) / step);
-          for(let dot of sliderDots) {
-            if(currentPosition + 1 === parseInt(dot.getAttribute('Data-value'))){
-              dot.click();
-            }
-          }
-        }
-        nextSet.addEventListener('click', function() {
-            currentDot += 1;
-            if(currentDot > numberDots ) {
-                currentDot = 1;
-            }
-            if(rightSpanNumb.textContent == imgStickers.length) {
-                sliderStart = 1;
-                sliderEnd = step;
-            } else if(sliderEnd + step <= imgStickers.length) {
-                sliderStart = sliderStart + step;
-                sliderEnd = sliderEnd + step;
-            } else {
-                sliderStart = (imgStickers.length - step) + 1;
-                sliderEnd = imgStickers.length;
-            }
-            showImages(sliderStart, sliderEnd, imgStickers);
-            leftSpanNumb.textContent = sliderStart;
-            rightSpanNumb.textContent = sliderEnd;
-            for(let dot of sliderDots) {
-                if(parseInt(dot.getAttribute('data-value')) < currentDot || parseInt(dot.getAttribute('data-value')) > currentDot) {
-                    if(dot.classList.contains('current')){
-                        dot.classList.remove('current');
-                    }
-                } else {
-                    dot.classList.add('current');
-                }
-            }
-        })
-        prevSet.addEventListener('click', function() {
-            if(currentDot - 1 < 1) {
-                currentDot = numberDots;
-            } else {
-                currentDot -= 1;
-            }
-            if(leftSpanNumb.textContent == '1') {
-                sliderEnd = imgStickers.length;
-                sliderStart = (imgStickers.length - step) + 1;
-            } else if(sliderStart - step < 1) {
-                sliderStart = 1;
-                sliderEnd = step;
-            } else {
-                sliderEnd = sliderEnd - step;
-                sliderStart = sliderStart - step;
-            }
-            showImages(sliderStart, sliderEnd, imgStickers);
-            leftSpanNumb.textContent = sliderStart;
-            rightSpanNumb.textContent = sliderEnd;
-            for(let dot of sliderDots) {
-                if(parseInt(dot.getAttribute('data-value')) < currentDot || parseInt(dot.getAttribute('data-value')) > currentDot) {
-                    if(dot.classList.contains('current')){
-                        dot.classList.remove('current');
-                    }
-                } else {
-                    dot.classList.add('current');
-                }
-            }
-        })
+    if(sliderImages.length < numOfStickers) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        numOfStickers = sliderImages.length;
     }
+
+    let startSlide = 0;
+    let endSlide = numOfStickers;
+   
+    // Create initial slides on the screen
+    for(let x=0; x < numOfStickers; x++) {
+        let imgInfo = sliderImages[x].split(' || ');
+        let imgUri = imgInfo[0];
+        let imgId = imgInfo[1];
+        let imgCompStatus = imgInfo[2];
+
+        sliderContainer.innerHTML += 
+            `<div class='slide-sticker' data-value='${x + 1}'>` +
+                `<div class='slide-img-wrap'>` +
+                    `<a href='${home_url}/documents/story/item/?story=${storyId}&item=${imgId}' class='slider-link'>` +
+                        `<img src='${imgUri}' class='slider-image' alt='slider-img-${x+1}' width='200' height='200'>` +
+                    `</a>` +
+                    `<div class='image-completion-status' style='background-color:${imgCompStatus};'>` +
+                        `<div class='slide-number-wrap'>${x + 1}</div>` +
+                    `</div>` +
+                `</div>` +
+            `</div>`;
+    }
+    ////// Second set of variables, after initial slider is rendered
+    // Make nodelist of slides so we can manipulate them
+    const sliderSlides = sliderContainer.querySelectorAll('.slide-sticker');
+    // Get number of dots we need to show on screen
+    const numOfSlides = Math.ceil(sliderImages.length / numOfStickers);
+    const dotContainer = document.querySelector('#dot-indicators');
+    let currentDot = 1;
+
+    // Create dot indicators to jump to desired set of slides
+    for(let z = 1; z <= numOfSlides; z++) {
+        let singleDot = document.createElement('div');
+        singleDot.classList.add('slider-dot');
+        singleDot.setAttribute('data-value', (z));
+        // Add event to the dot
+        singleDot.addEventListener('click', function() {
+            currentDot = parseInt(this.getAttribute('data-value'));
+            this.classList.add('current');
+           
+            endSlide = numOfStickers * z;
+            if(endSlide > sliderImages.length) {
+                endSlide = sliderImages.length;
+            }
+            startSlide = endSlide - numOfStickers;
+            slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+            activeDot(currentDot);
+        });
+        dotContainer.appendChild(singleDot);
+    }
+    // dotContainer.querySelector('div').classList.add('current');
+    if(currentItm) {  
+        let currPosition = Math.floor(currentItm/numOfStickers);
+        for(let dot of dotContainer.querySelectorAll('.slider-dot')) {
+            if(currPosition + 1 == parseInt(dot.getAttribute('data-value'))) {
+                dot.click();
+            }
+        }
+    }
+    
+    function slideImages(slideStart, slideEnd, slides, imageInfo, storyid, currItm) {
+        let indexOfSlide = 0;
+        for(let i = slideStart; i < slideEnd; i++) {
+            let imgArr = imageInfo[i].split(' || ');
+           
+            slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
+            slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?story=${storyid}&item=${imgArr[1]}`);
+            slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
+            slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
+            if(i === currItm) {
+                slides[indexOfSlide].querySelector('.slide-img-wrap').classList.add('active');
+            } else if(slides[indexOfSlide].querySelector('.slide-img-wrap').classList.contains('active')) {
+                slides[indexOfSlide].querySelector('.slide-img-wrap').classList.remove('active');
+            }     
+            indexOfSlide ++;
+        }
+    }
+
+    function activeDot(number) {
+        const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+        for(let dot of sliderDots) {
+            if(dot.getAttribute('data-value') < number || dot.getAttribute('data-value') > number) {
+                if(dot.classList.contains('current')) {
+                    dot.classList.remove('current');
+                }
+            }
+        }
+    }
+
+    nextBtn.addEventListener('click', function () {
+
+        if(endSlide === sliderImages.length) {
+            endSlide = numOfStickers;
+            startSlide = 0;
+        } else if((endSlide + numOfStickers) > sliderImages.length) {
+            endSlide = sliderImages.length;
+            startSlide = sliderImages.length - numOfStickers;
+        } else {
+            endSlide = endSlide + numOfStickers;
+            startSlide = startSlide + numOfStickers;
+        }
+      
+        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+        // change active dot
+        const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+        let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
+        if(curDot == sliderDots.length) {
+            sliderDots[curDot-1].classList.remove('current');
+            sliderDots[0].classList.add('current');
+        } else {
+            sliderDots[curDot-1].classList.remove('current');
+            sliderDots[curDot].classList.add('current');
+        }
+    });
+
+    prevBtn.addEventListener('click', function() {
+        if(startSlide === 0) {
+            endSlide = sliderImages.length;
+            startSlide = sliderImages.length - numOfStickers;
+        } else if((startSlide - numOfStickers) < 0) {
+            startSlide = 0;
+            endSlide = numOfStickers;
+        } else {
+            startSlide -= numOfStickers;
+            endSlide -= numOfStickers;
+        }
+        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+        // Change active dot
+        const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+        let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
+        if(curDot - 2 < 0) {
+            sliderDots[curDot - 1].classList.remove('current');
+            sliderDots[sliderDots.length-1].classList.add('current');
+        } else {
+            sliderDots[curDot - 1].classList.remove('current');
+            sliderDots[curDot - 2].classList.add('current');
+        }
+    });
+   
+   
 
     // Item Page, Open full screen if user comes to page from fullscreen viewer
     if(document.querySelector('#openseadragon')){
@@ -2689,6 +2743,6 @@ ready(() => {
           }
         })
     }
-    
+    installEventListeners();
  
 });

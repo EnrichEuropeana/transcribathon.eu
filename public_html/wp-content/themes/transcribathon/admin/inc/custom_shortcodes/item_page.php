@@ -260,14 +260,14 @@ function _TCT_mtr_transcription( $atts) {
                     $locationDisplay .= "<div class='location-input-section-top'>";
                         $locationDisplay .= "<div class='location-input-name-container' style='min-height:25px;'>";
                             $locationDisplay .= "<label>Location Name: </label>";
-                            $locationDisplay .= "<input type='text' class='edit-input' value='" . $place['Name'] . "' name='' placeholder=''>";
+                            $locationDisplay .= "<input type='text' class='edit-input' value='" . ($place['Name'] != 'NULL' ? htmlspecialchars($place['Name'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
                         $locationDisplay .= "</div>";
 
                         $locationDisplay .= "<div class='location-input-coordinates-container' style='min-height:25px;'>";
                             $locationDisplay .= "<label>Coordinates: </label>";
                             $locationDisplay .= "<span class='required-field'>*</span>";
-                            $locationDisplay .= "<input class='edit-input' type='text' value='" . htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') . ", "
-                                . htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') . "' name='' placeholder=''>";
+                            $locationDisplay .= "<input class='edit-input' type='text' value='" . ($place['Latitude'] != 'NULL' ? htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') : '') . ", "
+                                . ($place['Longitude'] != 'NULL' ? htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
                         $locationDisplay .= "</div>";
 
                         $locationDisplay .= "<div style='clear:both;'></div>";
@@ -277,7 +277,7 @@ function _TCT_mtr_transcription( $atts) {
                         $locationDisplay .= "<label>Wikidata Reference:";
                             $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
                         $locationDisplay .= "</label>";
-                        if($place['WikidataId'] != 'NULL' && $place['WikidataName'] != 'NULL') {
+                        if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != '' && $place['WikidataName'] != 'NULL' && $place['WikidataName'] != '') {
                             $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='" 
                                 . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . "; "
                                 . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
@@ -285,7 +285,6 @@ function _TCT_mtr_transcription( $atts) {
                             $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
                         }
                     $locationDisplay .= "</div>";
-
                     $locationDisplay .= "<div class='location-input-description-container' style='height:50px;'>";
                         $locationDisplay .= "<label>";
                             $locationDisplay .= "Description: ";
@@ -300,14 +299,18 @@ function _TCT_mtr_transcription( $atts) {
                     $locationDisplay .= "</div>";
 
                     $locationDisplay .= "<div class='form-buttons-right'>";
-                        $locationDisplay .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
-                            $locationDisplay .= "CANCEL";
-                        $locationDisplay .= "</button>";
+                        $locationDisplay .= "<div class='form-btn-left'>";
+                            $locationDisplay .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
+                                $locationDisplay .= "CANCEL";
+                            $locationDisplay .= "</button>";
+                        $locationDisplay .= "</div>";
 
-                        $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save' 
-                                        onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
-                            $locationDisplay .= "SAVE";
-                        $locationDisplay .= "</button>";
+                        $locationDisplay .= "<div class='form-btn-right'>";
+                            $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save' 
+                                            onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
+                                $locationDisplay .= "SAVE";
+                            $locationDisplay .= "</button>";
+                        $locationDisplay .= "</div>";
 
                         $locationDisplay .= "<div id='item-location-" . $place['PlaceId'] . "-spinner-container' class='spinner-container spinner-container-right'>";
                             $locationDisplay .= "<div class='spinner'></div>";
@@ -597,7 +600,7 @@ function _TCT_mtr_transcription( $atts) {
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . $person['LastName'] . "</span>";
+                                $enrichmentTab .= "<span style='font-weight:400;'>" . htmlspecialchars($person['FirstName']) . " " . ($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
                                 if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                                     $enrichmentTab .= " (" . $person['BirthDate'];
                                     if($person['BirthPlace'] != 'NULL') {
@@ -643,45 +646,49 @@ function _TCT_mtr_transcription( $atts) {
                         $enrichmentTab .= "<div id='person-data-edit-". $person['PersonId'] . "' class='person-data-edit-container person-item-data-container'>";
                             $enrichmentTab .= "<div class='person-input-names-container'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-firstName-edit' class='input-response person-input-field person-re-edit'
-                                                placeholder='&nbsp First Name' value='" . $person['FirstName'] . "'>";
+                                                placeholder='&nbsp First Name' value='" . htmlspecialchars($person['FirstName']) . "'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
-                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? htmlspecialchars($person['LastName']) : '') . "'>";
+                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? $person['LastName'] : '') . "'>";
                             $enrichmentTab .= "</div>";
                             
                             $enrichmentTab .= "<div class='person-description-input'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
-                                                placeholder='&nbsp Add more info to this person...' value='" . $person['Description'] . "'>";
+                                                placeholder='&nbsp Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars($person['Description']) : '') . "'>";
                             $enrichmentTab .= "</div>";
     
                             $enrichmentTab .= "<div class='person-description-input'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp Add Wikidata ID to this person'
-                                                title='e.g. Wikidata Title ID' value='" . $person['Link'] . "'>";
+                                                title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars($person['Link']) : '') . "'>";
                             $enrichmentTab .= "</div>";
     
                             $enrichmentTab .= "<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-birthPlace-edit' class='input-response person-input-field person-re-edit'
-                                                value='" . $person['BirthPlace'] . "' placeholder='&nbsp Birth Location'>";
+                                                value='" . ($person['BirthPlace'] != 'NULL' ? htmlspecialchars($person['BirthPlace']) : '') . "' placeholder='&nbsp Birth Location'>";
                                 $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-birthDate-edit'
-                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . $person['BirthDate'] .
+                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['BirthDate'] != 'NULL' ? htmlspecialchars($person['BirthDate']) : '') .
                                                 "' placeholder='&nbsp Birth: dd/mm/yyyy'></span>";
                             $enrichmentTab .= "</div>";
     
                             $enrichmentTab .= "<div class='person-location-death-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-deathPlace-edit' class='input-response person-input-field person-re-edit'
-                                                value='" . $person['DeathPlace'] . "' placeholder='&nbsp Death Location'>";
+                                                value='" . ($person['DeathPlace'] != 'NULL' ? htmlspecialchars($person['DeathPlace']) : '') . "' placeholder='&nbsp Death Location'>";
                                 $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-deathDate-edit'
-                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . $person['Deathdate'] .
+                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['DeathDate'] != 'NULL' ? htmlspecialchars($person['DeathDate']) : '') .
                                                 "' placeholder='&nbsp Death: dd/mm/yyyy'></span>";
                             $enrichmentTab .= "</div>";
     
                             $enrichmentTab .= "<div class='form-buttons-right'>";
-                                $enrichmentTab .= "<button class='theme-color-background edit-location-cancel' onClick='openPersonEdit(" . $person['PersonId'] . ")'>";
-                                    $enrichmentTab .= "CANCEL";
-                                $enrichmentTab .= "</button>";
-                                $enrichmentTab .= "<button class='theme-color-background edit-location-save'
-                                                onClick='editPerson(" . $person['PersonId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
-                                    $enrichmentTab .= "SAVE";
-                                $enrichmentTab .= "</button>";
+                                $enrichmentTab .= "<div class='person-btn-left'>";
+                                    $enrichmentTab .= "<button class='theme-color-background' onClick='openPersonEdit(" . $person['PersonId'] . ")'>";
+                                        $enrichmentTab .= "CANCEL";
+                                    $enrichmentTab .= "</button>";
+                                $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "<div class='person-btn-right'>";
+                                    $enrichmentTab .= "<button class='theme-color-background'
+                                                    onClick='editPerson(" . $person['PersonId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
+                                        $enrichmentTab .= "SAVE";
+                                    $enrichmentTab .= "</button>";
+                                $enrichmentTab .= "</div>";
                                 $enrichmentTab .= "<div id='item-person-" . $person['PersonId']  ."-spinner-container' class='spinner-container spinner-container-left'>";
                                     $enrichmentTab .= "<div class='spinner'></div>";
                                 $enrichmentTab .= "</div>";
@@ -812,14 +819,18 @@ function _TCT_mtr_transcription( $atts) {
                                     $enrichmentTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars($descPHolder, ENT_QUOTES, 'UTF-8') . "</textarea>";
                                 $enrichmentTab .= "</div>";
                                 $enrichmentTab .= "<div class='form-buttons-right'>";
-                                    $enrichmentTab .= "<button class='theme-color-background edit-location-save'
-                                        onClick='editLink(" . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", " . get_current_user_id() . ")'>";
-                                        $enrichmentTab .= "SAVE";
-                                    $enrichmentTab .= "</button>";
-                                    $enrichmentTab .= "<button class='theme-color-background edit-location-cancel'
-                                        onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'>";
-                                        $enrichmentTab .= "CANCEL";
-                                    $enrichmentTab .= "</button>";
+                                    $enrichmentTab .= "<div class='link-btn-right'>" ;
+                                        $enrichmentTab .= "<button class='theme-color-background'
+                                            onClick='editLink(" . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", " . get_current_user_id() . ")'>";
+                                            $enrichmentTab .= "SAVE";
+                                        $enrichmentTab .= "</button>";
+                                    $enrichmentTab .= "</div>";
+                                    $enrichmentTab .= "<div class='link-btn-left'>";
+                                        $enrichmentTab .= "<button class='theme-color-background'
+                                            onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'>";
+                                            $enrichmentTab .= "CANCEL";
+                                        $enrichmentTab .= "</button>";
+                                    $enrichmentTab .= "</div>";
                                     $enrichmentTab .= "<div id='item-link-" . $property['PropertyId'] . "-spinner-container' class='spinner-container spinner-container-left'>";
                                         $enrichmentTab .= "<div class='spinner'></div>";
                                     $enrichmentTab .= "</div>";
@@ -829,69 +840,7 @@ function _TCT_mtr_transcription( $atts) {
                         $enrichmentTab .= "</div>";
                     }
                 }
-                // $enrichmentTab .= '<ul>';
-                // foreach ($itemData['Properties'] as $property) {
-                //     if ($property['PropertyDescription'] != "NULL") {
-                //         $description = $property['PropertyDescription'];
-                //     } else {
-                //         $description = "";
-                //     }
-                //     if ($property['PropertyType'] == "Link") {
-                //         $enrichmentTab .= '<li id="link-'.$property['PropertyId'].'">';
-                //             $enrichmentTab .= '<div id="link-data-output-'.$property['PropertyId'].'" class="">';
-                //                 $enrichmentTab .= '<div id="link-data-output-display-'.$property['PropertyId'].'" class="link-data-output-content">';
-                //                     $enrichmentTab .= '<div class="item-data-output-element-header">';
-                //                         $enrichmentTab .= '<a href="'.$property['PropertyValue'].'" target="_blank">';
-                //                             $enrichmentTab .= $property['PropertyValue'];
-                //                         $enrichmentTab .= '</a>';
-                //                         $enrichmentTab .= '<i class="edit-item-data-icon fas fa-pencil theme-color-hover login-required"
-                //                                         onClick="openLinksourceEdit('.$property['PropertyId'].')"></i>';
-                //                         $enrichmentTab .= '<i class="edit-item-data-icon delete-item-datas fas fa-times theme-color-hover login-required"
-                //                                         onClick="deleteItemData(\'Properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'link\', '.get_current_user_id().')"></i>';
-                //                         $enrichmentTab .= '<div style="clear:both;"></div>';
-                //                     $enrichmentTab .= '</div>';
-                //                     $enrichmentTab .= '<div>';
-                //                         $enrichmentTab .= '<span>';
-                //                             $enrichmentTab .= 'Description: ';
-                //                             $enrichmentTab .= $description;
-                //                         $enrichmentTab .= '</span>';
-                //                     $enrichmentTab .= '</div>';
-                //                 $enrichmentTab .= '</div>';
-
-                //                 $enrichmentTab .= '<div class="link-data-edit-container" id="link-data-edit-'.$property['PropertyId'].'">';
-                //                 // $taggingTab .= '<div>';
-                //                 //     $taggingTab .= "<span>Link:</span><br/>";
-                //                 // $taggingTab .= '</div>';
-
-                //                     $enrichmentTab .= '<div id="link-'.$property['PropertyId'].'-url-input" class="link-url-input">';
-                //                         $enrichmentTab .= '<input type="url" value="'.htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8').'" placeholder="Enter URL here">';
-                //                     $enrichmentTab .= '</div>';
-
-                //                     $enrichmentTab .= '<div id="link-'.$property['PropertyId'].'-description-input" class="link-description-input">';
-                //                         // $taggingTab .= '<label>Additional description:</label><br/>';
-                //                         $enrichmentTab .= '<textarea rows= "3" type="text" placeholder="" name="">'.htmlspecialchars($description, ENT_QUOTES, 'UTF-8').'</textarea>';
-                //                     $enrichmentTab .= '</div>';
-                //                     $enrichmentTab .= "<div class='form-buttons-right'>";
-                //                         $enrichmentTab .= "<button class='theme-color-background edit-location-save'
-                //                                         onClick='editLink(".$property['PropertyId'].", ".$_GET['item'].", ".get_current_user_id().")'>";
-                //                             $enrichmentTab .= "SAVE";
-                //                         $enrichmentTab .= "</button>";
-
-                //                         $enrichmentTab .= "<button class='theme-color-background edit-location-cancel' onClick='openLinksourceEdit(".$property['PropertyId'].")'>";
-                //                             $enrichmentTab .= "CANCEL";
-                //                         $enrichmentTab .= "</button>";
-
-                //                         $enrichmentTab .= '<div id="item-link-'.$property['PropertyId'].'-spinner-container" class="spinner-container spinner-container-left">';
-                //                             $enrichmentTab .= '<div class="spinner"></div>';
-                //                         $enrichmentTab .= "</div>";
-                //                         $enrichmentTab .= '<div style="clear:both;"></div>';
-                //                     $enrichmentTab .= '</div>';
-                //                     $enrichmentTab .= '<div style="clear:both;"></div>';
-                //                 $enrichmentTab .= '</div>';
-                //             $enrichmentTab .= '</div>';
-                //         $enrichmentTab .= '</li>';
-                //     }
-                // }
+                
                 // $enrichmentTab .= '</ul>';
             $enrichmentTab .= '</div>';
             $enrichmentTab .= "<div id='save-all-tags'>";
@@ -904,12 +853,12 @@ function _TCT_mtr_transcription( $atts) {
     // People Display
     $peopleDisplay .= "<div class='people-container'>";
         $peopleDisplay .= "<h6 id='fs-people' class='enrich-headers'> People <i title='Add Info' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-        $peopleDisplay .= "<div style='padding-left:24px;margin-top:10px;'>";
+        $peopleDisplay .= "<div style='padding-left:24px;'>";
             foreach($itemData['Persons'] as $person) {
                 $peopleDisplay .= "<div class='single-person'>";
                     $peopleDisplay .= "<i class='fas fa-user person-i' style='float:left;margin-right:5px;'></i>";
                     $peopleDisplay .= "<p class='person-data'>";
-                        $peopleDisplay .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . $person['LastName'] . "</span>";
+                        $peopleDisplay .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . ($person['LastName'] != 'NULL' ? $person['LastName'] : '' ). "</span>";
                         if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                             $peopleDisplay .= " (" . $person['BirthDate'];
                             if($person['BirthPlace'] != 'NULL') {
@@ -1229,7 +1178,7 @@ function _TCT_mtr_transcription( $atts) {
             // New position for Description Language
             $descriptionTab .= "<div id='description-language-selector' class='language-selector-background language-selector login-required'>";
             if($itemData['DescriptionLanguage'] != null) {
-                $descriptionTab .= "<span class='language-select-selected' style='margin-right:5px;'>Language of Description: </span>";
+                $descriptionTab .= "<span id='language-sel-placeholder' class='language-select-selected' style='margin-right:5px;'>Language of Description: </span>";
             }
                 $descriptionTab .= "<select>";
                     if($itemData['DescriptionLanguage'] == null) {
@@ -1279,66 +1228,34 @@ function _TCT_mtr_transcription( $atts) {
     // Get the image of the Current Item
     $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
 
+    $allImages = [];
+    
+    for($x = 0; $x < $numOfPhotos; $x++) {
+        $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
+        $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
+                        
+        if($sliderImg['height'] == null) {
+            $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
+        }
+    
+        array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || ' . $isActive));
+    }
+    
     $imageSlider = "";
+    $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
+    $imageSlider .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
+    $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
+    $imageSlider .= "<div id='current-itm' style='display:none;'>" . $startingSlide . "</div>";
     $imageSlider .= "<div id='img-slider'>";
-        // Hidden span to get the current Image
-        $imageSlider .= "<span id='slide-start' style='display:none;'>" . $startingSlide . "</span>";
-
         $imageSlider .= "<div id='slider-container'>";
-            // Buttons to go through images
             $imageSlider .= "<button class='prev-slide' type='button' aria-label='Previous'><i class='fas fa-chevron-left'></i></button>";
             $imageSlider .= "<button class='next-slide' type='button' aria-label='Next'><i class='fas fa-chevron-right'></i></button>";
-            // Image container
-            $imageSlider .= "<div id='inner-slider'>";
-                for($x = 0; $x < $numOfPhotos; $x++) {
-                    if($x < 9) {
-                        $loadingImg = 'eager';
-                    } else {
-                        $loadingImg = 'lazy';
-                    }
-
-                    $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
-                    $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
-                    
-                    if($sliderImg['height'] == null) {
-                        $sliderImgLink = str_replace('full', '0,0,1800,1100', $sliderImgLink);
-                    }
-
-
-                    $imageSlider .= "<div class='slide-sticker' data-value='" . ($x + 1) . "'>";
-                    if($x == $startingSlide) {
-                        $imageSlider .= "<div class='slide-img-wrap active'>";
-                    } else {
-                        $imageSlider .= "<div class='slide-img-wrap'>";
-                    }
-                            $imageSlider .= "<a href='" . home_url() . "/documents/story/item/?story=" . $itemData['StoryId'] . "&item=" . $itemImages[$x]['ItemId'] . "'>";
-                                $imageSlider .= "<img src='" . $sliderImgLink . "' class='slider-image' alt='slider-img-" . ($x + 1) . "' width='200' height='200' loading='". $loadingImg ."'>";
-                            $imageSlider .= "</a>";
-                            $imageSlider .= "<div class='image-completion-status' style='background-color:" . $itemImages[$x]['CompletionStatusColorCode'] . ";'>";
-                                $imageSlider .= "<div class='slide-number-wrap'>" . ($x + 1) . "</div>";
-                            $imageSlider .= "</div>";
-                        $imageSlider .= "</div>";
-                    $imageSlider .= "</div>";
-                }
-
-
-            $imageSlider .= "</div>";
+            $imageSlider .= "<div id='inner-slider'></div>";
+            $imageSlider .= "<div id='dot-indicators'></div>";
         $imageSlider .= "</div>";
+    $imageSlider .= "</div>";
 
-        // Back-to-story
-        //$imageSlider .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
-        // Slider dots and numbers
-        $imageSlider .= "<div id='dot-indicators'></div>";
-
-        $imageSlider .= "<div id='controls-div'>";
-            $imageSlider .= "<div class='num-indicators' style='display:none;'>";
-                $imageSlider .= "<span id='left-num'>1</span> - <span id='right-num'></span> of <span>" . $numOfPhotos . "</span>";
-            $imageSlider .= "</div>";
-        $imageSlider .= "</div>";
-
-        //$imageSlider .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
-    $imageSlider .= "</div>"; // End of Image Slider
-
+    
     // Metadata
     $metaData .= "";
     $metaData .= "<div id='meta-container'>";
@@ -1582,16 +1499,6 @@ function _TCT_mtr_transcription( $atts) {
         }
     $storyDescription .= "</div>";
     // Item progress bar
-    // $itemProgress = array(
-    //     'Not Started' => 0,
-    //     'Edit' => 0,
-    //     'Review' => 0,
-    //     'Completed' => 0
-    // );
-    // $itemProgress[$itemData['TranscriptionStatusName']] += 25;
-    // $itemProgress[$itemData['DescriptionStatusName']] += 25;
-    // $itemProgress[$itemData['LocationStatusName']] += 25;
-    // $itemProgress[$itemData['TaggingStatusName']] += 25;
 
     //$content .= "<div id='main-section'>";
         // Build Page Layout
@@ -1603,10 +1510,10 @@ function _TCT_mtr_transcription( $atts) {
         // Title
     $content .= "<section id='title-n-progress'>";
         $content .= "<div class='title-n-btn'>";
-            $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:1px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
+            $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
         $content .= "</div>";
         if(current_user_can('administrator')) {
-            $content .= "<div class='tr-comp-btn' style='float:right;cursor:pointer;'>";
+            $content .= "<div class='tr-comp-btn' style='float:right;cursor:pointer;margin-right:25px;'>";
                 $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>COMPARE TRANSCRIPTIONS</a>";
             $content .= "</div>";
         }
@@ -1717,6 +1624,7 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "<div class='current-transcription' style='display:none;'></div>";
                         $content .= "<div class='transcription-language' style='display:none;'>";
                             $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
+                            $content .= "<div style='padding-left:24px;'></div>";
                         $content .= "</div>";
                     } else {
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
@@ -1754,6 +1662,7 @@ function _TCT_mtr_transcription( $atts) {
                             $content .= "<div class='current-transcription' style='display:none;'></div>";
                             $content .= "<div class='transcription-language' style='display:none;'>";
                                 $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
+                                $content .= "<div style='padding-left: 24px;'></div>";
                             $content .= "</div>";
                         }
                     }
@@ -1766,7 +1675,7 @@ function _TCT_mtr_transcription( $atts) {
    // $content .= "<div style='clear:both;'></div>";
 
     $content .= "<section id='location-n-enrichments'>";
-        $content .= "<div style='float:left;width:49%;'>";
+        $content .= "<div id='map-left'>";
              // Location Header
             $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:10px 0;'>";
                 $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' width='28px' height='28px'> LOCATION</h5></div>";
@@ -1783,122 +1692,135 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "</div>";
             $content .= $locationView;
         $content .= "</div>"; // end of left side
-        $content .= "<div style='float:right;width:49%;'>";
+        $content .= "<div id='enrich-right'>";
             // Right side
-            $content .= "<div id='description-container'>";
-                $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:10px;margin-bottom:5px;'>";
-                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ABOUT THIS DOCUMENT</h5></div>";
-                    $content .= "<div>";
-                    if($itemData['DescriptionStatusId'] < $itemData['TaggingStatusId'] && $itemData['DescriptionStatusId'] != 1) {
-                        $content .= "<div class='status-display' style='background-color:".$itemData['DescriptionStatusColorCode']."'>";
-                            $content .= "<span class='status-indicator-view'>" . $itemData['DescriptionStatusName'] . "</span>";
-                        $content .= "</div>";
-                    } else if ($itemData['TaggingStatusId'] < $itemData['DescriptionStatusId'] && $itemData['TaggingStatusId'] != 1) {
-                        $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
-                            $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
-                        $content .= "</div>";
-                    } else {
-                        $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
-                            $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
-                        $content .= "</div>";
-                    }
-                        $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i>";
+            $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:10px;margin-bottom:5px;'>";
+                $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ABOUT THIS DOCUMENT</h5></div>";
+                $content .= "<div>";
+                if($itemData['DescriptionStatusId'] < $itemData['TaggingStatusId'] && $itemData['DescriptionStatusId'] != 1) {
+                    $content .= "<div class='status-display' style='background-color:".$itemData['DescriptionStatusColorCode']."'>";
+                        $content .= "<span class='status-indicator-view'>" . $itemData['DescriptionStatusName'] . "</span>";
                     $content .= "</div>";
-                $content .= "</div>";
-                $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
-
-                $content .= "<h6 class='enrich-headers'> Description  <i title='Add Info' id='description-open' style='margin-left:5px;font-size:1.1em;margin-bottom:10px;' class='fas fa-plus-circle'></i></h6>";
-
-                $content .= "<div class='current-description' style='padding-left:24px;'>";
-                    $content .= $itemData['Description'];
-                $content .= "</div>";
-                    
-                $descriptionLanguage = "";
-                foreach($languages as $language) {
-                    if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
-                        $descriptionLanguage = $language['Name'];
-                    }
+                } else if ($itemData['TaggingStatusId'] < $itemData['DescriptionStatusId'] && $itemData['TaggingStatusId'] != 1) {
+                    $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
+                        $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
+                    $content .= "</div>";
+                } else {
+                    $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
+                        $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
+                    $content .= "</div>";
                 }
-
-                $content .= "<div class='description-language'>";
-                    $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
-                    $content .= "<div style='padding-left:24px;'>";
-                    if($descriptionLanguage != null || $descriptionLanguage != "")
-                        $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
-                    $content .= "</div>";
+                    $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i>";
                 $content .= "</div>";
+            $content .= "</div>";
+            $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
 
-                $content .= "<div class='type-of-media'>";
-                    $content .= "<h6 class='enrich-headers'> Type of Media  <i title='Add Info' id='media-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                    $content .= "<div style='padding-left:24px;'>";
-                    foreach($itemData['Properties'] as $property) {
-                        if($property['PropertyType'] == "Category") {
-                            $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+            $content .= "<div id='description-container'>";
+                $content .= "<div class='enrich-box'>";
+                    $content .= "<h6 class='enrich-headers'> Description  <i title='Add Info' id='description-open' style='margin-left:5px;font-size:1.1em;margin-bottom:10px;' class='fas fa-plus-circle'></i></h6>";
+    
+                    $content .= "<div class='current-description' style='padding-left:24px;'>";
+                        $content .= $itemData['Description'];
+                    $content .= "</div>";
+                        
+                    $descriptionLanguage = "";
+                    foreach($languages as $language) {
+                        if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                            $descriptionLanguage = $language['Name'];
                         }
                     }
-                    $content .= "</div>";
-                $content .= "</div>";
-
-            $content .= "</div>"; // end of description
-
-            // Enrichments
-            $content .= "<div class='enrichment-container'>";
-                $content .= "<div class='dl-enrichments'>";
-
-                    // Document Date
-                    $content .= "<div class='document-date-container'>";
-                        $content .= "<h6 class='enrich-headers'> Document Creation Date <i title='Add Info' id='date-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                        $content .= "<div class='date-top' style='padding-left:24px;'>";
-                            $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
-                            $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
-                        $content .= "</div>";
-                        $content .= "<div style='clear:both;'></div>";
-                        $content .= "<div class='date-bottom' style='padding-left:24px;'>";
-                            $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
-                            $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
-                        $content .= "</div>";
-                        $content .= "<div style='clear:both;'></div>";
-                    $content .= "</div>";
-
-                    // People
-                    $content .= "<div id='people-view'>";
-                        $content .= "<h6 class='enrich-headers'> People <i title='Add Info' id='people-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                        $content .= $peopleDisplay;
-                    $content .= "</div>";
-
-                    // Properties
-                    $keywords = "";
-                    $externalLinks = "";
-                    foreach($itemData['Properties'] as $property) {
-                        if($property['PropertyType'] == 'Keyword') {
-                            $keywords .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
-                        } else if ($property['PropertyType'] == 'Link') {
-                            if($property['PropertyDescription'] != 'NULL') {
-                                $propDesc = "<div class='prop-desc' style='padding-left:24px;'>Description: <b>" . $property['PropertyDescription'] . "</b></div>";
-                            }
-                            $externalLinks .= "<div class='link-single'>";
-                                $externalLinks .= "<i class='far fa-external-link' style='margin-left:3px;margin-right:5px;color:#0a72cc;font-size:14px;''></i><a href='" . $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
-                                $externalLinks .= $propDesc;
-                            $externalLinks .= "</div>";
-                        }
+                    if($descriptionLanguage != '') {
+                        $content .= "<div class='description-language'>";
+                    } else {
+                        $content .= "<div class='description-language' style='display:none;'>";
                     }
-
-                    // Keywords
-                    $content .= "<div class='keywords-container'>";
-                        $content .= "<h6 class='enrich-headers'> Keywords <i title='Add Info' id='keywords-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                        $content .= "<div style='padding-left:24px;margin-top:10px;'>";
-                            $content .= $keywords;
+                            $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
+                            $content .= "<div style='padding-left:24px;'>";
+                            if($descriptionLanguage != null || $descriptionLanguage != "")
+                                $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
+                            $content .= "</div>";
                         $content .= "</div>";
-                    $content .= "</div>";
-
-                    // External Links
-                    $content .= "<div class='links-container'>";
-                        $content .= "<h6 class='enrich-headers'> External Web Resources <i title='Add Info' id='links-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                $content .= "</div>";
+                $content .= "<div class='enrich-box'>";
+                    $content .= "<div class='type-of-media'>";
+                        $content .= "<h6 class='enrich-headers'> Type of Media  <i title='Add Info' id='media-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
                         $content .= "<div style='padding-left:24px;'>";
-                            $content .= $externalLinks;
+                        foreach($itemData['Properties'] as $property) {
+                            if($property['PropertyType'] == "Category") {
+                                $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                            }
+                        }
                         $content .= "</div>";
                     $content .= "</div>";
-
+                $content .= "</div>";
+                $content .= "<div class='enrich-box'>";   
+                        // Document Date
+                        $content .= "<div class='document-date-container'>";
+                            $content .= "<h6 class='enrich-headers'> Document Creation Date <i title='Add Info' id='date-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                            if($itemData['DateStartDisplay'] != NULL || $itemData['DateEndDisplay'] != NULL) {
+                                $content .= "<div class='date-top' style='padding-left:24px;'>";
+                                    $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                                    $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
+                                $content .= "</div>";
+                                $content .= "<div style='clear:both;'></div>";
+                                $content .= "<div class='date-bottom' style='padding-left:24px;'>";
+                                    $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
+                                    $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
+                                $content .= "</div>";
+                            } else {
+                                $content .= "<div class='date-top' style='padding-left:24px;display:none;'>";
+                                    $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                                    $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
+                                $content .= "</div>";
+                                $content .= "<div style='clear:both;'></div>";
+                                $content .= "<div class='date-bottom' style='padding-left:24px;display:none;'>";
+                                    $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
+                                    $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
+                                $content .= "</div>";
+                            }
+                            $content .= "<div style='clear:both;'></div>";
+                        $content .= "</div>";
+                $content .= "</div>";
+                $content .= "<div class='enrich-box'>";
+                        // People
+                        $content .= "<div id='people-view'>";
+                            $content .= "<h6 class='enrich-headers'> People <i title='Add Info' id='people-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                            $content .= $peopleDisplay;
+                        $content .= "</div>";
+                $content .= "</div>";
+                        // Properties
+                        $keywords = "";
+                        $externalLinks = "";
+                        foreach($itemData['Properties'] as $property) {
+                            if($property['PropertyType'] == 'Keyword') {
+                                $keywords .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
+                            } else if ($property['PropertyType'] == 'Link') {
+                                if($property['PropertyDescription'] != 'NULL') {
+                                    $propDesc = "<div class='prop-desc' style='padding-left:24px;'>Description: <b>" . $property['PropertyDescription'] . "</b></div>";
+                                }
+                                $externalLinks .= "<div class='link-single'>";
+                                    $externalLinks .= "<i class='far fa-external-link' style='margin-left:3px;margin-right:5px;color:#0a72cc;font-size:14px;''></i><a href='" . $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
+                                    $externalLinks .= $propDesc;
+                                $externalLinks .= "</div>";
+                            }
+                        }
+                $content .= "<div class='enrich-box'>";
+                        // Keywords
+                        $content .= "<div class='keywords-container'>";
+                            $content .= "<h6 class='enrich-headers'> Keywords <i title='Add Info' id='keywords-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                            $content .= "<div style='padding-left:24px;'>";
+                                $content .= $keywords;
+                            $content .= "</div>";
+                        $content .= "</div>";
+                $content .= "</div>";
+                $content .= "<div class='enrich-box'>";
+                        // External Links
+                        $content .= "<div class='links-container'>";
+                            $content .= "<h6 class='enrich-headers'> External Web Resources <i title='Add Info' id='links-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                            $content .= "<div style='padding-left:24px;'>";
+                                $content .= $externalLinks;
+                            $content .= "</div>";
+                        $content .= "</div>";
                 $content .= "</div>";
             $content .= "</div>"; // end of enrichment
 
@@ -1912,11 +1834,11 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "<span><h5><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>STORY INFORMATION</span><span style='float:right;padding-right:10px;'><i id='angle-i' style='font-size:25px;' class='fas fa-angle-down'></i></h5></span>";
         $content .= "</div>";
         $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:25px;'> &nbsp </div>";
-        $content .= "<div style='width:49%;float:left;'>";
+        $content .= "<div id='meta-left'>";
             // Metadata
             $content .= $metaData;
         $content .= "</div>";
-        $content .= "<div style='float:right;width:49%;'>";
+        $content .= "<div id='meta-right'>";
             $content .= $storyDescription;
         $content .= "</div>";
         $content .= "<div style='clear:both;'></div>";
@@ -1976,7 +1898,7 @@ function _TCT_mtr_transcription( $atts) {
                     $content .= "</li>";
                     $content .= "<li>";
                         $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
-                                    onclick='switchItemTab(event, \"tagging-tab\");map.resize()'>";
+                                    onclick='switchItemTab(event, \"tagging-tab\");'>";
                             $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;position:relative;bottom:3px;'>";
                             $content .= "<p class='tab-h' style='position:relative;bottom:4px;'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
                             $content .= "<span><b> LOCATION</b></span></p>";
@@ -2054,7 +1976,7 @@ function _TCT_mtr_transcription( $atts) {
                 $content .= "</div>";
                 // Help tab
                 $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";
-                    $content .= do_shortcode('[tutorial_item_slider]');
+                    //$content .= do_shortcode('[tutorial_item_slider]');
                 $content .= "</div>";
                 // Automatic enrichment tab
                 $content .= "<div id='autoEnrichment-tab' class='tabcontent' style='display:none;'>";

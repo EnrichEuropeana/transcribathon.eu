@@ -41,115 +41,34 @@ function _TCT_get_document_data( $atts ) {
     // $numbSlides = floor($numbPhotos / 9);
     // $restPhotos = $numbPhotos - ($numbSlides * 9);
     //// NEW IMAGE SLIDER
+    $allImages = [];
+    for($x = 0; $x < $numbPhotos; $x++) {
+                   
+        $sliderImg = json_decode($storyData['Items'][$x]['ImageLink'], true);
+        $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
+                        
+        if($sliderImg['height'] == null) {
+            $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
+        }
+    
+        array_push($allImages, ($sliderImgLink . ' || ' . $storyData['Items'][$x]['ItemId'] . ' || ' . $storyData['Items'][$x]['CompletionStatusColorCode']));
+    }
+    
     $imageSlider = "";
+    $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
+    $imageSlider .= "<div id='story-id' style='display:none;'>" . $storyData['StoryId'] . "</div>";
     $imageSlider .= "<div id='img-slider'>";
-
         $imageSlider .= "<div id='slider-container'>";
-            // Buttons to go through images
             $imageSlider .= "<button class='prev-slide' type='button' aria-label='Previous'><i class='fas fa-chevron-left'></i></button>";
             $imageSlider .= "<button class='next-slide' type='button' aria-label='Next'><i class='fas fa-chevron-right'></i></button>";
-            // Image container
-            $imageSlider .= "<div id='inner-slider'>";
-                for($x = 0; $x < $numbPhotos; $x++) {
-                    if($x < 9) {
-                        $loadingImg = 'eager';
-                    } else {
-                        $loadingImg = 'lazy';
-                    }
-
-                    $sliderImg = json_decode($storyData['Items'][$x]['ImageLink'], true);
-                    $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
-                    
-                    if($sliderImg['height'] == null) {
-                        $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
-                    }
-
-
-                    $imageSlider .= "<div class='slide-sticker' data-value='" . ($x + 1) . "'>";
-                    if($x == $startingSlide) {
-                        $imageSlider .= "<div class='slide-img-wrap active'>";
-                    } else {
-                        $imageSlider .= "<div class='slide-img-wrap'>";
-                    }
-                            $imageSlider .= "<a href='" . home_url() . "/documents/story/item/?story=" . $storyData['StoryId'] . "&item=" . $storyData['Items'][$x]['ItemId'] . "'>";
-                                $imageSlider .= "<img src='" . $sliderImgLink . "' class='slider-image' alt='slider-img-" . ($x + 1) . "' width='200' height='200' loading='". $loadingImg ."'>";
-                            $imageSlider .= "</a>";
-                            $imageSlider .= "<div class='image-completion-status' style='background-color:" . $storyData['Items'][$x]['CompletionStatusColorCode'] . ";'>";
-                                $imageSlider .= "<div class='slide-number-wrap'>" . ($x + 1) . "</div>";
-                            $imageSlider .= "</div>";
-                        $imageSlider .= "</div>";
-                    $imageSlider .= "</div>";
-                }
-
-
-            $imageSlider .= "</div>";
+            $imageSlider .= "<div id='inner-slider'></div>";
+            $imageSlider .= "<div id='dot-indicators'></div>";
         $imageSlider .= "</div>";
-
-        // Back-to-story
-        //$imageSlider .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
-        // Slider dots and numbers
-        $imageSlider .= "<div id='dot-indicators'></div>";
-
-        $imageSlider .= "<div id='controls-div'>";
-            $imageSlider .= "<div class='num-indicators' style='display:none;'>";
-                $imageSlider .= "<span id='left-num'>1</span> - <span id='right-num'></span> of <span>" . $numOfPhotos . "</span>";
-            $imageSlider .= "</div>";
-        $imageSlider .= "</div>";
-
-        //$imageSlider .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
-    $imageSlider .= "</div>"; // End of Image Slider
-
-
-
+    $imageSlider .= "</div>";
 
     ////
-    $content .= "<section id='img-slider'>";
+    $content .= "<section id='images-slider'>";
         $content .= $imageSlider;
-    // $content .= "<div id='slider-container'>";
-    //     $content .= "<button class='prev-slide' type='button'><i class=\"fas fa-chevron-left\"></i></button>";
-    //     $content .= "<button class='next-slide' type='button'><i class=\"fas fa-chevron-right\"></i></button>";
-
-    //     $content .= "<div id='inner-slider'>";
-    //         for($x = 0; $x < $numbPhotos; $x++) {
-    //             $sliderImg = json_decode($storyData['Items'][$x]['ImageLink'], true);
-    //             $dimensions = 0;
-    //             if($sliderImg["height"] < $sliderImg["width"]) {
-    //                 $dimensions = $sliderImg["height"];
-    //             } else {
-    //                 $dimensions = $sliderImg["width"];
-    //             }
-
-    //             if(substr($sliderImg['service']['@id'],0,4) == 'rhus'){
-    //                $sliderImgLink ='https://'. str_replace(' ','_',$sliderImg['service']["@id"]) . '/0,0,'.$dimensions.','.$dimensions.'/200,200/0/default.jpg';
-    //             } else {
-    //                 $sliderImgLink = str_replace(' ','_',$sliderImg['service']["@id"]) . '/0,0,'.$dimensions.','.$dimensions.'/200,200/0/default.jpg';
-    //             }
-    //             $content .= "<div class='slide-sticker' data-value='". ($x+1) ."'>";
-    //                 $content .= "<div class='slide-img-wrap'>";
-    //                     $content .= "<a href='".home_url()."/documents/story/item/?story=".$storyData['StoryId']."&item=".$storyData['Items'][$x]['ItemId']."'><img src=".$sliderImgLink." class='slider-image' alt='slider-image' width='200' height='200' loading='lazy'></a>";
-    //                     $content .= "<div class='image-completion-status' style='bottom:20px;border-color:".$storyData['Items'][$x]['CompletionStatusColorCode']."'></div>";
-    //                 $content .= "</div>";
-    //                 $content .= "<div class='slide-number-wrap'>".($x+1)."</div>";
-    //             $content .= "</div>";
-    //         }
-
-    //     $content .= "</div>";
-    // $content .= "</div>";
-    // $content .= "<div id='dot-indicators'>";
-    // // placeholder for dot indicators
-    // $content .= "</div>";
-    //     $content .= "<div id='controls-div'>";
-
-    //         $content .= "<button class='prev-set' type='button' style='display:none;'><i class=\"fas fa-chevron-double-left\"></i></button>";
-
-    //         $content .= "<div class='num-indicators' style='display:none;'>";
-    //             $content .= "<span id='left-num'>1</span> - <span id='right-num'></span> of ";
-    //             $content .="<span>". $numbPhotos ."</span>";
-    //         $content .="</div>";
-    //         $content .= "<button class='next-set' type='button' style='display:none;'><i class=\"fas fa-chevron-double-right\"></i></button>";
-    //         //// To be discussed if we keep dots or numbers /////
-    //     $content .= "</div>";
-
     $content .= "</section>";
 
         /* New- Start Transcription button */
@@ -406,7 +325,7 @@ function _TCT_get_document_data( $atts ) {
                                         }
                                     )
                                     .then(function(response) {
-console.log(response);
+
                                         return response.json();
                                     })
                                     .then(function(places) {
