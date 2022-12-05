@@ -2747,6 +2747,10 @@ div.tox.tox-tinymce {
 }
 .compare-tr {
     display: inline-block;
+    margin-left: 15px;
+    font-family: var(--h-font-family);
+    font-weight: 600;
+    font-size: 1.1em;
 }
 /* Item Page compare transcriptions btn */
 /* .tr-comp-btn {

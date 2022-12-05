@@ -737,7 +737,7 @@ function updateDataProperty(dataType, id, fieldName, value) {
 // Check if the tinymce contains invalid html tags
 function isWhitelisted(tinyText) {
     // WIP
-    let tester = new DOMParser().parseFromString(tinyText, 'text/html');
+    let tester = new DOMParser().parseFromString(('a ' + tinyText), 'text/html');
     if(tester.body.querySelector('*:not(p)') != null) {
         window.alert('Invalid Input');
         return 0;
