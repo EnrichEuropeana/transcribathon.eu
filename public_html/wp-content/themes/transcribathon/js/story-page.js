@@ -5,11 +5,11 @@ var map, marker;
 // Story Description Toggle
 function descToggler() {
     let buttonDesc = document.querySelector('.descMore');
-    if(buttonDesc.previousSibling.style.maxHeight === '202px') {
+    if(buttonDesc.previousSibling.style.maxHeight === '275px') {
             buttonDesc.previousSibling.style.maxHeight = 'unset';
             buttonDesc.textContent = 'Show Less';
     } else {
-            buttonDesc.previousSibling.style.maxHeight = '202px';
+            buttonDesc.previousSibling.style.maxHeight = '275px';
             buttonDesc.textContent = 'Show More';
     }
 }

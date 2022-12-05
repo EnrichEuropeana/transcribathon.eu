@@ -288,11 +288,16 @@ ul.story-navigation-content-container li {
     font-weight: 700;
     font-size: 1.6rem!important;
     margin-top: 0!important;
+    margin-bottom: 16px;
 }
 .descMore {
-    text-align: center;
-    cursor: pointer;
     color: var(--main-color);
+    background-color: #fff;
+    margin: 0!important;
+    position: relative;
+    bottom: 3px;
+    height: 45px;
+    padding-top: 10px;
 }
 .togglePara {
     max-height: 202px;
@@ -326,16 +331,20 @@ ul.story-navigation-content-container li {
 }
 .progress-div {
     background-color: var(--bg-main-color);
-    padding: 10px 0 10px;
+    padding: 10px 0 5px;
 }
 .progress-p {
     background-color: var(--bg-main-color);
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    margin: 8px 0!important;
 }
 .progress-div span {
     width: 25%;
+    position: relative;
+    top: 3px;
+    display: inline-block;
 }
 .table-l {
     color: var(--main-color);
@@ -451,6 +460,8 @@ ul.story-navigation-content-container li {
     height: 40px;
     color: var(--main-color);
     background-color: var(--bg-main-color);
+    font-family: var(--h-font-family);
+    letter-spacing: 00.025em;
     width: 100%;
     margin-top: 2%!important;
     margin-bottom: 2%!important;
