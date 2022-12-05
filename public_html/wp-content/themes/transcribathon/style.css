@@ -4343,6 +4343,7 @@ a#new-temporary-prof:hover {
   float: left;
   max-height: 50px;
   font-family: var(--h-font-family);
+  letter-spacing: 0.025em;
 }
 #search-form {
   float: right;
