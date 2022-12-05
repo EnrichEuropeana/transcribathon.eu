@@ -29,11 +29,12 @@ function _TCT_get_document_data( $atts ) {
     }
     $randomItem = rand(0,(count($storyData['Items'])-1));
     $imgDescription = json_decode($storyData['Items'][$randomItem]['ImageLink'], true);
-    if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
-        $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    } else {
-        $imgDescriptionLink = str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    }
+    $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => 'full', 'region' => 'full'));
+    // if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
+    //     $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
+    // } else {
+    //     $imgDescriptionLink = str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
+    // }
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
     /////////////////////////
@@ -174,9 +175,7 @@ function _TCT_get_document_data( $atts ) {
                         }
                         unset($storyKeyWords);
                         $content .= "</div>";
-                        $content .= "<div class='tr-comparison'>";
-                            $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?item=".$storyData['Items'][$randomItem]['ItemId']."'>Compare Manual and HTR transcriptions</a>";
-                        $content .= "</div>";
+
                     $content .= "</div>"; //second column closing
                 $content .= "</div>"; //row closing
             $content .= "</section>";
