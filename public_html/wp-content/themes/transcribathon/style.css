@@ -127,6 +127,7 @@ div._transcribathon_mainnav {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   z-index: -1;
+  font-family: var(--h-font-family);
 }
 .nav-right-side{
   color: #fff;
@@ -149,8 +150,10 @@ nav.navbar {
   z-index: 2;
 }
 ._transcribathon_partnerlogo img {
-  max-width: 100%;
+  max-width: 85%;
   height: auto;
+  position: relative;
+  top: 5px;
 }
 ._transcribathon_logo {
   background-color: #2b2b2b;
@@ -4339,6 +4342,8 @@ a#new-temporary-prof:hover {
 .menu-main-menu-container {
   float: left;
   max-height: 50px;
+  font-family: var(--h-font-family);
+  letter-spacing: 0.025em;
 }
 #search-form {
   float: right;

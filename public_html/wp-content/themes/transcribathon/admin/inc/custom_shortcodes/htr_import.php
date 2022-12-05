@@ -364,6 +364,19 @@ document.addEventListener('alpine:init', () => {
 
 });
 
+// When the user clicks the button(pen on the image viewer), open the login modal
+jQuery('#default-lock-login').click(function() {
+	jQuery('#default-login-container').css('display', 'block');
+})
+// When the user clicks on <span> (x), close the modal
+jQuery('.item-login-close').click(function() {
+	jQuery('#default-login-container').css('display', 'none');
+	if(jQuery('.site-navigation').hasClass("fullscreen")){
+		jQuery("nav").removeClass("fullscreen");
+		jQuery(".site-navigation").css('display', 'none');
+	}
+})
+
 </script>
 <script src="{$alpineJs}"></script>
 OUT;

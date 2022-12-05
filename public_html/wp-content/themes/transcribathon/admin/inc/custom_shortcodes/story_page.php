@@ -146,7 +146,7 @@ function _TCT_get_document_data( $atts ) {
 
                         } elseif (strlen($storyText) > 420) {
                             $content .= "<div class='desc-toggle' role='button'>";
-                            $content .= "<div id='storyDescription' class='togglePara' style='max-height: 202px;'>";
+                            $content .= "<div id='storyDescription' class='togglePara' style='max-height: 275px;'>";
                             $content .= $storyText;
                             //$content .= "<span class='desc-span' style='display:none;'>".substr($storyText, 399)."</span>";
 

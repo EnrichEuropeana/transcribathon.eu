@@ -6,30 +6,46 @@ const ready = (callback) => {
 }
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
-    const imJaLink = document.querySelector('#image-json-link').textContent;
-    const imgHeight = document.querySelector('#image-height').textContent;
-    const imgWidth = document.querySelector('#image-width').textContent;
 
-	  let imJLink = imJaLink;
-	  if (imJaLink.substring(0, 5) != 'https' && imJaLink.substring(0, 4) != 'http') {
-	      imJLink = 'https://' + imJaLink;
-	  } else if (imJaLink.substring(0, 5) == 'http:') {
-	       imJLink = imJaLink.replace('http','https');
-	  }
+    // When the user clicks the button(pen on the image viewer), open the login modal
+    jQuery('#default-lock-login').click(function() {
+        jQuery('#default-login-container').css('display', 'block');
+    })
+    // When the user clicks on <span> (x), close the modal
+    jQuery('.item-login-close').click(function() {
+        jQuery('#default-login-container').css('display', 'none');
+        if(jQuery('.site-navigation').hasClass("fullscreen")){
+            jQuery("nav").removeClass("fullscreen");
+            jQuery(".site-navigation").css('display', 'none');
+        }
+    })
 
-    const viewer = OpenSeadragon({
-        id: "openseadragon",
-        showRotationControl: true,
-        toolbar: "buttons",
-        homeButton: "home",
-        zoomInButton: "zoom-in",
-        zoomOutButton: "zoom-out",
-        rotateLeftButton: "rotate-left",
-        rotateRightButton: "rotate-right",
-        prefixUrl: home_url + "/wp-content/themes/transcribathon/images/osdImages/",
-        tileSources: imJLink,
-    });
+    if(document.querySelector('#image-json-link')) {
+        const imJaLink = document.querySelector('#image-json-link').textContent;
+        const imgHeight = document.querySelector('#image-height').textContent;
+        const imgWidth = document.querySelector('#image-width').textContent;
+    
+	      let imJLink = imJaLink;
+	      if (imJaLink.substring(0, 5) != 'https' && imJaLink.substring(0, 4) != 'http') {
+	          imJLink = 'https://' + imJaLink;
+	      } else if (imJaLink.substring(0, 5) == 'http:') {
+	           imJLink = imJaLink.replace('http','https');
+	      }
+    
 
+        const viewer = OpenSeadragon({
+            id: "openseadragon",
+            showRotationControl: true,
+            toolbar: "buttons",
+            homeButton: "home",
+            zoomInButton: "zoom-in",
+            zoomOutButton: "zoom-out",
+            rotateLeftButton: "rotate-left",
+            rotateRightButton: "rotate-right",
+            prefixUrl: home_url + "/wp-content/themes/transcribathon/images/osdImages/",
+            tileSources: imJLink,
+        });
+    }
 })
 
 document.addEventListener('alpine:init', () => {

@@ -5,11 +5,11 @@ var map, marker;
 // Story Description Toggle
 function descToggler() {
     let buttonDesc = document.querySelector('.descMore');
-    if(buttonDesc.previousSibling.style.maxHeight === '202px') {
+    if(buttonDesc.previousSibling.style.maxHeight === '275px') {
             buttonDesc.previousSibling.style.maxHeight = 'unset';
             buttonDesc.textContent = 'Show Less';
     } else {
-            buttonDesc.previousSibling.style.maxHeight = '202px';
+            buttonDesc.previousSibling.style.maxHeight = '275px';
             buttonDesc.textContent = 'Show More';
     }
 }
@@ -21,6 +21,19 @@ var ready = (callback) => {
 }
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
+
+    // When the user clicks the button(pen on the image viewer), open the login modal
+    jQuery('#default-lock-login').click(function() {
+    	jQuery('#default-login-container').css('display', 'block');
+    })
+    // When the user clicks on <span> (x), close the modal
+    jQuery('.item-login-close').click(function() {
+    	jQuery('#default-login-container').css('display', 'none');
+    	if(jQuery('.site-navigation').hasClass("fullscreen")){
+    		jQuery("nav").removeClass("fullscreen");
+    		jQuery(".site-navigation").css('display', 'none');
+    	}
+    })
 
     // Description Toggle
     const paraToggler = document.querySelector('.descMore');
