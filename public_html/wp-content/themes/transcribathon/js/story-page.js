@@ -72,7 +72,7 @@ ready(() => {
 
     let startSlide = 0;
     let endSlide = numOfStickers;
-    
+
     // Create initial slides on the screen
     for(let x=0; x < numOfStickers; x++) {
         let imgInfo = sliderImages[x].split(' || ');
@@ -80,10 +80,10 @@ ready(() => {
         let imgId = imgInfo[1];
         let imgCompStatus = imgInfo[2];
 
-        sliderContainer.innerHTML += 
+        sliderContainer.innerHTML +=
             `<div class='slide-sticker' data-value='${x + 1}'>` +
                 `<div class='slide-img-wrap'>` +
-                    `<a href='${home_url}/documents/story/item/?story=${storyId}&item=${imgId}' class='slider-link'>` +
+                    `<a href='${home_url}/documents/story/item/?item=${imgId}' class='slider-link'>` +
                         `<img src='${imgUri}' class='slider-image' alt='slider-img-${x+1}' width='200' height='200'>` +
                     `</a>` +
                     `<div class='image-completion-status' style='background-color:${imgCompStatus};'>` +
@@ -109,7 +109,7 @@ ready(() => {
         singleDot.addEventListener('click', function() {
             currentDot = parseInt(this.getAttribute('data-value'));
             this.classList.add('current');
-            
+
             endSlide = numOfStickers * z;
             if(endSlide > sliderImages.length) {
                 endSlide = sliderImages.length;
@@ -123,14 +123,14 @@ ready(() => {
     dotContainer.querySelector('.slider-dot').classList.add('current');
 
 
-    
+
     function slideImages(slideStart, slideEnd, slides, imageInfo, storyid) {
         let indexOfSlide = 0;
         for(let i = slideStart; i < slideEnd; i++) {
             let imgArr = imageInfo[i].split(' || ');
-            
+
             slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
-            slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?story=${storyid}&item=${imgArr[1]}`);
+            slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?item=${imgArr[1]}`);
             slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
             slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
 
@@ -161,7 +161,7 @@ ready(() => {
             endSlide = endSlide + numOfStickers;
             startSlide = startSlide + numOfStickers;
         }
-       
+
         slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
         // change active dot
         const sliderDots = dotContainer.querySelectorAll('.slider-dot');

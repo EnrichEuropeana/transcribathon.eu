@@ -102,7 +102,6 @@ function _TCT_item_page_htr( $atts) {
 
     $content = '';
     $content .= '<form id="changeEditor" action="'.get_europeana_url().'/documents/story/item/item_page_htr/" method="get" style="position:absolute;bottom:10%;z-index:9999;">';
-        $content .= '<input type="number" name="story" value="'.$_GET['story'].'" hidden>';
         $content .= '<input type="number" name="item" value="'.$_GET['item'].'" hidden>';
     $content .= '</form>';
 

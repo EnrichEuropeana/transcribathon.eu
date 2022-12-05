@@ -473,7 +473,7 @@ function _TCT_compare_transcriptions( $atts) {
                     } else {
                         $imageSlider .= "<div class='slide-img-wrap'>";
                     }
-                            $imageSlider .= "<a href='" . home_url() . "/documents/compare-transcriptions/?story=" . $itemData['StoryId'] . "&item=" . $itemImages[$x]['ItemId'] . "'>";
+                            $imageSlider .= "<a href='" . home_url() . "/documents/compare-transcriptions/?item=" . $itemImages[$x]['ItemId'] . "'>";
                                 $imageSlider .= "<img src='" . $sliderImgLink . "' class='slider-image' alt='slider-img-" . ($x + 1) . "' width='200' height='200' loading='lazy'>";
                             $imageSlider .= "</a>";
                             $imageSlider .= "<div class='image-completion-status' style='bottom:20px;border-color:" . $itemImages[$x]['CompletionStatusColorCode'] . ";'></div>";
