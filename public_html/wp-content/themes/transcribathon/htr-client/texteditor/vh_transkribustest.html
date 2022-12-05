@@ -9,16 +9,14 @@
     <title>Transkribus Text-Editor</title>
     <link href=./custom.css rel=stylesheet>
     <script src=https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js></script>
-    <link href=./css/app.c2e7a107.css rel=preload as=style>
-    <link href=./css/chunk-vendors.3ee89ce5.css rel=preload as=style>
-    <link href=./js/app.83160130.js rel=preload as=script>
-    <link href=./js/chunk-vendors.8c83230e.js rel=preload as=script>
-    <link href=./css/chunk-vendors.3ee89ce5.css rel=stylesheet>
-    <link href=./css/app.c2e7a107.css rel=stylesheet>
+    <link href=/css/app.c2223102.css rel=preload as=style>
+    <link href=/css/chunk-vendors.3ee89ce5.css rel=preload as=style>
+    <link href=/js/app.4ab5c3ab.js rel=preload as=script>
+    <link href=/js/chunk-vendors.8c83230e.js rel=preload as=script>
+    <link href=/css/chunk-vendors.3ee89ce5.css rel=stylesheet>
+    <link href=/css/app.c2223102.css rel=stylesheet>
     <script>
-      //xml retrieved from https://transkribus.eu/TrpServer/rest/collections/36916/353013/396/text endpoint.
-      //Is there no endpoint where based on {collId}/{id}/{page} where you can get the json and iiif url?
-      //we communicate with the Transkribus Rest api using PHP
+     
 
       var benthamXML = "";
       var xml =
@@ -46,8 +44,8 @@
     </noscript>
     <!--setting data-iiif-url to an empty string causes a error in the vue app-->
     <div id="transkribusEditor"></div>
-    <script src=./js/chunk-vendors.8c83230e.js></script>
-    <script src=./js/app.83160130.js></script>
+    <script src=/js/chunk-vendors.8c83230e.js></script>
+    <script src=/js/app.4ab5c3ab.js></script>
     <script>
       window.eventBus.$on("save", function (data) {
         console.log("data contains (edited) text (annotations and text");

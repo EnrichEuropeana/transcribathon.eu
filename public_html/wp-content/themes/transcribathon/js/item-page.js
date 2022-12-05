@@ -16,7 +16,7 @@ function uninstallEventListeners() {
 
 function installEventListeners() {
     //initializeMap();
-    if(map){ 
+    if(map){
         map.resize();
     }
 
@@ -106,7 +106,7 @@ function installEventListeners() {
     jQuery('#lock-login').click(function() {
         jQuery('#default-login-container').css('display', 'block');
     })
-    
+
     // When the user clicks on <span> (x), close the modal
     jQuery('.item-login-close').click(function() {
         jQuery('#default-login-container').css('display', 'none');
@@ -167,7 +167,7 @@ function installEventListeners() {
                         if(!document.querySelector('#language-sel-placeholder')) {
                             h.insertAdjacentHTML('afterbegin', "<span id='language-sel-placeholder' class='language-select-selected'>Language of Description: </span><span class='desc-margin'>&nbsp</span>");
                         }
-                        
+
                     }
                     y = this.parentNode.getElementsByClassName("same-as-selected");
                     for (k = 0; k < y.length; k++) {
@@ -216,7 +216,7 @@ function installEventListeners() {
 //       'url': TP_API_HOST + '/tp-api/properties?PropertyType=Keyword'
 //   },
 //   function(response) {
-   
+
 //     var response = JSON.parse(response);
 //     var content = JSON.parse(response.content);
 //     for (var i = 0; i < content.length; i++) {
@@ -403,10 +403,10 @@ function switchItemTab(event, tabName) {
     if(map) {
         map.resize();
     }
-    
+
 }
 
-// View switch in full screen mode 
+// View switch in full screen mode
 // TODO CLEAN THIS UP!
 function switchItemView(event, viewName) {
     // Transcription Language selection
@@ -453,7 +453,7 @@ function switchItemView(event, viewName) {
             jQuery( "#item-data-section" ).removeClass("ui-resizable")
             jQuery( ".ui-resizable-handle" ).css("display", "none")
             jQuery("#location-common-map").addClass("full-map-container")
-      
+
             jQuery("#item-image-section").resizable_split({
                 handleSelector: "#item-splitter",
                 resizeHeight: false,
@@ -463,11 +463,11 @@ function switchItemView(event, viewName) {
               tinymce.activeEditor.fire('blur');
             }
             });
-      
+
             jQuery("#item-data-section").css("top", "")
             jQuery("#item-data-section").css("left", "")
             jQuery("#item-data-section").css("position", "relative")
-      
+
             jQuery("#item-data-content").css("display", 'block')
             jQuery("#item-tab-list").css("display", 'block')
             jQuery("#item-status-doughnut-chart").css("display", 'block')
@@ -483,7 +483,7 @@ function switchItemView(event, viewName) {
                 panelRContainer.style.display = 'block';
             }
 
-  
+
             jQuery("#item-image-section").css("width", '')
             jQuery("#item-image-section").css("height", '')
             jQuery("#image-view-container").removeClass("panel-container-horizontal")
@@ -503,7 +503,7 @@ function switchItemView(event, viewName) {
             jQuery( "#item-data-section" ).resizable('disable')
             jQuery( "#item-data-section" ).removeClass("ui-resizable")
             jQuery( ".ui-resizable-handle" ).css("display", "none")
-      
+
             jQuery("#item-image-section").resizable_split({
                 handleSelector: "#item-splitter",
                 resizeHeight: true,
@@ -515,10 +515,10 @@ function switchItemView(event, viewName) {
             jQuery("#item-data-section").css("top", "")
             jQuery("#item-data-section").css("left", "")
             jQuery("#item-data-section").css("position", "relative")
-      
+
             jQuery("#item-data-content").css("display", 'block')
             jQuery("#item-tab-list").css("display", 'block')
-            
+
             break;
         case 'popout':
             if(langHoldContainer.querySelector('.transcription-mini-metadat') == null) {
@@ -530,7 +530,7 @@ function switchItemView(event, viewName) {
                 panelRContainer.style.display = 'block';
             }
 
-  
+
             jQuery("#item-image-section").css("width", '100%')
             jQuery("#item-image-section").css("height", '100%')
             jQuery("#item-image-section").addClass("image-popout")
@@ -562,13 +562,13 @@ function switchItemView(event, viewName) {
                   })
               }
             }
-      
+
             jQuery("#item-data-content").css("display", 'block')
             jQuery("#item-tab-list").css("display", 'block')
-      
+
             break;
         case 'closewindow':
-  
+
             jQuery("#item-image-section").css("width", '100%')
             jQuery("#item-image-section").css("height", '100%')
             jQuery("#item-data-section").css("width", '')
@@ -595,7 +595,7 @@ function switchItemView(event, viewName) {
             jQuery( "#item-data-section" ).resizable('disable')
             jQuery( "#item-data-section" ).removeClass("ui-resizable")
             jQuery( ".ui-resizable-handle" ).css("display", "none")
-      
+
             jQuery("#item-data-content").css("display", 'none')
             jQuery("#item-tab-list").css("display", 'none')
             break;
@@ -630,11 +630,11 @@ function switchItemPageView() {
       }
     }
 
- 
+
    if (jQuery('#full-view-container').css('display') == 'block') {
      var descriptionText = jQuery('#item-page-description-text').val();
      var descriptionLanguage = jQuery('#description-language-selector select').val();
- 
+
      //
      const fSContainer = document.querySelector('#item-image-section');
      const imgViewer = document.querySelector('#openseadragon');
@@ -642,7 +642,7 @@ function switchItemPageView() {
      //
      //switch to image view
      imgViewer.style.height = '100vh';
-     
+
      fSContainer.appendChild(imgViewer);
      jQuery('.site-footer').css('display', 'none')
      jQuery('#full-view-container').css('display', 'none')
@@ -660,7 +660,7 @@ function switchItemPageView() {
      jQuery('#story-info').css('display', 'none')
      jQuery('.main-navigation').css('display', 'none')
      jQuery('#wpadminbar').css('display', 'none')
- 
+
       // Open full screen if users refreshes page while in full screen mode
       let urlLocation = new URL(window.location);
       let urlParameter = new URLSearchParams(urlLocation.search);
@@ -671,7 +671,7 @@ function switchItemPageView() {
 
       window.history.replaceState(null, null, newUrl);
       document.querySelector('#full-width').click();
- 
+
    } else {
      var descriptionText = jQuery('#item-page-description-text').val();
      var descriptionLanguage = jQuery('#description-language-selector select').val();
@@ -703,7 +703,7 @@ function switchItemPageView() {
     let newUrl = '?' + urlParameter.toString()
     window.history.replaceState(null, null, newUrl);
     // console.log(document.location.pathname);
- 
+
    }
     //installEventListeners();
     if(map) {
@@ -717,7 +717,7 @@ function updateDataProperty(dataType, id, fieldName, value) {
     data = {
         };
     data[fieldName] = value;
-    
+
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'POST',
@@ -741,7 +741,7 @@ function isWhitelisted(tinyText) {
     if(tester.body.querySelector('*:not(p)') != null) {
         window.alert('Invalid Input');
         return 0;
-    } 
+    }
     return tinyText;
 }
 
@@ -753,7 +753,7 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
     updateDataProperty('items', itemId, 'DescriptionLanguage', descriptionLanguage);
 
     var description = jQuery('#item-page-description-text').val()
-    
+
     // Check for html tags
     if(isWhitelisted(description) == 0) {
         jQuery('#item-description-spinner-container').css('display', 'none')
@@ -764,7 +764,7 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
             Description: description
         }
         var dataString= JSON.stringify(data);
-    
+
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
             'type': 'GET',
             'url': TP_API_HOST + '/tp-api/items/' + itemId
@@ -774,7 +774,7 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
             var response = JSON.parse(response);
             var descriptionCompletion = JSON.parse(response.content)["DescriptionStatusName"];
             var oldDescription = JSON.parse(response.content)["Description"];
-    
+
             jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                 'type': 'POST',
                 'url': TP_API_HOST + '/tp-api/items/' + itemId,
@@ -782,19 +782,19 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
             },
             // Check success and create confirmation message
             function(response) {
-    
+
                 // Update description text and language out of full screen when saving new values
                 const descLangCont = document.querySelector('.description-language div');
                 var descLanguage = document.querySelector('#description-language-custom-selector').textContent;
-    
+
                 if(descLanguage.includes('Language of Description: ')) {
                     descLanguage = descLanguage.replace('Language of Description: ', '');
-                } 
+                }
                 // Update description
                 document.querySelector('.current-description').textContent = description;
                 // Update Language
                 descLangCont.parentElement.style.display = 'block';
-    
+
                 if(descLangCont.querySelector('.language-single')) {
                   descLangCont.querySelector('.language-single').textContent = descLanguage;
                 } else {
@@ -852,12 +852,12 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 transcriptionLanguages.push(nextLanguage);
             }
         });
-    
+
         var noText = 0;
         if (jQuery('#no-text-checkbox').is(':checked') && document.querySelector('#item-page-transcription-text').textContent == '') {
             noText = 1
         }
-    
+
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
             'type': 'GET',
             'url': TP_API_HOST + '/tp-api/items/' + itemId
@@ -867,24 +867,24 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
             var itemCompletion = JSON.parse(response.content)["CompletionStatusName"];
             var transcriptionCompletion = JSON.parse(response.content)["TranscriptionStatusName"];
             var currentTranscription = "";
-    
+
             for (var i = 0; i < JSON.parse(response.content)["Transcriptions"].length; i++) {
                 if (JSON.parse(response.content)["Transcriptions"][i]["CurrentVersion"] == 1) {
                     currentTranscription = JSON.parse(response.content)["Transcriptions"][i]["TextNoTags"];
                 }
             }
-            
+
             if(noText === 0) {
                 const wordcount = tinymce.get('item-page-transcription-text').plugins.wordcount;
                 // var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
                 // var newTranscriptionLength = tinyMCE.editors.get([jQuery('#item-page-transcription-text').attr('id')]).getContent({format : 'text'}).length;
                 if(jQuery('#item-page-transcription-text').text()) {
                     var newTranscriptionLength = wordcount.body.getCharacterCountWithoutSpaces();
-                }     
+                }
             } else {
                 var newTranscriptionLength = 0;
             }
-            
+
             // Prepare data and send API request
             data = {
                 UserId: userId,
@@ -893,18 +893,18 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 NoText: noText,
                 Languages: transcriptionLanguages,
             }
-          
+
             if (jQuery('#item-page-transcription-text').html()) {
                 data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'}).replace(/'/g, "\\'");
-                data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'"); 
+                data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
             } else {
                 data['Text'] = "";
                 data['TextNoTags'] = "";
             }
             const curTrToUpdate = data['Text'];
-          
+
             var dataString= JSON.stringify(data);
-          
+
             jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                 'type': 'POST',
                 'url': TP_API_HOST + '/tp-api/transcriptions',
@@ -912,21 +912,21 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
             },
             // Check success and create confirmation message
             function(response) {
-            
+
                 var amount = newTranscriptionLength - currentTranscription.length
                 if (amount > 0) {
                     amount = amount;
-                } else { 
+                } else {
                     amount = 0;
                 }
-    
+
                 scoreData = {
                     ItemId: itemId,
                     UserId: userId,
                     ScoreType: "Transcription",
                     Amount: amount
                 }
-    
+
                 jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                     'type': 'POST',
                     'url': TP_API_HOST + '/tp-api/scores',
@@ -936,14 +936,14 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 function(response) {
                 })
                 updateSolr();
-    
+
                 var response = JSON.parse(response);
                 const selTrLangs = document.querySelectorAll('#transcription-selected-languages ul li');
                 const selLanCont = document.querySelector('.transcription-language div');
                 if(selLanCont) {
                     const oldLanguages = selLanCont.querySelectorAll('.language-single');
                 }
-    
+
                 if (response.code == "200") {
                     console.log(data);
                     if (itemCompletion == "Not Started") {
@@ -957,7 +957,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                     if(selLanCont) {
                         selLanCont.innerHTML = '';
                     }
-    
+
                     // Add new Languages
                     for(let langSingle of selTrLangs) {
                         let langEl = document.createElement('div');
@@ -966,7 +966,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                         langEl.textContent = langName[0];
                         selLanCont.appendChild(langEl);
                     }
-    
+
                     if(document.querySelector('#no-text-placeholder')) {
                         document.querySelector('#no-text-placeholder').style.display = 'none';
                         document.querySelector('.current-transcription').style.display = 'block';
@@ -1057,7 +1057,7 @@ function addItemProperty(itemId, userId, type, editStatusColor, statusCount, pro
 function changeStatus (itemId, oldStatus, newStatus, fieldName, value, color, statusCount, e) {
     jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-changer').css('background-color', color);
     jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').text(newStatus);
-  
+
     if (fieldName != "CompletionStatusId") {
         if (oldStatus == null) {
             jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
@@ -1069,7 +1069,7 @@ function changeStatus (itemId, oldStatus, newStatus, fieldName, value, color, st
                 var response = JSON.parse(response);
                 if (response.code == "200") {
                     var content = JSON.parse(response.content);
-  
+
                     oldStatus = content[fieldName.replace("Id", "Name")];
                     updateDataProperty("items", itemId , fieldName, value);
                 } else {
@@ -1131,16 +1131,16 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
         jQuery('#item-location-spinner-container').css('display', 'none')
         return 0;
     }
-  
+
     if (jQuery('#location-input-section .location-input-name-container input').val() == "") {
         jQuery('#location-input-section .location-input-name-container span').css('display', 'block');
         jQuery('#item-location-spinner-container').css('display', 'none')
         return 0;
     }
-  
+
     description = jQuery('#location-input-section .location-input-description-container textarea').val();
     wikidata = jQuery('#location-input-geonames-search-container > input').val().split(";");
-  
+
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'GET',
         'url': TP_API_HOST + '/tp-api/items/' + itemId
@@ -1185,7 +1185,7 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
             // Check success and create confirmation message
             function(response) {
             })
-  
+
             loadPlaceData(itemId, userId);
             if (locationCompletion == "Not Started") {
                 changeStatus(itemId, "Not Started", "Edit", "LocationStatusId", 2, editStatusColor, statusCount)
@@ -1221,7 +1221,7 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
             return 0
         }
     }
-  
+
     endDate = jQuery('#enddateentry').val().split('/');
     if (!isNaN(endDate[2]) && !isNaN(endDate[1]) && !isNaN(endDate[0])) {
         data['DateEnd'] = endDate[2] + "-" + endDate[1] + "-" + endDate[0];
@@ -1234,7 +1234,7 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
             return 0
         }
     }
-  
+
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'GET',
@@ -1282,7 +1282,7 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
             // Check success and create confirmation message
             function(response) {
             })
-  
+
             if (taggingCompletion == "Not Started") {
                 changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
             }
@@ -1294,7 +1294,7 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
 
 function savePerson(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-person-spinner-container').css('display', 'block')
-  
+
     firstName = jQuery('#person-firstName-input').val();
     lastName = jQuery('#person-lastName-input').val();
     birthPlace = jQuery('#person-birthPlace-input').val();
@@ -1303,11 +1303,11 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
     deathDate = jQuery('#person-deathDate-input').val().split('/');
     description = jQuery('#person-description-input-field').val();
     link = jQuery('#person-wiki-input-field').val();
-  
+
     if (firstName == "" && lastName == "") {
         return 0;
     }
-  
+
     // Prepare data and send API request
     data = {
         FirstName: firstName,
@@ -1330,13 +1330,13 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
     else {
         data['DeathDate'] = null;
     }
-  
+
     for (var key in data) {
         if (data[key] == "") {
             data[key] = null;
         }
     }
-  
+
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'GET',
@@ -1367,7 +1367,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
             // Check success and create confirmation message
             function(response) {
             })
-  
+
             loadPersonData(itemId, userId);
             if (taggingCompletion == "Not Started") {
                 changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
@@ -1382,14 +1382,14 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
 function saveKeyword(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-keyword-spinner-container').css('display', 'block')
     value = jQuery('#keyword-input').val();
-  
+
     if (value != "" && value != null) {
         // Prepare data and send API request
         data = {
             PropertyValue: value,
             PropertyType: "Keyword"
         }
-  
+
         var dataString= JSON.stringify(data);
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
             'type': 'GET',
@@ -1427,7 +1427,7 @@ function saveKeyword(itemId, userId, editStatusColor, statusCount) {
                 // Check success and create confirmation message
                 function(response) {
                 })
-  
+
                 loadKeywordData(itemId, userId);
                 if (taggingCompletion == "Not Started") {
                     changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
@@ -1444,7 +1444,7 @@ function saveLink(itemId, userId, editStatusColor, statusCount, e) {
     jQuery('#item-link-spinner-container').css('display', 'block')
     url = jQuery('#link-input-container .link-url-input input').val();
     description = jQuery('#link-input-container .link-description-input textarea').val();
-  
+
     if (url != "" && url != null) {
         // Prepare data and send API request
         data = {
@@ -1482,7 +1482,7 @@ function saveLink(itemId, userId, editStatusColor, statusCount, e) {
                 // Check success and create confirmation message
                 function(response) {
                 })
-  
+
                 loadLinkData(itemId, userId);
                 if (taggingCompletion == "Not Started") {
                     changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, editStatusColor, statusCount)
@@ -1522,9 +1522,9 @@ function loadPlaceData(itemId, userId) {
                             `<p><b>${escapeHtml(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
                             // Check if there is description : don't add <p> if not
                             `${location['Comment'] ?
-                                `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>` 
+                                `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>`
                                 :
-                                `` 
+                                ``
                             }` +
                             // Check for Wikidata : ^^
                             `${location['WikidataId'] ?
@@ -1543,7 +1543,7 @@ function loadPlaceData(itemId, userId) {
                             // Input Top
                             `<div class='location-input-section-top'>` +
                                 `<div class='location-input-name-container' style='min-height:25px;'>` +
-                                    `<label>Location Name:</label>` + 
+                                    `<label>Location Name:</label>` +
                                     `<input type='text' class='edit-input' value='${isItString(location['Name'])}' name='' placeholder=''>` +
                                 `</div>` +
                                 `<div class='location-input-coordinates-container' style='min-height:25px;'>` +
@@ -1551,7 +1551,7 @@ function loadPlaceData(itemId, userId) {
                                     `<span class='required-field'>*</span>` +
                                     `<input type='text' class='edit-input' value='${isItString(location['Latitude'])}, ${isItString(location['Longitude'])}' name='' placeholder=''>` +
                                 `</div>` +
-                                `<div style='clear:both;'></div>` + 
+                                `<div style='clear:both;'></div>` +
                             `</div>` +
                             // Wikidata ref container
                             `<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>` +
@@ -1585,7 +1585,7 @@ function loadPlaceData(itemId, userId) {
                                         `SAVE` +
                                     `</button>` +
                                 `</div>` +
-                                // Spinner 
+                                // Spinner
                                 `<div id='item-location-${location['PlaceId']}-spinner-container' class='spinner-container spinner-container-right'>` +
                                     `<div class='spinner'></div>` +
                                 `</div>` +
@@ -1596,15 +1596,15 @@ function loadPlaceData(itemId, userId) {
                     `</div>` ;
 
                 // Update the view out of full screen
-                locViewCont.innerHTML += 
+                locViewCont.innerHTML +=
                     `<div class='location-single'>` +
                         `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
                         `<p><b>${escapeHtml(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
                         // Check if there is description : don't add <p> if not
                         `${location['Comment'] ?
-                            `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>` 
+                            `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>`
                             :
-                            `` 
+                            ``
                         }` +
                         // Check for Wikidata : ^^
                         `${location['WikidataId'] ?
@@ -1648,9 +1648,9 @@ function loadPersonData(itemId, userId) {
 
             personOutCont.innerHTML = '';
             personViewCont.innerHTML = '';
-  
+
             for(let person of content) {
-                personOutCont.innerHTML += 
+                personOutCont.innerHTML +=
                     `<div id='person-${person['PersonId']}'>` +
                         `<div class='single-person'>` +
                             `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
@@ -1660,15 +1660,15 @@ function loadPersonData(itemId, userId) {
                                 `${(person['BirthDate'] != undefined && person['BirthDate'] != 'NULL') && (person['DeathDate'] != undefined && person['DeathDate'] != 'NULL') ?
                                     ` (${escapeHtml(person['BirthDate'])}${isItString(person['BirthPlace'], 2)} - ${escapeHtml(person['DeathDate'])}${isItString(person['DeathPlace'], 2)})`
                                     :
-                                    `${person['BirthDate'] || person['BirthPlace'] ? 
+                                    `${person['BirthDate'] || person['BirthPlace'] ?
                                         ` (Birth: ${isItString(person['BirthDate'])}${person['BirthDate'] ? ',' : ''}${isItString(person['BirthPlace'])})`
                                         :
-                                        `${person['DeathDate'] || person['DeathPlace'] ? 
+                                        `${person['DeathDate'] || person['DeathPlace'] ?
                                             ` (Death: ${isItString(person['DeathDate'])}${person['DeathDate'] ? ',' : ''}${isItString(person['DeathPlace'])})`
                                             :
                                             ``
-                                        }` 
-                                    }` 
+                                        }`
+                                    }`
                                 }` +
                             `</p>` +
                             `${person['Description'] ?
@@ -1709,7 +1709,7 @@ function loadPersonData(itemId, userId) {
                             `<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>` +
                                 `<input type='text' id='person-${person['PersonId']}-birthPlace-edit' class='input-response person-input-field person-re-edit'
                                     value='${isItString(person['BirthPlace'])}' placeholder='&nbsp Birth Location'>` +
-                                `<span class='input-response'><input type='text' id='person-${person['PersonId']}-birthDate-edit' 
+                                `<span class='input-response'><input type='text' id='person-${person['PersonId']}-birthDate-edit'
                                     class='date-input-response person-input-field datepicker-input-field person-re-edit-right'
                                     value='${isItString(person['BirthDate'])}' placeholder='&nbsp Birth: dd/mm/yyyy'>` +
                             `</div>` +
@@ -1720,7 +1720,7 @@ function loadPersonData(itemId, userId) {
                                 `<span class='input-response'><input type='text' id='person-${person['PersonId']}-deathDate-edit'
                                     class='date-input-response person-input-field datepicker-input-field person-re-edit-right'
                                     value='${isItString(person['DeathDate'])}' placeholder='&nbsp Death: dd/mm/yyyy'>` +
-                            `</div>` + 
+                            `</div>` +
 
                             `<div class='form-buttons-right'>` +
                                 `<div class='person-btn-left'>` +
@@ -1737,12 +1737,12 @@ function loadPersonData(itemId, userId) {
                                     `<div class='spinner'></div>` +
                                 `</div>` +
                                 `<div style='clear:both;'></div>` +
-                            `</div>` + 
+                            `</div>` +
                             `<div style='clear:both;'></div>` +
                         `</div>` +
                     `</div>`;
 
-                personViewCont.innerHTML += 
+                personViewCont.innerHTML +=
                     `<div class='single-person'>` +
                         `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
                         `<p class='person-data'>` +
@@ -1751,15 +1751,15 @@ function loadPersonData(itemId, userId) {
                             `${(person['BirthDate'] != undefined && person['BirthDate'] != 'NULL') && (person['DeathDate'] != undefined && person['DeathDate'] != 'NULL') ?
                                 ` (${escapeHtml(person['BirthDate'])}${isItString(person['BirthPlace'], 2)}- ${escapeHtml(person['DeathDate'])}${isItString(person['DeathPlace'], 2)})`
                                 :
-                                `${person['BirthDate'] ? 
+                                `${person['BirthDate'] ?
                                     ` (Birth: ${isItString(person['BirthDate'])}${person['BirthDate'] ? ',' : ''}${isItString(person['BirthPlace'])})`
                                     :
-                                    `${person['DeathDate'] ? 
+                                    `${person['DeathDate'] ?
                                         ` (Death: ${isItString(person['DeathDate'])}${person['DeathDate'] ? ',' : ''}${isItString(person['DeathPlace'])})`
                                         :
                                         ``
-                                    }` 
-                                }` 
+                                    }`
+                                }`
                             }` +
                         `</p>` +
                         `${person['Description'] ?
@@ -1772,8 +1772,8 @@ function loadPersonData(itemId, userId) {
                             :
                             ``
                         }` +
-                    `</div>`;  
-                    
+                    `</div>`;
+
             }
       }
     });
@@ -1826,7 +1826,7 @@ function loadLinkData(itemId, userId) {
                     if(property['PropertyDescription'] != 'NULL') {
                         propDesc = `<div class='prop-desc' style='padding-left:23px;bottom:6px;'>Description: <b>${escapeHtml(property['PropertyDescription'])}</b></div>`;
                     }
-                    extLinkCont.innerHTML += 
+                    extLinkCont.innerHTML +=
                         `<div id='link-${property['PropertyId']}'>` +
                             `<div id='link-data-output-${property['PropertyId']}' class='link-single'>` +
                                 `<div id='link-data-output-display-${property['PropertyId']}' class='link-data-output-content'>` +
@@ -1839,8 +1839,8 @@ function loadLinkData(itemId, userId) {
                                 `</div>` +
                                 `${propDesc ? propDesc : ''}` +
                             `</div>` +
-                            // Edit Container 
-                            `<div class='link-data-edit-container' id='link-data-edit-${property['PropertyId']}'>` + 
+                            // Edit Container
+                            `<div class='link-data-edit-container' id='link-data-edit-${property['PropertyId']}'>` +
                                 `<div id='link-${property['PropertyId']}-url-input' class='link-url-input'>` +
                                     `<input type='url' value='${escapeHtml(property['PropertyValue'])}' placeholder='Enter URL Here'>` +
                                 `</div>` +
@@ -1864,9 +1864,9 @@ function loadLinkData(itemId, userId) {
                                     `<div style='clear:both;'></div>` +
                                 `</div>` +
                             `</div>` +
-                        `</div>` 
+                        `</div>`
 
-                    extLinkView.innerHTML += 
+                    extLinkView.innerHTML +=
                         `<div>` +
                         `<div class='link-single'>` +
                             `<div class='link-data-output-content'>` +
@@ -1875,7 +1875,7 @@ function loadLinkData(itemId, userId) {
                             `</div>` +
                             `${propDesc ? propDesc : ''}` +
                         `</div>`
-                }    
+                }
             }
         }
     });
@@ -1977,7 +1977,7 @@ function editItemLocation(placeId, itemId, userId) {
       jQuery('#item-location-' + placeId + '-spinner-container').css('display', 'none')
       return 0;
     }
-  
+
     description = jQuery('#location-data-edit-' + placeId + ' .location-input-description-container textarea').val();
     wikidata = jQuery('#location-data-edit-' + placeId + '  .location-input-geonames-container input').val().split(";");
     // alert(wikidata[1]);
@@ -1990,7 +1990,7 @@ function editItemLocation(placeId, itemId, userId) {
               WikidataId: wikidata[1]
             }
     var dataString= JSON.stringify(data);
-  
+
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'POST',
         'url': TP_API_HOST + '/tp-api/places/' + placeId,
@@ -1999,7 +1999,7 @@ function editItemLocation(placeId, itemId, userId) {
     // Check success and create confirmation message
     function(response) {
       loadPlaceData(itemId, userId);
-  
+
       openLocationEdit(placeId);
       jQuery('#item-location-' + placeId + '-spinner-container').css('display', 'none')
     });
@@ -2007,7 +2007,7 @@ function editItemLocation(placeId, itemId, userId) {
 
 function editPerson(personId, itemId, userId) {
     jQuery('#item-person-' + personId + '-spinner-container').css('display', 'block')
-  
+
     firstName = jQuery('#person-' + personId + '-firstName-edit').val();
     lastName = jQuery('#person-' + personId + '-lastName-edit').val();
     birthPlace = jQuery('#person-' + personId + '-birthPlace-edit').val();
@@ -2016,7 +2016,7 @@ function editPerson(personId, itemId, userId) {
     deathDate = jQuery('#person-' + personId + '-deathDate-edit').val().split('/');
     description = jQuery('#person-' + personId + '-description-edit').val();
     wiki = jQuery('#person-' + personId + '-wiki-edit').val();
-  
+
     if (firstName == "" && lastName == "") {
       return 0;
     }
@@ -2042,13 +2042,13 @@ function editPerson(personId, itemId, userId) {
     else {
       data['DeathDate'] = null;
     }
-  
+
     for (var key in data) {
       if (data[key] == "") {
         data[key] = null;
       }
     }
-  
+
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'POST',
         'url': TP_API_HOST + '/tp-api/persons/' + personId,
@@ -2066,7 +2066,7 @@ function editLink(linkId, itemId, userId) {
     jQuery('#item-link-' + linkId + '-spinner-container').css('display', 'block')
     url = jQuery('#link-' + linkId + '-url-input input').val();
     description = jQuery('#link-' + linkId + '-description-input textarea').val();
-  
+
     if (url != "" && url != null) {
       // Prepare data and send API request
       data = {
@@ -2075,7 +2075,7 @@ function editLink(linkId, itemId, userId) {
         PropertyType: "Link"
       }
       var dataString= JSON.stringify(data);
-  
+
       jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
           'type': 'POST',
           'url': TP_API_HOST + '/tp-api/properties/' + linkId,
@@ -2100,7 +2100,7 @@ function setToolbarHeight() {
             e.preventDefault;
             tinymce.activeEditor.focus();
             jQuery('.tox-toolbar__group').css('width', jQuery('#mytoolbar-transcription').css('width'))
-            
+
             if(document.querySelector('.tox-tinymce')){
                 document.querySelector('.tox-tinymce').style.display = 'block';
             }
@@ -2123,7 +2123,7 @@ function escapeHtml(text) {
 
 jQuery(document).delegate('#item-page-description-text', 'keydown', function(e) {
     var keyCode = e.keyCode || e.which;
-  
+
     if (keyCode == 9) {
       e.preventDefault();
       var start = this.selectionStart;
@@ -2153,13 +2153,13 @@ function initializeMap() {
     var url = new URL(url_string);
     var itemId = url.searchParams.get('item');
     var coordinates = jQuery('.location-input-coordinates-container.location-input-container > input ')[0];
-  
+
     mapboxgl.accessToken = 'pk.eyJ1IjoiZmFuZGYiLCJhIjoiY2pucHoybmF6MG5uMDN4cGY5dnk4aW80NSJ9.U8roKG6-JV49VZw5ji6YiQ';
-  
+
     jQuery('#addMapMarker').click(function() {
       var el = document.createElement('div');
       el.className = 'marker';
-  
+
       var icon = document.createElement('i');
       icon .className = 'fas fa-map-marker-plus';
       if(typeof marker !== 'undefined') {
@@ -2168,7 +2168,7 @@ function initializeMap() {
       marker = new mapboxgl.Marker({element: el, draggable: true})
         .setLngLat(map.getCenter())
         .addTo(map);
-  
+
       var lngLat = marker.getLngLat();
       coordinates.value = lngLat.lat + ', ' + lngLat.lng;
       marker.on('dragend', onDragEnd);
@@ -2183,9 +2183,9 @@ function initializeMap() {
           scrollZoom: false
         });
         map.addControl(new mapboxgl.NavigationControl());
-  
+
         var bounds = new mapboxgl.LngLatBounds();
-  
+
         jQuery.post(
           home_url
           + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',
@@ -2256,12 +2256,12 @@ function initializeMap() {
               marker: false,
         language: 'en-EN'
       });
-  
+
       geocoder.on('result', function(res) {
         jQuery('#location-input-geonames-search-container > input').val(res.result['text_en-EN'] + '; ' + res.result.properties.wikidata);
         var el = document.createElement('div');
         el.className = 'marker';
-  
+
         var icon = document.createElement('div');
         icon .className = 'marker newMarker';
         if(typeof marker !== 'undefined') {
@@ -2276,7 +2276,7 @@ function initializeMap() {
           }
         marker.on('dragend', onDragEnd);
       })
-  
+
         //map.addControl(geocoder, 'bottom-left');
       jQuery('#location-input-section .location-input-name-container input').remove()
       jQuery('#location-input-section .location-input-name-container.location-input-container')[0].appendChild(geocoder.onAdd(map));
@@ -2320,20 +2320,20 @@ var ready = (callback) => {
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
 
-   
+
     /////////// Paragraph Collapse Toggler, on Story Page and Item Page - story/item page only
     const paraToggler = document.querySelector('.descMore');
     if(paraToggler) {
         paraToggler.addEventListener('click', descToggler, false);
     }
- 
+
     // Item Page/Full Screen - Hide tab names when they start to break
     const tabHeadList = document.querySelector('#item-tab-list');
     const tabNames = tabHeadList.querySelectorAll('.tab-h span');
     const resizeImage = document.querySelector('#item-image-section');
-    
 
-    
+
+
     // Item page full screen image splitter, remove 'editor bar' while resizing screen - item page only
     // Add listener to hide tab names when resizing below min width
     const splitter = document.querySelector('#item-splitter');
@@ -2369,7 +2369,7 @@ ready(() => {
             logContainer.style.display = 'none';
         }, false);
     }
- 
+
 
     // Item page, bind 'escape' key to close login warning if open, or full screen view(if open)
     //const escape = new KeyboardEvent('keydown');
@@ -2449,7 +2449,7 @@ ready(() => {
       if (jQuery(selElmnt).parent().attr('id') == "transcription-language-selector") {
         a.setAttribute("id", "transcription-language-custom-selector");
       }
-  
+
       a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
       x[i].appendChild(a);
       /*for each element, create a new DIV that will contain the option list:*/
@@ -2464,7 +2464,7 @@ ready(() => {
         b.appendChild(c);
       }
       x[i].appendChild(b);
-    } 
+    }
     // Start of Image slider functions
     /// Test slider
     const sliderContainer = document.querySelector('#inner-slider');
@@ -2485,7 +2485,7 @@ ready(() => {
 
     let startSlide = 0;
     let endSlide = numOfStickers;
-   
+
     // Create initial slides on the screen
     for(let x=0; x < numOfStickers; x++) {
         let imgInfo = sliderImages[x].split(' || ');
@@ -2493,10 +2493,10 @@ ready(() => {
         let imgId = imgInfo[1];
         let imgCompStatus = imgInfo[2];
 
-        sliderContainer.innerHTML += 
+        sliderContainer.innerHTML +=
             `<div class='slide-sticker' data-value='${x + 1}'>` +
                 `<div class='slide-img-wrap'>` +
-                    `<a href='${home_url}/documents/story/item/?story=${storyId}&item=${imgId}' class='slider-link'>` +
+                    `<a href='${home_url}/documents/story/item/?item=${imgId}' class='slider-link'>` +
                         `<img src='${imgUri}' class='slider-image' alt='slider-img-${x+1}' width='200' height='200'>` +
                     `</a>` +
                     `<div class='image-completion-status' style='background-color:${imgCompStatus};'>` +
@@ -2522,7 +2522,7 @@ ready(() => {
         singleDot.addEventListener('click', function() {
             currentDot = parseInt(this.getAttribute('data-value'));
             this.classList.add('current');
-           
+
             endSlide = numOfStickers * z;
             if(endSlide > sliderImages.length) {
                 endSlide = sliderImages.length;
@@ -2534,7 +2534,7 @@ ready(() => {
         dotContainer.appendChild(singleDot);
     }
     // dotContainer.querySelector('div').classList.add('current');
-    if(currentItm) {  
+    if(currentItm) {
         let currPosition = Math.floor(currentItm/numOfStickers);
         for(let dot of dotContainer.querySelectorAll('.slider-dot')) {
             if(currPosition + 1 == parseInt(dot.getAttribute('data-value'))) {
@@ -2542,21 +2542,21 @@ ready(() => {
             }
         }
     }
-    
+
     function slideImages(slideStart, slideEnd, slides, imageInfo, storyid, currItm) {
         let indexOfSlide = 0;
         for(let i = slideStart; i < slideEnd; i++) {
             let imgArr = imageInfo[i].split(' || ');
-           
+
             slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
-            slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?story=${storyid}&item=${imgArr[1]}`);
+            slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?item=${imgArr[1]}`);
             slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
             slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
             if(i === currItm) {
                 slides[indexOfSlide].querySelector('.slide-img-wrap').classList.add('active');
             } else if(slides[indexOfSlide].querySelector('.slide-img-wrap').classList.contains('active')) {
                 slides[indexOfSlide].querySelector('.slide-img-wrap').classList.remove('active');
-            }     
+            }
             indexOfSlide ++;
         }
     }
@@ -2584,7 +2584,7 @@ ready(() => {
             endSlide = endSlide + numOfStickers;
             startSlide = startSlide + numOfStickers;
         }
-      
+
         slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
         // change active dot
         const sliderDots = dotContainer.querySelectorAll('.slider-dot');
@@ -2621,8 +2621,8 @@ ready(() => {
             sliderDots[curDot - 2].classList.add('current');
         }
     });
-   
-   
+
+
 
     // Item Page, Open full screen if user comes to page from fullscreen viewer
     if(document.querySelector('#openseadragon')){
@@ -2690,7 +2690,7 @@ ready(() => {
 
 
         allNS.addEventListener('click',function() {
-            
+
             transcriptionH.style.backgroundColor = '#eeeeee';
             transcriptionH.querySelector('span').textContent = 'NOT STARTED';
 
@@ -2744,5 +2744,5 @@ ready(() => {
         })
     }
     installEventListeners();
- 
+
 });
