@@ -9,23 +9,28 @@
   <title>Transkribus Text-Editor</title>
   <link href=./custom.css rel=stylesheet>
   <script src=https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js></script>
-  <link href=./css/app.c2e7a107.css rel=preload as=style>
-  <link href=./css/chunk-vendors.3ee89ce5.css rel=preload as=style>
-  <link href=./js/app.83160130.js rel=preload as=script>
-  <link href=./js/chunk-vendors.8c83230e.js rel=preload as=script>
-  <link href=./css/chunk-vendors.3ee89ce5.css rel=stylesheet>
-  <link href=./css/app.c2e7a107.css rel=stylesheet>
+  <link href=/css/app.c2223102.css rel=preload as=style>
+  <link href=/css/chunk-vendors.3ee89ce5.css rel=preload as=style>
+  <link href=/js/app.4ab5c3ab.js rel=preload as=script>
+  <link href=/js/chunk-vendors.8c83230e.js rel=preload as=script>
+  <link href=/css/chunk-vendors.3ee89ce5.css rel=stylesheet>
+  <link href=/css/app.c2223102.css rel=stylesheet>
 </head>
 
 <body><noscript><strong>We're sorry but vue doesn't work properly without JavaScript enabled. Please enable it to
       continue.</strong></noscript>
   <div id=transkribusEditor ref=editor></div>
-  <script src=./js/chunk-vendors.8c83230e.js></script>
-  <script src=./js/app.83160130.js></script>
+  <script src=/js/chunk-vendors.8c83230e.js></script>
+  <script src=/js/app.4ab5c3ab.js></script>
 </body>
 
 </html>
-<script>window.eventBus.$on('dataSaved', function (data) {
-    console.log("react on saving the data ");
-    console.log(data);
-  });</script>
+<script>
+  window.eventBus.$on("save", function (data) {
+    console.log("data contains (edited) text (annotations and text");
+    console.log(data); //
+    alert("Saving, example...");
+    //next save to transkribus via vh backend. Should we post xml or this json? If xml how do we convert this back to xml?
+    //looking at xml.js we should convert it back to xml first.
+  });
+</script>

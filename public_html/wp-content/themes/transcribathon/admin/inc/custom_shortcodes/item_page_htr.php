@@ -113,9 +113,9 @@ function _TCT_item_page_htr( $atts) {
     if($_GET['editor'] == NULL || $_GET['editor'] == 'text') {
 
         $htrEditor = <<<HED
-<link href="{$textEditorUrl}css/app.c2e7a107.css" rel=preload as=style>
+<link href="{$textEditorUrl}css/app.c2223102.css" rel=preload as=style>
 <link href="{$textEditorUrl}css/chunk-vendors.3ee89ce5.css" rel=preload as=style>
-<link href="{$textEditorUrl}js/app.83160130.js" rel=preload as=script>
+<link href="{$textEditorUrl}js/app.4ab5c3ab.js" rel=preload as=script>
 <link href="{$textEditorUrl}js/chunk-vendors.8c83230e.js" rel=preload as=script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <style>
@@ -137,12 +137,12 @@ footer._tct_footer, footer.site-footer {
     font-weight: bolder;
 }
 </style>
-<link href="{$textEditorUrl}css/app.c2e7a107.css" rel="stylesheet" />
+<link href="{$textEditorUrl}css/app.c2223102.css" rel="stylesheet" />
 <link href="{$textEditorUrl}css/chunk-vendors.3ee89ce5.css" rel="stylesheet" />
 <link href="{$textEditorUrl}custom.css" rel="stylesheet" />
 <input form="changeEditor" name="editor" value="layout" hidden />
 <input form="changeEditor" type="submit" value="Layout Editor" style="display:none;" />
-<a id="go-home" href="{$homeUri}/documents/story/item/?story={$storyId}&item={$itemId}">Back to Item</a>;
+<a id="go-home" href="{$homeUri}/documents/story/item/?item={$itemId}">Back to Item</a>;
 <div
     id="transkribusEditor"
     ref="editor"
@@ -168,7 +168,7 @@ ready(() => {
 })
 </script>
 <script src="{$textEditorUrl}js/chunk-vendors.8c83230e.js"></script>
-<script src="{$textEditorUrl}js/app.83160130.js"></script>
+<script src="{$textEditorUrl}js/app.4ab5c3ab.js"></script>
 <script>
 
 
@@ -209,7 +209,7 @@ HED;
 
         // Remove line breaks, otherwise layoueditor doesn't work
         $layoutTranscription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
-        
+
         // Get json file from IIIF
         $layoutImage = file_get_contents($imJLink);
         // Remove line breaks
