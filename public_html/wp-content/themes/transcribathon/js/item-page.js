@@ -1509,7 +1509,9 @@ function loadPlaceData(itemId, userId) {
             const locContainer = document.querySelector('.location-display-container');
             const locViewCont = document.querySelector('.location-view-container');
             const storyLoc = locContainer.querySelector('.story-location');
-            const viewStoryLoc = storyLoc.cloneNode(true);
+            if(storyLoc) {
+                const viewStoryLoc = storyLoc.cloneNode(true);
+            }
             // Empty the old location list
             locContainer.innerHTML = "";
             locViewCont.innerHTML = "";
@@ -1615,8 +1617,11 @@ function loadPlaceData(itemId, userId) {
                         }` +
                     `</div>` ;
             }
-            locContainer.appendChild(storyLoc);
-            locViewCont.appendChild(viewStoryLoc);
+            if(storyLoc) {
+                locContainer.appendChild(storyLoc);
+                locViewCont.appendChild(viewStoryLoc);
+            }
+            
         }
     });
 }
