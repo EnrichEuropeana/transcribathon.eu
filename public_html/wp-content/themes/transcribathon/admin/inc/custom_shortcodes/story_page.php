@@ -43,17 +43,17 @@ function _TCT_get_document_data( $atts ) {
     //// NEW IMAGE SLIDER
     $allImages = [];
     for($x = 0; $x < $numbPhotos; $x++) {
-                   
+
         $sliderImg = json_decode($storyData['Items'][$x]['ImageLink'], true);
         $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
-                        
+
         if($sliderImg['height'] == null) {
             $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
         }
-    
+
         array_push($allImages, ($sliderImgLink . ' || ' . $storyData['Items'][$x]['ItemId'] . ' || ' . $storyData['Items'][$x]['CompletionStatusColorCode']));
     }
-    
+
     $imageSlider = "";
     $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
     $imageSlider .= "<div id='story-id' style='display:none;'>" . $storyData['StoryId'] . "</div>";
@@ -72,7 +72,7 @@ function _TCT_get_document_data( $atts ) {
     $content .= "</section>";
 
         /* New- Start Transcription button */
-        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item/?story=".$storyData['StoryId']."&item=".$storyData['Items'][$randomItem]['ItemId']."' style='font-family:\"Dosis\";margin-top:6px;'><b>🖉  Start Transcription</b></a>";
+        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item/?item=".$storyData['Items'][$randomItem]['ItemId']."' style='font-family:\"Dosis\";margin-top:6px;'><b>🖉  Start Transcription</b></a>";
 
         $content .= "<div id='total-storypg' class='storypg-container'>";
             $content .= "<div class='main-storypg'>";
@@ -82,7 +82,7 @@ function _TCT_get_document_data( $atts ) {
 
                     $content .= "<div class='story-description-left'>";
                     //    $content .= "<div id='desc-img-wrap'>";
-                    $content .= "<a href='".home_url()."/documents/story/item/?story=".$storyData['StoryId']."&item=".$storyData['Items'][$randomItem]['ItemId']."'><img class=\"description-img\" src='".$imgDescriptionLink."' alt=\"story-img\"></a>";
+                    $content .= "<a href='".home_url()."/documents/story/item/?item=".$storyData['Items'][$randomItem]['ItemId']."'><img class=\"description-img\" src='".$imgDescriptionLink."' alt=\"story-img\"></a>";
                     unset($imgDescriptionLink);
                     //    $content .= "</div>";
 
@@ -175,7 +175,7 @@ function _TCT_get_document_data( $atts ) {
                         unset($storyKeyWords);
                         $content .= "</div>";
                         $content .= "<div class='tr-comparison'>";
-                            $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=".$storyData['StoryId']."&item=".$storyData['Items'][$randomItem]['ItemId']."'>Compare Manual and HTR transcriptions</a>";
+                            $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?item=".$storyData['Items'][$randomItem]['ItemId']."'>Compare Manual and HTR transcriptions</a>";
                         $content .= "</div>";
                     $content .= "</div>"; //second column closing
                 $content .= "</div>"; //row closing
@@ -336,7 +336,7 @@ function _TCT_get_document_data( $atts ) {
                                                     var el = document.createElement('div');
                                                     el.className = 'marker savedMarker';
                                                     var popup = new mapboxgl.Popup({offset: 25, closeButton: false})
-                                                    .setHTML('<div class=\"popupWrapper\"><div class=\"name\">' + (place.Name || \"\") + '</div><div class=\"comment\">' + (place.Comment || \"\") + '</div>' + '<a class=\"item-link\" href=\"' + home_url + '/documents/story/item/?story=' + places[0].StoryId + '&item=' + marker.ItemId + '\">' + marker.Title + '</a></div></div>');
+                                                    .setHTML('<div class=\"popupWrapper\"><div class=\"name\">' + (place.Name || \"\") + '</div><div class=\"comment\">' + (place.Comment || \"\") + '</div>' + '<a class=\"item-link\" href=\"' + home_url + '/documents/story/item/?item=' + marker.ItemId + '\">' + marker.Title + '</a></div></div>');
                                                     bounds.extend([place.Longitude, place.Latitude]);
                                                     new mapboxgl.Marker({element: el, anchor: 'bottom'})
                                                     .setLngLat([place.Longitude, place.Latitude])
@@ -383,7 +383,7 @@ function _TCT_get_document_data( $atts ) {
                         } elseif ($storyData['dcContributor']) {
                             $content .= "<div class='meta-sticker'>";
                                 $content .= "<span class='mb-1'>Contributor</span>";
-                                $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $storyData['dcContributor']) . "</span>"; 
+                                $content .= "<span class='meta-p'>" . str_replace(' || ', '</br>', $storyData['dcContributor']) . "</span>";
                             $content .= "</div>";
                         }
 
