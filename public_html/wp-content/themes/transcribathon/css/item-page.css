@@ -2707,17 +2707,36 @@ div.tox.tox-tinymce {
     font-weight: 600;
     margin-left: 40px;
 }
-.run-htr, .htr-editor {
+/* .run-htr {
     display: inline-block;
     color: var(--main-color);
     font-family: var(--h-font-family);
     font-size: 1.1em;
     font-weight: 600;
     cursor: pointer;
-}
+} */
 .htr-btns {
     margin: 10px auto;
     padding: 0 25px;
+    color: var(--main-color);
+    font-family: var(--h-font-family);
+    font-weight: 600;
+    letter-spacing: 0.025em;
+}
+.htr-btns .left-btn {
+    width: 54%;
+    float: left;
+}
+.htr-btns .right-btn {
+    width: 43%;
+    float: right;
+}
+.right-btn div:first-of-type {
+    margin-left: 10px;
+    float: left;
+}
+.right-btn div:last-of-type {
+    float: right;
 }
 /* -- Compare Transcriptions Css -- */
 #full-width-viewer {

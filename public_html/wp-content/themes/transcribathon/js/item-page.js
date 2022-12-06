@@ -750,6 +750,7 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-description-spinner-container').css('display', 'block')
 
     var descriptionLanguage = jQuery('#description-language-selector select').val();
+    console.log(descriptionLanguage);
     updateDataProperty('items', itemId, 'DescriptionLanguage', descriptionLanguage);
 
     var description = jQuery('#item-page-description-text').val()
@@ -2316,6 +2317,21 @@ function initializeMap() {
     });
 }
 
+//
+
+
+async function showActiveTranscription(itemId) {
+    let source = null;
+    const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/items/' + itemId; 
+    const result = await (await fetch(requestUri)).json();
+    source = result.data.TranscriptionSource;
+    console.log(source);
+
+    return source;
+}
+
+
+
 // Declaration of replacement for jQuery document.ready, it runs the check if DOM has loaded until it loads
 var ready = (callback) => {
     if (document.readyState != "loading") callback();
@@ -2410,35 +2426,7 @@ ready(() => {
             }
         }
     });
-    // Item page, enrichments, language-selector
-    // Get all elements with class 'language-selector-background'
-    // const languageSelector = document.querySelectorAll('.language-selector-background');
-    // for(i = 0; i < languageSelector.length; i++) {
-    //     const selectedElement = languageSelector[i].querySelector('select');
-    //     // For each element, create a new DIV that will act as the selected item
-    //     const selectorDiv = document.createElement('div');
-    //     selectorDiv.classList.add('language-select-selected');
-    //     // Separate transcription and description selectors
-    //     if(selectedElement.parentElement.id === 'transcription-language-selector') {
-    //         selectorDiv.id = 'transcription-language-custom-selector';
-    //     } else if(selectedElement.parentElement.id === 'description-language-selector') {
-    //         selectorDiv.id = 'description-language-custom-selector';
-    //     }
-    //     selectorDiv.textContent = selectedElement.options[selectedElement.selectedIndex].textContent;
-    //     languageSelector[i].appendChild(selectorDiv);
-    //     // For each element, create option list div
-    //     const optionDiv = document.createElement('div');
-    //     optionDiv.classList.add('language-item-select','select-hide');
 
-    //     for(j = 0; j < selectedElement.length; j++) {
-    //         if(selectedElement.options[j].textContent != 'Language(s) of the Document:'){// For each option, create DIV that will act as option item
-    //         let optionItemDiv = document.createElement('div');
-    //         optionItemDiv.classList.add('selected-option');
-    //         optionItemDiv.textContent = selectedElement.options[j].textContent;
-    //         optionDiv.appendChild(optionItemDiv);}
-    //     }
-    //     languageSelector[i].appendChild(optionDiv);
-    // }
     // TODO Rewrite language select
     var x, i, j, selElmnt, a, b, c;
     /*look for any elements with the class "language-selector-background":*/
@@ -2748,6 +2736,17 @@ ready(() => {
           }
         })
     }
+
+    // Add event listener to the 'Language of Description'
+    const langOfDescPH = document.querySelector('#language-sel-placeholder');
+    if(langOfDescPH) {
+        const currDescLang = document.querySelector('#description-language-custom-selector');
+        langOfDescPH.addEventListener('click', function() {
+            document.querySelector('#description-language-custom-selector').click();
+        });
+        currDescLang.insertAdjacentHTML('beforeend', '<i id="del-desc-lang" class="far fa-times" style="margin-left: 5px;"></i>');
+    }
+
     installEventListeners();
 
 });

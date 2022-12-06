@@ -7,7 +7,13 @@ Description: Gets item data and builds the item page without htr editor
 
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
+//
+// // Transkribus Client, include required files
+// require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
+// require_once(get_stylesheet_directory() . '/htr-client/config.php');
 
+use FactsAndFiles\Transcribathon\TranskribusClient;
+//
 date_default_timezone_set('Europe/Berlin');
 
 function _TCT_mtr_transcription( $atts) {
@@ -38,9 +44,26 @@ function _TCT_mtr_transcription( $atts) {
             $categories = $itemPageData['Categories'];
             $itemImages = $itemPageData['ItemImages'];
         }
+    // Check which Transcription is active
+    $trCheck = json_decode(checkActiveTranscription($itemData['ItemId']));
+    $activeTr = $trCheck->data->TranscriptionSource;
     // Build required components for the page
     $content = "";
 
+    // TODO MOVE THIS TO THE APPROPRIATE PLACE
+    // Get htr data
+    // create new Transkribus client and inject configuration
+    // $transkribusClient = new TranskribusClient($config);
+    // // get the HTR-transcribed data from database if there is one
+    // $htrDataJson = $transkribusClient->getDataFromTranscribathon(
+    //     null,
+    //     array(
+    //         'ItemId' => $_GET['item'],
+    //             'orderBy' => 'LastUpdated',
+    //             'orderDir' => 'desc'
+    //     )
+    // );
+    
     $content .= '<script>
     window.onclick = function(event) {
         if (event.target.id != "transcription-status-indicator") {
@@ -148,18 +171,43 @@ function _TCT_mtr_transcription( $atts) {
         $content .= "</div>";
     $content .= "</div>";
 
-    // Get the current transcription
     $currentTranscription = null;
-    $transcriptionList = [];
-    if($itemData['Transcriptions'] != null) {
-        foreach($itemData['Transcriptions'] as $transcription) {
-            if($transcription['CurrentVersion'] == '1') {
-                $currentTranscription = $transcription;
-            } else {
-                array_push($transcriptionList, $transcription);
-            }
+
+    // Get the current transcription
+    if($activeTr == 'htr' || $itemData['Transcriptions'] == null) {
+        // Get htr data
+
+        // Transkribus Client, include required files
+        require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
+        require_once(get_stylesheet_directory() . '/htr-client/config.php');
+        
+        // create new Transkribus client and inject configuration
+        $transkribusClient = new TranskribusClient($config);
+        // get the HTR-transcribed data from database if there is one
+        $htrDataJson = $transkribusClient->getDataFromTranscribathon(
+            null,
+            array(
+                'ItemId' => $_GET['item'],
+                    'orderBy' => 'LastUpdated',
+                    'orderDir' => 'desc'
+            )
+        );
+        $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
+        $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
+        
+    } else {
+    
+        $transcriptionList = [];
+        if($itemData['Transcriptions'] != null) {
+            foreach($itemData['Transcriptions'] as $transcription) {
+                if($transcription['CurrentVersion'] == '1') {
+                    $currentTranscription = $transcription;
+                } else {
+                    array_push($transcriptionList, $transcription);
+                }
+            } 
         } 
-    } 
+    }
     // Get the progress data
     $progressData = array(
         $itemData['TranscriptionStatusName'],
@@ -940,35 +988,36 @@ function _TCT_mtr_transcription( $atts) {
 
             $i = 1;
 
-            foreach($transcriptionList as $transcription) {
-                $user = get_userdata($transcription['WP_UserId']);
-                $trHistory .= "<div class='transcription-toggle' data-toggle='collapse' data-target='#transcription-" . $i . "'>";
-                    $trHistory .= "<i class='fas fa-calendar-day' style='margin-right: 6px;'></i>";
-                    $date = strtotime($transcription['Timestamp']);
-                    $trHistory .= "<span class='day-n-time'>";
-                        $trHistory .= $transcription['Timestamp'];
-                    $trHistory .= "</span>";
-                    $trHistory .= "<i class='fas fa-user-alt' style='margin: 0 6px;'></i>";
-                    $trHistory .= "<span class='day-n-time'>";
-                        $trHistory .= "<a target='_blank' href='" . network_home_url() . "profile/" . $user->data->user_nicename . "'>";
-                            $trHistory .= $user->data->user_nicename;
-                        $trHistory .= "</a>";
-                    $trHistory .= "</span>";
-                    $trHistory .= "<i class='fas fa-angle-down' style='float:right;'></i>";
-                $trHistory .= "</div>";
-
-                $trHistory .= "<div id='transcription-" . $i . "' class='collapse transcription-history-collapse-content'>";
-                    $trHistory .= "<p>";
-                        $trHistory .= $transcription['TextNoTags'];
-                    $trHistory .= "</p>";
-                    $trHistory .= "<input class='transcription-comparison-button theme-color-background' type='button'
-                                    onClick='compareTranscription(" . htmlentities(json_encode($transcriptionList[$i]['TextNoTags']), ENT_QUOTES) . ", 
-                                    " . htmlentities(json_encode($currentTranscription['TextNoTags']), ENT_QUOTES)."," . $i . ")' value='Compare to current transcription'>";
-                    $trHistory .= "<div id='transcription-comparison-output-" . $i . "' class='transcription-comparison-output'></div>";
-                $trHistory .= "</div>";
-                $i ++;
+            if($transcriptionList != null) {
+                foreach($transcriptionList as $transcription) {
+                    $user = get_userdata($transcription['WP_UserId']);
+                    $trHistory .= "<div class='transcription-toggle' data-toggle='collapse' data-target='#transcription-" . $i . "'>";
+                        $trHistory .= "<i class='fas fa-calendar-day' style='margin-right: 6px;'></i>";
+                        $date = strtotime($transcription['Timestamp']);
+                        $trHistory .= "<span class='day-n-time'>";
+                            $trHistory .= $transcription['Timestamp'];
+                        $trHistory .= "</span>";
+                        $trHistory .= "<i class='fas fa-user-alt' style='margin: 0 6px;'></i>";
+                        $trHistory .= "<span class='day-n-time'>";
+                            $trHistory .= "<a target='_blank' href='" . network_home_url() . "profile/" . $user->data->user_nicename . "'>";
+                                $trHistory .= $user->data->user_nicename;
+                            $trHistory .= "</a>";
+                        $trHistory .= "</span>";
+                        $trHistory .= "<i class='fas fa-angle-down' style='float:right;'></i>";
+                    $trHistory .= "</div>";
+    
+                    $trHistory .= "<div id='transcription-" . $i . "' class='collapse transcription-history-collapse-content'>";
+                        $trHistory .= "<p>";
+                            $trHistory .= $transcription['TextNoTags'];
+                        $trHistory .= "</p>";
+                        $trHistory .= "<input class='transcription-comparison-button theme-color-background' type='button'
+                                        onClick='compareTranscription(" . htmlentities(json_encode($transcriptionList[$i]['TextNoTags']), ENT_QUOTES) . ", 
+                                        " . htmlentities(json_encode($currentTranscription['TextNoTags']), ENT_QUOTES)."," . $i . ")' value='Compare to current transcription'>";
+                        $trHistory .= "<div id='transcription-comparison-output-" . $i . "' class='transcription-comparison-output'></div>";
+                    $trHistory .= "</div>";
+                    $i ++;
+                }
             }
-
         $trHistory .= "</div>";
     $trHistory .= "</div>";
     // Editor Tab
@@ -1201,6 +1250,7 @@ function _TCT_mtr_transcription( $atts) {
                                     $descriptionTab .= $language['Name'];
                                 $descriptionTab .= "</option>";
                             }
+                            
                         }
                     }
                 $descriptionTab .= "</select>";
@@ -1592,16 +1642,18 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "<div id='full-view-l'>";
                 $content .= $imageViewer;
                 $content .= "<div class='htr-btns'>";
-                    $content .= "<div class='run-htr' style='float:left;'>";
+                    $content .= "<div class='left-btn'>";
                         $content .= "<a href='". home_url() ."/import-htr-transcription/?itemId=". $itemData['ItemId'] ."'>Run Transkribus automatic text recognition(HTR) ";
                         $content .= "<i class='fas fa-desktop'></i></a>";
                     $content .= "</div>";
-                    $content .= "<div class='compare-tr'>";
-                        $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>Compare Transcription</a>";
-                    $content .= "</div>";
-                    $content .= "<div class='htr-editor' style='float:right;'>";
-                        $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR editor ";
-                        $content .= "<i class='fas fa-pen-alt'></i></a>";
+                    $content .= "<div class='right-btn'>";
+                        $content .= "<div>";
+                            $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>Compare Transcription</a>";
+                        $content .= "</div>";
+                        $content .= "<div>";
+                            $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR editor ";
+                            $content .= "<i class='fas fa-pen-alt'></i></a>";
+                        $content .= "</div>";
                     $content .= "</div>";
                     $content .= "<div style='clear:both;'></div>";
                 $content .= "</div>";
@@ -1631,7 +1683,12 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "</div>";
                     } else {
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
-                            $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
+                            if($activeTr == 'htr' || $currentTranscription['Text'] == null) {
+                                $formattedTranscription = $htrTranscription;
+                                $content .= "<script>document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';</script>";
+                            } else {
+                                $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
+                            }
                         }
                         if(strlen($formattedTranscription) < 700 && strlen($formattedTranscription) != 0) {
                             $content .= "<div class='current-transcription' style='padding-left:24px;'>";
@@ -1654,8 +1711,10 @@ function _TCT_mtr_transcription( $atts) {
                             $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
-                                foreach($currentTranscription['Languages'] as $language) {
-                                    $content .= "<div class='language-single'>" . $language['Name'] . "</div>";
+                                if($currentTranscription) {
+                                    foreach($currentTranscription['Languages'] as $language) {
+                                        $content .= "<div class='language-single'>" . $language['Name'] . "</div>";
+                                    }
                                 }
                             $content .= "</div>";
                         } else {
@@ -1989,9 +2048,6 @@ function _TCT_mtr_transcription( $atts) {
         $content .= "</div>";
     $content .= "</div>";
 
-
-
-//$content .= "</div>"; // end of full-view-container
     // JAVASCRIPT TODO put in a separate file
     $content .= "<script>
     
@@ -2051,6 +2107,14 @@ function _TCT_mtr_transcription( $atts) {
             metaCollapseBtn.click();
         });
 
+        let descLangDel = document.querySelector('#del-desc-lang');
+        if(descLangDel) {
+            descLangDel.addEventListener('click',function() {
+                    updateDataProperty('items', ". $itemData['ItemId'] .", 'DescriptionLanguage', 0);
+                    this.parentNode.style.display = 'none';
+                }
+            );
+        }
     });
     
     

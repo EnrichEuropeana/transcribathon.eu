@@ -19,6 +19,29 @@ function extractImageService($imageData) {
 
     return $extractedService;
 }
+/**
+ * Function to check valid Transcription
+ * For now passing just item ID, it can be modified for other use
+ */
+function checkActiveTranscription($itemID) {
+    // Create a stream
+    $options = [
+        'http' => [
+            'header' => [
+                'Content-type: application/json',
+                'Authorization: Bearer ' . TP_API_V2_TOKEN
+            ],
+            'method' => 'GET'
+        ]
+    ];
+      
+    $context = stream_context_create($options);
+      
+    // Open the file using the HTTP headers set above
+    $result = file_get_contents(TP_API_V2_ENDPOINT . "/items/" . $itemID, false, $context);
+
+    return $result;
+}
 
 /**
  * $request as array with IIIF image request API:
