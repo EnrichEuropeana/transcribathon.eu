@@ -1624,7 +1624,7 @@ function loadPlaceData(itemId, userId) {
             if(storyLoc) {
                 locContainer.appendChild(storyLoc);
             }
-            
+
         }
     });
 }
@@ -2159,6 +2159,11 @@ function initializeMap() {
           function(response) {
             const content  = JSON.parse(response).content;
             const places  = JSON.parse(content);
+
+            if (places.length < 1) {
+                return;
+            }
+
             places.filter(place => place.Latitude != 0 || place.Longitude != 0).forEach(function(marker) {
               var el = document.createElement('div');
               el.className = 'marker savedMarker ' + (marker.ItemId == 0 ? "storyMarker" : "");
@@ -2279,7 +2284,7 @@ function initializeMap() {
 
 async function showActiveTranscription(itemId) {
     let source = null;
-    const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/items/' + itemId; 
+    const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/items/' + itemId;
     const result = await (await fetch(requestUri)).json();
     source = result.data.TranscriptionSource;
     console.log(source);

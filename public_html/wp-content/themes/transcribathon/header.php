@@ -18,11 +18,17 @@
 	<meta name="description" content="Transcribing of historical documents">
 	<link rel="profile" href="http://gmpg.org/xfn/11" />
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
-	<link rel="shortcut icon" href="/wp-content/themes/transcribathon/images/favicon.ico" />
-	<link rel="apple-touch-icon-precomposed" href="/wp-content/themes/transcribathon/images/apple-touch-icon-precomposed.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/wp-content/themes/transcribathon/images/apple-touch-icon-72x72-precomposed.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/wp-content/themes/transcribathon/images/apple-touch-icon-114x114-precomposed.png" />
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/wp-content/themes/transcribathon/images/apple-touch-icon-144x144-precomposed.png" />
+	<link rel="shortcut icon" href="<?php echo get_stylesheet_directory_uri(); ?>/images/favicon.ico" />
+	<link rel="apple-touch-icon-precomposed" href="<?php echo get_stylesheet_directory_uri(); ?>/images/apple-touch-icon-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo get_stylesheet_directory_uri(); ?>/images/apple-touch-icon-72x72-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo get_stylesheet_directory_uri(); ?>/images/apple-touch-icon-114x114-precomposed.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo get_stylesheet_directory_uri(); ?>/images/apple-touch-icon-144x144-precomposed.png" />
+	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/dosis-v27-latin-regular.woff2" as="font" type="font/woff2" crossOrigin />
+	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/dosis-v27-latin-700.woff2" as="font" type="font/woff2" crossOrigin />
+	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-regular.woff2" as="font" type="font/woff2" crossOrigin />
+	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-700.woff2" as="font" type="font/woff2" crossOrigin />
+	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-italic.woff2" as="font" type="font/woff2" crossOrigin />
+	<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/fonts.css" type="text/css" />
 	<script>const TP_API_HOST = '<?php echo TP_API_HOST; ?>';</script>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163155192-1"></script>
