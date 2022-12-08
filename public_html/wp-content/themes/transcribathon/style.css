@@ -12,11 +12,7 @@ Version: 1.0
 /* Retreive styles from mother theme */
 @import url("css/logos.css");
 /* Main font */
-/* @import url("https://fonts.googleapis.com/css?family=Fira+Sans+Condensed:300,400,600");
-/* Dosis and Open Sans 
-@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap'); */
-
+@import url("css/fonts.css");
 /* Make some global variables */
 :root {
   --main-color: #0a72cc;
@@ -1846,12 +1842,12 @@ div#comments ol.commentlist li.comment li.comment p {
 div#comments ol.commentlist li.comment article {
   margin-bottom: 0px !important;
 }
-/* Comment-Form 
+/* Comment-Form
 div#comments div#respond {
-   background: #fff; 
-   margin: 10px 0px; 
-   padding: 0px 10px; 
-   border: 1px solid #eee; 
+   background: #fff;
+   margin: 10px 0px;
+   padding: 0px 10px;
+   border: 1px solid #eee;
 }*/
 div#comments div#respond h3#reply-title {
   font-weight: 400;
