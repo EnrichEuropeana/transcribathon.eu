@@ -5,155 +5,137 @@ Shortcode: item_page_htr
 Description: Gets item data and builds the item page without htr editor
 */
 
-// include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
-//
-// // Transkribus Client, include required files
 
 use FactsAndFiles\Transcribathon\TranskribusClient;
-//
+
 date_default_timezone_set('Europe/Berlin');
 
-function _TCT_mtr_transcription( $atts) {
-    global $ultimatemember, $config;
-    if (isset($_GET['item']) && $_GET['item'] != "") {
-        // Set request parameters for image data
-        // $requestData = array(
-        //     'key' => 'testKey'
-        // );
-        $url = TP_API_HOST."/tp-api/items/".$_GET['item'];
+function _TCT_mtr_transcription($atts)
+{
+    global $config;
 
-        $options = [
-            'http' => [
-                'header' => [
-                    'Content-type: application/json',
-            ],
-                'method' => 'GET'
-            ]
-        ];
-        $context = stream_context_create($options);
+    if (empty($_GET['item'])) {
+        return;
+    }
 
-	    $data = @file_get_contents($url, false, $context);
-        $isLoggedIn = is_user_logged_in();
+    $itemId = intval($_GET['item']);
 
-        // Save image data
-        $itemData = json_decode($data, true);
+    $isLoggedIn = is_user_logged_in();
 
-        if ($itemData['StoryId'] != null) {
-            // Set request parameters for story data
-            $url = TP_API_HOST."/tp-api/itemPage/".$itemData['StoryId'];
+    $getJsonOptions = [
+        'http' => [
+            'header' => [ 'Content-type: application/json' ],
+            'method' => 'GET'
+        ]
+    ];
 
-            $options = [
-                'http' => [
-                    'header' => [
-                        'Content-type: application/json',
-                ],
-                    'method' => 'GET'
-                ]
-            ];
-            $context = stream_context_create($options);
+    $itemData = sendQuery(TP_API_HOST . '/tp-api/items/' . $itemId, $getJsonOptions, true);
 
-            $data = @file_get_contents($url, false, $context);
+    if (empty($itemData['StoryId'])) {
+        return;
+    }
 
-            // Save story data
-            $itemPageData = json_decode($data, true);
+    $storyId = $itemData['StoryId'];;
 
-            $statusTypes = $itemPageData['CompletionStatus'];
-            $fieldMappings = $itemPageData['FieldMappings'];
-            $languages = $itemPageData['Languages'];
-            $categories = $itemPageData['Categories'];
-            $itemImages = $itemPageData['ItemImages'];
-        }
+    $pageData = sendQuery(TP_API_HOST . '/tp-api/itemPage/' . $storyId, $getJsonOptions, true);
+
+    $statusTypes = $pageData['CompletionStatus'];
+    $languages = $pageData['Languages'];
+    $categories = $pageData['Categories'];
+    $itemImages = $pageData['ItemImages'];
+
     // Check which Transcription is active
     $trCheck = json_decode(checkActiveTranscription($itemData['ItemId']));
     $activeTr = $trCheck->data->TranscriptionSource;
+
     // Build required components for the page
     $content = "";
 
     // TODO MOVE THIS TO THE APPROPRIATE PLACE
 
     $content .= '<script>
-    window.onclick = function(event) {
-        if (event.target.id != "transcription-status-indicator") {
-            var dropdown = document.getElementById("transcription-status-dropdown");
-            if (dropdown.classList.contains("show")) {
-                dropdown.classList.remove("show");
-            }
-        }
-        if (event.target.id != "description-status-indicator") {
-            var dropdown = document.getElementById("description-status-dropdown");
-            if (dropdown.classList.contains("show")) {
-                dropdown.classList.remove("show");
-            }
-        }
-        if (event.target.id != "location-status-indicator") {
-            var dropdown = document.getElementById("location-status-dropdown");
-            if (dropdown.classList.contains("show")) {
-                dropdown.classList.remove("show");
-            }
-        }
-        if (event.target.id != "tagging-status-indicator") {
-            var dropdown = document.getElementById("tagging-status-dropdown");
-            if (dropdown.classList.contains("show")) {
-                dropdown.classList.remove("show");
-            }
-        }
-    }
+        window.onclick = function(event) {
+            if (event.target.id != "transcription-status-indicator") {
+                var dropdown = document.getElementById("transcription-status-dropdown");
+                if (dropdown.classList.contains("show")) {
+                    dropdown.classList.remove("show");
+}
+}
+if (event.target.id != "description-status-indicator") {
+    var dropdown = document.getElementById("description-status-dropdown");
+    if (dropdown.classList.contains("show")) {
+        dropdown.classList.remove("show");
+}
+}
+if (event.target.id != "location-status-indicator") {
+    var dropdown = document.getElementById("location-status-dropdown");
+    if (dropdown.classList.contains("show")) {
+        dropdown.classList.remove("show");
+}
+}
+if (event.target.id != "tagging-status-indicator") {
+    var dropdown = document.getElementById("tagging-status-dropdown");
+    if (dropdown.classList.contains("show")) {
+        dropdown.classList.remove("show");
+}
+}
+}
 </script>';
     // Lock item if user is not logged in or someone else is Enriching Item
     $locked = false;
     if ($isLoggedIn && ($itemData['LockedTime'] < date("Y-m-d H:i:s") || get_current_user_id() == $itemData['LockedUser'])) {
         $content .= '<script>
-                        // Lock document
-                        // Prepare data and send API request
-                        data = {
-                                };
-                        var today = new Date();
-                        today = new Date(today.getTime() + 60000);
-                        var dateTime = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                        data["LockedTime"] = dateTime;
-                        data["LockedUser"] = '.get_current_user_id().';
+            // Lock document
+            // Prepare data and send API request
+            data = {
+    };
+    var today = new Date();
+    today = new Date(today.getTime() + 60000);
+    var dateTime = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    data["LockedTime"] = dateTime;
+    data["LockedUser"] = '.get_current_user_id().';
 
-                        var dataString= JSON.stringify(data);
-                        jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
-                            "type": "POST",
-                            "url": home_url + "/tp-api/items/" + '. $itemData['ItemId'] .',
-                            "data": data
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                        var response = JSON.parse(response);
-                        if (response.code == "200") {
-                            return 1;
-                        }
-                        else {
-                        }
-                        });
-                        setInterval(function() {
-                            // Prepare data and send API request
-                            data = {
-                                    };
-                            var today = new Date();
-                            today = new Date(today.getTime() + 60000);
-                            var dateTime = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                            data["LockedTime"] = dateTime;
-                            data["LockedUser"] = '.get_current_user_id().';
+    var dataString= JSON.stringify(data);
+    jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
+    "type": "POST",
+        "url": home_url + "/tp-api/items/" + '. $itemData['ItemId'] .',
+        "data": data
+    },
+        // Check success and create confirmation message
+        function(response) {
+            var response = JSON.parse(response);
+            if (response.code == "200") {
+                return 1;
+    }
+    else {
+    }
+    });
+    setInterval(function() {
+        // Prepare data and send API request
+        data = {
+    };
+    var today = new Date();
+    today = new Date(today.getTime() + 60000);
+    var dateTime = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    data["LockedTime"] = dateTime;
+    data["LockedUser"] = '.get_current_user_id().';
 
-                            var dataString= JSON.stringify(data);
-                            jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
-                                "type": "POST",
-                                "url": home_url + "/tp-api/items/" + '.$_GET['item'].',
-                                "data": data
-                            },
-                            // Check success and create confirmation message
-                            function(response) {
-                            var response = JSON.parse(response);
-                            if (response.code == "200") {
-                                return 1;
-                            }
-                            });
-                        }, 55 * 1000);
-                    </script>';
+    var dataString= JSON.stringify(data);
+    jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
+    "type": "POST",
+        "url": home_url + "/tp-api/items/" + '.$_GET['item'].',
+        "data": data
+    },
+        // Check success and create confirmation message
+        function(response) {
+            var response = JSON.parse(response);
+            if (response.code == "200") {
+                return 1;
+    }
+    });
+    }, 55 * 1000);
+    </script>';
     }
     else if ($isLoggedIn) {
         $locked = true;
@@ -181,10 +163,6 @@ function _TCT_mtr_transcription( $atts) {
 
     $currentTranscription = null;
 
-    // Get the current transcription
-    if($activeTr === 'htr') {
-        // Get htr data
-
         // Transkribus Client, include required files
         require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
         require_once(get_stylesheet_directory() . '/htr-client/config.php');
@@ -203,8 +181,6 @@ function _TCT_mtr_transcription( $atts) {
         $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
         $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
 
-    } else {
-
         $transcriptionList = [];
         if($itemData['Transcriptions'] != null) {
             foreach($itemData['Transcriptions'] as $transcription) {
@@ -215,7 +191,6 @@ function _TCT_mtr_transcription( $atts) {
                 }
             }
         }
-    }
     // Get the progress data
     $progressData = array(
         $itemData['TranscriptionStatusName'],
@@ -1045,8 +1020,8 @@ function _TCT_mtr_transcription( $atts) {
                                 $editorTab .= "<li class='theme-colored-data-box'>";
                                     $editorTab .= $trLanguage['Name'] . " (" . $trLanguage['NameEnglish'] . ")";
                                     $editorTab .= '<script>
-                                                    jQuery("#transcription-language-selector option[value=\'' . $trLanguage['LanguageId'] . '\']").prop("disabled", true)
-                                                </script>';
+                                        jQuery("#transcription-language-selector option[value=\'' . $trLanguage['LanguageId'] . '\']").prop("disabled", true)
+                                        </script>';
                                     $editorTab .= "<i class='far fa-times' onClick='removeTranscriptionLanguage(" . $trLanguage['LanguageId'] . ", this)'></i>";
                                 $editorTab .= "</li>";
                             }
@@ -1530,60 +1505,60 @@ function _TCT_mtr_transcription( $atts) {
                     $content .= "Mark item as Not Started";
                 $content .= "</div>";
                 $content .= "<script>
-                                const allNotStarted = document.querySelector('#all-not-started');
-                                allNotStarted.addEventListener('click', function() {
-                                    changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'taggingStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'locationStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'descriptionStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'transcriptionStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
-                                    document.querySelector('#item-status-selector').style.display = 'none';
-                                });
-                            </script>";
+                    const allNotStarted = document.querySelector('#all-not-started');
+                allNotStarted.addEventListener('click', function() {
+                    changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'taggingStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'locationStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'descriptionStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'transcriptionStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
+                    document.querySelector('#item-status-selector').style.display = 'none';
+});
+</script>";
                 // Edit
                 $content .= "<div id='all-edit' class='status-dropdown-option'>";
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff700), color-stop(1, #ffd800));'></i>";
                     $content .= "Mark item as Edit";
                 $content .= "</div>";
                 $content .= "<script>
-                                const allEdit = document.querySelector('#all-edit');
-                                allEdit.addEventListener('click', function() {
-                                    changeStatus(" . $_GET['item'] . ", null, 'Edit', 'taggingStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Edit', 'locationStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Edit', 'descriptionStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Edit', 'transcriptionStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
-                                    document.querySelector('#item-status-selector').style.display = 'none';
-                                });
-                             </script>";
+                    const allEdit = document.querySelector('#all-edit');
+                allEdit.addEventListener('click', function() {
+                    changeStatus(" . $_GET['item'] . ", null, 'Edit', 'taggingStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Edit', 'locationStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Edit', 'descriptionStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Edit', 'transcriptionStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
+                    document.querySelector('#item-status-selector').style.display = 'none';
+});
+</script>";
                 // Review
                 $content .= "<div id='all-review' class='status-dropdown-option'>";
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffc720), color-stop(1, #f0b146));'></i>";
                     $content .= "Mark item as Review";
                 $content .= "</div>";
                 $content .= "<script>
-                                const allReview = document.querySelector('#all-review');
-                                allReview.addEventListener('click', function() {
-                                    changeStatus(" . $_GET['item'] . ", null, 'Review', 'taggingStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Review', 'locationStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Review', 'descriptionStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Review', 'transcriptionStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
-                                    document.querySelector('#item-status-selector').style.display = 'none';
-                                });
-                            </script>";
+                    const allReview = document.querySelector('#all-review');
+                allReview.addEventListener('click', function() {
+                    changeStatus(" . $_GET['item'] . ", null, 'Review', 'taggingStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Review', 'locationStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Review', 'descriptionStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Review', 'transcriptionStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
+                    document.querySelector('#item-status-selector').style.display = 'none';
+});
+</script>";
                 // Completed
                 $content .= "<div id='all-complete' class='status-dropdown-option'>";
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #61e02f), color-stop(1, #4dcd1c));'></i>";
                     $content .= "Mark item as Completed";
                 $content .= "</div>";
                 $content .= "<script>
-                                const allComplete = document.querySelector('#all-complete');
-                                allComplete.addEventListener('click', function() {
-                                    changeStatus(" . $_GET['item'] . ", null, 'Completed', 'taggingStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Completed', 'locationStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Completed', 'descriptionStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
-                                    changeStatus(" . $_GET['item'] . ", null, 'Completed', 'transcriptionStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
-                                    document.querySelector('#item-status-selector').style.display = 'none';
-                                });
-                            </script>";
+                    const allComplete = document.querySelector('#all-complete');
+                allComplete.addEventListener('click', function() {
+                    changeStatus(" . $_GET['item'] . ", null, 'Completed', 'taggingStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Completed', 'locationStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Completed', 'descriptionStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
+                    changeStatus(" . $_GET['item'] . ", null, 'Completed', 'transcriptionStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
+                    document.querySelector('#item-status-selector').style.display = 'none';
+});
+</script>";
             $content .= "</div>";
         $content .= "</div>";
     $content .= "</section>";
@@ -1634,33 +1609,33 @@ function _TCT_mtr_transcription( $atts) {
                             $content .= "<div style='padding-left:24px;'></div>";
                         $content .= "</div>";
                     } else {
-                        if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
-                            if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
-                                $formattedTranscription = $htrTranscription;
-                                $content .= "<script>document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';</script>";
-                            } else {
-                                $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
+                            if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
+                                if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
+                                    $formattedTranscription = $htrTranscription;
+                                    $content .= "<script>document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';</script>";
+                                } else {
+                                    $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
+                                }
                             }
-                        }
-                        if(strlen($formattedTranscription) < 700 && strlen($formattedTranscription) != 0) {
-                            $content .= "<div class='current-transcription' style='padding-left:24px;'>";
+                            if(strlen($formattedTranscription) < 700 && strlen($formattedTranscription) != 0) {
+                                $content .= "<div class='current-transcription' style='padding-left:24px;'>";
                                 $content .= $formattedTranscription;
-                            $content .= "</div>";
+                                $content .= "</div>";
 
-                            $content .= "<div class='transcription-language'>";
+                                $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
                                 foreach($currentTranscription['Languages'] as $language) {
                                     $content .= "<div class='language-single'>" . $language['Name'] . "</div>";
                                 }
-                            $content .= "</div>";
-                        } else if(strlen($formattedTranscription) != 0) {
-                            $content .= "<div class='current-transcription' style='padding-left:24px;'>";
+                                $content .= "</div>";
+                            } else if(strlen($formattedTranscription) != 0) {
+                                $content .= "<div class='current-transcription' style='padding-left:24px;'>";
                                 $content .= $formattedTranscription;
-                            $content .= "</div>";
-                            $content .= "<div id='transcription-collapse-btn'> Show More </div>";
+                                $content .= "</div>";
+                                $content .= "<div id='transcription-collapse-btn'> Show More </div>";
 
-                            $content .= "<div class='transcription-language'>";
+                                $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
                                 if($currentTranscription) {
@@ -1668,73 +1643,73 @@ function _TCT_mtr_transcription( $atts) {
                                         $content .= "<div class='language-single'>" . $language['Name'] . "</div>";
                                     }
                                 }
-                            $content .= "</div>";
-                        } else {
-                            $content .= "<div id='no-text-placeholder'>";
+                                $content .= "</div>";
+                            } else {
+                                $content .= "<div id='no-text-placeholder'>";
                                 $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
-                            $content .= "</div>";
-                            $content .= "<div class='current-transcription' style='display:none;'></div>";
-                            $content .= "<div class='transcription-language' style='display:none;'>";
+                                $content .= "</div>";
+                                $content .= "<div class='current-transcription' style='display:none;'></div>";
+                                $content .= "<div class='transcription-language' style='display:none;'>";
                                 $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left: 24px;'></div>";
-                            $content .= "</div>";
-                        }
+                                $content .= "</div>";
+                            }
                     }
-                $content .= "</div>";
+                    $content .= "</div>";
 
-            $content .= "</div>"; // end of transcription
-        $content .= "</div>";
-        $content .= "<div style='clear:both;'></div>";
-    $content .= "</section>";
-   // $content .= "<div style='clear:both;'></div>";
+                    $content .= "</div>"; // end of transcription
+                    $content .= "</div>";
+                    $content .= "<div style='clear:both;'></div>";
+                    $content .= "</section>";
+                    // $content .= "<div style='clear:both;'></div>";
 
-    $content .= "<section id='location-n-enrichments'>";
-        $content .= "<div id='map-left'>";
-             // Location Header
-            $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:10px 0;'>";
-                $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' width='28px' height='28px'> LOCATION</h5></div>";
-                $content .= "<div>";
+                    $content .= "<section id='location-n-enrichments'>";
+                    $content .= "<div id='map-left'>";
+                    // Location Header
+                    $content .= "<div id='startLocation' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin:10px 0;'>";
+                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' width='28px' height='28px'> LOCATION</h5></div>";
+                    $content .= "<div>";
                     $content .= "<div class='status-display' style='background-color:".$itemData['LocationStatusColorCode']."'>";
-                        $content .= "<span class='status-indicator-view'>" . $itemData['LocationStatusName'] . "</span>";
+                    $content .= "<span class='status-indicator-view'>" . $itemData['LocationStatusName'] . "</span>";
                     $content .= "</div>";
                     $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i>";
-                $content .= "</div>";
-            $content .= "</div>";
-               // $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:20px;'> &nbsp </div>";
-            $content .= "<div id='normal-map' style='height:400px;'>";
-                $content .= $mapBox;
-            $content .= "</div>";
-            $content .= $mapEditor;
-        $content .= "</div>"; // end of left side
-        $content .= "<div id='enrich-right'>";
-            // Right side
-            $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:10px;margin-bottom:5px;'>";
-                $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ABOUT THIS DOCUMENT</h5></div>";
-                $content .= "<div>";
-                if($itemData['DescriptionStatusId'] < $itemData['TaggingStatusId'] && $itemData['DescriptionStatusId'] != 1) {
-                    $content .= "<div class='status-display' style='background-color:".$itemData['DescriptionStatusColorCode']."'>";
+                    $content .= "</div>";
+                    $content .= "</div>";
+                    // $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:20px;'> &nbsp </div>";
+                    $content .= "<div id='normal-map' style='height:400px;'>";
+                    $content .= $mapBox;
+                    $content .= "</div>";
+                    $content .= $mapEditor;
+                    $content .= "</div>"; // end of left side
+                    $content .= "<div id='enrich-right'>";
+                    // Right side
+                    $content .= "<div id='startDescription' class='enrich-header' style='display:flex;flex-direction:row;justify-content:space-between;margin-top:10px;margin-bottom:5px;'>";
+                    $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-book\" aria-hidden=\"true\"></i> ABOUT THIS DOCUMENT</h5></div>";
+                    $content .= "<div>";
+                    if($itemData['DescriptionStatusId'] < $itemData['TaggingStatusId'] && $itemData['DescriptionStatusId'] != 1) {
+                        $content .= "<div class='status-display' style='background-color:".$itemData['DescriptionStatusColorCode']."'>";
                         $content .= "<span class='status-indicator-view'>" . $itemData['DescriptionStatusName'] . "</span>";
-                    $content .= "</div>";
-                } else if ($itemData['TaggingStatusId'] < $itemData['DescriptionStatusId'] && $itemData['TaggingStatusId'] != 1) {
-                    $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
+                        $content .= "</div>";
+                    } else if ($itemData['TaggingStatusId'] < $itemData['DescriptionStatusId'] && $itemData['TaggingStatusId'] != 1) {
+                        $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
                         $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
-                    $content .= "</div>";
-                } else {
-                    $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
+                        $content .= "</div>";
+                    } else {
+                        $content .= "<div class='status-display' style='background-color:".$itemData['TaggingStatusColorCode']."'>";
                         $content .= "<span class='status-indicator-view'>" . $itemData['TaggingStatusName'] . "</span>";
-                    $content .= "</div>";
-                }
+                        $content .= "</div>";
+                    }
                     $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i>";
-                $content .= "</div>";
-            $content .= "</div>";
-            $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
+                    $content .= "</div>";
+                    $content .= "</div>";
+                    $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
 
-            $content .= "<div id='description-container'>";
-                $content .= "<div class='description-view'>";
+                    $content .= "<div id='description-container'>";
+                    $content .= "<div class='description-view'>";
                     $content .= "<h6 class='enrich-headers'> Description </h6>";
 
                     $content .= "<div class='current-description' style='padding-left:24px;'>";
-                        $content .= $itemData['Description'];
+                    $content .= $itemData['Description'];
                     $content .= "</div>";
 
                     $descriptionLanguage = "";
@@ -1748,157 +1723,157 @@ function _TCT_mtr_transcription( $atts) {
                     } else {
                         $content .= "<div class='description-language' style='display:none;'>";
                     }
-                        $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
-                        $content .= "<div style='padding-left:24px;'>";
-                        if($descriptionLanguage != null || $descriptionLanguage != "")
-                            $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
-                        $content .= "</div>";
+                    $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
+                    $content .= "<div style='padding-left:24px;'>";
+                    if($descriptionLanguage != null || $descriptionLanguage != "")
+                        $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
+                    $content .= "</div>";
                     $content .= "</div>";
 
                     $content .= "<div class='type-of-media'>";
-                        $content .= "<h6 class='enrich-headers'> Type of Media</h6>";
-                        $content .= "<div style='padding-left:24px;'>";
-                        foreach($itemData['Properties'] as $property) {
-                            if($property['PropertyType'] == "Category") {
-                                $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
-                            }
+                    $content .= "<h6 class='enrich-headers'> Type of Media</h6>";
+                    $content .= "<div style='padding-left:24px;'>";
+                    foreach($itemData['Properties'] as $property) {
+                        if($property['PropertyType'] == "Category") {
+                            $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
                         }
-                        $content .= "</div>";
+                    }
                     $content .= "</div>";
-                $content .= "</div>";
+                    $content .= "</div>";
+                    $content .= "</div>";
 
-                $content .= "<div id='enrich-view'>";
+                    $content .= "<div id='enrich-view'>";
                     $content .= $enrichmentTab;
-                $content .= "</div>";
-            $content .= "</div>"; // end of enrichment
+                    $content .= "</div>";
+                    $content .= "</div>"; // end of enrichment
 
-        $content .= "</div>"; // end of right side
-        $content .= "<div style='clear:both;'></div>";
-    $content .= "</section>";
+                    $content .= "</div>"; // end of right side
+                    $content .= "<div style='clear:both;'></div>";
+                    $content .= "</section>";
 
 
-    $content .= "<section id='story-info' class='collapsed' style='height:325px;'>";
-        $content .= "<div id='meta-collapse' class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;margin:25px 0;' role='button' aria-expanded='false'>";
-            $content .= "<span><h5><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>STORY INFORMATION</span><span style='float:right;padding-right:10px;'><i id='angle-i' style='font-size:25px;' class='fas fa-angle-down'></i></h5></span>";
-        $content .= "</div>";
-        $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:25px;'> &nbsp </div>";
-        $content .= "<div id='meta-left'>";
-            // Metadata
-            $content .= $metaData;
-        $content .= "</div>";
-        $content .= "<div id='meta-right'>";
-            $content .= $storyDescription;
-        $content .= "</div>";
-        $content .= "<div style='clear:both;'></div>";
-        $content .= "<div id='meta-cover'><i class='fas fa-angle-double-down'></i></div>";
-    $content .= "</section>";
+                    $content .= "<section id='story-info' class='collapsed' style='height:325px;'>";
+                    $content .= "<div id='meta-collapse' class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;margin:25px 0;' role='button' aria-expanded='false'>";
+                    $content .= "<span><h5><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>STORY INFORMATION</span><span style='float:right;padding-right:10px;'><i id='angle-i' style='font-size:25px;' class='fas fa-angle-down'></i></h5></span>";
+                    $content .= "</div>";
+                    $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:25px;'> &nbsp </div>";
+                    $content .= "<div id='meta-left'>";
+                    // Metadata
+                    $content .= $metaData;
+                    $content .= "</div>";
+                    $content .= "<div id='meta-right'>";
+                    $content .= $storyDescription;
+                    $content .= "</div>";
+                    $content .= "<div style='clear:both;'></div>";
+                    $content .= "<div id='meta-cover'><i class='fas fa-angle-double-down'></i></div>";
+                    $content .= "</section>";
 
-    $content .= "<div id='image-view-container' class='panel-container-horizontal' style='display:none;overflow:hidden;'>";
-        // Image Section
-        $content .= "<div id='item-image-section' class='panel-left'>";
-            // Viewer will be added here in 'Full Screen Mode'
-        $content .= "</div>";
-        // Splitter
-        $content .= "<div id='item-splitter' class='splitter-vertical'></div>";
-        // Data Section
-        $content .= "<div id='item-data-section' class='panel-right'>";
-            $content .= "<div id='item-data-header'>";
-                $content .= "<div class='fs-title'>" . $itemData['Title'] . "</div>";
-                $content .= '<div class="view-switcher" id="switcher-casephase" style="display:inline-block;">';
+                    $content .= "<div id='image-view-container' class='panel-container-horizontal' style='display:none;overflow:hidden;'>";
+                    // Image Section
+                    $content .= "<div id='item-image-section' class='panel-left'>";
+                    // Viewer will be added here in 'Full Screen Mode'
+                    $content .= "</div>";
+                    // Splitter
+                    $content .= "<div id='item-splitter' class='splitter-vertical'></div>";
+                    // Data Section
+                    $content .= "<div id='item-data-section' class='panel-right'>";
+                    $content .= "<div id='item-data-header'>";
+                    $content .= "<div class='fs-title'>" . $itemData['Title'] . "</div>";
+                    $content .= '<div class="view-switcher" id="switcher-casephase" style="display:inline-block;">';
                     $content .= '<ul id="item-switch-list" class="switch-list" style="z-index:10;top:0;right:0;">';
 
-                        $content .= "<li>";
-                            $content .= '<div id="popout" class="view-switcher-icons" style="display:inline-block;width: 20px;"
+                    $content .= "<li>";
+                    $content .= '<div id="popout" class="view-switcher-icons" style="display:inline-block;width: 20px;"
                         onclick="switchItemView(event, \'popout\')"><img src="'.home_url().'/wp-content/themes/transcribathon/images/icon_float.svg"></div>';
-                        $content .= "</li>";
+                    $content .= "</li>";
 
-                        $content .= "<li>";
-                            $content .= '<div id="vertical-split" class="view-switcher-icons" style="display:inline-block;width: 20px;"
+                    $content .= "<li>";
+                    $content .= '<div id="vertical-split" class="view-switcher-icons" style="display:inline-block;width: 20px;"
                         onclick="switchItemView(event, \'vertical\')"><img src="'.home_url().'/wp-content/themes/transcribathon/images/icon_below.svg"></div>';
-                        $content .= "</li>";
+                    $content .= "</li>";
 
-                        $content .= "<li>";
-                            $content .= '<div id="horizontal-split" class="view-switcher-icons active theme-color" style="font-size:12px;display:inline-block;width: 20px;"
+                    $content .= "<li>";
+                    $content .= '<div id="horizontal-split" class="view-switcher-icons active theme-color" style="font-size:12px;display:inline-block;width: 20px;"
                         onclick="switchItemView(event, \'horizontal\')"><img src="'.home_url().'/wp-content/themes/transcribathon/images/icon_side.svg"></div>';
-                        $content .= "</li>";
+                    $content .= "</li>";
 
-                        $content .= "<li style='position:relative;bottom:2px;'>";
-                            $content .= '<div class="switch-i"><i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons" style="position:relative;bottom:3px;"
+                    $content .= "<li style='position:relative;bottom:2px;'>";
+                    $content .= '<div class="switch-i"><i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons" style="position:relative;bottom:3px;"
                         onclick="switchItemView(event, \'closewindow\')"></i></div>';
-                        $content .= "</li>";
+                    $content .= "</li>";
 
-                        $content .= "<li style='position:relative;bottom:2px;'>";
-                            $content .= '<div class="switch-i"><i id="close-window-view" class="fas fa-times view-switcher-icons" onClick="switchItemPageView()" style="position:relative;bottom:1px;color:#2b2b2b;"></i></div>';
-                        $content .= "</li>";
+                    $content .= "<li style='position:relative;bottom:2px;'>";
+                    $content .= '<div class="switch-i"><i id="close-window-view" class="fas fa-times view-switcher-icons" onClick="switchItemPageView()" style="position:relative;bottom:1px;color:#2b2b2b;"></i></div>';
+                    $content .= "</li>";
 
                     $content .= '</ul>';
-                $content .= '</div>';
-                $content .= "<div style='clear:both;'></div>";
-                // Tab menu
-                $content .= '<ul id="item-tab-list" class="tab-list" style="list-style: none;">';
+                    $content .= '</div>';
+                    $content .= "<div style='clear:both;'></div>";
+                    // Tab menu
+                    $content .= '<ul id="item-tab-list" class="tab-list" style="list-style: none;">';
                     $content .= "<li>";
-                        $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
-                                        onclick='switchItemTab(event, \"editor-tab\")'>";
-                            $content .= '<i class="fa fa-quote-right tab-i"></i>';
-                            $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TranscriptionStatusColorCode'].";background-color:".$itemData['TranscriptionStatusColorCode'].";'></i>";
-                            $content .= "<span ><b> TRANSCRIPTION</b></span></p>";
-                        $content .= "</div>";
+                    $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
+                        onclick='switchItemTab(event, \"editor-tab\")'>";
+                    $content .= '<i class="fa fa-quote-right tab-i"></i>';
+                    $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TranscriptionStatusColorCode'].";background-color:".$itemData['TranscriptionStatusColorCode'].";'></i>";
+                    $content .= "<span ><b> TRANSCRIPTION</b></span></p>";
+                    $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
-                        $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
-                                    onclick='switchItemTab(event, \"tagging-tab\");'>";
-                            $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;position:relative;bottom:3px;'>";
-                            $content .= "<p class='tab-h' style='position:relative;bottom:4px;'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
-                            $content .= "<span><b> LOCATION</b></span></p>";
-                        $content .= "</div>";
+                    $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
+                        onclick='switchItemTab(event, \"tagging-tab\");'>";
+                    $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;position:relative;bottom:3px;'>";
+                    $content .= "<p class='tab-h' style='position:relative;bottom:4px;'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
+                    $content .= "<span><b> LOCATION</b></span></p>";
+                    $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
-                        $content .= "<div id='desc-tab' class='theme-color tablinks' title='Description' onclick='switchItemTab(event, \"description-tab\");'>";
-                            $content .= "<i class='fa fa-book tab-i'></i>";
-                            $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['DescriptionStatusColorCode'].";background-color:".$itemData['DescriptionStatusColorCode'].";'></i>";
-                            $content .= "<span><b> DESCRIPTION</b></span></p>";
-                        $content .= "</div>";
+                    $content .= "<div id='desc-tab' class='theme-color tablinks' title='Description' onclick='switchItemTab(event, \"description-tab\");'>";
+                    $content .= "<i class='fa fa-book tab-i'></i>";
+                    $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['DescriptionStatusColorCode'].";background-color:".$itemData['DescriptionStatusColorCode'].";'></i>";
+                    $content .= "<span><b> DESCRIPTION</b></span></p>";
+                    $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
-                        $content .= "<div id='tagi-tab' class='theme-color tablinks' title='Enrichments/Tagging' onclick='switchItemTab(event, \"tag-tab\");'>";
-                            $content .= "<i class='fa fa-tag tab-i' aria-hidden='true'></i>";
-                            $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TaggingStatusColorCode'].";background-color:".$itemData['TaggingStatusColorCode'].";'></i>";
-                            $content .= "<span><b> ENRICHMENTS</b></span></p>";
-                        $content .= "</div>";
+                    $content .= "<div id='tagi-tab' class='theme-color tablinks' title='Enrichments/Tagging' onclick='switchItemTab(event, \"tag-tab\");'>";
+                    $content .= "<i class='fa fa-tag tab-i' aria-hidden='true'></i>";
+                    $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TaggingStatusColorCode'].";background-color:".$itemData['TaggingStatusColorCode'].";'></i>";
+                    $content .= "<span><b> ENRICHMENTS</b></span></p>";
+                    $content .= "</div>";
                     $content .= "</li>";
                     // $content .= "<li style='max-width:10px;'>";
                     //     $content .= "<div>&nbsp</div>";
                     // $content .= "</li>";
                     $content .= "<li>";
-                        $content .= "<div class='theme-color tablinks' title='More Information'
-                                        onclick='switchItemTab(event, \"info-tab\")'>";
-                            $content .= '<i class="fa fa-info-circle tab-i"></i>';
-                            $content .= "<p class='tab-h it'><span><b> STORY INFO</b></span></p>";
-                        $content .= "</div>";
+                    $content .= "<div class='theme-color tablinks' title='More Information'
+                        onclick='switchItemTab(event, \"info-tab\")'>";
+                    $content .= '<i class="fa fa-info-circle tab-i"></i>';
+                    $content .= "<p class='tab-h it'><span><b> STORY INFO</b></span></p>";
+                    $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
-                        $content .= "<div class='theme-color tablinks' title='Tutorial'
-                                        onclick='switchItemTab(event, \"help-tab\")'>";
-                            $content .= '<i class="fa fa-question-circle tab-i"></i>';
-                            $content .= "<p class='tab-h it'><span><b> TUTORIAL</b></span></p>";
-                        $content .= "</div>";
+                    $content .= "<div class='theme-color tablinks' title='Tutorial'
+                        onclick='switchItemTab(event, \"help-tab\")'>";
+                    $content .= '<i class="fa fa-question-circle tab-i"></i>';
+                    $content .= "<p class='tab-h it'><span><b> TUTORIAL</b></span></p>";
+                    $content .= "</div>";
                     $content .= "</li>";
-                $content .= '</ul>';
-            $content .= "</div>";
+                    $content .= '</ul>';
+                    $content .= "</div>";
 
-            $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
-                // Editor tab
-                $content .= "<div id='editor-tab' class='tabcontent'>";
-                // Content will be added here in switchItemPageView function
+                    $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
+                    // Editor tab
+                    $content .= "<div id='editor-tab' class='tabcontent'>";
+                    // Content will be added here in switchItemPageView function
                     $content .= $editorTab;
                     //$content .= $trHistory;
-                $content .= "</div>";
-                // Description Tab
-                $content .= "<div id='description-tab' class='tabcontent' style='display:none;'>";
+                    $content .= "</div>";
+                    // Description Tab
+                    $content .= "<div id='description-tab' class='tabcontent' style='display:none;'>";
                     $content .= $descriptionTab;
-                $content .= "</div>";
-                // Info tab
-                $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
+                    $content .= "</div>";
+                    // Info tab
+                    $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
                     $content .= "<div class='item-page-section-headline theme-color'>" . $itemData['StorydcTitle'] . "</div>";
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
 
@@ -1907,119 +1882,116 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "<div id='story-full-collapse'>Show More</div>";
                     }
                     $content .= "<div id='full-v-metadata'>";
-              ;
+                    ;
                     $content .= "</div>";
                     // Content will be added here in switchItemPageView function
-                $content .= "</div>";
-                // Location tab
-                $content .= "<div id='tagging-tab' class='tabcontent' style='display:none;'>";
+                    $content .= "</div>";
+                    // Location tab
+                    $content .= "<div id='tagging-tab' class='tabcontent' style='display:none;'>";
                     // Content will be added here in switchItemPageView function
                     $content .= "<div id='full-screen-map-placeholder'></div>";
-                   // $content .= $mapEditor;
+                    // $content .= $mapEditor;
 
-                $content .= "</div>";
-                // Tag tab
-                $content .= "<div id='tag-tab' class='tabcontent' style='display:none'>";
-                  // $enrichmentTab;
-                $content .= "</div>";
-                // Help tab
-                $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";
+                    $content .= "</div>";
+                    // Tag tab
+                    $content .= "<div id='tag-tab' class='tabcontent' style='display:none'>";
+                    // $enrichmentTab;
+                    $content .= "</div>";
+                    // Help tab
+                    $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";
                     //$content .= do_shortcode('[tutorial_item_slider]');
-                $content .= "</div>";
-                // Automatic enrichment tab
-                $content .= "<div id='autoEnrichment-tab' class='tabcontent' style='display:none;'>";
+                    $content .= "</div>";
+                    // Automatic enrichment tab
+                    $content .= "<div id='autoEnrichment-tab' class='tabcontent' style='display:none;'>";
                     // Content will be added here in switchItemPageView function
-                $content .= "</div>";
-            $content .= "</div>";
-        $content .= "</div>";
-    $content .= "</div>";
+                    $content .= "</div>";
+                    $content .= "</div>";
+                    $content .= "</div>";
+                    $content .= "</div>";
 
-    // JAVASCRIPT TODO put in a separate file
-    $content .= "<script>
+                    // JAVASCRIPT TODO put in a separate file
+                    $content .= "<script>
 
-    var ready = (callback) => {
-        if (document.readyState != \"loading\") callback();
-        else document.addEventListener(\"DOMContentLoaded\", callback);
-    }
-    // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
-    ready(() => {
-        const collapseBtn = document.querySelector('#transcription-collapse-btn');
-        const trSection = document.querySelector('#viewer-n-transcription');
-        const trContainer = document.querySelector('.current-transcription');
-        // Transcription Collapse
-        if(collapseBtn) {
-            collapseBtn.addEventListener('click', function() {
-                if(trSection.classList.contains('collapsed')){
-                    trSection.classList.remove('collapsed');
-                    trContainer.style.height = 'unset';
-                  //  trSection.style.height = 'unset';
-                   // document.querySelector('.transcription-language').style.position = 'unset';
-                    document.querySelector('#transcription-container').style.height = 'unset';
-                    collapseBtn.textContent = 'Show Less';
-                } else {
-                    trSection.classList.add('collapsed');
+                        var ready = (callback) => {
+                        if (document.readyState != \"loading\") callback();
+                        else document.addEventListener(\"DOMContentLoaded\", callback);
+}
+// Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
+ready(() => {
+const collapseBtn = document.querySelector('#transcription-collapse-btn');
+const trSection = document.querySelector('#viewer-n-transcription');
+const trContainer = document.querySelector('.current-transcription');
+// Transcription Collapse
+if(collapseBtn) {
+    collapseBtn.addEventListener('click', function() {
+        if(trSection.classList.contains('collapsed')){
+            trSection.classList.remove('collapsed');
+            trContainer.style.height = 'unset';
+            //  trSection.style.height = 'unset';
+            // document.querySelector('.transcription-language').style.position = 'unset';
+            document.querySelector('#transcription-container').style.height = 'unset';
+            collapseBtn.textContent = 'Show Less';
+} else {
+    trSection.classList.add('collapsed');
 
-                 //   trSection.style.height = '600px';
-                    trContainer.style.height = 'calc(100% - 205px)';
-                 //   document.querySelector('.transcription-language').style.position = 'absolute';
-                    document.querySelector('#transcription-container').style.height = '600px';
-                    collapseBtn.textContent = 'Show More';
-                }
-            });
-        }
+    //   trSection.style.height = '600px';
+    trContainer.style.height = 'calc(100% - 205px)';
+    //   document.querySelector('.transcription-language').style.position = 'absolute';
+    document.querySelector('#transcription-container').style.height = '600px';
+    collapseBtn.textContent = 'Show More';
+}
+});
+}
 
-        // Metadata collapse
-        const metaCollapseBtn = document.querySelector('#meta-collapse');
-        const metaSection = document.querySelector('#story-info');
+// Metadata collapse
+const metaCollapseBtn = document.querySelector('#meta-collapse');
+const metaSection = document.querySelector('#story-info');
 
-        metaCollapseBtn.addEventListener('click', function() {
-            if(metaSection.classList.contains('collapsed')) {
-                metaSection.style.height = 'unset';
-                metaSection.classList.remove('collapsed');
-                metaCollapseBtn.querySelector('#angle-i').classList.remove('fa-angle-down');
-                metaCollapseBtn.querySelector('#angle-i').classList.add('fa-angle-up');
-                metaSection.querySelector('#meta-cover i').classList.add('fa-angle-double-up');
-                metaSection.querySelector('#meta-cover i').classList.remove('fa-angle-double-down');
-            } else {
-                metaSection.style.height = '325px';
-                metaSection.classList.add('collapsed');
-                metaCollapseBtn.querySelector('#angle-i').classList.remove('fa-angle-up');
-                metaCollapseBtn.querySelector('#angle-i').classList.add('fa-angle-down');
-                metaSection.querySelector('#meta-cover i').classList.remove('fa-angle-double-up');
-                metaSection.querySelector('#meta-cover i').classList.add('fa-angle-double-down');
-            }
-        });
-        metaSection.querySelector('#meta-cover').addEventListener('click', function() {
-            metaCollapseBtn.click();
-        });
+metaCollapseBtn.addEventListener('click', function() {
+    if(metaSection.classList.contains('collapsed')) {
+        metaSection.style.height = 'unset';
+        metaSection.classList.remove('collapsed');
+        metaCollapseBtn.querySelector('#angle-i').classList.remove('fa-angle-down');
+        metaCollapseBtn.querySelector('#angle-i').classList.add('fa-angle-up');
+        metaSection.querySelector('#meta-cover i').classList.add('fa-angle-double-up');
+        metaSection.querySelector('#meta-cover i').classList.remove('fa-angle-double-down');
+} else {
+    metaSection.style.height = '325px';
+    metaSection.classList.add('collapsed');
+    metaCollapseBtn.querySelector('#angle-i').classList.remove('fa-angle-up');
+    metaCollapseBtn.querySelector('#angle-i').classList.add('fa-angle-down');
+    metaSection.querySelector('#meta-cover i').classList.remove('fa-angle-double-up');
+    metaSection.querySelector('#meta-cover i').classList.add('fa-angle-double-down');
+}
+});
+metaSection.querySelector('#meta-cover').addEventListener('click', function() {
+    metaCollapseBtn.click();
+});
 
-        let descLangDel = document.querySelector('#del-desc-lang');
-        if(descLangDel) {
-            descLangDel.addEventListener('click',function() {
-                    updateDataProperty('items', ". $itemData['ItemId'] .", 'DescriptionLanguage', 0);
-                    this.parentNode.style.display = 'none';
-                }
-            );
-        }
-    });
+let descLangDel = document.querySelector('#del-desc-lang');
+if(descLangDel) {
+    descLangDel.addEventListener('click',function() {
+        updateDataProperty('items', ". $itemData['ItemId'] .", 'DescriptionLanguage', 0);
+        this.parentNode.style.display = 'none';
+}
+);
+}
+});
 
 
 
-    </script>";
+</script>";
 
     $content .= '<script>
-    jQuery("#item-image-section").resizable_split({
+        jQuery("#item-image-section").resizable_split({
         handleSelector: "#item-splitter",
-        resizeHeight: false
-    });
-    </script>';
+            resizeHeight: false
+});
+</script>';
 
     //$content .= "</section>"; // End of main section
 
     return $content;
-    }
 }
 
 add_shortcode( 'item_page', '_TCT_mtr_transcription' );
-
-?>
