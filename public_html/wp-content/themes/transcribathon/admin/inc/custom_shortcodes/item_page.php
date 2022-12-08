@@ -26,19 +26,19 @@ function _TCT_mtr_transcription( $atts) {
         $options = [
             'http' => [
                 'header' => [
-                    'Content-type: application/json',      
+                    'Content-type: application/json',
             ],
                 'method' => 'GET'
             ]
         ];
         $context = stream_context_create($options);
-    
+
 	    $data = @file_get_contents($url, false, $context);
         $isLoggedIn = is_user_logged_in();
 
         // Save image data
         $itemData = json_decode($data, true);
- 
+
         if ($itemData['StoryId'] != null) {
             // Set request parameters for story data
             $url = TP_API_HOST."/tp-api/itemPage/".$itemData['StoryId'];
@@ -52,7 +52,7 @@ function _TCT_mtr_transcription( $atts) {
                 ]
             ];
             $context = stream_context_create($options);
-        
+
             $data = @file_get_contents($url, false, $context);
 
             // Save story data
@@ -71,7 +71,7 @@ function _TCT_mtr_transcription( $atts) {
     $content = "";
 
     // TODO MOVE THIS TO THE APPROPRIATE PLACE
-    
+
     $content .= '<script>
     window.onclick = function(event) {
         if (event.target.id != "transcription-status-indicator") {
@@ -182,13 +182,13 @@ function _TCT_mtr_transcription( $atts) {
     $currentTranscription = null;
 
     // Get the current transcription
-    if($activeTr == 'htr' || $itemData['Transcriptions'] == null) {
+    if($activeTr === 'htr') {
         // Get htr data
 
         // Transkribus Client, include required files
         require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
         require_once(get_stylesheet_directory() . '/htr-client/config.php');
-        
+
         // create new Transkribus client and inject configuration
         $transkribusClient = new TranskribusClient($config);
         // get the HTR-transcribed data from database if there is one
@@ -202,9 +202,9 @@ function _TCT_mtr_transcription( $atts) {
         );
         $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
         $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
-        
+
     } else {
-    
+
         $transcriptionList = [];
         if($itemData['Transcriptions'] != null) {
             foreach($itemData['Transcriptions'] as $transcription) {
@@ -213,8 +213,8 @@ function _TCT_mtr_transcription( $atts) {
                 } else {
                     array_push($transcriptionList, $transcription);
                 }
-            } 
-        } 
+            }
+        }
     }
     // Get the progress data
     $progressData = array(
@@ -288,7 +288,7 @@ function _TCT_mtr_transcription( $atts) {
                 $locationDisplay .= "</div>";
 
                 $locationDisplay .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container' style='display:none;'>";
-                    
+
                     $locationDisplay .= "<div class='location-input-section-top'>";
                         $locationDisplay .= "<div class='location-input-name-container' style='min-height:25px;'>";
                             $locationDisplay .= "<label>Location Name: </label>";
@@ -310,7 +310,7 @@ function _TCT_mtr_transcription( $atts) {
                             $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
                         $locationDisplay .= "</label>";
                         if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != '' && $place['WikidataName'] != 'NULL' && $place['WikidataName'] != '') {
-                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='" 
+                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='"
                                 . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . "; "
                                 . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
                         } else {
@@ -338,7 +338,7 @@ function _TCT_mtr_transcription( $atts) {
                         $locationDisplay .= "</div>";
 
                         $locationDisplay .= "<div class='form-btn-right'>";
-                            $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save' 
+                            $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save'
                                             onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
                                 $locationDisplay .= "SAVE";
                             $locationDisplay .= "</button>";
@@ -370,11 +370,11 @@ function _TCT_mtr_transcription( $atts) {
 
     $mapEditor .= "<div id='location-section' class='item-page-section'>";
         $mapEditor .= "<div id='location-hide' class='item-page-section-headline-container login-required'>";
-            
+
             $mapEditor .= "<div id='location-position' class='theme-color item-page-section-headline collapse-headline' title='Click to add a location'>";
                 $mapEditor .= "<span class='headline-header'>Locations</span>";
                 $mapEditor .= "<i class='fas fa-plus-circle'></i>";
-            
+
             // Status changer
             //$mapEditor .= "<div class='item-page-section-headline-right-site'>";
                 $mapEditor .= "<div id='location-status-changer' class='status-changer section-status-changer login-required' style='background-color:" . $itemData['LocationStatusColorCode'] . ";'>";
@@ -406,7 +406,7 @@ function _TCT_mtr_transcription( $atts) {
                 $mapEditor .= "</div>";
             $mapEditor .= "</div>";
         $mapEditor .= "</div>";
-        
+
         if(sizeof($itemData['Places']) < 1) {
             $mapEditor .= "<div id='location-input-section' style='display:block;'>";
         } else {
@@ -444,7 +444,7 @@ function _TCT_mtr_transcription( $atts) {
                 $mapEditor .= "<label>Description:<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Add more information to this location, e.g. the building name, or its significance to the item'></i></label>";
                 $mapEditor .= "<textarea rows='2' style='resize:none;' class='gsearch-form' type='text' id='ldsc' placeholder='' name=''></textarea>";
             $mapEditor .= "</div>";
-        
+
             $mapEditor .= "<div style='clear:both;'></div>";
             $mapEditor .= "<div>";
                 $mapEditor .= '<div id="clear-loc-input" class="loc-input-fa">Clear All <i class="fas fa-times"></i></div>';
@@ -472,7 +472,7 @@ function _TCT_mtr_transcription( $atts) {
     $enrichmentTab .= "<div id='tagging-section' class='item-page-section'>";
 
         $enrichmentTab .= "<div class='item-page-section-headline-container'>";
-            
+
             $enrichmentTab .= "<div class='theme-color item-page-section-headline'>";
                 $enrichmentTab .= "<span class='headline-header'>ENRICHMENTS</span>";
             //$enrichmentTab .= "<div class='item-page-headline-right-site'>";
@@ -488,8 +488,8 @@ function _TCT_mtr_transcription( $atts) {
                         foreach($statusTypes as $statusType) {
                             if($statusType['CompletionStatusId'] != 4 || current_user_can('administrator')) {
                                 if($itemData['TaggingStatusId'] == $statusType['CompletionStatusId']) {
-                                    $enrichmentTab .= "<div class='status-dropdown-option status-dropdown-option-current' 
-                                                        onClick='changeStatus(" . $_GET['item'] . ", null, \"" . $statusType['Name'] . "\", \"taggingStatusId\", " . $statusType['CompletionStatusId'] . ", 
+                                    $enrichmentTab .= "<div class='status-dropdown-option status-dropdown-option-current'
+                                                        onClick='changeStatus(" . $_GET['item'] . ", null, \"" . $statusType['Name'] . "\", \"taggingStatusId\", " . $statusType['CompletionStatusId'] . ",
                                                         \"" .$statusType['ColorCode'] . "\", " . sizeof($progressData) . ", this)'>";
                                         $enrichmentTab .= "<i class='fal fa-circle' style='color:transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0," . $statusType['ColorCode'] . "), color-stop(1, " . $statusType['ColorCodeGradient'] . "));'></i>";
                                         $enrichmentTab .= $statusType['Name'];
@@ -669,9 +669,9 @@ function _TCT_mtr_transcription( $atts) {
                                     }
                                     $enrichmentTab .= ")";
                                 }
-            
+
                             $enrichmentTab .= "</p>";
-    
+
                             if($person['Description'] != 'NULL' && $person['Description'] != null) {
                                 $enrichmentTab .= "<p class='person-description'>Description: <b>" . $person['Description'] . "</b></p>";
                             }
@@ -695,17 +695,17 @@ function _TCT_mtr_transcription( $atts) {
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
                                                 placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? $person['LastName'] : '') . "'>";
                             $enrichmentTab .= "</div>";
-                            
+
                             $enrichmentTab .= "<div class='person-description-input'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
                                                 placeholder='&nbsp Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars($person['Description']) : '') . "'>";
                             $enrichmentTab .= "</div>";
-    
+
                             $enrichmentTab .= "<div class='person-description-input'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp Add Wikidata ID to this person'
                                                 title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars($person['Link']) : '') . "'>";
                             $enrichmentTab .= "</div>";
-    
+
                             $enrichmentTab .= "<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-birthPlace-edit' class='input-response person-input-field person-re-edit'
                                                 value='" . ($person['BirthPlace'] != 'NULL' ? htmlspecialchars($person['BirthPlace']) : '') . "' placeholder='&nbsp Birth Location'>";
@@ -713,7 +713,7 @@ function _TCT_mtr_transcription( $atts) {
                                                 class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['BirthDate'] != 'NULL' ? htmlspecialchars($person['BirthDate']) : '') .
                                                 "' placeholder='&nbsp Birth: dd/mm/yyyy'></span>";
                             $enrichmentTab .= "</div>";
-    
+
                             $enrichmentTab .= "<div class='person-location-death-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-deathPlace-edit' class='input-response person-input-field person-re-edit'
                                                 value='" . ($person['DeathPlace'] != 'NULL' ? htmlspecialchars($person['DeathPlace']) : '') . "' placeholder='&nbsp Death Location'>";
@@ -721,7 +721,7 @@ function _TCT_mtr_transcription( $atts) {
                                                 class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['DeathDate'] != 'NULL' ? htmlspecialchars($person['DeathDate']) : '') .
                                                 "' placeholder='&nbsp Death: dd/mm/yyyy'></span>";
                             $enrichmentTab .= "</div>";
-    
+
                             $enrichmentTab .= "<div class='form-buttons-right'>";
                                 $enrichmentTab .= "<div class='person-btn-left'>";
                                     $enrichmentTab .= "<button class='theme-color-background' onClick='openPersonEdit(" . $person['PersonId'] . ")'>";
@@ -885,7 +885,7 @@ function _TCT_mtr_transcription( $atts) {
                         $enrichmentTab .= "</div>";
                     }
                 }
-                
+
                 // $enrichmentTab .= '</ul>';
             $enrichmentTab .= '</div>';
             $enrichmentTab .= "<div id='save-all-tags'>";
@@ -894,7 +894,7 @@ function _TCT_mtr_transcription( $atts) {
         $enrichmentTab .= "</div>";
 
     $enrichmentTab .= "</div>";
-    
+
     // Transcription History
     $trHistory = "";
     if($currentTranscription['Text'] == null ) {
@@ -957,13 +957,13 @@ function _TCT_mtr_transcription( $atts) {
                         $trHistory .= "</span>";
                         $trHistory .= "<i class='fas fa-angle-down' style='float:right;'></i>";
                     $trHistory .= "</div>";
-    
+
                     $trHistory .= "<div id='transcription-" . $i . "' class='collapse transcription-history-collapse-content'>";
                         $trHistory .= "<p>";
                             $trHistory .= $transcription['TextNoTags'];
                         $trHistory .= "</p>";
                         $trHistory .= "<input class='transcription-comparison-button theme-color-background' type='button'
-                                        onClick='compareTranscription(" . htmlentities(json_encode($transcriptionList[$i]['TextNoTags']), ENT_QUOTES) . ", 
+                                        onClick='compareTranscription(" . htmlentities(json_encode($transcriptionList[$i]['TextNoTags']), ENT_QUOTES) . ",
                                         " . htmlentities(json_encode($currentTranscription['TextNoTags']), ENT_QUOTES)."," . $i . ")' value='Compare to current transcription'>";
                         $trHistory .= "<div id='transcription-comparison-output-" . $i . "' class='transcription-comparison-output'></div>";
                     $trHistory .= "</div>";
@@ -979,10 +979,10 @@ function _TCT_mtr_transcription( $atts) {
         $editorTab .= "<div class='item-page-section-headline-container transcription-headline-header'>";
             $editorTab .= "<div class='theme-color item-page-section-headline'>";
                 $editorTab .= "<span class='headline-header'>TRANSCRIPTION</span>";
-            
+
                 $editorTab .= "<div id='transcription-status-changer' class='status-changer section-status-changer login-required' style='background-color:" . $itemData['TranscriptionStatusColorCode'] . ";'>";
                     $editorTab .= "<span id='transcription-status-indicator' class='status-indicator'
-                                
+
                                 onclick='event.stopPropagation(); document.getElementById(\"transcription-status-dropdown\").classList.toggle(\"show\")'> " .$itemData['TranscriptionStatusName'] . " </span>";
                     $editorTab .= "<div id='transcription-status-dropdown' class='sub-status status-dropdown-content'>";
 
@@ -995,7 +995,7 @@ function _TCT_mtr_transcription( $atts) {
                                     $editorTab .= $statusTyp['Name'];
                                 $editorTab .= "</div>";
                             } else {
-                                $editorTab .= "<div class='status-dropdown-option' 
+                                $editorTab .= "<div class='status-dropdown-option'
                                             onclick='changeStatus(" . $_GET['item'] . ", null, \"" . $statusTyp['Name'] . "\", \"transcriptionStatusId\", " . $statusTyp['CompletionStatusId'] . ", \"" . $statusTyp['ColorCode'] . "\", " . sizeof($progressData) . ", this)'>";
                                     $editorTab .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, " . $statusTyp['ColorCode'] . "), color-stop(1, " . $statusTyp['ColorCodeGradient'] . "));'></i>";
                                     $editorTab .= $statusTyp['Name'];
@@ -1010,7 +1010,7 @@ function _TCT_mtr_transcription( $atts) {
             $editorTab .= "<div id='switch-tr-view' style='float:right;'><i class='fa fa-pencil' style='font-size:30px;color:#0a72cc;cursor:pointer;margin-top:5px;'></i></div>";
         $editorTab .= "</div>"; // End of header
         $editorTab .= "<div style='clear:both;'></div>";
-        
+
         // Editor and Language Selector
         $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
             // MCE Editor
@@ -1073,19 +1073,19 @@ function _TCT_mtr_transcription( $atts) {
                         $editorTab .= "</label>";
                     $editorTab .= "</div>";
 
-                    $editorTab .= "<button disabled class='item-page-save-button language-tooltip' id='transcription-update-button' 
+                    $editorTab .= "<button disabled class='item-page-save-button language-tooltip' id='transcription-update-button'
                                     onClick='updateItemTranscription(" . $itemData["ItemId"] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                         $editorTab .= "SAVE"; // Save transcription
                         $editorTab .= "<span class='language-tooltip-text'>Please select a language</span>";
                     $editorTab .= "</button>";
-    
 
-                    
-    
+
+
+
                     $editorTab .= "<div id='item-transcription-spinner-container' class='spinner-container spinner-container-right'>";
                         $editorTab .= "<div class='spinner'></div>";
                     $editorTab .= "</div>";
-    
+
                     $editorTab .= "<div style='clear:both;'></div>";
                 $editorTab .= "</div>";
                 $editorTab .= "<div style='clear:both;'></div>";
@@ -1113,12 +1113,12 @@ function _TCT_mtr_transcription( $atts) {
         // description status  changer
                 $descriptionTab .= "<div id='description-status-changer' class='status-changer section-status-changer login-required' style='background-color:" . $itemData['DescriptionStatusColorCode'] . ";' >";
                 if(current_user_can('administrator')) {
-                    $descriptionTab .= "<span id='description-status-indicator' class='status-indicator' 
+                    $descriptionTab .= "<span id='description-status-indicator' class='status-indicator'
                                         onClick='event.stopPropagation(); document.getElementById(\"description-status-dropdown\").classList.toggle(\"show\")'> " . $itemData['DescriptionStatusName'] . " </span>";
                 } else {
                     $descriptionTab .= "<span id='description-status-indicator' class='status-indicator'> " . $itemData['DescriptionStatusName'] . " </span>";
                 }
-            
+
                     $descriptionTab .= "<div id='description-status-dropdown' class='sub-status status-dropdown-content'>";
                         foreach($statusTypes as $sType) {
                             if($sType['CompletionStatusId'] != 4 || current_user_can('administrator')){
@@ -1202,7 +1202,7 @@ function _TCT_mtr_transcription( $atts) {
                                     $descriptionTab .= $language['Name'];
                                 $descriptionTab .= "</option>";
                             }
-                            
+
                         }
                     }
                 $descriptionTab .= "</select>";
@@ -1231,18 +1231,18 @@ function _TCT_mtr_transcription( $atts) {
     $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
 
     $allImages = [];
-    
+
     for($x = 0; $x < $numOfPhotos; $x++) {
         $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
         $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
-                        
+
         if($sliderImg['height'] == null) {
             $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
         }
-    
+
         array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || ' . $isActive));
     }
-    
+
     $imageSlider = "";
     $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
     $imageSlider .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
@@ -1257,11 +1257,11 @@ function _TCT_mtr_transcription( $atts) {
         $imageSlider .= "</div>";
     $imageSlider .= "</div>";
 
-    
+
     // Metadata
     $metaData .= "";
     $metaData .= "<div id='meta-container'>";
-        
+
         // Contributor
         if($itemData['StorydcContributor']) {
             $metaData .= "<div class='single-meta'>";
@@ -1508,7 +1508,7 @@ function _TCT_mtr_transcription( $atts) {
         $content .= $imageSlider;
         //$content .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
     $content .= "</section>";
-    
+
         // Title
     $content .= "<section id='title-n-progress'>";
         $content .= "<div class='title-n-btn'>";
@@ -1522,14 +1522,14 @@ function _TCT_mtr_transcription( $atts) {
 
         $content .= "<div class='item-progress'>";
             $content .= "<div class='change-all-status'>CHANGE ITEM STATUS</div>";
-        
+
             $content .= "<div id='item-status-selector' style='display:none;'>";
                 // Not Started
                 $content .= "<div id='all-not-started' class='status-dropdown-option'>";
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #eeeeee), color-stop(1, #eeeeee));'></i>";
                     $content .= "Mark item as Not Started";
                 $content .= "</div>";
-                $content .= "<script> 
+                $content .= "<script>
                                 const allNotStarted = document.querySelector('#all-not-started');
                                 allNotStarted.addEventListener('click', function() {
                                     changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'taggingStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
@@ -1544,7 +1544,7 @@ function _TCT_mtr_transcription( $atts) {
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff700), color-stop(1, #ffd800));'></i>";
                     $content .= "Mark item as Edit";
                 $content .= "</div>";
-                $content .= "<script> 
+                $content .= "<script>
                                 const allEdit = document.querySelector('#all-edit');
                                 allEdit.addEventListener('click', function() {
                                     changeStatus(" . $_GET['item'] . ", null, 'Edit', 'taggingStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
@@ -1559,7 +1559,7 @@ function _TCT_mtr_transcription( $atts) {
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffc720), color-stop(1, #f0b146));'></i>";
                     $content .= "Mark item as Review";
                 $content .= "</div>";
-                $content .= "<script> 
+                $content .= "<script>
                                 const allReview = document.querySelector('#all-review');
                                 allReview.addEventListener('click', function() {
                                     changeStatus(" . $_GET['item'] . ", null, 'Review', 'taggingStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
@@ -1574,7 +1574,7 @@ function _TCT_mtr_transcription( $atts) {
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #61e02f), color-stop(1, #4dcd1c));'></i>";
                     $content .= "Mark item as Completed";
                 $content .= "</div>";
-                $content .= "<script> 
+                $content .= "<script>
                                 const allComplete = document.querySelector('#all-complete');
                                 allComplete.addEventListener('click', function() {
                                     changeStatus(" . $_GET['item'] . ", null, 'Completed', 'taggingStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
@@ -1732,11 +1732,11 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "<div id='description-container'>";
                 $content .= "<div class='description-view'>";
                     $content .= "<h6 class='enrich-headers'> Description </h6>";
-    
+
                     $content .= "<div class='current-description' style='padding-left:24px;'>";
                         $content .= $itemData['Description'];
                     $content .= "</div>";
-                        
+
                     $descriptionLanguage = "";
                     foreach($languages as $language) {
                         if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
@@ -1775,7 +1775,7 @@ function _TCT_mtr_transcription( $atts) {
         $content .= "</div>"; // end of right side
         $content .= "<div style='clear:both;'></div>";
     $content .= "</section>";
-        
+
 
     $content .= "<section id='story-info' class='collapsed' style='height:325px;'>";
         $content .= "<div id='meta-collapse' class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;margin:25px 0;' role='button' aria-expanded='false'>";
@@ -1885,7 +1885,7 @@ function _TCT_mtr_transcription( $atts) {
                     $content .= "</li>";
                 $content .= '</ul>';
             $content .= "</div>";
-        
+
             $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
                 // Editor tab
                 $content .= "<div id='editor-tab' class='tabcontent'>";
@@ -1901,7 +1901,7 @@ function _TCT_mtr_transcription( $atts) {
                 $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
                     $content .= "<div class='item-page-section-headline theme-color'>" . $itemData['StorydcTitle'] . "</div>";
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
-                        
+
                     $content .= "</div>";
                     if($itemData['StorydcDescription'] != null && $itemData['StorydcDescription'] != 'NULL' && strlen($storyDescription) > 1300) {
                         $content .= "<div id='story-full-collapse'>Show More</div>";
@@ -1916,7 +1916,7 @@ function _TCT_mtr_transcription( $atts) {
                     // Content will be added here in switchItemPageView function
                     $content .= "<div id='full-screen-map-placeholder'></div>";
                    // $content .= $mapEditor;
-                    
+
                 $content .= "</div>";
                 // Tag tab
                 $content .= "<div id='tag-tab' class='tabcontent' style='display:none'>";
@@ -1936,7 +1936,7 @@ function _TCT_mtr_transcription( $atts) {
 
     // JAVASCRIPT TODO put in a separate file
     $content .= "<script>
-    
+
     var ready = (callback) => {
         if (document.readyState != \"loading\") callback();
         else document.addEventListener(\"DOMContentLoaded\", callback);
@@ -2002,9 +2002,9 @@ function _TCT_mtr_transcription( $atts) {
             );
         }
     });
-    
-    
-    
+
+
+
     </script>";
 
     $content .= '<script>
