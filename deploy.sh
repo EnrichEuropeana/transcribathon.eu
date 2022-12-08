@@ -12,24 +12,12 @@ echo "Deploying to $STAGE..."
 date
 echo
 
+cd "$LOCAL_PATH"
+tar -czf "$DEPLOY_NAME" "$THEME_NAME"
+
 if [ $STAGE = 'local' ]; then
-  cd "$LOCAL_PATH"
-  tar -czf "$DEPLOY_NAME" "$THEME_NAME"
   lftp -e "put -O $REMOTE_PATH $DEPLOY_NAME; bye" --user $SSH_USER --password $SSH_PASS sftp://$SSH_HOST
-  rm $DEPLOY_NAME
-fi
 
-OUT=$?
-
-if [ $OUT != 0 ]; then
-  echo 'Deploy failed'
-  exit 1
-fi
-
-
-echo 'Transfer successful, moving to target...'
-
-if [ $STAGE = 'local' ]; then
   ssh -t $SSH_USER@$SSH_HOST << EOF
   cd "$REMOTE_PATH"
   mv "$THEME_NAME" "$THEME_NAME.$NOW"
@@ -40,8 +28,28 @@ if [ $STAGE = 'local' ]; then
 EOF
 fi
 
+if [ $STAGE = 'dev' ]; then
+  lftp -e "set sftp:connect-program 'ssh -a -x -i $SSH_KEY_FILE'; connect sftp://$SSH_USER@$SSH_HOST:$SSH_PORT; put -O $REMOTE_PATH $DEPLOY_NAME; bye"
+
+  ssh -t -t -x -i $SSH_KEY_FILE -p $SSH_PORT $SSH_USER@$SSH_HOST << EOF
+  cd "$REMOTE_PATH"
+  mv "$THEME_NAME" "$THEME_NAME.$NOW"
+  tar -xzf "$DEPLOY_NAME"
+  rm "$DEPLOY_NAME"
+  exit
+EOF
+fi
+
+rm $DEPLOY_NAME
+
+OUT=$?
+
+if [ $OUT != 0 ]; then
+  echo 'Deploy failed'
+  exit 1
+fi
+
 echo 'Deploy successful'
 
 date
 echo
-
