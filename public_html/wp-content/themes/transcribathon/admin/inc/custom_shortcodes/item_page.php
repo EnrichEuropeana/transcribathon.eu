@@ -9,8 +9,6 @@ Description: Gets item data and builds the item page without htr editor
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 //
 // // Transkribus Client, include required files
-// require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
-// require_once(get_stylesheet_directory() . '/htr-client/config.php');
 
 use FactsAndFiles\Transcribathon\TranskribusClient;
 //
@@ -20,24 +18,46 @@ function _TCT_mtr_transcription( $atts) {
     global $ultimatemember, $config;
     if (isset($_GET['item']) && $_GET['item'] != "") {
         // Set request parameters for image data
-        $requestData = array(
-            'key' => 'testKey'
-        );
+        // $requestData = array(
+        //     'key' => 'testKey'
+        // );
         $url = TP_API_HOST."/tp-api/items/".$_GET['item'];
-        $requestType = "GET";
+
+        $options = [
+            'http' => [
+                'header' => [
+                    'Content-type: application/json',      
+            ],
+                'method' => 'GET'
+            ]
+        ];
+        $context = stream_context_create($options);
+    
+	    $data = @file_get_contents($url, false, $context);
         $isLoggedIn = is_user_logged_in();
-        // Execude http request
-        include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
+
         // Save image data
-        $itemData = json_decode($result, true);
+        $itemData = json_decode($data, true);
+ 
         if ($itemData['StoryId'] != null) {
             // Set request parameters for story data
             $url = TP_API_HOST."/tp-api/itemPage/".$itemData['StoryId'];
-            $requestType = "GET";
-            // Execude http request
-            include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
+
+            $options = [
+                'http' => [
+                    'header' => [
+                        'Content-type: application/json',
+                ],
+                    'method' => 'GET'
+                ]
+            ];
+            $context = stream_context_create($options);
+        
+            $data = @file_get_contents($url, false, $context);
+
             // Save story data
-            $itemPageData = json_decode($result, true);
+            $itemPageData = json_decode($data, true);
+
             $statusTypes = $itemPageData['CompletionStatus'];
             $fieldMappings = $itemPageData['FieldMappings'];
             $languages = $itemPageData['Languages'];
@@ -51,18 +71,6 @@ function _TCT_mtr_transcription( $atts) {
     $content = "";
 
     // TODO MOVE THIS TO THE APPROPRIATE PLACE
-    // Get htr data
-    // create new Transkribus client and inject configuration
-    // $transkribusClient = new TranskribusClient($config);
-    // // get the HTR-transcribed data from database if there is one
-    // $htrDataJson = $transkribusClient->getDataFromTranscribathon(
-    //     null,
-    //     array(
-    //         'ItemId' => $_GET['item'],
-    //             'orderBy' => 'LastUpdated',
-    //             'orderDir' => 'desc'
-    //     )
-    // );
     
     $content .= '<script>
     window.onclick = function(event) {
@@ -255,33 +263,9 @@ function _TCT_mtr_transcription( $atts) {
         $mapBox .= "<i class='fas fa-map map-placeholder'></i>";
     $mapBox .= "</div>";
 
-    // Location View
-    $locationView .= "<div class='location-view-container' style='margin-top:20px;'>";
-    foreach($itemData['Places'] as $place) {
-        $locationView .= "<div>";
-            $locationView .= "<div class='location-single'>";
-                $locationView .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>";
-                $locationView .= "<p><b>" . $place['Name'] . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
-                if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
-                    $locationView .= "<p style='margin-top:0px;font-size:13px;'>Description: <b>" . $place['Comment'] . "</b></p>";
-                }
-                if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
-                    $locationView .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". ($place['WikidataId']) . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
-                }
-            $locationView .= "</div>";
-        $locationView .= "</div>";
-    }
-    if($itemData['StoryPlaceName'] != null && $itemData['StoryPlaceName'] != "") {
-        $locationView .= "<div class='location-single story-location'>";
-            $locationView .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='filter:saturate(0.4);'>";
-            $locationView .= "<p><b>" . $itemData['StoryPlaceName'] . "</b> (" . $itemData['StoryPlaceLatitude'] . ", " . $itemData['StoryPlaceLongitude'] . ")</p>";
-            $locationView .= "<p style='font-size:13px;'>Story Location</p>";
-        $locationView .= "</div>";
-    }
-    $locationView .= "</div>";
     // Locations Display
     $locationDisplay = "";
-    $locationDisplay .= "<div class='location-display-container' style='margin-top:20px;'>";
+    $locationDisplay .= "<div id='location-editor' class='location-display-container' style='margin-top:20px;'>";
         foreach($itemData['Places'] as $place) {
             $locationDisplay .= "<div id='location-" . $place['PlaceId'] . "'>";
                 $locationDisplay .= "<div id='location-data-output-" . $place['PlaceId'] . "' class='location-single'>";
@@ -529,6 +513,19 @@ function _TCT_mtr_transcription( $atts) {
             $enrichmentTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
                 $enrichmentTab .= "Document Creation Date";
             $enrichmentTab .= "</h6>";
+            if($itemData['DateStartDisplay'] != null || $itemData['DateEndDisplay'] != null) {
+                $enrichmentTab .= "<div class='document-date-container'>";
+                    $enrichmentTab .= "<div class='date-top'>";
+                        $enrichmentTab .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                        $enrichmentTab .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
+                    $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "<div style='clear:both;'></div>";
+                    $enrichmentTab .= "<div class='date-bottom'>";
+                        $enrichmentTab .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
+                        $enrichmentTab .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
+                    $enrichmentTab .= "</div>";
+                $enrichmentTab .= "</div>";
+            }
 
             $enrichmentTab .= "<div class='item-date-inner-container'>";
                 $enrichmentTab .= "<label>Start Date</label>";
@@ -897,51 +894,6 @@ function _TCT_mtr_transcription( $atts) {
         $enrichmentTab .= "</div>";
 
     $enrichmentTab .= "</div>";
-
-    // People Display
-    $peopleDisplay .= "<div class='people-container'>";
-        $peopleDisplay .= "<h6 id='fs-people' class='enrich-headers'> People <i title='Add Info' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-        $peopleDisplay .= "<div style='padding-left:24px;'>";
-            foreach($itemData['Persons'] as $person) {
-                $peopleDisplay .= "<div class='single-person'>";
-                    $peopleDisplay .= "<i class='fas fa-user person-i' style='float:left;margin-right:5px;'></i>";
-                    $peopleDisplay .= "<p class='person-data'>";
-                        $peopleDisplay .= "<span style='font-weight:400;'>" . $person['FirstName'] . " " . ($person['LastName'] != 'NULL' ? $person['LastName'] : '' ). "</span>";
-                        if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
-                            $peopleDisplay .= " (" . $person['BirthDate'];
-                            if($person['BirthPlace'] != 'NULL') {
-                                $peopleDisplay .= ", " . $person['BirthPlace'];
-                            }
-                            $peopleDisplay .= " - " . $person['DeathDate'];
-                            if($person['DeathPlace'] != 'NULL') {
-                                $peopleDisplay .= ', ' . $person['DeathPlace'];
-                            }
-                            $peopleDisplay .= ")";
-                        } else if ($person['BirthDate'] != 'NULL') {
-                            $peopleDisplay .= " (Birth: " . $person['BirthDate'];
-                            if($person['BirthPlace'] != 'NULL') {
-                                $peopleDisplay .= ", " . $person['BirthPlace'];
-                            }
-                            $peopleDisplay .= ")";
-                        } else if ($person['DeathDate'] != 'NULL') {
-                            $peopleDisplay .= " (Death: " . $person['DeathDate'];
-                            if($person['DeathPlace'] != 'NULL') {
-                                $peopleDisplay .= ", " . $person['DeathPlace'];
-                            }
-                            $peopleDisplay .= ")";
-                        }
-                    $peopleDisplay .= "</p>";
-        
-                    if($person['Description'] != 'NULL') {
-                        $peopleDisplay .= "<p class='person-description'>Description: <b>" . $person['Description'] . "</b></p>";
-                    }
-                    if($person['Link'] != 'NULL') {
-                        $peopleDisplay .= "<p class='person-description'>Wikidata ID: <b><a href='https://www.wikidata.org/wiki/".$person['Link']."' target='_blank'>".$person['Link']."</a></b></p>";
-                    }
-                $peopleDisplay .= "</div>";
-            }
-        $peopleDisplay .= "</div>";
-    $peopleDisplay .= "</div>";
     
     // Transcription History
     $trHistory = "";
@@ -1683,7 +1635,7 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "</div>";
                     } else {
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
-                            if($activeTr == 'htr' || $currentTranscription['Text'] == null) {
+                            if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
                                 $formattedTranscription = $htrTranscription;
                                 $content .= "<script>document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';</script>";
                             } else {
@@ -1719,7 +1671,7 @@ function _TCT_mtr_transcription( $atts) {
                             $content .= "</div>";
                         } else {
                             $content .= "<div id='no-text-placeholder'>";
-                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'><span>START TRANSCRIPTION</span></p>";
+                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
                             $content .= "</div>";
                             $content .= "<div class='current-transcription' style='display:none;'></div>";
                             $content .= "<div class='transcription-language' style='display:none;'>";
@@ -1752,7 +1704,7 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "<div id='normal-map' style='height:400px;'>";
                 $content .= $mapBox;
             $content .= "</div>";
-            $content .= $locationView;
+            $content .= $mapEditor;
         $content .= "</div>"; // end of left side
         $content .= "<div id='enrich-right'>";
             // Right side
@@ -1778,8 +1730,8 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
 
             $content .= "<div id='description-container'>";
-                $content .= "<div class='enrich-box'>";
-                    $content .= "<h6 class='enrich-headers'> Description  <i title='Add Info' id='description-open' style='margin-left:5px;font-size:1.1em;margin-bottom:10px;' class='fas fa-plus-circle'></i></h6>";
+                $content .= "<div class='description-view'>";
+                    $content .= "<h6 class='enrich-headers'> Description </h6>";
     
                     $content .= "<div class='current-description' style='padding-left:24px;'>";
                         $content .= $itemData['Description'];
@@ -1796,16 +1748,15 @@ function _TCT_mtr_transcription( $atts) {
                     } else {
                         $content .= "<div class='description-language' style='display:none;'>";
                     }
-                            $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
-                            $content .= "<div style='padding-left:24px;'>";
-                            if($descriptionLanguage != null || $descriptionLanguage != "")
-                                $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
-                            $content .= "</div>";
+                        $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
+                        $content .= "<div style='padding-left:24px;'>";
+                        if($descriptionLanguage != null || $descriptionLanguage != "")
+                            $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
                         $content .= "</div>";
-                $content .= "</div>";
-                $content .= "<div class='enrich-box'>";
+                    $content .= "</div>";
+
                     $content .= "<div class='type-of-media'>";
-                        $content .= "<h6 class='enrich-headers'> Type of Media  <i title='Add Info' id='media-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
+                        $content .= "<h6 class='enrich-headers'> Type of Media</h6>";
                         $content .= "<div style='padding-left:24px;'>";
                         foreach($itemData['Properties'] as $property) {
                             if($property['PropertyType'] == "Category") {
@@ -1815,74 +1766,9 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "</div>";
                     $content .= "</div>";
                 $content .= "</div>";
-                $content .= "<div class='enrich-box'>";   
-                        // Document Date
-                        $content .= "<div class='document-date-container'>";
-                            $content .= "<h6 class='enrich-headers'> Document Creation Date <i title='Add Info' id='date-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                            if($itemData['DateStartDisplay'] != NULL || $itemData['DateEndDisplay'] != NULL) {
-                                $content .= "<div class='date-top' style='padding-left:24px;'>";
-                                    $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
-                                    $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
-                                $content .= "</div>";
-                                $content .= "<div style='clear:both;'></div>";
-                                $content .= "<div class='date-bottom' style='padding-left:24px;'>";
-                                    $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
-                                    $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
-                                $content .= "</div>";
-                            } else {
-                                $content .= "<div class='date-top' style='padding-left:24px;display:none;'>";
-                                    $content .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
-                                    $content .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
-                                $content .= "</div>";
-                                $content .= "<div style='clear:both;'></div>";
-                                $content .= "<div class='date-bottom' style='padding-left:24px;display:none;'>";
-                                    $content .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
-                                    $content .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
-                                $content .= "</div>";
-                            }
-                            $content .= "<div style='clear:both;'></div>";
-                        $content .= "</div>";
-                $content .= "</div>";
-                $content .= "<div class='enrich-box'>";
-                        // People
-                        $content .= "<div id='people-view'>";
-                            $content .= "<h6 class='enrich-headers'> People <i title='Add Info' id='people-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                            $content .= $peopleDisplay;
-                        $content .= "</div>";
-                $content .= "</div>";
-                        // Properties
-                        $keywords = "";
-                        $externalLinks = "";
-                        foreach($itemData['Properties'] as $property) {
-                            if($property['PropertyType'] == 'Keyword') {
-                                $keywords .= "<div class='keyword-single'>" . $property['PropertyValue'] . "</div>";
-                            } else if ($property['PropertyType'] == 'Link') {
-                                if($property['PropertyDescription'] != 'NULL') {
-                                    $propDesc = "<div class='prop-desc' style='padding-left:24px;'>Description: <b>" . $property['PropertyDescription'] . "</b></div>";
-                                }
-                                $externalLinks .= "<div class='link-single'>";
-                                    $externalLinks .= "<i class='far fa-external-link' style='margin-left:3px;margin-right:5px;color:#0a72cc;font-size:14px;''></i><a href='" . $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
-                                    $externalLinks .= $propDesc;
-                                $externalLinks .= "</div>";
-                            }
-                        }
-                $content .= "<div class='enrich-box'>";
-                        // Keywords
-                        $content .= "<div class='keywords-container'>";
-                            $content .= "<h6 class='enrich-headers'> Keywords <i title='Add Info' id='keywords-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                            $content .= "<div style='padding-left:24px;'>";
-                                $content .= $keywords;
-                            $content .= "</div>";
-                        $content .= "</div>";
-                $content .= "</div>";
-                $content .= "<div class='enrich-box'>";
-                        // External Links
-                        $content .= "<div class='links-container'>";
-                            $content .= "<h6 class='enrich-headers'> External Web Resources <i title='Add Info' id='links-open' style='margin-left:5px;font-size:1.1em;' class='fas fa-plus-circle'></i></h6>";
-                            $content .= "<div style='padding-left:24px;'>";
-                                $content .= $externalLinks;
-                            $content .= "</div>";
-                        $content .= "</div>";
+
+                $content .= "<div id='enrich-view'>";
+                    $content .= $enrichmentTab;
                 $content .= "</div>";
             $content .= "</div>"; // end of enrichment
 
@@ -2015,13 +1901,13 @@ function _TCT_mtr_transcription( $atts) {
                 $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
                     $content .= "<div class='item-page-section-headline theme-color'>" . $itemData['StorydcTitle'] . "</div>";
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
-                        $content .= $storyDescription;
+                        
                     $content .= "</div>";
                     if($itemData['StorydcDescription'] != null && $itemData['StorydcDescription'] != 'NULL' && strlen($storyDescription) > 1300) {
                         $content .= "<div id='story-full-collapse'>Show More</div>";
                     }
                     $content .= "<div id='full-v-metadata'>";
-                        $content .= $metaData;
+              ;
                     $content .= "</div>";
                     // Content will be added here in switchItemPageView function
                 $content .= "</div>";
@@ -2029,12 +1915,12 @@ function _TCT_mtr_transcription( $atts) {
                 $content .= "<div id='tagging-tab' class='tabcontent' style='display:none;'>";
                     // Content will be added here in switchItemPageView function
                     $content .= "<div id='full-screen-map-placeholder'></div>";
-                    $content .= $mapEditor;
+                   // $content .= $mapEditor;
                     
                 $content .= "</div>";
                 // Tag tab
                 $content .= "<div id='tag-tab' class='tabcontent' style='display:none'>";
-                    $content .= $enrichmentTab;
+                  // $enrichmentTab;
                 $content .= "</div>";
                 // Help tab
                 $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";

@@ -13,9 +13,9 @@ Version: 1.0
 @import url("css/logos.css");
 /* Main font */
 /* @import url("https://fonts.googleapis.com/css?family=Fira+Sans+Condensed:300,400,600");
-/* Dosis and Open Sans 
+/* Dosis and Open Sans */
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap'); 
 
 /* Make some global variables */
 :root {

@@ -289,6 +289,11 @@ body {
     text-align: center;
     cursor: pointer;
     color: var(--main-color);
+    position: relative;
+    bottom: 15px;
+    background-color: #fff;
+    height: 25px;
+    padding-top: 5px;
 }
 #startTranscription, #startHtrTranscription {
     padding: 0 25px 15px 25px;
@@ -335,6 +340,13 @@ body {
     float: right;
     width: 49%;
 }
+#map-left #location-hide, #map-left .edit-delete-btns, #map-left #location-input-section{
+    display: none!important;
+}
+#map-left #location-editor {
+    margin-top: 10px!important;
+    padding: 0 25px;
+}
 /*--- Sub Headers ---*/
 /*-- bigger, section titles --*/
 .enrich-header h5 {
@@ -372,6 +384,32 @@ h6.enrich-headers {
     flex-direction: column;
     justify-content: space-between;
 }
+.description-view {
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+#enrich-view {
+    min-height: 280px;
+}
+#enrich-view #tagging-section {
+    min-height: 279px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#enrich-view button{
+    display: none;
+}
+#enrich-view .item-date-inner-container {
+    display: none;
+}
+#enrich-right .item-page-section-headline-container, #enrich-right .edit-item-date,
+#enrich-right .edit-del-person, #enrich-right .item-page-save-button, #enrich-right .delete-item-datas,
+#enrich-right .edit-del-link, #enrich-right #save-all-tags, #enrich-right #person-input-container, #enrich-right .fa-plus-circle {
+    display: none!important;
+}
 .link-single {
     background-color: #fff;
     padding-bottom: 5px;
@@ -379,9 +417,7 @@ h6.enrich-headers {
     position: relative;
     width: 91%;
 }
-.enrich-box {
-    min-height: 65px;
-}
+
 .single-person {
     padding: 5px 0px;
     background: #fff;
@@ -520,6 +556,9 @@ h6.enrich-headers {
 .date-bottom {
     font-weight: 400;
     margin-top: 5px;
+}
+#item-data-section .document-date-container{
+    display: none;
 }
 /* --- Metadata --- */
 .single-meta {
