@@ -10,21 +10,14 @@ define( 'TCT_THEME_DIR_PATH', plugin_dir_path( __FILE__ ) );
 /* Disable WordPress Admin Bar for all users but admins. */
 show_admin_bar(false);
 
-function extractImageService($imageData) {
-    $extractedService = $imageData['service'];
-
-    if (is_array($imageData['service']) && empty($imageData['service']['@id'])) {
-        $extractedService = $imageData['service'][0];
-    }
-
-    return $extractedService;
-}
 /**
  * Function to check valid Transcription
  * For now passing just item ID, it can be modified for other use
  */
 function checkActiveTranscription($itemID) {
-    // Create a stream
+
+    $url = TP_API_V2_ENDPOINT . '/items/' . $itemID;
+
     $options = [
         'http' => [
             'header' => [
@@ -34,13 +27,46 @@ function checkActiveTranscription($itemID) {
             'method' => 'GET'
         ]
     ];
-      
-    $context = stream_context_create($options);
-      
-    // Open the file using the HTTP headers set above
-    $result = file_get_contents(TP_API_V2_ENDPOINT . "/items/" . $itemID, false, $context);
+
+    $result = sendQuery($url, $options);
 
     return $result;
+}
+
+/**
+ * Send queries to APIs and servers
+ *
+ * @param  string  $url        URL to be queried
+ * @param  array   $options    Options for the context stream
+ * @param  boolean $jsonDecode Should the result json_decoded
+ * @return mixed               Result or false
+ */
+function sendQuery($url, $options, $jsonDecode = false)
+{
+		$options['ssl'] = [
+			  'verify_peer' => $options['ssl']['verify_peer'] ?? false,
+        'verify_peer_name' => $options['ssl']['verify_peer_name'] ?? false
+		];
+
+		$options['http']['ignore_errors'] = true;
+		$options['http']['timeout'] = 60;
+
+		$context = stream_context_create($options);
+		$result = @file_get_contents($url, false, $context);
+
+    $out = ($result && $jsonDecode) ? json_decode($result, true) : $result;
+
+		return $out;
+}
+
+function extractImageService($imageData) {
+    $extractedService = $imageData['service'];
+
+    if (is_array($imageData['service']) && empty($imageData['service']['@id'])) {
+        $extractedService = $imageData['service'][0];
+    }
+
+    return $extractedService;
 }
 
 /**
@@ -225,7 +251,7 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-news/tct-news.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
 // Image settings
 add_image_size( 'news-image', 300, 200, true );
-// Image settings 
+// Image settings
 add_image_size( 'tutorial-image', 1600, 800, true );
 
 // Embedd custom Javascripts and CSS
