@@ -42,7 +42,7 @@ docker_stop:
 	@echo "...mischief managed."
 	@echo
 
-deploy local:
+deploy_local:
 	@echo
 	@echo "----"
 	@echo "Delpoying to .local..."
