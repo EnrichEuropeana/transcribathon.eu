@@ -292,7 +292,7 @@ function embedd_custom_javascripts_and_css() {
             wp_dequeue_style('siteorigin-panels-front');
             wp_dequeue_style('chartist');
             wp_dequeue_style('siteorigin-mobilenav');
-            wp_dequeue_style('jQuery-UI');
+            //wp_dequeue_style('jQuery-UI');
             wp_dequeue_style('classic-theme-styles');
             wp_dequeue_style('sp-ea-font-awesome');
             wp_dequeue_style('sp-ea-style');
@@ -329,12 +329,12 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js', null, null, true);
             wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/item-page-viewer.js');
             wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
-            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/item-page-min.js', null, null, true);
+            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/item-page.js', null, null, true);
         } else if (is_page('transcription-comparison')) {
             wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/compare-tr-viewer.js');
             wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon-bin-3.1.0/openseadragon.min.js');
             wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
-            wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page-min.css');
+            wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css');
             wp_enqueue_script( 'jquery' );
             wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
         }

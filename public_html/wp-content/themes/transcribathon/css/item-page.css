@@ -384,6 +384,27 @@ h6.enrich-headers {
     flex-direction: column;
     justify-content: space-between;
 }
+.description-view {
+    min-height: 125px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+#enrich-view {
+    min-height: 280px;
+}
+#enrich-view #tagging-section {
+    min-height: 279px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#enrich-view button{
+    display: none;
+}
+#enrich-view .item-date-inner-container {
+    display: none;
+}
 #enrich-right .item-page-section-headline-container, #enrich-right .edit-item-date,
 #enrich-right .edit-del-person, #enrich-right .item-page-save-button, #enrich-right .delete-item-datas,
 #enrich-right .edit-del-link, #enrich-right #save-all-tags, #enrich-right #person-input-container, #enrich-right .fa-plus-circle {
@@ -396,9 +417,7 @@ h6.enrich-headers {
     position: relative;
     width: 91%;
 }
-.enrich-box {
-    min-height: 65px;
-}
+
 .single-person {
     padding: 5px 0px;
     background: #fff;
@@ -537,6 +556,9 @@ h6.enrich-headers {
 .date-bottom {
     font-weight: 400;
     margin-top: 5px;
+}
+#item-data-section .document-date-container{
+    display: none;
 }
 /* --- Metadata --- */
 .single-meta {

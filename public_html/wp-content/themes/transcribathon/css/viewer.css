@@ -214,9 +214,11 @@
 }
 
 #buttons > div, #buttons > a {
-  padding: 4px 2px 0px 2px;
+  padding: 1px;
+  height: 25px;
+  width: 25px;
   background-color: #fff;
-  margin: 1px;
+  margin: 3px;
   text-align: center;
 }
 

@@ -513,6 +513,19 @@ function _TCT_mtr_transcription( $atts) {
             $enrichmentTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
                 $enrichmentTab .= "Document Creation Date";
             $enrichmentTab .= "</h6>";
+            if($itemData['DateStartDisplay'] != null || $itemData['DateEndDisplay'] != null) {
+                $enrichmentTab .= "<div class='document-date-container'>";
+                    $enrichmentTab .= "<div class='date-top'>";
+                        $enrichmentTab .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                        $enrichmentTab .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
+                    $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "<div style='clear:both;'></div>";
+                    $enrichmentTab .= "<div class='date-bottom'>";
+                        $enrichmentTab .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
+                        $enrichmentTab .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
+                    $enrichmentTab .= "</div>";
+                $enrichmentTab .= "</div>";
+            }
 
             $enrichmentTab .= "<div class='item-date-inner-container'>";
                 $enrichmentTab .= "<label>Start Date</label>";
@@ -1622,7 +1635,7 @@ function _TCT_mtr_transcription( $atts) {
                         $content .= "</div>";
                     } else {
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
-                            if($activeTr == 'htr' || $currentTranscription['Text'] == null) {
+                            if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
                                 $formattedTranscription = $htrTranscription;
                                 $content .= "<script>document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';</script>";
                             } else {
@@ -1658,7 +1671,7 @@ function _TCT_mtr_transcription( $atts) {
                             $content .= "</div>";
                         } else {
                             $content .= "<div id='no-text-placeholder'>";
-                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'><span>START TRANSCRIPTION</span></p>";
+                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
                             $content .= "</div>";
                             $content .= "<div class='current-transcription' style='display:none;'></div>";
                             $content .= "<div class='transcription-language' style='display:none;'>";
@@ -1717,7 +1730,7 @@ function _TCT_mtr_transcription( $atts) {
             $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
 
             $content .= "<div id='description-container'>";
-                $content .= "<div class='enrich-box'>";
+                $content .= "<div class='description-view'>";
                     $content .= "<h6 class='enrich-headers'> Description </h6>";
     
                     $content .= "<div class='current-description' style='padding-left:24px;'>";
@@ -1735,14 +1748,13 @@ function _TCT_mtr_transcription( $atts) {
                     } else {
                         $content .= "<div class='description-language' style='display:none;'>";
                     }
-                            $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
-                            $content .= "<div style='padding-left:24px;'>";
-                            if($descriptionLanguage != null || $descriptionLanguage != "")
-                                $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
-                            $content .= "</div>";
+                        $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
+                        $content .= "<div style='padding-left:24px;'>";
+                        if($descriptionLanguage != null || $descriptionLanguage != "")
+                            $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
                         $content .= "</div>";
-                $content .= "</div>";
-                $content .= "<div class='enrich-box'>";
+                    $content .= "</div>";
+
                     $content .= "<div class='type-of-media'>";
                         $content .= "<h6 class='enrich-headers'> Type of Media</h6>";
                         $content .= "<div style='padding-left:24px;'>";
