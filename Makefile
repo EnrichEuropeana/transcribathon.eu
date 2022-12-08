@@ -41,3 +41,12 @@ docker_stop:
 	@echo "----"
 	@echo "...mischief managed."
 	@echo
+
+deploy local:
+	@echo
+	@echo "----"
+	@echo "Delpoying to .local..."
+	@bash deploy.sh local
+	@echo "----"
+	@echo "...deploy done"
+	@echo
