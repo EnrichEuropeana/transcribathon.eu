@@ -376,6 +376,11 @@ function vantage_scripts() {
 
 	wp_enqueue_script( 'vantage-selectivizr', get_template_directory_uri() . '/js/selectivizr' . SITEORIGIN_THEME_JS_PREFIX . '.js', array(), '1.0.2' );
 	wp_script_add_data( 'vantage-selectivizr', 'conditional', '(gte IE 6)&(lte IE 8)' );
+	if(is_page('item')) {
+		wp_dequeue_script('jquery-touchswipe');
+		wp_dequeue_script('vantage-main');
+		wp_dequeue_script('jquery-fitvids');
+	}
 }
 endif;
 add_action( 'wp_enqueue_scripts', 'vantage_scripts' );

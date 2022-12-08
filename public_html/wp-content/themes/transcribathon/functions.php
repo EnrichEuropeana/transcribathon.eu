@@ -206,7 +206,7 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/datasets-admin-pag
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_import.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/story_page.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page.php');
-//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/solr_test.php'); // Solr test client
+require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/solr_test.php'); // Solr test client
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/get_word_document.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/compare_transcriptions.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
@@ -232,75 +232,15 @@ add_image_size( 'tutorial-image', 1600, 800, true );
 function embedd_custom_javascripts_and_css() {
     global $post;
      if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
-        /* jQuery */
-        /* Don't enqueue following scripts if it's HTR editor */
-        if(!is_page('item-page-htr') && !is_page('import-htr-transcription') && !is_page('item') && !is_page('transcription-comparison') && !is_page('story')) {
-            wp_enqueue_script( 'jquery' );
-            /* custom JS and CSS*/
-            /* openseadragon */
-            wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon-bin-3.1.0/openseadragon.min.js');
-            /*osdSelection plugin*/
-            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
-            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js');
-        }
-        if(is_page('story')){
-            wp_enqueue_style( 'storystyle', CHILD_TEMPLATE_DIR . '/css/story_page.css');
-            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/story-page.js');
-        }
-        if(is_page('transcription-comparison')) {
-            wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/compare-tr-viewer.js');
-            wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon-bin-3.1.0/openseadragon.min.js');
-            wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
-            wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css');
-            wp_enqueue_script( 'jquery' );
-            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
-        }
-        if(is_page('item')){
-            wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css');
-            wp_enqueue_script( 'jquery' );
 
-            /* TinyMCE */
-            wp_enqueue_script( 'tinymce', CHILD_TEMPLATE_DIR . '/js/tinymce/js/tinymce/tinymce.min.js');
-
-            /* iiif viewer */
-            wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon-bin-3.1.0/openseadragon.min.js');
-            /*osdSelection plugin*/
-            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
-            wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/item-page-viewer.js');
-            wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
-            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/item-page.js');
-        }
-
-        // if(!is_page('story')){
+        // Enqueue on all pages
         wp_enqueue_style('child-style', get_stylesheet_directory_uri() .'/style.css', array('parent-style'));
-        // }
         /* Bootstrap CSS */
         wp_enqueue_style( 'bootstrap', CHILD_TEMPLATE_DIR . '/css/bootstrap.min.css');
         /* Bootstrap JS */
-        wp_enqueue_script('bootstrap', CHILD_TEMPLATE_DIR . '/js/bootstrap.min.js');
-
-
-        /* progress chart CSS*/
-        wp_enqueue_style( 'chartist', CHILD_TEMPLATE_DIR . '/css/chartist.min.css');
-        /* progress chart JS*/
-        wp_enqueue_script( 'chartist', CHILD_TEMPLATE_DIR . '/js/chartist.min.js');
-
-
-        /* Don't enqueue following scripts if it's HTR editor page */
-        if(!is_page('item_page_htr') && !is_page('import-htr-transcription')){
-        /* jQuery UI CSS*/
-        wp_enqueue_style( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/css/jquery-ui.min.css');
-        /* jQuery UI JS*/
-        wp_register_script( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/js/jquery-ui.min.js');
-        /* jQuery UI JS*/
-        wp_enqueue_script( 'jQuery-UI' );
-        /* jQuery pagination */
-        wp_enqueue_script( 'pagination', CHILD_TEMPLATE_DIR . '/js/pagination.min.js');
-        }
-
-
+        wp_enqueue_script('bootstrap', CHILD_TEMPLATE_DIR . '/js/bootstrap.min.js', null, null, true);
         /* resizable JS*/
-        wp_register_script( 'resizable', CHILD_TEMPLATE_DIR . '/js/jquery-resizable.js', array( 'jQuery-UI' ) );
+        wp_register_script( 'resizable', CHILD_TEMPLATE_DIR . '/js/jquery-resizable.js', array( 'jQuery-UI' ), null, null, true );
         wp_enqueue_script( 'resizable' );
 
         /* Font Awesome CSS */
@@ -313,10 +253,93 @@ function embedd_custom_javascripts_and_css() {
         wp_register_style( 'custom-css', CHILD_TEMPLATE_DIR.'/css/custom.php');
         wp_enqueue_style( 'custom-css' );
 
-	/* mapbox js and style*/
-    wp_enqueue_script( 'mapbox-gl', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js', null, null, true );
-	wp_enqueue_style('mapblox-gl', CHILD_TEMPLATE_DIR . '/css/mapbox-gl.css');
+	    /* mapbox js and style*/
+        wp_enqueue_script( 'mapbox-gl', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js', null, null, true );
+	    wp_enqueue_style('mapblox-gl', CHILD_TEMPLATE_DIR . '/css/mapbox-gl.css');
+
+        if(!is_page('item-page-htr') && !is_page('import-htr-transcription') && !is_page('item') && !is_page('transcription-comparison') && !is_page('story')) {
+            wp_enqueue_script( 'jquery' );
+            /* custom JS and CSS*/
+            /* openseadragon */
+            wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon-bin-3.1.0/openseadragon.min.js');
+            /*osdSelection plugin*/
+            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
+            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js');
+            /* progress chart CSS*/
+            wp_enqueue_style( 'chartist', CHILD_TEMPLATE_DIR . '/css/chartist.min.css');
+            /* progress chart JS*/
+            wp_enqueue_script( 'chartist', CHILD_TEMPLATE_DIR . '/js/chartist.min.js');
+
+        }
+        if(!is_page('item_page_htr') && !is_page('import-htr-transcription')){
+            /* jQuery UI CSS*/
+            wp_enqueue_style( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/css/jquery-ui.min.css');
+            /* jQuery UI JS*/
+            wp_register_script( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/js/jquery-ui.min.js');
+            /* jQuery UI JS*/
+            wp_enqueue_script( 'jQuery-UI' );
+            /* jQuery pagination */
+            wp_enqueue_script( 'pagination', CHILD_TEMPLATE_DIR . '/js/pagination.min.js');
+        }
+
+        if(is_page('story')) {
+            wp_enqueue_style( 'storystyle', CHILD_TEMPLATE_DIR . '/css/story_page.css');
+            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/story-page.js');
+        }
+        if(is_page('item')) {
+            wp_dequeue_style('responsive-lightbox-featherlight');
+            wp_dequeue_style('responsive-lightbox-featherlight-gallery');
+            wp_dequeue_style('siteorigin-panels-front');
+            wp_dequeue_style('chartist');
+            wp_dequeue_style('siteorigin-mobilenav');
+            wp_dequeue_style('jQuery-UI');
+            wp_dequeue_style('classic-theme-styles');
+            wp_dequeue_style('sp-ea-font-awesome');
+            wp_dequeue_style('sp-ea-style');
+            wp_dequeue_style('sp-ea-style-inline');
+            wp_dequeue_style('cpsh-shortcodes');
+            wp_dequeue_style('child-style');
+            //wp_dequeue_style('bootstrap');
+
+            wp_dequeue_script('tct-tutorial-slider-widget');
+            wp_dequeue_script('tct-menulist-widget');
+            wp_dequeue_script('tct-boxes-widget');
+            wp_dequeue_script('responsive-lightbox-featherlight');
+            wp_dequeue_script('responsive-lightbox-featherlight-gallery');
+            wp_dequeue_script('responsive-lightbox-infinite-scroll');
+            wp_dequeue_script('underscore');
+            wp_dequeue_script('responsive-lightbox');
+            wp_dequeue_script('pagination');
+            wp_dequeue_script('jquery-touchswipe');
+            wp_dequeue_script('vantage-main');
+            wp_dequeue_script('jquery-fitvids');
+
+            wp_dequeue_script('jQuery-UI');
+
+
+            wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css');
+            wp_enqueue_script( 'jquery' );
+
+            /* TinyMCE */
+            wp_enqueue_script( 'tinymce', CHILD_TEMPLATE_DIR . '/js/tinymce/js/tinymce/tinymce.min.js', null, null, true);
+
+            /* iiif viewer */
+            wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon-bin-3.1.0/openseadragon.min.js', null, null, true);
+            /*osdSelection plugin*/
+            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js', null, null, true);
+            wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/item-page-viewer.js');
+            wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
+            wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/item-page-min.js', null, null, true);
+        } else if (is_page('transcription-comparison')) {
+            wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/compare-tr-viewer.js');
+            wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon-bin-3.1.0/openseadragon.min.js');
+            wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css');
+            wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page-min.css');
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
+        }
     }
+
  }
  add_action('wp_enqueue_scripts', 'embedd_custom_javascripts_and_css');
 

@@ -289,6 +289,11 @@ body {
     text-align: center;
     cursor: pointer;
     color: var(--main-color);
+    position: relative;
+    bottom: 15px;
+    background-color: #fff;
+    height: 25px;
+    padding-top: 5px;
 }
 #startTranscription, #startHtrTranscription {
     padding: 0 25px 15px 25px;
@@ -335,6 +340,13 @@ body {
     float: right;
     width: 49%;
 }
+#map-left #location-hide, #map-left .edit-delete-btns, #map-left #location-input-section{
+    display: none!important;
+}
+#map-left #location-editor {
+    margin-top: 10px!important;
+    padding: 0 25px;
+}
 /*--- Sub Headers ---*/
 /*-- bigger, section titles --*/
 .enrich-header h5 {
@@ -371,6 +383,11 @@ h6.enrich-headers {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+#enrich-right .item-page-section-headline-container, #enrich-right .edit-item-date,
+#enrich-right .edit-del-person, #enrich-right .item-page-save-button, #enrich-right .delete-item-datas,
+#enrich-right .edit-del-link, #enrich-right #save-all-tags, #enrich-right #person-input-container, #enrich-right .fa-plus-circle {
+    display: none!important;
 }
 .link-single {
     background-color: #fff;
