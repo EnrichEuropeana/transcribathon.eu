@@ -2,13 +2,7 @@ var home_url = WP_URLs.home_url;
 var network_home_url = WP_URLs.network_home_url;
 var map, marker;
 
-jQuery(window).load(function() {
-    initializeMap();
-});
-
 function uninstallEventListeners() {
-    // jQuery(".datepicker-input-field").datepicker("destroy");
-    // tinymce.remove();
     if(map){
         map.resize();
     }
@@ -619,17 +613,50 @@ function compareTranscription(oldTranscription, newTranscription, index) {
 function switchItemPageView() {
     uninstallEventListeners();
 
+    // Move map to map tab
     let mapMap = document.getElementById('full-view-map');
     let fsMapContainer = document.getElementById('full-screen-map-placeholder');
+    let mapEditor = document.getElementById('location-section');
     let normalMapContainer = document.getElementById('normal-map');
+
     if(mapMap != null) {
       if(fsMapContainer.querySelector('#full-view-map') != null) {
         normalMapContainer.appendChild(mapMap);
+        normalMapContainer.parentElement.appendChild(mapEditor);
       } else {
         fsMapContainer.appendChild(mapMap);
+        fsMapContainer.appendChild(mapEditor);
       }
     }
+    // Move Enrichments to enrichments tab
+    const enrichEditor = document.getElementById('tagging-section');
+    const enrichViewCont = document.getElementById('enrich-view');
+    const enrichFsCont = document.getElementById('tag-tab');
+    if(enrichEditor != null) {
+        if(enrichFsCont.querySelector('#tagging-section') == null) {
+            enrichFsCont.appendChild(enrichEditor);
+        } else {
+            enrichViewCont.appendChild(enrichEditor);
+        }
+    }
+    // Move Metadata and Story Description to metadata fs tab
+    const fsMetaCont = document.getElementById('full-v-metadata');
+    const normalMetaCont = document.getElementById('meta-left');
+    const metaData = document.getElementById('meta-container');
+    const storyDesc = document.getElementById('storydesc');
+    const fsStoryDesc = document.getElementById('full-v-story-description');
+    const norStoryDesc = document.getElementById('meta-right');
 
+
+    if(metaData != null) {
+        if(fsMetaCont.querySelector('#meta-container') == null) {
+            fsMetaCont.appendChild(metaData);
+            fsStoryDesc.appendChild(storyDesc);
+        } else {
+            normalMetaCont.appendChild(metaData);
+            norStoryDesc.appendChild(storyDesc);
+        }
+    }
 
    if (jQuery('#full-view-container').css('display') == 'block') {
      var descriptionText = jQuery('#item-page-description-text').val();
@@ -1508,14 +1535,10 @@ function loadPlaceData(itemId, userId) {
         if (response.code == "200") {
             const content = JSON.parse(response.content);
             const locContainer = document.querySelector('.location-display-container');
-            const locViewCont = document.querySelector('.location-view-container');
             const storyLoc = locContainer.querySelector('.story-location');
-            if(storyLoc) {
-                const viewStoryLoc = storyLoc.cloneNode(true);
-            }
+
             // Empty the old location list
             locContainer.innerHTML = "";
-            locViewCont.innerHTML = "";
 
             for(let location of content) {
                 locContainer.innerHTML +=
@@ -1597,30 +1620,9 @@ function loadPlaceData(itemId, userId) {
                             `<div style='clear:both;'></div>` +
                         `</div>` +
                     `</div>` ;
-
-                // Update the view out of full screen
-                locViewCont.innerHTML +=
-                    `<div class='location-single'>` +
-                        `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
-                        `<p><b>${escapeHtml(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
-                        // Check if there is description : don't add <p> if not
-                        `${location['Comment'] ?
-                            `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>`
-                            :
-                            ``
-                        }` +
-                        // Check for Wikidata : ^^
-                        `${location['WikidataId'] ?
-                            `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/${location['WikidataId']} ` +
-                            `style='text-decoration:none;' target='_blank'>${escapeHtml(location['WikidataName'])}, ${escapeHtml(location['WikidataId'])}</a></b></p>`
-                            :
-                            ''
-                        }` +
-                    `</div>` ;
             }
             if(storyLoc) {
                 locContainer.appendChild(storyLoc);
-                locViewCont.appendChild(viewStoryLoc);
             }
 
         }
@@ -1650,10 +1652,8 @@ function loadPersonData(itemId, userId) {
         if (response.code == "200") {
             var content = JSON.parse(response.content);
             const personOutCont = document.querySelector('#item-person-list');
-            const personViewCont = document.querySelector('#people-view .people-container div');
 
             personOutCont.innerHTML = '';
-            personViewCont.innerHTML = '';
 
             for(let person of content) {
                 personOutCont.innerHTML +=
@@ -1748,38 +1748,6 @@ function loadPersonData(itemId, userId) {
                         `</div>` +
                     `</div>`;
 
-                personViewCont.innerHTML +=
-                    `<div class='single-person'>` +
-                        `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
-                        `<p class='person-data'>` +
-                            `<span style='font-weight:400;'>${isItString(person['FirstName'])} ${isItString(person['LastName'])} </span>` +
-                            // Sorry for this one, but it looks like best solution for now xD
-                            `${(person['BirthDate'] != undefined && person['BirthDate'] != 'NULL') && (person['DeathDate'] != undefined && person['DeathDate'] != 'NULL') ?
-                                ` (${escapeHtml(person['BirthDate'])}${isItString(person['BirthPlace'], 2)}- ${escapeHtml(person['DeathDate'])}${isItString(person['DeathPlace'], 2)})`
-                                :
-                                `${person['BirthDate'] ?
-                                    ` (Birth: ${isItString(person['BirthDate'])}${person['BirthDate'] ? ',' : ''}${isItString(person['BirthPlace'])})`
-                                    :
-                                    `${person['DeathDate'] ?
-                                        ` (Death: ${isItString(person['DeathDate'])}${person['DeathDate'] ? ',' : ''}${isItString(person['DeathPlace'])})`
-                                        :
-                                        ``
-                                    }`
-                                }`
-                            }` +
-                        `</p>` +
-                        `${person['Description'] ?
-                            `<p class='person-description'>${escapeHtml(person['Description'])}</p>`
-                            :
-                            ``
-                        }` +
-                        `${person['Link'] ?
-                            `<p class='person-description'><a href='http://www.wikidata.org/wiki/${escapeHtml(person['Link'])}' target='_blank'>${escapeHtml(person['Link'])}</a></p>`
-                            :
-                            ``
-                        }` +
-                    `</div>`;
-
             }
       }
     });
@@ -1820,13 +1788,12 @@ function loadLinkData(itemId, userId) {
     function(response) {
         var response = JSON.parse(response);
         if (response.code == "200") {
-            const extLinkCont = document.querySelector('#item-link-list');
-            const extLinkView = document.querySelector('.links-container div');
+            const extLinkCont = document.querySelector('#item-link-list');;
             var content = JSON.parse(response.content);
             let propDesc = null;
 
             extLinkCont.innerHTML = '';
-            extLinkView.innerHTML = '';
+            
             for (let property of content['Properties']) {
                 if(property['PropertyType'] === 'Link') {
                     if(property['PropertyDescription'] != 'NULL') {
@@ -1870,16 +1837,6 @@ function loadLinkData(itemId, userId) {
                                     `<div style='clear:both;'></div>` +
                                 `</div>` +
                             `</div>` +
-                        `</div>`
-
-                    extLinkView.innerHTML +=
-                        `<div>` +
-                        `<div class='link-single'>` +
-                            `<div class='link-data-output-content'>` +
-                                `<i class='far fa-external-link' style='margin-left: 3px;margin-right: 5px; color:#0a72cc;font-size:14px;'></i>` +
-                                `<a href='${escapeHtml(property['PropertyValue'])}' target='_blank'>${escapeHtml(property['PropertyValue'])}</a>` +
-                            `</div>` +
-                            `${propDesc ? propDesc : ''}` +
                         `</div>`
                 }
             }
@@ -2753,5 +2710,6 @@ ready(() => {
     }
 
     installEventListeners();
+    initializeMap();
 
 });
