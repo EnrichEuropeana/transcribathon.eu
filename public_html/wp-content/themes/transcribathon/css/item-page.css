@@ -406,6 +406,9 @@ h6.enrich-headers {
     flex-direction: column;
     justify-content: space-between;
 }
+#enrich-view #keyword-input-container, #enrich-view #link-input-container {
+    display: none!important;
+}
 #enrich-view button{
     display: none;
 }
@@ -2591,6 +2594,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-size: 12px;
     bottom: 4px!important;
     right: 3px;
+}
+.data-popout .switch-list i:not(i#horizontal-close) {
+    right: 2px;
 }
 /* --------------------- */
 .selected-option i {
