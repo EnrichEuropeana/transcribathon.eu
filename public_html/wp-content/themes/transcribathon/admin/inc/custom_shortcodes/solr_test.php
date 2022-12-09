@@ -21,9 +21,14 @@ function _TCT_solr_test( $atts ) {
         if(array_search($par, $_GET) == 'q' && $par != '') {
             $q = $par;
         }
-        if(array_search($par, $_GET) != 'q' && array_search($par, $_GET) != 'view') {
+        if(array_search($par, $_GET) == 'Language' && $par != '') {
             $fieldName = array_search($par, $_GET);
-            $filterQuery = $fieldName . ':' . $par;
+            $filterQuery = $fieldName . '=" ' . $par . '"';
+            array_push($filter, $filterQuery );
+        }
+        if(array_search($par, $_GET) != 'q' && array_search($par, $_GET) != 'view' && array_search($par, $_GET) != 'Language') {
+            $fieldName = array_search($par, $_GET);
+            $filterQuery = $fieldName . ':"' . $par . '"';
             array_push($filter, $filterQuery );
         }
     }
@@ -96,7 +101,7 @@ function _TCT_solr_test( $atts ) {
     //dd($storyFacets);
     $responseData = $data['response'];
     $facetFields = $data['facet_counts']['facet_fields'];
-
+var_dump($filterQuery);
     // GET name of url parameter
    // var_dump($_GET);
 
@@ -262,14 +267,14 @@ function _TCT_solr_test( $atts ) {
                             $checked = '';
                         }
                     $content .= "</div>";
-                }
+                } 
             //$content .= "</form>";
             
         $content .= "</div>";
 
         // Right side, search result 'stickers'
         $content .= "<div class='result-stickers'>";
-            if(count($responseData['docs']) != 0) {
+            if($responseData['docs']) {
                 foreach($responseData['docs'] as $doc) {
     
                     // Completion status
