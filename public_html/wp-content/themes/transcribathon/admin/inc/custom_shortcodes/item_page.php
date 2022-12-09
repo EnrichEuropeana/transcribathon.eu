@@ -1496,6 +1496,7 @@ if (event.target.id != "tagging-status-indicator") {
         // }
 
         $content .= "<div class='item-progress'>";
+        if($isLoggedIn) {
             $content .= "<div class='change-all-status'>CHANGE ITEM STATUS</div>";
 
             $content .= "<div id='item-status-selector' style='display:none;'>";
@@ -1512,8 +1513,8 @@ if (event.target.id != "tagging-status-indicator") {
                     changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'descriptionStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
                     changeStatus(" . $_GET['item'] . ", null, 'Not Started', 'transcriptionStatusId', 1, '#eeeeee', " . sizeof($progressData) . ", this);
                     document.querySelector('#item-status-selector').style.display = 'none';
-});
-</script>";
+                });
+                </script>";
                 // Edit
                 $content .= "<div id='all-edit' class='status-dropdown-option'>";
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #fff700), color-stop(1, #ffd800));'></i>";
@@ -1527,8 +1528,8 @@ if (event.target.id != "tagging-status-indicator") {
                     changeStatus(" . $_GET['item'] . ", null, 'Edit', 'descriptionStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
                     changeStatus(" . $_GET['item'] . ", null, 'Edit', 'transcriptionStatusId', 2, '#fff700', " . sizeof($progressData) . ", this);
                     document.querySelector('#item-status-selector').style.display = 'none';
-});
-</script>";
+                });
+                </script>";
                 // Review
                 $content .= "<div id='all-review' class='status-dropdown-option'>";
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffc720), color-stop(1, #f0b146));'></i>";
@@ -1542,8 +1543,8 @@ if (event.target.id != "tagging-status-indicator") {
                     changeStatus(" . $_GET['item'] . ", null, 'Review', 'descriptionStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
                     changeStatus(" . $_GET['item'] . ", null, 'Review', 'transcriptionStatusId', 3, '#ffc720', " . sizeof($progressData) . ", this);
                     document.querySelector('#item-status-selector').style.display = 'none';
-});
-</script>";
+                });
+                </script>";
                 // Completed
                 $content .= "<div id='all-complete' class='status-dropdown-option'>";
                     $content .= "<i class='fal fa-circle' style='color: transparent; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #61e02f), color-stop(1, #4dcd1c));'></i>";
@@ -1557,9 +1558,10 @@ if (event.target.id != "tagging-status-indicator") {
                     changeStatus(" . $_GET['item'] . ", null, 'Completed', 'descriptionStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
                     changeStatus(" . $_GET['item'] . ", null, 'Completed', 'transcriptionStatusId', 4, '#61e02f', " . sizeof($progressData) . ", this);
                     document.querySelector('#item-status-selector').style.display = 'none';
-});
-</script>";
+                });
+                </script>";
             $content .= "</div>";
+        }
         $content .= "</div>";
     $content .= "</section>";
 
@@ -1569,20 +1571,21 @@ if (event.target.id != "tagging-status-indicator") {
             $content .= "<div id='full-view-l'>";
                 $content .= $imageViewer;
                 $content .= "<div class='htr-btns'>";
-                    $content .= "<div class='left-btn'>";
-                        $content .= "<a href='". home_url() ."/import-htr-transcription/?itemId=". $itemData['ItemId'] ."'>Run Transkribus automatic text recognition(HTR) ";
+                    $content .= "<div>";
+                        $content .= "<a href='". home_url() ."/import-htr-transcription/?itemId=". $itemData['ItemId'] ."'>Run Transkribus HTR ";
                         $content .= "<i class='fas fa-desktop'></i></a>";
                     $content .= "</div>";
-                    $content .= "<div class='right-btn'>";
-                        $content .= "<div>";
-                            $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>Compare Transcription</a>";
-                        $content .= "</div>";
-                        $content .= "<div>";
-                            $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR editor ";
-                            $content .= "<i class='fas fa-pen-alt'></i></a>";
-                        $content .= "</div>";
+                    $content .= "<div>";
+                        $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR editor ";
+                        $content .= "<i class='fas fa-keyboard'></i></a>";
                     $content .= "</div>";
-                    $content .= "<div style='clear:both;'></div>";
+                    
+                    $content .= "<div>";
+                        $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>Compare Transcriptions <i class=\"far fa-columns\"></i></a>";
+                    $content .= "</div>";
+
+                    
+                    //$content .= "<div style='clear:both;'></div>";
                 $content .= "</div>";
             $content .= "</div>";
             $content .= "<div id='full-view-r'>";
@@ -1605,7 +1608,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "</div>";
                         $content .= "<div class='current-transcription' style='display:none;'></div>";
                         $content .= "<div class='transcription-language' style='display:none;'>";
-                            $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
+                            $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                             $content .= "<div style='padding-left:24px;'></div>";
                         $content .= "</div>";
                     } else {
@@ -1623,7 +1626,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $content .= "</div>";
 
                                 $content .= "<div class='transcription-language'>";
-                                $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
+                                $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
                                 foreach($currentTranscription['Languages'] as $language) {
                                     $content .= "<div class='language-single'>" . $language['Name'] . "</div>";
@@ -1636,7 +1639,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $content .= "<div id='transcription-collapse-btn'> Show More </div>";
 
                                 $content .= "<div class='transcription-language'>";
-                                $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
+                                $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
                                 if($currentTranscription) {
                                     foreach($currentTranscription['Languages'] as $language) {
@@ -1650,7 +1653,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $content .= "</div>";
                                 $content .= "<div class='current-transcription' style='display:none;'></div>";
                                 $content .= "<div class='transcription-language' style='display:none;'>";
-                                $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
+                                $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left: 24px;'></div>";
                                 $content .= "</div>";
                             }
@@ -1723,7 +1726,7 @@ if (event.target.id != "tagging-status-indicator") {
                     } else {
                         $content .= "<div class='description-language' style='display:none;'>";
                     }
-                    $content .= "<h6 class='enrich-headers'> Language of Description </h6>";
+                    $content .= "<h6 class='enrich-language'> Language of Description </h6>";
                     $content .= "<div style='padding-left:24px;'>";
                     if($descriptionLanguage != null || $descriptionLanguage != "")
                         $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
@@ -1798,7 +1801,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "</li>";
 
                     $content .= "<li style='position:relative;bottom:2px;'>";
-                    $content .= '<div class="switch-i"><i id="horizontal-split" class="fas fa-window-minimize view-switcher-icons" style="position:relative;bottom:3px;"
+                    $content .= '<div class="switch-i"><i id="horizontal-close" class="fas fa-window-minimize view-switcher-icons" style="position:relative;bottom:3px;"
                         onclick="switchItemView(event, \'closewindow\')"></i></div>';
                     $content .= "</li>";
 
@@ -1823,7 +1826,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
                         onclick='switchItemTab(event, \"tagging-tab\");'>";
                     $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;position:relative;bottom:3px;'>";
-                    $content .= "<p class='tab-h' style='position:relative;bottom:4px;'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
+                    $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
                     $content .= "<span><b> LOCATION</b></span></p>";
                     $content .= "</div>";
                     $content .= "</li>";
