@@ -8,7 +8,11 @@ body {
 .entry-content {
     line-height: unset;
 }
-
+/* --- Navbar --- */
+#projects:hover .sub-menu, #account-menu:hover .sub-menu {
+    display: block!important;
+    opacity: unset!important;
+}
 /* --- Image Slider ---*/
 #img-slider {
     height: 275px;
