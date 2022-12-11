@@ -21,18 +21,18 @@ function _TCT_solr_test( $atts ) {
         if(array_search($par, $_GET) == 'q' && $par != '') {
             $q = $par;
         }
-        if(array_search($par, $_GET) == 'Language' && $par != '') {
-            $fieldName = array_search($par, $_GET);
-            $filterQuery = $fieldName . '=" ' . $par . '"';
-            array_push($filter, $filterQuery );
-        }
-        if(array_search($par, $_GET) != 'q' && array_search($par, $_GET) != 'view' && array_search($par, $_GET) != 'Language') {
+        // if(array_search($par, $_GET) == 'Languages' && $par != '') {
+        //     $fieldName = array_search($par, $_GET);
+        //     $filterQuery = $fieldName . '="' . $par . '"';
+        //     array_push($filter, $filterQuery );
+        // }
+        if(array_search($par, $_GET) != 'q' && array_search($par, $_GET) != 'view') {
             $fieldName = array_search($par, $_GET);
             $filterQuery = $fieldName . ':"' . $par . '"';
             array_push($filter, $filterQuery );
         }
     }
-
+//dd($filter);
     if($view == 'items') {
         $sort = 'Timestamp desc';
         if($_GET['q'] != '') {
@@ -101,12 +101,12 @@ function _TCT_solr_test( $atts ) {
     //dd($storyFacets);
     $responseData = $data['response'];
     $facetFields = $data['facet_counts']['facet_fields'];
-var_dump($filterQuery);
+//var_dump($filterQuery);
     // GET name of url parameter
    // var_dump($_GET);
 
     ////
-  //dd($facetFields);
+  //dd($data);
     //dd($result);
 
     // Build Page Layout
@@ -167,7 +167,7 @@ var_dump($filterQuery);
                     $content .= "<div class='facet-single'>";
                         $content .= "<div class='facet-h'>COMPLETION STATUS</div>";
                         for($x = 0; $x < count($facetFields['CompletionStatus']); $x += 2) {
-                            if($_GET['CompletionStatus'] != null && ($_GET['CompletionStatus'] == $facetFields['CompletionStatus'][$x] )) {
+                            if($_GET['CompletionStatus'] == $facetFields['CompletionStatus'][$x] ) {
                                 $checked = 'checked';
                             }
                             $content .= "<label class='facet-data' title='" . $facetFields['CompletionStatus'][$x] . "'>" . $facetFields['CompletionStatus'][$x] . " (" . $facetFields['CompletionStatus'][$x+1] . ")";
@@ -182,7 +182,7 @@ var_dump($filterQuery);
                     $content .= "<div class='facet-single'>";
                         $content .= "<div class='facet-h'>DOCUMENT TYPE</div>";
                         for($x = 0; $x < count($facetFields['Categories']); $x += 2) {
-                            if($_GET['Categories'] != null && ($_GET['Categories'] == $facetFields['Categories'][$x] )) {
+                            if($_GET['Categories'] == $facetFields['Categories'][$x] ) {
                                 $checked = 'checked';
                             }
                             $content .= "<label class='facet-data' title='" . $facetFields['Categories'][$x] . "'>" . $facetFields['Categories'][$x] . " (" . $facetFields['Categories'][$x+1] . ")";
@@ -197,7 +197,7 @@ var_dump($filterQuery);
                     $content .= "<div class='facet-single'>";
                         $content .= "<div class='facet-h'>PROVIDING COUNTRY</div>";
                         for($x = 0; $x < count($facetFields['edmCountry']); $x += 2) {
-                            if($_GET['edmCountry'] != null && ($_GET['edmCountry'] == $facetFields['edmCountry'][$x] )) {
+                            if($_GET['edmCountry'] == $facetFields['edmCountry'][$x] ) {
                                 $checked = 'checked';
                             }
                             $content .= "<label class='facet-data' title='" . $facetFields['edmCountry'][$x] . "'>" . $facetFields['edmCountry'][$x] . " (" . $facetFields['edmCountry'][$x+1] . ")";
@@ -212,7 +212,7 @@ var_dump($filterQuery);
                     $content .= "<div class='facet-single'>";
                         $content .= "<div class='facet-h' onClick='this.parentElement.classList.toggle(\"uncollapse\");'>DATASET <i class='fas fa-plus-circle'></i></div>";
                         for($x = 0; $x < count($facetFields['Dataset']); $x += 2) {
-                            if($_GET['Dataset'] != null && ($_GET['Dataset'] == $facetFields['Dataset'][$x] )) {
+                            if($_GET['Dataset'] == $facetFields['Dataset'][$x] ) {
                                 $checked = 'checked';
                             }
                             $content .= "<label class='facet-data' title='" . $facetFields['Dataset'][$x] . "'>" . $facetFields['Dataset'][$x] . " (" . $facetFields['Dataset'][$x+1] . ")";
@@ -227,7 +227,7 @@ var_dump($filterQuery);
                     $content .= "<div class='facet-single'>";
                         $content .= "<div class='facet-h' onClick='this.parentElement.classList.toggle(\"uncollapse\");'>PROVIDER <i class='fas fa-plus-circle'></i></div>";
                         for($x = 0; $x < count($facetFields['edmProvider']); $x += 2) {
-                            if($_GET['edmProvider'] != null && ($_GET['edmProvider'] == $facetFields['edmProvider'][$x] )) {
+                            if($_GET['edmProvider'] == $facetFields['edmProvider'][$x] ) {
                                 $checked = 'checked';
                             }
                             $content .= "<label class='facet-data' title='" . $facetFields['edmProvider'][$x] . "'>" . $facetFields['edmProvider'][$x] . " (" . $facetFields['edmProvider'][$x+1] . ")";
@@ -242,11 +242,20 @@ var_dump($filterQuery);
                     $content .= "<div class='facet-single'>";
                         $content .= "<div class='facet-h' onClick='this.parentElement.classList.toggle(\"uncollapse\");'>LANGUAGE <i class='fas fa-plus-circle'></i></div>";
                         for($x = 0; $x < count($facetFields['dcLanguage']); $x += 2) {
-                            if($_GET['dcLanguage'] != null && ($_GET['dcLanguage'] == $facetFields['dcLanguage'][$x] )) {
+                            if($_GET['dcLanguage'] == $facetFields['dcLanguage'][$x] ) {
                                 $checked = 'checked';
                             }
-                            $content .= "<label class='facet-data' title='" . $facetFields['dcLanguage'][$x] . "'>" . $facetFields['dcLanguage'][$x] . " (" . $facetFields['dcLanguage'][$x+1] . ")";
-                                $content .= "<input type='checkbox' form='query-form' name='Language' value='" . $facetFields['dcLanguage'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
+                            $facetLabel = '';
+                            $facetCleanAr = [];
+                            $facetLabelAr = explode(' || ', $facetFields['dcLanguage'][$x]);
+                            foreach($facetLabelAr as $lblLang) {
+                                if(strlen($lblLang) < 4) {
+                                    $facetLabel .= array_push($facetCleanAr, ucfirst($lblLang));
+                                }
+                            }
+                            $facetLabel = implode(' - ', $facetCleanAr);
+                            $content .= "<label class='facet-data' title='" . $facetFields['dcLanguage'][$x] . "'>" . $facetLabel . " (" . $facetFields['dcLanguage'][$x+1] . ")";
+                                $content .= "<input type='checkbox' form='query-form' name='dcLanguage' value='" . $facetFields['dcLanguage'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
                                 $content .= "<span class='theme-color-background checkmark'></span>";
                             $content .= "</label>";
                             $checked = '';
@@ -257,11 +266,11 @@ var_dump($filterQuery);
                     $content .= "<div class='facet-single'>";
                         $content .= "<div class='facet-h' onClick='this.parentElement.classList.toggle(\"uncollapse\");'>LANGUAGE <i class='fas fa-plus-circle'></i></div>";
                         for($x = 0; $x < count($facetFields['Languages']); $x += 2) {
-                            if($_GET['Languages'] != null && ($_GET['Languages'] == $facetFields['Languages'][$x] )) {
+                            if($_GET['Languages'] == $facetFields['Languages'][$x] ) {
                                 $checked = 'checked';
                             }
                             $content .= "<label class='facet-data' title='" . $facetFields['Languages'][$x] . "'>" . $facetFields['Languages'][$x] . " (" . $facetFields['Languages'][$x+1] . ")";
-                                $content .= "<input type='checkbox' form='query-form' name='Language' value='" . $facetFields['Languages'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
+                                $content .= "<input type='checkbox' form='query-form' name='Languages' value='" . $facetFields['Languages'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
                                 $content .= "<span class='theme-color-background checkmark'></span>";
                             $content .= "</label>";
                             $checked = '';
