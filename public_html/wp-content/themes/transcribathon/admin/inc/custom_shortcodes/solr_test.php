@@ -12,6 +12,8 @@ function _TCT_solr_test( $atts ) {
     $view = $_GET['view'];
     /* Set up facet fields and labels */
     $q = '*:*';
+    $page = '0';
+
     $filter = [];
 
     foreach($_GET as $par) {
@@ -21,14 +23,19 @@ function _TCT_solr_test( $atts ) {
         if(array_search($par, $_GET) == 'q' && $par != '') {
             $q = $par;
         }
+        if(array_search($par, $_GET) == 'ps' && $par != '') {
+            $page = '25';
+        }
         // if(array_search($par, $_GET) == 'Languages' && $par != '') {
         //     $fieldName = array_search($par, $_GET);
         //     $filterQuery = $fieldName . '="' . $par . '"';
         //     array_push($filter, $filterQuery );
         // }
-        if(array_search($par, $_GET) != 'q' && array_search($par, $_GET) != 'view') {
+        if(array_search($par, $_GET) != 'q' && array_search($par, $_GET) != 'view' && array_search($par, $_GET) != 'ps' ) {
             $fieldName = array_search($par, $_GET);
+            $par = str_replace('&&', '"&&"', $par);
             $filterQuery = $fieldName . ':"' . $par . '"';
+
             array_push($filter, $filterQuery );
         }
     }
@@ -54,7 +61,7 @@ function _TCT_solr_test( $atts ) {
                 'q' => $q,
                 'fq' => $filter,
                 'sort' => $sort,
-                'start' => '24',
+                'start' => $page,
                 'rows' => '24',
                 'facet' => 'on',
                 'facet.field' => ['Languages', 'CompletionStatus', 'Categories'],
@@ -65,7 +72,7 @@ function _TCT_solr_test( $atts ) {
     
 	    $data = @file_get_contents($url, false, $context);
         $data = json_decode($data, true);
-        //dd($data);
+        dd($data);
     } else {
 
         $sort = 'StoryId desc';
@@ -87,6 +94,7 @@ function _TCT_solr_test( $atts ) {
                 'q'=> $q,
                 'fq' => $filter,
                 'sort' => $sort,
+                'start' => $page,
                 'rows' => '24',
                 'facet' => 'on',
                 'facet.field' => ['CompletionStatus', 'Categories', 'edmCountry', 'Dataset', 'dcLanguage', 'edmProvider'],
@@ -101,13 +109,8 @@ function _TCT_solr_test( $atts ) {
     //dd($storyFacets);
     $responseData = $data['response'];
     $facetFields = $data['facet_counts']['facet_fields'];
-//var_dump($filterQuery);
-    // GET name of url parameter
-   // var_dump($_GET);
 
-    ////
   //dd($data);
-    //dd($result);
 
     // Build Page Layout
     $content = '';
@@ -121,7 +124,7 @@ function _TCT_solr_test( $atts ) {
                 $content .= '<div><button type="submit" form="query-form" class="theme-color-background document-search-button"><i class="far fa-search" style="font-size: 20px;"></i></button></div>';
                 $content .= '<div class="map-search-page"><a href="' . home_url() . '/documents/map" target="_blank" form="" class="theme-color-background document-search-button"><i class="fal fa-globe-europe" style="font-size: 20px;"></i></a></div>';
                 $content .= '<div style="clear:both;"></div>';
-            $content .= "</form>";
+            //$content .= "</form>";
         $content .= '</div>';
     $content .= '</section>';
     // NAvigation section (switch between item/story, pagination, and numbers of results)
@@ -182,11 +185,17 @@ function _TCT_solr_test( $atts ) {
                     $content .= "<div class='facet-single'>";
                         $content .= "<div class='facet-h'>DOCUMENT TYPE</div>";
                         for($x = 0; $x < count($facetFields['Categories']); $x += 2) {
-                            if($_GET['Categories'] == $facetFields['Categories'][$x] ) {
+                            $value = $facetFields['Categories'][$x];
+                            $name = 'Categories';
+                            if(strpos($_GET['Categories'], $value) !== false) {
                                 $checked = 'checked';
+                                $value = '';
+                                $name = '';
+                            } else if ($_GET['Categories'] != '') {
+                                $value .= '&&' . $_GET['Categories'];
                             }
                             $content .= "<label class='facet-data' title='" . $facetFields['Categories'][$x] . "'>" . $facetFields['Categories'][$x] . " (" . $facetFields['Categories'][$x+1] . ")";
-                                $content .= "<input type='checkbox' form='query-form' name='Categories' value='" . $facetFields['Categories'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
+                                $content .= "<input type='checkbox' form='query-form' name='" . $name . "' value='" . $value . "' " . $checked . " onChange='this.form.submit()'>";
                                 $content .= "<span class='theme-color-background checkmark'></span>";
                             $content .= "</label>";
                             $checked = '';
@@ -266,18 +275,30 @@ function _TCT_solr_test( $atts ) {
                     $content .= "<div class='facet-single'>";
                         $content .= "<div class='facet-h' onClick='this.parentElement.classList.toggle(\"uncollapse\");'>LANGUAGE <i class='fas fa-plus-circle'></i></div>";
                         for($x = 0; $x < count($facetFields['Languages']); $x += 2) {
-                            if($_GET['Languages'] == $facetFields['Languages'][$x] ) {
+                            $value = $facetFields['Languages'][$x];
+                            $name = 'Languages';
+                            if(strpos($_GET['Languages'], $value) !== false) {
                                 $checked = 'checked';
+                                $value = '';
+                                $name = '';
+                            } else if ($_GET['Languages'] != '') {
+                                $value .= '&&' . $_GET['Languages'];
                             }
                             $content .= "<label class='facet-data' title='" . $facetFields['Languages'][$x] . "'>" . $facetFields['Languages'][$x] . " (" . $facetFields['Languages'][$x+1] . ")";
-                                $content .= "<input type='checkbox' form='query-form' name='Languages' value='" . $facetFields['Languages'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
+                                $content .= "<input type='checkbox' form='query-form' name='" . $name . "' value='" . $value . "' " . $checked . " onChange='this.form.submit()'>";
                                 $content .= "<span class='theme-color-background checkmark'></span>";
                             $content .= "</label>";
                             $checked = '';
                         }
                     $content .= "</div>";
                 } 
-            //$content .= "</form>";
+
+                $content .= "<label class='facet-data' title='page'>1";
+                $content .= "<input type='checkbox' form='query-form' name='ps' value='4' onChange='this.form.submit()'>";
+                
+            $content .= "</label>";
+                
+            $content .= "</form>";
             
         $content .= "</div>";
 
@@ -304,14 +325,14 @@ function _TCT_solr_test( $atts ) {
                         $image = json_decode($doc['PreviewImageLink'], true);
                         $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
         
-                        $content .= "<div class='search-page-single-result'>";
+                        $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/?story=" . $doc['StoryId'] . "'>";
                             $content .= "<div class='search-page-result-image'>";
                                 $content .= "<img src='" . $imageLink . "' alt='result image' width='280' height='140'>";
                             $content .= "</div>";
                                 $content .= $compStatus;
                             $content .= "<div style='clear:both;'></div>";
                             $content .= "<div class='single-title'><h2 class='theme-color'>" . $doc['dcTitle'] . "</h2></div>";
-                        $content .= "</div>";
+                        $content .= "</a></div>";
                     } else {
 
                         // Progress bar
@@ -344,14 +365,14 @@ function _TCT_solr_test( $atts ) {
                         $image = json_decode($doc['PreviewImageLink'], true);
                         $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
         
-                        $content .= "<div class='search-page-single-result'>";
+                        $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/item/?item=" . $doc['ItemId'] . "'>";
                             $content .= "<div class='search-page-result-image'>";
                                 $content .= "<img src='" . $imageLink . "' alt='result image' width='280' height='140'>";
                             $content .= "</div>";
                                 $content .= $compStatus;
                             $content .= "<div style='clear:both;'></div>";
                             $content .= "<div class='single-title'><h2 class='theme-color'>" . $doc['Title'] . "</h2></div>";
-                        $content .= "</div>";
+                        $content .= "</a></div>";
                     }
                 }
             }
@@ -437,7 +458,7 @@ function _TCT_solr_test( $atts ) {
             padding: 0;
             margin: 5px 10px 5px 0px;
             width: 300px;
-            height: 220px;
+            height: 245px;
         }
         .search-page-result-image {
             width: 94%;
@@ -450,6 +471,7 @@ function _TCT_solr_test( $atts ) {
         .facet-single {
             margin-top: 25px;
             margin-left: 50px;
+            font-family: var(--p-font-family);
             width: 70%;
             max-height: 316px;
             overflow: hidden;
@@ -469,6 +491,8 @@ function _TCT_solr_test( $atts ) {
         .facet-data {
             display: block;
             color: var(--main-color);
+            font-family: var(--h-font-family);
+            letter-spacing: 0.025em;
             cursor: pointer;
             margin-left: 0px!important;
             text-overflow: ellipsis;
@@ -486,6 +510,7 @@ function _TCT_solr_test( $atts ) {
         .single-title h2 {
             font-size: 14px!important;
             font-family: var(--p-font-family);
+            margin-top: 35px;
         }
         
     
