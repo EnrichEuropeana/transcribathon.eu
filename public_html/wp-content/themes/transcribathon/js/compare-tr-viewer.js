@@ -19,6 +19,22 @@ ready(() => {
             jQuery(".site-navigation").css('display', 'none');
         }
     })
+    const compTrCollapse = document.querySelector('#transcription-collapse-btn');
+    if(compTrCollapse) {
+        const htrCont = document.querySelector('#htr-container');
+        const mtrCont = document.querySelector('#transcription-container');
+        compTrCollapse.addEventListener('click', function() {
+            if(htrCont.style.height == '600px') {
+                htrCont.style.height = 'unset';
+                mtrCont.style.height = 'unset';
+                compTrCollapse.textContent = 'Show Less';
+            } else {
+                htrCont.style.height = '600px';
+                mtrCont.style.height = '600px';
+                compTrCollapse.textContent = 'Show More';
+            }
+        })
+    }
 
     if(document.querySelector('#image-json-link')) {
         const imJaLink = document.querySelector('#image-json-link').textContent;

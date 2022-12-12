@@ -1570,23 +1570,28 @@ if (event.target.id != "tagging-status-indicator") {
         //$content .= "<section id='viewer-n-transcription'>";
             $content .= "<div id='full-view-l'>";
                 $content .= $imageViewer;
+                
                 $content .= "<div class='htr-btns'>";
+                if(current_user_can('administrator')) {
                     $content .= "<div>";
                         $content .= "<a href='". home_url() ."/import-htr-transcription/?itemId=". $itemData['ItemId'] ."'>Run Transkribus HTR ";
                         $content .= "<i class='fas fa-desktop'></i></a>";
                     $content .= "</div>";
-                    $content .= "<div>";
-                        $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR editor ";
-                        $content .= "<i class='fas fa-keyboard'></i></a>";
-                    $content .= "</div>";
+                    if($htrTranscription != '') {
+                        $content .= "<div>";
+                            $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR editor ";
+                            $content .= "<i class='fas fa-keyboard'></i></a>";
+                        $content .= "</div>";
                     
-                    $content .= "<div>";
-                        $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>Compare Transcriptions <i class=\"far fa-columns\"></i></a>";
-                    $content .= "</div>";
-
+                        $content .= "<div>";
+                            $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>Compare Transcriptions <i class=\"far fa-columns\"></i></a>";
+                        $content .= "</div>";
+                    }
+                }
                     
                     //$content .= "<div style='clear:both;'></div>";
                 $content .= "</div>";
+               
             $content .= "</div>";
             $content .= "<div id='full-view-r'>";
             //var_dump($itemData);
@@ -1902,7 +1907,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "</div>";
                     // Help tab
                     $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";
-                    //$content .= do_shortcode('[tutorial_item_slider]');
+                      $content .= do_shortcode('[tutorial_item_slider]');
                     $content .= "</div>";
                     // Automatic enrichment tab
                     $content .= "<div id='autoEnrichment-tab' class='tabcontent' style='display:none;'>";

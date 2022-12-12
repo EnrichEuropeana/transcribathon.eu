@@ -11,7 +11,7 @@ function _TCT_solr_test( $atts ) {
 
     $view = $_GET['view'];
     /* Set up facet fields and labels */
-    $q = '*:*';
+    $q = '';
     $page = '0';
 
     $filter = [];
@@ -21,7 +21,7 @@ function _TCT_solr_test( $atts ) {
             $view = $par;
         }
         if(array_search($par, $_GET) == 'q' && $par != '') {
-            $q = $par;
+            $q = htmlspecialchars($par);
         }
         if(array_search($par, $_GET) == 'ps' && $par != '') {
             $page = (intval($par) - 1) *24;
@@ -40,7 +40,7 @@ function _TCT_solr_test( $atts ) {
             array_push($filter, $filterQuery );
         }
     }
-//dd($filter);
+
     if($view == 'items') {
         $sort = 'Timestamp desc';
         if($_GET['q'] != '') {
@@ -60,6 +60,9 @@ function _TCT_solr_test( $atts ) {
         $options['http']['content'] = json_encode(
             ['params' =>[
                 'q' => $q,
+                'q.alt' => '*:*',
+                'defType' => 'dismax',
+                'qf' => 'text',
                 'fq' => $filter,
                 'sort' => $sort,
                 'start' => $page,
@@ -73,7 +76,7 @@ function _TCT_solr_test( $atts ) {
     
 	    $data = @file_get_contents($url, false, $context);
         $data = json_decode($data, true);
-        dd($data);
+
     } else {
 
         $sort = 'StoryId desc';
@@ -93,6 +96,9 @@ function _TCT_solr_test( $atts ) {
         $options['http']['content'] = json_encode(
             ['params'=>[
                 'q'=> $q,
+                'q.alt' => '*:*',
+                'defType' => 'dismax',
+                'qf' => 'text',
                 'fq' => $filter,
                 'sort' => $sort,
                 'start' => $page,
@@ -107,7 +113,7 @@ function _TCT_solr_test( $atts ) {
         $data = @file_get_contents($url, false, $context);
         $data = json_decode($data, true);
     }
-    //dd($storyFacets);
+
     $responseData = $data['response'];
     $facetFields = $data['facet_counts']['facet_fields'];
 
