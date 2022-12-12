@@ -24,7 +24,8 @@ function _TCT_solr_test( $atts ) {
             $q = $par;
         }
         if(array_search($par, $_GET) == 'ps' && $par != '') {
-            $page = '25';
+            $page = (intval($par) - 1) *24;
+            var_dump($par);
         }
         // if(array_search($par, $_GET) == 'Languages' && $par != '') {
         //     $fieldName = array_search($par, $_GET);
@@ -110,11 +111,69 @@ function _TCT_solr_test( $atts ) {
     $responseData = $data['response'];
     $facetFields = $data['facet_counts']['facet_fields'];
 
-  //dd($data);
-
     // Build Page Layout
     $content = '';
+
+    // Pagination 
+    $totalPs = ceil($responseData['numFound'] / 24);
+    $currPs = intval($_GET['ps']);
+    $pagination = "<div class='search-pgntn'>";
+    if($currPs == null || $currPs <= 3) {
+        $pagination .= "<label class='pag-lbl' title='first'> 1";
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='1' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'> 2";
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='2' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'> 3";
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='3' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-right\"></i>";
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='4' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-right\"></i>";
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs)."' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        
+        $pagination .= "<style>.pag-lbl:nth-of-type(".$currPs."){color:#000;font-weight:600;}</style>";
     
+    } else if($currPs > $totalPs - 3) {
+        $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-left\"></i>";
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='1' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-left\"></i>";
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs - 3)."' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'>" . strval($totalPs - 2);
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs - 2)."' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'>" . strval($totalPs - 1);
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs - 1)."' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'>" . strval($totalPs);
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs)."' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+
+        $pagination .= "<style>.pag-lbl:nth-of-type(".(5 - $totalPs + $currPs)."){color:#000;font-weight:600;}</style>";
+    } else {
+        $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-left\"></i>";
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='1' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'>" . strval($currPs - 1);
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($currPs - 1)."' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl curr' title='first'>" . strval($currPs);
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($currPs)."' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'>" . strval($currPs + 1);
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($currPs + 1)."' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+        $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-right\"></i>";
+            $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs)."' name='ps' onChange='this.form.submit()'>";
+        $pagination .= "</label>";
+    }
+    $pagination .= "</div>";
+
     // Input field and Banner
     $content .= '<section class="temp-back">';
         $content .= '<div class="facet-form-search">';
@@ -153,10 +212,13 @@ function _TCT_solr_test( $atts ) {
                 $content .= "</label>";
             $content .= "</div>";
         $content .= "</div>";
+     
+        $content .= $pagination;
+
         // right side
-        $content .= "<div class='num-results'><i class=\"fa-regular fa-line-columns\"></i>";
+        $content .= "<div class='num-results'>";
             if($responseData['numFound'] > 24) {
-                $content .= "<div><span>" . ($responseData['start'] + 1) . "</span><span> - " . ($responseData['start'] + 24) ." of " . $responseData['numFound'] . "</div>";  
+                $content .= "<div><span>" . ($responseData['start'] + 1) . "</span><span> - " . ($responseData['start'] + 24) ." <span style='color:#000;'>of</span> " . $responseData['numFound'] . "</div>";  
             }
         $content .= "</div>";
     $content .= "</section>";
@@ -292,13 +354,8 @@ function _TCT_solr_test( $atts ) {
                         }
                     $content .= "</div>";
                 } 
-
-                $content .= "<label class='facet-data' title='page'>1";
-                $content .= "<input type='checkbox' form='query-form' name='ps' value='4' onChange='this.form.submit()'>";
                 
-            $content .= "</label>";
-                
-            $content .= "</form>";
+            //$content .= "</form>";
             
         $content .= "</div>";
 
@@ -377,7 +434,11 @@ function _TCT_solr_test( $atts ) {
                 }
             }
         $content .= "</div>";
+        $content .= "<div class='bottom-pag'>";
+            $content .= $pagination;
+        $content .= "</div>";
         $content .= "<div style='clear:both;'></div>";
+
         
     $content .= "</section>";
     
@@ -400,9 +461,10 @@ function _TCT_solr_test( $atts ) {
             background: #fff;
             display: flex;
             flex-wrap: wrap;
+            padding-top: 35px;
         }
         .str-itm-switch {
-            width: 21vw;
+            width: 18vw;
             display: inline-block;
             text-transform: uppercase;
             padding-top: 15px;
@@ -436,6 +498,9 @@ function _TCT_solr_test( $atts ) {
             float: right;
             padding-top: 15px;
             padding-right: 15px;
+        }
+        .num-results div {
+            color: var(--main-color);
         }
         .search-page-single-status {
             width: 94%;
@@ -512,7 +577,35 @@ function _TCT_solr_test( $atts ) {
             font-family: var(--p-font-family);
             margin-top: 35px;
         }
-        
+        .pagi-ctrl {
+            display: none;
+        }
+        .search-pgntn {
+            display: inline-block;
+            position: relative;
+            top: 12px;
+        }
+        .pag-lbl {
+            min-width: 15px;
+            margin-right: 3px;
+            color: var(--main-color);
+            cursor: pointer;
+        }
+        .pag-lbl i {
+            font-size: 12px;
+            position: relative;
+            bottom: 1px;
+        }
+        .pag-lbl.curr {
+            color: #000;
+            font-weight: 600;
+        }
+        .bottom-pag {
+            margin-left: 18vw;
+        }
+        .bottom-pag .search-pgntn {
+            top: 20px;
+        }
     
     </style>";
 
