@@ -12,7 +12,7 @@ jQuery(document).ready(function() {
   jQuery(".facet-close-button").click(function () {
     jQuery(this).parents('.search-content-left').animate({ "left": -500 }, "slow");
   });
- 
+
 
 });
 function uninstallEventListeners() {
@@ -122,7 +122,7 @@ function installEventListeners() {
         jQuery(".site-navigation").css('display', 'block');
         jQuery('#default-login-container').css('display', 'block');
       })
-    
+
     // Item Page, Full screen transcription view, toggle between view and edit
     const editButton = document.querySelector('#tr-view-start-transcription');
     if(editButton) {
@@ -154,7 +154,7 @@ function installEventListeners() {
             jQuery(".site-navigation").css('display', 'none');
         }
     })
-    
+
     //Prevent users of editing fields that need logged in user
     jQuery('.login-required').mousedown(function(event) {
         // Checks if document is locked
@@ -247,7 +247,7 @@ function installEventListeners() {
 //       'url': TP_API_HOST + '/tp-api/properties?PropertyType=Keyword'
 //   },
 //   function(response) {
-   
+
 //     var response = JSON.parse(response);
 //     var content = JSON.parse(response.content);
 //     for (var i = 0; i < content.length; i++) {
@@ -585,7 +585,7 @@ function switchItemView(event, viewName) {
       jQuery("#item-status-doughnut-chart").css("display", 'block')
       break;
     case 'popout':
-    
+
         // Move language seletor from bottom to header
         // transToolBar.appendChild(langSelecta);
         // On switching views hide 'transcription-view' and show editor
@@ -974,7 +974,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
       // var newTranscriptionLength = tinyMCE.editors.get([jQuery('#item-page-transcription-text').attr('id')]).getContent({format : 'text'}).length;
       if(jQuery('#item-page-transcription-text').text()) {
         var newTranscriptionLength = (document.querySelector('#item-page-transcription-text').textContent).length;
-        console.log(newTranscriptionLength);
+        // console.log(newTranscriptionLength);
       }
       // Prepare data and send API request
       data = {
@@ -1007,7 +1007,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
         else {
           amount = 0;
         }
-        console.log(amount);
+        // console.log(amount);
         scoreData = {
                       ItemId: itemId,
                       UserId: userId,
@@ -1103,7 +1103,7 @@ function addItemProperty(itemId, userId, type, editStatusColor, statusCount, pro
 // Change progress status
 function changeStatus (itemId, oldStatus, newStatus, fieldName, value, color, statusCount, e) {
   // jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').innerHTML(newStatus);
-  
+
   document.querySelector('#' + fieldName.replace("StatusId", "").toLowerCase() + "-status-indicator").textContent = newStatus;
   document.querySelector('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').parentElement.style.backgroundColor = color;
 
@@ -2588,7 +2588,7 @@ function setToolbarHeight() {
             e.preventDefault;
             tinymce.activeEditor.focus();
             jQuery('.tox-tinymce').css('width', jQuery('#mytoolbar-transcription').css('width'))
-            
+
             if(document.querySelector('.tox-tinymce')){
                 document.querySelector('.tox-tinymce').style.display = 'block';
             }
@@ -3243,7 +3243,7 @@ ready(() => {
         const gridRadioBtn = document.querySelector('.search-results-grid-radio');
         const listRdioBtn = document.querySelector('.search-results-list-radio');
         const singleSearchResults = document.querySelectorAll('.search-page-single-result');
-    
+
         if(gridRadioBtn) {
             // switch to grid view
             gridRadioBtn.addEventListener('click', function() {
@@ -3444,6 +3444,7 @@ ready(() => {
         const lockWarning = document.querySelector('#locked-warning-container');
 
         if(escape.key === 'Escape') {
+            if (!itemLogContainer) { return; }
             if(itemLogContainer.style.display != 'none' || lockWarning.style.display != 'none') {
                 itemLogContainer.style.display = 'none';
                 lockWarning.style.display = 'none';
@@ -3511,7 +3512,7 @@ ready(() => {
         let sliderStart = null;
         if(document.querySelector('#slide-start')){
           sliderStart = parseInt(document.querySelector('#slide-start').textContent) + 1;
-        } 
+        }
         // Buttons to move by 1
         // const prevBtn = document.querySelector('.prev-set');
         // const nextBtn = document.querySelector('.next-set');
@@ -3554,7 +3555,7 @@ ready(() => {
                 slideN = slideN;
               } else {
                 slideN = sliderStart;
-              
+
               for(let img of imgSticker){
                 if(img.getAttribute('data-value') < (slideN-step)+1 || img.getAttribute('data-value') > slideN) {
                   img.style.display = 'none';
@@ -3564,7 +3565,7 @@ ready(() => {
                 rightSpanNumb.textContent = slideN;
               }}
             }
-            
+
             // Sliding images by value of slideN(number of slides that depends on screen width) -- right (+)
             nextSet.addEventListener('click', function() {
                 if(slideN + step < imgSticker.length) {
@@ -3574,13 +3575,13 @@ ready(() => {
                         imgSticker[x + (slideN)].style.display = 'inline-block';
                         imgSticker[(slideN-1) - x].style.display = 'none';
                     }
-                    console.log(slideN);
+                    // console.log(slideN);
                     slideN += step;
                 } else {
                     leftSpanNumb.textContent = imgSticker.length - step + 1;
                     rightSpanNumb.textContent = imgSticker.length;
                     slideN = imgSticker.length - 1;
-                    
+
                     for(let y = imgSticker.length-1; y > imgSticker.length - (step+1); y--) {
                         if(imgSticker[y-step]){
                             imgSticker[y-step].style.display = 'none';
@@ -3625,7 +3626,7 @@ ready(() => {
             //     imgSticker[slideN - step].style.display = 'none';
             //     leftSpanNumb.textContent = slideN + 2 - step;
             //     rightSpanNumb.textContent = slideN + 1;
-    
+
             //     slideN += 1;
             //     if(slideN >= imgSticker.length -1) {
             //         slideN = imgSticker.length - 1;
@@ -3673,7 +3674,7 @@ ready(() => {
     }
     //Quick fix to move languages until finding long term solution
     const fullScreenBtn = document.querySelector('#full-page');
-    
+
     if(fullScreenBtn) {
         const langContainer = document.querySelector('#lang-holder');
         const langSelecta = document.querySelector('.transcription-mini-metadata');

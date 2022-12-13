@@ -333,7 +333,7 @@ function installEventListeners() {
         changeYear: true,
         yearRange: "100:+10",
         showOn: "button",
-        buttonImage: `${home_url}/public_html/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg`
+        buttonImage: `${home_url}/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg`
     });
     jQuery("#startdateentry").val(startDate);
     jQuery("#enddateentry").val(endDate);
@@ -344,7 +344,7 @@ function installEventListeners() {
         changeYear: true,
         yearRange: "100:+10",
         showOn: "button",
-        buttonImage:  `${home_url}/public_html/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg`
+        buttonImage:  `${home_url}/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg`
     });
     jQuery("#person-birthDate-input").val(birthDate);
     jQuery("#person-deathDate-input").val(deathDate);
@@ -1796,7 +1796,7 @@ function loadLinkData(itemId, userId) {
             let propDesc = null;
 
             extLinkCont.innerHTML = '';
-            
+
             for (let property of content['Properties']) {
                 if(property['PropertyType'] === 'Link') {
                     if(property['PropertyDescription'] != 'NULL') {

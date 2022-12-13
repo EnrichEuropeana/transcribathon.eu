@@ -1424,7 +1424,7 @@ p.mb-1 {
 }
 .item-data-input-headline {
     font-size: 1.1em;
-    font-weight: 600;
+    font-weight: 600 !important;
     font-family: var(--h-font-family);
     margin: 1em 0;
 }

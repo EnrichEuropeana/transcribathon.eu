@@ -1,8 +1,8 @@
 <?php
 
-/* 
+/*
 Shortcode: tct_new_search
-Description: New search Page, based on Solr Dismax Parser 
+Description: New search Page, based on Solr Dismax Parser
 */
 
 // include required files
@@ -25,7 +25,7 @@ function _TCT_new_search( $atts ) {
         $solrData = json_decode($result, true);
 
         $resultItems = $solrData['response']['docs'];
-        
+
     } else {
         /*
         Theoretically it should work with str_replace(replacing spaces with *) and without foreach loop,
@@ -34,7 +34,7 @@ function _TCT_new_search( $atts ) {
         $queryString = explode(' ', $queryString);
         $queryPhrase = '';
         foreach($queryString as $query){
-            $queryPhrase .= '*' . $query . '* '; 
+            $queryPhrase .= '*' . $query . '* ';
         }
         htmlspecialchars($queryPhrase);
         $url = TP_SOLR . '/solr/Items/select?defType=edismax&facet.field=StoryId&facet=on&hl.fl=*&hl=on&mm=2&q.alt=*%3A*&q='.urlencode($queryPhrase).'&qf=text%20StoryId%20ItemId%20Languages%20CompletionStatus&rows=24&start=0&sort=StoryId%20desc';
@@ -46,7 +46,7 @@ function _TCT_new_search( $atts ) {
 
         $resultItems = $solrData['response']['docs'];
     }
-    
+
    // var_dump($solrData['facet_counts']['facet_fields']['StoryId']);
    // var_dump($resultItems);
 
@@ -57,7 +57,7 @@ function _TCT_new_search( $atts ) {
         for($i = 0; $i < 20; $i += 2) {
             // To store number of hits, we declare topStoriesId as an array and run following code
             // $topStoriesId[$allStoryIds[$i]] = $allStoryIds[$i + 1];
-    
+
             // To get only Story ID
             if($allStoryIds[$i+1] > 0) {
                 $topStoriesId .= $allStoryIds[$i] . ' ';
@@ -73,7 +73,7 @@ function _TCT_new_search( $atts ) {
 
         $resultStories = $solrData['response']['docs'];
     }
-  
+
 
 
     $content = "";
@@ -158,8 +158,8 @@ function _TCT_new_search( $atts ) {
             $content .= "<form id='searchForm' action='#' method='post'>";
                 $content .= "<input type='text' id='searchTerm' name='qt'>";
                 $content .= "<input type='submit' value='🔎︎' form='searchForm' class='theme-color-background'>";
-                $content .= "<div class='theme-color-background mapLink'><a href='/map' target='_blank' class='theme-color-background'><i class='fal fa-globe-europe' style='font-size: 20px;'></i></a></div>";    
-            
+                $content .= "<div class='theme-color-background mapLink'><a href='/map' target='_blank' class='theme-color-background'><i class='fal fa-globe-europe' style='font-size: 20px;'></i></a></div>";
+
                 // Choose between Stories and Items
                 $content .= "<input type='checkbox' id='story-radio' value='story'>";
                 $content .= "<label for='story-radio'>Stories</label>";
@@ -191,13 +191,13 @@ function _TCT_new_search( $atts ) {
                     $content .= "</div>";
                 $content .= "</div>";
 
-            $content .= "</form>";   
+            $content .= "</form>";
         $content .= "</div>";
-    $content .= "</section>"; // End of top section 
+    $content .= "</section>"; // End of top section
 
     // Bottom section, container with Item results
     $content .= "<section id='itemResultContainer'>";
-        
+
         // Display results on the page
         foreach($resultItems as $item){
 
@@ -230,7 +230,7 @@ function _TCT_new_search( $atts ) {
                 }
             }
 
-            
+
             // Get status percentages
             $completeNr = 0;
             $reviewNr = 0;
@@ -321,8 +321,8 @@ function _TCT_new_search( $atts ) {
         $itemCategory = Null;
         $itemLanguages = Null;
 
-        
-        
+
+
     $content .= "</section>"; // End of Results
     //var_dump($queryString);
 
@@ -385,7 +385,7 @@ function _TCT_new_search( $atts ) {
 
 
     // Js needed for the page, to be placed in js file later
-    
+
 
 
     return $content;

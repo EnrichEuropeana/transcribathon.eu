@@ -1586,7 +1586,7 @@ if (event.target.id != "tagging-status-indicator") {
         //$content .= "<section id='viewer-n-transcription'>";
             $content .= "<div id='full-view-l'>";
                 $content .= $imageViewer;
-                
+
                 $content .= "<div class='htr-btns'>";
                 if(current_user_can('administrator')) {
                     $content .= "<div>";
@@ -1598,16 +1598,16 @@ if (event.target.id != "tagging-status-indicator") {
                             $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR editor ";
                             $content .= "<i class='fas fa-keyboard'></i></a>";
                         $content .= "</div>";
-                    
+
                         $content .= "<div>";
                             $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>Compare Transcriptions <i class=\"far fa-columns\"></i></a>";
                         $content .= "</div>";
                     }
                 }
-                    
+
                     //$content .= "<div style='clear:both;'></div>";
                 $content .= "</div>";
-               
+
             $content .= "</div>";
             $content .= "<div id='full-view-r'>";
             //var_dump($itemData);
@@ -1668,7 +1668,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
-                                if($currentTranscription) {
+                                if(!empty($currentTranscription['Languages'])) {
                                     foreach($currentTranscription['Languages'] as $language) {
                                         $content .= "<div class='language-single'>" . $language['Name'] . "</div>";
                                     }
