@@ -907,6 +907,9 @@ p.mb-1 {
     float: inherit;
     width: fit-content;
 }
+.data-popout .tab-h span {
+    display: inline-block!important;
+}
 .data-popout #no-text-selector {
     position: relative;
     left: 17px;

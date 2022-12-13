@@ -202,32 +202,28 @@ function installEventListeners() {
         }
     })
 
-//   const itemPageKeyWords = document.querySelector('#keyword-input');
-//   let flag = true;
-//   var keyWordList = [];
-//   if(itemPageKeyWords && flag){
-//   jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-//       'type': 'GET',
-//       'url': TP_API_HOST + '/tp-api/properties?PropertyType=Keyword'
-//   },
-//   function(response) {
+  const itemPageKeyWords = document.querySelector('#keyword-input');
+  var keyWordList = [];
+  if(itemPageKeyWords){
+  jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+      'type': 'GET',
+      'url': TP_API_HOST + '/tp-api/properties?PropertyType=Keyword'
+  },
+  function(response) {
 
-//     var response = JSON.parse(response);
-//     var content = JSON.parse(response.content);
-//     for (var i = 0; i < content.length; i++) {
-//       keyWordList.push(content[i]['PropertyValue']);
-//     }
-//     jQuery( "#keyword-input" ).autocomplete({
-//       source: keyWordList,
-//       delay: 100,
-//       minLength: 1
-//     });
-//     console.log(flag);
-//     console.log(keyWordList);
-//     flag = false;
-//     console.log(flag);
-//   });
-//   }
+    var response = JSON.parse(response);
+    var content = JSON.parse(response.content);
+    for (var i = 0; i < content.length; i++) {
+      keyWordList.push(content[i]['PropertyValue']);
+    }
+    jQuery( "#keyword-input" ).autocomplete({
+      source: keyWordList,
+      delay: 100,
+      minLength: 1
+    });
+    console.log(keyWordList);
+  });
+  }
 
     // New transcription langauge selected
     jQuery('#transcription-language-custom-selector').siblings('.language-item-select').children('.selected-option').click(function(){
@@ -317,6 +313,9 @@ function installEventListeners() {
             jQuery('#transcription-language-selector select').removeClass("disabled-dropdown");
             tct_viewer.initTinyWithConfig('#item-page-transcription-text');
             setToolbarHeight();
+            if(document.querySelector('#mce-wrapper-transcription.htr-active-tr')) {
+                tinymce.get('item-page-transcription-text').mode.set('readonly');
+            }
             jQuery('#transcription-update-button').removeClass('theme-color-background');
             jQuery('#transcription-update-button').prop('disabled', true);
             jQuery('#transcription-update-button .language-tooltip-text').css('display', 'block');
@@ -353,6 +352,9 @@ function installEventListeners() {
     if(document.querySelector('#item-page-transcription-text')) {
         tct_viewer.initTinyWithConfig('#item-page-transcription-text');
         setToolbarHeight();
+        if(document.querySelector('#mce-wrapper-transcription.htr-active-tr')) {
+            tinymce.get('item-page-transcription-text').mode.set('readonly');
+        }
     }
 
 } // End of event listeners
@@ -2304,19 +2306,9 @@ var ready = (callback) => {
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
 
-
-    /////////// Paragraph Collapse Toggler, on Story Page and Item Page - story/item page only
-    const paraToggler = document.querySelector('.descMore');
-    if(paraToggler) {
-        paraToggler.addEventListener('click', descToggler, false);
-    }
-
     // Item Page/Full Screen - Hide tab names when they start to break
     const tabHeadList = document.querySelector('#item-tab-list');
     const tabNames = tabHeadList.querySelectorAll('.tab-h span');
-    const resizeImage = document.querySelector('#item-image-section');
-
-
 
     // Item page full screen image splitter, remove 'editor bar' while resizing screen - item page only
     // Add listener to hide tab names when resizing below min width
@@ -2325,6 +2317,9 @@ ready(() => {
         splitter.addEventListener('mousedown', function() {
             tinymce.remove();
             tct_viewer.initTinyWithConfig('#item-page-transcription-text');
+            if(document.querySelector('#mce-wrapper-transcription.htr-active-tr')) {
+                tinymce.get('item-page-transcription-text').mode.set('readonly');
+            }
         }, false);
         // Hide Tab Names when they start to break
         splitter.addEventListener('mouseleave', function() {
@@ -2712,5 +2707,6 @@ ready(() => {
 
     installEventListeners();
     initializeMap();
+
 
 });

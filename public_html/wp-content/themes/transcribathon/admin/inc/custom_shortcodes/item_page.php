@@ -987,15 +987,21 @@ if (event.target.id != "tagging-status-indicator") {
         $editorTab .= "<div style='clear:both;'></div>";
         // Editor and Language Selector
         if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
-            $editorTab .= "<div id='transcription-edit-container' style='display:block;'>";
-            // MCE Editor
-            $editorTab .= "<div id='mce-wrapper-transcription' class='login-required' style='display:none;'>";
-                $editorTab .= "<script>
-                    document.querySelector('#switch-tr-view').style.display = 'none';
-                    document.querySelector('.transcription-headline-header span').textContent = 'HTR TRANSCRIPTION';
-                </script>";
-            $editorTab .= "</div>";
+          //  $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
             $currentTranscription['Text'] = $htrTranscription;
+            $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
+            // MCE Editor
+            $editorTab .= "<div id='mce-wrapper-transcription' class='login-required htr-active-tr'>";
+                $editorTab .= "<div id='mytoolbar-transcription'></div>";
+                $editorTab .= "<div id='item-page-transcription-text' rows='8'>";
+                    $editorTab .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'>";
+                $editorTab .= "</div>";
+            $editorTab .= "</div>";
+
+            $editorTab .= "<script>
+                document.querySelector('.transcription-headline-header span').textContent = 'HTR TRANSCRIPTION';
+            </script>";
+
         } else {
             $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
                 // MCE Editor
