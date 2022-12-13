@@ -25,7 +25,6 @@ function _TCT_solr_search( $atts ) {
         }
         if(array_search($par, $_GET) == 'ps' && $par != '') {
             $page = (intval($par) - 1) *24;
-            var_dump($par);
         }
         // if(array_search($par, $_GET) == 'Languages' && $par != '') {
         //     $fieldName = array_search($par, $_GET);
