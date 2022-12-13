@@ -1554,7 +1554,7 @@ function loadPlaceData(itemId, userId) {
                             }` +
                             // Check for Wikidata : ^^
                             `${location['WikidataId'] ?
-                                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/${location['WikidataId']} ` +
+                                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/${location['WikidataId']}' ` +
                                 `style='text-decoration:none;' target='_blank'>${escapeHtml(location['WikidataName'])}, ${escapeHtml(location['WikidataId'])}</a></b></p>`
                                 :
                                 ''
@@ -1584,7 +1584,7 @@ function loadPlaceData(itemId, userId) {
                                 `<label>Wikidata Reference:` +
                                     `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>` +
                                 `</label>` +
-                                `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value='${isItString(location['WikidataName'])}; ${isItString(location['WikidataId'])}' >` +
+                                `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value='${isItString(location['WikidataName'])}; ${isItString(location['WikidataId'])};' >` +
                             `</div>` +
                             // Description
                             `<div class='location-input-description-container' style='height:50px;'>` +
