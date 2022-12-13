@@ -713,6 +713,7 @@ p.mb-1 {
 }
 .edit-location-save {
     border: none;
+    padding: 10px;
     border-radius: 0;
     font-weight: 700;
     font-size: 14px;
@@ -720,6 +721,7 @@ p.mb-1 {
 }
 .edit-location-cancel {
     border: none;
+    padding: 10px;
     width: 94px;
     border-radius: 0;
     font-weight: 700;

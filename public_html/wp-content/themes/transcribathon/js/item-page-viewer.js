@@ -46,7 +46,7 @@ var tct_viewer = (function($, document, window) {
 			toggleFS();
 
 		});
-		jQuery('#startTranscription').click(function() {
+		jQuery('.mtr-active').click(function() {
 			document.querySelector('#transcription-edit-container').style.display = 'block';
 			document.querySelector('#transcription-view-container').style.display = 'none';
 			document.querySelector('#tr-tab').click();

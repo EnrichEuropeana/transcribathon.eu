@@ -26,6 +26,7 @@ footer._tct_footer{
     min-height:45px;
     margin-bottom:25px;
     background-image: url("logos_images/Europeana.svg");
+    filter: brightness(0%);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: left center;
@@ -34,6 +35,7 @@ footer._tct_footer{
     min-height:40px;
     margin-bottom:25px;
     background-image: url("logos_images/F&F.svg");
+    filter: brightness(0%);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -42,15 +44,18 @@ footer._tct_footer{
     min-height:40px;
     margin-bottom:25px;
     background-image: url("logos_images/ait_gs_c.svg");
+    filter: brightness(0%);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
 }
 
-._tct_footerlogo.net7{
-    min-height:40px;
-    margin-bottom:25px;
-    background-image: url("logos_images/net7.svg");
+._tct_footerlogo.read-coop{
+    min-height:65px;
+    margin-bottom:10px;
+    margin-left: 45px;
+    background-image: url("logos_images/READ_COOP_color.svg");
+    filter: brightness(0%);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -60,15 +65,19 @@ footer._tct_footer{
     min-height:40px;
     margin-bottom:25px;
     background-image: url("logos_images/BJC_logo_gs_c.svg");
+    filter: brightness(0%);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
 }
 
-._tct_footerlogo.onb{
-    min-height:40px;
-    margin-bottom:25px;
-    background-image: url("logos_images/ONB_gs_cc.svg");
+._tct_footerlogo.Transkribus{
+    min-height:60px;
+    margin-bottom:10px;
+    margin-left: 50px;
+    width: 130%;
+    background-image: url("logos_images/Transkribus.svg");
+    filter: brightness(0%);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;
@@ -78,6 +87,7 @@ footer._tct_footer{
     min-height:40px;
     margin-bottom:25px;
     background-image: url("logos_images/PSNC_gs_c.svg");
+    filter: brightness(0%);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center center;

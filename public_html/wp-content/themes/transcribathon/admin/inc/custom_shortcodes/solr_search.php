@@ -183,7 +183,7 @@ function _TCT_solr_search( $atts ) {
     // Input field and Banner
     $content .= '<section class="temp-back">';
         $content .= '<div class="facet-form-search">';
-            $content .= "<form id='query-form' action='" . home_url() . "/solr-test/' method='GET'>";
+            $content .= "<form id='query-form' action='" . home_url() . "/documents/' method='GET'>";
                 $content .= '<div><input class="search-field" type="text" placeholder="Add a search term" name="q" form="query-form" value="' . str_replace('\\', '', htmlspecialchars($_GET['q'])) . '"></div>';
                 //$content .= '<div><input class="search-field" type="text" name="view" value="story" form="query-form" hidden></div>';
                 $content .= '<div><button type="submit" form="query-form" class="theme-color-background document-search-button"><i class="far fa-search" style="font-size: 20px;"></i></button></div>';
@@ -296,10 +296,11 @@ function _TCT_solr_search( $atts ) {
                             $facetCleanAr = [];
                             $facetLabelAr = explode(' || ', $facetFields['dcLanguage'][$x]);
                             foreach($facetLabelAr as $lblLang) {
-                                if(strlen($lblLang) < 4) {
-                                    $facetLabel .= array_push($facetCleanAr, ucfirst($lblLang));
+                                if(strlen($lblLang) < 4 && strlen($lblLang) > 1) {
+                                    array_push($facetCleanAr, ucfirst($lblLang));
                                 }
                             }
+                           
                             $facetLabel = implode(' - ', $facetCleanAr);
                             $content .= "<label class='facet-data' title='" . $facetFields['dcLanguage'][$x] . "'>" . $facetLabel . " (" . $facetFields['dcLanguage'][$x+1] . ")";
                                 $content .= "<input type='checkbox' form='query-form' name='dcLanguage' value='" . $facetFields['dcLanguage'][$x] . "' " . $checked . " onChange='this.form.submit()'>";

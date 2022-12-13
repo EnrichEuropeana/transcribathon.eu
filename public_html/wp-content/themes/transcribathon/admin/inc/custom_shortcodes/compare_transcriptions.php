@@ -224,6 +224,7 @@ function _TCT_compare_transcriptions( $atts) {
         // Title
     $content .= "<section id='title-n-progress'>";
     $content .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
+    $content .= "<div class='back-to-story' style='bottom:35px;'><a href='" . home_url() . "/documents/story/item/?item=". $itemData['ItemId'] ."'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Item </a></div>";
         $content .= "<div class='title-n-btn'>";
             $content .= "<h4 id='item-header'><b>" . $itemData['Title'] . "</b></h4>";
         $content .= "</div>";

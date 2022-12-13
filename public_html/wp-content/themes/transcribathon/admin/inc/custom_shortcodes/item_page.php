@@ -985,19 +985,29 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div id='switch-tr-view' style='float:right;'><i class='fa fa-pencil' style='font-size:30px;color:#0a72cc;cursor:pointer;margin-top:5px;'></i></div>";
         $editorTab .= "</div>"; // End of header
         $editorTab .= "<div style='clear:both;'></div>";
-
         // Editor and Language Selector
-        $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
+        if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
+            $editorTab .= "<div id='transcription-edit-container' style='display:block;'>";
             // MCE Editor
-            $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
-                $editorTab .= "<div id='mytoolbar-transcription'></div>";
-                $editorTab .= "<div id='item-page-transcription-text' rows='8'>";
-                    if($currentTranscription != null) {
-                        $editorTab .= $currentTranscription['Text'];
-                    }
-                $editorTab .= "</div>";
+            $editorTab .= "<div id='mce-wrapper-transcription' class='login-required' style='display:none;'>";
+                $editorTab .= "<script>
+                    document.querySelector('#switch-tr-view').style.display = 'none';
+                    document.querySelector('.transcription-headline-header span').textContent = 'HTR TRANSCRIPTION';
+                </script>";
             $editorTab .= "</div>";
-
+            $currentTranscription['Text'] = $htrTranscription;
+        } else {
+            $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
+                // MCE Editor
+                $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
+                    $editorTab .= "<div id='mytoolbar-transcription'></div>";
+                    $editorTab .= "<div id='item-page-transcription-text' rows='8'>";
+                        if($currentTranscription != null) {
+                            $editorTab .= $currentTranscription['Text'];
+                        }
+                    $editorTab .= "</div>";
+                $editorTab .= "</div>";
+        }
             // Language Selector
             $editorTab .= "<div class='transcription-mini-metadata'>";
                 $editorTab .= "<div id='transcription-language-selector' class='language-selector-background language-selector login-required'>";
@@ -1597,7 +1607,7 @@ if (event.target.id != "tagging-status-indicator") {
             //var_dump($itemData);
                 // Transcription
                 $content .= "<div id='transcription-container' style='height:600px;'>";
-                    $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
+                    $content .= "<div id='startTranscription' class='mtr-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         $content .= "<div>";
                             $content .= "<div class='status-display' style='line-height: normal;background-color:".$itemData['TranscriptionStatusColorCode']."'>";
@@ -1620,7 +1630,13 @@ if (event.target.id != "tagging-status-indicator") {
                             if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
                                 if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
                                     $formattedTranscription = $htrTranscription;
-                                    $content .= "<script>document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';</script>";
+                                    $content .= "<script>
+                                        document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';
+                                        document.querySelector('#startTranscription').classList.replace('mtr-active', 'htr-active');
+                                        document.querySelector('#startTranscription').addEventListener('click', function() {
+                                            location.href = '" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "';
+                                        });
+                                    </script>";
                                 } else {
                                     $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
                                 }

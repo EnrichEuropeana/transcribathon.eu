@@ -508,7 +508,7 @@ footer {
   color: #6b6b6b !important;
 }
 footer h1, footer h2, footer h3, footer h4, footer h5, footer h6, footer p {
-  color: #6b6b6b !important;
+  color: #000 !important;
 }
 footer a {
   color: #6b6b6b !important;
@@ -552,7 +552,9 @@ footer._tct_footer {
   text-decoration: none;
 }
 #colophon {
-  background-color: #474747 !important;
+  background-color: #f8f8f8 !important;
+  color: #000!important;
+  border-top: 2px solid #000;
 }
 /*----------------------------- End Of Footer and related things ------------------------------*/
 /*----------------------------------------- Main Page(home) -----------------------------------*/

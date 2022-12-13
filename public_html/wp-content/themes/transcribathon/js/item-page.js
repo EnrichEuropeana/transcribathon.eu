@@ -15,8 +15,9 @@ function installEventListeners() {
     }
 
     const noTextSelect = document.querySelector('#no-text-selector');
-    if(noTextSelect) {
-        document.querySelector('#item-page-transcription-text').addEventListener('keyup', function() {
+    const transcriptionEditor = document.querySelector('#item-page-transcription-text');
+    if(noTextSelect && transcriptionEditor) {
+        transcriptionEditor.addEventListener('keyup', function() {
             if(document.querySelector('#item-page-transcription-text').innerHTML != '' || document.querySelector('#item-page-transcription-text').textContent != '') {
                 noTextSelect.style.display = 'none';
             } else {
