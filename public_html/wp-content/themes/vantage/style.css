@@ -301,7 +301,7 @@ input {
   *overflow: visible;
 }
 a.button,
-button:not(#editor-overlay button),
+button,
 html input[type="button"],
 input[type="reset"],
 input[type="submit"] {
