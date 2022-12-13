@@ -232,8 +232,8 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/datasets-admin-pag
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_import.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/story_page.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/solr_test.php'); // Solr test client
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/get_word_document.php');
+require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/solr_search.php'); // Solr test client
+//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/get_word_document.php'); // Curently not used
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/compare_transcriptions.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_htr.php'); // Adds HTR Editor
@@ -308,9 +308,10 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_script( 'pagination', CHILD_TEMPLATE_DIR . '/js/pagination.min.js');
         }
 
-        if(is_page('story')) {
+        if(is_page('story') || is_page('documents')) {
             wp_enqueue_style( 'storystyle', CHILD_TEMPLATE_DIR . '/css/story_page.css');
             wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/story-page.js');
+            wp_enqueue_style( 'searchstyle', CHILD_TEMPLATE_DIR . '/css/search-page.css');
         }
         if(is_page('item')) {
             wp_dequeue_style('responsive-lightbox-featherlight');

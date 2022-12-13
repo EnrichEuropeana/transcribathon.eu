@@ -101,7 +101,7 @@ function _TCT_item_page_htr( $atts) {
     $storyId = $_GET['story'];
 
     $content = '';
-    $content .= '<form id="changeEditor" action="'.get_europeana_url().'/documents/story/item/item_page_htr/" method="get" style="position:absolute;bottom:10%;z-index:9999;">';
+    $content .= '<form id="changeEditor" action="'.get_europeana_url().'/documents/story/item-page-htr/" method="get" style="position:absolute;bottom:10%;z-index:9999;">';
         $content .= '<input type="number" name="item" value="'.$_GET['item'].'" hidden>';
     $content .= '</form>';
 
@@ -119,7 +119,8 @@ function _TCT_item_page_htr( $atts) {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <style>
 button.button.is-success {
-    background: #0a72cc!important;
+    background: rgb(72, 199, 116)!important;
+    color: #fff!important;
 }
 footer._tct_footer, footer.site-footer {
     display: none;
@@ -135,12 +136,22 @@ footer._tct_footer, footer.site-footer {
     font-size: 14px;
     font-weight: bolder;
 }
+.editor-change {
+    position:absolute;
+    bottom:2%;
+    left:30px;
+    z-index:9999;
+    padding:10px!important;
+    text-decoration:none;
+    background:#0a72cc!important;
+    color:#fff!important;
+}
 </style>
 <link href="{$textEditorUrl}css/app.c2223102.css" rel="stylesheet" />
 <link href="{$textEditorUrl}css/chunk-vendors.3ee89ce5.css" rel="stylesheet" />
 <link href="{$textEditorUrl}custom.css" rel="stylesheet" />
-<input form="changeEditor" name="editor" value="layout" hidden />
-<input form="changeEditor" type="submit" value="Layout Editor" style="display:none;" />
+<input form="changeEditor" name="editor" value="layout" hidden>
+<input form="changeEditor" type="submit" value="Layout Editor" class='editor-change'>
 <a id="go-home" href="{$homeUri}/documents/story/item/?item={$itemId}">Back to Item</a>;
 <div
     id="transkribusEditor"
@@ -221,7 +232,7 @@ HED;
 <link href="{$layoutEditorUrl}css/chunk-vendors.0d1a6cf4.css" rel="stylesheet" />
 <link href="{$layoutEditorUrl}css/app.497aabb0.css" rel="stylesheet" />
 <input form="changeEditor" name="editor" value="text" hidden>
-<input form="changeEditor" type="submit" value="Text Editor" style="position:absolute;bottom:5%;right:0;z-index:9999;width:100px;margin:0auto;">
+<input form="changeEditor" type="submit" value="Text Editor" class='editor-change' style="">
 <div id="app"></div>
 <script>
     window.layoutEditorConfig = {
@@ -239,6 +250,21 @@ body {
     overflow-y: hidden;
     height: 100vh;
 }
+.dropdown-content p {
+    margin: 0!important;
+}
+.editor-change {
+    position: absolute;
+    bottom: 5%;
+    left: 20px;
+    z-index: 9999;
+    padding: 10px!important;
+    text-decoration:none;
+    background:#0a72cc!important;
+    color:#fff!important;
+}
+
+
 </style>
 <script>
 var ready = (callback) => {
