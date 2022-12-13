@@ -1200,7 +1200,7 @@ a.transcription-comparison-button {
   position: relative;
   display: inline-block;
 }
-.dropdown-content {
+.dropdown-content:not(#editor-overlay .dropdown-content) {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
