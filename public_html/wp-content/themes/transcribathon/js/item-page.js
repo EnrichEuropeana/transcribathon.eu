@@ -221,7 +221,7 @@ function installEventListeners() {
       delay: 100,
       minLength: 1
     });
-    console.log(keyWordList);
+    //console.log(keyWordList);
   });
   }
 
@@ -780,7 +780,7 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-description-spinner-container').css('display', 'block')
 
     var descriptionLanguage = jQuery('#description-language-selector select').val();
-    console.log(descriptionLanguage);
+    //console.log(descriptionLanguage);
     updateDataProperty('items', itemId, 'DescriptionLanguage', descriptionLanguage);
 
     var description = jQuery('#item-page-description-text').val()
@@ -849,7 +849,7 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
                 },
                 // Check success and create confirmation message
                 function(response) {
-                    console.log(response);
+                    //console.log(response);
                 })
                 var response = JSON.parse(response);
                 if (response.code == "200") {
@@ -976,7 +976,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 }
 
                 if (response.code == "200") {
-                    console.log(data);
+                    //console.log(data);
                     if (itemCompletion == "Not Started") {
                         changeStatus(itemId, "Not Started", "Edit", "CompletionStatusId", 2, editStatusColor, statusCount)
                     }
@@ -2290,7 +2290,7 @@ async function showActiveTranscription(itemId) {
     const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/items/' + itemId;
     const result = await (await fetch(requestUri)).json();
     source = result.data.TranscriptionSource;
-    console.log(source);
+    //console.log(source);
 
     return source;
 }
