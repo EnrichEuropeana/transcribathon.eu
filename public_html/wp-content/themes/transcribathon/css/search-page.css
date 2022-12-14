@@ -119,14 +119,62 @@
     overflow: hidden;
     white-space: nowrap;
     position: relative;
-    padding-left: 20px;
+    padding-left: 25px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .facet-data input {
-    margin-right: 5px;
+    /* margin-right: 5px;
     position: absolute;
     top: 6px;
-    left: 0px;
+    left: 0px; */
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
 }
+.facet-data .checkmark {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: #fff;
+    margin-right: 5px;
+    border: 2px solid var(--main-color);
+}
+.facet-data:hover input ~ .checkmark {
+    background-color: #eee;
+}
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+.facet-data input:checked ~ .checkmark {
+    background-color: var(--main-color);
+    display: block;
+}
+
+/* Show the checkmark when checked */
+.facet-data input:checked ~ .checkmark:after {
+    display: block;
+}
+.facet-data .checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+  
 .single-title h2 {
     font-size: 14px!important;
     font-family: var(--p-font-family);

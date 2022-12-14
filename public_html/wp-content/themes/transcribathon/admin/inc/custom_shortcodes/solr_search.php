@@ -243,7 +243,7 @@ function _TCT_solr_search( $atts ) {
                                 }
                                 $content .= "<label class='facet-data' title='" . $facetFields['CompletionStatus'][$x] . " (" . $facetFields['CompletionStatus'][$x+1] . ")" . "'>" . $facetFields['CompletionStatus'][$x] . " (" . $facetFields['CompletionStatus'][$x+1] . ")";
                                     $content .= "<input class='search-check' type='checkbox' form='query-form' name='CompletionStatus' value='" . $facetFields['CompletionStatus'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
-                                    $content .= "<span class='theme-color-background checkmark'></span>";
+                                    $content .= "<span class='checkmark'></span>";
                                 $content .= "</label>";
                                 $checked = '';
                             }
@@ -266,7 +266,7 @@ function _TCT_solr_search( $atts ) {
                                 }
                                 $content .= "<label class='facet-data' title='" . $facetFields['Categories'][$x] . " (" . $facetFields['Categories'][$x+1] . ")" . "'>" . $facetFields['Categories'][$x] . " (" . $facetFields['Categories'][$x+1] . ")";
                                     $content .= "<input class='search-check' type='checkbox' form='query-form' name='" . $name . "' value='" . $value . "' " . $checked . " onChange='this.form.submit()'>";
-                                    $content .= "<span class='theme-color-background checkmark'></span>";
+                                    $content .= "<span class='checkmark'></span>";
                                 $content .= "</label>";
                                 $checked = '';
                             }
@@ -283,7 +283,7 @@ function _TCT_solr_search( $atts ) {
                                 }
                                 $content .= "<label class='facet-data' title='" . $facetFields['edmCountry'][$x] . " (" . $facetFields['edmCountry'][$x+1] . ")" . "'>" . $facetFields['edmCountry'][$x] . " (" . $facetFields['edmCountry'][$x+1] . ")";
                                     $content .= "<input class='search-check' type='checkbox' form='query-form' name='edmCountry' value='" . $facetFields['edmCountry'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
-                                    $content .= "<span class='theme-color-background checkmark'></span>";
+                                    $content .= "<span class='checkmark'></span>";
                                 $content .= "</label>";
                                 $checked = '';
                             }
@@ -310,7 +310,7 @@ function _TCT_solr_search( $atts ) {
                                 $facetLabel = implode(' - ', $facetCleanAr);
                                 $content .= "<label class='facet-data' title='" . $facetFields['dcLanguage'][$x] . " (" . $facetFields['dcLanguage'][$x+1] . ")" . "'>" . $facetLabel . " (" . $facetFields['dcLanguage'][$x+1] . ")";
                                     $content .= "<input class='search-check' type='checkbox' form='query-form' name='dcLanguage' value='" . $facetFields['dcLanguage'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
-                                    $content .= "<span class='theme-color-background checkmark'></span>";
+                                    $content .= "<span class='checkmark'></span>";
                                 $content .= "</label>";
                                 $checked = '';
                             }
@@ -327,7 +327,7 @@ function _TCT_solr_search( $atts ) {
                                 }
                                 $content .= "<label class='facet-data' title='" . $facetFields['Dataset'][$x] . " (" . $facetFields['Dataset'][$x+1] . ")" . "'>" . $facetFields['Dataset'][$x] . " (" . $facetFields['Dataset'][$x+1] . ")";
                                     $content .= "<input class='search-check' type='checkbox' form='query-form' name='Dataset' value='" . $facetFields['Dataset'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
-                                    $content .= "<span class='theme-color-background checkmark'></span>";
+                                    $content .= "<span class='checkmark'></span>";
                                 $content .= "</label>";
                                 $checked = '';
                             }
@@ -344,7 +344,7 @@ function _TCT_solr_search( $atts ) {
                                 }
                                 $content .= "<label class='facet-data' title='" . $facetFields['edmProvider'][$x] . " (" . $facetFields['edmProvider'][$x+1] . ")" . "'>" . $facetFields['edmProvider'][$x] . " (" . $facetFields['edmProvider'][$x+1] . ")";
                                     $content .= "<input class='search-check' type='checkbox' form='query-form' name='edmProvider' value='" . $facetFields['edmProvider'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
-                                    $content .= "<span class='theme-color-background checkmark'></span>";
+                                    $content .= "<span class='checkmark'></span>";
                                 $content .= "</label>";
                                 $checked = '';
                             }
@@ -365,10 +365,10 @@ function _TCT_solr_search( $atts ) {
                                 } else if ($_GET['Languages'] != '') {
                                     $value .= '&&' . $_GET['Languages'];
                                 }
-                                $content .= "<label class='facet-data square-checkbox-contaier' title='" . $facetFields['Languages'][$x] . " (" . $facetFields['Languages'][$x+1] . ")" . "'>" . $facetFields['Languages'][$x] . " (" . $facetFields['Languages'][$x+1] . ")";
+                                $content .= "<label class='facet-data' title='" . $facetFields['Languages'][$x] . " (" . $facetFields['Languages'][$x+1] . ")" . "'>" . $facetFields['Languages'][$x] . " (" . $facetFields['Languages'][$x+1] . ")";
                                     $content .= "<input class='search-check' type='checkbox' form='query-form' name='" . $name . "' value='" . $value . "' " . $checked . " onChange='this.form.submit()'>";
                                     $content .= "<span class='theme-color-background checkmark'></span>";
-                                    $content .= "<span class='item-checkmark checkmark'>&nbsp</span>";
+                                    $content .= "<span class='checkmark'></span>";
                                 $content .= "</label>";
                                 $checked = '';
                             }
