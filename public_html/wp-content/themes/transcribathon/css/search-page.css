@@ -1,6 +1,7 @@
 .search-navigation {
     height: 85px;
     background: #fff;
+    margin-top: 25px;
 }
 .facet-menu {
     float: left;
@@ -45,10 +46,11 @@
     border-left: none;
 }
 .num-results {
-    display: inline-block;
+    position: relative;
+    top: 40px;
     float: right;
     padding-top: 15px;
-    padding-right: 15px;
+    padding-right: 25px;
 }
 .num-results div {
     color: var(--main-color);
@@ -103,11 +105,13 @@
     color: #000;
     margin: 15px 0;
     font-weight: 500;
+    font-family: var(--h-font-family);
+    letter-spacing: 0.025em;
 }
 .facet-data {
     display: block;
     color: var(--main-color);
-    font-family: var(--h-font-family);
+    font-family: var(--p-font-family);
     letter-spacing: 0.025em;
     cursor: pointer;
     margin-left: 0px!important;
@@ -134,7 +138,6 @@
 .search-pgntn {
     display: inline-block;
     position: relative;
-    top: 12px;
 }
 .pag-lbl {
     min-width: 15px;
@@ -153,7 +156,13 @@
 }
 .bottom-pag {
     margin-left: 18vw;
+    margin-bottom: 10vh;
+    margin-top: 15px;
 }
 .bottom-pag .search-pgntn {
     top: 20px;
+}
+.search-check::after {
+    border-radius: 0;
+    border: 2px solid #0a72cc;
 }

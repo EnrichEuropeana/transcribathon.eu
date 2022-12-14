@@ -128,15 +128,18 @@ var tct_viewer = (function($, document, window) {
 			toggleFS();
 			document.querySelector('#tagi-tab').click();
 		});
-		jQuery('#keywords-open').click(function() {
+		jQuery('#keywords-open').click(function(e) {
+			e.stopPropagation();
 			toggleFS();
 			document.querySelector('#tagi-tab').click();
 		});
-		jQuery('#links-open').click(function() {
+		jQuery('#links-open').click(function(e) {
+			e.stopPropagation();
 			toggleFS();
 			document.querySelector('#tagi-tab').click();
 		});
-		jQuery('#people-open').click(function() {
+		jQuery('#people-open').click(function(e) {
+			e.stopPropagation();
 			toggleFS();
 			document.querySelector('#tagi-tab').click();
 		});

@@ -329,7 +329,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $locationDisplay .= "</div>";
             $locationDisplay .= "</div>"; // End of single location
         }
-        if($itemData['StoryPlaceName'] != null && $itemData['StoryPlaceName'] != "") {
+        if($itemData['StoryPlaceName'] != null && $itemData['StoryPlaceName'] != "" && $itemData['StoryPlaceName'] != "NULL") {
             $locationDisplay .= "<div class='location-single story-location'>";
                 $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;filter:saturate(0.4)'>";
                 $locationDisplay .= "<p><b>" . $itemData['StoryPlaceName'] . "</b> (" . $itemData['StoryPlaceLatitude'] . ", " . $itemData['StoryPlaceLongitude'] . ")</p>";
@@ -486,8 +486,8 @@ if (event.target.id != "tagging-status-indicator") {
         // DATE ENTRY
         $enrichmentTab .= "<div id='item-date-container'>";
             $enrichmentTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
-                $enrichmentTab .= "Document Creation Date";
-            $enrichmentTab .= "</h6>";
+                $enrichmentTab .= "Document Creation Date ";
+            $enrichmentTab .= "<i id='date-open' class=\"fas fa-edit\"></i></h6>";
             if($itemData['DateStartDisplay'] != null || $itemData['DateEndDisplay'] != null) {
                 $enrichmentTab .= "<div class='document-date-container'>";
                     $enrichmentTab .= "<div class='date-top'>";
@@ -568,9 +568,9 @@ if (event.target.id != "tagging-status-indicator") {
                                 onClick='jQuery(this).find(\".collapse-icon\").toggleClass(\"fa-caret-circle-up\")
                                         jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")'>";
                 $enrichmentTab .= "<h6 class='theme-color item-data-input-headline login-required' title='Click to tag a person'>";
-                    $enrichmentTab .= "People";
+                    $enrichmentTab .= "People ";
                     $enrichmentTab .= "<i style='margin-left:5px;' class='fas fa-plus-circle'></i>";
-                $enrichmentTab .= "</h6>";
+                $enrichmentTab .= "<i id='people-open' class=\"fas fa-edit\"></i></h6>";
             $enrichmentTab .= "</div>";
             // add person form
             if(count($itemData['Persons']) > 0) {
@@ -620,7 +620,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span style='font-weight:400;'>" . htmlspecialchars($person['FirstName']) . " " . ($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
+                                $enrichmentTab .= "<span style='font-weight:400;'>" . htmlspecialchars(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
                                 if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                                     $enrichmentTab .= " (" . $person['BirthDate'];
                                     if($person['BirthPlace'] != 'NULL') {
@@ -727,12 +727,12 @@ if (event.target.id != "tagging-status-indicator") {
         $enrichmentTab .= "<div id='item-page-keyword-container'>";
             $enrichmentTab .= '<div id="item-page-keyword-headline" class="keyword-collapse">';
             $enrichmentTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add keywords">';
-                    $enrichmentTab .= 'Keywords';
+                    $enrichmentTab .= 'Keywords ';
                     // $taggingTab .= "<button id='keyword-plus-button' type='submit' class='edit-data-save-right'
                     // onClick='document.querySelector(\"#keyword-save-button\").click();'>";
                     $enrichmentTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
                     // $taggingtab .= "</button>";
-                $enrichmentTab .= '</h6>';
+                $enrichmentTab .= '<i id=\'keywords-open\' class="fas fa-edit"></i></h6>';
             $enrichmentTab .= '</div>';
 
             $enrichmentTab .= '<div  style="position:relative;width:100%;">';
@@ -769,14 +769,14 @@ if (event.target.id != "tagging-status-indicator") {
         $enrichmentTab .= "<div id='item-page-link-container'>";
             $enrichmentTab .= '<div class="collapse-headline collapse-controller" data-toggle="collapse" href="#link-input-container">';
                 $enrichmentTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add a link">';
-                    $enrichmentTab .= 'External Web Resources';
+                    $enrichmentTab .= 'External Web Resources ';
                     // $taggingTab .= "<button type='submit' class='edit-data-save-right' id='link-save-button'
                     // onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
                     // , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
                     // $taggingTab .= '<div>Save</div>';
                     // $taggingTab .= "</button>";
                     $enrichmentTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
-                $enrichmentTab .= '</h6>';
+                $enrichmentTab .= '<i id="links-open" class="fas fa-edit"></i></h6>';
             $enrichmentTab .= '</div>';
 
             $enrichmentTab .= '<div id="link-input-container" class="collapse" style="padding-right:70px;position:relative;">';
@@ -1736,7 +1736,7 @@ if (event.target.id != "tagging-status-indicator") {
 
                     $content .= "<div id='description-container'>";
                     $content .= "<div class='description-view'>";
-                    $content .= "<h6 class='enrich-headers'> Description </h6>";
+                    $content .= "<h6 class='enrich-headers'> Description <i id='description-open' class=\"fas fa-edit\"></i></h6>";
 
                     $content .= "<div class='current-description' style='padding-left:24px;'>";
                     $content .= $itemData['Description'];
@@ -1761,7 +1761,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "</div>";
 
                     $content .= "<div class='type-of-media'>";
-                    $content .= "<h6 class='enrich-headers'> Type of Media</h6>";
+                    $content .= "<h6 class='enrich-headers'> Type of Media <i id='media-open' class=\"fas fa-edit\"></i></h6>";
                     $content .= "<div style='padding-left:24px;'>";
                     foreach($itemData['Properties'] as $property) {
                         if($property['PropertyType'] == "Category") {
