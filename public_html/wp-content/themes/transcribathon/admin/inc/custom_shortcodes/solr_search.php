@@ -11,7 +11,7 @@ function _TCT_solr_search( $atts ) {
 
     $view = $_GET['view'];
     /* Set up facet fields and labels */
-    $q = '';
+    $q = '*:*';
     $page = '0';
 
     $filter = [];
