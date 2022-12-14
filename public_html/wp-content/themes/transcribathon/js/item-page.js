@@ -1437,13 +1437,6 @@ function saveKeyword(itemId, userId, editStatusColor, statusCount) {
             // Check success and create confirmation message
             function(response) {
 
-                // Add new keyword to the 'view'
-                const keyWordContainer = document.querySelector('.keywords-container div');
-                let newKW = document.createElement('div');
-                newKW.classList.add('keyword-single');
-                newKW.textContent = value;
-                keyWordContainer.appendChild(newKW);
-
                 scoreData = {
                     ItemId: itemId,
                     UserId: userId,
