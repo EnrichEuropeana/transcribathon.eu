@@ -117,8 +117,7 @@ $logo_in_menu = siteorigin_setting( 'layout_masthead' ) == 'logo-in-menu';
 		<?php endif; ?>
 		<div id='search-form'>
 			<form action='<?php echo get_europeana_url(); ?>/documents/' method='get'>
-				<input type='text' id='storySearch' name='qs' placeholder='search' class='search-text'>
-				<input type='text' id='itemSearch' name='qi' hidden>
+				<input type='text' id='storySearch' name='q' placeholder='search' class='search-text'>
 				<input type="submit" value="🔎︎" class='search-submit theme-color-background' style='color:white;'>
 		    </form>
 		</div>
