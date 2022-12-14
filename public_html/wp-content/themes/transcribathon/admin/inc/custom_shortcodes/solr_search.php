@@ -59,8 +59,6 @@ function _TCT_solr_search( $atts ) {
         $options['http']['content'] = json_encode(
             ['params' =>[
                 'q' => $q,
-                'q.alt' => '*:*',
-                'defType' => 'dismax',
                 'qf' => 'text',
                 'fq' => $filter,
                 'sort' => $sort,
@@ -95,8 +93,6 @@ function _TCT_solr_search( $atts ) {
         $options['http']['content'] = json_encode(
             ['params'=>[
                 'q'=> $q,
-                'q.alt' => '*:*',
-                'defType' => 'dismax',
                 'qf' => 'text',
                 'fq' => $filter,
                 'sort' => $sort,
