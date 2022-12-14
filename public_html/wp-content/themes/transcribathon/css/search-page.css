@@ -166,3 +166,12 @@
     border-radius: 0;
     border: 2px solid #0a72cc;
 }
+.document-search-button:not(.map-search-page .document-search-button) {
+    padding: 14px 10px!important;
+    margin: 0!important;
+}
+.map-search-page .document-search-button {
+    position: relative;
+    bottom: 1px;
+    padding: 12.5px 10px;
+}
