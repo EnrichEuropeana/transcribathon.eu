@@ -28,7 +28,7 @@ if [ $STAGE = 'local' ]; then
 EOF
 fi
 
-if [ $STAGE = 'dev' ]; then
+if [[ "$STAGE" = "dev" || "$STAGE" = "live" ]]; then
   lftp -e "set sftp:connect-program 'ssh -a -x -i $SSH_KEY_FILE'; connect sftp://$SSH_USER@$SSH_HOST:$SSH_PORT; put -O $REMOTE_PATH $DEPLOY_NAME; bye"
 
   ssh -t -t -x -i $SSH_KEY_FILE -p $SSH_PORT $SSH_USER@$SSH_HOST << EOF
