@@ -177,7 +177,7 @@
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
-  
+
 .single-title h2 {
     font-size: 14px!important;
     font-family: var(--p-font-family);
@@ -225,4 +225,12 @@
     position: relative;
     bottom: 1px;
     padding: 12.5px 10px;
+}
+
+.search-page-single-result-info > h2 {
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
 }
