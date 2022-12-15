@@ -63,7 +63,7 @@ function _TCT_new_search( $atts ) {
                 $topStoriesId .= $allStoryIds[$i] . ' ';
             }
         }
-        var_dump(urlencode($topStoriesId));
+        /* var_dump(urlencode($topStoriesId)); */
         $url = TP_SOLR . '/solr/Stories/select?df=StoryId&q=' . urlencode($topStoriesId);
         $requestType = "GET";
 

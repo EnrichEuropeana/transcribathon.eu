@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
 Shortcode: _TCT_get_team
 Description: Gets news information and builds the news section for front page
 */
@@ -8,8 +8,8 @@ Description: Gets news information and builds the news section for front page
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
-function _TCT_get_team( $atts ) { 
-    
+function _TCT_get_team( $atts ) {
+
 
     $url = TP_API_HOST."/tp-api/teams?ShortName=".$_GET['team'];
     $requestType = "GET";
@@ -32,7 +32,7 @@ function _TCT_get_team( $atts ) {
             var_dump($userData->user_nicename);
         }
         $content .= "test";
-    
+
         echo $content;
     }
 }
