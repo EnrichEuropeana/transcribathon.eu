@@ -60,3 +60,12 @@ deploy_dev:
 	@echo "...deploy done"
 	@echo
 
+deploy_live:
+	@echo
+	@echo "----"
+	@echo "Delpoying to LIVE..."
+	@bash deploy.sh live
+	@echo "----"
+	@echo "...deploy done"
+	@echo
+

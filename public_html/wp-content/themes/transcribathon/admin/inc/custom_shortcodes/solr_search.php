@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
 Shortcode: solr_test
 */
 
@@ -7,7 +7,7 @@ Shortcode: solr_test
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
-function _TCT_solr_search( $atts ) { 
+function _TCT_solr_search( $atts ) {
 
     $view = $_GET['view'];
     /* Set up facet fields and labels */
@@ -46,7 +46,7 @@ function _TCT_solr_search( $atts ) {
             $sort = '';
         }
 
-        /// Items Facet Field   
+        /// Items Facet Field
         $url = TP_SOLR . '/solr/Items/query';
         $options = [
             'http' => [
@@ -70,7 +70,7 @@ function _TCT_solr_search( $atts ) {
             ]
         );
         $context = stream_context_create($options);
-    
+
 	    $data = @file_get_contents($url, false, $context);
         $data = json_decode($data, true);
 
@@ -104,7 +104,7 @@ function _TCT_solr_search( $atts ) {
             ]
         );
         $context = stream_context_create($options);
-        
+
         $data = @file_get_contents($url, false, $context);
         $data = json_decode($data, true);
     }
@@ -115,7 +115,7 @@ function _TCT_solr_search( $atts ) {
     // Build Page Layout
     $content = '';
 
-    // Pagination 
+    // Pagination
     $totalPs = ceil($responseData['numFound'] / 24);
     $currPs = intval($_GET['ps']);
     $pagination = "<div class='search-pgntn'>";
@@ -135,9 +135,9 @@ function _TCT_solr_search( $atts ) {
         $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-right\"></i>";
             $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs)."' name='ps' onChange='this.form.submit()'>";
         $pagination .= "</label>";
-        
+
         $pagination .= "<style>.pag-lbl:nth-of-type(".$currPs."){color:#000;font-weight:600;}</style>";
-    
+
     } else if($currPs > $totalPs - 3) {
         $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-left\"></i>";
             $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='1' name='ps' onChange='this.form.submit()'>";
@@ -176,7 +176,7 @@ function _TCT_solr_search( $atts ) {
     $pagination .= "</div>";
 
     // Input field and Banner
-    $content .= '<section class="temp-back">';
+    $content .= '<section class="temp-back style="min-width: 100vw;">';
         $content .= '<div class="facet-form-search">';
             $content .= "<form id='query-form' action='" . home_url() . "/documents/' method='GET'>";
                 $content .= '<div><input class="search-field" type="text" placeholder="Add a search term" name="q" form="query-form" value="' . str_replace('\\', '', htmlspecialchars($_GET['q'])) . '"></div>';
@@ -213,13 +213,13 @@ function _TCT_solr_search( $atts ) {
                 $content .= "</label>";
             $content .= "</div>";
         $content .= "</div>";
-     
+
         $content .= $pagination;
 
         // right side
         $content .= "<div class='num-results'>";
             if($responseData['numFound'] > 24) {
-                $content .= "<div><span>" . ($responseData['start'] + 1) . "</span><span> - " . ($responseData['start'] + 24) ." <span style='color:#000;'>of</span> " . $responseData['numFound'] . "</div>";  
+                $content .= "<div><span>" . ($responseData['start'] + 1) . "</span><span> - " . ($responseData['start'] + 24) ." <span style='color:#000;'>of</span> " . $responseData['numFound'] . "</div>";
             }
         $content .= "</div>";
     $content .= "</section>";
@@ -302,7 +302,7 @@ function _TCT_solr_search( $atts ) {
                                         array_push($facetCleanAr, ucfirst($lblLang));
                                     }
                                 }
-                               
+
                                 $facetLabel = implode(' - ', $facetCleanAr);
                                 $content .= "<label class='facet-data' title='" . $facetFields['dcLanguage'][$x] . " (" . $facetFields['dcLanguage'][$x+1] . ")" . "'>" . $facetLabel . " (" . $facetFields['dcLanguage'][$x+1] . ")";
                                     $content .= "<input class='search-check' type='checkbox' form='query-form' name='dcLanguage' value='" . $facetFields['dcLanguage'][$x] . "' " . $checked . " onChange='this.form.submit()'>";
@@ -370,25 +370,25 @@ function _TCT_solr_search( $atts ) {
                             }
                         }
                     $content .= "</div>";
-                } 
-                
+                }
+
             //$content .= "</form>";
-            
+
         $content .= "</div>";
 
         // Right side, search result 'stickers'
         $content .= "<div class='result-stickers'>";
             if($responseData['docs']) {
                 foreach($responseData['docs'] as $doc) {
-    
+
                     // Completion status
                     if($view != 'items') {
                         $total = $doc['EditAmount'] + $doc['CompletedAmount'] + $doc['NotStartedAmount'] + $doc['ReviewAmount'];
-                        $completed = ($doc['CompletedAmount'] / $total) * 100; 
-                        $review = ($doc['ReviewAmount'] / $total) * 100; 
-                        $edit = ($doc['EditAmount'] / $total) * 100; 
-                        $notStarted = ($doc['NotStartedAmount'] / $total) * 100; 
-    
+                        $completed = ($doc['CompletedAmount'] / $total) * 100;
+                        $review = ($doc['ReviewAmount'] / $total) * 100;
+                        $edit = ($doc['EditAmount'] / $total) * 100;
+                        $notStarted = ($doc['NotStartedAmount'] / $total) * 100;
+
                         $compStatus = "<div class='search-page-single-status'>";
                             $compStatus .= "<div class='search-status' style='width:" . $completed . "%;background-color:#61e02f;z-index:4;' title='Completed:" . round($completed) . "%'>&nbsp</div>";
                             $compStatus .= "<div class='search-status' style='width:" . ($completed + $review) . "%;background-color:#ffc720;z-index:3;' title='Review:" . round($review) . "%'>&nbsp</div>";
@@ -398,7 +398,7 @@ function _TCT_solr_search( $atts ) {
                         // Image
                         $image = json_decode($doc['PreviewImageLink'], true);
                         $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
-        
+
                         $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/?story=" . $doc['StoryId'] . "'>";
                             $content .= "<div class='search-page-result-image'>";
                                 $content .= "<img src='" . $imageLink . "' alt='result image' width='280' height='140'>";
@@ -426,7 +426,7 @@ function _TCT_solr_search( $atts ) {
                         foreach ($progressData as $status) {
                             $progressCount[$status] += 25;
                         }
-                        
+
 
                         $compStatus = "<div class='search-page-single-status'>";
                             $compStatus .= "<div class='search-status' style='width:" . $progressCount['Completed'] . "%;background-color:#61e02f;z-index:4;' title='Completed:" . round($progressCount['Completed']) . "%'>&nbsp</div>";
@@ -438,7 +438,7 @@ function _TCT_solr_search( $atts ) {
 
                         $image = json_decode($doc['PreviewImageLink'], true);
                         $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
-        
+
                         $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/item/?item=" . $doc['ItemId'] . "'>";
                             $content .= "<div class='search-page-result-image'>";
                                 $content .= "<img src='" . $imageLink . "' alt='result image' width='280' height='140'>";
@@ -457,10 +457,10 @@ function _TCT_solr_search( $atts ) {
         $content .= "</div>";
         $content .= "<div style='clear:both;'></div>";
 
-        
+
     $content .= "</section>";
-    
-    
+
+
 
 
     /// TODO MOVE STYLES TO SEPARATE FILE
@@ -470,10 +470,10 @@ function _TCT_solr_search( $atts ) {
 
     // Javascript to separate
     $content .= "<script>
-    
-    
+
+
     </script>";
-    
+
 
     return $content;
 }
