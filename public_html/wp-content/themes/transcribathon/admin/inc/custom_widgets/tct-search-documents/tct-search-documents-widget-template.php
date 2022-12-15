@@ -180,7 +180,6 @@ foreach ($storyFacetFields as $storyFacetField) {
     $url .= "&rows=24&start=0";
  }
  $url .= "&sort=Timestamp%20desc";
-var_dump($url);
  $requestType = "GET";
 
  include get_stylesheet_directory() . '/admin/inc/custom_scripts/send_api_request.php';
