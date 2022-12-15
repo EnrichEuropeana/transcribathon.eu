@@ -2779,7 +2779,7 @@ button.content-view-button {
 }
 /*temporary background for search bar*/
 .temp-back {
-  background: url("/wp-content/uploads/sites/11/2019/03/Greek_school_report-2100x600.jpg");
+  background: url("/wp-content/themes/transcribathon/images/search-header.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;

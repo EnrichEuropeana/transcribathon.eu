@@ -82,6 +82,9 @@
     width: 94%;
     margin: 0 auto;
 }
+.search-page-result-image img {
+    max-height: 140px!important;
+}
 .single-title {
     width: 94%;
     margin: 0 auto;
@@ -91,7 +94,7 @@
     margin-left: 50px;
     font-family: var(--p-font-family);
     width: 70%;
-    max-height: 316px;
+    max-height: 310px;
     overflow: hidden;
 }
 .facet-single.uncollapse {
