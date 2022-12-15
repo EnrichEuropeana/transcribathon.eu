@@ -4362,3 +4362,9 @@ a#new-temporary-prof:hover {
   margin: 0!important;
   border: 0!important;
 }
+nav[role=navigation].main-navigation #menu-main-menu > li a {
+  color: var(--main-color)!important;
+}
+nav[role=navigation] ul#menu-main-menu li a {
+  color: var(--main-color)!important;
+}
