@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
 Shortcode: item_page_test
 Description: Gets item data and builds the item page
 */
@@ -9,7 +9,7 @@ include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
 
 
-function _TCT_item_page_test( $atts ) { 
+function _TCT_item_page_test( $atts ) {
     if (isset($_GET['item']) && $_GET['item'] != "") {
         // Set request parameters for image data
         $requestData = array(
@@ -17,21 +17,21 @@ function _TCT_item_page_test( $atts ) {
         );
         $url = TP_API_HOST."/tp-api/items/?ItemId=".$_GET['item'];
         $requestType = "GET";
-    
+
         // Execude http request
         include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
 
         // Save image data
         $imageData = json_decode($result, true);
-        
+
         if ($itemData['StoryId'] != null) {
             // Set request parameters for story data
             $url = TP_API_HOST."/tp-api/stories/".$itemData['StoryId'];
             $requestType = "GET";
-   
+
             // Execude http request
             include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
-   
+
             // Save story data
             $storyData = json_decode($result, true);
             $storyData = $storyData[0];
@@ -39,7 +39,7 @@ function _TCT_item_page_test( $atts ) {
 
         // Build Item page content
         $content = "";
-        
+
         // Image viewer
         //$imageViewer = "";
         //    $imageViewer .= "<img src='".$imageData['ImageLink']."'>";
@@ -57,9 +57,9 @@ function _TCT_item_page_test( $atts ) {
             onclick="document.getElementById(\'myDropdown\').classList.toggle(\'show\')"></i>';
                 $editorTab .=     '<div id="myDropdown" class="submenu dropdown-content">';
                     foreach ($statusList as $statusId => $statusName) {
-                        if ($currentStatus != $statusId) { 
+                        if ($currentStatus != $statusId) {
                             $editorTab .= "<a href=''><i class='far fa-circle icon-str'></i>".$statusName."</a>";
-                        } else { 
+                        } else {
                             $editorTab .= "<a href=''><i class='far fa-circle icon-str'></i>".$statusName."</a>";
                         }
                     }
@@ -77,9 +77,9 @@ function _TCT_item_page_test( $atts ) {
                                     4 => "Complete"
                                 );
                     foreach ($statusList as $statusId => $statusName) {
-                        if ($currentStatus != $statusId) { 
+                        if ($currentStatus != $statusId) {
                             $editorTab .= "<option value=".$statusId.">".$statusName."</option>";
-                        } else { 
+                        } else {
                             $editorTab .= "<option selected value=".$statusId.">".$statusName."</option>";
                         }
                     }
@@ -93,7 +93,7 @@ function _TCT_item_page_test( $atts ) {
 
             // Current transcription
             $editorTab .= "<h4 class='theme-color item-page-section-headline'>TRANSCRIPTION</h4>";
-            
+
             $currentTranscription = "";
             $transcriptionList = [];
             foreach ($imageData["Transcriptions"] as $transcription) {
@@ -133,8 +133,8 @@ function _TCT_item_page_test( $atts ) {
                         $editorTab .= '<p id="item-page-current-transcription">';
                             $editorTab .= $transcription['Text'];
                         $editorTab .= '</p>';
-                        $editorTab .= '<input class="transcription-comparison-button" type="button" 
-                                            onClick="compareTranscription(\''.$transcriptionList[$i]['Text'].'\', \''.$currentTranscription.'\','.$i.')" 
+                        $editorTab .= '<input class="transcription-comparison-button" type="button"
+                                            onClick="compareTranscription(\''.$transcriptionList[$i]['Text'].'\', \''.$currentTranscription.'\','.$i.')"
                                             value="Compare to current transcription">';
                         $editorTab .= '<p id="transcription-comparison-output-'.$i.'" class="transcription-comparison-output">';
                         $editorTab .= '</p>';
@@ -145,7 +145,7 @@ function _TCT_item_page_test( $atts ) {
 
         // Image settings tab
         $imageSettingsTab = "";
-            $imageSettingsTab .= "<p class='theme-color item-page-section-headline'>ADVANCED IMAGE SETTINGS</p>"; 
+            $imageSettingsTab .= "<p class='theme-color item-page-section-headline'>ADVANCED IMAGE SETTINGS</p>";
 
         // Info tab
         $infoTab = "";
@@ -236,7 +236,7 @@ function _TCT_item_page_test( $atts ) {
             $infoTab .= "<p class='theme-color item-page-property-headline'>Time</p>";
             $infoTab .= "<span class='item-page-property-key'>Creation date: </span>";
             $infoTab .= "<span class='item-page-property-value'>".$imageData['Timestamp']."</span></br>";
-            
+
             $infoTab .= "<p class='theme-color item-page-property-headline'>Provenanace</p>";
             $infoTab .= "<span class='item-page-property-key'>Source: </span>";
             $infoTab .= "<span class='item-page-property-value'>".$imageData['Title']."</span></br>";
@@ -254,7 +254,7 @@ function _TCT_item_page_test( $atts ) {
             $infoTab .= "<span class='item-page-property-value'>".$imageData['DateStart']."</span></br>";
             $infoTab .= "<span class='item-page-property-key'>Last updated in Europeana: </span>";
             $infoTab .= "<span class='item-page-property-value'>".$imageData['DateEnd']."</span></br>";
-            
+
             $infoTab .= "<p class='theme-color item-page-property-headline'>References and relations</p>";
             $infoTab .= "<span class='item-page-property-key'>Location: </span>";
             $infoTab .= "<span class='item-page-property-value'>".$imageData['TranscriptionId']."</span></br>";
@@ -269,16 +269,16 @@ function _TCT_item_page_test( $atts ) {
 
         // Tagging tab
         $taggingTab = "";
-            $taggingTab .= "<p>test... tags tab</p>";     
+            $taggingTab .= "<p>test... tags tab</p>";
 
         // Help tab
         $helpTab = "";
-            $helpTab .= "<p>test... help tab</p>";          
+            $helpTab .= "<p>test... help tab</p>";
 
         // Automatic enrichment tab
         $autoEnrichmentTab = "";
-            $autoEnrichmentTab .= "<p>test... automatic enrichment tab</p>"; 
-        
+            $autoEnrichmentTab .= "<p>test... automatic enrichment tab</p>";
+
         // Comment section
         $commentSection = "";
             $commentSection .= "<h2 class=\"theme-color-background comments-head\">";
@@ -287,12 +287,12 @@ function _TCT_item_page_test( $atts ) {
             $commentSection .= "<div id=\"single-comments-wrapper\">";
                 $commentSection .= "<div id=\"comments\" class=\"comments-area\">";
                     $commentSection .= "<div id=\"respond\" class=\"comment-respond\">";
-                        $commentSection .= "<h3 id=\"reply-title\" class=\"comment-reply-title\">";	
+                        $commentSection .= "<h3 id=\"reply-title\" class=\"comment-reply-title\">";
                             $commentSection .= "Leave a note or a question";
                             $commentSection .= "<small><a rel=\"nofollow\" id=\"cancel-comment-reply-link\" href=\"/en/documents/id-19044/item-223349/#respond\" style=\"display:none;\">";
                                 $commentSection .= "Cancel reply";
-                            $commentSection .= "</a></small>";	
-                        $commentSection .= "</h3>";		
+                            $commentSection .= "</a></small>";
+                        $commentSection .= "</h3>";
                         $commentSection .= "<form action=\"https://transcribathon.com/wp-comments-post.php\" method=\"post\" id=\"commentform\" class=\"comment-form\">";
                             $commentSection .= "<p class=\"logged-in-as\">";
                                 $commentSection .= "<a href=\"https://transcribathon.com/wp-admin/profile.php\" aria-label=\"Logged in as ".wp_get_current_user()->display_name.". Edit your profile.\">";
@@ -329,9 +329,9 @@ function _TCT_item_page_test( $atts ) {
         // <<< FULL VIEW >>> //
 
         $content .= "<div id='full-view-container'>";
-            // Top image slider 
+            // Top image slider
             $content .= "<div class='item-page-slider'>";
-            
+
             foreach ($storyData['Items'] as $item) {
                 $content .= "<div><img data-lazy='".$item['ImageLink']."'></div>";
             }
@@ -344,7 +344,7 @@ function _TCT_item_page_test( $atts ) {
             <div><img data-lazy='https://transcribathon.com/wp-content/uploads/document-images/21795.258369.full-150x150.jpg'></div>
             <div><img data-lazy='https://transcribathon.com/wp-content/uploads/document-images/21795.258370.full-150x150.jpg'></div>
             <div><img data-lazy='https://transcribathon.com/wp-content/uploads/document-images/21795.258371.full-150x150.jpg'></div>
-            
+
             <div><img data-lazy='https://iiif.onb.ac.at/images/ANNO/fug15840321/z116567901_00000162/square/150,150/0/default.jpg'></div>
             <div><img data-lazy='https://iiif.onb.ac.at/images/ANNO/fug15840321/z116567901_00000162/square/150,150/0/default.jpg'></div>
             <div><img data-lazy='https://iiif.onb.ac.at/images/ANNO/fug15840321/z116567901_00000162/square/150,150/0/default.jpg'></div>
@@ -365,7 +365,7 @@ function _TCT_item_page_test( $atts ) {
 
 // Image slider JavaScript
 $infinite = "true";
-var_dump(sizeof($storyData['Items']));
+/* var_dump(sizeof($storyData['Items'])); */
 if (sizeof($storyData['Items']) > 100) {
     $infinite = "false";
 }
@@ -413,7 +413,7 @@ $content .= "<script>
                 });
             });
         </script>";
-            
+
             $content .= "<div id='full-view-left'>";
                 $content .= $imageViewer;
                 $content .= "<div id='full-view-editor'>";
@@ -427,7 +427,7 @@ $content .= "<script>
                 $content .= "<hr>";
                 $content .= '<div class="panel panel-default">';
                     $content .= '<div class="panel-heading clickable" data-toggle="collapse" href="#info-collapsable">';
-                        $content .= '<h4 id="info-collapse-heading" class="theme-color item-page-section-headline panel-title">';  
+                        $content .= '<h4 id="info-collapse-heading" class="theme-color item-page-section-headline panel-title">';
                             $content .= 'DOCUMENT META DATA';
                         $content .= '</h4>';
                         $content .= '<i class="fa fa-angle-down" style="font-size: 20px; float:right;"></i>';
@@ -456,7 +456,7 @@ $content .= "<script>
 
         // Splitscreen container
         $content .= "<div id='image-view-container' class='panel-container-horizontal' style='display:none'>";
-            
+
             // Image section
             $content .= "<div id='item-image-section' class='panel-left'>
                             <img src='".$imageData['ImageLink']."'>
@@ -485,7 +485,7 @@ $content .= "<script>
                         $content .= '<i class="far fa-info-circle theme-color theme-color-hover tablinks"
                                     onclick="switchItemTab(event, \'info-tab\')"></i>';
                     $content .= "</li>";
-                        
+
                     $content .= "<li>";
                         $content .= '<i id="item-tab-laptop" class="far fa-laptop theme-color theme-color-hover tablinks"
                                     onclick="switchItemTab(event, \'autoEnrichment-tab\')"></i>';
@@ -500,7 +500,7 @@ $content .= "<script>
                         $content .= '<i class="far fa-question-circle theme-color-hover theme-color tablinks"
                                     onclick="switchItemTab(event, \'help-tab\')"></i>';
                     $content .= "</li>";
-                    
+
                     $content .= '</ul>';
 
                     // View switcher
@@ -521,14 +521,14 @@ $content .= "<script>
                                 $content .= '<i id="popout" class="far fa-expand-arrows theme-color-hover theme-color view-switcher-icons"
                             onclick="switchItemView(event, \'popout\')"></i>';
                             $content .= "</li>";
-                            
+
                         $content .= '</ul>';
                     $content .= '</div>';
                 $content .= "</div>";
-                
+
                 // Tab content
                 $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
-                    
+
                     // Editor tab
                     $content .= "<div id='editor-tab' class='tabcontent'>";
                         // Content will be added here in switchItemPageView function
@@ -537,7 +537,7 @@ $content .= "<script>
                     // Image settings tab
                     $content .= "<div id='settings-tab' class='tabcontent' style='display:none;'>";
                         $content .= $imageSettingsTab;
-                    $content .= "</div>";    
+                    $content .= "</div>";
 
                     // Info tab
                     $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
@@ -563,7 +563,7 @@ $content .= "<script>
                 $content .= "</div>";
             $content .= '</div>
                     </div>';
-        
+
         // Split screen JavaScript
         $content .= '<script>
                         jQuery("#item-image-section").resizable({
@@ -572,7 +572,7 @@ $content .= "<script>
                         });
                     </script>';
 
-        $content .= "</div> 
+        $content .= "</div>
                 </div>";
         echo $content;
     }

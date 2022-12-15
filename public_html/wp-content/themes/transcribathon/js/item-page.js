@@ -1284,10 +1284,10 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
         // Check success and create confirmation message
         function(response) {
             // Update date 'view' when changing date in editor
-            document.querySelector('.date-bottom .start-date').textContent = startDate.join('/');
-            document.querySelector('.date-bottom .end-date').textContent = endDate.join('/');
-            document.querySelector('.date-bottom').style.display = 'block';
-            document.querySelector('.date-top').style.display = 'block';
+            // document.querySelector('.date-bottom .start-date').textContent = startDate.join('/');
+            // document.querySelector('.date-bottom .end-date').textContent = endDate.join('/');
+            // document.querySelector('.date-bottom').style.display = 'block';
+            // document.querySelector('.date-top').style.display = 'block';
 
             if (startDate != "" && startDate != oldStartDate) {
                 jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
