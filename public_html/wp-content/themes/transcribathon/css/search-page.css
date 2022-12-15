@@ -226,11 +226,10 @@
     bottom: 1px;
     padding: 12.5px 10px;
 }
-
-.search-page-single-result-info > h2 {
+.search-page-single-result .single-title > h2 {
     overflow-y: hidden;
     text-overflow: ellipsis;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     display: -webkit-box;
 }
