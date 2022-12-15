@@ -86,13 +86,13 @@ function installEventListeners() {
                 setTimeout(()=>{document.querySelector('#item-date-save-button').click()}, 100);
             }
             if(jQuery('#person-firstName-input').val().length > 0 || jQuery('#person-lastName-input').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 500);
+                setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 700);
             }
             if(jQuery('#keyword-input').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 900);
+                setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 1200);
             }
             if(jQuery('#link-input-container .link-url-input input').val().length > 0 || jQuery('#link-input-container .link-description-input textarea').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1300);
+                setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1600);
             }
         });
     }
@@ -1144,7 +1144,7 @@ function removeTranscriptionLanguage(languageId, e) {
 function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-location-spinner-container').css('display', 'block')
     // Prepare data and send API request
-    locationName = jQuery('#location-name-display input').val();
+    locationName = escapeHtml(jQuery('#location-name-display input').val());
     [latitude, longitude] = jQuery('#location-input-section .location-input-coordinates-container input').val().split(',');
     if (latitude != null) {
         latitude = latitude.trim();
@@ -1169,8 +1169,8 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
         return 0;
     }
 
-    description = jQuery('#location-input-section .location-input-description-container textarea').val();
-    wikidata = jQuery('#location-input-geonames-search-container > input').val().split(";");
+    description = escapeHtml(jQuery('#location-input-section .location-input-description-container textarea').val());
+    wikidata = escapeHtml(jQuery('#location-input-geonames-search-container > input').val().split(";"));
 
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'GET',
@@ -1326,14 +1326,14 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
 function savePerson(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-person-spinner-container').css('display', 'block')
 
-    firstName = jQuery('#person-firstName-input').val();
-    lastName = jQuery('#person-lastName-input').val();
-    birthPlace = jQuery('#person-birthPlace-input').val();
-    birthDate = jQuery('#person-birthDate-input').val().split('/');
-    deathPlace = jQuery('#person-deathPlace-input').val();
-    deathDate = jQuery('#person-deathDate-input').val().split('/');
-    description = jQuery('#person-description-input-field').val();
-    link = jQuery('#person-wiki-input-field').val();
+    firstName = escapeHtml(jQuery('#person-firstName-input').val());
+    lastName = escapeHtml(jQuery('#person-lastName-input').val());
+    birthPlace = escapeHtml(jQuery('#person-birthPlace-input').val());
+    birthDate = escapeHtml(jQuery('#person-birthDate-input').val().split('/'));
+    deathPlace = escapeHtml(jQuery('#person-deathPlace-input').val());
+    deathDate = escapeHtml(jQuery('#person-deathDate-input').val().split('/'));
+    description = escapeHtml(jQuery('#person-description-input-field').val());
+    link = escapeHtml(jQuery('#person-wiki-input-field').val());
 
     if (firstName == "" && lastName == "") {
         return 0;
@@ -1412,7 +1412,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
 
 function saveKeyword(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-keyword-spinner-container').css('display', 'block')
-    value = jQuery('#keyword-input').val();
+    value = escapeHtml(jQuery('#keyword-input').val());
 
     if (value != "" && value != null) {
         // Prepare data and send API request
@@ -1466,8 +1466,8 @@ function saveKeyword(itemId, userId, editStatusColor, statusCount) {
 
 function saveLink(itemId, userId, editStatusColor, statusCount, e) {
     jQuery('#item-link-spinner-container').css('display', 'block')
-    url = jQuery('#link-input-container .link-url-input input').val();
-    description = jQuery('#link-input-container .link-description-input textarea').val();
+    url = escapeHtml(jQuery('#link-input-container .link-url-input input').val());
+    description = escapeHtml(jQuery('#link-input-container .link-description-input textarea').val());
 
     if (url != "" && url != null) {
         // Prepare data and send API request

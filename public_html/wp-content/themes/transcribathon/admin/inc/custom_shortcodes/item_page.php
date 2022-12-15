@@ -994,7 +994,7 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div id='mce-wrapper-transcription' class='login-required htr-active-tr'>";
                 $editorTab .= "<div id='mytoolbar-transcription'></div>";
                 $editorTab .= "<div id='item-page-transcription-text' rows='8'>";
-                    $editorTab .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'>";
+                    $editorTab .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/htr_active.svg' style='margin-left:15px;'>";
                 $editorTab .= "</div>";
             $editorTab .= "</div>";
 
