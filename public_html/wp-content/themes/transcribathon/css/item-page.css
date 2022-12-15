@@ -1430,6 +1430,7 @@ p.mb-1 {
     width: 100%!important;
 }
 .item-data-input-headline {
+    color: var(--main-color)!important;
     font-size: 1.1em;
     font-weight: 600 !important;
     font-family: var(--h-font-family);
@@ -1466,6 +1467,9 @@ p.mb-1 {
     position: relative;
     bottom: 25px;
     left: 40px;
+}
+#back-to-story-title {
+    color: var(--main-color)!important;
 }
 button.ui-datepicker-trigger {
     padding: 0;
@@ -2385,7 +2389,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     text-transform: uppercase;
     letter-spacing: 0.025em;
     position: relative;
-    bottom: -1px;
+    bottom: 1px;
 }
 .status-display {
     display: inline-block;
