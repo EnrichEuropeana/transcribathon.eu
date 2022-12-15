@@ -176,7 +176,7 @@ function _TCT_solr_search( $atts ) {
     $pagination .= "</div>";
 
     // Input field and Banner
-    $content .= '<section class="temp-back style="min-width: 100vw;">';
+    $content .= '<section class="temp-back" style="min-width: 100vw;">';
         $content .= '<div class="facet-form-search">';
             $content .= "<form id='query-form' action='" . home_url() . "/documents/' method='GET'>";
                 $content .= '<div><input class="search-field" type="text" placeholder="Add a search term" name="q" form="query-form" value="' . str_replace('\\', '', htmlspecialchars($_GET['q'])) . '"></div>';
