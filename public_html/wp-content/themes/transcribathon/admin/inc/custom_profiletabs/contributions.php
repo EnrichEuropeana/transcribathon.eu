@@ -33,7 +33,7 @@ $theme_sets = get_theme_mods();
     $documents = json_decode($result, true);
     
 	echo "<h2>"._x('My Contributions','Contributions-Tab on Profile', 'transcribathon'  )."</h2>\n";
-		echo "<div class=\"doc-results profile\">\n";
+		echo "<div class=\"doc-results profile\" style=\"padding: 0 50px;\">\n";
             echo "<div class=\"tableholder\">\n";
                 echo "<div class=\"tablegrid\">\n";	
                     echo "<div class=\"section group sepgroup tab\">\n";

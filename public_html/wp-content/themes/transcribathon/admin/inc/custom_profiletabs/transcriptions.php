@@ -85,8 +85,8 @@ $theme_sets = get_theme_mods();
     // Display data
     $documents = json_decode($result, true);
     
-	echo "<h2>"._x('My Contributions','Transcription-Tab on Profile', 'transcribathon'  )."</h2>\n";
-		echo "<div class=\"doc-results profile\">\n";
+	echo "<h2 style=\"margin-left: 50px;\">"._x('My Contributions','Transcription-Tab on Profile', 'transcribathon'  )."</h2>\n";
+		echo "<div class=\"doc-results profile\" style=\"padding: 0 50px;\">\n";
             echo "<div class=\"tableholder\">\n";
                 echo "<div class=\"tablegrid\">\n";	
                     echo "<div class=\"section group sepgroup tab\">\n";
