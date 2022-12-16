@@ -31,8 +31,22 @@ function _TCT_item_page_htr( $atts) {
     }
 
     if (!$isLoggedIn) {
-        echo '<h1 class="entry-title">Not logged in.</h1>';
-        echo '<p>Please login to proceed.</p>';
+        echo '<div id="default-login-container" style="display:block;">';
+		    echo '<div id="default-login-popup">';
+		    	echo '<div class="default-login-popup-header theme-color-background">';
+		    		echo '<span class="item-login-close">&times;</span>';
+		    	echo '</div>';
+		    	echo '<div class="default-login-popup-body">';
+		    		$login_post = get_posts( array(
+		    			'name'    => 'default-login',
+		    			'post_type'    => 'um_form',
+		    		));
+		    		echo do_shortcode('[ultimatemember form_id="'.$login_post[0]->ID.'"]');
+		    	echo '</div>';
+		    	echo '<div class="default-login-popup-footer theme-color-background">';
+		    	echo '</div>';
+		    echo '</div>';
+	    echo '</div>';
         return;
     }
 
