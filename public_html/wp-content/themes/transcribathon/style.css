@@ -103,7 +103,7 @@ nav.navbar {
   position: relative;
   bottom: -2px;
   width: 120px;
-  height: 47px;
+  height: 47px!important;
   background: #fff;
   z-index: 2;
 }
