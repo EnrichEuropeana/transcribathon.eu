@@ -154,7 +154,7 @@ function _TCT_htr_import()
 		    	echo '</div>';
 		    echo '</div>';
 	    echo '</div>';
-       
+
     } else {
 
 	$out = <<<OUT
@@ -392,16 +392,16 @@ jQuery('.item-login-close').click(function() {
 	jQuery('#default-login-container').css('display', 'none');
 		jQuery(".site-navigation").css('display', 'none');
 		jQuery("nav").removeClass("fullscreen");
-	
+
 	}
 })</script>
 
-OUT;
 <script src="{$alpineJs}"></script>
+
+OUT;
 	}
+
 	return $out;
 }
 
 add_shortcode('htr_import', '_TCT_htr_import');
-
-?>
