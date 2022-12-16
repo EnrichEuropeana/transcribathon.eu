@@ -647,6 +647,7 @@ p.mb-1 {
     display: inline-block;
     text-transform: uppercase;
     font-family: var(--h-font-family);
+    color: var(--main-color)!important;
     font-weight: 700;
     letter-spacing: 0.025em;
 }
@@ -919,7 +920,7 @@ p.mb-1 {
 }
 .data-popout #no-text-selector {
     position: relative;
-    left: 17px;
+    right: 100px;
 }
 .data-popout .fs-title, .data-popout #loc-tab img  {
     display: none;
