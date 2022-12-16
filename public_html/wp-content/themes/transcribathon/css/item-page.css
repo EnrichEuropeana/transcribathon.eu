@@ -1637,8 +1637,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 #item-data-section {
     background: #ffffff;
     padding: 10px;
-    min-width: 225px;
+    min-width: 400px;
 }
+
 #transcription-language-custom-selector:hover {
     color: #fff!important;
     background-color: var(--main-color)!important;
@@ -1821,6 +1822,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     overflow-y: hidden;
     overflow-x: hidden;
     background: #fff;
+    min-width: 550px!important;
 }
 #item-data-section.data-popout #editor-tab.tabcontent {
     overflow: hidden;
