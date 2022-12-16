@@ -100,25 +100,33 @@ if ( ! is_admin() ) {
                                                 
                                                     $image = json_decode($story['PreviewImage'], true);
 
-                                                    if (substr($image['service']['@id'], 0, 4) == "http") {
-                                                        $gridImageLink = $image['service']['@id'];
-                                                    }
-                                                    else {
-                                                        $gridImageLink = "http://".$image['service']['@id'];
+                                            
+                                                    $gridImageLink = createImageLinkFromData($image, array('size' => '280,140'));
+                                            
+                                                    if($image['height'] == null) {
+                                                        $gridImageLink = str_replace('full', '50,50,1800,1100', $gridImageLink);
                                                     }
 
-                                                    if ($image["width"] != null || $image["height"] != null) {
-                                                        if ($image["width"] <= ($image["height"] * 2)) {
-                                                            $gridImageLink .= "/0,0,".$image["width"].",".round($image["width"] / 2);
-                                                        }
-                                                        else {
-                                                            $gridImageLink .= "/".round(($image["width"] - $image["height"]) / 2).",0,".($image["height"] * 2).",".$image["height"];
-                                                        }
-                                                    }
-                                                    else {
-                                                        $gridImageLink .= "/full";
-                                                    }
-                                                    $gridImageLink .= "/280,140/0/default.jpg";
+
+                                                    // if (substr($image['service']['@id'], 0, 4) == "http") {
+                                                    //     $gridImageLink = $image['service']['@id'];
+                                                    // }
+                                                    // else {
+                                                    //     $gridImageLink = "http://".$image['service']['@id'];
+                                                    // }
+
+                                                    // if ($image["width"] != null || $image["height"] != null) {
+                                                    //     if ($image["width"] <= ($image["height"] * 2)) {
+                                                    //         $gridImageLink .= "/0,0,".$image["width"].",".round($image["width"] / 2);
+                                                    //     }
+                                                    //     else {
+                                                    //         $gridImageLink .= "/".round(($image["width"] - $image["height"]) / 2).",0,".($image["height"] * 2).",".$image["height"];
+                                                    //     }
+                                                    // }
+                                                    // else {
+                                                    //     $gridImageLink .= "/full";
+                                                    // }
+                                                    // $gridImageLink .= "/280,140/0/default.jpg";
 
                                                     echo  "<a class='grid-view-image' href='".home_url()."/documents/story/?story=".$story['StoryId']."'>";
                                                         echo  '<img src='.$gridImageLink.'>';

@@ -137,7 +137,25 @@ function _TCT_htr_import()
 		$backtext = 'Back to the story';
 	}
 
-
+    if (!$isLoggedIn) {
+        echo '<div id="default-login-container" style="display:block;">';
+		    echo '<div id="default-login-popup">';
+		    	echo '<div class="default-login-popup-header theme-color-background">';
+		    		echo '<span class="item-login-close">&times;</span>';
+		    	echo '</div>';
+		    	echo '<div class="default-login-popup-body">';
+		    		$login_post = get_posts( array(
+		    			'name'    => 'default-login',
+		    			'post_type'    => 'um_form',
+		    		));
+		    		echo do_shortcode('[ultimatemember form_id="'.$login_post[0]->ID.'"]');
+		    	echo '</div>';
+		    	echo '<div class="default-login-popup-footer theme-color-background">';
+		    	echo '</div>';
+		    echo '</div>';
+	    echo '</div>';
+       
+    } else {
 
 	$out = <<<OUT
 
@@ -319,6 +337,7 @@ document.addEventListener('alpine:init', () => {
 					setTimeout(() => {
 						query.call()
 					}, 5000);
+
 				}
 
 			};
@@ -338,9 +357,9 @@ document.addEventListener('alpine:init', () => {
 			const elCards = document.querySelectorAll('#htrModels .card');
 			const filterStrings = this.filterString.split(' ');
 
-			elCards.forEach(card => {
+			elCards.forEach(card => {				const cardText = card.innerText.toLowerCase();
 
-				const cardText = card.innerText.toLowerCase();
+
 				let check = true;
 				card.style.display = 'none';
 
@@ -363,24 +382,23 @@ document.addEventListener('alpine:init', () => {
 	}));
 
 });
-
-// When the user clicks the button(pen on the image viewer), open the login modal
 jQuery('#default-lock-login').click(function() {
+// When the user clicks the button(pen on the image viewer), open the login modal
+})
 	jQuery('#default-login-container').css('display', 'block');
-})
-// When the user clicks on <span> (x), close the modal
 jQuery('.item-login-close').click(function() {
-	jQuery('#default-login-container').css('display', 'none');
+// When the user clicks on <span> (x), close the modal
 	if(jQuery('.site-navigation').hasClass("fullscreen")){
-		jQuery("nav").removeClass("fullscreen");
+	jQuery('#default-login-container').css('display', 'none');
 		jQuery(".site-navigation").css('display', 'none');
+		jQuery("nav").removeClass("fullscreen");
+	
 	}
-})
+})</script>
 
-</script>
-<script src="{$alpineJs}"></script>
 OUT;
-
+<script src="{$alpineJs}"></script>
+	}
 	return $out;
 }
 

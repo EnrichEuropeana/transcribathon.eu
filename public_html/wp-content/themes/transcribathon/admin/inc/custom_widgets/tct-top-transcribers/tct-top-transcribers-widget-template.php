@@ -49,6 +49,9 @@ if($instance['tct-top-transcribers-headline'] != ""){ echo "<h1>".str_replace("\
 				ul.topusers li.p4{
 					background: rgba(9, 97, 129, 0.15);
 				}
+				.entry-content {
+					padding: 0 25px;
+				}
 				</style>";
 	if($kind === "campaign"){
 		if($subject === "teams"){ // team

@@ -295,9 +295,19 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
             wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion);
             /* progress chart CSS*/
-            wp_enqueue_style( 'chartist', CHILD_TEMPLATE_DIR . '/css/chartist.min.css');
-            /* progress chart JS*/
-            wp_enqueue_script( 'chartist', CHILD_TEMPLATE_DIR . '/js/chartist.min.js');
+            // wp_enqueue_style( 'chartist', CHILD_TEMPLATE_DIR . '/css/chartist.min.css');
+            // /* progress chart JS*/
+            // wp_enqueue_script( 'chartist', CHILD_TEMPLATE_DIR . '/js/chartist.min.js');
+            /* slick CSS*/
+            wp_enqueue_style( 'slick', CHILD_TEMPLATE_DIR . '/css/slick.css');
+            /* slick JS*/
+            wp_enqueue_script( 'slick', CHILD_TEMPLATE_DIR . '/js/slick.min.js');
+
+            /* chart JS */
+            wp_enqueue_style( 'chart', CHILD_TEMPLATE_DIR . '/css/chart.min.css');
+            /* chart JS */
+            wp_enqueue_script( 'chart', CHILD_TEMPLATE_DIR . '/js/chart.min.js');
+    
 
         }
         if(!is_page('item_page_htr') && !is_page('import-htr-transcription')){

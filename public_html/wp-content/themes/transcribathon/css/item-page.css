@@ -647,6 +647,7 @@ p.mb-1 {
     display: inline-block;
     text-transform: uppercase;
     font-family: var(--h-font-family);
+    color: var(--main-color)!important;
     font-weight: 700;
     letter-spacing: 0.025em;
 }
@@ -919,7 +920,7 @@ p.mb-1 {
 }
 .data-popout #no-text-selector {
     position: relative;
-    left: 17px;
+    right: 100px;
 }
 .data-popout .fs-title, .data-popout #loc-tab img  {
     display: none;
@@ -1637,8 +1638,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 #item-data-section {
     background: #ffffff;
     padding: 10px;
-    min-width: 225px;
+    min-width: 400px;
 }
+
 #transcription-language-custom-selector:hover {
     color: #fff!important;
     background-color: var(--main-color)!important;
@@ -1821,6 +1823,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     overflow-y: hidden;
     overflow-x: hidden;
     background: #fff;
+    min-width: 550px!important;
 }
 #item-data-section.data-popout #editor-tab.tabcontent {
     overflow: hidden;
@@ -2896,3 +2899,13 @@ div.tox.tox-tinymce {
     border-radius: 15px;
     font-weight: ;
 } */
+.full-container {
+    margin-top: 110px;
+}
+#masthead nav[role=navigation] {
+    position: fixed;
+    width: 100vw;
+}
+#search-form {
+    margin-right: 25px;
+}

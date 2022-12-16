@@ -33,7 +33,7 @@ $theme_sets = get_theme_mods();
     $documents = json_decode($result, true);
     
 	echo "<h2>"._x('My Contributions','Contributions-Tab on Profile', 'transcribathon'  )."</h2>\n";
-		echo "<div class=\"doc-results profile\">\n";
+		echo "<div class=\"doc-results profile\" style=\"padding: 0 50px;\">\n";
             echo "<div class=\"tableholder\">\n";
                 echo "<div class=\"tablegrid\">\n";	
                     echo "<div class=\"section group sepgroup tab\">\n";
@@ -49,25 +49,31 @@ $theme_sets = get_theme_mods();
                                         
                                             $image = json_decode($document['ItemImageLink'], true);
 
-                                            if (substr($image['service']['@id'], 0, 4) == "http") {
-                                                $imageLink = $image['service']['@id'];
-                                            }
-                                            else {
-                                                $imageLink = "http://".$image['service']['@id'];
+                                            $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
+                                            
+                                            if($image['height'] == null) {
+                                                $imageLink = str_replace('full', '50,50,1800,1100', $imageLink);
                                             }
 
-                                            if ($image["width"] != null || $image["height"] != null) {
-                                                if ($image["width"] <= ($image["height"] * 2)) {
-                                                    $imageLink .= "/0,0,".$image["width"].",".($image["width"] / 2);
-                                                }
-                                                else {
-                                                    $imageLink .= "/".round(($image["width"] - $image["height"]) / 2).",0,".($image["height"] * 2).",".$image["height"];
-                                                }
-                                            }
-                                            else {
-                                                $imageLink .= "/full";
-                                            }
-                                            $imageLink .= "/280,140/0/default.jpg";
+                                            // if (substr($image['service']['@id'], 0, 4) == "http") {
+                                            //     $imageLink = $image['service']['@id'];
+                                            // }
+                                            // else {
+                                            //     $imageLink = "http://".$image['service']['@id'];
+                                            // }
+
+                                            // if ($image["width"] != null || $image["height"] != null) {
+                                            //     if ($image["width"] <= ($image["height"] * 2)) {
+                                            //         $imageLink .= "/0,0,".$image["width"].",".($image["width"] / 2);
+                                            //     }
+                                            //     else {
+                                            //         $imageLink .= "/".round(($image["width"] - $image["height"]) / 2).",0,".($image["height"] * 2).",".$image["height"];
+                                            //     }
+                                            // }
+                                            // else {
+                                            //     $imageLink .= "/full";
+                                            // }
+                                            // $imageLink .= "/280,140/0/default.jpg";
 
                                             echo  '<img src='.$imageLink.'>';
                                         echo  "</a>";
