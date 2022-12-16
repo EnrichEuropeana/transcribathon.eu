@@ -2896,3 +2896,13 @@ div.tox.tox-tinymce {
     border-radius: 15px;
     font-weight: ;
 } */
+.full-container {
+    margin-top: 110px;
+}
+#masthead nav[role=navigation] {
+    position: fixed;
+    width: 100vw;
+}
+#search-form {
+    margin-right: 25px;
+}
