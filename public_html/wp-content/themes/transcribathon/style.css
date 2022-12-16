@@ -2725,6 +2725,7 @@ button.content-view-button {
 /*search bar*/
 .facet-form-search {
   position: relative;
+  top: 25px;
   width: 600px;
   margin: auto;
   padding: 4.8rem 1.6rem;
@@ -2733,7 +2734,7 @@ button.content-view-button {
 .map-search-page {
   display: inline-block;
   position: absolute;
-  bottom: 87px;
+  bottom: 58px;
   right: 16px;
 }
 .map-search-page a {

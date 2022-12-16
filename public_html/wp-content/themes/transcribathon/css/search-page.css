@@ -233,3 +233,7 @@
     -webkit-box-orient: vertical;
     display: -webkit-box;
 }
+.temp-back {
+    width: 100vw!important;
+    height: 220px!important;
+}
