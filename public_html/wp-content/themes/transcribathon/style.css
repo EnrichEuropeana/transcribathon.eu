@@ -4028,7 +4028,17 @@ a#new-temporary-prof:hover {
 @media all and (max-width: 1024px) {}
 @media all and (max-width: 992px) {}
 @media all and (max-width: 768px) {}
-@media all and (max-width: 575px) {}
+@media all and (max-width: 575px) {
+  #primary-least-width{
+    padding: 0!important;
+  }
+  .tablegrid .section.group .col {
+    display: block!important;
+  }
+  .tablegrid .span_1_of_4 {
+    width: 90%!important;
+  }
+}
 @media all and (max-width: 480px) {}
 @media all and (max-width: 320px) {}
 .ttnav {
