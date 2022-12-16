@@ -325,5 +325,3 @@ LED;
 }
 
 add_shortcode( 'item_page_htr', '_TCT_item_page_htr' );
-
-?>
