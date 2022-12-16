@@ -369,6 +369,14 @@ function _TCT_compare_transcriptions( $atts) {
     metadata {
         display: none;
     }
+    .full-container {
+        margin-top: 0!important;
+    }
+    #masthead nav[role=navigation] {
+        position: unset;
+        width: unset;
+    }
+
     </style>";
 
     //$content .= "</section>"; // End of main section
