@@ -108,6 +108,7 @@ function getInputs($ids = null, $type = null)
 
 function _TCT_htr_import()
 {
+  $isLoggedIn = is_user_logged_in();
 	$itemIds = sanitizeDigit($_GET['itemId']);
 	$storyIds = sanitizeDigit($_GET['storyId']);
 
