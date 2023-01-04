@@ -6,11 +6,15 @@
 */
 
 // include required files
-include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
 
 function customCSS ()
 {
 	$css = <<<EOF
+
+html {
+	font-size: 100%;
+}
 
 body {
 	max-width: inherit;
