@@ -3383,21 +3383,8 @@ form#tct-crtrtm-frm label:after {
   border-bottom: 1px dotted black;
   /* If you want dots under the hoverable text */
 }
-/* Tooltip text */
-.language-tooltip .language-tooltip-text {
-  visibility: hidden;
-  width: 120px;
-  background-color: #828282;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-  top: -40px;
-  left: -20px;
   /* Position the tooltip text - see examples below! */
-  position: absolute;
-  z-index: 1;
-}
+
 /* Show the tooltip text when you mouse over the tooltip container */
 .language-tooltip:hover .language-tooltip-text {
   visibility: visible;
