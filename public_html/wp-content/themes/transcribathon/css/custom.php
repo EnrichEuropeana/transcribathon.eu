@@ -7,7 +7,7 @@ $theme_sets = get_theme_mods();
 
 // Navigation-Color
 echo "nav[role=navigation] ul#menu-main-menu li a{color:".$theme_sets['vantage_general_link_color'].";}\n";
-echo "nav[role=navigation] ul#menu-main-menu li a:hover{background-color:".$theme_sets['vantage_general_link_hover_color']."; color:#fff;}\n";
+echo "nav[role=navigation] ul#menu-main-menu li a:hover{background-color:".$theme_sets['vantage_general_link_hover_color']."; color:#fff !important;}\n";
 echo "h1{color:".$theme_sets['vantage_general_link_color']." !important;}\n";
 echo ".theme-color-hover:not(.active):hover{
     color: #fff !important;
