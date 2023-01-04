@@ -869,7 +869,18 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
     jQuery('#transcription-update-button').removeClass('theme-color-background');
     jQuery('#transcription-update-button').prop('disabled', true);
     jQuery('#item-transcription-spinner-container').css('display', 'block')
-    let checkIfDirty = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
+    
+    let checkIfDirty = '';
+    var noText = 0;
+    if (jQuery('#no-text-checkbox').is(':checked') && document.querySelector('#item-page-transcription-text').textContent == '') {
+        noText = 1
+    }
+    if(noText == 0) {
+        checkIfDirty = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
+    } else {
+        checkIfDirty = 1;
+    }
+    
     if(isWhitelisted(checkIfDirty) == 0){
         jQuery('#item-transcription-spinner-container').css('display', 'none')
         return null;
