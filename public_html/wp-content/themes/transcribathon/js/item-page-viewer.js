@@ -327,6 +327,14 @@ var tct_viewer = (function($, document, window) {
 						return false;
 					}
 				});
+				editor.on('focus', function() {
+					document.querySelector('.item-page-section-headline').style.visibility = 'hidden';
+					document.querySelector('#switch-tr-view').style.visibility = 'hidden';
+				})
+				editor.on('blur', function() {
+					document.querySelector('.item-page-section-headline').style.visibility = 'unset';
+					document.querySelector('#switch-tr-view').style.visibility = 'unset';
+				})
 				editor.ui.registry.addIcon('missing', '<i class="mce-ico mce-i-missing"></i>');
     			editor.ui.registry.addIcon('unsure', '<i class="mce-ico mce-i-unsure"></i>');
 				editor.ui.registry.addIcon('info', '<i class="mce-ico mce-i-pos-in-text"></i>');
