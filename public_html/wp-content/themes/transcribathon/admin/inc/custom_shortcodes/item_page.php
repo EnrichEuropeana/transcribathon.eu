@@ -1617,7 +1617,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         $content .= "<div>";
                             $content .= "<div class='status-display' style='line-height: normal;background-color:".$itemData['TranscriptionStatusColorCode']."'>";
-                                $content .= "<span class='status-indicator-view' style='position:relative;bottom:-1px;'>" . $itemData['TranscriptionStatusName'] . "</span>";
+                                $content .= "<span class='status-indicator-view'>" . $itemData['TranscriptionStatusName'] . "</span>";
                             $content .= "</div>";
                             $content .= "<i class=\"fa fa-pencil right-i\" aria-hidden=\"true\"></i>";
                         $content .= "</div>";

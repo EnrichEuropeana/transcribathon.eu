@@ -876,7 +876,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
         noText = 1
     }
     if(noText == 0) {
-        checkIfDirty = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
+        checkIfDirty = tinymce.get('item-page-transcription-text').getContent({format : 'text'});
     } else {
         checkIfDirty = 1;
     }
@@ -937,8 +937,8 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
             }
 
             if (jQuery('#item-page-transcription-text').html()) {
-                data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'}).replace(/'/g, "\\'");
-                data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
+                data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'});
+                data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'});
             } else {
                 data['Text'] = "";
                 data['TextNoTags'] = "";
