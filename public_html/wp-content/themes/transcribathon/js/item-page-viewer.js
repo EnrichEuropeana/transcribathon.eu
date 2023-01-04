@@ -312,12 +312,11 @@ var tct_viewer = (function($, document, window) {
 	    selector: selector,
 		menubar: false,
         inline: true,
-		//height: '400px',
 		resize: true,
-		plugins: 'wordcount table charmap',
-		toolbar: 'bold italic underline strikethrough removeformat alignleft aligncenter alignright alignjustify missbut unsure side-info charmap table wordcount undo redo subscript superscript indent',
-		    resize: true,
+		plugins: 'wordcount table charmap directionality',
+		toolbar: 'bold italic underline strikethrough removeformat | alignleft aligncenter alignright alignjustify | table | missbut unsure side-info | charmap undo redo subscript superscript indent ltr rtl wordcount',
 		placeholder:' Start transcribing...',
+		toolbar_mode: 'floating',
 	
 			setup: function (editor) {
 				

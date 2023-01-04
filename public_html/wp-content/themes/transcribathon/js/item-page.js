@@ -2058,7 +2058,9 @@ function setToolbarHeight() {
         jQuery('#item-page-transcription-text').mousedown(function(e){
             e.preventDefault;
             tinymce.activeEditor.focus();
-            jQuery('.tox-toolbar__group').css('width', jQuery('#mytoolbar-transcription').css('width'))
+            jQuery('.tox-toolbar__primary').css('width', jQuery('#mytoolbar-transcription').css('width'))
+            jQuery('button[aria-label="More..."]').parent().css('position', 'absolute');
+            jQuery('button[aria-label="More..."]').parent().css('right', '0px');
 
             if(document.querySelector('.tox-tinymce')){
                 document.querySelector('.tox-tinymce').style.display = 'block';
