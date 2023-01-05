@@ -2906,3 +2906,10 @@ div.tox.tox-tinymce {
 #search-form {
     margin-right: 25px;
 }
+nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
+    width: 100%!important;
+}
+#masthead {
+    position: relative;
+    z-index: 9999;
+}

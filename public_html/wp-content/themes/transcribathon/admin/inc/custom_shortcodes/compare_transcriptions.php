@@ -252,8 +252,8 @@ function _TCT_compare_transcriptions( $atts) {
                     $content .= "</label>";
             $content .= "</div>";
         //$content .= "<section id='viewer-n-transcription'>";
-            $content .= "<div id='full-view-l'>";
-                $content .= "<div id='htr-container' style='height:600px;'>";
+            $content .= "<div id='full-view-l' style='margin-bottom:50px;'>";
+                $content .= "<div id='htr-container'>";
                     $content .= "<div id='startHtrTranscription' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;padding-left:0;padding-right:0;' title='click to open editor'>";
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> HTR TRANSCRIPTION</h5></div>";
                         $content .= "<div>";
@@ -295,12 +295,12 @@ function _TCT_compare_transcriptions( $atts) {
 
             $content .= "</div>"; // end of transcription
 
-            $content .= "<div id='full-view-r'>";
+            $content .= "<div id='full-view-r' style='margin-bottom:50px;'>";
             //var_dump($itemData);
                 // Transcription
-                $content .= "<div id='transcription-container' style='height:600px;'>";
+                $content .= "<div id='transcription-container'>";
                     $content .= "<div id='startTranscription' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;padding-left:0;padding-right:0;' title='click to open editor'>";
-                        $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
+                        $content .= "<div style='display:inline-block;'><a href='" . home_url() . "/documents/story/item/?item=". $itemData['ItemId'] ."&fs=true'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></a></div>";
                         $content .= "<div>";
                             $content .= "<div class='status-display' style='background-color:".$itemData['TranscriptionStatusColorCode']."'>";
                                 $content .= "<span class='status-indicator-view' style='bottom:0px;'>" . $itemData['TranscriptionStatusName'] . "</span>";
@@ -344,7 +344,7 @@ function _TCT_compare_transcriptions( $atts) {
                             // $content .= "</div>";
                         } else {
                             $content .= "<div id='no-text-placeholder'>";
-                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'><span>START TRANSCRIPTION</span></p>";
+                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
                             $content .= "</div></div>";
                         }
                     }
@@ -355,9 +355,7 @@ function _TCT_compare_transcriptions( $atts) {
     $content .= "</section>";
     $content .= "<div style='clear:both;'></div>";
 
-    if(strlen($formattedTranscription) > 700 || strlen($htrTranscriptionText) > 700) {
-        $content .= "<div id='transcription-collapse-btn' style='font-size:15px;font-weight:600;height:35px;width:150px;margin: 50px auto;background-color:#0a72cc;color:#fff;padding-top:7px;'> Show More </div>";
-    }
+    
 
 
 
