@@ -1045,7 +1045,7 @@ p.mb-1 {
 }
 #transcription-view-container {
     overflow-y: auto;
-    max-height: 80vh;
+    max-height: 75vh;
 }
 #transcription-view-container #current-tr-view {
     min-height: 40vh;

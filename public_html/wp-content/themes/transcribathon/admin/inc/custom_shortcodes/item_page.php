@@ -879,7 +879,7 @@ if (event.target.id != "tagging-status-indicator") {
     // }
         $trHistory .= "<div class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' data-toggle='collapse' href='#transcription-history'
                         onClick='jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")
-                        jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-up\")'>";
+                        jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-up\")' style='margin-bottom: 0;'>";
             $trHistory .= "<h4 id='transcription-history-collapse-heading' class='theme-color item-page-section-headline'>";
                 $trHistory .= "TRANSCRIPTION HISTORY";
             $trHistory .= "</h4>";
