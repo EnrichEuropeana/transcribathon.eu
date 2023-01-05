@@ -333,15 +333,7 @@ function _TCT_compare_transcriptions( $atts) {
                             $content .= "<div class='current-transcription' style='padding-left:24px;'>";
                                 $content .= $formattedTranscription;
                             $content .= "</div>";
-                          //  $content .= "<div id='transcription-collapse-btn'> Show More </div>";
 
-                            // $content .= "<div class='transcription-language'>";
-                            //     $content .= "<h6 class='enrich-headers'> Language(s) of Transcription </h6>";
-                            //     $content .= "<div style='padding-left:24px;'>";
-                            //     foreach($currentTranscription['Languages'] as $language) {
-                            //         $content .= "<div class='language-single'>" . $language['Name'] . "</div>";
-                            //     }
-                            // $content .= "</div>";
                         } else {
                             $content .= "<div id='no-text-placeholder'>";
                                 $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
