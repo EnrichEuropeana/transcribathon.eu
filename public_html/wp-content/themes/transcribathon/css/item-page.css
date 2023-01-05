@@ -141,22 +141,7 @@ body {
     height: 195px!important;
     max-width: 200px!important;
 }
-/* --- Back to story Button -- */
-.back-to-story {
-    display: inline-block;
-    font-size: 18px;
-    position: absolute;
-    bottom: 10px;
-    left: 100px;
-    font-family: var(--h-font-family);
-}
-.back-to-story:hover a, .back-to-story:hover i {
-    text-decoration: none;
-    color: var(--main-color)!important;
-}
-.back-to-story a, .back-to-story i {
-    color: #000!important;
-}
+
 /* --- Title and Change All statuses next to title ---*/
 #item-header {
     position: relative;
@@ -288,7 +273,7 @@ body {
     bottom: 15px;
     height: 80px;
 }
-#transcription-collapse-btn, #htr-transcription-collapse-btn {
+#transcription-collapse-btn {
     margin-top: 10px;
     text-align: center;
     cursor: pointer;
@@ -904,8 +889,9 @@ p.mb-1 {
     background-color: #828282;
     color: #fff;
     text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    padding: 5px;
+    border-radius: 0;
+    font-family: var(--p-font-family);
     position: absolute;
     z-index: 1;
     top: 0;
@@ -1145,17 +1131,20 @@ p.mb-1 {
     cursor: col-resize;
 }
 .splitter-horizontal {
+    position: relative;
+    left: 50%;
     margin-top: -11px;
-    margin-bottom: -14px;
+    margin-bottom: -21px;
     z-index: 9;
-    margin-left: auto;
-    margin-right: auto;
-    width: 200px;
+    /* margin-left: auto;
+    margin-right: auto; */
+    width: 25px;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
-    height: 25px;
-    background: url(../images/splitter_2.png) center center no-repeat;
+    height: 40px;
+    background: url(../images/splitter.png) center center no-repeat;
+    transform: rotate(90deg);
     cursor: row-resize;
 
 }

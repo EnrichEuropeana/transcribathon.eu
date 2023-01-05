@@ -359,6 +359,22 @@ function _TCT_compare_transcriptions( $atts) {
         position: unset;
         width: unset;
     }
+    /* --- Back to story Button -- */
+    .back-to-story {
+        display: inline-block;
+        font-size: 18px;
+        position: absolute;
+        bottom: 10px;
+        left: 100px;
+        font-family: var(--h-font-family);
+    }
+    .back-to-story:hover a, .back-to-story:hover i {
+        text-decoration: none;
+        color: var(--main-color)!important;
+    }
+    .back-to-story a, .back-to-story i {
+        color: #000!important;
+    } 
 
     </style>";
 
