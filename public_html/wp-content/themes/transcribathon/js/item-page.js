@@ -2439,6 +2439,10 @@ ready(() => {
         nextBtn.style.display = 'none';
         numOfStickers = sliderImages.length;
     }
+    if(sliderWidth < 750) {
+        document.querySelector('#vertical-split').click();
+        document.querySelector('#switcher-casephase').style.display = 'none';
+    }
 
     let startSlide = 0;
     let endSlide = numOfStickers;
@@ -2717,6 +2721,7 @@ ready(() => {
         });
         currDescLang.insertAdjacentHTML('beforeend', '<i id="del-desc-lang" class="far fa-times" style="margin-left: 5px;"></i>');
     }
+
 
     installEventListeners();
     initializeMap();
