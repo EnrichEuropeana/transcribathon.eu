@@ -875,7 +875,7 @@ if (event.target.id != "tagging-status-indicator") {
     // if($currentTranscription['Text'] == null ) {
     //     $trHistory .= "<div class='tr-history-section' style='display:none;'>";
     // } else {
-    //     $trHistory .= "<div class='tr-history-section' style='display:block;'>";
+         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
     // }
         $trHistory .= "<div class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' data-toggle='collapse' href='#transcription-history'
                         onClick='jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")
@@ -1107,7 +1107,7 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";
         $editorTab .= "</div>";
 
-   // $editorTab .= "</div>"; // End of Transcription-section
+    $editorTab .= "</div>"; // End of Transcription-section
 
     // Description tab
     $descriptionTab = "";

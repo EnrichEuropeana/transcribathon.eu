@@ -1031,7 +1031,7 @@ p.mb-1 {
 }
 #transcription-view-container {
     overflow-y: auto;
-    max-height: 75vh;
+    max-height: 77vh;
 }
 #transcription-view-container #current-tr-view {
     min-height: 40vh;
@@ -2844,39 +2844,19 @@ div.tox.tox-tinymce {
     display: flex;
     justify-content: space-between;
 }
-/* -- Compare Transcriptions Css -- */
-#full-width-viewer {
-    margin-bottom: 50px;
-}
-
-.mark-active {
-    display: flex;
-    justify-content: space-between;
-    width: 50vw;
-    margin: 20px auto;
-}
-
-.mark-active label {
-    cursor: pointer;
-}
-
-.mark-active input {
-    margin-right: 10px;
-}
-
 .link-single i.far.fa-external-link {
     margin-left: 3px;
     margin-right: 5px;
     color: var(--main-color);
     font-size: 14px;
 }
-.compare-tr {
+/* .compare-tr {
     display: inline-block;
     margin-left: 15px;
     font-family: var(--h-font-family);
     font-weight: 600;
     font-size: 1.1em;
-}
+} */
 /* Item Page compare transcriptions btn */
 /* .tr-comp-btn {
     float: right;

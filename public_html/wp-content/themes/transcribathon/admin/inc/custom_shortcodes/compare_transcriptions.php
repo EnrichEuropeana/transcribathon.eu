@@ -374,7 +374,25 @@ function _TCT_compare_transcriptions( $atts) {
     }
     .back-to-story a, .back-to-story i {
         color: #000!important;
-    } 
+    }
+    #full-width-viewer {
+        margin-bottom: 50px;
+    }
+    
+    .mark-active {
+        display: flex;
+        justify-content: space-between;
+        width: 50vw;
+        margin: 20px auto;
+    }
+    
+    .mark-active label {
+        cursor: pointer;
+    }
+    
+    .mark-active input {
+        margin-right: 10px;
+    }
 
     </style>";
 
