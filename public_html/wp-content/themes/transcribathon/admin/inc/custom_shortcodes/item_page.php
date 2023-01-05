@@ -1107,7 +1107,7 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";
         $editorTab .= "</div>";
 
-    $editorTab .= "</div>"; // End of Transcription-section
+   // $editorTab .= "</div>"; // End of Transcription-section
 
     // Description tab
     $descriptionTab = "";
