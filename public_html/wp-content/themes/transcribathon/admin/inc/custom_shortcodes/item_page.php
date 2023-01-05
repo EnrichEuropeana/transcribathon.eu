@@ -383,9 +383,9 @@ if (event.target.id != "tagging-status-indicator") {
         $mapEditor .= "</div>";
 
         if(sizeof($itemData['Places']) < 1) {
-            $mapEditor .= "<div id='location-input-section' style='display:block;'>";
+            $mapEditor .= "<div id='location-input-section' class='login-required' style='display:block;'>";
         } else {
-            $mapEditor .= "<div id='location-input-section' style='display:none;'>";
+            $mapEditor .= "<div id='location-input-section' class='login-required' style='display:none;'>";
         }
             $mapEditor .= "<div class='location-input-section-second'>";
                 $mapEditor .= "<div class='location-input-name-container location-input-container'>";
@@ -576,7 +576,7 @@ if (event.target.id != "tagging-status-indicator") {
             if(count($itemData['Persons']) > 0) {
                 $enrichmentTab .= '<div class="collapse person-item-data-container" id="person-input-container" style="position:relative;">';
             } else {
-                $enrichmentTab .= '<div class="collapse person-item-data-container collapse show" id="person-input-container" style="position:relative;">';
+                $enrichmentTab .= '<div class="collapse person-item-data-container collapse show login-required" id="person-input-container" style="position:relative;">';
             }
                 $enrichmentTab .= '<div class="person-input-names-container">';
                     $enrichmentTab .= '<input type="text" id="person-firstName-input" class="input-response person-input-field" name="" placeholder="&nbsp First Name" style="width:48.5%;">';
