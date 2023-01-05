@@ -636,9 +636,6 @@ p.mb-1 {
     position: relative;
     margin-left: 30px;
 }
-.transcription-headline-header {
-    margin-bottom: 8px;
-}
 .item-page-section-headline {
     font-size: 18px;
     margin-top: 0px;
@@ -894,11 +891,11 @@ p.mb-1 {
     background-color: #828282;
     color: #fff;
     text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    padding: 5px;
     top: -40px;
     left: -20px;
     position: absolute;
+    font-family: var(--p-font-family);
     z-index: 1;
 }
 .data-popout .language-tooltip .language-tooltip-text, .panel-bottom .language-tooltip .language-tooltip-text {

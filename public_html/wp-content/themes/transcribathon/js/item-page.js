@@ -869,7 +869,18 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
     jQuery('#transcription-update-button').removeClass('theme-color-background');
     jQuery('#transcription-update-button').prop('disabled', true);
     jQuery('#item-transcription-spinner-container').css('display', 'block')
-    let checkIfDirty = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
+    
+    let checkIfDirty = '';
+    var noText = 0;
+    if (jQuery('#no-text-checkbox').is(':checked') && document.querySelector('#item-page-transcription-text').textContent == '') {
+        noText = 1
+    }
+    if(noText == 0) {
+        checkIfDirty = tinymce.get('item-page-transcription-text').getContent({format : 'text'});
+    } else {
+        checkIfDirty = 1;
+    }
+    
     if(isWhitelisted(checkIfDirty) == 0){
         jQuery('#item-transcription-spinner-container').css('display', 'none')
         return null;
@@ -926,8 +937,8 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
             }
 
             if (jQuery('#item-page-transcription-text').html()) {
-                data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'}).replace(/'/g, "\\'");
-                data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'}).replace(/'/g, "\\'");
+                data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'});
+                data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'});
             } else {
                 data['Text'] = "";
                 data['TextNoTags'] = "";
@@ -2058,7 +2069,9 @@ function setToolbarHeight() {
         jQuery('#item-page-transcription-text').mousedown(function(e){
             e.preventDefault;
             tinymce.activeEditor.focus();
-            jQuery('.tox-toolbar__group').css('width', jQuery('#mytoolbar-transcription').css('width'))
+            jQuery('.tox-toolbar__primary').css('width', jQuery('#mytoolbar-transcription').css('width'))
+            jQuery('button[aria-label="More..."]').parent().css('position', 'absolute');
+            jQuery('button[aria-label="More..."]').parent().css('right', '0px');
 
             if(document.querySelector('.tox-tinymce')){
                 document.querySelector('.tox-tinymce').style.display = 'block';

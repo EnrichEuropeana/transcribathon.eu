@@ -267,10 +267,10 @@ body > div.tox.tox-tinymce.tox-tinymce-inline.tox-toolbar-dock-transition.tox-to
   background-color: transparent!important;
 }
 
-.tox .tox-toolbar__group {
+/* .tox .tox-toolbar__group {
   background-color: #fff!important;
   border: 1px solid #0a72cc!important;
-}
+} */
 
 body > div.tox.tox-silver-sink.tox-tinymce-aux {
   z-index: 999999;
