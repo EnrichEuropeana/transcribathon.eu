@@ -103,7 +103,7 @@ nav.navbar {
   position: relative;
   bottom: -2px;
   width: 120px;
-  height: 47px!important;
+  height: 44px!important;
   background: #fff;
   z-index: 2;
 }
@@ -160,7 +160,8 @@ nav[role=navigation].main-navigation #menu-main-menu > li a {
   background: #fff;
   padding-left: 10px;
   padding-right: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 13px;
+  padding-top: 17px!important;
 }
 nav[role=navigation].main-navigation .sub-menu > li a {
   text-transform: uppercase;
@@ -181,7 +182,6 @@ nav[role=navigation].main-navigation .menu {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   max-width: 100%;
-  margin-bottom: 20px;
 }
 ul#menu-main-menu {
   background: #fff;
@@ -1010,13 +1010,15 @@ button.active {
 }
 /*----------------------------------------End of item page----------------------------------*/
 /*----------------------------------------news page css-------------------------------------*/
+#doc-results {
+  padding: 0 50px;
+}
 .bottombutton {
   display: inline-block;
-  border-radius: 4px;
-  float: right;
+  border-radius: 0px!important;
   position: absolute;
-  right: 6px;
-  bottom: 6px;
+  right: 20px;
+  bottom: 20px;
 }
 .bottombutton a{
   text-decoration: none;
@@ -1062,15 +1064,15 @@ button.active {
   font-weight:600; font-size:1.1em; letter-spacing:0.3px; line-height:1.2; padding:10px 0px 0px 0px; color:#000;}
 .col.newsarchiv h3{font-weight:600; font-size:1em; letter-spacing:0.3px; line-height:1.2; padding:5px 0px 5px 0px; color:#000;}
 .col.newsarchiv p{/*font-weight:300;*/ font-size:0.9em; letter-spacing:0.3px; line-height:1.4; padding:5px 0px 5px 0px; color:#000;}
-.col.newsarchiv div.newsdate{display:block; margin-bottom: 1px; margin-top:-90px; margin-left:10px; background:#fff; height:121px; border:1px solid #ccc; max-width:140px; padding:5px 10px;}
+.col.newsarchiv div.newsdate{display:block; margin-bottom: 1px; margin-top:-90px; margin-left:20px; background:#fff; height:121px; border:1px solid #ccc; max-width:140px; padding:5px 0px;}
 .col.newsarchiv div.newsdate.single{max-width:64px;}
 .col.newsarchiv div.newsdate p.clear{clear:both;}
 .col.newsarchiv div.newsdate h4{line-height:1.1 !important; font-weight:400; font-size:3em; text-align:center;}
 .col.newsarchiv div.newsdate h5{line-height:1 !important; font-weight:400 !important; font-size:1.5em !important; color:#000 !important; text-transform:uppercase; text-align:center;}
 .col.newsarchiv div.newsdate h6{line-height:1.2 !important; font-weight:400; padding-top:3px; font-size:1.3em !important; color:#000 !important; text-transform:uppercase; text-align:center;}
-.col.newsarchiv div.newsdate div.leftdate{position:relative;float:left; display:block; max-width:60px;}
-.col.newsarchiv div.newsdate div.rightdate{position:relative;float:right; display:block; max-width:60px;}
-.col.newsarchiv div.newsdate div.rightdate:before{content:'–'; font-weight:300; line-height:2.5; font-size:3em; color:#000; position:absolute;left:-35px;}
+.col.newsarchiv div.newsdate div.leftdate{position:relative;display:inline-block; width:60px;}
+.col.newsarchiv div.newsdate div.rightdate{position:relative;float:right; display:block;width:60px;}
+.col.newsarchiv div.newsdate div.rightdate:before{content:'–'; font-weight:300; line-height:2.5; font-size:3em; color:#000; position:absolute;left:-22px;}
 .col.newsarchiv div.nodate{display:block;height:22px;}
 .col.collection{position:relative;}
 .col .dcholder{background-size:cover; background-position:center 20%; border:1px solid #ccc; background-color:#444;}
