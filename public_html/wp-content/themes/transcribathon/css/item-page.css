@@ -2895,7 +2895,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     }
     .panel-bottom #popout-language-holder {
         position: relative;
-        width: auto;
+        width: 100%;
         padding-left: 0;
     }
     .panel-bottom #category-checkboxes {
