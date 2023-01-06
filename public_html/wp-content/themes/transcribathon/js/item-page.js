@@ -313,9 +313,9 @@ function installEventListeners() {
             jQuery('#transcription-language-selector select').removeClass("disabled-dropdown");
             tct_viewer.initTinyWithConfig('#item-page-transcription-text');
             setToolbarHeight();
-            if(document.querySelector('#mce-wrapper-transcription.htr-active-tr')) {
-                tinymce.get('item-page-transcription-text').mode.set('readonly');
-            }
+            // if(document.querySelector('#mce-wrapper-transcription.htr-active-tr')) {
+            //     tinymce.get('item-page-transcription-text').mode.set('readonly');
+            // }
             jQuery('#transcription-update-button').removeClass('theme-color-background');
             jQuery('#transcription-update-button').prop('disabled', true);
             jQuery('#transcription-update-button .language-tooltip-text').css('display', 'block');
@@ -352,9 +352,9 @@ function installEventListeners() {
     if(document.querySelector('#item-page-transcription-text')) {
         tct_viewer.initTinyWithConfig('#item-page-transcription-text');
         setToolbarHeight();
-        if(document.querySelector('#mce-wrapper-transcription.htr-active-tr')) {
-            tinymce.get('item-page-transcription-text').mode.set('readonly');
-        }
+        // if(document.querySelector('#mce-wrapper-transcription.htr-active-tr')) {
+        //     tinymce.get('item-page-transcription-text').mode.set('readonly');
+        // }
     }
 
 } // End of event listeners
@@ -2323,9 +2323,9 @@ ready(() => {
         splitter.addEventListener('mousedown', function() {
             tinymce.remove();
             tct_viewer.initTinyWithConfig('#item-page-transcription-text');
-            if(document.querySelector('#mce-wrapper-transcription.htr-active-tr')) {
-                tinymce.get('item-page-transcription-text').mode.set('readonly');
-            }
+            // if(document.querySelector('#mce-wrapper-transcription.htr-active-tr')) {
+            //     tinymce.get('item-page-transcription-text').mode.set('readonly');
+            // }
         }, false);
         // Hide Tab Names when they start to break
         splitter.addEventListener('mouseleave', function() {
@@ -2438,6 +2438,10 @@ ready(() => {
         prevBtn.style.display = 'none';
         nextBtn.style.display = 'none';
         numOfStickers = sliderImages.length;
+    }
+    if(sliderWidth < 750) {
+        document.querySelector('#vertical-split').click();
+        document.querySelector('#switcher-casephase').style.display = 'none';
     }
 
     let startSlide = 0;
@@ -2596,15 +2600,22 @@ ready(() => {
     if(transcriptionSwitch) {
         const transEditContainer = document.querySelector('#transcription-edit-container');
         const transViewContainer = document.querySelector('#transcription-view-container');
+        const transHeader = document.querySelector('.transcription-headline-header span');
         transcriptionSwitch.addEventListener('click', function() {
             if(transEditContainer.style.display == 'none') {
                 transEditContainer.style.display = 'block';
                 transViewContainer.style.display = 'none';
                 transcriptionSwitch.querySelector('i').classList.replace('fa-pencil', 'fa-times');
+                if(transcriptionSwitch.classList.contains('htr-trans')) {
+                    transHeader.textContent = 'TRANSCRIPTION';
+                }
             } else {
                 transEditContainer.style.display = 'none';
                 transViewContainer.style.display = 'block';
                 transcriptionSwitch.querySelector('i').classList.replace('fa-times', 'fa-pencil');
+                if(transcriptionSwitch.classList.contains('htr-trans')) {
+                    transHeader.textContent = 'HTR TRANSCRIPTION';
+                }
             }
         });
 
@@ -2710,6 +2721,7 @@ ready(() => {
         });
         currDescLang.insertAdjacentHTML('beforeend', '<i id="del-desc-lang" class="far fa-times" style="margin-left: 5px;"></i>');
     }
+
 
     installEventListeners();
     initializeMap();

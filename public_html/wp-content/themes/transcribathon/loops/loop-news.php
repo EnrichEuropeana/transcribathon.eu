@@ -6,7 +6,7 @@
 <?php if ( have_posts() ) : ?>
 
 	<?php /* Start the Loop */ ?>
-    <?php vantage_content_nav( 'nav-below' ); ?>
+    <?php //vantage_content_nav( 'nav-below' ); ?>
     <?php 
 		// Doc-Uebersicht
 		if('news' === get_post_type($post->ID)){ 
@@ -45,7 +45,19 @@
 			endwhile;
 		}
 	?>
-	<?php vantage_content_nav( 'nav-below' ); ?>
+	<?php //vantage_content_nav( 'nav-below' ); ?>
+	<style>
+        #page-title {
+			margin-left: 50px;
+		}
+		.page-header {
+			margin-top: 20px!important;
+		}
+		.col h3, .col h1, .col p {
+			margin-left: 20px;
+			margin-right: 20px;
+		}
+	</style>
 
 <?php else : ?>
 

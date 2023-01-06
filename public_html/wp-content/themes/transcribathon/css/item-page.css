@@ -141,22 +141,7 @@ body {
     height: 195px!important;
     max-width: 200px!important;
 }
-/* --- Back to story Button -- */
-.back-to-story {
-    display: inline-block;
-    font-size: 18px;
-    position: absolute;
-    bottom: 10px;
-    left: 100px;
-    font-family: var(--h-font-family);
-}
-.back-to-story:hover a, .back-to-story:hover i {
-    text-decoration: none;
-    color: var(--main-color)!important;
-}
-.back-to-story a, .back-to-story i {
-    color: #000!important;
-}
+
 /* --- Title and Change All statuses next to title ---*/
 #item-header {
     position: relative;
@@ -288,7 +273,7 @@ body {
     bottom: 15px;
     height: 80px;
 }
-#transcription-collapse-btn, #htr-transcription-collapse-btn {
+#transcription-collapse-btn {
     margin-top: 10px;
     text-align: center;
     cursor: pointer;
@@ -904,8 +889,9 @@ p.mb-1 {
     background-color: #828282;
     color: #fff;
     text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    padding: 5px;
+    border-radius: 0;
+    font-family: var(--p-font-family);
     position: absolute;
     z-index: 1;
     top: 0;
@@ -1045,7 +1031,7 @@ p.mb-1 {
 }
 #transcription-view-container {
     overflow-y: auto;
-    max-height: 80vh;
+    max-height: 77vh;
 }
 #transcription-view-container #current-tr-view {
     min-height: 40vh;
@@ -1145,17 +1131,20 @@ p.mb-1 {
     cursor: col-resize;
 }
 .splitter-horizontal {
+    position: relative;
+    left: 50%;
     margin-top: -11px;
-    margin-bottom: -14px;
+    margin-bottom: -21px;
     z-index: 9;
-    margin-left: auto;
-    margin-right: auto;
-    width: 200px;
+    /* margin-left: auto;
+    margin-right: auto; */
+    width: 25px;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
-    height: 25px;
-    background: url(../images/splitter_2.png) center center no-repeat;
+    height: 40px;
+    background: url(../images/splitter.png) center center no-repeat;
+    transform: rotate(90deg);
     cursor: row-resize;
 
 }
@@ -2855,39 +2844,19 @@ div.tox.tox-tinymce {
     display: flex;
     justify-content: space-between;
 }
-/* -- Compare Transcriptions Css -- */
-#full-width-viewer {
-    margin-bottom: 50px;
-}
-
-.mark-active {
-    display: flex;
-    justify-content: space-between;
-    width: 50vw;
-    margin: 20px auto;
-}
-
-.mark-active label {
-    cursor: pointer;
-}
-
-.mark-active input {
-    margin-right: 10px;
-}
-
 .link-single i.far.fa-external-link {
     margin-left: 3px;
     margin-right: 5px;
     color: var(--main-color);
     font-size: 14px;
 }
-.compare-tr {
+/* .compare-tr {
     display: inline-block;
     margin-left: 15px;
     font-family: var(--h-font-family);
     font-weight: 600;
     font-size: 1.1em;
-}
+} */
 /* Item Page compare transcriptions btn */
 /* .tr-comp-btn {
     float: right;
@@ -2905,4 +2874,37 @@ div.tox.tox-tinymce {
 }
 #search-form {
     margin-right: 25px;
+}
+nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
+    width: 100%!important;
+}
+#masthead {
+    position: relative;
+    z-index: 9999;
+}
+/* Mobile 'version' css */
+@media screen and (max-width: 750px) {
+    .panel-bottom .tab-list span {
+        display: none;
+    }
+    .panel-bottom span.headline-header {
+        display: none;
+    }
+    .panel-bottom .section-status-changer {
+        display: none!important;
+    }
+    .panel-bottom #popout-language-holder {
+        position: relative;
+        width: auto;
+        padding-left: 0;
+    }
+    .panel-bottom #category-checkboxes {
+        display: block;
+    }
+    .panel-bottom #transcription-view-container {
+        display: none!important;
+    }
+    .panel-bottom #transcription-edit-container {
+        display: block!important;
+    }
 }
