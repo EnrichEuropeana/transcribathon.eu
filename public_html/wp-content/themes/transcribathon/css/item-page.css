@@ -2882,3 +2882,29 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     position: relative;
     z-index: 9999;
 }
+/* Mobile 'version' css */
+@media screen and (max-width: 750px) {
+    .panel-bottom .tab-list span {
+        display: none;
+    }
+    .panel-bottom span.headline-header {
+        display: none;
+    }
+    .panel-bottom .section-status-changer {
+        display: none!important;
+    }
+    .panel-bottom #popout-language-holder {
+        position: relative;
+        width: auto;
+        padding-left: 0;
+    }
+    .panel-bottom #category-checkboxes {
+        display: block;
+    }
+    .panel-bottom #transcription-view-container {
+        display: none!important;
+    }
+    .panel-bottom #transcription-edit-container {
+        display: block!important;
+    }
+}
