@@ -1611,7 +1611,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "</div>";
                     if($htrTranscription != '') {
                         $content .= "<div>";
-                            $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR editor ";
+                            $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR Editor ";
                             $content .= "<i class='fas fa-keyboard'></i></a>";
                         $content .= "</div>";
 

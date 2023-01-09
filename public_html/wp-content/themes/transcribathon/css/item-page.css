@@ -2907,4 +2907,46 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     .panel-bottom #transcription-edit-container {
         display: block!important;
     }
+    section {
+        padding: 0 10px!important;
+    }
+    #item-header {
+        font-size: 15px;
+    }
+    .htr-btns {
+        display: block;
+        font-weight: 600;
+    }
+    .htr-btns div {
+        font-size: 13px;
+    }
+    .location-single p {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    #meta-cover {
+        width: 100%;
+    }
+    #search-form {
+        display: none;
+    }
+    ul#_transcribathon_topmenu {
+        display: block;
+        right: 0!important;
+        height: unset!important;
+        line-height: unset!important;
+        letter-spacing: unset!important;
+        text-align: center;
+    }
+    ul#_transcribathon_topmenu li {
+        margin-right: 5px!important;
+        font-size: 11px!important;
+    }
+    #_transcribathon_topmenu > li > a {
+        padding: 0!important;
+    }
+    .mobilenav-main-link {
+        color: #0a72cc!important;
+    }
 }
