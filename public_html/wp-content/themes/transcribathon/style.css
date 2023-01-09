@@ -72,6 +72,10 @@ h1 {
   display: inline-block;
   margin: 0px;
 }
+.entry-content a:hover {
+    color: #0058a4!important;
+    text-decoration: none;
+}
 /*----------------------- Main Nvigation and everything regarding navbar ---------------------*/
 div._transcribathon_mainnav {
   height: 50px;
