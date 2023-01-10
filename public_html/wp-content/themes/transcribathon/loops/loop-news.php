@@ -51,7 +51,8 @@
 			margin-left: 50px;
 		}
 		.page-header {
-			margin-top: 20px!important;
+			margin-top: 0px!important;
+			padding-top: 20px;
 		}
 		.col h3, .col h1, .col p {
 			margin-left: 20px;

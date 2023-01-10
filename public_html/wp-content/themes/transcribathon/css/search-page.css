@@ -220,6 +220,7 @@
 .document-search-button:not(.map-search-page .document-search-button) {
     padding: 14px 10px!important;
     margin: 0!important;
+    border-radius: 0;
 }
 .map-search-page .document-search-button {
     position: relative;

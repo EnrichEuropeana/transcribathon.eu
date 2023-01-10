@@ -194,6 +194,7 @@ var tct_viewer = (function($, document, window) {
 			setTimeout(() => {
                 fullWidth();
 			}, 20);
+			document.querySelector('.openseadragon-container').style.overflow = 'unset';
 		});
 	},
 	fullWidth = function() {

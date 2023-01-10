@@ -1825,15 +1825,15 @@ function loadLinkData(itemId, userId) {
                                     `<input type='url' value='${escapeHtml(property['PropertyValue'])}' placeholder='Enter URL Here'>` +
                                 `</div>` +
                                 `<div id='link-${property['PropertyId']}-description-input' class='link-description-input'>` +
-                                    `<textarea rows='3' type='text' placeholder='' name=''>${propDesc ? propDesc : ''}</textarea>` +
+                                    `<textarea rows='3' type='text' placeholder='' name=''>${escapeHtml(property['PropertyDescription'] != 'NULL' ? property['PropertyDescription'] : '')}</textarea>` +
                                 `</div>` +
                                 `<div class='form-buttons-right'>` +
-                                    `<div class='form-btn-left'>` +
+                                    `<div class='link-btn-right'>` +
                                         `<button class='theme-color-background' onClick='editLink(${property['PropertyId']}, ${itemId}, ${userId})'>` +
                                             `SAVE` +
                                         `</button>` +
                                     `</div>` +
-                                    `<div class='form-btn-right'>` +
+                                    `<div class='link-btn-left'>` +
                                         `<button class='theme-color-background' onClick='openLinksourceEdit(${property['PropertyId']})'>` +
                                             `CANCEL` +
                                         `</button>` +

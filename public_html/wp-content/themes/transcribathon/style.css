@@ -72,6 +72,10 @@ h1 {
   display: inline-block;
   margin: 0px;
 }
+.entry-content a:hover {
+    color: #0058a4!important;
+    text-decoration: none;
+}
 /*----------------------- Main Nvigation and everything regarding navbar ---------------------*/
 div._transcribathon_mainnav {
   height: 50px;
@@ -4309,6 +4313,7 @@ a#new-temporary-prof:hover {
   float: right;
   width: 200px;
   margin-top: 10px;
+  margin-right: 87px;
 }
 .search-submit {
   padding: 5px!important;
