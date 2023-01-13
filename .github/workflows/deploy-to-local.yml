@@ -53,6 +53,7 @@ jobs:
 
       - name: Upload files
         run: |
+          cd "$LOCAL_PATH"
           scp -i ~/.ssh/local_key -P $PORT "${{ env.deployfile }}" $SSH_USER@$IP
 
       - name: Kill VPN connection
