@@ -23,39 +23,44 @@ jobs:
       - name: Create deploy name
         run: echo "deployfile=deploy.${{ env.now }}.tar.gz" >> $GITHUB_ENV
 
-      - name: Install OpenVPN
+      - name: Test
         run: |
-          sudo apt-get update
-          sudo apt-get --assume-yes --no-install-recommends install openvpn
+          echo "${{ env.now }}"
+          echo "${{ env.deployfile }}"
 
-      - name: Setup VPN config
-        run: |
-          echo "${{ secrets.CLIENT_OVPN }}" > client.ovpn
-          echo "${{ secrets.CLIENT_P12 }}" | base64 --decode > client.p12
-          echo "${{ secrets.CLIENT_PASS }}" > client.pass
+      # - name: Install OpenVPN
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get --assume-yes --no-install-recommends install openvpn
 
-      - name: Connect VPN
-        run: sudo openvpn --config "client.ovpn" --log "vpn.log" --daemon
+      # - name: Setup VPN config
+      #   run: |
+      #     echo "${{ secrets.CLIENT_OVPN }}" > client.ovpn
+      #     echo "${{ secrets.CLIENT_P12 }}" | base64 --decode > client.p12
+      #     echo "${{ secrets.CLIENT_PASS }}" > client.pass
 
-      - name: Wait for a VPN connection
-        timeout-minutes: 1
-        run: until ping -c1 "$IP"; do sleep 2; done
+      # - name: Connect VPN
+      #   run: sudo openvpn --config "client.ovpn" --log "vpn.log" --daemon
 
-      - name: Checkout
-        uses: actions/checkout@v3
+      # - name: Wait for a VPN connection
+      #   timeout-minutes: 1
+      #   run: until ping -c1 "$IP"; do sleep 2; done
 
-      - name: Prepare files
-        run: |
-          mkdir ~/.ssh
-          echo "SSH_PRIVATE_KEY" > ~/.ssh/local_key
-          cd "$LOCAL_PATH"
-          tar -czf "${{ env.deployfile }}" "$THEME_NAME"
+      # - name: Checkout
+      #   uses: actions/checkout@v3
 
-      - name: Upload files
-        run: |
-          scp -i ~/.ssh/local_key -P $PORT "${{ env.deployfile }}" $SSH_USER@$IP
+      # - name: Prepare files
+      #   run: |
+      #     mkdir ~/.ssh
+      #     echo "SSH_PRIVATE_KEY" > ~/.ssh/local_key
+      #     cd "$LOCAL_PATH"
+      #     tar -czf "${{ env.deployfile }}" "$THEME_NAME"
 
-      - name: Kill VPN connection
-        if: always()
-        run: |
-          sudo killall openvpn
+      # - name: Upload files
+      #   run: |
+      #     scp -i ~/.ssh/local_key -P $PORT "${{ env.deployfile }}" $SSH_USER@$IP
+
+      # - name: Kill VPN connection
+      #   if: always()
+      #   run: |
+      #     sudo killall openvpn
