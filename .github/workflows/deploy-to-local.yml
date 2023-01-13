@@ -17,9 +17,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Get current date
-        id: version
-        run: echo "::set-output name=timestamp::$(date +%s)"
+      - name: Create date
+        run: echo "now=$(data +%s)" >> $GITHUB_ENV
+
+      - name: Create deploy name
+        run: echo "deployfile=deploy.${{ env.now }}.tar.gz" >> $GITHUB_ENV
 
       - name: Install OpenVPN
         run: |
@@ -43,19 +45,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Prepare files
-        env:
-          DEPLOY_NAME: deploy.${{ steps.version.outputs.timestamp }}.tar.gz
         run: |
           mkdir ~/.ssh
           echo "SSH_PRIVATE_KEY" > ~/.ssh/local_key
           cd "$LOCAL_PATH"
-          tar -czf "$DEPLOY_NAME" "$THEME_NAME"
+          tar -czf "${{ env.deployfile }}" "$THEME_NAME"
 
       - name: Upload files
-        env:
-          DEPLOY_NAME: deploy.${{ steps.version.outputs.timestamp }}.tar.gz
         run: |
-          scp -i ~/.ssh/local_key -P $PORT $DEPLOY_NAME $SSH_USER@$IP
+          scp -i ~/.ssh/local_key -P $PORT "${{ env.deployfile }}" $SSH_USER@$IP
 
       - name: Kill VPN connection
         if: always()
