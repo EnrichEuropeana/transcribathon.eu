@@ -46,6 +46,7 @@ jobs:
         env:
           DEPLOY_NAME: deploy.${{ steps.version.outputs.timestamp }}.tar.gz
         run: |
+          mkdir ~/.ssh
           echo "SSH_PRIVATE_KEY" > ~/.ssh/local_key
           cd "$LOCAL_PATH"
           tar -czf "$DEPLOY_NAME" "$THEME_NAME"
