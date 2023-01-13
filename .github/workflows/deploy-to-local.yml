@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create date
-        run: echo "now=$(data +%s)" >> $GITHUB_ENV
+        run: echo "now=$(date +%s)" >> $GITHUB_ENV
 
       - name: Create deploy name
         run: echo "deployfile=deploy.${{ env.now }}.tar.gz" >> $GITHUB_ENV
