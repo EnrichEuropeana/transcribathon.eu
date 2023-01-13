@@ -48,13 +48,14 @@ jobs:
         run: |
           mkdir ~/.ssh
           echo "SSH_PRIVATE_KEY" > ~/.ssh/local_key
+          chmod 600 ~/.ssh/local_key
           cd "$LOCAL_PATH"
           tar -czf "${{ env.deployfile }}" "$THEME_NAME"
 
       - name: Upload files
         run: |
           cd "$LOCAL_PATH"
-          scp -i ~/.ssh/local_key -P $PORT "${{ env.deployfile }}" $SSH_USER@$IP
+          scp -i ~/.ssh/local_key -P $PORT "${{ env.deployfile }}" $SSH_USER@$IP:
 
       - name: Kill VPN connection
         if: always()
