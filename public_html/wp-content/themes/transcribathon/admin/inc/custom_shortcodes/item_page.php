@@ -616,6 +616,12 @@ if (event.target.id != "tagging-status-indicator") {
 
             $enrichmentTab .= '<div id="item-person-list" class="item-data-output-list">';
                 foreach($itemData['Persons'] as $person) {
+                    $person['BirthDate'] = $person['BirthDate'] !== 'NULL'
+                        ? date('d/m/Y', strtotime($person['BirthDate']))
+                        : 'NULL';
+                    $person['DeathDate'] = $person['DeathDate'] !== 'NULL'
+                        ? date('d/m/Y', strtotime($person['DeathDate']))
+                        : 'NULL';
                     $enrichmentTab .= "<div id='person-" . $person['PersonId'] . "'>";
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
