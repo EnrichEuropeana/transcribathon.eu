@@ -2235,7 +2235,28 @@ function initializeMap() {
       });
 
       geocoder.on('result', function(res) {
-        jQuery('#location-input-geonames-search-container > input').val(res.result['text_en-EN'] + '; ' + res.result.properties.wikidata);
+        
+        let wikiCode = '';
+        let wikiName = '';
+        if(res.result.place_type.includes('country') || res.result.place_type.includes('place')) {
+            wikiCode = res.result.properties['wikidata'];
+            wikiName = res.result.text;
+        } else {
+            if(res.result.properties['wikidata']) {
+                wikiCode = `${res.result.properties['wikidata']}`;
+                wikiName = res.result.text;
+            } else {
+                for(let el of res.result.context) {
+                    if(el.hasOwnProperty('wikidata')) {
+                        wikiCode = el.wikidata;
+                        wikiName = el.text;
+                        break
+                    }
+                }
+            }
+        }
+
+        jQuery('#location-input-geonames-search-container > input').val(wikiName + '; ' + wikiCode);
         var el = document.createElement('div');
         el.className = 'marker';
 
