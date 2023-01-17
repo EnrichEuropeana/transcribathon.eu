@@ -869,7 +869,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
     jQuery('#transcription-update-button').removeClass('theme-color-background');
     jQuery('#transcription-update-button').prop('disabled', true);
     jQuery('#item-transcription-spinner-container').css('display', 'block')
-    
+
     let checkIfDirty = '';
     var noText = 0;
     if (jQuery('#no-text-checkbox').is(':checked') && document.querySelector('#item-page-transcription-text').textContent == '') {
@@ -880,7 +880,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
     } else {
         checkIfDirty = 1;
     }
-    
+
     if(isWhitelisted(checkIfDirty) == 0){
         jQuery('#item-transcription-spinner-container').css('display', 'none')
         return null;
@@ -1663,15 +1663,23 @@ function loadPersonData(itemId, userId) {
             personOutCont.innerHTML = '';
 
             for(let person of content) {
+
+                person['BirthDate'] = !isNaN(Date.parse(person['BirthDate']))
+                    ? new Date(person['BirthDate']).toLocaleDateString('en-GB')
+                    : null;
+                person['DeathDate'] = !isNaN(Date.parse(person['DeathDate']))
+                    ? new Date(person['DeathDate']).toLocaleDateString('en-GB')
+                    : null;
+
                 personOutCont.innerHTML +=
                     `<div id='person-${person['PersonId']}'>` +
                         `<div class='single-person'>` +
                             `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
                             `<p class='person-data'>` +
-                                `<span style='font-weight:400;'>${person['FirstName'] ? escapeHtml(person['FirstName']) : ''} ${person['LastName'] ? escapeHtml(person['LastName']) : ''} </span>` +
+                                `${person['FirstName'] ? escapeHtml(person['FirstName']) : ''} ${person['LastName'] ? escapeHtml(person['LastName']) : ''}` +
                                 // Sorry for this one, but it looks like best solution for now xD
-                                `${(person['BirthDate'] != undefined && person['BirthDate'] != 'NULL') && (person['DeathDate'] != undefined && person['DeathDate'] != 'NULL') ?
-                                    ` (${escapeHtml(person['BirthDate'])}${isItString(person['BirthPlace'], 2)} - ${escapeHtml(person['DeathDate'])}${isItString(person['DeathPlace'], 2)})`
+                                `${(person['BirthDate']) && (person['DeathDate']) ?
+                                    ` (${person['BirthDate']}${isItString(person['BirthPlace'], 2)} - ${person['DeathDate']}${isItString(person['DeathPlace'], 2)})`
                                     :
                                     `${person['BirthDate'] || person['BirthPlace'] ?
                                         ` (Birth: ${isItString(person['BirthDate'])}${person['BirthDate'] ? ',' : ''}${isItString(person['BirthPlace'])})`
