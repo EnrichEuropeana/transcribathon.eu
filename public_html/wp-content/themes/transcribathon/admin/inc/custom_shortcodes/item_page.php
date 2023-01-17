@@ -1710,7 +1710,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $content .= "</div>"; // end of transcription
             $content .= "</div>"; 
             $content .= "<div style='clear:both;'></div>";
-        $content .= "</div>";
+      //  $content .= "</div>";
     $content .= "</section>";
 
     $content .= "<section id='location-n-enrichments'>";
