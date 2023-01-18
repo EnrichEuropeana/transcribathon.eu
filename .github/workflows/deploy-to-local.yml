@@ -55,7 +55,8 @@ jobs:
       - name: Upload files
         run: |
           cd "$LOCAL_PATH"
-          scp -i ~/.ssh/local_key -o StrictHostKeyChecking=no -P $PORT "${{ env.deployfile }}" $SSH_USER@$IP:
+          ssh -i ~/.ssh/local_key -q "$SSH_USER@$$IP" -o BatchMode=yes  -o ConnectionAttempts=1 -o StrictHostKeyChecking=no true
+          # scp -i ~/.ssh/local_key -o StrictHostKeyChecking=no "${{ env.deployfile }}" $SSH_USER@$IP:
 
       - name: Kill VPN connection
         if: always()
