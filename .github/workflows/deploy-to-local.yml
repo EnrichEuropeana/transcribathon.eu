@@ -1,10 +1,10 @@
 name: Deploy to LOCAL
 run-name: ${{ github.actor }} is deploying to LOCAL...
 on:
-  workflow_dispatch
-  # push:
-    # branches:
-      # - local
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 env:
   HOST: 192.168.7.125
   PORT: 22
