@@ -1595,10 +1595,11 @@ div.number-ball-content span {
 /*Navigation bar for profile page*/
 div.um-header {
   border-bottom: none !important;
+  margin-right: 35px;
 }
 div.um-profile-nav {
   background-color: transparent;
-  padding: 0px 0px;
+  padding: 0px 65px;
   border-bottom: 5px solid #eee;
 }
 div.um-profile-nav div.um-profile-nav-item {
