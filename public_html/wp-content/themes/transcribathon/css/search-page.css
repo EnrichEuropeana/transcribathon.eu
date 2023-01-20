@@ -238,3 +238,75 @@
     width: 100vw!important;
     height: 220px!important;
 }
+#search-form {
+    display: none!important;
+}
+.mobi-f {
+    display: none;
+}
+@media screen and (max-width: 750px) {
+    .facet-form-search {
+        width: 85%!important;
+    }
+    .facet-form-search .search-field {
+        width: 75%!important;
+    }
+    .map-search-page .document-search-button {
+        padding: 13px 10px;
+        bottom: 0px!important;
+    }
+    .str-itm-switch {
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+        display: block;
+        text-align: center;
+    }
+    .search-navigation {
+        height: unset;
+    }
+    .search-pgntn {
+        display: block;
+        width: 80%;
+        margin: 20px auto;
+        text-align: center;
+    }
+    .num-results {
+        top: 0px;
+    }
+    .facet-menu {
+        float: unset!important;
+        width: 100%;
+    }
+    .facet-single {
+        margin-top: 0px;
+        margin-left: 25px;
+        width: auto;
+        font-size: 13px!important;
+    }
+    .result-stickers {
+        margin: 10px auto;
+        float: unset;
+        display: block;
+    }
+    .search-page-single-result {
+        display: block;
+        margin: 10px auto;
+    }
+    .bottom-pag {
+        margin-left: 0px;
+    }
+    .facet-single {
+        max-height: 130px;
+    }
+    .facet-data {
+        line-height: initial;
+    }
+    .facet-data .checkmark {
+        height: 13px;
+        width: 13px;
+    }
+    .mobi-f {
+        display: inline-block;
+    }
+}
