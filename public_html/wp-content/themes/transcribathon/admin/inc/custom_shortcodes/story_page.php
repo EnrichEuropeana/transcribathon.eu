@@ -269,7 +269,6 @@ function _TCT_get_document_data( $atts ) {
                     }
                 }
             }
-
             // Short Info Data under the status bar
             $content .= "<div class='story-info'>";
                 if(count($storyContributors) > 0 || $storyData['dcContributor']) {
@@ -326,13 +325,14 @@ function _TCT_get_document_data( $atts ) {
                                         }
                                     )
                                     .then(function(response) {
-
+                                         
                                         return response.json();
                                     })
                                     .then(function(places) {
-                                        console.log(places);
-                                        if(places.length > 0) {
-                                            places[0].Items.forEach(function(marker) {
+                                        let placest = JSON.parse(places.content);
+                                        // console.log(placest);
+                                        if(placest.length > 0) {
+                                            placest[0].Items.forEach(function(marker) {
                                                 marker.Places.forEach(function(place) {
                                                     var el = document.createElement('div');
                                                     el.className = 'marker savedMarker';
@@ -347,19 +347,20 @@ function _TCT_get_document_data( $atts ) {
                                             });
                                             // add story location to the map
 
-                                            if (places[0].PlaceLongitude != 0 || places[0].PlaceLongitude != 0) {
+                                            if (placest[0].PlaceLongitude != 0 || placest[0].PlaceLongitude != 0) {
+                                                // console.log('story place');
                                                 var el = document.createElement('div');
                                                 el.className = 'marker savedMarker storyMarker';
                                                 var popup = new mapboxgl.Popup({offset: 25, closeButton: false})
-                                                .setHTML('<div class=\"popupWrapper\"><div class=\"story-location-header\">Story Location</div><div class=\"title\">' + places[0].dcTitle + '</div><div class=\"name\">' + places[0].PlaceName + '</div></div>');
-                                                bounds.extend([places[0].PlaceLongitude, places[0].PlaceLatitude]);
+                                                .setHTML('<div class=\"popupWrapper\"><div class=\"story-location-header\">Story Location</div><div class=\"title\">' + placest[0].dcTitle + '</div><div class=\"name\">' + placest[0].PlaceName + '</div></div>');
+                                                bounds.extend([placest[0].PlaceLongitude, placest[0].PlaceLatitude]);
 
                                                 new mapboxgl.Marker({element: el, anchor: 'bottom'})
-                                                .setLngLat([places[0].PlaceLongitude, places[0].PlaceLatitude])
+                                                .setLngLat([placest[0].PlaceLongitude, placest[0].PlaceLatitude])
                                                 .setPopup(popup)
                                                 .addTo(map);
 
-                                                map.fitBounds(bounds, {padding: {top: 50, bottom:20, left: 20, right: 20}});
+                                                map.fitBounds(bounds, {padding: {top: 50, bottom:20, left: 20, right: 20}, maxZoom: 15});
                                             }
                                         }
                                     });

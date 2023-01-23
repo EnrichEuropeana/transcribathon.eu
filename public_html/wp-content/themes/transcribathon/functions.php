@@ -328,6 +328,7 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_style( 'storystyle', CHILD_TEMPLATE_DIR . '/css/story_page.css', array(), $themeVersion);
             wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/story-page.js', array(), $themeVersion);
             wp_enqueue_style( 'searchstyle', CHILD_TEMPLATE_DIR . '/css/search-page.css', array(), $themeVersion);
+            wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css', array(), $themeVersion);
         }
         if(is_page('item')) {
             wp_dequeue_style('responsive-lightbox-featherlight');
