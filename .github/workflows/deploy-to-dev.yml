@@ -23,7 +23,6 @@ jobs:
           echo "now=$(date +%s)" >> $GITHUB_ENV
           echo "theme_name=$THEME_NAME" >> $GITHUB_ENV
           echo "remote_path=$REMOTE_PATH" >> $GITHUB_ENV
-          echo "remote_path=$REMOTE_PATH" >> $GITHUB_ENV
 
       - name: Install OpenVPN
         run: |

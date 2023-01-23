@@ -22,7 +22,6 @@ jobs:
           echo "now=$(date +%s)" >> $GITHUB_ENV
           echo "theme_name=$THEME_NAME" >> $GITHUB_ENV
           echo "remote_path=$REMOTE_PATH" >> $GITHUB_ENV
-          echo "deployfile=deploy.${{ env.now }}.tar.gz" >> $GITHUB_ENV
 
       - name: Install OpenVPN
         run: |
@@ -50,12 +49,12 @@ jobs:
           mkdir ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/local_key
           chmod 600 ~/.ssh/local_key
-          cd "$LOCAL_PATH"
-          tar -czf "${{ env.deployfile }}" "${{ env.theme_name}}"
+          echo "deployfile=deploy.${{ env.now }}.tar.gz" >> $GITHUB_ENV
 
       - name: Upload files
         run: |
           cd "$LOCAL_PATH"
+          tar -czf "${{ env.deployfile }}" "${{ env.theme_name}}"
           scp -i ~/.ssh/local_key -o StrictHostKeyChecking=no -P "$PORT" "${{ env.deployfile }}" "$SSH_USER@$HOST:$REMOTE_PATH"
 
       - name: Move and extract files
