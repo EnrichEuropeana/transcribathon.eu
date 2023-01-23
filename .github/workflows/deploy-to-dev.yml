@@ -1,15 +1,14 @@
 name: Deploy to DEV
 run-name: ${{ github.actor }} is deploying to DEV...
 on:
-  workflow_dispatch
-  # push:
-    # branches:
-      # - main
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 env:
   HOST: 192.168.7.123
   PORT: 2223
-  USER: enrich-dev
-  REMOTE_PATH: /var/www/transcribathon.local/wp-content/themes
+  REMOTE_PATH: www/wp-content/themes
   LOCAL_PATH: public_html/wp-content/themes
   THEME_NAME: transcribathon
 jobs:
@@ -21,7 +20,8 @@ jobs:
           echo "now=$(date +%s)" >> $GITHUB_ENV
           echo "theme_name=$THEME_NAME" >> $GITHUB_ENV
           echo "remote_path=$REMOTE_PATH" >> $GITHUB_ENV
-          echo "deployfile=deploy.${{ env.now }}.tar.gz" >> $GITHUB_ENV
+          echo "remote_path=$REMOTE_PATH" >> $GITHUB_ENV
+
       - name: Install OpenVPN
         run: |
           sudo apt-get update
@@ -49,29 +49,35 @@ jobs:
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           echo 'echo $SSH_PASSPHRASE' > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - > /dev/null
-          mkdir ~/.ssh
 
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Prepare files
         run: |
-          cd "$LOCAL_PATH"
-          tar -czf "${{ env.deployfile }}" "${{ env.theme_name}}"
+          mkdir ~/.ssh
+          echo "deployfile=deploy.${{ env.now }}.tar.gz" >> $GITHUB_ENV
 
       - name: Upload files
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           cd "$LOCAL_PATH"
-          scp -o StrictHostKeyChecking=no -P "$PORT" "${{ env.deployfile }}" "$SSH_USER@$HOST:$REMOTE_PATH"
+          tar -czf "${{ env.deployfile }}" "${{ env.theme_name}}"
+          scp -o StrictHostKeyChecking=no -P "$PORT" "${{ env.deployfile }}" "${{ secrets.DEV_SSH_USER }}@$HOST:${{ env.remote_path}}"
 
-      # - name: Create and upload tarball
-      #   env:
-      #     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      #   run: |
-      #     echo "deploy"
-          # tar zcvf - README.md | ssh -o StrictHostKeyChecking=no -p $PORT $USER@$HOST "cat > README.tar.gz"
+      - name: Move and extract files
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh -tt -o StrictHostKeyChecking=no -p "$PORT" "${{ secrets.DEV_SSH_USER }}@$HOST" <<EOF
+            cd ${{ env.remote_path }}
+            tar -czf ${{ env.theme_name }}.${{ env.now }}.tar.gz ${{ env.theme_name }}
+            rm -R ${{ env.theme_name }}
+            tar -xf ${{ env.deployfile }}
+            rm ${{ env.deployfile }}
+            exit
+          EOF
 
       - name: Kill VPN connection
         if: always()
