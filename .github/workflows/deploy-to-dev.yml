@@ -2,9 +2,12 @@ name: Deploy to DEV
 run-name: ${{ github.actor }} is deploying to DEV...
 on:
   workflow_dispatch:
-  push:
+  workflow_run:
+    workflows: [Deploy to LOCAL]
     branches:
       - main
+    types:
+      - completed
 env:
   HOST: 192.168.7.123
   PORT: 2223
