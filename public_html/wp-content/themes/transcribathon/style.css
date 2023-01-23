@@ -1595,10 +1595,11 @@ div.number-ball-content span {
 /*Navigation bar for profile page*/
 div.um-header {
   border-bottom: none !important;
+  margin-right: 35px;
 }
 div.um-profile-nav {
   background-color: transparent;
-  padding: 0px 0px;
+  padding: 0px 65px;
   border-bottom: 5px solid #eee;
 }
 div.um-profile-nav div.um-profile-nav-item {
@@ -4020,7 +4021,29 @@ a#new-temporary-prof:hover {
 @media all and (max-width: 1200px) {}
 @media all and (max-width: 1024px) {}
 @media all and (max-width: 992px) {}
-@media all and (max-width: 768px) {}
+@media all and (max-width: 768px) {
+  ul#_transcribathon_topmenu {
+        display: block;
+        right: 0!important;
+        height: unset!important;
+        line-height: unset!important;
+        letter-spacing: unset!important;
+        text-align: center;
+    }
+    ul#_transcribathon_topmenu li {
+        margin-right: 5px!important;
+        font-size: 11px!important;
+    }
+    #_transcribathon_topmenu > li > a {
+        padding: 0!important;
+    }
+    .mobilenav-main-link {
+        color: #0a72cc!important;
+    }
+    #search-form {
+      display: none;
+    }
+}
 @media all and (max-width: 575px) {
   #primary-least-width{
     padding: 0!important;

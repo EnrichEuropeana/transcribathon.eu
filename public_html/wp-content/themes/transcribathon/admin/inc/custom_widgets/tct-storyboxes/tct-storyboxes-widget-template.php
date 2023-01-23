@@ -101,7 +101,7 @@ if ( ! is_admin() ) {
                                                     $image = json_decode($story['PreviewImage'], true);
 
                                             
-                                                    $gridImageLink = createImageLinkFromData($image, array('size' => '280,140'));
+                                                    $gridImageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
                                             
                                                     if($image['height'] == null) {
                                                         $gridImageLink = str_replace('full', '50,50,1800,1100', $gridImageLink);

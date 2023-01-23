@@ -248,7 +248,7 @@ function _TCT_solr_search( $atts ) {
                 }
                 if($facetFields['Categories'] != null) {
                     $content .= "<div class='facet-single'>";
-                        $content .= "<div class='facet-h'>DOCUMENT TYPE</div>";
+                        $content .= "<div class='facet-h' onClick='this.parentElement.classList.toggle(\"uncollapse\");'>DOCUMENT TYPE <i class='fas fa-plus-circle mobi-f'></i></div>";
                         for($x = 0; $x < count($facetFields['Categories']); $x += 2) {
                             if($facetFields['Categories'][$x+1] != 0) {
                                 $value = $facetFields['Categories'][$x];
@@ -271,7 +271,7 @@ function _TCT_solr_search( $atts ) {
                 }
                 if($facetFields['edmCountry'] != null) {
                     $content .= "<div class='facet-single'>";
-                        $content .= "<div class='facet-h'>PROVIDING COUNTRY</div>";
+                        $content .= "<div class='facet-h' onClick='this.parentElement.classList.toggle(\"uncollapse\");'>PROVIDING COUNTRY <i class='fas fa-plus-circle mobi-f'></i></div>";
                         for($x = 0; $x < count($facetFields['edmCountry']); $x += 2) {
                             if($facetFields['edmCountry'][$x+1] != 0) {
                                 if($_GET['edmCountry'] == $facetFields['edmCountry'][$x] ) {

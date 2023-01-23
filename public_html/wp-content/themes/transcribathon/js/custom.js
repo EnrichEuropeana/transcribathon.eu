@@ -682,7 +682,7 @@ function switchItemView(event, viewName) {
     }
 }
 // Calls script to draw linechart on the profile page
-function getTCTlinehlChart(what,start,ende,holder,uid){
+function getTCTlinePersonalChart(what,start,ende,holder,uid){
   "use strict";
   jQuery.post(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_profiletabs/scripts/linechart-script.php",
   {
