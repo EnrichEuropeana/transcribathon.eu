@@ -1,0 +1,83 @@
+name: Deploy to LIVE
+run-name: ${{ github.actor }} is deploying to LIVE...
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+env:
+  HOST: 192.168.7.123
+  PORT: 2222
+  REMOTE_PATH: www/wp-content/themes
+  LOCAL_PATH: public_html/wp-content/themes
+  THEME_NAME: transcribathon
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup environment vars
+        run: |
+          echo "now=$(date +%s)" >> $GITHUB_ENV
+          echo "theme_name=$THEME_NAME" >> $GITHUB_ENV
+          echo "remote_path=$REMOTE_PATH" >> $GITHUB_ENV
+
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo apt-get --assume-yes --no-install-recommends install openvpn
+
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.CLIENT_OVPN }}" > client.ovpn
+          echo "${{ secrets.CLIENT_P12 }}" | base64 --decode > client.p12
+          echo "${{ secrets.CLIENT_PASS }}" > client.pass
+
+      - name: Connect VPN
+        run: sudo openvpn --config "client.ovpn" --log "vpn.log" --daemon
+
+      - name: Wait for a VPN connection
+        timeout-minutes: 1
+        run: until ping -c1 "$HOST"; do sleep 2; done
+
+      - name: Setup SSH key and SSH passphrase
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          SSH_PASSPHRASE: ${{secrets.LIVE_SSH_PASSPHRASE}}
+          SSH_PRIVATE_KEY: ${{secrets.LIVE_SSH_PRIVATE_KEY}}
+        run: |
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          echo 'echo $SSH_PASSPHRASE' > ~/.ssh_askpass && chmod +x ~/.ssh_askpass
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | DISPLAY=None SSH_ASKPASS=~/.ssh_askpass ssh-add - > /dev/null
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Prepare files
+        run: |
+          mkdir ~/.ssh
+          echo "deployfile=deploy.${{ env.now }}.tar.gz" >> $GITHUB_ENV
+
+      - name: Upload files
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          cd "$LOCAL_PATH"
+          tar -czf "${{ env.deployfile }}" "${{ env.theme_name}}"
+          scp -o StrictHostKeyChecking=no -P "$PORT" "${{ env.deployfile }}" "${{ secrets.LIVE_SSH_USER }}@$HOST:${{ env.remote_path}}"
+
+      # - name: Move and extract files
+      #   env:
+      #     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      #   run: |
+      #     ssh -tt -o StrictHostKeyChecking=no -p "$PORT" "${{ secrets.LIVE_SSH_USER }}@$HOST" <<EOF
+      #       cd ${{ env.remote_path }}
+      #       tar -czf ${{ env.theme_name }}.${{ env.now }}.tar.gz ${{ env.theme_name }}
+      #       rm -R ${{ env.theme_name }}
+      #       tar -xf ${{ env.deployfile }}
+      #       rm ${{ env.deployfile }}
+      #       exit
+      #     EOF
+
+      - name: Kill VPN connection
+        if: always()
+        run: |
+          sudo killall openvpn
