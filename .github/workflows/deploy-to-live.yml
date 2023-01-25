@@ -1,7 +1,6 @@
 name: Deploy to LIVE
 run-name: ${{ github.actor }} is deploying to LIVE...
 on:
-  workflow_dispatch:
   release:
     types: [published]
 env:
@@ -64,18 +63,18 @@ jobs:
           tar -czf "${{ env.deployfile }}" "${{ env.theme_name}}"
           scp -o StrictHostKeyChecking=no -P "$PORT" "${{ env.deployfile }}" "${{ secrets.LIVE_SSH_USER }}@$HOST:${{ env.remote_path}}"
 
-      # - name: Move and extract files
-      #   env:
-      #     SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      #   run: |
-      #     ssh -tt -o StrictHostKeyChecking=no -p "$PORT" "${{ secrets.LIVE_SSH_USER }}@$HOST" <<EOF
-      #       cd ${{ env.remote_path }}
-      #       tar -czf ${{ env.theme_name }}.${{ env.now }}.tar.gz ${{ env.theme_name }}
-      #       rm -R ${{ env.theme_name }}
-      #       tar -xf ${{ env.deployfile }}
-      #       rm ${{ env.deployfile }}
-      #       exit
-      #     EOF
+      - name: Move and extract files
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh -tt -o StrictHostKeyChecking=no -p "$PORT" "${{ secrets.LIVE_SSH_USER }}@$HOST" <<EOF
+            cd ${{ env.remote_path }}
+            tar -czf ${{ env.theme_name }}.${{ env.now }}.tar.gz ${{ env.theme_name }}
+            rm -R ${{ env.theme_name }}
+            tar -xf ${{ env.deployfile }}
+            rm ${{ env.deployfile }}
+            exit
+          EOF
 
       - name: Kill VPN connection
         if: always()
