@@ -1,5 +1,5 @@
-name: Deploy to DEV
-run-name: ${{ github.actor }} is deploying to DEV...
+name: Deploy to LIVE
+run-name: ${{ github.actor }} is deploying to LIVE...
 on:
   workflow_dispatch:
   release:
