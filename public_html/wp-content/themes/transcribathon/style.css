@@ -606,6 +606,9 @@ footer._tct_footer {
   width: 180px;
   font-size: 20px;
 }
+.entry-content.bubbles a.bubble:hover {
+  color: #fff!important;
+}
 .bubbles .bubble.big i {
   width: 53px;
   height: 53px;
