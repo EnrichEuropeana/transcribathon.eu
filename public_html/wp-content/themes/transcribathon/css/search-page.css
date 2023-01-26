@@ -36,13 +36,9 @@
     cursor: pointer;
 }
 #stry-btn {
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
     border-right: none;
 }
 #itm-btn {
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
     border-left: none;
 }
 .num-results {

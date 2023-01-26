@@ -556,6 +556,14 @@ footer._tct_footer {
 }
 /*--------------- end of banner ------------ */
 /*----------------Bubbles(big circular buttons)--*/
+.panel-grid {
+  max-width: 90%;
+  margin: 0 auto;
+}
+.panel-grid .textwidget {
+  max-width: 90vw;
+  margin: 0 auto;
+}
 .bubbles {
   position: relative;
   display: -webkit-box;
@@ -605,6 +613,9 @@ footer._tct_footer {
   height: 180px;
   width: 180px;
   font-size: 20px;
+}
+.entry-content.bubbles a.bubble:hover {
+  color: #fff!important;
 }
 .bubbles .bubble.big i {
   width: 53px;
@@ -698,7 +709,7 @@ footer._tct_footer {
   display: none;
 }
 .widget_headline-widget h3 {
-  font-family: 'Fira Sans Condensed';
+  font-family: var(--h-font-family);
   text-transform: uppercase;
   font-weight: 400;
   letter-spacing: 0.3px;
@@ -721,7 +732,7 @@ footer._tct_footer {
   text-align: center;
 }
 .widget_tct-home-stats-widget .stat-number h3 {
-  font-family: "Fira Sans Condensed", arial, sans-serif;
+  font-family: var(--h-font-family);
   font-size: 40px;
   margin: 0;
 }
@@ -2061,7 +2072,6 @@ div#geo-tagging-map {
   text-decoration: none;
   color: #fff !important;
   padding: 0 8px;
-  border-radius: 4px;
   font-size: 15px;
 }
 .dots {
