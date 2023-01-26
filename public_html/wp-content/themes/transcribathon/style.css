@@ -698,7 +698,7 @@ footer._tct_footer {
   display: none;
 }
 .widget_headline-widget h3 {
-  font-family: 'Fira Sans Condensed';
+  font-family: var(--h-font-family);
   text-transform: uppercase;
   font-weight: 400;
   letter-spacing: 0.3px;
@@ -721,7 +721,7 @@ footer._tct_footer {
   text-align: center;
 }
 .widget_tct-home-stats-widget .stat-number h3 {
-  font-family: "Fira Sans Condensed", arial, sans-serif;
+  font-family: var(--h-font-family);
   font-size: 40px;
   margin: 0;
 }
@@ -2061,7 +2061,6 @@ div#geo-tagging-map {
   text-decoration: none;
   color: #fff !important;
   padding: 0 8px;
-  border-radius: 4px;
   font-size: 15px;
 }
 .dots {

@@ -221,7 +221,7 @@ ul.story-navigation-content-container li {
     position: relative;
     bottom: 21px;
 }
-.start-transcription:hover {
+.entry-content a.start-transcription:hover {
     background: var(--main-color);
     color: #fff!important;
     text-decoration: none;
