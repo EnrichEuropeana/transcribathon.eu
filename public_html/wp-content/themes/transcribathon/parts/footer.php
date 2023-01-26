@@ -26,6 +26,6 @@
 		<a href=<?php echo network_home_url()."terms-of-use/" ?> target= "_blank">Terms of Use</a>
 		<a href=<?php echo network_home_url()."legal-disclosure/" ?> target= "_blank">Legal Disclosure - Impressum</a>
 	</span>
-	<strong class="main-footer-bottom-right">Developed by Facts & Files <?php echo date('Y')?></strong>
+	<strong class="main-footer-bottom-right">Developed by Facts & Files <?php echo date('Y')?>; Version: <?php echo wp_get_theme()->Version;?></strong>
 
 </footer>
