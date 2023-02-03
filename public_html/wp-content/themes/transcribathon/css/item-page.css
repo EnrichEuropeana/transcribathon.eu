@@ -2960,3 +2960,8 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
         color: #0a72cc!important;
     }
 }
+@-moz-document url-prefix() {
+    .form-buttons-right {
+      margin-top: 25px!important;
+    }
+}
