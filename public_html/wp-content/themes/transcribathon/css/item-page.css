@@ -336,6 +336,9 @@ body {
     margin-top: 10px!important;
     padding: 0 25px;
 }
+#location-n-enrichments .location-data-edit-container {
+    display: none!important;
+}
 /*--- Sub Headers ---*/
 /*-- bigger, section titles --*/
 .enrich-header h5 {
