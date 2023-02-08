@@ -989,8 +989,12 @@ ul.topusers li h2 span.teammem {
 }
 /*------------------------------------------------------------------------*/
 /*--------------- Story titles at the bottom of the page -----------------*/
-.storybox-title {
+.storybox-title, .monthStoryContent h1 {
   font-size: 15px;
+  font-family: var(--h-font-family);
+  color: var(--main-color);
+  letter-spacing: 0.025em;
+  font-weight: 500;
 }
 /*-------------------------------- End of Runs --------------------------------------------*/
 /*-------------------------------- Item page ----------------------------------------------*/
