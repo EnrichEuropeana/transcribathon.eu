@@ -455,12 +455,13 @@ function _TCT_solr_search( $atts ) {
                         $content .= "</a></div>";
                     }
                 }
-                $content .= "</div>";
-                $content .= "<div style='clear:both;'></div>";
                 $content .= "<div class='bottom-pag'>";
                     $content .= $pagination;
                 $content .= "</div>";
+                $content .= "</div>";
                 $content .= "<div style='clear:both;'></div>";
+
+
             } else {
                 $content .= "<div class='result-stickers'>";
                    $content .= "<h2> We are sorry! We couldn't find any match for: '" . $q . "'.</h2>";
@@ -470,20 +471,6 @@ function _TCT_solr_search( $atts ) {
 
 
     $content .= "</section>";
-
-
-
-
-    /// TODO MOVE STYLES TO SEPARATE FILE
-    $content .= "<style>
-
-    </style>";
-
-    // Javascript to separate
-    $content .= "<script>
-
-
-    </script>";
 
 
     return $content;
