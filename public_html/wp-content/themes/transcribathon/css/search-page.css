@@ -8,12 +8,14 @@
     width: 16%;
 }
 .result-stickers {
+    position: relative;
     float: right;
     width: 82%;
     background: #fff;
     display: flex;
     flex-wrap: wrap;
     padding-top: 35px;
+    padding-bottom: 35px;
 }
 .str-itm-switch {
     width: 18vw;
@@ -48,7 +50,7 @@
     padding-top: 15px;
     padding-right: 25px;
 }
-.num-results div {
+.num-results .num-found {
     color: var(--main-color);
 }
 .search-page-single-status {
@@ -202,9 +204,9 @@
     font-weight: 600;
 }
 .bottom-pag {
-    margin-left: 18vw;
-    margin-bottom: 10vh;
-    margin-top: 15px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
 }
 .bottom-pag .search-pgntn {
     top: 20px;
