@@ -336,6 +336,9 @@ body {
     margin-top: 10px!important;
     padding: 0 25px;
 }
+#location-n-enrichments .location-data-edit-container {
+    display: none!important;
+}
 /*--- Sub Headers ---*/
 /*-- bigger, section titles --*/
 .enrich-header h5 {
@@ -2955,5 +2958,10 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     }
     .mobilenav-main-link {
         color: #0a72cc!important;
+    }
+}
+@-moz-document url-prefix() {
+    .form-buttons-right {
+      margin-top: 25px!important;
     }
 }
