@@ -284,7 +284,29 @@ function _TCT_get_document_data( $atts ) {
                         $content .= "<div style='padding:2%;'><span class='story-info-s'>CREATOR</span></br>" . str_replace(' || ','</br>', $storyData['dcCreator']) . "</div>";
                     }
                 }
-                $content .= "<div style='padding:2%;'><span class='story-info-s'>DATE</span></br>".substr($storyData['edmBegin'],0,4)."-".substr($storyData['edmEnd'],0,4)."</div>";
+                $storyDate = '';
+                if($storyData['dcDate']) {
+                    $storyDates = array_unique(explode(' || ', $storyData['dcDate']));
+                    $storyDateArr  = [];
+                    foreach($storyDates as $date){
+                        if(substr($date, 0, 4) == 'http'){
+                            // $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
+                            continue;
+                        } else {
+                            // $storyDate .= "<span>" . $date . "</span>";
+                            array_push($storyDateArr, $date);
+                        }
+                    }
+                    sort($storyDateArr);
+                    $endDate = end($storyDateArr);
+                    if(count($storyDateArr) > 1) {
+                        $storyDate = $storyDateArr[0] . ' - ' . $endDate;
+                    } else {
+                        $storyDate = $storyDateArr[0];
+                    }
+                   // var_dump($storyDate);
+                }
+                $content .= "<div style='padding:2%;'><span class='story-info-s'>DATE</span></br>". $storyDate ."</div>";
                 $storyLang = explode(" || ", $storyData['dcLanguage']);
                 $content .= "<div style='padding:2%;'><span class='story-info-s'>LANGUAGE</span></br>".$storyLang[1]."</div>";
                 $content .= "<div style='padding:2%;'><span class='story-info-s'>ITEMS</span></br>".count($storyData['Items'])."</div>";
@@ -402,15 +424,7 @@ function _TCT_get_document_data( $atts ) {
                         if($storyData['dcDate']) {
                             $content .= "<div class='meta-sticker'>";
                                 $content .= "<span class='mb-1'>Date</span>";
-                                $storyDates = array_unique(explode(' || ', $storyData['dcDate']));
-                                foreach($storyDates as $date){
-                                    if(substr($date, 0, 4) == 'http'){
-                                        // $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
-                                        continue;
-                                    } else {
-                                        $content .= "<span class='meta-p'>" . $date . "</span>";
-                                    }
-                                }
+                                $content .= "<span class='meta-p'>" . $storyDate . "</span>";
                             $content .= "</div>";
                         }
                         // Creator
