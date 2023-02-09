@@ -118,7 +118,6 @@ function _TCT_solr_search( $atts ) {
     $pagination = '';
     if(!empty($responseData['docs']) && $responseData['numFound'] > 24) {
         $totalPs = ceil($responseData['numFound'] / 24);
-        var_dump($totalPs);
         $currPs = intval($_GET['ps']);
         $pagination .= "<div class='search-pgntn'>";
         if($currPs == null || $currPs <= 3) {
