@@ -151,10 +151,13 @@ class HtrData
 						return;
 					}
 
+					$transcritpionText = $this->extractPlainTextFromPageXml($transkribusXmlData);
+
 					// save the data
 					$updateData = array(
 						'HtrStatus'         => 'FINISHED',
-						'TranscriptionData' => $transkribusXmlData
+						'TranscriptionData' => $transkribusXmlData,
+						'TranscriptionText' => $transcritpionText
 					);
 
 					$updateQuery = $this->updateItem($id, $updateData);
@@ -167,6 +170,28 @@ class HtrData
 			}
 
 		}
+	}
+
+	public static function extractPlainTextFromPageXml ($xmlString, $break = "\n")
+	{
+    $text = '';
+    $xmlString = str_replace('xmlns=', 'ns=', $xmlString);
+
+    if ($xmlString) {
+    	$xml = new SimpleXMLElement($xmlString);
+    	$textRegions = $xml->xpath('//Page/TextRegion');
+
+    	foreach ($textRegions as $textRegion) {
+        $textLines = $textRegion->xpath('TextLine');
+        foreach ($textLines as $textLine) {
+          $textElement = $textLine->xpath(('TextEquiv/Unicode'));
+          $text .= $textElement[0] . $break;
+        }
+        $text .= $break;
+    	}
+    }
+
+    return $text;
 	}
 
 	protected function updateItem($id, $data)
