@@ -1469,7 +1469,7 @@ if (event.target.id != "tagging-status-indicator") {
         // Source Url
         if($itemData['StoryedmIsShownAt']) {
             $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Source Url</span>";
+                $metaData .= "<p class='mb-1'>Source Url</p>";
                 if(substr($itemData['StoryedmIsShownAt'], 0, 4) == 'http'){
                     $metaData .= "<a class='meta-p' target='_blank' href='".$itemData['StoryedmIsShownAt']."'>" . $itemData['StoryedmIsShownAt'] . "</a>";
                 } else {
