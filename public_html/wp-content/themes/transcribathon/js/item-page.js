@@ -219,7 +219,7 @@ function installEventListeners() {
     jQuery( "#keyword-input" ).autocomplete({
       source: keyWordList,
       delay: 100,
-      minLength: 1
+      minLength: 3
     });
     //console.log(keyWordList);
   });
