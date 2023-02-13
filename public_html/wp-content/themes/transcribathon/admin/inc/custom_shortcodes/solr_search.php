@@ -137,7 +137,7 @@ function _TCT_solr_search( $atts ) {
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
     
-            $pagination .= "<style>.pag-lbl:nth-of-type(".$currPs."){color:#000;font-weight:600;}</style>";
+            $pagination .= "<style>.pag-lbl:nth-of-type(".$currPs."){color:#000;font-weight:500;}</style>";
     
         } else if($currPs > $totalPs - 3) {
             $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-left\"></i>";

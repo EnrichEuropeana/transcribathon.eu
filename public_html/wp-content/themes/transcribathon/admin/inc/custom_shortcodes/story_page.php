@@ -470,6 +470,18 @@ function _TCT_get_document_data( $atts ) {
                             $content .= "</div>";
                             unset($itemIdentifiers);
                         }
+                        // EUropeana Identifier
+                        //Identifier
+                        if($storyData['ExternalRecordId']) {
+                            $content .= "<div class='meta-sticker'>";
+                                $content .= "<span class='mb-1'>Europeana Identifier</span>";
+                                if(substr($storyData['ExternalRecordId'], 0, 4) == 'http'){
+                                    $content .= "<span class='meta-p'><a target='_blank' href='".$storyData['ExternalRecordId']."'>" . substr($storyData['ExternalRecordId'], 0, 45) . "</a></span>";
+                                } else {
+                                    $content .= "<span class='meta-p'>" . $storyData['ExternalRecordId'] . "</span>";
+                                }
+                            $content .= "</div>";
+                        }
 
                         // Document Language
                         if($storyData['dcLanguage']) {

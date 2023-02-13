@@ -39,6 +39,7 @@ var tct_viewer = (function($, document, window) {
 		jQuery('#full-page').click(function() {
 			document.querySelector('#transcription-edit-container').style.display = 'none';
 			document.querySelector('#transcription-view-container').style.display = 'block';
+			document.querySelector('#switch-tr-view i').className = 'fa fa-pencil';
 			toggleFS();
 		});
 		jQuery('#no-text-placeholder').click(function() {
@@ -50,6 +51,7 @@ var tct_viewer = (function($, document, window) {
 			document.querySelector('#transcription-edit-container').style.display = 'block';
 			document.querySelector('#transcription-view-container').style.display = 'none';
 			document.querySelector('#tr-tab').click();
+			document.querySelector('#switch-tr-view i').className = 'fa fa-times';
 			toggleFS();
 		});
 		jQuery('#startDescription').click(function() {

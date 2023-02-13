@@ -2965,3 +2965,8 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
       margin-top: 25px!important;
     }
 }
+.ui-menu {
+    max-height: 300px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
