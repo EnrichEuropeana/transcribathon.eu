@@ -194,16 +194,13 @@ ready(() => {
 <script src="{$textEditorUrl}js/chunk-vendors.8c83230e.js"></script>
 <script src="{$textEditorUrl}js/app.4ab5c3ab.js"></script>
 <script>
-
-
-
-
     window.eventBus.\$on('save', async (data) => {
 
         const payload = {
             ItemId: {$itemId},
             UserId: {$userId},
-            TranscriptionData: data.xml
+            TranscriptionData: data.xml,
+            TranscriptionText: data.text
         };
 
         const sendData = await fetch('{$requestUri}', {
