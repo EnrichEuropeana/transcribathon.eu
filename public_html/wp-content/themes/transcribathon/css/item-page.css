@@ -422,7 +422,12 @@ h6.enrich-headers {
     position: relative;
     width: 91%;
 }
-
+#show-ppl-input {
+    position: relative;
+    font-size: 15px;
+    bottom: 1px;
+    margin-left: 5px;
+}
 .single-person {
     padding: 5px 0px;
     background: #fff;

@@ -2750,7 +2750,13 @@ ready(() => {
         });
         currDescLang.insertAdjacentHTML('beforeend', '<i id="del-desc-lang" class="far fa-times" style="margin-left: 5px;"></i>');
     }
-
+    // People input collapse controller
+    const pplInput = document.querySelector('#show-ppl-input');
+    if(pplInput) {
+        pplInput.addEventListener('click', function() {
+            document.querySelector('#person-input-container').classList.toggle('show');
+        })
+    }
 
     installEventListeners();
     initializeMap();
