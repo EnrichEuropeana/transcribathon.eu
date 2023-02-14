@@ -79,23 +79,23 @@ function installEventListeners() {
       })
     }
     // Add event listener to save all of the tagging
-    const saveAlltags = document.querySelector('#save-all-tags');
-    if(saveAlltags) {
-        saveAlltags.addEventListener('click', function() {
-            if(jQuery('#startdateentry').val().length > 0 || jQuery('#enddateentry').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#item-date-save-button').click()}, 100);
-            }
-            if(jQuery('#person-firstName-input').val().length > 0 || jQuery('#person-lastName-input').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 700);
-            }
-            if(jQuery('#keyword-input').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 1200);
-            }
-            if(jQuery('#link-input-container .link-url-input input').val().length > 0 || jQuery('#link-input-container .link-description-input textarea').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1600);
-            }
-        });
-    }
+    // const saveAlltags = document.querySelector('#save-all-tags');
+    // if(saveAlltags) {
+    //     saveAlltags.addEventListener('click', function() {
+    //         if(jQuery('#startdateentry').val().length > 0 || jQuery('#enddateentry').val().length > 0) {
+    //             setTimeout(()=>{document.querySelector('#item-date-save-button').click()}, 100);
+    //         }
+    //         if(jQuery('#person-firstName-input').val().length > 0 || jQuery('#person-lastName-input').val().length > 0) {
+    //             setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 700);
+    //         }
+    //         if(jQuery('#keyword-input').val().length > 0) {
+    //             setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 1200);
+    //         }
+    //         if(jQuery('#link-input-container .link-url-input input').val().length > 0 || jQuery('#link-input-container .link-description-input textarea').val().length > 0) {
+    //             setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1600);
+    //         }
+    //     });
+    // }
 
     // When the user clicks the button(pen on the image viewer), open the login modal
     jQuery('#lock-login').click(function() {
@@ -631,17 +631,18 @@ function switchItemPageView() {
         fsMapContainer.appendChild(mapEditor);
       }
     }
-    // Move Enrichments to enrichments tab
-    const enrichEditor = document.getElementById('tagging-section');
-    const enrichViewCont = document.getElementById('enrich-view');
-    const enrichFsCont = document.getElementById('tag-tab');
-    if(enrichEditor != null) {
-        if(enrichFsCont.querySelector('#tagging-section') == null) {
-            enrichFsCont.appendChild(enrichEditor);
+    // Move People to People tab
+    const pplEditor = document.getElementById('tagging-section');
+    const pplViewCont = document.getElementById('enrich-view');
+    const pplFsCont = document.getElementById('tag-tab');
+    if(pplEditor != null) {
+        if(pplFsCont.querySelector('#tagging-section') == null) {
+            pplFsCont.appendChild(pplEditor);
         } else {
-            enrichViewCont.appendChild(enrichEditor);
+            pplViewCont.appendChild(pplEditor);
         }
     }
+    // Move
     // Move Metadata and Story Description to metadata fs tab
     const fsMetaCont = document.getElementById('full-v-metadata');
     const normalMetaCont = document.getElementById('meta-left');

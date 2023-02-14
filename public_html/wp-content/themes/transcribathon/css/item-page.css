@@ -428,6 +428,12 @@ h6.enrich-headers {
     bottom: 1px;
     margin-left: 5px;
 }
+#enrich-view #item-page-person-headline {
+    display: block!important;
+}
+#image-view-container #item-page-person-headline {
+    display: none!important;
+}
 .single-person {
     padding: 5px 0px;
     background: #fff;

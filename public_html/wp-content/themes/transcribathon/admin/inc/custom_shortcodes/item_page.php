@@ -565,14 +565,11 @@ if (event.target.id != "tagging-status-indicator") {
         // $enrichmentTab .= "</div>";
         // PERSON ENTRY
         $enrichmentTab .= "<div class='item-page-person-container'>";
-            // $enrichmentTab .= "<div id='item-page-person-headline' class='theme-color collapse-headline collapse-controller' data-toggle='collapse' href='#person-input-container'
-            //                     onClick='jQuery(this).find(\".collapse-icon\").toggleClass(\"fa-caret-circle-up\")
-            //                             jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")'>";
-            //     $enrichmentTab .= "<h6 class='theme-color item-data-input-headline login-required' title='Click to tag a person'>";
-            //         $enrichmentTab .= "People ";
-            //         $enrichmentTab .= "<i style='margin-left:5px;' class='fas fa-plus-circle'></i>";
-            //     $enrichmentTab .= "<i id='people-open' class=\"fas fa-edit\"></i></h6>";
-            // $enrichmentTab .= "</div>";
+            $enrichmentTab .= "<div id='item-page-person-headline' class='theme-color'>";
+                $enrichmentTab .= "<h6 class='theme-color item-data-input-headline login-required' title='Click to tag a person'>";
+                    $enrichmentTab .= "People ";
+                $enrichmentTab .= "<i id='people-open' class=\"fas fa-edit\"></i></h6>";
+            $enrichmentTab .= "</div>";
             // add person form
             if(count($itemData['Persons']) > 0) {
                 $enrichmentTab .= '<div class="collapse person-item-data-container" id="person-input-container" style="position:relative;">';
@@ -1118,7 +1115,7 @@ if (event.target.id != "tagging-status-indicator") {
 
     // Description tab
     $descriptionTab = "";
-    $descriptionTab .= "<div class='item-page-section'>";
+    $descriptionTab .= "<div id='description-editor' class='item-page-section'>";
         $descriptionTab .= "<div class='item-page-section-headline-container'>";
             $descriptionTab .= "<div id='description-collapse-heading' class='theme-color item-page-section-headline'>";
                 $descriptionTab .= "<span class='headline-header'>ENRICHMENTS</span>";
@@ -1991,46 +1988,47 @@ if (event.target.id != "tagging-status-indicator") {
 
             $content .= "<div id='description-container'>";
                 $content .= "<div class='description-view'>";
-                    $content .= "<h6 class='enrich-headers'> Description <i id='description-open' class=\"fas fa-edit\"></i></h6>";
+                    $content .= $descriptionTab;
+                //     $content .= "<h6 class='enrich-headers'> Description <i id='description-open' class=\"fas fa-edit\"></i></h6>";
 
-                    $content .= "<div class='current-description' style='padding-left:24px;'>";
-                        $content .= $itemData['Description'];
-                    $content .= "</div>";
+                //     $content .= "<div class='current-description' style='padding-left:24px;'>";
+                //         $content .= $itemData['Description'];
+                //     $content .= "</div>";
 
-                    $descriptionLanguage = "";
-                    foreach($languages as $language) {
-                        if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
-                            $descriptionLanguage = $language['Name'];
-                        }
-                    }
-                    if($descriptionLanguage != '') {
-                        $content .= "<div class='description-language'>";
-                    } else {
-                        $content .= "<div class='description-language' style='display:none;'>";
-                    }
-                    $content .= "<h6 class='enrich-language'> Language of Description </h6>";
-                    $content .= "<div style='padding-left:24px;'>";
-                   // if($descriptionLanguage != null || $descriptionLanguage != "")
-                        $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
-                    $content .= "</div>";
+                //     $descriptionLanguage = "";
+                //     foreach($languages as $language) {
+                //         if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                //             $descriptionLanguage = $language['Name'];
+                //         }
+                //     }
+                //     if($descriptionLanguage != '') {
+                //         $content .= "<div class='description-language'>";
+                //     } else {
+                //         $content .= "<div class='description-language' style='display:none;'>";
+                //     }
+                //     $content .= "<h6 class='enrich-language'> Language of Description </h6>";
+                //     $content .= "<div style='padding-left:24px;'>";
+                //    // if($descriptionLanguage != null || $descriptionLanguage != "")
+                //         $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
+                //     $content .= "</div>";
+                // $content .= "</div>";
+
+                // $content .= "<div class='type-of-media'>";
+                //     $content .= "<h6 class='enrich-headers'> Document Type <i id='media-open' class=\"fas fa-edit\"></i></h6>";
+                //     $content .= "<div style='padding-left:24px;'>";
+                //         foreach($itemData['Properties'] as $property) {
+                //             if($property['PropertyType'] == "Category") {
+                //                 $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                //             }
+                //         }
+                //     $content .= "</div>";
+                // $content .= "</div>";
                 $content .= "</div>";
 
-                $content .= "<div class='type-of-media'>";
-                    $content .= "<h6 class='enrich-headers'> Type of Media <i id='media-open' class=\"fas fa-edit\"></i></h6>";
-                    $content .= "<div style='padding-left:24px;'>";
-                        foreach($itemData['Properties'] as $property) {
-                            if($property['PropertyType'] == "Category") {
-                                $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
-                            }
-                        }
-                    $content .= "</div>";
+                $content .= "<div id='enrich-view'>";
+                    $content .= $enrichmentTab;
                 $content .= "</div>";
-            $content .= "</div>";
-
-            $content .= "<div id='enrich-view'>";
-                $content .= $enrichmentTab;
-            $content .= "</div>";
-        $content .= "</div>"; // end of enrichment
+            $content .= "</div>"; // end of enrichment
 
         $content .= "</div>"; // end of right side
         $content .= "<div style='clear:both;'></div>";
@@ -2112,14 +2110,14 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "</li>";
                     $content .= "<li>";
                         $content .= "<div id='desc-tab' class='theme-color tablinks' title='Description' onclick='switchItemTab(event, \"description-tab\");'>";
-                            $content .= "<i class='fa fa-book tab-i'></i>";
+                            $content .= "<i class='fa fa-tag tab-i'></i>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['DescriptionStatusColorCode'].";background-color:".$itemData['DescriptionStatusColorCode'].";'></i>";
                             $content .= "<span><b> ENRICHMENTS</b></span></p>";
                         $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
                         $content .= "<div id='tagi-tab' class='theme-color tablinks' title='Enrichments/Tagging' onclick='switchItemTab(event, \"tag-tab\");'>";
-                            $content .= "<i class='fa fa-tag tab-i' aria-hidden='true'></i>";
+                            $content .= "<i class='fas fa-user tab-i' aria-hidden='true'></i>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TaggingStatusColorCode'].";background-color:".$itemData['TaggingStatusColorCode'].";'></i>";
                             $content .= "<span><b> PEOPLE</b></span></p>";
                         $content .= "</div>";
@@ -2153,7 +2151,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $content .= "</div>";
                 // Description Tab
                 $content .= "<div id='description-tab' class='tabcontent' style='display:none;'>";
-                    $content .= $descriptionTab;
+                  //  $content .= $descriptionTab;
                 $content .= "</div>";
                 // Info tab
                 $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
