@@ -369,10 +369,12 @@ h6.enrich-headers {
 }
 .enrich-language {
     height: 30px;
-    padding-left: 25px;
     color: var(--main-color);
     margin: 10px 0px!important;
     font-weight: 500;
+}
+#description-editor i {
+    cursor: pointer;
 }
 /*-- Enrichments --*/
 #description-container {
@@ -383,7 +385,7 @@ h6.enrich-headers {
     flex-direction: column;
     justify-content: space-between;
 }
-.description-view {
+#description-view {
     min-height: 125px;
     display: flex;
     flex-direction: column;
@@ -398,16 +400,25 @@ h6.enrich-headers {
     flex-direction: column;
     justify-content: space-between;
 }
-#enrich-view #keyword-input-container, #enrich-view #link-input-container {
+#description-view .current-description, #description-view .description-language {
+    display: block;
+}
+#description-tab .current-description, #description-tab .description-language,
+#description-tab #doc-type-view {
     display: none!important;
 }
-#enrich-view button{
+#description-view #keyword-input-container, #description-view #link-input-container,
+#description-view #category-checkboxes, #description-view #item-page-description-text,
+#description-view #description-language-selector {
+    display: none!important;
+}
+#enrich-view button, #description-view button{
     display: none;
 }
-#enrich-view .item-date-inner-container {
+#description-view .item-date-inner-container {
     display: none;
 }
-#enrich-view .person-data-edit-container, #enrich-view .link-data-edit-container {
+#enrich-view .person-data-edit-container, #description-view .link-data-edit-container {
     display: none!important;
 }
 #enrich-right .item-page-section-headline-container, #enrich-right .edit-item-date,

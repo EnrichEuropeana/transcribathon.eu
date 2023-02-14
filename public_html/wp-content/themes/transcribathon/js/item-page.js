@@ -642,7 +642,18 @@ function switchItemPageView() {
             pplViewCont.appendChild(pplEditor);
         }
     }
-    // Move
+    // Move Enrichments to Enrichments tab
+    const enrichEditor = document.getElementById('description-editor');
+    const enrichViewCont = document.getElementById('description-view');
+    const enrichFsCont = document.getElementById('description-tab');
+
+    if(enrichEditor != null) {
+        if(enrichFsCont.querySelector('#description-editor') == null) {
+            enrichFsCont.appendChild(enrichEditor);
+        } else {
+            enrichViewCont.appendChild(enrichEditor);
+        }
+    }
     // Move Metadata and Story Description to metadata fs tab
     const fsMetaCont = document.getElementById('full-v-metadata');
     const normalMetaCont = document.getElementById('meta-left');

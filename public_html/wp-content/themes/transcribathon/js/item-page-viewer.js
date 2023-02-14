@@ -128,17 +128,17 @@ var tct_viewer = (function($, document, window) {
 		});
 		jQuery('#date-open').click(function() {
 			toggleFS();
-			document.querySelector('#tagi-tab').click();
+			document.querySelector('#desc-tab').click();
 		});
 		jQuery('#keywords-open').click(function(e) {
 			e.stopPropagation();
 			toggleFS();
-			document.querySelector('#tagi-tab').click();
+			document.querySelector('#desc-tab').click();
 		});
 		jQuery('#links-open').click(function(e) {
 			e.stopPropagation();
 			toggleFS();
-			document.querySelector('#tagi-tab').click();
+			document.querySelector('#desc-tab').click();
 		});
 		jQuery('#people-open').click(function(e) {
 			e.stopPropagation();

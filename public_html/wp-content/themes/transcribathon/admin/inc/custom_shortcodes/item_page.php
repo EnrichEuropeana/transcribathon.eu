@@ -1160,7 +1160,9 @@ if (event.target.id != "tagging-status-indicator") {
         $descriptionTab .= "<div id='item-date-container'>";
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
                 $descriptionTab .= "Document Date ";
-            $descriptionTab .= "<i id='date-open' class=\"fas fa-edit\"></i></h6>";
+                $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
+                $descriptionTab .= "<i id='date-open' class=\"fas fa-edit\"></i>";
+            $descriptionTab .= "</h6>";
             if($itemData['DateStartDisplay'] != null || $itemData['DateEndDisplay'] != null) {
                 $descriptionTab .= "<div class='document-date-container'>";
                     $descriptionTab .= "<div class='date-top'>";
@@ -1238,8 +1240,19 @@ if (event.target.id != "tagging-status-indicator") {
 
         $descriptionTab .= "<div id='description-area' class='description-save collapse show'>";
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
-                $descriptionTab .= "Document Type";
-            $descriptionTab .= "<i class=\"fas fa-edit\"></i></h6>";
+                $descriptionTab .= "Document Type ";
+                $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
+                $descriptionTab .= "<i id='media-open' class=\"fas fa-edit\"></i>";
+            $descriptionTab .= "</h6>";
+
+            // Document type, view only
+            $descriptionTab .= "<div id='doc-type-view'>";
+            foreach($itemData['Properties'] as $property) {
+                if($property['PropertyType'] == "Category") {
+                    $descriptionTab .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                }
+            }
+            $descriptionTab .= "</div>";
 
             $descriptionTab .= "<div id='category-checkboxes' class='login-required'>";
             foreach($categories as $category) {
@@ -1264,8 +1277,32 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .= "</div>";
 
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
-                $descriptionTab .= "Description";
-            $descriptionTab .= "<i class=\"fas fa-edit\"></i></h6>";
+                $descriptionTab .= "Description ";
+                $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
+                $descriptionTab .= "<i id='description-open' class=\"fas fa-edit\"></i>";
+            $descriptionTab .= "</h6>";
+
+            // Description text view only
+            $descriptionTab .= "<div class='current-description'>";
+                $descriptionTab .= $itemData['Description'];
+            $descriptionTab .= "</div>";
+
+            $descriptionLanguage = "";
+            foreach($languages as $language) {
+                if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                    $descriptionLanguage = $language['Name'];
+                }
+            }
+            if($descriptionLanguage != '') {
+                $descriptionTab .= "<div class='description-language'>";
+            } else {
+                $descriptionTab .= "<div class='description-language' style='display:none;'>";
+            }
+            $descriptionTab .= "<h6 class='enrich-language'> Language of Description </h6>";
+            $descriptionTab .= "<div>";
+       
+                $descriptionTab .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
+            $descriptionTab .= "</div></div>";
 
             $descriptionTab .= "<textarea id='item-page-description-text' class='login-required' name='description' rows='4'>";
                 if($itemData['Description'] != null) {
@@ -1306,6 +1343,7 @@ if (event.target.id != "tagging-status-indicator") {
                     }
                 $descriptionTab .= "</select>";
             $descriptionTab .= "</div>";
+            $descriptionTab .= "</div>";
 
                 $descriptionTab .= "<button disabled class='language-tooltip' id='description-update-button' style='float:right'
                                     onClick='updateItemDescription(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")' >";
@@ -1320,7 +1358,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $descriptionTab .= "<div style='clear:both;'></div>";
             $descriptionTab .= "</div>";
             $descriptionTab .= "<div style='clear:both;'></div>";
-        $descriptionTab .= "</div>";
+       // $descriptionTab .= "</div>";
         $descriptionTab .= "<span id='description-update-message'></span>";
 
         // Keywords
@@ -1987,7 +2025,7 @@ if (event.target.id != "tagging-status-indicator") {
             $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
 
             $content .= "<div id='description-container'>";
-                $content .= "<div class='description-view'>";
+                $content .= "<div id='description-view'>";
                     $content .= $descriptionTab;
                 //     $content .= "<h6 class='enrich-headers'> Description <i id='description-open' class=\"fas fa-edit\"></i></h6>";
 
@@ -2015,13 +2053,13 @@ if (event.target.id != "tagging-status-indicator") {
 
                 // $content .= "<div class='type-of-media'>";
                 //     $content .= "<h6 class='enrich-headers'> Document Type <i id='media-open' class=\"fas fa-edit\"></i></h6>";
-                //     $content .= "<div style='padding-left:24px;'>";
-                //         foreach($itemData['Properties'] as $property) {
-                //             if($property['PropertyType'] == "Category") {
-                //                 $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
-                //             }
-                //         }
-                //     $content .= "</div>";
+                    // $content .= "<div style='padding-left:24px;'>";
+                    //     foreach($itemData['Properties'] as $property) {
+                    //         if($property['PropertyType'] == "Category") {
+                    //             $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                    //         }
+                    //     }
+                    // $content .= "</div>";
                 // $content .= "</div>";
                 $content .= "</div>";
 
