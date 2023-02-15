@@ -1300,6 +1300,7 @@ p.mb-1 {
     height: 25px;
     margin-bottom: 20px;
     margin-top: 45px;
+    border-radius: 0!important;
 }
 .panel-right #full-view-map {
     width: 99%;

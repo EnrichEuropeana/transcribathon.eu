@@ -363,7 +363,7 @@ if (event.target.id != "tagging-status-indicator") {
         }
         if($itemData['StoryPlaceName'] != null && $itemData['StoryPlaceName'] != "" && $itemData['StoryPlaceName'] != "NULL") {
             $locationDisplay .= "<div class='location-single story-location'>";
-                $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;margin-right:10px;position:relative;top:1px;filter:saturate(0.4)'>";
+                $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;position:absolute;top:7px;filter:saturate(0.4)'>";
                 $locationDisplay .= "<p><b>" . $itemData['StoryPlaceName'] . "</b> (" . $itemData['StoryPlaceLatitude'] . ", " . $itemData['StoryPlaceLongitude'] . ")</p>";
                 $locationDisplay .= "<p style='font-size:13px;'>Story Location</p>";
             $locationDisplay .= "</div>";
