@@ -373,9 +373,13 @@ h6.enrich-headers {
 }
 .enrich-language {
     height: 30px;
-    color: var(--main-color);
-    margin: 10px 0px!important;
+    padding-left: 25px;
+    color: var(--main-color)!important;
+    margin: 10px 0px 0px!important;
     font-weight: 500;
+}
+.description-language .enrich-language {
+    padding-left: 0;
 }
 #description-editor i {
     cursor: pointer;
@@ -389,11 +393,20 @@ h6.enrich-headers {
     flex-direction: column;
     justify-content: space-between;
 }
+#enrich-right .item-data-input-headline {
+    margin: 0 0 10px!important;
+}
 #description-view {
     min-height: 125px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+}
+#description-view #item-date-container, #description-view #doc-type-area,
+#description-view #description-area, #description-view #item-page-keyword-container,
+#description-view #item-page-link-container, #enrich-view #tagging-section {
+    min-height: 64px;
+    margin-bottom: 10px;
 }
 #enrich-view #tagging-section {
 

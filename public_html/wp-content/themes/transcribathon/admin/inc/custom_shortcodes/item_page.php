@@ -2152,7 +2152,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<div id='desc-tab' class='theme-color tablinks' title='Description' onclick='switchItemTab(event, \"description-tab\");'>";
                             $content .= "<i class='fa fa-tag tab-i'></i>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['DescriptionStatusColorCode'].";background-color:".$itemData['DescriptionStatusColorCode'].";'></i>";
-                            $content .= "<span><b> ENRICHMENTS</b></span></p>";
+                            $content .= "<span><b> DESCRIPTION</b></span></p>";
                         $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
