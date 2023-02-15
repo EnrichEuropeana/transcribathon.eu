@@ -637,7 +637,7 @@ function switchItemPageView() {
     const pplFsCont = document.getElementById('tag-tab');
     if(pplEditor != null) {
         if(pplFsCont.querySelector('#tagging-section') == null) {
-            pplFsCont.appendChild(pplEditor);
+            pplFsCont.insertBefore(pplEditor, pplFsCont.querySelector('#ppl-auto-e-container'));
         } else {
             pplViewCont.appendChild(pplEditor);
         }

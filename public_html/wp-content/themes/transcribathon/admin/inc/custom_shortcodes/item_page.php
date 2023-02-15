@@ -2141,9 +2141,9 @@ if (event.target.id != "tagging-status-indicator") {
                 // $enrichmentTab;
                     $content .= "<div id='ppl-auto-e-container'>";
                         $content .= "<h3 id='ppl-verify' style='display: none;'> Verify Automatically Identified Persons </h3>";
-                        $content .= "<div id='ppl-auto-enrich'>";
+                        $content .= "<div id='ppl-auto-enrich'></div>";
                     $content .= "</div>";
-                    $content .= "<div id='accept-ppl-enrich' style='display:none;'> SUBMIT </div></div>";
+                    $content .= "<div id='accept-ppl-enrich' style='display:none;'> SUBMIT </div>";
 
                 $content .= "</div>";
                 // Help tab

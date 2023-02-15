@@ -1867,7 +1867,6 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 .panel-bottom #description-tab {
     padding-right: 25px;
-    overflow: hidden;
 }
 .panel-bottom #tr-history {
     display: none;
@@ -2610,11 +2609,11 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     top: unset;
     position: relative;
 }
-.data-popout #item-date-container, .data-popout .item-page-person-container,
+/* .data-popout #item-date-container, .data-popout .item-page-person-container,
 .data-popout #item-page-keyword-container, .data-popout #item-page-link-container {
     position: relative;
     bottom: 30px;
-}
+} */
 .data-popout #location-position i {
     left: 105px;
     top: 8px;
