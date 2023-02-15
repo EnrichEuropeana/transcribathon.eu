@@ -1158,7 +1158,7 @@ if (event.target.id != "tagging-status-indicator") {
         /// Document Date, before on enrichments tab
 
         $descriptionTab .= "<div id='item-date-container'>";
-            $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
+            $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required' onClick='this.parentElement.classList.toggle(\"show\");'>";
                 $descriptionTab .= "Document Date ";
                 $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
                 $descriptionTab .= "<i id='date-open' class=\"fas fa-edit\"></i>";
@@ -2024,7 +2024,7 @@ if (event.target.id != "tagging-status-indicator") {
             $content .= "</div>";
             $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
 
-            $content .= "<div id='description-container'>";
+          //  $content .= "<div id='description-container'>";
                 $content .= "<div id='description-view'>";
                     $content .= $descriptionTab;
                 //     $content .= "<h6 class='enrich-headers'> Description <i id='description-open' class=\"fas fa-edit\"></i></h6>";
@@ -2066,7 +2066,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $content .= "<div id='enrich-view'>";
                     $content .= $enrichmentTab;
                 $content .= "</div>";
-            $content .= "</div>"; // end of enrichment
+           // $content .= "</div>"; // end of enrichment
 
         $content .= "</div>"; // end of right side
         $content .= "<div style='clear:both;'></div>";
