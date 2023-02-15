@@ -408,15 +408,8 @@ h6.enrich-headers {
     min-height: 64px;
     margin-bottom: 10px;
 }
-#enrich-view #tagging-section {
-
-}
 #description-view .current-description, #description-view .description-language {
     display: block;
-}
-#description-tab .current-description, #description-tab .description-language,
-#description-tab #doc-type-view {
-    display: none!important;
 }
 #description-view #keyword-input-container, #description-view #link-input-container,
 #description-view #category-checkboxes, #description-view #item-page-description-text,
@@ -610,6 +603,14 @@ h6.enrich-headers {
 }
 #item-date-container.show .item-date-inner-container, #item-date-container.show #item-date-save-button {
     display: inline-block;
+}
+#item-date-container.show .document-date-container, #doc-type-area.show #doc-type-view,
+#description-area.show .current-description, #description-area.show .description-language {
+    display: none;
+}
+#item-date-container .document-date-container, #doc-type-area #doc-type-view,
+#description-area .current-description, #description-area .description-language {
+    display: block;
 }
 /* --- Metadata --- */
 .single-meta {
@@ -1075,6 +1076,7 @@ p.mb-1 {
 }
 #description-area.show #item-page-description-text {
     display: block;
+    margin-bottom: 5px;
 }
 #description-area.show #description-language-selector {
     display: inline-flex;
