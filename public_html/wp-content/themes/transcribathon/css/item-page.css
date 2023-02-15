@@ -598,15 +598,17 @@ h6.enrich-headers {
 #item-data-section .document-date-container{
     display: none;
 }
-#item-date-container .item-date-inner-container, #item-date-container #item-date-save-button {
+#item-date-container .item-date-inner-container, #item-date-container #item-date-save-button,
+#item-date-container .creation-date-container {
     display: none;
 }
-#item-date-container.show .item-date-inner-container, #item-date-container.show #item-date-save-button {
+#item-date-container.show .item-date-inner-container, #item-date-container.show #item-date-save-button,
+#item-date-container.show .creation-date-container {
     display: inline-block;
 }
 #item-date-container.show .document-date-container, #doc-type-area.show #doc-type-view,
 #description-area.show .current-description, #description-area.show .description-language {
-    display: none;
+    display: none!important;
 }
 #item-date-container .document-date-container, #doc-type-area #doc-type-view,
 #description-area .current-description, #description-area .description-language {
@@ -3025,3 +3027,189 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+/*-- enrichments addition of checkboxes --*/
+/* Enrichment Changes */
+.person-desc-left, .person-desc-right {
+    min-height: 75px;
+}
+.person-desc-left, .person-desc-right, .map-wiki-left, .map-wiki-right {
+    display: inline-block;
+    width: 48.5%;
+}
+.person-desc-right {
+    float: right;
+    position: relative;
+}
+.person-desc-right i {
+    position: absolute;
+    right: -29px;
+    bottom: 35px;
+    color: var(--main-color);
+}
+.person-role-input {
+    /* width: 70%; */
+    /* margin: 0 auto; */
+    line-height: 1.3em!important;
+    height: inherit;
+}
+.person-role-input label {
+    font-size: 12px;
+    font-family: var(--p-font-family);
+    position: relative;
+    bottom: 2px;
+    /* margin-left: 5px; */
+    color: var(--main-color);
+}
+.place-wiki-left {
+    width: 48.5%;
+    float: left;
+}
+.place-wiki-right {
+    width: 48.5%;
+    float: right;
+}
+.date-checkmark {
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    right: 15px;
+    height: 18px;
+    width: 18px;
+    border: 2px solid var(--main-color);
+}
+.loc-checkmark {
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    height: 18px;
+    width: 18px;
+    border: 2px solid var(--main-color);
+}
+.loc-check-right {
+    display: inline-block;
+    width: 55%;
+    margin-right: 49px;
+    float: right;
+}
+.loc-checkbox-container, .date-checkbox-container {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 10px;
+    color: var(--main-color);
+    font-family: var(--h-font-family);
+}
+.loc-checkbox-container:hover input ~ .loc-checkmark, .date-checkbox-container:hover input ~ .date-checkmark {
+    background-color: #eee;
+}
+.loc-type-check::after, .date-type-check::after {
+    border-radius: 0;
+    border: 2px solid #0a72cc;
+}
+.loc-checkmark:after, .date-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+.loc-checkbox-container input:checked ~ .loc-checkmark, .date-checkbox-container input:checked ~ .date-checkmark {
+    background-color: var(--main-color);
+}
+.loc-checkbox-container input, .date-checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.date-checkbox-container i {
+    left: 25px;
+    position: relative;
+    margin-left: 2px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.loc-checkbox-container input:checked ~ .loc-checkmark:after, .date-checkbox-container input:checked ~ .date-checkmark:after {
+    display: block;
+}
+.loc-checkbox-container .loc-checkmark:after, .date-checkbox-container .date-checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.person-role-input input {
+    display: none;
+}
+.person-role-input label {
+    cursor: pointer;
+    letter-spacing: 00.025em;
+    font-family: var(--p-font-family);
+}
+.person-role-input label span {
+    position: relative;
+    line-height: 20px;
+    font-family: var(--h-font-family);
+    letter-spacing: 00.025em;
+    font-size: 15px;
+}
+.person-role-input span:before,
+.person-role-input span:after {
+    content: '';
+}
+.person-role-input span:before {
+    border: 2px solid var(--main-color);
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    top: 2.5px;
+} 
+/* .person-role-input span:after {
+    background: var(--main-color);
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    transition: 300ms;
+    opacity: 0;
+} */
+.person-role-input span:after {
+    display: inline-block;
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    opacity: 0;
+}
+.person-role-input input:checked+span:after {
+    opacity: 1;
+}
+.person-role-input input:checked+span:before {
+    background-color: var(--main-color);
+}
+.creation-date-container {
+    display: inline-block;
+}
+/* .loc-type {
+    display: inline-block;
+    margin-top: 10px;
+}
+.loc-type label {
+    margin: 0 10px;
+} */

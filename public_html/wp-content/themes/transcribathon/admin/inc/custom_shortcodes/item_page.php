@@ -410,14 +410,27 @@ if (event.target.id != "tagging-status-indicator") {
                 $mapEditor .= "<div style='clear:both;'></div>";
             $mapEditor .= "</div>";
 
-            $mapEditor .= "<div id='location-input-geonames-search-container' class='location-input-container location-search-container' style='margin-top:9px;min-height:25px;'>";
-                $mapEditor .= "<label>WikiData Reference:<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i></label>";
-                $mapEditor .= "<input type='text' id='lgns' class='wiki-input' palceholder='&nbsp&nbsp&nbsp e.g.: Q64' name=''>";
-            $mapEditor .= "</div>";
-
             $mapEditor .= "<div class='location-input-description-container location-input-container'>";
                 $mapEditor .= "<label>Description:<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Add more information to this location, e.g. the building name, or its significance to the item'></i></label>";
                 $mapEditor .= "<textarea rows='2' style='resize:none;' class='gsearch-form' type='text' id='ldsc' placeholder='' name=''></textarea>";
+            $mapEditor .= "</div>";
+            $mapEditor .= "<div style='clear:both;'></div>";
+
+            $mapEditor .= "<div class='loc-type'>";
+                $mapEditor .= "<label class='loc-checkbox-container'>";
+                    $mapEditor .= "<span> Creation Place <i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Is this location the place where the document was created?'></i>";
+                        // $mapEditor .= "<input class='loc-type-check' type='checkbox' name='CreationPlace' value='Creation Place'>";
+                    $mapEditor .= "</span>";
+                    $mapEditor .= "<span class='loc-check-right'>";
+                        $mapEditor .= "<input class='loc-type-check' type='checkbox' name='CreationPlace' value='Creation Place'>";
+                        $mapEditor .= "<span class='loc-checkmark'></span>";
+                    $mapEditor .= "</span>";
+                $mapEditor .= "</label>";
+            $mapEditor .= "</div>";
+
+            $mapEditor .= "<div id='location-input-geonames-search-container' class='location-input-container location-search-container' style='margin-top:9px;min-height:25px;'>";
+                $mapEditor .= "<label>WikiData Reference:<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i></label>";
+                $mapEditor .= "<input type='text' id='lgns' class='wiki-input' palceholder='&nbsp&nbsp&nbsp e.g.: Q64' name=''>";
             $mapEditor .= "</div>";
 
             $mapEditor .= "<div style='clear:both;'></div>";
@@ -503,13 +516,47 @@ if (event.target.id != "tagging-status-indicator") {
                     $enrichmentTab .= '<input type="text" id="person-lastName-input" class="input-response person-input-field" name="" placeholder="&nbsp Last Name" style="width:48.5%;float:right;">';
                 $enrichmentTab .= '</div>';
 
-                $enrichmentTab .= "<div class='person-description-input'>";
-                    $enrichmentTab .= "<input id='person-description-input-field' type='text' placeholder='&nbsp Add more info to this person...' title='e.g. their profession, or their significance to the dcument' class='input-response person-input-field'>";
+                // Enrich Person Changes
+                $enrichmentTab .= "<div class='person-input-desc-cont'>";
+                    $enrichmentTab .= "<div class='person-desc-left' style='margin-bottom: 0!important;'>";
+                        $enrichmentTab .= "<div class='person-description-input'>";
+                            $enrichmentTab .= "<input id='person-description-input-field' type='text' placeholder='&nbsp Add more info to this person...' title='e.g. their profession, or their significance to the document' class='input-response person-input-field'>";
+                        $enrichmentTab .= "</div>";
+                        $enrichmentTab .= "<div class='person-description-input'>";
+                            $enrichmentTab .= "<input id='person-wiki-input-field' type='text' placeholder='&nbsp Add Wikidata Id to this person...' title='e.g. Wikidata Title Id' class='input-response person-input-field'>";
+                        $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "<div class='person-desc-right'>";
+                        $enrichmentTab .= "<div class='person-role-input' style='margin-bottom: 0!important;'>";
+                            $enrichmentTab .= "<label id='document-creator'>";
+                                $enrichmentTab .= "<input type='radio' id='doc-creator' name='person-role' value='document-creator' required>";
+                                $enrichmentTab .= "<span> Document Creator</span>";
+                            $enrichmentTab .= "</label>";
+                            $enrichmentTab .= "</br>";
+                            $enrichmentTab .= "<label id='important-person'>";
+                                $enrichmentTab .= "<input type='radio' id='main-actor' name='person-role' value='main-actor'>";
+                                $enrichmentTab .= "<span> Person Addressed </span>";
+                            $enrichmentTab .= "</label>";
+                            $enrichmentTab .= "</br>";
+                            $enrichmentTab .= "<label id='others'>";
+                                $enrichmentTab .= "<input type='radio' id='other-ppl' name='person-role' value='other-people'>";
+                                $enrichmentTab .= "<span> Person Mentioned </span>";
+                            $enrichmentTab .= "</label>";
+                            $enrichmentTab .= "</br>";
+                        $enrichmentTab .= "</div>";
+                        $enrichmentTab .= "<i class='fas fa-question-circle'></i>";
+                    $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "<div style='clear:both;'></div>";
                 $enrichmentTab .= "</div>";
 
-                $enrichmentTab .= '<div class="person-description-input">';
-                    $enrichmentTab .= '<input id="person-wiki-input-field" type="text" placeholder="&nbsp Add Wikidata Id to this person..." title="e.g. Wikidata Title Id" class="input-response person-input-field">';
-                $enrichmentTab .= '</div>';
+
+                // $enrichmentTab .= "<div class='person-description-input'>";
+                //     $enrichmentTab .= "<input id='person-description-input-field' type='text' placeholder='&nbsp Add more info to this person...' title='e.g. their profession, or their significance to the dcument' class='input-response person-input-field'>";
+                // $enrichmentTab .= "</div>";
+
+                // $enrichmentTab .= '<div class="person-description-input">';
+                //     $enrichmentTab .= '<input id="person-wiki-input-field" type="text" placeholder="&nbsp Add Wikidata Id to this person..." title="e.g. Wikidata Title Id" class="input-response person-input-field">';
+                // $enrichmentTab .= '</div>';
 
                 $enrichmentTab .= '<div class="person-location-birth-inputs">';
                     $enrichmentTab .= '<input type="text" id="person-birthPlace-input" class="input-response person-input-field" name="" placeholder="&nbsp Birth Location">';
@@ -924,7 +971,7 @@ if (event.target.id != "tagging-status-indicator") {
                                     $descriptionTab .= "</div>";
                                 }
                             }
-                        }
+                        } 
                     $descriptionTab .= "</div>";
                 $descriptionTab .= "</div>";
             $descriptionTab .= "</div>";
@@ -1003,6 +1050,14 @@ if (event.target.id != "tagging-status-indicator") {
                         $descriptionTab .= "<input type='text' id='enddateentry' class='login-required datepicker-input-field' placeholder='dd/mm/yyyy'>";
                     $descriptionTab .= "</div>";
                 }
+            $descriptionTab .= "</div>";
+            
+            // Date type checkmark
+            $descriptionTab .= "<div class='creation-date-container'>";
+                $descriptionTab .= "<label class='date-checkbox-container'> Creation Date <i class='fas fa-question-circle' title='Is this the date when the document was created?'></i>";
+                    $descriptionTab .= "<input class='date-type-check' type='checkbox' name='CreationDate' value='Creation Date'>";
+                    $descriptionTab .= "<span class='date-checkmark'></span>";
+                $descriptionTab .= "</label>";
             $descriptionTab .= "</div>";
     
             $descriptionTab .= "<button class='item-page-save-button login-required' id='item-date-save-button'
