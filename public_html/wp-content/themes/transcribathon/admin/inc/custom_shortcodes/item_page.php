@@ -77,6 +77,10 @@ function _TCT_mtr_transcription($atts)
     $trCheck = json_decode(checkActiveTranscription($itemData['ItemId']));
     $activeTr = $trCheck->data->TranscriptionSource;
 
+    // Get English translation of story description
+    $engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
+
+
     // Build required components for the page
     $content = "";
 
@@ -996,6 +1000,13 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div id='current-tr-view' style='padding-top: 11px;'>";
                 $editorTab .= $currentTranscription['Text'];
             $editorTab .= "</div>";
+            // Transcription Translation
+            $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;'>";
+                $editorTab .= "<i class='far fa-caret-circle-down' style='margin-right:8px;font-size:17px;'></i>";
+                $editorTab .= "English Translation";
+            $editorTab .= "</h4>";
+            $editorTab .= "<div id='translated-tr' style='display:none;'></div>";
+
             $editorTab .= $trHistory;
             $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";
         $editorTab .= "</div>";
