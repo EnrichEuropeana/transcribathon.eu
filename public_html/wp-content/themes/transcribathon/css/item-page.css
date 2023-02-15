@@ -1051,6 +1051,21 @@ p.mb-1 {
     outline: none;
     border-radius: 0;
 }
+#doc-type-area #category-checkboxes {
+    display: none;
+}
+#doc-type-area.show #category-checkboxes {
+    display: block;
+}
+#description-area #item-page-description-text, #description-area #description-language-selector {
+    display: none;
+}
+#description-area.show #item-page-description-text {
+    display: block;
+}
+#description-area.show #description-language-selector {
+    display: inline-flex;
+}
 .transcription-toggle {
     width: 100%;
     height: 20px;

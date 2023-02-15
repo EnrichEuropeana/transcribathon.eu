@@ -1158,9 +1158,9 @@ if (event.target.id != "tagging-status-indicator") {
         /// Document Date, before on enrichments tab
 
         $descriptionTab .= "<div id='item-date-container'>";
-            $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required' onClick='this.parentElement.classList.toggle(\"show\");'>";
+            $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
                 $descriptionTab .= "Document Date ";
-                $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
+                $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
                 $descriptionTab .= "<i id='date-open' class=\"fas fa-edit\"></i>";
             $descriptionTab .= "</h6>";
             if($itemData['DateStartDisplay'] != null || $itemData['DateEndDisplay'] != null) {
@@ -1238,10 +1238,10 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .= "<div style='clear:both;'></div>";
         $descriptionTab .= "</div>";
 
-        $descriptionTab .= "<div id='description-area' class='description-save collapse show'>";
+        $descriptionTab .= "<div id='doc-type-area' class='description-save'>";
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
                 $descriptionTab .= "Document Type ";
-                $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
+                $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
                 $descriptionTab .= "<i id='media-open' class=\"fas fa-edit\"></i>";
             $descriptionTab .= "</h6>";
 
@@ -1275,10 +1275,11 @@ if (event.target.id != "tagging-status-indicator") {
             }
             $descriptionTab .= "<div style='clear:both;'></div>";
             $descriptionTab .= "</div>";
-
+        $descriptionTab .= "</div>";
+        $descriptionTab .= "<div id='description-area'>";
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
                 $descriptionTab .= "Description ";
-                $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
+                $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
                 $descriptionTab .= "<i id='description-open' class=\"fas fa-edit\"></i>";
             $descriptionTab .= "</h6>";
 
@@ -1310,7 +1311,7 @@ if (event.target.id != "tagging-status-indicator") {
                 }
             $descriptionTab .= "</textarea>";
 
-            $descriptionTab .= "<div style='margin-top:6px;'>";
+            // $descriptionTab .= "<div style='margin-top:6px;'>";
 
             // New position for Description Language
             $descriptionTab .= "<div id='description-language-selector' class='language-selector-background language-selector login-required'>";
@@ -1343,7 +1344,7 @@ if (event.target.id != "tagging-status-indicator") {
                     }
                 $descriptionTab .= "</select>";
             $descriptionTab .= "</div>";
-            $descriptionTab .= "</div>";
+            
 
                 $descriptionTab .= "<button disabled class='language-tooltip' id='description-update-button' style='float:right'
                                     onClick='updateItemDescription(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")' >";
@@ -1356,10 +1357,11 @@ if (event.target.id != "tagging-status-indicator") {
                 $descriptionTab .= "</div>";
 
                 $descriptionTab .= "<div style='clear:both;'></div>";
-            $descriptionTab .= "</div>";
-            $descriptionTab .= "<div style='clear:both;'></div>";
-       // $descriptionTab .= "</div>";
-        $descriptionTab .= "<span id='description-update-message'></span>";
+            // $descriptionTab .= "</div>";
+            // $descriptionTab .= "<div style='clear:both;'></div>";
+            // $descriptionTab .= "</div>";
+            // $descriptionTab .= "<span id='description-update-message'></span>";
+        $descriptionTab .= "</div>";
 
         // Keywords
         $descriptionTab .= "<div id='item-page-keyword-container'>";
