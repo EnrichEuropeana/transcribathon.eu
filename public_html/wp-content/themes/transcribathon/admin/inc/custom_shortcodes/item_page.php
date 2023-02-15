@@ -780,7 +780,7 @@ if (event.target.id != "tagging-status-indicator") {
             $trHistory .= "<h4 id='transcription-history-collapse-heading' class='theme-color item-page-section-headline'>";
                 $trHistory .= "TRANSCRIPTION HISTORY";
             $trHistory .= "</h4>";
-            $trHistory .= "<i class='far fa-caret-circle-down collapse-icon theme-color' style='font-size:17px; float:left; margin-right:8px; margin-top:9px;'></i>";
+            $trHistory .= "<i class='far fa-caret-circle-down collapse-icon theme-color' style='font-size:17px; margin-left:8px; margin-top:9px;'></i>";
         $trHistory .= "</div>";
         $trHistory .= "<div style='clear:both;'></div>";
 
@@ -1002,10 +1002,10 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "</div>";
             // Transcription Translation
             $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;'>";
-                $editorTab .= "<i class='far fa-caret-circle-down' style='margin-right:8px;font-size:17px;'></i>";
                 $editorTab .= "English Translation";
+                $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
             $editorTab .= "</h4>";
-            $editorTab .= "<div id='translated-tr' style='display:none;'></div>";
+            $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
 
             $editorTab .= $trHistory;
             $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";

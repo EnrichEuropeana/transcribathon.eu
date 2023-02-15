@@ -3078,7 +3078,7 @@ ready(() => {
                         function(response) {
                             let engTranslation = JSON.parse(response);
         
-                            translatedCont.innerHTML = engTranslation.content;
+                            translatedCont.querySelector('p').innerHTML = engTranslation.content;
                             translatedCont.classList.add('show');
                             translatedCont.classList.add('translated');
         
