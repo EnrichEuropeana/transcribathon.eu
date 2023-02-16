@@ -3078,6 +3078,7 @@ ready(() => {
 
 
 });
+
 function deleteAutoEnrichment(enrichmentId, event) {
     jQuery.post(
         home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
