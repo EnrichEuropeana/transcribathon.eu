@@ -253,7 +253,7 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutoria
 add_image_size( 'news-image', 300, 200, true );
 // Image settings
 add_image_size( 'tutorial-image', 1600, 800, true );
-
+// TODO Rewrite into switch statement
 // Embedd custom Javascripts and CSS
 function embedd_custom_javascripts_and_css() {
     global $post;
@@ -381,6 +381,9 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css', array(), $themeVersion);
             wp_enqueue_script( 'jquery' );
             wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
+        }
+        if(is_page('ration-cards')) {
+            wp_enqueue_script( 'rc-script', CHILD_TEMPLATE_DIR . '/js/ration-cards.js', array(), $themeVersion);
         }
     }
 
