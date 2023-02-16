@@ -233,7 +233,7 @@ require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_import.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/story_page.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/solr_search.php'); // Solr test client
-//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/get_word_document.php'); // Curently not used
+require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/ration_cards.php'); // Zagreb Ration Cards
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/compare_transcriptions.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_htr.php'); // Adds HTR Editor
@@ -289,7 +289,7 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js');
         }
 
-        if(!is_page('item-page-htr') && !is_page('import-htr-transcription') && !is_page('item') && !is_page('transcription-comparison') && !is_page('story')) {
+        if(!is_page('item-page-htr') && !is_page('import-htr-transcription') && !is_page('item') && !is_page('transcription-comparison') && !is_page('story') && !is_page('ration-cards')) {
             wp_enqueue_script( 'jquery' );
             /* custom JS and CSS*/
             /* openseadragon */
@@ -330,7 +330,7 @@ function embedd_custom_javascripts_and_css() {
             wp_enqueue_style( 'searchstyle', CHILD_TEMPLATE_DIR . '/css/search-page.css', array(), $themeVersion);
             wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css', array(), $themeVersion);
         }
-        if(is_page('item')) {
+        if(is_page('item') || is_page('ration-cards')) {
             wp_dequeue_style('responsive-lightbox-featherlight');
             wp_dequeue_style('responsive-lightbox-featherlight-gallery');
             wp_dequeue_style('siteorigin-panels-front');
