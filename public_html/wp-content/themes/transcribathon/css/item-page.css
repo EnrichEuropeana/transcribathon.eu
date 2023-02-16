@@ -3588,13 +3588,25 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 .res-single {
     border: 0.5px solid #eee;
-    position: relative;
     padding: 5px 10px;
 }
-.res-single i {
+.res-single:hover {
+    background-color: #0a72cc;
+}
+#m-address-res, #shop-loc-res, #landlord-loc-res {
     position: absolute;
-    right: 10px;
-    top: calc(50% - 10px);
+    top: 60px;
+    background-color: #fff;
+    overflow-y: auto;
+    z-index: 999;
+}
+.res-single p {
+    font-size: 10px!important;
+    margin: 0!important;
+}
+.res-single:hover p {
+    color: #fff;
+    font-size: 12px;
 }
 #rc-form i {
     cursor: pointer;

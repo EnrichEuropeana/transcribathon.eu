@@ -3,9 +3,9 @@ var network_home_url = WP_URLs.network_home_url;
 
 
 // Ration Cards get address from mapbox and save place
-function getRCLocation(query, description, locName) {
+function getRCLocation(query, description, locName, autoCompleteContainer) {
     let source = null;
-    let resContainer = document.querySelector('#rc-loc-result');
+    let resContainer = document.querySelector(autoCompleteContainer);
     const showLocCont = document.querySelector('#show-saved-loc');
     let itemIde = parseInt(document.querySelector('#rc-item-id').textContent);
     let userIde = parseInt(document.querySelector('#rc-user-id').textContent);
@@ -42,8 +42,8 @@ function getRCLocation(query, description, locName) {
             }
             let newEl = document.createElement('div');
             newEl.classList.add('res-single');
-            newEl.innerHTML = `<p>${element.place_name}, ${elWiki}, ${element.center}<i class='fas fa-save'></i></p>`;
-            newEl.querySelector('i').addEventListener('click', function() {
+            newEl.innerHTML = `<p>${element.place_name}, ${elWiki}, ${element.center}</p>`;
+            newEl.addEventListener('click', function() {
 
                 jQuery('#rc-place-spinner-container').css('display', 'block')
                 const lat = element.center[1].toString();
@@ -372,7 +372,7 @@ ready(() => {
             let description = 'Submitter Address/ Adresa Domacinstva';
             let locName = `${locOneStreet.value}, ${locOneNumb.value}`;
     
-            getRCLocation(queryLoc, description, locName);
+            getRCLocation(queryLoc, description, locName, '#m-address-res');
     
             document.querySelector('#submitter-place').textContent = locOneStreet.value;
             document.querySelector('#house-nr').textContent = 'Kbr. ' + locOneNumb.value;
@@ -387,7 +387,7 @@ ready(() => {
             let queryLoc = `Zagreb, ${lLordStreet.value}`;
             let description = 'Property owner Address/ Adresa Kucevlasnika';
     
-            getRCLocation(queryLoc, description, lLordStreet.value);
+            getRCLocation(queryLoc, description, lLordStreet.value, '#landlord-loc-res');
     
             document.querySelector('#llord-place').textContent = lLordStreet.value;
         })
@@ -405,7 +405,7 @@ ready(() => {
             let description = 'Shop Address/ Adresa Trgovine'
             let locName = `${shopName.value}, ${shopStreet.value}`;
     
-            getRCLocation(queryLoc, description, locName);
+            getRCLocation(queryLoc, description, locName, '#shop-loc-res');
     
             document.querySelector('#tr-shop-name').textContent = shopName.value;
             document.querySelector('#tr-shop-place').textContent = shopStreet.value;

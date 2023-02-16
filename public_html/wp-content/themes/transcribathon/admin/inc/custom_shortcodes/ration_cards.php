@@ -2009,6 +2009,15 @@ $formTr .= "</div>";
                     $content .= "<div style='clear:both;'></div>";
                     // Tab menu
                     $content .= '<ul id="item-tab-list" class="tab-list" style="list-style: none;">';
+
+                    $content .= "<li>";
+                    $content .= "<div class='theme-color tablinks' title='Tutorial'
+                        onclick='switchItemTab(event, \"help-tab\")'>";
+                    $content .= '<i class="fas fa-file-spreadsheet"></i>';
+                    $content .= "<p class='tab-h it'><span><b>RATION CARD</b></span></p>";
+                    $content .= "</div>";
+                    $content .= "</li>";
+
                     $content .= "<li>";
                     $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
                         onclick='switchItemTab(event, \"editor-tab\")'>";
@@ -2047,13 +2056,6 @@ $formTr .= "</div>";
                         onclick='switchItemTab(event, \"info-tab\")'>";
                     $content .= '<i class="fa fa-info-circle tab-i"></i>';
                     $content .= "<p class='tab-h it'><span><b> STORY INFO</b></span></p>";
-                    $content .= "</div>";
-                    $content .= "</li>";
-                    $content .= "<li>";
-                    $content .= "<div class='theme-color tablinks' title='Tutorial'
-                        onclick='switchItemTab(event, \"help-tab\")'>";
-                    $content .= '<i class="fas fa-file-spreadsheet"></i>';
-                    $content .= "<p class='tab-h it'><span><b>RATION CARD</b></span></p>";
                     $content .= "</div>";
                     $content .= "</li>";
                     $content .= '</ul>';
@@ -2171,7 +2173,7 @@ $formTr .= "</div>";
                                     $content .= "<td class='btn-col'>&nbsp</td>";
                                 $content .= "</tr>";
                                 $content .= "<tr>";
-                                    $content .= "<td class='rc-first-col mid-part'><input type='text' placeholder='Ulica' id='m-address'></td>";
+                                    $content .= "<td class='rc-first-col mid-part' style='position:relative;'><input type='text' placeholder='Ulica' id='m-address'><div id='m-address-res'></div></td>";
                                     $content .= "<td class='rc-second-col'><input type='text' id='regnumb'></td>";
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;'><span class='left-half'><input type='text' placeholder='Prezime' id='submitter-lname'></span>
                                         <span class='right-half'><input type='text' placeholder='Ime' id='submitter-fname'></span></td>";
@@ -2194,7 +2196,7 @@ $formTr .= "</div>";
                                 $content .= "<tr>";
                                     $content .= "<td class='rc-first-col'> &nbsp </td>";
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
-                                    $content .= "<td class='rc-third-col'><input type='text' id='landlord-loc' placeholder='Stan'></td>";
+                                    $content .= "<td class='rc-third-col' style='position:relative;'><input type='text' id='landlord-loc' placeholder='Stan'><div id='landlord-loc-res'></div></td>";
                                     $content .= "<td class='btn-col'><i id='l-lord-add' class='fas fa-search'></i></td>";
                                 $content .= "</tr>";
                             $content .= "</table>";
@@ -2232,13 +2234,14 @@ $formTr .= "</div>";
                                 $content .= "</form>";
                             $content .= "</div>";
                             // Shop address
-                            $content .= "<div id='shop-place'>";
+                            $content .= "<div id='shop-place' style='position:relative;'>";
                                 $content .= "<p> Zivezne namirnice nabavljat cu:</p>";
                                 $content .= "<label for='shop-name'>U radnji:</label>";
                                 $content .= "<input type='text' name='shop-name' id='shop-name'>";
                                 $content .= "<label for='shop-loc'>ulica:</label>";
                                 $content .= "<input type='text' name='shop-loc' id='shop-loc'>";
                                 $content .= "<i class='fas fa-search' id='shop-loc-btn'></i>";
+                                $content .= "<div id='shop-loc-res'></div>";
                             $content .= "</div>";
 
                             // Document date
