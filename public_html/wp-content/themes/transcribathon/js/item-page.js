@@ -954,14 +954,14 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
             },
             // Check success and create confirmation message
             function(response) {
-
+                currentTranscription = currentTranscription.replace(/\s+/g, '');
+            
                 var amount = newTranscriptionLength - currentTranscription.length
                 if (amount > 0) {
                     amount = amount;
                 } else {
                     amount = 0;
                 }
-
                 scoreData = {
                     ItemId: itemId,
                     UserId: userId,
