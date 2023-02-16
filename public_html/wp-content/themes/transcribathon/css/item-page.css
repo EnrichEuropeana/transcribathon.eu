@@ -3424,3 +3424,178 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     position: relative;
     bottom: 2px;
 }
+/* Ration Cards CSS */
+.rc-top-address {
+    width: 100%;
+    position: relative;
+}
+#rc-form input, #rc-form input:focus-visible {
+    border-radius: 0%!important;
+    outline: none;
+    color: #000;
+}
+#rc-form input:focus-visible {
+    border: 0.5px solid #000;
+}
+#rc-form i {
+    color: #0a72cc;
+}
+.rc-top-address tr {
+    height: 30px;
+}
+#rc-form h3 {
+    margin-bottom: 20px;
+}
+.rc-top-address td {
+    text-align: center;
+    height: inherit;
+}
+/* .rc-top-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40%;
+    max-width: 300px;
+}
+.rc-top-left input {
+    padding: 0;
+    border: none;
+    width: 100%;
+} */
+.reg-num {
+    position: absolute;
+    width: 100px;
+    left: 50%;
+    text-align: center;
+}
+.reg-num input {
+    width: 50px;
+}
+.rc-top-right {
+    width: 40%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    max-width: 300px;
+}
+.rc-title {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: var(--p-font-family);
+    margin-bottom: 25px;
+}
+#rc-date {
+    margin-top: 25px;
+}
+#shop-place {
+    margin-top: 25px;
+}
+#shop-tr-place {
+    margin-bottom: 20px;
+}
+.loc-name {
+    font-weight: 500;
+}
+.left-half {
+    float: left;
+    width: 50%;
+}
+.right-half {
+    float: right;
+    width: 50%;
+}
+.rc-first-col {
+    width: 42%;
+    display: inline-block;
+}
+.rc-second-col {
+    width: 11%;
+    display: inline-block;
+    margin: 0 8px;
+}
+.rc-second-col input, .rc-first-col input, .rc-third-col input, #rc-table td input {
+    width: 100%;
+}
+.rc-third-col {
+    width: 43%;
+    display: inline-block;
+}
+#kbr {
+    width: 60%;
+    margin-left: 10px;
+}
+#rc-table td {
+    display: inline-block;
+    width: 22%;
+    text-align: center;
+}
+.rc-person-second-col {
+    width: 8%!important;
+}
+.rc-list-head td {
+    font-size: 13px;
+}
+.rc-list-td {
+    position: relative;
+}
+#shop-place input {
+    margin: 0 5px;
+    width: 34%;
+}
+.btn-col {
+    width: 3%!important;
+}
+#rc-place-one {
+    margin-left: 10px;
+    position: relative;
+    left: 3px;
+}
+.top-part {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+.mid-part {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+.bot-part {
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+#m-address {
+    width: 90%;
+}
+#rc-date-entry {
+    margin-left: 8px;
+}
+#rc-date i {
+    position: relative;
+    left: 7px;
+    top: 1px;
+}
+#rc-date {
+    position: relative;
+}
+.rc-list-display td {
+    text-align: left!important;
+}
+#rc-loc-result {
+    margin: 25px 0;
+    position: relative;
+}
+.res-single {
+    border: 0.5px solid #eee;
+    position: relative;
+    padding: 5px 10px;
+}
+.res-single i {
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 10px);
+}
+#rc-form i {
+    cursor: pointer;
+}

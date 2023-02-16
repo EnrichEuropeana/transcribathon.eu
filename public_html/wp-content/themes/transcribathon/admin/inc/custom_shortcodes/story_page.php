@@ -37,6 +37,12 @@ function _TCT_get_document_data( $atts ) {
     // }
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
+    // Change path if it's ration card
+    $itemPath = 'item';
+    if(str_contains($storyData['dcTitle'], 'Potrošačka kartica')) {
+        $itemPath = 'ration-cards';
+    }
+
     /////////////////////////
     $numbPhotos = count($storyData['Items']);
     // $numbSlides = floor($numbPhotos / 9);
@@ -73,7 +79,8 @@ function _TCT_get_document_data( $atts ) {
     $content .= "</section>";
 
         /* New- Start Transcription button */
-        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/item/?item=".$storyData['Items'][$randomItem]['ItemId']."' style='font-family:\"Dosis\";margin-top:6px;'><b>🖉  Start Transcription</b></a>";
+
+        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/" . $itemPath . "/?item=".$storyData['Items'][$randomItem]['ItemId']."' style='font-family:\"Dosis\";margin-top:6px;'><b>🖉  Start Transcription</b></a>";
 
         $content .= "<div id='total-storypg' class='storypg-container'>";
             $content .= "<div class='main-storypg'>";
@@ -83,7 +90,7 @@ function _TCT_get_document_data( $atts ) {
 
                     $content .= "<div class='story-description-left'>";
                     //    $content .= "<div id='desc-img-wrap'>";
-                    $content .= "<a href='".home_url()."/documents/story/item/?item=".$storyData['Items'][$randomItem]['ItemId']."'><img class=\"description-img\" src='".$imgDescriptionLink."' alt=\"story-img\"></a>";
+                    $content .= "<a href='".home_url()."/documents/story/" . $itemPath . "/?item=".$storyData['Items'][$randomItem]['ItemId']."'><img class=\"description-img\" src='".$imgDescriptionLink."' alt=\"story-img\"></a>";
                     unset($imgDescriptionLink);
                     //    $content .= "</div>";
 
@@ -369,7 +376,7 @@ function _TCT_get_document_data( $atts ) {
                                                     var el = document.createElement('div');
                                                     el.className = 'marker savedMarker';
                                                     var popup = new mapboxgl.Popup({offset: 25, closeButton: false})
-                                                    .setHTML('<div class=\"popupWrapper\"><div class=\"name\">' + (place.Name || \"\") + '</div><div class=\"comment\">' + (place.Comment || \"\") + '</div>' + '<a class=\"item-link\" href=\"' + home_url + '/documents/story/item/?item=' + marker.ItemId + '\">' + marker.Title + '</a></div></div>');
+                                                    .setHTML('<div class=\"popupWrapper\"><div class=\"name\">' + (place.Name || \"\") + '</div><div class=\"comment\">' + (place.Comment || \"\") + '</div>' + '<a class=\"item-link\" href=\"' + home_url + '/documents/story/" . $itemPath . "/?item=' + marker.ItemId + '\">' + marker.Title + '</a></div></div>');
                                                     bounds.extend([place.Longitude, place.Latitude]);
                                                     new mapboxgl.Marker({element: el, anchor: 'bottom'})
                                                     .setLngLat([place.Longitude, place.Latitude])

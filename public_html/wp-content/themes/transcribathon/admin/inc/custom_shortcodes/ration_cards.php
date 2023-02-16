@@ -1383,37 +1383,37 @@ $formTr .= "</div>";
         $descriptionTab .= "<span id='description-update-message'></span>";
     $descriptionTab .= "</div>"; // end of 'item-page-section'
 
-    // Image Slider
-    $numOfPhotos = count($itemImages);
-    // Get the image of the Current Item
-    $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
+    // // Image Slider
+    // $numOfPhotos = count($itemImages);
+    // // Get the image of the Current Item
+    // $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
 
-    $allImages = [];
+    // $allImages = [];
 
-    for($x = 0; $x < $numOfPhotos; $x++) {
-        $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
-        $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
+    // for($x = 0; $x < $numOfPhotos; $x++) {
+    //     $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
+    //     $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
 
-        if($sliderImg['height'] == null) {
-            $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
-        }
+    //     if($sliderImg['height'] == null) {
+    //         $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
+    //     }
 
-        array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || ' . $isActive));
-    }
+    //     array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || ' . $isActive));
+    // }
 
-    $imageSlider = "";
-    $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
-    $imageSlider .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
-    $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
-    $imageSlider .= "<div id='current-itm' style='display:none;'>" . $startingSlide . "</div>";
-    $imageSlider .= "<div id='img-slider'>";
-        $imageSlider .= "<div id='slider-container'>";
-            $imageSlider .= "<button class='prev-slide' type='button' aria-label='Previous'><i class='fas fa-chevron-left'></i></button>";
-            $imageSlider .= "<button class='next-slide' type='button' aria-label='Next'><i class='fas fa-chevron-right'></i></button>";
-            $imageSlider .= "<div id='inner-slider'></div>";
-            $imageSlider .= "<div id='dot-indicators'></div>";
-        $imageSlider .= "</div>";
-    $imageSlider .= "</div>";
+    // $imageSlider = "";
+    // $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
+    // $imageSlider .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
+    // $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
+    // $imageSlider .= "<div id='current-itm' style='display:none;'>" . $startingSlide . "</div>";
+    // $imageSlider .= "<div id='img-slider'>";
+    //     $imageSlider .= "<div id='slider-container'>";
+    //         $imageSlider .= "<button class='prev-slide' type='button' aria-label='Previous'><i class='fas fa-chevron-left'></i></button>";
+    //         $imageSlider .= "<button class='next-slide' type='button' aria-label='Next'><i class='fas fa-chevron-right'></i></button>";
+    //         $imageSlider .= "<div id='inner-slider'></div>";
+    //         $imageSlider .= "<div id='dot-indicators'></div>";
+    //     $imageSlider .= "</div>";
+    // $imageSlider .= "</div>";
 
 
     // Metadata
@@ -1662,8 +1662,9 @@ $formTr .= "</div>";
 
     //$content .= "<div id='main-section'>";
         // Build Page Layout
-    $content .= "<section id='image-slider-section' style='padding:0;'>";
-        $content .= $imageSlider;
+    $content .= "<section id='image-slider-section' style='padding:0;height:50px;'>";
+        $content .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
+       // $content .= $imageSlider;
         //$content .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
     $content .= "</section>";
 
