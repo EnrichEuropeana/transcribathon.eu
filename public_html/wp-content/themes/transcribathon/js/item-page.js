@@ -2943,46 +2943,42 @@ ready(() => {
     // Submit Location Enrichments
     const locSubmit = document.querySelector('#accept-loc-enrich');
     if(locSubmit) {
-        const enrichLocArr = [];
+        //const enrichLocArr = [];
         locSubmit.addEventListener('click', function() {
             let acceptedEnrich = document.querySelector('#loc-auto-enrich').querySelectorAll('.accept');
             for(let enrichment of acceptedEnrich) {
                 console.log(enrichment);
                 let singlEnrichment = {
-                    Name: enrichment.querySelector('.enrich-label').textContent,
-                    Type: enrichment.querySelector('.ann-type').textContent,
-                    WikiData: enrichment.querySelector('.ann-id').textContent,
-                    StoryId: null,
-                    ItemId: itemId,
-                    ExternalId: enrichment.querySelector('.ext-id').textContent
+                    'Name': enrichment.querySelector('.enrich-label').textContent,
+                    'Type': enrichment.querySelector('.ann-type').textContent,
+                    'WikiData': enrichment.querySelector('.ann-id').textContent,
+                    'StoryId': null,
+                    'ItemId': itemId,
+                    'ExternalAnnotationId': enrichment.querySelector('.ext-id').textContent
                 }
-                enrichLocArr.push(singlEnrichment);
-            }
-            console.log(enrichLocArr);
 
-            data = {
-                'enrichments': enrichLocArr
-            }
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'data': singlEnrichment,
+                    'url': 'http://tp_api_v2/v2/autoenrichments',
+                    'token': 'yes'
+                  },
+                  function(response) {
+                    console.log(response);
+                    // var response = JSON.parse(response);
+                    // console.log(response);
+              
+                  });
 
-            console.log(data);
-            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                'type': 'POST',
-                'data': data,
-                'url': 'http://tp_api_v2/v2/autoenrichments',
-                'token': 'yes'
-              },
-              function(response) {
-                console.log(response);
-                // var response = JSON.parse(response);
-                // console.log(response);
-          
-              });
+                //enrichLocArr.push(singlEnrichment);
+            }
+            //   });
         })
     }
     // Submit Ppl Enrichments
     const pplSubmit = document.querySelector('#accept-ppl-enrich');
     if(pplSubmit) {
-        const enrichPplArr = [];
+        //const enrichPplArr = [];
         pplSubmit.addEventListener('click', function() {
             let acceptedEnrich = document.querySelector('#ppl-auto-enrich').querySelectorAll('.accept');
             for(let enrichment of acceptedEnrich) {
@@ -2993,29 +2989,23 @@ ready(() => {
                     WikiData: enrichment.querySelector('.ann-id').textContent,
                     StoryId: null,
                     ItemId: itemId,
-                    ExternalId: enrichment.querySelector('.ext-id').textContent
+                    ExternalAnnotationId: enrichment.querySelector('.ext-id').textContent
                 }
-                enrichPplArr.push(singlEnrichment);
+                
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'data': singlEnrichment,
+                    'url': 'http://tp_api_v2/v2/autoenrichments',
+                    'token': 'yes'
+                  },
+                  function(response) {
+                    console.log(response);
+                    // var response = JSON.parse(response);
+                    // console.log(response);
+              
+                  });
             }
-            console.log(enrichPplArr);
 
-            data = {
-                'enrichments': enrichPplArr 
-            }
-
-            console.log(data);
-            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                'type': 'POST',
-                'data': data,
-                'url': 'http://tp_api_v2/v2/autoenrichments',
-                'token': 'yes'
-              },
-              function(response) {
-                console.log(response);
-                // var response = JSON.parse(response);
-                // console.log(response);
-          
-              });
         })
     }
     // Submit Story Enrichments
@@ -3032,29 +3022,23 @@ ready(() => {
                     WikiData: enrichment.querySelector('.ann-id').textContent,
                     StoryId: stryId,
                     ItemId: null,
-                    ExternalId: enrichment.querySelector('.ext-id').textContent
+                    ExternalAnnotationId: enrichment.querySelector('.ext-id').textContent
                 }
-                enrichStoryArr.push(singlEnrichment);
+                
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'data': singlEnrichment,
+                    'url': 'http://tp_api_v2/v2/autoenrichments',
+                    'token': 'yes'
+                  },
+                  function(response) {
+                    console.log(response);
+                    // var response = JSON.parse(response);
+                    // console.log(response);
+              
+                  });
             }
-            console.log(enrichStoryArr);
 
-            data = {
-                'enrichments': enrichStoryArr 
-            }
-
-            console.log(data);
-            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                'type': 'POST',
-                'data': data,
-                'url': 'http://tp_api_v2/v2/autoenrichments',
-                'token': 'yes'
-              },
-              function(response) {
-                console.log(response);
-                // var response = JSON.parse(response);
-                // console.log(response);
-          
-              });
         })
     }
 
@@ -3094,3 +3078,15 @@ ready(() => {
 
 
 });
+function deleteAutoEnrichment(enrichmentId, event) {
+    jQuery.post(
+        home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
+          type: 'DELETE',
+          url: 'http://tp_api_v2/v2/autoenrichments/' + enrichmentId,
+          token: 'yes'
+        },
+        function(response) {
+            console.log(response);
+            event.target.parentElement.remove();
+        });
+}
