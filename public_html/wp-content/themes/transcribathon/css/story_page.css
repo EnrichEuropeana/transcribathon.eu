@@ -286,7 +286,7 @@ ul.story-navigation-content-container li {
 .storypg-container h1 {
     color: var(--main-color)!important;
     font-weight: 700;
-    font-size: 1.6rem!important;
+    font-size: 20px!important;
     margin-top: 0!important;
     margin-bottom: 16px;
 }
