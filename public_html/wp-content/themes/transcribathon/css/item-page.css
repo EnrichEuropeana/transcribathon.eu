@@ -3425,6 +3425,9 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     bottom: 2px;
 }
 /* Ration Cards CSS */
+#rc-form, #rc-form table, #rc-form tr, #rc-form td {
+    vertical-align: middle!important;
+}
 .rc-top-address {
     width: 100%;
     position: relative;
@@ -3491,6 +3494,19 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 #shop-place {
     margin-top: 25px;
 }
+#shop-place label {
+    display: inline-block;
+    width: 49%;
+}
+#shop-name {
+    width: 55%;
+}
+#shop-loc {
+    width: 65%;
+}
+#shop-loc-btn {
+    margin-left: 5px;
+}
 #shop-tr-place {
     margin-bottom: 20px;
 }
@@ -3523,7 +3539,8 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #kbr {
     width: 60%;
-    margin-left: 10px;
+    position: absolute;
+    right: 40px;
 }
 #rc-table td {
     display: inline-block;
@@ -3539,17 +3556,14 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .rc-list-td {
     position: relative;
 }
-#shop-place input {
-    margin: 0 5px;
-    width: 34%;
-}
 .btn-col {
     width: 3%!important;
 }
 #rc-place-one {
     margin-left: 10px;
-    position: relative;
-    left: 3px;
+    position: absolute;
+    right: 20px;
+    top: 7px;
 }
 .top-part {
     border-top: 1px solid #ccc;
@@ -3567,6 +3581,8 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #m-address {
     width: 90%;
+    position: absolute;
+    right: 10px;
 }
 #rc-date-entry {
     margin-left: 8px;
@@ -3595,10 +3611,15 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #m-address-res, #shop-loc-res, #landlord-loc-res {
     position: absolute;
-    top: 60px;
     background-color: #fff;
     overflow-y: auto;
     z-index: 999;
+}
+#m-address-res {
+    top: 60px;
+}
+#landlord-loc-res {
+    top: 25px;
 }
 .res-single p {
     font-size: 10px!important;
@@ -3607,7 +3628,58 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .res-single:hover p {
     color: #fff;
     font-size: 12px;
+    cursor: pointer;
 }
 #rc-form i {
     cursor: pointer;
+}
+.edit-delete {
+    margin-left: 3px;
+}
+.edit-delete i {
+    font-size: 12px;
+    margin: 0 5px;
+}
+#edit-shop-container, #edit-llord-container, #edit-subm-container {
+    display: inline-block;
+    font-size: unset;
+}
+#edit-subm-container {
+    position: absolute;
+    right: 15px;
+}
+#edit-shop-container {
+    position: absolute;
+    right: 0;
+}
+#m-address-check, #kbr-check, #landlord-check, #shop-check {
+    position: absolute;
+    color: #61e02f!important;
+    cursor: default!important;
+}
+#m-address-check {
+    top: 6px;
+    right: 15px;
+}
+#kbr-check {
+    top: 6px;
+    right: 45px;
+}
+#landlord-check {
+    top: 6px;
+    right: 5px;
+}
+#shop-loc {
+    position: absolute!important;
+    right: 20px!important;
+    top: -3px!important;
+}
+#shop-loc-btn {
+    position: absolute!important;
+    right: 0!important;
+    top: 4px;
+}
+#shop-check {
+    right: 25px;
+    top: 4px;
 }

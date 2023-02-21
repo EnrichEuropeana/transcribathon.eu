@@ -1877,6 +1877,7 @@ function deleteItemData(type, id, itemId, section, userId) {
       'url': TP_API_HOST + '/tp-api/' + type + '/' + id
     },
     function(response) {
+        console.log(response);
       switch (section) {
         case "place":
             loadPlaceData(itemId, userId);

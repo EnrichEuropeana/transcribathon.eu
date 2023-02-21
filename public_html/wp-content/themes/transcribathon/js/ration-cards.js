@@ -6,16 +6,20 @@ var network_home_url = WP_URLs.network_home_url;
 function getRCLocation(query, description, locName, autoCompleteContainer) {
     let source = null;
     let resContainer = document.querySelector(autoCompleteContainer);
-    const showLocCont = document.querySelector('#show-saved-loc');
     let itemIde = parseInt(document.querySelector('#rc-item-id').textContent);
     let userIde = parseInt(document.querySelector('#rc-user-id').textContent);
     resContainer.innerHTML = '';
     const requestUri = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?country=hr&proximity=15.96%2C45.81&types=place%2Caddress%2Ccountry&access_token=pk.eyJ1IjoiZmFuZGYiLCJhIjoiY2pucHoybmF6MG5uMDN4cGY5dnk4aW80NSJ9.U8roKG6-JV49VZw5ji6YiQ`;
     //const requestUri = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?types=place%2Caddress%2Ccountry&access_token=pk.eyJ1IjoiZmFuZGYiLCJhIjoiY2pucHoybmF6MG5uMDN4cGY5dnk4aW80NSJ9.U8roKG6-JV49VZw5ji6YiQ`;
     
+    resContainer.parentElement.querySelector('.spinner-container').style.display = 'block';
+
     fetch(requestUri).then(response => response.json()).then(data => {
         source = data.features;
         console.log(source);
+
+        resContainer.parentElement.querySelector('.spinner-container').style.display = 'none';
+
         source.forEach(element => {
             let wikiCode = '';
             let wikiName = '';
@@ -45,7 +49,8 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
             newEl.innerHTML = `<p>${element.place_name}, ${elWiki}, ${element.center}</p>`;
             newEl.addEventListener('click', function() {
 
-                jQuery('#rc-place-spinner-container').css('display', 'block')
+                resContainer.parentElement.querySelector('.spinner-container').style.display = 'block';
+              //  jQuery('#rc-place-spinner-container').css('display', 'block')
                 const lat = element.center[1].toString();
                 const lon = element.center[0].toString();
 
@@ -77,6 +82,7 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
                     },
                     // Check success and create confirmation message
                     function(response) {
+                        console.log(response);
                         if(document.querySelector('#location-input-section').style.display == 'block') {
                             document.querySelector('#location-input-section').style.display = 'none';
                         }
@@ -93,31 +99,26 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
                         },
                         // Check success and create confirmation message
                         function(response) {
-                            jQuery('#rc-place-spinner-container').css('display', 'none')
+                            resContainer.parentElement.querySelector('.spinner-container').style.display = 'none';
+                            
+                            newEl.parentElement.style.display = 'none';
+
+                            loadPlaceData(itemIde, userIde);
+                        
+                            loadRcPlaceData(itemIde, userIde);
                         })
             
-                        loadPlaceData(itemIde, userIde);
+
                         if (locationCompletion == "Not Started") {
                             changeStatus(itemIde, "Not Started", "Edit", "LocationStatusId", 2, "#fff700", 4)
                         }
-                        let newPlace = document.createElement('div');
-                        newPlace.innerHTML = 
-                            `<div class='location-single'>` +
-                                `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
-                                `<p><span class='loc-name'>${locName}</span> (${element.center})</p>` + 
-                                `<p style='margin-top:0px;font-size:13px;'>Description: ${description} </p>` +
-                                `<p style='margin-top:0px;font-size:13px;'>Wikidata Reference: <a href='http://wikidata.org/wiki/${wikiCode}'` +
-                                ` style='text-decoration:none;' target='_blank'>${elWiki}</a></p>` +
-                            `</div>`;
-
-
-                        showLocCont.appendChild(newPlace);
 
                     });
                 });
                 
             })
             resContainer.appendChild(newEl);
+            resContainer.style.display = 'block';
         })
     });
 
@@ -352,6 +353,165 @@ function saveRcPerson(firstName, lastName, description) {
     });
 }
 
+// Load Rc places
+function loadRcPlaceData(itemId, userId) {
+    // Get new location list
+    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+        'type': 'GET',
+        'url': TP_API_HOST + '/tp-api/places?ItemId=' + itemId
+    },
+    function(response) {
+        var response = JSON.parse(response);
+        var allPlaces = JSON.parse(response.content);
+        let submPlace = {};
+        let lLordPlace = {};
+        let shopPlace = {};
+        console.log(allPlaces);
+
+        for(let pl of allPlaces) {
+            if(pl.Comment == 'Submitter Address/ Adresa Domacinstva') {
+                submPlace = pl;
+            } else if (pl.Comment == 'Property owner Address/ Adresa Kucevlasnika') {
+                lLordPlace = pl;
+            } else if (pl.Comment == 'Shop Address/ Adresa Trgovine') {
+                shopPlace = pl;
+            }
+        }
+
+        // Submitter address -add delete button after saving it
+        if(Object.keys(submPlace).length > 0) {
+            // let editSubmBtn = document.querySelector('#edit-subm');
+            document.querySelector('#rc-place-one').style.display = 'none';
+            document.querySelector('#edit-subm-container').style.display = 'inline-block';
+            document.querySelector('#m-address-check').style.display = 'inline-block';
+            document.querySelector('#kbr-check').style.display ='inline-block';
+
+            // Fill the input with existing data
+            let submAddressArr = submPlace.Name.split(', ');
+            document.querySelector('#m-address').value = submAddressArr[0];
+            document.querySelector('#m-address').setAttribute('disabled', true);
+            document.querySelector('#kbr').value = submAddressArr[1];
+            document.querySelector('#kbr').setAttribute('disabled', true);
+
+            let deleteSubmBtn = document.querySelector('#del-subm');
+
+            deleteSubmBtn.addEventListener('click', function() {
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'DELETE',
+                    'url': TP_API_HOST + '/tp-api/places/' + submPlace.PlaceId
+                    },
+                    function(response) {
+                        document.querySelector('#m-address').value = '';
+                        document.querySelector('#m-address').removeAttribute('disabled');
+                        document.querySelector('#m-address-check').style.display = 'none';
+                        document.querySelector('#kbr').value = '';
+                        document.querySelector('#kbr').removeAttribute('disabled');
+                        document.querySelector('#kbr-check').style.display = 'none';
+                        document.querySelector('#rc-place-one').style.display = 'inline-block';
+                        document.querySelector('#edit-subm-container').style.display = 'none';
+
+                        loadPlaceData(itemId, userId);
+                });
+            })
+
+            // editSubmBtn.addEventListener('click', function() {
+
+            //     data = {
+            //         Name: locationName,
+            //         Latitude: latitude,
+            //         Longitude: longitude,
+            //         Comment: description,
+            //         WikidataName: wikidata[0],
+            //         WikidataId: wikidata[1]
+            //     }
+
+            //     var dataString= JSON.stringify(data);
+      
+            //     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+            //         'type': 'POST',
+            //         'url': TP_API_HOST + '/tp-api/places/' + placeId,
+            //         'data': data
+            //     },
+            //     // Check success and create confirmation message
+            //     function(response) {
+            //     });
+
+            // })
+        }
+
+        // Landlord address - add delete button after saving
+        if(Object.keys(lLordPlace).length > 0) {
+
+            document.querySelector('#l-lord-add').style.display = 'none';
+            document.querySelector('#edit-llord-container').style.display = 'inline-block';
+            document.querySelector('#landlord-check').style.display = 'inline-block';
+            // Fill the input with existing data and disable it
+            document.querySelector('#landlord-loc').value = lLordPlace.Name;
+            document.querySelector('#landlord-loc').setAttribute('disabled', true);
+
+            let deleteLLordBtn = document.querySelector('#del-llord');
+
+            deleteLLordBtn.addEventListener('click', function() {
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'DELETE',
+                    'url': TP_API_HOST + '/tp-api/places/' + lLordPlace.PlaceId
+                    },
+                    function(response) {
+                        document.querySelector('#landlord-loc').value = '';
+                        document.querySelector('#landlord-loc').removeAttribute('disabled');
+                        document.querySelector('#landlord-check').style.display = 'none';
+                        document.querySelector('#l-lord-add').style.display = 'inline-block';
+                        document.querySelector('#edit-llord-container').style.display = 'none';
+
+                        loadPlaceData(itemId, userId);
+                });
+            })
+
+        }
+
+        // Shop address - add delete button after saving
+        if(Object.keys(shopPlace).length > 0) {
+
+            document.querySelector('#shop-loc-btn').style.display = 'none';
+            document.querySelector('#edit-shop-container').style.display = 'inline-block';
+            document.querySelector('#shop-check').style.display = 'inline-block';
+            document.querySelector('#shop-name-check').style.display = 'inline-block';
+            // Fill the input with existing data and disable it
+            let shopAddressArr = shopPlace.Name.split(', ');
+            document.querySelector('#shop-name').value = shopAddressArr[0];
+            document.querySelector('#shop-name').setAttribute('disabled', true);
+            document.querySelector('#shop-loc').value = shopAddressArr[1];
+            document.querySelector('#shop-loc').setAttribute('disabled', true);
+
+
+            let deleteShopBtn = document.querySelector('#del-shop');
+
+            deleteShopBtn.addEventListener('click', function() {
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'DELETE',
+                    'url': TP_API_HOST + '/tp-api/places/' + shopPlace.PlaceId
+                    },
+                    function(response) {
+                        document.querySelector('#shop-loc').value = '';
+                        document.querySelector('#shop-loc').removeAttribute('disabled');
+                        document.querySelector('#shop-name').value = '';
+                        document.querySelector('#shop-name').removeAttribute('disabled');
+                        document.querySelector('#shop-check').style.display = 'none';
+                        document.querySelector('#shop-name-check').style.display = 'none';
+                        document.querySelector('#shop-loc-btn').style.display = 'inline-block';
+                        document.querySelector('#edit-shop-container').style.display = 'none';
+
+                        loadPlaceData(itemId, userId);
+                });
+            })
+
+        }
+       
+    });
+}
+
+
+
 // Declaration of replacement for jQuery document.ready, it runs the check if DOM has loaded until it loads
 var ready = (callback) => {
     if (document.readyState != "loading") callback();
@@ -360,6 +520,12 @@ var ready = (callback) => {
 
 // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
 ready(() => {
+
+    // Check if there are already locations
+    let itemId = parseInt(document.querySelector('#rc-item-id').textContent);
+    let userId = parseInt(document.querySelector('#rc-user-id').textContent);
+    
+    loadRcPlaceData(itemId, userId);
 
     // Ration Cards Javascript
     // Submitter Address
@@ -373,6 +539,12 @@ ready(() => {
             let locName = `${locOneStreet.value}, ${locOneNumb.value}`;
     
             getRCLocation(queryLoc, description, locName, '#m-address-res');
+
+            locOneStreet.setAttribute('disabled', true);
+            locOneNumb.setAttribute('disabled', true);
+           // document.querySelector('#rc-place-one').classList = 'fas fa-check';
+            // document.querySelector('#rc-place-one').style.display = 'none';
+            // document.querySelector('#edit-subm-container').style.display = 'inline-block';
     
             document.querySelector('#submitter-place').textContent = locOneStreet.value;
             document.querySelector('#house-nr').textContent = 'Kbr. ' + locOneNumb.value;
@@ -388,6 +560,8 @@ ready(() => {
             let description = 'Property owner Address/ Adresa Kucevlasnika';
     
             getRCLocation(queryLoc, description, lLordStreet.value, '#landlord-loc-res');
+
+            lLordStreet.setAttribute('disabled', true);
     
             document.querySelector('#llord-place').textContent = lLordStreet.value;
         })
@@ -401,14 +575,20 @@ ready(() => {
 
     if(shopBtn) {
         shopBtn.addEventListener('click', function() {
-            let queryLoc = `${shopStreet.value}`;
-            let description = 'Shop Address/ Adresa Trgovine'
-            let locName = `${shopName.value}, ${shopStreet.value}`;
+            if(shopName.value == '' || shopStreet.value == '') {
+                window.alert('Please fil both Shop Name and Shop Street!')
+            } else {
+                let queryLoc = `${shopStreet.value}`;
+                let description = 'Shop Address/ Adresa Trgovine'
+                let locName = `${shopName.value}, ${shopStreet.value}`;
+        
+                getRCLocation(queryLoc, description, locName, '#shop-loc-res');
     
-            getRCLocation(queryLoc, description, locName, '#shop-loc-res');
-    
-            document.querySelector('#tr-shop-name').textContent = shopName.value;
-            document.querySelector('#tr-shop-place').textContent = shopStreet.value;
+                shopStreet.setAttribute('disabled', true);
+        
+                document.querySelector('#tr-shop-name').textContent = shopName.value;
+                document.querySelector('#tr-shop-place').textContent = shopStreet.value;
+            }
         })
     }
 

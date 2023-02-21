@@ -1,8 +1,8 @@
 <?php
 
 /*
-Shortcode: item_page_htr
-Description: Gets item data and builds the item page without htr editor
+Shortcode: ration_cards
+Description: Gets item data and builds the ration cards page for Zagreb material
 */
 
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
@@ -1662,7 +1662,7 @@ $formTr .= "</div>";
 
     //$content .= "<div id='main-section'>";
         // Build Page Layout
-    $content .= "<section id='image-slider-section' style='padding:0;height:50px;'>";
+    $content .= "<section id='image-slider-section' style='padding:0;height:50px;background-color:#f8f8f8;'>";
         $content .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
        // $content .= $imageSlider;
         //$content .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
@@ -2173,15 +2173,30 @@ $formTr .= "</div>";
                                     $content .= "<td class='btn-col'>&nbsp</td>";
                                 $content .= "</tr>";
                                 $content .= "<tr>";
-                                    $content .= "<td class='rc-first-col mid-part' style='position:relative;'><input type='text' placeholder='Ulica' id='m-address'><div id='m-address-res'></div></td>";
+                                    $content .= "<td class='rc-first-col mid-part' style='position:relative;'>";
+                                        $content .= "<input type='text' placeholder='Ulica' id='m-address'>";
+                                        $content .= "<div class='spinner-container'>";
+                                            $content .= "<div class='spinner'></div>";
+                                        $content .= "</div>";
+                                        $content .= "<div id='m-address-res'></div>";
+                                        $content .= "<i id='m-address-check' class='fas fa-check' style='display:none;'></i>";
+                                    $content .= "</td>";
                                     $content .= "<td class='rc-second-col'><input type='text' id='regnumb'></td>";
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;'><span class='left-half'><input type='text' placeholder='Prezime' id='submitter-lname'></span>
                                         <span class='right-half'><input type='text' placeholder='Ime' id='submitter-fname'></span></td>";
                                     $content .= "<td class='btn-col'><i id='save-submitter' class='fas fa-save'></i></td>";
                                 $content .= "</tr>";
                                 $content .= "<tr>";
-                                    $content .= "<td class='rc-first-col bot-part' style='vertical-align: top;'><label for='kbr'>Kbr:</label>
-                                        <input type='text' placeholder='Kucni Broj' id='kbr'><i class='fas fa-search' id='rc-place-one'></i></td>";
+                                    $content .= "<td class='rc-first-col bot-part' style='vertical-align:top!important;position:relative;'>";
+                                        $content .= "<label for='kbr' style='position:absolute;left:10%;'>Kbr:</label>";
+                                        $content .= "<input type='text' placeholder='Kucni Broj' id='kbr'>";
+                                        $content .= "<i class='fas fa-check' id='kbr-check' style='display:none;'></i>";
+                                        $content .= "<i class='fas fa-search' id='rc-place-one'></i>";
+                                        $content .= "<div id='edit-subm-container' style='display:none;'>";
+                                            $content .= "<i class='fas fa-trash-alt' id='del-subm'></i>";
+                                          //  $content .= "<i class='fas fa-pen' id='edit-subm'></i>";
+                                        $content .= "</div>";
+                                    $content .= "</td>";
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
                                     $content .= "<td class='rc-third-col'>Prezime i ime i stan kucevlasnika:</td>";
                                     $content .= "<td class='btn-col'>&nbsp</td>";
@@ -2191,13 +2206,28 @@ $formTr .= "</div>";
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;'><span class='left-half'><input type='text' placeholder='Prezime' id='landlord-lname'></span>
                                         <span class='right-half'><input type='text' placeholder='Ime' id='landlord-fname'></span></td>";
-                                    $content .= "<td class='btn-col'><i id='save-l-lord' class='fas fa-save'></i></td>";
+                                    $content .= "<td class='btn-col'>";
+                                        $content .= "<i id='save-l-lord' class='fas fa-save'></i>";
+                                    $content .= "</td>";
                                 $content .= "</tr>";
                                 $content .= "<tr>";
                                     $content .= "<td class='rc-first-col'> &nbsp </td>";
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
-                                    $content .= "<td class='rc-third-col' style='position:relative;'><input type='text' id='landlord-loc' placeholder='Stan'><div id='landlord-loc-res'></div></td>";
-                                    $content .= "<td class='btn-col'><i id='l-lord-add' class='fas fa-search'></i></td>";
+                                    $content .= "<td class='rc-third-col' style='position:relative;'>";
+                                        $content .= "<input type='text' id='landlord-loc' placeholder='Stan'>";
+                                        $content .= "<i class='fas fa-check' id='landlord-check' style='display:none;'></i>";
+                                        $content .= "<div class='spinner-container'>";
+                                            $content .= "<div class='spinner'></div>";
+                                        $content .= "</div>";
+                                        $content .= "<div id='landlord-loc-res'></div>";
+                                    $content .= "</td>";
+                                    $content .= "<td class='btn-col'>";
+                                        $content .= "<i id='l-lord-add' class='fas fa-search'></i>";
+                                        $content .= "<div id='edit-llord-container' style='display:none;'>";
+                                            $content .= "<i class='fas fa-trash-alt' id='del-llord'></i>";
+                                            // $content .= "<i class='fas fa-pen' id='edit-llord'></i>;
+                                        $content .= "</div>";
+                                    $content .= "</td>";
                                 $content .= "</tr>";
                             $content .= "</table>";
                             
@@ -2236,12 +2266,25 @@ $formTr .= "</div>";
                             // Shop address
                             $content .= "<div id='shop-place' style='position:relative;'>";
                                 $content .= "<p> Zivezne namirnice nabavljat cu:</p>";
-                                $content .= "<label for='shop-name'>U radnji:</label>";
-                                $content .= "<input type='text' name='shop-name' id='shop-name'>";
-                                $content .= "<label for='shop-loc'>ulica:</label>";
-                                $content .= "<input type='text' name='shop-loc' id='shop-loc'>";
-                                $content .= "<i class='fas fa-search' id='shop-loc-btn'></i>";
-                                $content .= "<div id='shop-loc-res'></div>";
+                                $content .= "<label for='shop-name'>";
+                                    $content .= "U radnji: ";
+                                    $content .= "<input type='text' name='shop-name' id='shop-name'>";
+                                    $content .= "<i class='fas fa-check' id='shop-name-check' style='display:none;'></i>";
+                                $content .= "</label>";
+                                $content .= "<label for='shop-loc' style='position:relative;'>";
+                                    $content .= "ulica: ";
+                                    $content .= "<input type='text' name='shop-loc' id='shop-loc'>";
+                                    $content .= "<i class='fas fa-check' id='shop-check' style='display:none;'></i>";
+                                    $content .= "<i class='fas fa-search' id='shop-loc-btn'></i>";
+                                    $content .= "<div id='edit-shop-container' style='display:none;'>";
+                                        $content .= "<i class='fas fa-trash-alt' id='del-shop'></i>";
+                                        // $content .= "<i class='fas fa-pen' id='edit-shop'></i>;
+                                    $content .= "</div>";
+                                    $content .= "<div class='spinner-container'>";
+                                        $content .= "<div class='spinner'></div>";
+                                    $content .= "</div>";
+                                    $content .= "<div id='shop-loc-res'></div>";
+                                $content .= "</label>";
                             $content .= "</div>";
 
                             // Document date
@@ -2253,19 +2296,19 @@ $formTr .= "</div>";
                                 $content .= "</div>";
                             $content .= "</div>";
                             // Returned places form mapbox api
-                            $content .= "<div id='rc-loc-results-container'>";
-                                $content .= "<p> Address search results:</p>";
-                                $content .= "<div id='rc-place-spinner-container' class='spinner-container'>";
-                                    $content .= "<div class='spinner'></div>";
-                                $content .= "</div>";
-                                $content .= "<div id='rc-loc-result'>";
-                                $content .= "</div>";
-                            $content .= "</div>";
+                            // $content .= "<div id='rc-loc-results-container'>";
+                            //     $content .= "<p> Address search results:</p>";
+                            //     $content .= "<div id='rc-place-spinner-container' class='spinner-container'>";
+                            //         $content .= "<div class='spinner'></div>";
+                            //     $content .= "</div>";
+                            //     $content .= "<div id='rc-loc-result'>";
+                            //     $content .= "</div>";
+                            // $content .= "</div>";
                             
                             // Saved places
-                            $content .= "<div id='show-saved-loc'>";
-                                $content .= "<p> Saved places: </p>";
-                            $content .= "</div>";
+                            // $content .= "<div id='show-saved-loc'>";
+                            //     $content .= "<p> Saved places: </p>";
+                            // $content .= "</div>";
 
                             $content .= "<div id='rc-item-id' style='display:none;'>" . $_GET['item'] . "</div>";
                             $content .= "<div id='rc-user-id' style='display:none;'>" . get_current_user_id() . "</div>";
