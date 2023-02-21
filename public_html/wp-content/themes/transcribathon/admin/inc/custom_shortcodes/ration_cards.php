@@ -78,7 +78,7 @@ function _TCT_ration_cards($atts)
 
 
     // Get English translation of story description
-    $engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
+    //$engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
 
 
     // Build required components for the page
@@ -92,28 +92,28 @@ function _TCT_ration_cards($atts)
                 var dropdown = document.getElementById("transcription-status-dropdown");
                 if (dropdown.classList.contains("show")) {
                     dropdown.classList.remove("show");
-}
-}
-if (event.target.id != "description-status-indicator") {
-    var dropdown = document.getElementById("description-status-dropdown");
-    if (dropdown.classList.contains("show")) {
-        dropdown.classList.remove("show");
-}
-}
-if (event.target.id != "location-status-indicator") {
-    var dropdown = document.getElementById("location-status-dropdown");
-    if (dropdown.classList.contains("show")) {
-        dropdown.classList.remove("show");
-}
-}
-if (event.target.id != "tagging-status-indicator") {
-    var dropdown = document.getElementById("tagging-status-dropdown");
-    if (dropdown.classList.contains("show")) {
-        dropdown.classList.remove("show");
-}
-}
-}
-</script>';
+                }
+            }
+            if (event.target.id != "description-status-indicator") {
+                var dropdown = document.getElementById("description-status-dropdown");
+                if (dropdown.classList.contains("show")) {
+                    dropdown.classList.remove("show");
+                }
+            }
+            if (event.target.id != "location-status-indicator") {
+                var dropdown = document.getElementById("location-status-dropdown");
+                if (dropdown.classList.contains("show")) {
+                    dropdown.classList.remove("show");
+                }
+            }
+            if (event.target.id != "tagging-status-indicator") {
+                var dropdown = document.getElementById("tagging-status-dropdown");
+                if (dropdown.classList.contains("show")) {
+                    dropdown.classList.remove("show");
+                }
+            }
+        }
+    </script>';
     // Lock item if user is not logged in or someone else is Enriching Item
     $locked = false;
     if ($isLoggedIn && ($itemData['LockedTime'] < date("Y-m-d H:i:s") || get_current_user_id() == $itemData['LockedUser'])) {
@@ -121,131 +121,117 @@ if (event.target.id != "tagging-status-indicator") {
             // Lock document
             // Prepare data and send API request
             data = {
-    };
-    var today = new Date();
-    today = new Date(today.getTime() + 60000);
-    var dateTime = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    data["LockedTime"] = dateTime;
-    data["LockedUser"] = '.get_current_user_id().';
-    var dataString= JSON.stringify(data);
-    jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
-    "type": "POST",
-        "url": home_url + "/tp-api/items/" + '. $itemData['ItemId'] .',
-        "data": data
-    },
-        // Check success and create confirmation message
-        function(response) {
-            var response = JSON.parse(response);
-            if (response.code == "200") {
-                return 1;
-    }
-    else {
-    }
-    });
-    setInterval(function() {
-        // Prepare data and send API request
-        data = {
-    };
-    var today = new Date();
-    today = new Date(today.getTime() + 60000);
-    var dateTime = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    data["LockedTime"] = dateTime;
-    data["LockedUser"] = '.get_current_user_id().';
-    var dataString= JSON.stringify(data);
-    jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
-    "type": "POST",
-        "url": home_url + "/tp-api/items/" + '.$_GET['item'].',
-        "data": data
-    },
-        // Check success and create confirmation message
-        function(response) {
-            var response = JSON.parse(response);
-            if (response.code == "200") {
-                return 1;
-    }
-    });
-    }, 55 * 1000);
+            };
+            var today = new Date();
+            today = new Date(today.getTime() + 60000);
+            var dateTime = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            data["LockedTime"] = dateTime;
+            data["LockedUser"] = '.get_current_user_id().';
+            var dataString= JSON.stringify(data);
+            jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
+                "type": "POST",
+                "url": home_url + "/tp-api/items/" + '. $itemData['ItemId'] .',
+                "data": data
+            },
+            // Check success and create confirmation message
+            function(response) {
+                var response = JSON.parse(response);
+                if (response.code == "200") {
+                    return 1;
+                }
+                else {
+                }
+            });
+            setInterval(function() {
+                // Prepare data and send API request
+                data = {
+                };
+                var today = new Date();
+                today = new Date(today.getTime() + 60000);
+                var dateTime = today.getFullYear() + "-" + (today.getMonth()+1) + "-" + today.getDate() + " " + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                data["LockedTime"] = dateTime;
+                data["LockedUser"] = '.get_current_user_id().';
+                var dataString= JSON.stringify(data);
+                jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
+                    "type": "POST",
+                    "url": home_url + "/tp-api/items/" + '.$_GET['item'].',
+                    "data": data
+                },
+                // Check success and create confirmation message
+                function(response) {
+                    var response = JSON.parse(response);
+                    if (response.code == "200") {
+                        return 1;
+                    }
+                });
+            }, 55 * 1000);
     </script>';
     }
     else if ($isLoggedIn) {
         $locked = true;
     }
     //////////////////////
-// Form tinymce test
-$formTr = "";
-$formTr .= "<div id='rc-tr-form'>";
-    $formTr .= "<h3 style='margin-bottom:20px;'><b> Grad Zagreb </b></h3>";
-    // Top adress and card registration number
-    $formTr .= "<table class='rc-top-address' style='border:none!important'>";
-        $formTr .= "<tr style='border: 0 solid #000;'>";
-            $formTr .= "<td class='rc-first-col top-part' style='border:none!important'>Ulica, trg ili ina oznaka: <span id='submitter-place'></span> </td>";
-            $formTr .= "<td class='rc-second-col' style='border:none!important'> Reg. broj: </td>";
-            $formTr .= "<td class='rc-third-col' style='border:none!important'> Prezime i ime podnosioca prijave:</td>";
-        $formTr .= "</tr>";
-        $formTr .= "<tr style='border:none!important;height:20px;'>";
-            $formTr .= "<td id='house-nr' class='rc-first-col mid-part' style='border:none!important'></td>";
-            $formTr .= "<td id='reg-num' class='rc-second-col' style='border:none!important'></td>";
-            $formTr .= "<td id='submitter-lf-name' class='rc-third-col' style='vertical-align: top;border:none!important;'> &nbsp </td>";
-        $formTr .= "</tr>";
-        $formTr .= "<tr style='border:none!important'>";
-            $formTr .= "<td class='rc-first-col bot-part' style='vertical-align: top;border:none!important;'></td>";
-            $formTr .= "<td class='rc-second-col' style='border:none!important'> &nbsp </td>";
-            $formTr .= "<td class='rc-third-col' style='border:none!important'>Prezime i ime i stan kucevlasnika:</td>";
-        $formTr .= "</tr>";
-        $formTr .= "<tr style='border:none!important'>";
-            $formTr .= "<td class='rc-first-col' style='border:none!important'>&nbsp</td>";
-            $formTr .= "<td class='rc-second-col' style='border:none!important'> &nbsp </td>";
-            $formTr .= "<td id='llord-lf-name' class='rc-third-col' style='vertical-align: top;border:none!important;'> &nbsp </td>";
-        $formTr .= "</tr>";
-        $formTr .= "<tr style='border:none!important'>";
-            $formTr .= "<td class='rc-first-col' style='border:none!important'> &nbsp </td>";
-            $formTr .= "<td class='rc-second-col' style='border:none!important'> &nbsp </td>";
-            $formTr .= "<td id='llord-place' class='rc-third-col' style='border:none!important'></td>";
-        $formTr .= "</tr>";
-    $formTr .= "</table>";
+    // Form tinymce test
+    $formTr = "";
+    $formTr .= "<div id='rc-tr-form'>";
+        $formTr .= "<h3 style='margin-bottom:20px;'><b> Grad Zagreb </b></h3>";
+        // Top adress and card registration number
+        $formTr .= "<table class='rc-top-address' style='border:none!important'>";
+            $formTr .= "<tr style='border: 0 solid #000;'>";
+                $formTr .= "<td class='rc-first-col top-part' style='border:none!important'>Ulica, trg ili ina oznaka: <span id='submitter-place'></span> </td>";
+                $formTr .= "<td class='rc-second-col' style='border:none!important'> Reg. broj: </td>";
+                $formTr .= "<td class='rc-third-col' style='border:none!important'> Prezime i ime podnosioca prijave:</td>";
+            $formTr .= "</tr>";
+            $formTr .= "<tr style='border:none!important;height:20px;'>";
+                $formTr .= "<td id='house-nr' class='rc-first-col mid-part' style='border:none!important'></td>";
+                $formTr .= "<td id='reg-num' class='rc-second-col' style='border:none!important'></td>";
+                $formTr .= "<td id='submitter-lf-name' class='rc-third-col' style='vertical-align: top;border:none!important;'> &nbsp </td>";
+            $formTr .= "</tr>";
+            $formTr .= "<tr style='border:none!important'>";
+                $formTr .= "<td class='rc-first-col bot-part' style='vertical-align: top;border:none!important;'></td>";
+                $formTr .= "<td class='rc-second-col' style='border:none!important'> &nbsp </td>";
+                $formTr .= "<td class='rc-third-col' style='border:none!important'>Prezime i ime i stan kucevlasnika:</td>";
+            $formTr .= "</tr>";
+            $formTr .= "<tr style='border:none!important'>";
+                $formTr .= "<td class='rc-first-col' style='border:none!important'>&nbsp</td>";
+                $formTr .= "<td class='rc-second-col' style='border:none!important'> &nbsp </td>";
+                $formTr .= "<td id='llord-lf-name' class='rc-third-col' style='vertical-align: top;border:none!important;'> &nbsp </td>";
+            $formTr .= "</tr>";
+            $formTr .= "<tr style='border:none!important'>";
+                $formTr .= "<td class='rc-first-col' style='border:none!important'> &nbsp </td>";
+                $formTr .= "<td class='rc-second-col' style='border:none!important'> &nbsp </td>";
+                $formTr .= "<td id='llord-place' class='rc-third-col' style='border:none!important'></td>";
+            $formTr .= "</tr>";
+        $formTr .= "</table>";
                             
                             //
-    $formTr .= "<h3 class='rc-title'> Potrosacka prijavnica <br> za kucanstva i samce - samice. </h3>";
-                            // Saving spinner
-                            // $content .= "<div id='rc-spinner-container' class='spinner-container'>";
-                            //     $content .= "<div class='spinner'></div>";
-                            // $content .= "</div>";
-                            // Main form
-    $formTr .= "<div id='tr-person-list'>";
-        $formTr .= "<table id='tr-list-table'>";
-                                    // Table head
-            $formTr .= "<tr class='rc-list-head'>";
-                $formTr .= "<td>Prezime i ime</th>";
-                $formTr .= "<td class='rc-person-second-col'>God. Rod.</th>";
-                $formTr .= "<td>Odnos prema podnosiocu prijave odn. Starjesini</th>";
-                $formTr .= "<td>Zanimanje</th>";
-                $formTr .= "<td>Mjesto rada</th>";
-            $formTr .= "</tr>";
-                                    // Table inputs
-          //  $formTr .= "<tr class='rc-list-td'>";
-                // $formTr .= "<td style='vertical-align: bottom;'>
-                //     <span class='left-half'>Prezime</span>
-                //     <span class='right-half'>Ime</span></td>";
-                // $formTr .= "<td class='rc-person-second-col'>1928</td>";
-                // $formTr .= "<td>Sin</td>";
-                // $formTr .= "<td>Profesor</td>";
-                // $formTr .= "<td>O.S. Tone Perusko</td>";
-          //  $formTr .= "</tr>";
-        $formTr .= "</table>";
-    $formTr .= "</div>";
+        $formTr .= "<h3 class='rc-title'> Potrosacka prijavnica <br> za kucanstva i samce - samice. </h3>";
+                            
+        // Main form
+        $formTr .= "<div id='tr-person-list'>";
+            $formTr .= "<table id='tr-list-table'>";
+                // Table head
+                $formTr .= "<tr class='rc-list-head'>";
+                    $formTr .= "<td>Prezime i ime</th>";
+                    $formTr .= "<td class='rc-person-second-col'>God. Rod.</th>";
+                    $formTr .= "<td>Odnos prema podnosiocu prijave odn. Starjesini</th>";
+                    $formTr .= "<td>Zanimanje</th>";
+                    $formTr .= "<td>Mjesto rada</th>";
+                $formTr .= "</tr>";
+            $formTr .= "</table>";
+        $formTr .= "</div>";
                             // Shop address
-    $formTr .= "<div id='shop-tr-place'>";
-        $formTr .= "<span> Zivezne namirnice nabavljat cu:</span></br></br>";
-        $formTr .= "<span style='margin-right:100px;margin-top:20px;'>U radnji: <span id='tr-shop-name'></span></span>";
-        $formTr .= "<span>ulica: <span id='tr-shop-place'></span></span>";
-    $formTr .= "</div>";
+        $formTr .= "<div id='shop-tr-place'>";
+            $formTr .= "<span> Zivezne namirnice nabavljat cu:</span></br></br>";
+            $formTr .= "<span style='margin-right:100px;margin-top:20px;'>U radnji: <span id='tr-shop-name'></span></span>";
+            $formTr .= "<span>ulica: <span id='tr-shop-place'></span></span>";
+        $formTr .= "</div>";
 
-                            // Document date
-    $formTr .= "<div id='rc-tr-date'>";
-        $formTr .= "<span id='rc-doc-date'></span>";
-                                // Saving spinner
-$formTr .= "</div>";
-$formTr .= "</div>";
+        // Document date
+        $formTr .= "<div id='rc-tr-date'>";
+            $formTr .= "<span id='rc-doc-date'></span>";
+        $formTr .= "</div>";
+    $formTr .= "</div>";
 
 
     /////////////////////
@@ -272,34 +258,34 @@ $formTr .= "</div>";
 
     $currentTranscription = null;
 
-        // Transkribus Client, include required files
-        require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
-        require_once(get_stylesheet_directory() . '/htr-client/config.php');
+    // Transkribus Client, include required files
+    require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
+    require_once(get_stylesheet_directory() . '/htr-client/config.php');
 
-        // create new Transkribus client and inject configuration
-        $transkribusClient = new TranskribusClient($config);
-        // get the HTR-transcribed data from database if there is one
-        $htrDataJson = $transkribusClient->getDataFromTranscribathon(
-            null,
-            array(
-                'ItemId' => $_GET['item'],
-                    'orderBy' => 'LastUpdated',
-                    'orderDir' => 'desc'
-            )
-        );
-        $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
-        $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
+    // create new Transkribus client and inject configuration
+    $transkribusClient = new TranskribusClient($config);
+    // get the HTR-transcribed data from database if there is one
+    $htrDataJson = $transkribusClient->getDataFromTranscribathon(
+        null,
+        array(
+            'ItemId' => $_GET['item'],
+            'orderBy' => 'LastUpdated',
+            'orderDir' => 'desc'
+        )
+    );
+    $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
+    $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
 
-        $transcriptionList = [];
-        if($itemData['Transcriptions'] != null) {
-            foreach($itemData['Transcriptions'] as $transcription) {
-                if($transcription['CurrentVersion'] == '1') {
-                    $currentTranscription = $transcription;
-                } else {
-                    array_push($transcriptionList, $transcription);
-                }
+    $transcriptionList = [];
+    if($itemData['Transcriptions'] != null) {
+        foreach($itemData['Transcriptions'] as $transcription) {
+            if($transcription['CurrentVersion'] == '1') {
+                $currentTranscription = $transcription;
+            } else {
+                array_push($transcriptionList, $transcription);
             }
         }
+    }
     // Get the progress data
     $progressData = array(
         $itemData['TranscriptionStatusName'],
@@ -342,8 +328,8 @@ $formTr .= "</div>";
     // Mapbox
     $mapBox .= "";
     $mapBox .= "<div id='full-view-map' style='height:400px;'>";
-    $mapBox .= "<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>";
-    $mapBox .= "<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />";
+        $mapBox .= "<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>";
+        $mapBox .= "<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />";
         $mapBox .= "<i class='fas fa-map map-placeholder'></i>";
     $mapBox .= "</div>";
 
