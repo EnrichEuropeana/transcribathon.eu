@@ -187,6 +187,7 @@ function saveRcDate() {
             // document.querySelector('.date-bottom').style.display = 'block';
             // document.querySelector('.date-top').style.display = 'block';
             document.querySelector('#rc-doc-date').textContent = `Zagreb, ${jQuery('#rc-date-entry').val()}`;
+
             // if (startDate != "" && startDate != oldStartDate) {
             //     jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
             //     jQuery('#startdateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
@@ -221,12 +222,12 @@ function saveRcDate() {
     });
 }
 // Save Ration Card Persons
-function saveRcPerson(firstName, lastName, description) {
+function saveRcPerson(firstName, lastName, description, spinner) {
 
     let itemIde = parseInt(document.querySelector('#rc-item-id').textContent);
     let userIde = parseInt(document.querySelector('#rc-user-id').textContent);
 
-    jQuery('#item-person-spinner-container').css('display', 'block')
+    jQuery('#' + spinner + '-spinner').css('display', 'block');
 
     // let firstName = escapeHtml(jQuery('#person-firstName-input').val());
     // let lastName = escapeHtml(jQuery('#person-lastName-input').val());
@@ -236,7 +237,7 @@ function saveRcPerson(firstName, lastName, description) {
     //     return 0;
     // }
     /////////
-        jQuery('#item-person-spinner-container').css('display', 'block')
+        //jQuery('#item-person-spinner-container').css('display', 'block')
     
         //firstName = escapeHtml(jQuery('#person-firstName-input').val());
         //lastName = escapeHtml(jQuery('#person-lastName-input').val());
@@ -314,7 +315,7 @@ function saveRcPerson(firstName, lastName, description) {
         'url': TP_API_HOST + '/tp-api/items/' + itemIde
     },
     function(response) {
-        console.log(response);
+        // console.log(response);
         var response = JSON.parse(response);
         var taggingCompletion = JSON.parse(response.content)["TaggingStatusName"];
         jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
@@ -340,6 +341,7 @@ function saveRcPerson(firstName, lastName, description) {
             // Check success and create confirmation message
             function(response) {
                 console.log(response);
+                jQuery('#' + spinner + '-spinner').css('display', 'none');
             })
 
             //loadPersonData(itemIde, userIde);
@@ -390,8 +392,10 @@ function loadRcPlaceData(itemId, userId) {
             let submAddressArr = submPlace.Name.split(', ');
             document.querySelector('#m-address').value = submAddressArr[0];
             document.querySelector('#m-address').setAttribute('disabled', true);
+            document.querySelector('#m-address').style.border = '1px solid #0a72cc';
             document.querySelector('#kbr').value = submAddressArr[1];
             document.querySelector('#kbr').setAttribute('disabled', true);
+            document.querySelector('#kbr').style.border = '1px solid #0a72cc';
 
             let deleteSubmBtn = document.querySelector('#del-subm');
 
@@ -403,9 +407,11 @@ function loadRcPlaceData(itemId, userId) {
                     function(response) {
                         document.querySelector('#m-address').value = '';
                         document.querySelector('#m-address').removeAttribute('disabled');
+                        document.querySelector('#m-address').style.border = '1px solid #ccc';
                         document.querySelector('#m-address-check').style.display = 'none';
                         document.querySelector('#kbr').value = '';
                         document.querySelector('#kbr').removeAttribute('disabled');
+                        document.querySelector('#kbr').style.border = '1px solid #ccc';
                         document.querySelector('#kbr-check').style.display = 'none';
                         document.querySelector('#rc-place-one').style.display = 'inline-block';
                         document.querySelector('#edit-subm-container').style.display = 'none';
@@ -448,6 +454,7 @@ function loadRcPlaceData(itemId, userId) {
             // Fill the input with existing data and disable it
             document.querySelector('#landlord-loc').value = lLordPlace.Name;
             document.querySelector('#landlord-loc').setAttribute('disabled', true);
+            document.querySelector('#landlord-loc').style.border = '1px solid #0a72cc';
 
             let deleteLLordBtn = document.querySelector('#del-llord');
 
@@ -459,6 +466,7 @@ function loadRcPlaceData(itemId, userId) {
                     function(response) {
                         document.querySelector('#landlord-loc').value = '';
                         document.querySelector('#landlord-loc').removeAttribute('disabled');
+                        document.querySelector('#landlord-loc').style.border = '1px solid #ccc';
                         document.querySelector('#landlord-check').style.display = 'none';
                         document.querySelector('#l-lord-add').style.display = 'inline-block';
                         document.querySelector('#edit-llord-container').style.display = 'none';
@@ -480,8 +488,10 @@ function loadRcPlaceData(itemId, userId) {
             let shopAddressArr = shopPlace.Name.split(', ');
             document.querySelector('#shop-name').value = shopAddressArr[0];
             document.querySelector('#shop-name').setAttribute('disabled', true);
+            document.querySelector('#shop-name').style.border = '1px solid #0a72cc';
             document.querySelector('#shop-loc').value = shopAddressArr[1];
             document.querySelector('#shop-loc').setAttribute('disabled', true);
+            document.querySelector('#shop-loc').style.border = '1px solid #0a72cc';
 
 
             let deleteShopBtn = document.querySelector('#del-shop');
@@ -494,8 +504,10 @@ function loadRcPlaceData(itemId, userId) {
                     function(response) {
                         document.querySelector('#shop-loc').value = '';
                         document.querySelector('#shop-loc').removeAttribute('disabled');
+                        document.querySelector('#shop-loc').style.border = '1px solid #ccc';
                         document.querySelector('#shop-name').value = '';
                         document.querySelector('#shop-name').removeAttribute('disabled');
+                        document.querySelector('#shop-name').style.border = '1px solid #ccc';
                         document.querySelector('#shop-check').style.display = 'none';
                         document.querySelector('#shop-name-check').style.display = 'none';
                         document.querySelector('#shop-loc-btn').style.display = 'inline-block';
@@ -541,7 +553,10 @@ ready(() => {
             getRCLocation(queryLoc, description, locName, '#m-address-res');
 
             locOneStreet.setAttribute('disabled', true);
+            locOneStreet.style.border = '1px solid #0a72cc';
             locOneNumb.setAttribute('disabled', true);
+            locOneNumb.style.border = '1px solid #0a72cc';
+            
            // document.querySelector('#rc-place-one').classList = 'fas fa-check';
             // document.querySelector('#rc-place-one').style.display = 'none';
             // document.querySelector('#edit-subm-container').style.display = 'inline-block';
@@ -562,6 +577,7 @@ ready(() => {
             getRCLocation(queryLoc, description, lLordStreet.value, '#landlord-loc-res');
 
             lLordStreet.setAttribute('disabled', true);
+            lLordStreet.style.border = '1px solid #0a72cc';
     
             document.querySelector('#llord-place').textContent = lLordStreet.value;
         })
@@ -612,7 +628,7 @@ ready(() => {
             let firstName = document.querySelector('#submitter-fname').value;
             let lastName = document.querySelector('#submitter-lname').value;
     
-            saveRcPerson(firstName, lastName, description);
+            saveRcPerson(firstName, lastName, description, 'submitter');
     
             document.querySelector('#submitter-lf-name').textContent = lastName + ' ' + firstName;
             document.querySelector('#reg-num').textContent = document.querySelector('#regnumb').value;
@@ -627,7 +643,7 @@ ready(() => {
             let firstName = document.querySelector('#landlord-fname').value;
             let lastName = document.querySelector('#landlord-lname').value;
     
-            saveRcPerson(firstName, lastName, description);
+            saveRcPerson(firstName, lastName, description, 'landlord');
     
             document.querySelector('#llord-lf-name').textContent = lastName + ' ' + firstName;
             
@@ -644,7 +660,7 @@ ready(() => {
             let firstName = document.querySelector('#lst-p-fname').value;
             let lastName = document.querySelector('#lst-p-lname').value;
     
-            saveRcPerson(firstName, lastName, description);
+            saveRcPerson(firstName, lastName, description, 'listed-person');
     
             let addedToList = document.createElement('tr');
             let lastChild = document.querySelector('.rc-list-td');

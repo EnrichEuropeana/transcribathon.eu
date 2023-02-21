@@ -2170,8 +2170,13 @@ function _TCT_ration_cards($atts)
                                         $content .= "<i id='m-address-check' class='fas fa-check' style='display:none;'></i>";
                                     $content .= "</td>";
                                     $content .= "<td class='rc-second-col'><input type='text' id='regnumb'></td>";
-                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;'><span class='left-half'><input type='text' placeholder='Prezime' id='submitter-lname'></span>
-                                        <span class='right-half'><input type='text' placeholder='Ime' id='submitter-fname'></span></td>";
+                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;'>";
+                                        $content .= "<span class='left-half'><input type='text' placeholder='Prezime' id='submitter-lname'></span>";
+                                        $content .= "<span class='right-half'><input type='text' placeholder='Ime' id='submitter-fname'></span>";
+                                        $content .= "<div id='submitter-spinner' class='spinner-container'>";
+                                            $content .= "<div class='spinner'></div>";
+                                        $content .= "</div>";
+                                    $content .= "</td>";
                                     $content .= "<td class='btn-col'><i id='save-submitter' class='fas fa-save'></i></td>";
                                 $content .= "</tr>";
                                 $content .= "<tr>";
@@ -2192,8 +2197,13 @@ function _TCT_ration_cards($atts)
                                 $content .= "<tr>";
                                     $content .= "<td class='rc-first-col'>&nbsp</td>";
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
-                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;'><span class='left-half'><input type='text' placeholder='Prezime' id='landlord-lname'></span>
-                                        <span class='right-half'><input type='text' placeholder='Ime' id='landlord-fname'></span></td>";
+                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;'>";
+                                        $content .= "<span class='left-half'><input type='text' placeholder='Prezime' id='landlord-lname'></span>";
+                                        $content .= "<span class='right-half'><input type='text' placeholder='Ime' id='landlord-fname'></span>";
+                                        $content .= "<div id='landlord-spinner' class='spinner-container'>";
+                                            $content .= "<div class='spinner'></div>";
+                                        $content .= "</div>";
+                                    $content .= "</td>";
                                     $content .= "<td class='btn-col'>";
                                         $content .= "<i id='save-l-lord' class='fas fa-save'></i>";
                                     $content .= "</td>";
@@ -2239,14 +2249,17 @@ function _TCT_ration_cards($atts)
                                         $content .= "<td class='btn-col'>&nbsp</td>";
                                     $content .= "</tr>";
                                     // Table inputs
-                                    $content .= "<tr class='rc-list-td'>";
+                                    $content .= "<tr class='rc-list-td' style='position:relative;'>";
                                         $content .= "<td style='vertical-align: bottom;'><span class='left-half'><input type='text' id='lst-p-lname' placeholder='Prezime' name='lname'></span>
                                             <span class='right-half'><input type='text' id='lst-p-fname' placeholder='Ime' name='fname'></span></td>";
                                         $content .= "<td class='rc-person-second-col'><input type='text' name='bdate' id='rc-bdate'></td>";
                                         $content .= "<td><input type='text' id='desc-rel' name='relation'></td>";
                                         $content .= "<td><input type='text' id='desc-voc' name='vocation'></td>";
                                         $content .= "<td><input type='text' id='desc-wp' name='workplace'></td>";
-                                        $content .= "<td class='btn-col'><i id='save-list-person' class='fas fa-save'></i></td>";
+                                        $content .= "<td class='btn-col'><i id='save-list-person' class='fas fa-save'></i>";
+                                        $content .= "<div id='listed-person-spinner' class='spinner-container'>";
+                                            $content .= "<div class='spinner'></div>";
+                                        $content .= "</div></td>";
                                     $content .= "</tr>";
                                 $content .= "</table>";
                                 $content .= "</form>";
@@ -2254,7 +2267,7 @@ function _TCT_ration_cards($atts)
                             // Shop address
                             $content .= "<div id='shop-place' style='position:relative;'>";
                                 $content .= "<p> Zivezne namirnice nabavljat cu:</p>";
-                                $content .= "<label for='shop-name'>";
+                                $content .= "<label for='shop-name' style='position:relative;'>";
                                     $content .= "U radnji: ";
                                     $content .= "<input type='text' name='shop-name' id='shop-name'>";
                                     $content .= "<i class='fas fa-check' id='shop-name-check' style='display:none;'></i>";

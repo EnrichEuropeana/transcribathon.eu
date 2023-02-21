@@ -3500,6 +3500,9 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #shop-name {
     width: 55%;
+    position: absolute;
+    right: 25px;
+    top: -3px;
 }
 #shop-loc {
     width: 65%;
@@ -3652,7 +3655,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     position: absolute;
     right: 0;
 }
-#m-address-check, #kbr-check, #landlord-check, #shop-check {
+#m-address-check, #kbr-check, #landlord-check, #shop-check, #shop-name-check {
     position: absolute;
     color: #61e02f!important;
     cursor: default!important;
@@ -3681,5 +3684,9 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #shop-check {
     right: 25px;
+    top: 4px;
+}
+#shop-name-check {
+    right: 30px;
     top: 4px;
 }
