@@ -1,6 +1,63 @@
 var home_url = WP_URLs.home_url;
 var network_home_url = WP_URLs.network_home_url;
 
+function escapeRcHtml(html){
+    var text = document.createTextNode(html);
+    var p = document.createElement('p');
+    p.appendChild(text);
+
+    return p.innerHTML;
+}
+function loadRcPerson(itemId, userId) {
+
+    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+        'type': 'GET',
+        'url': TP_API_HOST + '/tp-api/persons?ItemId=' + itemId
+    }, 
+    function(response) {
+        var response = JSON.parse(response);
+        var allPpl = JSON.parse(response.content);
+
+        const pplTopContainer = document.querySelector('#show-top-ppl');
+        const pplListContainer = document.querySelector('#show-list-ppl');
+
+        pplTopContainer.innerHTML = '';
+      //  pplListContainer.innerHTML = '';
+
+        let topPpl = [];
+        let listPpl = [];
+
+        for(let person of allPpl) {
+            if(person.Description == 'Landlord / Kucevlasnik' || person.Description == 'Submitter Podnositelj prijave') {
+                topPpl.push(person);
+            } else {
+                listPpl.push(person);
+            }
+        }
+
+        for(let person of topPpl) {
+            let newPerson = document.createElement('div')
+            newPerson.classList = 'top-person-single';
+
+            newPerson.innerHTML = 
+                `<i class='fas fa-user' style='float:left;margin-right:5px;'></i>` +
+                `<p class='person-data'>${escapeRcHtml(person.FirstName)} ${escapeRcHtml(person.LastName)}</p>` +
+                `<p class='perosn-description'>${escapeRcHtml(person.Description)}</p>`; +
+                `<i class='fas fa-trash-alt' style='float:right'></i>`;
+            newPerson.querySelector('.fa-trash-alt').addEventListener('click', function() {
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'DELETE',
+                    'url': TP_API_HOST + '/tp-api/persons/' + person.PersonId
+                },
+                function(response) {
+/// CONTINUE HERE !!!!
+                });
+            });
+        }
+        console.log(topPpl);
+        console.log(listPpl);
+    });
+}
 
 // Ration Cards get address from mapbox and save place
 function getRCLocation(query, description, locName, autoCompleteContainer) {
@@ -103,7 +160,7 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
                             
                             newEl.parentElement.style.display = 'none';
 
-                            loadPlaceData(itemIde, userIde);
+                           // loadPlaceData(itemIde, userIde);
                         
                             loadRcPlaceData(itemIde, userIde);
                         })
@@ -380,6 +437,8 @@ function loadRcPlaceData(itemId, userId) {
             }
         }
 
+        document.querySelector('#show-top-loc').innerHTML = '';
+        document.querySelector('#show-bot-loc').innerHTML = '';
         // Submitter address -add delete button after saving it
         if(Object.keys(submPlace).length > 0) {
             // let editSubmBtn = document.querySelector('#edit-subm');
@@ -416,9 +475,22 @@ function loadRcPlaceData(itemId, userId) {
                         document.querySelector('#rc-place-one').style.display = 'inline-block';
                         document.querySelector('#edit-subm-container').style.display = 'none';
 
-                        loadPlaceData(itemId, userId);
+                        loadRcPlaceData(itemId, userId);
                 });
             })
+
+            let showPlace = document.createElement('div');
+            showPlace.classList = 'location-single';
+
+            showPlace.innerHTML = 
+                `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
+                `<p><b>${escapeRcHtml(submPlace.Name)}</b> (${escapeRcHtml(submPlace.Latitude)}, ${escapeRcHtml(submPlace.Longitude)})</p>` +
+                `<p style='margin-top:0px;font-size:13px;'>Description: ${escapeRcHtml(submPlace.Comment)}</p>` +
+                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
+                    `${escapeRcHtml(submPlace.WikidataName)}, ${escapeRcHtml(submPlace.WikidataId)}</a></p>`;
+
+            document.querySelector('#show-top-loc').appendChild(showPlace);
+                
 
             // editSubmBtn.addEventListener('click', function() {
 
@@ -471,9 +543,21 @@ function loadRcPlaceData(itemId, userId) {
                         document.querySelector('#l-lord-add').style.display = 'inline-block';
                         document.querySelector('#edit-llord-container').style.display = 'none';
 
-                        loadPlaceData(itemId, userId);
+                        loadRcPlaceData(itemId, userId);
                 });
             })
+
+            let showPlace = document.createElement('div');
+            showPlace.classList = 'location-single';
+
+            showPlace.innerHTML = 
+                `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
+                `<p><b>${escapeRcHtml(lLordPlace.Name)}</b> (${escapeRcHtml(lLordPlace.Latitude)}, ${escapeRcHtml(lLordPlace.Longitude)})</p>` +
+                `<p style='margin-top:0px;font-size:13px;'>Description: ${escapeRcHtml(lLordPlace.Comment)}</p>` +
+                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
+                    `${escapeRcHtml(lLordPlace.WikidataName)}, ${escapeRcHtml(lLordPlace.WikidataId)}</a></p>`;
+
+            document.querySelector('#show-top-loc').appendChild(showPlace);
 
         }
 
@@ -513,9 +597,21 @@ function loadRcPlaceData(itemId, userId) {
                         document.querySelector('#shop-loc-btn').style.display = 'inline-block';
                         document.querySelector('#edit-shop-container').style.display = 'none';
 
-                        loadPlaceData(itemId, userId);
+                        loadRcPlaceData(itemId, userId);
                 });
             })
+
+            let showPlace = document.createElement('div');
+            showPlace.classList = 'location-single';
+
+            showPlace.innerHTML = 
+                `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
+                `<p><b>${escapeRcHtml(shopPlace.Name)}</b> (${escapeRcHtml(shopPlace.Latitude)}, ${escapeRcHtml(shopPlace.Longitude)})</p>` +
+                `<p style='margin-top:0px;font-size:13px;'>Description: ${escapeRcHtml(shopPlace.Comment)}</p>` +
+                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
+                    `${escapeRcHtml(shopPlace.WikidataName)}, ${escapeRcHtml(shopPlace.WikidataId)}</a></p>`;
+
+            document.querySelector('#show-bot-loc').appendChild(showPlace);
 
         }
        
@@ -538,6 +634,7 @@ ready(() => {
     let userId = parseInt(document.querySelector('#rc-user-id').textContent);
     
     loadRcPlaceData(itemId, userId);
+    loadRcPerson(itemId, userId);
 
     // Ration Cards Javascript
     // Submitter Address
@@ -655,10 +752,11 @@ ready(() => {
 
     if(lPersSaveBtn) {
         lPersSaveBtn.addEventListener('click', function() {
-            let description = `${document.querySelector('#desc-rel').value} - ${document.querySelector('#desc-voc').value}
-                - ${document.querySelector('#desc-wp').value}`;
+            let description = `${document.querySelector('#desc-rel').value} - ${document.querySelector('#desc-voc').value} - ${document.querySelector('#desc-wp').value}`;
             let firstName = document.querySelector('#lst-p-fname').value;
             let lastName = document.querySelector('#lst-p-lname').value;
+
+            console.log(description);
     
             saveRcPerson(firstName, lastName, description, 'listed-person');
     

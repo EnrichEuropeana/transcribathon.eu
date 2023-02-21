@@ -3690,3 +3690,11 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     right: 30px;
     top: 4px;
 }
+#show-top-loc {
+    float: left;
+    width: 49%;
+}
+#show-top-ppl {
+    float: right;
+    width: 49%;
+}

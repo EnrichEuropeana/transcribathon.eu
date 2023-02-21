@@ -2228,6 +2228,14 @@ function _TCT_ration_cards($atts)
                                     $content .= "</td>";
                                 $content .= "</tr>";
                             $content .= "</table>";
+
+                            $content .= "<div id='show-top-loc'>";
+                            // Saved locations (submitter/landlord) will be shown here
+                            $content .= "</div>";
+                            $content .= "<div id='show-top-ppl'>";
+                            // Saved persons (submitter/landlord) will be shown here
+                            $content .= "</div>";
+                            $content .= "<div style='clear:both;'></div>";
                             
                             //
                             $content .= "<h3 class='rc-title'> Potrosacka prijavnica <br> za kucanstva i samce - samice. </h3>";
@@ -2248,6 +2256,13 @@ function _TCT_ration_cards($atts)
                                         $content .= "<td>Mjesto rada</th>";
                                         $content .= "<td class='btn-col'>&nbsp</td>";
                                     $content .= "</tr>";
+
+                                    $content .= "<tr>";
+                                        $content .= "<td style='width:100%;'><div id='show-list-ppl'>";
+                                            // $content .= "<div><span>Ime</span><span>Prezime</span><span>1943.</span><span>odnos</span><span>zanimanje</span><span>mjesto rada</span></div>";
+                                            // $content .= "<div><span>Ime</span><span>Prezime</span><span>1943.</span><span>odnos</span><span>zanimanje</span><span>mjesto rada</span></div>";
+                                        $content .= "</div></td>";
+                                    $content .= "</tr>";
                                     // Table inputs
                                     $content .= "<tr class='rc-list-td' style='position:relative;'>";
                                         $content .= "<td style='vertical-align: bottom;'><span class='left-half'><input type='text' id='lst-p-lname' placeholder='Prezime' name='lname'></span>
@@ -2258,7 +2273,7 @@ function _TCT_ration_cards($atts)
                                         $content .= "<td><input type='text' id='desc-wp' name='workplace'></td>";
                                         $content .= "<td class='btn-col'><i id='save-list-person' class='fas fa-save'></i>";
                                         $content .= "<div id='listed-person-spinner' class='spinner-container'>";
-                                            $content .= "<div class='spinner'></div>";
+                                            $content .= "<span class='loader'></span>";
                                         $content .= "</div></td>";
                                     $content .= "</tr>";
                                 $content .= "</table>";
@@ -2286,6 +2301,10 @@ function _TCT_ration_cards($atts)
                                     $content .= "</div>";
                                     $content .= "<div id='shop-loc-res'></div>";
                                 $content .= "</label>";
+                            $content .= "</div>";
+
+                            $content .= "<div id='show-bot-loc' style='margin-top:35px;'>";
+                            // shop place will be added here
                             $content .= "</div>";
 
                             // Document date
