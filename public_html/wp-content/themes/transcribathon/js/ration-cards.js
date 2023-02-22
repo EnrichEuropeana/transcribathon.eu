@@ -8,6 +8,18 @@ function escapeRcHtml(html){
 
     return p.innerHTML;
 }
+function deleteRcPerson(personId, itemId, userId) {
+
+    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+        'type': 'DELETE',
+        'url': TP_API_HOST + '/tp-api/persons/' + personId
+    },
+    function(response) {
+        console.log(response);
+        loadRcPerson(itemId, userId);
+    });
+
+}
 function loadRcPerson(itemId, userId) {
 
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
@@ -22,7 +34,7 @@ function loadRcPerson(itemId, userId) {
         const pplListContainer = document.querySelector('#show-list-ppl');
 
         pplTopContainer.innerHTML = '';
-      //  pplListContainer.innerHTML = '';
+        pplListContainer.innerHTML = '';
 
         let topPpl = [];
         let listPpl = [];
@@ -38,21 +50,55 @@ function loadRcPerson(itemId, userId) {
         for(let person of topPpl) {
             let newPerson = document.createElement('div')
             newPerson.classList = 'top-person-single';
-
+            console.log(person);
             newPerson.innerHTML = 
                 `<i class='fas fa-user' style='float:left;margin-right:5px;'></i>` +
                 `<p class='person-data'>${escapeRcHtml(person.FirstName)} ${escapeRcHtml(person.LastName)}</p>` +
-                `<p class='perosn-description'>${escapeRcHtml(person.Description)}</p>`; +
-                `<i class='fas fa-trash-alt' style='float:right'></i>`;
-            newPerson.querySelector('.fa-trash-alt').addEventListener('click', function() {
-                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                    'type': 'DELETE',
-                    'url': TP_API_HOST + '/tp-api/persons/' + person.PersonId
-                },
-                function(response) {
-/// CONTINUE HERE !!!!
-                });
-            });
+                `<p class='person-description'>Description: ${escapeRcHtml(person.Description)}</p>` +
+                `<i class='fas fa-trash-alt' onClick='deleteRcPerson(${person.PersonId}, ${itemId}, ${userId});'></i>`;
+        
+            pplTopContainer.appendChild(newPerson);
+
+            if(person.Description == 'Landlord / Kucevlasnik') {
+                document.querySelector('#landlord-lname').setAttribute('disabled', true);
+                document.querySelector('#landlord-lname').value = person.LastName;
+                document.querySelector('#landlord-fname').setAttribute('disabled', true);
+                document.querySelector('#landlord-fname').value = person.FirstName;
+
+                document.querySelector('#landlord-lname').parentElement.parentElement.style.border = '1px solid #0a72cc';
+            } else if(person.Description == 'Submitter Podnositelj prijave') {
+                document.querySelector('#submitter-lname').setAttribute('disabled', true);
+                document.querySelector('#submitter-lname').value = person.LastName;
+                document.querySelector('#submitter-fname').setAttribute('disabled', true);
+                document.querySelector('#submitter-fname').value = person.FirstName;
+
+                document.querySelector('#submitter-lname').parentElement.parentElement.style.border = '1px solid #0a72cc';
+            }
+
+        }
+
+        for(let listPerson of listPpl) {
+            let listPersonDescription = listPerson.Description.split('-');
+
+            let listPersonBirthYear = '&nbsp';
+            if(listPerson.BirthDate && listPerson.BirthDate.includes('-01-01')) {
+                let listPersonBirthArr = listPerson.BirthDate.split('-');
+                listPersonBirthYear = listPersonBirthArr[0];
+            }
+
+            console.log(listPersonBirthYear);
+            let newListPerson = document.createElement('div');
+            newListPerson.classList = 'list-person-single';
+
+            newListPerson.innerHTML = 
+                `<span class='first-span'>${listPerson.LastName} ${listPerson.FirstName} </span>` +
+                `<span class='second-span'>${listPersonBirthYear}</span>` +
+                `<span class='third-span'>${listPersonDescription[0] ? listPersonDescription[0] : '&nbsp'}</span>` +
+                `<span class='fourth-span'>${listPersonDescription[1] ? listPersonDescription[1] : '&nbsp'}</span>` +
+                `<span class='fifth-span'>${listPersonDescription[2] ? listPersonDescription[2] : '&nbsp'}</span>` +
+                `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='deleteRcPerson(${listPerson.PersonId}, ${itemId}, ${userId});'></i></span>`;
+
+            pplListContainer.appendChild(newListPerson);
         }
         console.log(topPpl);
         console.log(listPpl);
@@ -243,7 +289,7 @@ function saveRcDate() {
             // document.querySelector('.date-bottom .end-date').textContent = endDate.join('/');
             // document.querySelector('.date-bottom').style.display = 'block';
             // document.querySelector('.date-top').style.display = 'block';
-            document.querySelector('#rc-doc-date').textContent = `Zagreb, ${jQuery('#rc-date-entry').val()}`;
+           // document.querySelector('#rc-doc-date').textContent = `Zagreb, ${jQuery('#rc-date-entry').val()}`;
 
             // if (startDate != "" && startDate != oldStartDate) {
             //     jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
@@ -279,7 +325,8 @@ function saveRcDate() {
     });
 }
 // Save Ration Card Persons
-function saveRcPerson(firstName, lastName, description, spinner) {
+// listedPerson argument is just to make difference between listed people and other people on ration cards, false by default
+function saveRcPerson(itemId, userId, firstName, lastName, description, spinner, listedPerson = false) {
 
     let itemIde = parseInt(document.querySelector('#rc-item-id').textContent);
     let userIde = parseInt(document.querySelector('#rc-user-id').textContent);
@@ -288,22 +335,21 @@ function saveRcPerson(firstName, lastName, description, spinner) {
 
     // let firstName = escapeHtml(jQuery('#person-firstName-input').val());
     // let lastName = escapeHtml(jQuery('#person-lastName-input').val());
-    let birthDate = escapeHtml(jQuery('#rc-bdate').val());
+    // let birthDate = escapeHtml(jQuery('#rc-bdate').val());
+    let birthDate = '';
 
-    // if (firstName == "" && lastName == "") {
-    //     return 0;
-    // }
-    /////////
-        //jQuery('#item-person-spinner-container').css('display', 'block')
+    if(listedPerson == true) {
+        birthDate = document.querySelector('#rc-bdate').value + '-01-01';
+    }
     
-        //firstName = escapeHtml(jQuery('#person-firstName-input').val());
-        //lastName = escapeHtml(jQuery('#person-lastName-input').val());
-        birthPlace = escapeHtml(jQuery('#person-birthPlace-input').val());
-        birthDate = escapeHtml(jQuery('#person-birthDate-input').val().split('/'));
-        deathPlace = escapeHtml(jQuery('#person-deathPlace-input').val());
+    console.log(birthDate);
+
+
         deathDate = escapeHtml(jQuery('#person-deathDate-input').val().split('/'));
-        //description = escapeHtml(jQuery('#person-description-input-field').val());
-        link = escapeHtml(jQuery('#person-wiki-input-field').val());
+
+        let birthPlace = '';
+        let deathPlace = '';
+        let link = '';
     
         if (firstName == "" && lastName == "") {
             return 0;
@@ -317,14 +363,10 @@ function saveRcPerson(firstName, lastName, description, spinner) {
             DeathPlace: deathPlace,
             Link: link,
             Description: description,
-            ItemId: itemIde
+            ItemId: itemIde,
+            BirthDate: birthDate
         }
-        if (!isNaN(birthDate[2]) && !isNaN(birthDate[1]) && !isNaN(birthDate[0])) {
-            data['BirthDate'] = birthDate[2] + "-" + birthDate[1] + "-" + birthDate[0];
-        }
-        else {
-            data['BirthDate'] = null;
-        }
+
         if (!isNaN(deathDate[2]) && !isNaN(deathDate[1]) && !isNaN(deathDate[0])) {
             data['DeathDate'] = deathDate[2] + "-" + deathDate[1] + "-" + deathDate[0];
         }
@@ -338,33 +380,6 @@ function saveRcPerson(firstName, lastName, description, spinner) {
             }
         }
 
-
-    ///////7
-
-    // Prepare data and send API request
-    // data = {
-    //     FirstName: firstName,
-    //     LastName: lastName,
-    //     BirthPlace: null,
-    //     DeathPlace: null,
-    //     Link: null,
-    //     Description: null,
-    //     ItemId: itemIde
-    // }
-    // if (!isNaN(birthDate)) {
-    //     data['BirthDate'] = birthDate;
-    // }
-    // else {
-    //     data['BirthDate'] = null;
-    // }
-
-    // for (var key in data) {
-    //     if (data[key] == "") {
-    //         data[key] = null;
-    //     }
-    // }
-
-    // console.log(data);
 
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
@@ -399,6 +414,8 @@ function saveRcPerson(firstName, lastName, description, spinner) {
             function(response) {
                 console.log(response);
                 jQuery('#' + spinner + '-spinner').css('display', 'none');
+
+                loadRcPerson(itemId, userId);
             })
 
             //loadPersonData(itemIde, userIde);
@@ -466,11 +483,13 @@ function loadRcPlaceData(itemId, userId) {
                     function(response) {
                         document.querySelector('#m-address').value = '';
                         document.querySelector('#m-address').removeAttribute('disabled');
-                        document.querySelector('#m-address').style.border = '1px solid #ccc';
+                        document.querySelector('#m-address').style.border = 'none';
+                        document.querySelector('#m-address').style.borderBottom = '1px dotted #ccc';
                         document.querySelector('#m-address-check').style.display = 'none';
                         document.querySelector('#kbr').value = '';
                         document.querySelector('#kbr').removeAttribute('disabled');
-                        document.querySelector('#kbr').style.border = '1px solid #ccc';
+                        document.querySelector('#kbr').style.border
+                        document.querySelector('#kbr').style.borderBottom = '1px dotted #ccc';
                         document.querySelector('#kbr-check').style.display = 'none';
                         document.querySelector('#rc-place-one').style.display = 'inline-block';
                         document.querySelector('#edit-subm-container').style.display = 'none';
@@ -485,8 +504,8 @@ function loadRcPlaceData(itemId, userId) {
             showPlace.innerHTML = 
                 `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
                 `<p><b>${escapeRcHtml(submPlace.Name)}</b> (${escapeRcHtml(submPlace.Latitude)}, ${escapeRcHtml(submPlace.Longitude)})</p>` +
-                `<p style='margin-top:0px;font-size:13px;'>Description: ${escapeRcHtml(submPlace.Comment)}</p>` +
-                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
+                `<p style='margin-top:0px;font-size:12px;'>Description: ${escapeRcHtml(submPlace.Comment)}</p>` +
+                `<p style='margin-top:0px;font-size:12px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
                     `${escapeRcHtml(submPlace.WikidataName)}, ${escapeRcHtml(submPlace.WikidataId)}</a></p>`;
 
             document.querySelector('#show-top-loc').appendChild(showPlace);
@@ -538,7 +557,8 @@ function loadRcPlaceData(itemId, userId) {
                     function(response) {
                         document.querySelector('#landlord-loc').value = '';
                         document.querySelector('#landlord-loc').removeAttribute('disabled');
-                        document.querySelector('#landlord-loc').style.border = '1px solid #ccc';
+                        document.querySelector('#landlord-loc').style.border = 'none'
+                        document.querySelector('#landlord-loc').style.borderBottom = '1px dotted #ccc';
                         document.querySelector('#landlord-check').style.display = 'none';
                         document.querySelector('#l-lord-add').style.display = 'inline-block';
                         document.querySelector('#edit-llord-container').style.display = 'none';
@@ -553,8 +573,8 @@ function loadRcPlaceData(itemId, userId) {
             showPlace.innerHTML = 
                 `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
                 `<p><b>${escapeRcHtml(lLordPlace.Name)}</b> (${escapeRcHtml(lLordPlace.Latitude)}, ${escapeRcHtml(lLordPlace.Longitude)})</p>` +
-                `<p style='margin-top:0px;font-size:13px;'>Description: ${escapeRcHtml(lLordPlace.Comment)}</p>` +
-                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
+                `<p style='margin-top:0px;font-size:12px;'>Description: ${escapeRcHtml(lLordPlace.Comment)}</p>` +
+                `<p style='margin-top:0px;font-size:12px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
                     `${escapeRcHtml(lLordPlace.WikidataName)}, ${escapeRcHtml(lLordPlace.WikidataId)}</a></p>`;
 
             document.querySelector('#show-top-loc').appendChild(showPlace);
@@ -588,10 +608,12 @@ function loadRcPlaceData(itemId, userId) {
                     function(response) {
                         document.querySelector('#shop-loc').value = '';
                         document.querySelector('#shop-loc').removeAttribute('disabled');
-                        document.querySelector('#shop-loc').style.border = '1px solid #ccc';
+                        document.querySelector('#shop-loc').style.border = 'none';
+                        document.querySelector('#shop-loc').style.borderBottom = '1px dotted #ccc';
                         document.querySelector('#shop-name').value = '';
                         document.querySelector('#shop-name').removeAttribute('disabled');
-                        document.querySelector('#shop-name').style.border = '1px solid #ccc';
+                        document.querySelector('#shop-name').style.border = 'none';
+                        document.querySelector('#shop-name').style.borderBottom = '1px dotted #ccc';
                         document.querySelector('#shop-check').style.display = 'none';
                         document.querySelector('#shop-name-check').style.display = 'none';
                         document.querySelector('#shop-loc-btn').style.display = 'inline-block';
@@ -607,8 +629,8 @@ function loadRcPlaceData(itemId, userId) {
             showPlace.innerHTML = 
                 `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
                 `<p><b>${escapeRcHtml(shopPlace.Name)}</b> (${escapeRcHtml(shopPlace.Latitude)}, ${escapeRcHtml(shopPlace.Longitude)})</p>` +
-                `<p style='margin-top:0px;font-size:13px;'>Description: ${escapeRcHtml(shopPlace.Comment)}</p>` +
-                `<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
+                `<p style='margin-top:0px;font-size:12px;'>Description: ${escapeRcHtml(shopPlace.Comment)}</p>` +
+                `<p style='margin-top:0px;font-size:12px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
                     `${escapeRcHtml(shopPlace.WikidataName)}, ${escapeRcHtml(shopPlace.WikidataId)}</a></p>`;
 
             document.querySelector('#show-bot-loc').appendChild(showPlace);
@@ -630,8 +652,8 @@ var ready = (callback) => {
 ready(() => {
 
     // Check if there are already locations
-    let itemId = parseInt(document.querySelector('#rc-item-id').textContent);
-    let userId = parseInt(document.querySelector('#rc-user-id').textContent);
+    const itemId = parseInt(document.querySelector('#rc-item-id').textContent);
+    const userId = parseInt(document.querySelector('#rc-user-id').textContent);
     
     loadRcPlaceData(itemId, userId);
     loadRcPerson(itemId, userId);
@@ -658,8 +680,8 @@ ready(() => {
             // document.querySelector('#rc-place-one').style.display = 'none';
             // document.querySelector('#edit-subm-container').style.display = 'inline-block';
     
-            document.querySelector('#submitter-place').textContent = locOneStreet.value;
-            document.querySelector('#house-nr').textContent = 'Kbr. ' + locOneNumb.value;
+            // document.querySelector('#submitter-place').textContent = locOneStreet.value;
+            // document.querySelector('#house-nr').textContent = 'Kbr. ' + locOneNumb.value;
         })
     }
 
@@ -676,7 +698,7 @@ ready(() => {
             lLordStreet.setAttribute('disabled', true);
             lLordStreet.style.border = '1px solid #0a72cc';
     
-            document.querySelector('#llord-place').textContent = lLordStreet.value;
+            // document.querySelector('#llord-place').textContent = lLordStreet.value;
         })
     }
 
@@ -699,8 +721,8 @@ ready(() => {
     
                 shopStreet.setAttribute('disabled', true);
         
-                document.querySelector('#tr-shop-name').textContent = shopName.value;
-                document.querySelector('#tr-shop-place').textContent = shopStreet.value;
+                // document.querySelector('#tr-shop-name').textContent = shopName.value;
+                // document.querySelector('#tr-shop-place').textContent = shopStreet.value;
             }
         })
     }
@@ -725,10 +747,10 @@ ready(() => {
             let firstName = document.querySelector('#submitter-fname').value;
             let lastName = document.querySelector('#submitter-lname').value;
     
-            saveRcPerson(firstName, lastName, description, 'submitter');
+            saveRcPerson(itemId, userId, firstName, lastName, description, 'submitter');
     
-            document.querySelector('#submitter-lf-name').textContent = lastName + ' ' + firstName;
-            document.querySelector('#reg-num').textContent = document.querySelector('#regnumb').value;
+            // document.querySelector('#submitter-lf-name').textContent = lastName + ' ' + firstName;
+            // document.querySelector('#reg-num').textContent = document.querySelector('#regnumb').value;
         })
     }
 
@@ -740,9 +762,9 @@ ready(() => {
             let firstName = document.querySelector('#landlord-fname').value;
             let lastName = document.querySelector('#landlord-lname').value;
     
-            saveRcPerson(firstName, lastName, description, 'landlord');
+            saveRcPerson(itemId, userId, firstName, lastName, description, 'landlord');
     
-            document.querySelector('#llord-lf-name').textContent = lastName + ' ' + firstName;
+            // document.querySelector('#llord-lf-name').textContent = lastName + ' ' + firstName;
             
         })
     }
@@ -758,31 +780,93 @@ ready(() => {
 
             console.log(description);
     
-            saveRcPerson(firstName, lastName, description, 'listed-person');
-    
-            let addedToList = document.createElement('tr');
-            let lastChild = document.querySelector('.rc-list-td');
-            addedToList.classList.add('rc-list-display')
-            
-            addedToList.innerHTML =
-                    `<td>${lastName} ${firstName} </td>` +
-                    `<td class='rc-person-second-col'>${escapeHtml(jQuery('#rc-bdate').val())}</td>` +
-                    `<td>${document.querySelector('#desc-rel').value}</td>` +
-                    `<td>${document.querySelector('#desc-voc').value}</td>` +
-                    `<td>${document.querySelector('#desc-wp').value}</td>` +
-                    `<td class='btn-col'>&nbsp</td>`; 
-            
-           let addedToTrList = addedToList.cloneNode(true);
-            document.querySelector('#rc-table tbody').insertBefore(addedToList, lastChild);
-            document.querySelector('#tr-list-table tbody').appendChild(addedToTrList);
+            saveRcPerson(itemId, userId, firstName, lastName, description, 'listed-person', true);
     
             document.querySelector('#rc-list-form').reset();
         })
     }
     // Set document language to Croatian if it's Ration Card
-    if(document.querySelector('#rc-form')) {
-        document.querySelector('#transcription-language-selector div[value="Hrvatski (Croatian)"]').click();
-    }
+    // if(document.querySelector('#rc-form')) {
+    //     if(!document.querySelector('#transcription-selected-languages li')) {
+    //         document.querySelector('#transcription-language-selector div[value="Hrvatski (Croatian)"]').click();
+    //     }
+    // }
+
+    const submitForm = document.getElementById('submit-form');
+
+    submitForm.addEventListener('click', function() {
+        // Get data from form and pass it to variables
+        const submitterLoc = document.getElementById('m-address').value;
+        const submitterHouseNr = document.getElementById('kbr').value;
+        const formNumber = document.getElementById('regnumb').value;
+        const submitterLName = document.getElementById('submitter-lname').value;
+        const submitterFName = document.getElementById('submitter-fname').value;
+        const landlordLName = document.getElementById('landlord-lname').value;
+        const landlordFName = document.getElementById('landlord-fname').value;
+        const landlordLoc = document.getElementById('landlord-loc').value;
+        const shopName = document.getElementById('shop-name').value;
+        const shopLoc = document.getElementById('shop-loc').value;
+        const docDate = document.getElementById('rc-date-entry').value;
+
+        // Get listed persons
+        const listedPersons = document.querySelector('#show-list-ppl').querySelectorAll('.list-person-single');
+        let displayDiv = document.createElement('div');
+        displayDiv.Id = 'display-list-ppl';
+        // Loop trough nodes, clone them and add them to container
+        for(let person of listedPersons) {
+            let clonedPerson = person.cloneNode(true);
+            displayDiv.appendChild(clonedPerson);
+        }
+         
+        // Build transcription
+        const transcriptionTemplate = document.createElement('div');
+        transcriptionTemplate.classList = 'transcription-form';
+
+        transcriptionTemplate.innerHTML = 
+            `<p class='display-first-row'><span> Grad Zagreb </span><span> A. </span><span> Prezime i Ime podnosioca prijave: </span></p>` +
+            `<p class='display-second-row'>` +
+                `<span> Ulica, trg ili ina oznaka <span style='border-bottom:1px dotted #000;'> ${submitterLoc} </span></span>` +
+                `<span> REG. BROJ:</span>` +
+                `<span style='border-bottom: 1px dotted #000;'> ${submitterLName} ${submitterFName} </span>` +
+            `</p>` +
+            `<p class='display-third-row'>` +
+                `<span> Kbr. <span style='border-bottom:1px dotted #000'> ${submitterHouseNr} </span></span>` +
+                `<span> ${formNumber} </span>` +
+                `<span> ${landlordLName} ${landlordFName} </span>` +
+            `</p>` +
+            `<p class='display-fourth-row'>` +
+                `<span> &nbsp </span>` +
+                `<span> &nbsp </span>` +
+                `<span> ${landlordLoc} </span>` +
+            `</p>` +
+            `<p class='form-title'> Potrošačka prijavnica </p>` +
+            `<p class='form-sub-title'> za kućanstva i samce - samice </p>` +
+            `<p class='form-cookies'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </p>` +
+            `<p class='form-sub-cookies'> Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
+
+            /// Maybe add other parts of form?? 
+            `<p class='display-shop-label'> Živežne namirnice nabavljat ću: </p>` +
+            `<p class='display-shop'>` +
+                ` U radnji: ` +
+                `<span style='border-bottom: 1px dotted #000;'> ${shopName} </span>` +
+                ` ulica ` + 
+                `<span style='border-bottom: 1px dotted #000;'> ${shopLoc} </span>` +
+            `</p>` +
+            `<p class='display-form-date'> Zagreb, <span style='border-bottom: 1px dotted #000;'> ${docDate} </span></p>`+
+            `<p class='form-footer'> Ova prijavnica stoji din 0*75 i ne smije se skuplje prodavati. </p>` +
+            `<p class='form-sub-footer'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>`;
+
+            // append listed persons to the transcription
+            transcriptionTemplate.insertBefore(displayDiv, transcriptionTemplate.querySelector('.display-shop-label'));
+
+            // append transcription to test div
+            tinymce.get('item-page-transcription-text').setContent(transcriptionTemplate.innerHTML);
+
+            if(!document.querySelector('#transcription-selected-languages li')) {
+                document.querySelector('#transcription-language-selector div[value="Hrvatski (Croatian)"]').click();
+            }
+
+    })
 
 });
 
