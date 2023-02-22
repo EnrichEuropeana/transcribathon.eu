@@ -468,7 +468,7 @@ h6.enrich-headers {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.person-data:hover {
+.person-data:hover:not(.top-person-single .person-data) {
     overflow: visible;
     height: auto;
     min-height: 27px;
@@ -3438,7 +3438,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     color: #000;
 }
 #rc-form input:focus-visible {
-    border: 0.5px solid #000;
+    border: 0.5px solid #000!important;
 }
 #rc-form i {
     color: #0a72cc;
@@ -3516,14 +3516,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .loc-name {
     font-weight: 500;
 }
-.left-half {
-    float: left;
-    width: 50%;
-}
-.right-half {
-    float: right;
-    width: 50%;
-}
 .rc-first-col {
     width: 42%;
     display: inline-block;
@@ -3553,11 +3545,15 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .rc-person-second-col {
     width: 8%!important;
 }
-.rc-list-head td {
-    font-size: 13px;
-}
 .rc-list-td {
     position: relative;
+    border-bottom: 1px solid #ccc;
+}
+.rc-list-td input {
+    padding: 0!important;
+    border: none!important;
+    width: 100%;
+    height: 100%;
 }
 .btn-col {
     width: 3%!important;
@@ -3568,7 +3564,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     right: 20px;
     top: 7px;
 }
-.top-part {
+/* .top-part {
     border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
@@ -3581,7 +3577,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
-}
+} */
 #m-address {
     width: 90%;
     position: absolute;
@@ -3697,4 +3693,86 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 #show-top-ppl {
     float: right;
     width: 49%;
+}
+#rc-person-list span {
+    display: inline-block;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+.rc-list-head span {
+    font-size: 12px;
+}
+.first-span {
+    width: 25%;
+}
+.second-span {
+    width: 10%;
+}
+.third-span, .fourth-span, .fifth-span {
+    width: 20%;
+}
+.sixth-span {
+    width: 5%;
+}
+.left-half, .right-half {
+    display: inline-block;
+    width: 50%;
+    border: none!important;
+}
+.left-half input, .right-half input {
+    width: 100%;
+    border: none!important;
+    padding: 0;
+}
+.rc-list-head .third-span {
+    position: relative;
+    top: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#submit-form {
+    border: 1px solid var(--main-color);
+    background-color: var(--main-color);
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    margin-top: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--p-font-family);
+}
+#rc-form .location-single p:first-of-type {
+    font-size: 14px;
+}
+.top-person-single {
+    padding: 5px 25px;
+    background: #fff;
+    margin-bottom: 10px;
+    font-weight: 400;
+    line-height: 1em!important;
+    position: relative;
+}
+.top-person-single i.fa-user {
+    float: left;
+    margin-right: 5px;
+    font-size: 12px;
+    color: var(--main-color);
+    position: relative;
+    top: 3px;
+}
+.top-person-single i.fa-trash-alt {
+    position: absolute;
+    right: 25px;
+    top: 7px;
+    font-size: 12px;
+}
+.top-person-single .person-data {
+    font-size: 14px!important;
+    font-weight: bold;
+    height: auto;
+}
+.top-person-single .person-description {
+    font-size: 12px!important;
 }
