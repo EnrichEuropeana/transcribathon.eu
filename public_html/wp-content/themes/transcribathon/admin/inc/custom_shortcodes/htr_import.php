@@ -338,10 +338,12 @@ document.addEventListener('alpine:init', () => {
 						: 'success';
 				}
 
+				const intervall = this.storyId ? 180000 : 5000;
+
 				if (this.processing) {
 					setTimeout(() => {
 						query.call()
-					}, 5000);
+					}, intervall);
 				}
 
 			};
