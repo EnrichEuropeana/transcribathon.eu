@@ -419,7 +419,7 @@ h6.enrich-headers {
 #enrich-view button, #description-view button{
     display: none;
 }
-#description-view .item-date-inner-container {
+#description-view .item-date-inner-container, #description-view .creation-date-container {
     display: none;
 }
 #enrich-view .person-data-edit-container, #description-view .link-data-edit-container {
@@ -598,11 +598,11 @@ h6.enrich-headers {
 #item-data-section .document-date-container{
     display: none;
 }
-#item-date-container .item-date-inner-container, #item-date-container #item-date-save-button,
+/* #item-date-container .item-date-inner-container, #item-date-container #item-date-save-button,
 #item-date-container .creation-date-container {
     display: none;
-}
-#item-date-container.show .item-date-inner-container, #item-date-container.show #item-date-save-button,
+} */
+/* #item-date-container.show .item-date-inner-container, #item-date-container.show #item-date-save-button,
 #item-date-container.show .creation-date-container {
     display: inline-block;
 }
@@ -613,7 +613,7 @@ h6.enrich-headers {
 #item-date-container .document-date-container, #doc-type-area #doc-type-view,
 #description-area .current-description, #description-area .description-language {
     display: block;
-}
+} */
 /* --- Metadata --- */
 .single-meta {
     padding: 5px 0px;
@@ -1067,13 +1067,16 @@ p.mb-1 {
     outline: none;
     border-radius: 0;
 }
-#doc-type-area #category-checkboxes {
+/* #doc-type-area #category-checkboxes {
     display: none;
 }
 #doc-type-area.show #category-checkboxes {
     display: block;
+} */
+#item-data-section #doc-type-view, #item-data-section .current-description, #item-data-section .description-language {
+    display: none;
 }
-#description-area #item-page-description-text, #description-area #description-language-selector {
+/* #description-area #item-page-description-text, #description-area #description-language-selector {
     display: none;
 }
 #description-area.show #item-page-description-text {
@@ -1082,7 +1085,7 @@ p.mb-1 {
 }
 #description-area.show #description-language-selector {
     display: inline-flex;
-}
+} */
 .transcription-toggle {
     width: 100%;
     height: 20px;

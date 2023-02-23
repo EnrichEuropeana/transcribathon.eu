@@ -1018,7 +1018,7 @@ if (event.target.id != "tagging-status-indicator") {
     $descriptionTab .= "<div id='description-editor' class='item-page-section'>";
         $descriptionTab .= "<div class='item-page-section-headline-container'>";
             $descriptionTab .= "<div id='description-collapse-heading' class='theme-color item-page-section-headline'>";
-                $descriptionTab .= "<span class='headline-header'>ENRICHMENTS</span>";
+                $descriptionTab .= "<span class='headline-header'>DESCRIPTION</span>";
             // Save button placeholder
         //$descriptionTab .= "</div>";
         // description status  changer
@@ -1060,7 +1060,7 @@ if (event.target.id != "tagging-status-indicator") {
         $descriptionTab .= "<div id='item-date-container'>";
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
                 $descriptionTab .= "Document Date ";
-                $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
+                // $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
                 $descriptionTab .= "<i id='date-open' class=\"fas fa-edit\"></i>";
             $descriptionTab .= "</h6>";
             if($itemData['DateStartDisplay'] != null || $itemData['DateEndDisplay'] != null) {
@@ -1149,7 +1149,7 @@ if (event.target.id != "tagging-status-indicator") {
         $descriptionTab .= "<div id='doc-type-area' class='description-save'>";
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
                 $descriptionTab .= "Document Type ";
-                $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
+              //  $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
                 $descriptionTab .= "<i id='media-open' class=\"fas fa-edit\"></i>";
             $descriptionTab .= "</h6>";
 
@@ -1186,8 +1186,8 @@ if (event.target.id != "tagging-status-indicator") {
         $descriptionTab .= "</div>";
         $descriptionTab .= "<div id='description-area'>";
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
-                $descriptionTab .= "Description ";
-                $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
+                $descriptionTab .= "Item Description ";
+              //  $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
                 $descriptionTab .= "<i id='description-open' class=\"fas fa-edit\"></i>";
             $descriptionTab .= "</h6>";
 

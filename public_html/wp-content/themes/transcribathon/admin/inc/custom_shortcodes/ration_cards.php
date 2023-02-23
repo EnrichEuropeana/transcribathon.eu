@@ -170,71 +170,6 @@ function _TCT_ration_cards($atts)
     else if ($isLoggedIn) {
         $locked = true;
     }
-    //////////////////////
-    // Form tinymce test
-    $formTr = "";
-    $formTr .= "<div id='rc-tr-form'>";
-        $formTr .= "<h3 style='margin-bottom:20px;'><b> Grad Zagreb </b></h3>";
-        // Top adress and card registration number
-        $formTr .= "<table class='rc-top-address' style='border:none!important'>";
-            $formTr .= "<tr style='border: 0 solid #000;'>";
-                $formTr .= "<td class='rc-first-col top-part' style='border:none!important'>Ulica, trg ili ina oznaka: <span id='submitter-place'></span> </td>";
-                $formTr .= "<td class='rc-second-col' style='border:none!important'> Reg. broj: </td>";
-                $formTr .= "<td class='rc-third-col' style='border:none!important'> Prezime i ime podnosioca prijave:</td>";
-            $formTr .= "</tr>";
-            $formTr .= "<tr style='border:none!important;height:20px;'>";
-                $formTr .= "<td id='house-nr' class='rc-first-col mid-part' style='border:none!important'></td>";
-                $formTr .= "<td id='reg-num' class='rc-second-col' style='border:none!important'></td>";
-                $formTr .= "<td id='submitter-lf-name' class='rc-third-col' style='vertical-align: top;border:none!important;'> &nbsp </td>";
-            $formTr .= "</tr>";
-            $formTr .= "<tr style='border:none!important'>";
-                $formTr .= "<td class='rc-first-col bot-part' style='vertical-align: top;border:none!important;'></td>";
-                $formTr .= "<td class='rc-second-col' style='border:none!important'> &nbsp </td>";
-                $formTr .= "<td class='rc-third-col' style='border:none!important'>Prezime i ime i stan kucevlasnika:</td>";
-            $formTr .= "</tr>";
-            $formTr .= "<tr style='border:none!important'>";
-                $formTr .= "<td class='rc-first-col' style='border:none!important'>&nbsp</td>";
-                $formTr .= "<td class='rc-second-col' style='border:none!important'> &nbsp </td>";
-                $formTr .= "<td id='llord-lf-name' class='rc-third-col' style='vertical-align: top;border:none!important;'> &nbsp </td>";
-            $formTr .= "</tr>";
-            $formTr .= "<tr style='border:none!important'>";
-                $formTr .= "<td class='rc-first-col' style='border:none!important'> &nbsp </td>";
-                $formTr .= "<td class='rc-second-col' style='border:none!important'> &nbsp </td>";
-                $formTr .= "<td id='llord-place' class='rc-third-col' style='border:none!important'></td>";
-            $formTr .= "</tr>";
-        $formTr .= "</table>";
-                            
-                            //
-        $formTr .= "<h3 class='rc-title'> Potrosacka prijavnica <br> za kucanstva i samce - samice. </h3>";
-                            
-        // Main form
-        $formTr .= "<div id='tr-person-list'>";
-            $formTr .= "<table id='tr-list-table'>";
-                // Table head
-                $formTr .= "<tr class='rc-list-head'>";
-                    $formTr .= "<td>Prezime i ime</th>";
-                    $formTr .= "<td class='rc-person-second-col'>God. Rod.</th>";
-                    $formTr .= "<td>Odnos prema podnosiocu prijave odn. Starjesini</th>";
-                    $formTr .= "<td>Zanimanje</th>";
-                    $formTr .= "<td>Mjesto rada</th>";
-                $formTr .= "</tr>";
-            $formTr .= "</table>";
-        $formTr .= "</div>";
-                            // Shop address
-        $formTr .= "<div id='shop-tr-place'>";
-            $formTr .= "<span> Zivezne namirnice nabavljat cu:</span></br></br>";
-            $formTr .= "<span style='margin-right:100px;margin-top:20px;'>U radnji: <span id='tr-shop-name'></span></span>";
-            $formTr .= "<span>ulica: <span id='tr-shop-place'></span></span>";
-        $formTr .= "</div>";
-
-        // Document date
-        $formTr .= "<div id='rc-tr-date'>";
-            $formTr .= "<span id='rc-doc-date'></span>";
-        $formTr .= "</div>";
-    $formTr .= "</div>";
-
-
-    /////////////////////
 
     $content .= "";
     // Large spinner
@@ -560,7 +495,8 @@ function _TCT_ration_cards($atts)
         $enrichmentTab .= "<div class='item-page-section-headline-container'>";
 
             $enrichmentTab .= "<div class='theme-color item-page-section-headline'>";
-                $enrichmentTab .= "<span class='headline-header'>ENRICHMENTS</span>";
+                $enrichmentTab .= "<span class='headline-header'>PEOPLE</span>";
+                $enrichmentTab .= "<i id='show-ppl-input' class='fas fa-plus-circle'></i>";
             //$enrichmentTab .= "<div class='item-page-headline-right-site'>";
                 $enrichmentTab .= "<div id='tagging-status-changer' class='status-changer section-status-changer login-required' style='background-color:" . $itemData['TaggingStatusColorCode'] . ";'>";
                     if(current_user_can('administrator')) {
@@ -594,124 +530,77 @@ function _TCT_ration_cards($atts)
                 $enrichmentTab .= "</div>";
             $enrichmentTab .= "</div>";
         $enrichmentTab .= "</div>";
-        // DATE ENTRY
-        $enrichmentTab .= "<div id='item-date-container'>";
-            $enrichmentTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
-                $enrichmentTab .= "Document Date ";
-            $enrichmentTab .= "<i id='date-open' class=\"fas fa-edit\"></i></h6>";
-            if($itemData['DateStartDisplay'] != null || $itemData['DateEndDisplay'] != null) {
-                $enrichmentTab .= "<div class='document-date-container'>";
-                    $enrichmentTab .= "<div class='date-top'>";
-                        $enrichmentTab .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
-                        $enrichmentTab .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
-                    $enrichmentTab .= "</div>";
-                    $enrichmentTab .= "<div style='clear:both;'></div>";
-                    $enrichmentTab .= "<div class='date-bottom'>";
-                        $enrichmentTab .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
-                        $enrichmentTab .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
-                    $enrichmentTab .= "</div>";
-                $enrichmentTab .= "</div>";
-            }
 
-            $enrichmentTab .= "<div class='item-date-inner-container'>";
-                $enrichmentTab .= "<label>Start Date</label>";
-                if($itemData['DateStartDisplay'] != null) {
-                    $startTimestamp = strtotime($itemData['DateStart']);
-                    $dateStart = date('d/m/Y', $startTimestamp);
-                    $enrichmentTab .= "<div class='item-date-display-container'>";
-                        $enrichmentTab .= "<span type='text' id='startdateDisplay' class='item-date-display'>";
-                            $enrichmentTab .= $itemData['DateStartDisplay'];
-                        $enrichmentTab .= "</span>";
-                        $enrichmentTab .= "<span class='edit-item-date edit-item-data-icon login-required'><img class='calendar-img' src='".home_url()."/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg'></img></span>";
-                    $enrichmentTab .= "</div>";
-                    $enrichmentTab .= "<div class='item-date-input-container' style='display:none;'>";
-                        $enrichmentTab .= "<input type='text' id='startdateentry' placeholder='dd/mm/yyyy' class='datepicker-input-field' value='" .$dateStart . "'>";
-                    $enrichmentTab .= "</div>";
-                } else {
-                    $enrichmentTab .= "<div class='item-date-display-container' style='display:none;'>";
-                        $enrichmentTab .= "<span type='text' id='startdateDisplay' class='item-date-display'></span>";
-                        $enrichmentTab .= "<span class='edit-item-date edit-item-data-icon login-required'><img class='calendar-img' src='".home_url()."/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg'></img></span>";
-                    $enrichmentTab .= "</div>";
-                    $enrichmentTab .= "<div class='item-date-input-container'>";
-                        $enrichmentTab .= "<input type='text' id='startdateentry' class='login-required datepicker-input-field' placeholder='dd/mm/yyyy'>";
-                    $enrichmentTab .= "</div>";
-                }
-            $enrichmentTab .= "</div>";
-
-            $enrichmentTab .= "<div class='item-date-inner-container'>";
-                $enrichmentTab .= "<label>End Date</label>";
-                if($itemData['DateEndDisplay'] != null) {
-                    $endTimestamp = strtotime($itemData['DateEnd']);
-                    $dateEnd = date('d/m/Y', $endTimestamp);
-                    $enrichmentTab .= "<div class='item-date-display-container'>";
-                        $enrichmentTab .= "<span type='text' id='enddateDisplay' class='item-date-display'>";
-                            $enrichmentTab .= $itemData['DateEndDisplay'];
-                        $enrichmentTab .= "</span>";
-                        $enrichmentTab .= "<span class='edit-item-date edit-item-data-icon login-required'><img class='calendar-img' src='".home_url()."/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg'></img></span>";
-                    $enrichmentTab .= "</div>";
-                    $enrichmentTab .= "<div class='item-date-input-container' style='display:none;'>";
-                        $enrichmentTab .= "<input type='text' id='enddateentry' class='datepicker-input-field' placeholder='dd/mm/yyyy' value='" . $dateEnd . "'>";
-                    $enrichmentTab .= "</div>";
-                } else {
-                    $enrichmentTab .= "<div class='item-date-display-container' style='display:none;'>";
-                        $enrichmentTab .= "<span type='text' id='enddateDisplay' class='item-date-display'>";
-                        $enrichmentTab .= "</span>";
-                        $enrichmentTab .= "<span class='edit-item-date edit-item-data-icon login-required'><img class='calendar-img' src='".home_url()."/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg'></img></span>";
-                    $enrichmentTab .= "</div>";
-                    $enrichmentTab .= "<div class='item-date-input-container'>";
-                        $enrichmentTab .= "<input type='text' id='enddateentry' class='login-required datepicker-input-field' placeholder='dd/mm/yyyy'>";
-                    $enrichmentTab .= "</div>";
-                }
-            $enrichmentTab .= "</div>";
-
-            $enrichmentTab .= "<button class='item-page-save-button login-required' id='item-date-save-button'
-                                onClick='saveItemDate(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
-                $enrichmentTab .= "<i class='fas fa-save'></i>";
-            $enrichmentTab .= "</button>";
-            $enrichmentTab .= "<div id='item-date-spinner-container' class='spinner-container spinner-container-right'>";
-                $enrichmentTab .= "<div class='spinner'></div>";
-            $enrichmentTab .= "</div>";
-            $enrichmentTab .= "<div style='clear:both;'></div>";
-        $enrichmentTab .= "</div>";
         // PERSON ENTRY
         $enrichmentTab .= "<div class='item-page-person-container'>";
-            $enrichmentTab .= "<div id='item-page-person-headline' class='theme-color collapse-headline collapse-controller' data-toggle='collapse' href='#person-input-container'
-                                onClick='jQuery(this).find(\".collapse-icon\").toggleClass(\"fa-caret-circle-up\")
-                                        jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")'>";
+            $enrichmentTab .= "<div id='item-page-person-headline' class='theme-color'>";
                 $enrichmentTab .= "<h6 class='theme-color item-data-input-headline login-required' title='Click to tag a person'>";
                     $enrichmentTab .= "People ";
-                    $enrichmentTab .= "<i style='margin-left:5px;' class='fas fa-plus-circle'></i>";
                 $enrichmentTab .= "<i id='people-open' class=\"fas fa-edit\"></i></h6>";
             $enrichmentTab .= "</div>";
             // add person form
             if(count($itemData['Persons']) > 0) {
                 $enrichmentTab .= '<div class="collapse person-item-data-container" id="person-input-container" style="position:relative;">';
             } else {
-                $enrichmentTab .= '<div class="collapse person-item-data-container collapse show login-required" id="person-input-container" style="position:relative;">';
+                $enrichmentTab .= '<div class="collapse person-item-data-container show login-required" id="person-input-container" style="position:relative;">';
             }
                 $enrichmentTab .= '<div class="person-input-names-container">';
                     $enrichmentTab .= '<input type="text" id="person-firstName-input" class="input-response person-input-field" name="" placeholder="&nbsp First Name" style="width:48.5%;">';
                     $enrichmentTab .= '<input type="text" id="person-lastName-input" class="input-response person-input-field" name="" placeholder="&nbsp Last Name" style="width:48.5%;float:right;">';
                 $enrichmentTab .= '</div>';
-    
-                $enrichmentTab .= "<div class='person-description-input'>";
-                    $enrichmentTab .= "<input id='person-description-input-field' type='text' placeholder='&nbsp Add more info to this person...' title='e.g. their profession, or their significance to the dcument' class='input-response person-input-field'>";
+
+                // Enrich Person Changes
+                $enrichmentTab .= "<div class='person-input-desc-cont'>";
+                    $enrichmentTab .= "<div class='person-desc-left' style='margin-bottom: 0!important;'>";
+                        $enrichmentTab .= "<div class='person-description-input'>";
+                            $enrichmentTab .= "<input id='person-description-input-field' type='text' placeholder='&nbsp Add more info to this person...' title='e.g. their profession, or their significance to the document' class='input-response person-input-field'>";
+                        $enrichmentTab .= "</div>";
+                        $enrichmentTab .= "<div class='person-description-input'>";
+                            $enrichmentTab .= "<input id='person-wiki-input-field' type='text' placeholder='&nbsp Add Wikidata Id to this person...' title='e.g. Wikidata Title Id' class='input-response person-input-field'>";
+                        $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "<div class='person-desc-right'>";
+                        $enrichmentTab .= "<div class='person-role-input' style='margin-bottom: 0!important;'>";
+                            $enrichmentTab .= "<label id='document-creator'>";
+                                $enrichmentTab .= "<input type='radio' id='doc-creator' name='person-role' value='document-creator' required>";
+                                $enrichmentTab .= "<span> Document Creator</span>";
+                            $enrichmentTab .= "</label>";
+                            $enrichmentTab .= "</br>";
+                            $enrichmentTab .= "<label id='important-person'>";
+                                $enrichmentTab .= "<input type='radio' id='main-actor' name='person-role' value='main-actor'>";
+                                $enrichmentTab .= "<span> Person Addressed </span>";
+                            $enrichmentTab .= "</label>";
+                            $enrichmentTab .= "</br>";
+                            $enrichmentTab .= "<label id='others'>";
+                                $enrichmentTab .= "<input type='radio' id='other-ppl' name='person-role' value='other-people'>";
+                                $enrichmentTab .= "<span> Person Mentioned </span>";
+                            $enrichmentTab .= "</label>";
+                            $enrichmentTab .= "</br>";
+                        $enrichmentTab .= "</div>";
+                        $enrichmentTab .= "<i class='fas fa-question-circle'></i>";
+                    $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "<div style='clear:both;'></div>";
                 $enrichmentTab .= "</div>";
-        
-                $enrichmentTab .= '<div class="person-description-input">';
-                    $enrichmentTab .= '<input id="person-wiki-input-field" type="text" placeholder="&nbsp Add Wikidata Id to this person..." title="e.g. Wikidata Title Id" class="input-response person-input-field">';
-                $enrichmentTab .= '</div>';
-        
+
+
+                // $enrichmentTab .= "<div class='person-description-input'>";
+                //     $enrichmentTab .= "<input id='person-description-input-field' type='text' placeholder='&nbsp Add more info to this person...' title='e.g. their profession, or their significance to the dcument' class='input-response person-input-field'>";
+                // $enrichmentTab .= "</div>";
+
+                // $enrichmentTab .= '<div class="person-description-input">';
+                //     $enrichmentTab .= '<input id="person-wiki-input-field" type="text" placeholder="&nbsp Add Wikidata Id to this person..." title="e.g. Wikidata Title Id" class="input-response person-input-field">';
+                // $enrichmentTab .= '</div>';
+
                 $enrichmentTab .= '<div class="person-location-birth-inputs">';
                     $enrichmentTab .= '<input type="text" id="person-birthPlace-input" class="input-response person-input-field" name="" placeholder="&nbsp Birth Location">';
                     $enrichmentTab .= '<span style="display:inline-block;width:48.5%;" class="input-response"><input type="text" id="person-birthDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Birth: dd/mm/yyyy" style="width:100%;margin-left:15px;"></span>';
                 $enrichmentTab .= '</div>';
-        
+
                 $enrichmentTab .= '<div class="person-location-death-inputs">';
                     $enrichmentTab .= '<input type="text" id="person-deathPlace-input" class="input-response person-input-field" name="" placeholder="&nbsp Death Location">';
                     $enrichmentTab .= '<span style="display:inline-block;width:48.5%;" class="input-response"><input type="text" id="person-deathDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Death: dd/mm/yyyy" style="width:100%;margin-left:15px;"></span>';
                 $enrichmentTab .= '</div>';
-        
+
                 $enrichmentTab .= "<div class='person form-buttons-right' style='display:block;margin-top:0px;'>";
                     $enrichmentTab .= "<button id='save-personinfo-button' class='edit-data-save-right' id='person-save-button'
                                     onClick='savePerson(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
@@ -725,14 +614,19 @@ function _TCT_ration_cards($atts)
                 $enrichmentTab .= "<div style='clear:both;'></div>";
             $enrichmentTab .= "</div>";
 
-
             $enrichmentTab .= '<div id="item-person-list" class="item-data-output-list">';
                 foreach($itemData['Persons'] as $person) {
+                    $person['BirthDate'] = $person['BirthDate'] !== 'NULL'
+                        ? date('d/m/Y', strtotime($person['BirthDate']))
+                        : 'NULL';
+                    $person['DeathDate'] = $person['DeathDate'] !== 'NULL'
+                        ? date('d/m/Y', strtotime($person['DeathDate']))
+                        : 'NULL';
                     $enrichmentTab .= "<div id='person-" . $person['PersonId'] . "'>";
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span style='font-weight:400;'>" . htmlspecialchars(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
+                                $enrichmentTab .= "<span style='font-weight:600;'>" . htmlspecialchars(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
                                 if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                                     $enrichmentTab .= " (" . $person['BirthDate'];
                                     if($person['BirthPlace'] != 'NULL') {
@@ -760,7 +654,7 @@ function _TCT_ration_cards($atts)
                             $enrichmentTab .= "</p>";
 
                             if($person['Description'] != 'NULL' && $person['Description'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>Description: <b>" . $person['Description'] . "</b></p>";
+                                $enrichmentTab .= "<p class='person-description'>" . $person['Description'] . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
                                 $enrichmentTab .= "<p class='person-description'>Wikidata ID: <b><a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . $person['Link'] . "</a></b></p>";
@@ -829,8 +723,9 @@ function _TCT_ration_cards($atts)
                             $enrichmentTab .= "<div style='clear:both;'></div>";
                         $enrichmentTab .= "</div>";
                     $enrichmentTab .= "</div>";
-                }
 
+                }
+                // AutoEnrichment People
                 if(sizeof($itemAutoPpl) > 0) {
                     $enrichmentTab .= "<p class='auto-h'> Automatically Identified People </p>";
                     //dd($itemAutoPpl);
@@ -849,153 +744,8 @@ function _TCT_ration_cards($atts)
                     }
                 }
 
-            $enrichmentTab .= '</div>'; // End of people display container
+            $enrichmentTab .= "</div>"; // End of people display container
 
-        $enrichmentTab .= "</div>";
-
-        // Keywords
-        $enrichmentTab .= "<div id='item-page-keyword-container'>";
-            $enrichmentTab .= '<div id="item-page-keyword-headline" class="keyword-collapse">';
-            $enrichmentTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add keywords">';
-                    $enrichmentTab .= 'Keywords ';
-                    // $taggingTab .= "<button id='keyword-plus-button' type='submit' class='edit-data-save-right'
-                    // onClick='document.querySelector(\"#keyword-save-button\").click();'>";
-                    $enrichmentTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
-                    // $taggingtab .= "</button>";
-                $enrichmentTab .= '<i id=\'keywords-open\' class="fas fa-edit"></i></h6>';
-            $enrichmentTab .= '</div>';
-
-            $enrichmentTab .= '<div  style="position:relative;width:100%;">';
-                $enrichmentTab .= '<div id="keyword-input-container" class="" style="display:none;margin-right:10px;margin-bottom:10px;">';
-                    $enrichmentTab .= '<input type="text" id="keyword-input" name="" placeholder="&nbsp Add a Keyword">';
-                    $enrichmentTab .= "<button id='keyword-save-button' type='submit' class='theme-color' style='display:block;background:none;border:none'
-                                        onClick='saveKeyword(".htmlspecialchars($itemData['ItemId'], ENT_QUOTES, 'UTF-8').", ".get_current_user_id()."
-                                        , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                        $enrichmentTab .= '<i style="font-size:20px;" class="fas fa-save"></i>';
-                    $enrichmentTab .= '</button>';
-                    $enrichmentTab .= '<div id="item-keyword-spinner-container" class="spinner-container spinner-container-left">';
-                        $enrichmentTab .= '<div class="spinner"></div>';
-                    $enrichmentTab .= "</div>";
-                    $enrichmentTab .= '<div style="clear: both;"></div>';
-                $enrichmentTab .= '</div>';
-            $enrichmentTab .= '</div>';
-
-            $enrichmentTab .= '<div id="item-keyword-list" class="item-data-output-listt">';
-            // $taggingTab .= '<ul>';
-                foreach ($itemData['Properties'] as $property) {
-                    if ($property['PropertyType'] == "Keyword") {
-                        $enrichmentTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
-                            $enrichmentTab .= $property['PropertyValue'];
-                            $enrichmentTab .= '<i class="login-required delete-item-datas far fa-times" style="margin-left:5px;"
-                                                onClick="deleteItemData(\'properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'keyword\', '.get_current_user_id().')"></i>';
-                        $enrichmentTab .= '</div>';
-                    }
-                }
-            // $taggingTab .= '</ul>';
-            $enrichmentTab .= '</div>';
-        $enrichmentTab .= "</div>";
-
-        // Other Sources
-        $enrichmentTab .= "<div id='item-page-link-container'>";
-            $enrichmentTab .= '<div class="collapse-headline collapse-controller" data-toggle="collapse" href="#link-input-container">';
-                $enrichmentTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add a link">';
-                    $enrichmentTab .= 'External Web Resources ';
-                    // $taggingTab .= "<button type='submit' class='edit-data-save-right' id='link-save-button'
-                    // onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
-                    // , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                    // $taggingTab .= '<div>Save</div>';
-                    // $taggingTab .= "</button>";
-                    $enrichmentTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
-                $enrichmentTab .= '<i id="links-open" class="fas fa-edit"></i></h6>';
-            $enrichmentTab .= '</div>';
-
-            $enrichmentTab .= '<div id="link-input-container" class="collapse" style="padding-right:70px;position:relative;">';
-                // $taggingTab .= '<div>';
-                //     $taggingTab .= "<span>Link:</span><br/>";
-                // $taggingTab .= '</div>';
-
-                $enrichmentTab .= '<div class="link-url-input">';
-                    $enrichmentTab .= '<input type="url" name="" placeholder="&nbsp Enter URL here">';
-                $enrichmentTab .= '</div>';
-
-                $enrichmentTab .= '<div class="link-description-input">';
-                    // $taggingTab .= '<label>Additional description:</label><br/>';
-                    $enrichmentTab .= '<textarea rows= "3" type="text" placeholder="&nbsp Add description of the link" name=""></textarea>';
-                $enrichmentTab .= '</div>';
-                $enrichmentTab .= "<div class='form-buttons-right' style='display:inline-block;position:absolute;right:40px;top:-10px;'>";
-                    $enrichmentTab .= "<button type='submit' class='theme-color edit-data-save-right' id='link-save-button'
-                                    onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
-                                    , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                        $enrichmentTab .= "<i style='font-size:20px;' class='fas fa-save'></i>";
-                    $enrichmentTab .= "</button>";
-                    $enrichmentTab .= '<div id="item-link-spinner-container" class="spinner-container spinner-container-left">';
-                        $enrichmentTab .= '<div class="spinner"></div>';
-                    $enrichmentTab .= "</div>";
-                    $enrichmentTab .= '<div style="clear:both;"></div>';
-                $enrichmentTab .=    "</div>";
-                $enrichmentTab .= '<div style="clear:both;"></div>';
-            $enrichmentTab .=    "</div>";
-
-            $enrichmentTab .= '<div id="item-link-list" class="item-data-output-list">';
-                foreach ($itemData['Properties'] as $property) {
-                    if($property['PropertyDescription'] != 'NULL') {
-                        $propDescription = "Description: <b>" . $property['PropertyDescription'] . "</b>";
-                        $descPHolder = $property['PropertyDescription'];
-                    } else {
-                        $propDescription = "";
-                        $descPHolder = "";
-                    }
-                    if($property['PropertyType'] == "Link") {
-                        $enrichmentTab .= "<div id='link-" . $property['PropertyId'] . "'>";
-                            $enrichmentTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
-                                $enrichmentTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
-                                    $enrichmentTab .= "<i class='far fa-external-link' style='margin-left: 3px;margin-right:5px;color:#0a72cc;font-size:14px;'></i>";
-                                    $enrichmentTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
-                                $enrichmentTab .= "</div>";
-                                $enrichmentTab .= "<div class='edit-del-link'>";
-                                    $enrichmentTab .= "<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required'
-                                        onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'></i>";
-                                    $enrichmentTab .= "<i class='edit-item-data-icon delete-item-data fas fa-trash-alt theme-color-hover login-required'
-                                        onClick='deleteItemData(\"properties\", " . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", \"link\", " . get_current_user_id() .")'></i>";
-                                $enrichmentTab .= "</div>";
-                                $enrichmentTab .= "<div class='prop-desc' style='bottom:6px;padding-left:23px;'>" . $propDescription . "</div>";
-                            $enrichmentTab .= "</div>";
-
-                            $enrichmentTab .= "<div class='link-data-edit-container' id='link-data-edit-" . $property['PropertyId'] . "'>";
-                                $enrichmentTab .= "<div id='link-" . $property['PropertyId'] . "-url-input' class='link-url-input'>";
-                                    $enrichmentTab .= "<input type='url' value='" . htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
-                                $enrichmentTab .= "</div>";
-                                $enrichmentTab .= "<div id='link-" . $property['PropertyId'] . "-description-input' class='link-description-input'>";
-                                    $enrichmentTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars($descPHolder, ENT_QUOTES, 'UTF-8') . "</textarea>";
-                                $enrichmentTab .= "</div>";
-                                $enrichmentTab .= "<div class='form-buttons-right'>";
-                                    $enrichmentTab .= "<div class='link-btn-right'>" ;
-                                        $enrichmentTab .= "<button class='theme-color-background'
-                                            onClick='editLink(" . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", " . get_current_user_id() . ")'>";
-                                            $enrichmentTab .= "SAVE";
-                                        $enrichmentTab .= "</button>";
-                                    $enrichmentTab .= "</div>";
-                                    $enrichmentTab .= "<div class='link-btn-left'>";
-                                        $enrichmentTab .= "<button class='theme-color-background'
-                                            onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'>";
-                                            $enrichmentTab .= "CANCEL";
-                                        $enrichmentTab .= "</button>";
-                                    $enrichmentTab .= "</div>";
-                                    $enrichmentTab .= "<div id='item-link-" . $property['PropertyId'] . "-spinner-container' class='spinner-container spinner-container-left'>";
-                                        $enrichmentTab .= "<div class='spinner'></div>";
-                                    $enrichmentTab .= "</div>";
-                                    $enrichmentTab .= "<div style='clear:both;'></div>";
-                                $enrichmentTab .= "</div>";
-                            $enrichmentTab .= "</div>";
-                        $enrichmentTab .= "</div>";
-                    }
-                }
-
-                // $enrichmentTab .= '</ul>';
-            $enrichmentTab .= '</div>';
-            $enrichmentTab .= "<div id='save-all-tags'>";
-                $enrichmentTab .= "<span style='display:inline-block;'>SAVE</span>";
-            $enrichmentTab .= "</div>";
         $enrichmentTab .= "</div>";
 
     $enrichmentTab .= "</div>";
@@ -1248,10 +998,10 @@ function _TCT_ration_cards($atts)
 
     // Description tab
     $descriptionTab = "";
-    $descriptionTab .= "<div class='item-page-section'>";
+    $descriptionTab .= "<div id='description-editor' class='item-page-section'>";
         $descriptionTab .= "<div class='item-page-section-headline-container'>";
             $descriptionTab .= "<div id='description-collapse-heading' class='theme-color item-page-section-headline'>";
-                $descriptionTab .= "<span class='headline-header'>Description</span>";
+                $descriptionTab .= "<span class='headline-header'>DESCRIPTION</span>";
             // Save button placeholder
         //$descriptionTab .= "</div>";
         // description status  changer
@@ -1280,7 +1030,7 @@ function _TCT_ration_cards($atts)
                                     $descriptionTab .= "</div>";
                                 }
                             }
-                        }
+                        } 
                     $descriptionTab .= "</div>";
                 $descriptionTab .= "</div>";
             $descriptionTab .= "</div>";
@@ -1288,7 +1038,113 @@ function _TCT_ration_cards($atts)
 
         $descriptionTab .= "<div style='clear:both;'></div>";
 
-        $descriptionTab .= "<div id='description-area' class='description-save collapse show'>";
+        /// Document Date, before on enrichments tab
+
+        $descriptionTab .= "<div id='item-date-container'>";
+            $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
+                $descriptionTab .= "Document Date ";
+               // $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
+                $descriptionTab .= "<i id='date-open' class=\"fas fa-edit\"></i>";
+            $descriptionTab .= "</h6>";
+            if($itemData['DateStartDisplay'] != null || $itemData['DateEndDisplay'] != null) {
+                $descriptionTab .= "<div class='document-date-container'>";
+                    $descriptionTab .= "<div class='date-top'>";
+                        $descriptionTab .= "<div style='float:left;display:inline-block;'>Start Date:</div>";
+                        $descriptionTab .= "<div style='float:right;display:inline-block;margin-right:60%;'>End Date:</div>";
+                    $descriptionTab .= "</div>";
+                    $descriptionTab .= "<div style='clear:both;'></div>";
+                    $descriptionTab .= "<div class='date-bottom'>";
+                        $descriptionTab .= "<div class='start-date' style='float:left;display:inline-block;'>" . $itemData['DateStartDisplay'] . "</div>";
+                        $descriptionTab .= "<div class='end-date' style='float:right;display:inline-block;margin-right:60%;'>" . $itemData['DateEndDisplay'] . "</div>";
+                    $descriptionTab .= "</div>";
+                $descriptionTab .= "</div>";
+            }
+    
+            $descriptionTab .= "<div class='item-date-inner-container'>";
+                $descriptionTab .= "<label>Start Date</label>";
+                if($itemData['DateStartDisplay'] != null) {
+                    $startTimestamp = strtotime($itemData['DateStart']);
+                    $dateStart = date('d/m/Y', $startTimestamp);
+                    $descriptionTab .= "<div class='item-date-display-container'>";
+                        $descriptionTab .= "<span type='text' id='startdateDisplay' class='item-date-display'>";
+                            $descriptionTab .= $itemData['DateStartDisplay'];
+                        $descriptionTab .= "</span>";
+                        $descriptionTab .= "<span class='edit-item-date edit-item-data-icon login-required'><img class='calendar-img' src='".home_url()."/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg'></img></span>";
+                    $descriptionTab .= "</div>";
+                    $descriptionTab .= "<div class='item-date-input-container' style='display:none;'>";
+                        $descriptionTab .= "<input type='text' id='startdateentry' placeholder='dd/mm/yyyy' class='datepicker-input-field' value='" .$dateStart . "'>";
+                    $descriptionTab .= "</div>";
+                } else {
+                    $descriptionTab .= "<div class='item-date-display-container' style='display:none;'>";
+                        $descriptionTab .= "<span type='text' id='startdateDisplay' class='item-date-display'></span>";
+                        $descriptionTab .= "<span class='edit-item-date edit-item-data-icon login-required'><img class='calendar-img' src='".home_url()."/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg'></img></span>";
+                    $descriptionTab .= "</div>";
+                    $descriptionTab .= "<div class='item-date-input-container'>";
+                        $descriptionTab .= "<input type='text' id='startdateentry' class='login-required datepicker-input-field' placeholder='dd/mm/yyyy'>";
+                    $descriptionTab .= "</div>";
+                }
+            $descriptionTab .= "</div>";
+    
+            $descriptionTab .= "<div class='item-date-inner-container'>";
+                $descriptionTab .= "<label>End Date</label>";
+                if($itemData['DateEndDisplay'] != null) {
+                    $endTimestamp = strtotime($itemData['DateEnd']);
+                    $dateEnd = date('d/m/Y', $endTimestamp);
+                    $descriptionTab .= "<div class='item-date-display-container'>";
+                        $descriptionTab .= "<span type='text' id='enddateDisplay' class='item-date-display'>";
+                            $descriptionTab .= $itemData['DateEndDisplay'];
+                        $descriptionTab .= "</span>";
+                        $descriptionTab .= "<span class='edit-item-date edit-item-data-icon login-required'><img class='calendar-img' src='".home_url()."/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg'></img></span>";
+                    $descriptionTab .= "</div>";
+                    $descriptionTab .= "<div class='item-date-input-container' style='display:none;'>";
+                        $descriptionTab .= "<input type='text' id='enddateentry' class='datepicker-input-field' placeholder='dd/mm/yyyy' value='" . $dateEnd . "'>";
+                    $descriptionTab .= "</div>";
+                } else {
+                    $descriptionTab .= "<div class='item-date-display-container' style='display:none;'>";
+                        $descriptionTab .= "<span type='text' id='enddateDisplay' class='item-date-display'>";
+                        $descriptionTab .= "</span>";
+                        $descriptionTab .= "<span class='edit-item-date edit-item-data-icon login-required'><img class='calendar-img' src='".home_url()."/wp-content/themes/transcribathon/admin/inc/custom_shortcodes/upload-images/icon_calendar.svg'></img></span>";
+                    $descriptionTab .= "</div>";
+                    $descriptionTab .= "<div class='item-date-input-container'>";
+                        $descriptionTab .= "<input type='text' id='enddateentry' class='login-required datepicker-input-field' placeholder='dd/mm/yyyy'>";
+                    $descriptionTab .= "</div>";
+                }
+            $descriptionTab .= "</div>";
+            
+            // Date type checkmark
+            $descriptionTab .= "<div class='creation-date-container'>";
+                $descriptionTab .= "<label class='date-checkbox-container'> Creation Date <i class='fas fa-question-circle' title='Is this the date when the document was created?'></i>";
+                    $descriptionTab .= "<input class='date-type-check' type='checkbox' name='CreationDate' value='Creation Date'>";
+                    $descriptionTab .= "<span class='date-checkmark'></span>";
+                $descriptionTab .= "</label>";
+            $descriptionTab .= "</div>";
+    
+            $descriptionTab .= "<button class='item-page-save-button login-required' id='item-date-save-button'
+                                onClick='saveItemDate(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
+                $descriptionTab .= "<i class='fas fa-save'></i>";
+            $descriptionTab .= "</button>";
+            $descriptionTab .= "<div id='item-date-spinner-container' class='spinner-container spinner-container-right'>";
+                $descriptionTab .= "<div class='spinner'></div>";
+            $descriptionTab .= "</div>";
+            $descriptionTab .= "<div style='clear:both;'></div>";
+        $descriptionTab .= "</div>";
+
+        $descriptionTab .= "<div id='doc-type-area' class='description-save'>";
+            $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
+                $descriptionTab .= "Document Type ";
+              //  $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
+                $descriptionTab .= "<i id='media-open' class=\"fas fa-edit\"></i>";
+            $descriptionTab .= "</h6>";
+
+            // Document type, view only
+            $descriptionTab .= "<div id='doc-type-view'>";
+            foreach($itemData['Properties'] as $property) {
+                if($property['PropertyType'] == "Category") {
+                    $descriptionTab .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                }
+            }
+            $descriptionTab .= "</div>";
+
             $descriptionTab .= "<div id='category-checkboxes' class='login-required'>";
             foreach($categories as $category) {
                 $checked = "";
@@ -1310,7 +1166,35 @@ function _TCT_ration_cards($atts)
             }
             $descriptionTab .= "<div style='clear:both;'></div>";
             $descriptionTab .= "</div>";
+        $descriptionTab .= "</div>";
+        $descriptionTab .= "<div id='description-area'>";
+            $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
+                $descriptionTab .= "Item Description ";
+             //   $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
+                $descriptionTab .= "<i id='description-open' class=\"fas fa-edit\"></i>";
+            $descriptionTab .= "</h6>";
 
+            // Description text view only
+            $descriptionTab .= "<div class='current-description'>";
+                $descriptionTab .= $itemData['Description'];
+            $descriptionTab .= "</div>";
+
+            $descriptionLanguage = "";
+            foreach($languages as $language) {
+                if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                    $descriptionLanguage = $language['Name'];
+                }
+            }
+            if($descriptionLanguage != '') {
+                $descriptionTab .= "<div class='description-language'>";
+            } else {
+                $descriptionTab .= "<div class='description-language' style='display:none;'>";
+            }
+            $descriptionTab .= "<h6 class='enrich-language'> Language of Description </h6>";
+            $descriptionTab .= "<div>";
+       
+                $descriptionTab .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
+            $descriptionTab .= "</div></div>";
 
             $descriptionTab .= "<textarea id='item-page-description-text' class='login-required' name='description' rows='4'>";
                 if($itemData['Description'] != null) {
@@ -1318,7 +1202,7 @@ function _TCT_ration_cards($atts)
                 }
             $descriptionTab .= "</textarea>";
 
-            $descriptionTab .= "<div style='margin-top:6px;'>";
+            // $descriptionTab .= "<div style='margin-top:6px;'>";
 
             // New position for Description Language
             $descriptionTab .= "<div id='description-language-selector' class='language-selector-background language-selector login-required'>";
@@ -1351,6 +1235,7 @@ function _TCT_ration_cards($atts)
                     }
                 $descriptionTab .= "</select>";
             $descriptionTab .= "</div>";
+            
 
                 $descriptionTab .= "<button disabled class='language-tooltip' id='description-update-button' style='float:right'
                                     onClick='updateItemDescription(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")' >";
@@ -1363,10 +1248,157 @@ function _TCT_ration_cards($atts)
                 $descriptionTab .= "</div>";
 
                 $descriptionTab .= "<div style='clear:both;'></div>";
-            $descriptionTab .= "</div>";
-            $descriptionTab .= "<div style='clear:both;'></div>";
+            // $descriptionTab .= "</div>";
+            // $descriptionTab .= "<div style='clear:both;'></div>";
+            // $descriptionTab .= "</div>";
+            // $descriptionTab .= "<span id='description-update-message'></span>";
         $descriptionTab .= "</div>";
-        $descriptionTab .= "<span id='description-update-message'></span>";
+
+        // Keywords
+        $descriptionTab .= "<div id='item-page-keyword-container'>";
+            $descriptionTab .= '<div id="item-page-keyword-headline" class="keyword-collapse">';
+                $descriptionTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add keywords">';
+                $descriptionTab .= 'Keywords ';
+                // $taggingTab .= "<button id='keyword-plus-button' type='submit' class='edit-data-save-right'
+                // onClick='document.querySelector(\"#keyword-save-button\").click();'>";
+                $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
+                // $taggingtab .= "</button>";
+                $descriptionTab .= '<i id=\'keywords-open\' class="fas fa-edit"></i></h6>';
+            $descriptionTab .= '</div>';
+
+            $descriptionTab .= '<div  style="position:relative;width:100%;">';
+                $descriptionTab .= '<div id="keyword-input-container" class="" style="display:none;margin-right:10px;margin-bottom:10px;">';
+                    $descriptionTab .= '<input type="text" id="keyword-input" name="" placeholder="&nbsp Add a Keyword">';
+                    $descriptionTab .= "<button id='keyword-save-button' type='submit' class='theme-color' style='display:block;background:none;border:none'
+                                        onClick='saveKeyword(".htmlspecialchars($itemData['ItemId'], ENT_QUOTES, 'UTF-8').", ".get_current_user_id()."
+                                        , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                        $descriptionTab .= '<i style="font-size:20px;" class="fas fa-save"></i>';
+                    $descriptionTab .= '</button>';
+                    $descriptionTab .= '<div id="item-keyword-spinner-container" class="spinner-container spinner-container-left">';
+                        $descriptionTab .= '<div class="spinner"></div>';
+                    $descriptionTab .= "</div>";
+                    $descriptionTab .= '<div style="clear: both;"></div>';
+                $descriptionTab .= '</div>';
+            $descriptionTab .= '</div>';
+
+            $descriptionTab .= '<div id="item-keyword-list" class="item-data-output-listt">';
+// $taggingTab .= '<ul>';
+                foreach ($itemData['Properties'] as $property) {
+                    if ($property['PropertyType'] == "Keyword") {
+                        $descriptionTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
+                            $descriptionTab .= $property['PropertyValue'];
+                            $descriptionTab .= '<i class="login-required delete-item-datas far fa-times" style="margin-left:5px;"
+                                                onClick="deleteItemData(\'properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'keyword\', '.get_current_user_id().')"></i>';
+                        $descriptionTab .= '</div>';
+                    }
+                }
+// $taggingTab .= '</ul>';
+                $descriptionTab .= '</div>';
+        $descriptionTab .= "</div>";
+
+            // Other Sources
+            $descriptionTab .= "<div id='item-page-link-container'>";
+            $descriptionTab .= '<div class="collapse-headline collapse-controller" data-toggle="collapse" href="#link-input-container">';
+                $descriptionTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add a link">';
+                    $descriptionTab .= 'External Web Resources ';
+                    // $taggingTab .= "<button type='submit' class='edit-data-save-right' id='link-save-button'
+                    // onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
+                    // , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                    // $taggingTab .= '<div>Save</div>';
+                    // $taggingTab .= "</button>";
+                    $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
+                $descriptionTab .= '<i id="links-open" class="fas fa-edit"></i></h6>';
+            $descriptionTab .= '</div>';
+
+            $descriptionTab .= '<div id="link-input-container" class="collapse" style="padding-right:70px;position:relative;">';
+    // $taggingTab .= '<div>';
+    //     $taggingTab .= "<span>Link:</span><br/>";
+    // $taggingTab .= '</div>';
+
+                $descriptionTab .= '<div class="link-url-input">';
+                    $descriptionTab .= '<input type="url" name="" placeholder="&nbsp Enter URL here">';
+                $descriptionTab .= '</div>';
+
+                $descriptionTab .= '<div class="link-description-input">';
+                // $taggingTab .= '<label>Additional description:</label><br/>';
+                    $descriptionTab .= '<textarea rows= "3" type="text" placeholder="&nbsp Add description of the link" name=""></textarea>';
+                $descriptionTab .= '</div>';
+                $descriptionTab .= "<div class='form-buttons-right' style='display:inline-block;position:absolute;right:40px;top:-10px;'>";
+                    $descriptionTab .= "<button type='submit' class='theme-color edit-data-save-right' id='link-save-button'
+                                    onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
+                                    , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
+                        $descriptionTab .= "<i style='font-size:20px;' class='fas fa-save'></i>";
+                    $descriptionTab .= "</button>";
+                    $descriptionTab .= '<div id="item-link-spinner-container" class="spinner-container spinner-container-left">';
+                        $descriptionTab .= '<div class="spinner"></div>';
+                    $descriptionTab .= "</div>";
+                    $descriptionTab .= '<div style="clear:both;"></div>';
+                $descriptionTab .=    "</div>";
+                $descriptionTab .= '<div style="clear:both;"></div>';
+            $descriptionTab .=    "</div>";
+
+            $descriptionTab .= '<div id="item-link-list" class="item-data-output-list">';
+            foreach ($itemData['Properties'] as $property) {
+                if($property['PropertyDescription'] != 'NULL') {
+                    $propDescription =  $property['PropertyDescription'];
+                    $descPHolder = $property['PropertyDescription'];
+                } else {
+                    $propDescription = "";
+                    $descPHolder = "";
+                }
+                if($property['PropertyType'] == "Link") {
+                    $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "'>";
+                        $descriptionTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
+                            $descriptionTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
+                                $descriptionTab .= "<i class='far fa-external-link' style='margin-left: 3px;margin-right:5px;color:#0a72cc;font-size:14px;'></i>";
+                                $descriptionTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
+                            $descriptionTab .= "</div>";
+                            $descriptionTab .= "<div class='edit-del-link'>";
+                                $descriptionTab .= "<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required'
+                                    onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'></i>";
+                                $descriptionTab .= "<i class='edit-item-data-icon delete-item-data fas fa-trash-alt theme-color-hover login-required'
+                                    onClick='deleteItemData(\"properties\", " . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", \"link\", " . get_current_user_id() .")'></i>";
+                            $descriptionTab .= "</div>";
+                            $descriptionTab .= "<div class='prop-desc' style='bottom:6px;padding-left:23px;'>" . $propDescription . "</div>";
+                        $descriptionTab .= "</div>";
+        
+                        $descriptionTab .= "<div class='link-data-edit-container' id='link-data-edit-" . $property['PropertyId'] . "'>";
+                            $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-url-input' class='link-url-input'>";
+                                $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
+                            $descriptionTab .= "</div>";
+                            $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-description-input' class='link-description-input'>";
+                                $descriptionTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars($descPHolder, ENT_QUOTES, 'UTF-8') . "</textarea>";
+                            $descriptionTab .= "</div>";
+                            $descriptionTab .= "<div class='form-buttons-right'>";
+                                $descriptionTab .= "<div class='link-btn-right'>" ;
+                                    $descriptionTab .= "<button class='theme-color-background'
+                                        onClick='editLink(" . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", " . get_current_user_id() . ")'>";
+                                        $descriptionTab .= "SAVE";
+                                    $descriptionTab .= "</button>";
+                                $descriptionTab .= "</div>";
+                                $descriptionTab .= "<div class='link-btn-left'>";
+                                    $descriptionTab .= "<button class='theme-color-background'
+                                        onClick='openLinksourceEdit(" . $property['PropertyId'] . ")'>";
+                                        $descriptionTab .= "CANCEL";
+                                    $descriptionTab .= "</button>";
+                                $descriptionTab .= "</div>";
+                                $descriptionTab .= "<div id='item-link-" . $property['PropertyId'] . "-spinner-container' class='spinner-container spinner-container-left'>";
+                                    $descriptionTab .= "<div class='spinner'></div>";
+                                $descriptionTab .= "</div>";
+                                $descriptionTab .= "<div style='clear:both;'></div>";
+                            $descriptionTab .= "</div>";
+                        $descriptionTab .= "</div>";
+                    $descriptionTab .= "</div>";
+                }
+            }
+
+    // $enrichmentTab .= '</ul>';
+            $descriptionTab .= '</div>';
+    // $enrichmentTab .= "<div id='save-all-tags'>";
+    //     $enrichmentTab .= "<span style='display:inline-block;'>SAVE</span>";
+    // $enrichmentTab .= "</div>";
+        $descriptionTab .= "</div>";
+
     $descriptionTab .= "</div>"; // end of 'item-page-section'
 
     // // Image Slider
@@ -1890,49 +1922,15 @@ function _TCT_ration_cards($atts)
             $content .= "</div>";
             $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:5px;'> &nbsp </div>";
 
-            $content .= "<div id='description-container'>";
-                $content .= "<div class='description-view'>";
-                    $content .= "<h6 class='enrich-headers'> Description <i id='description-open' class=\"fas fa-edit\"></i></h6>";
-
-                    $content .= "<div class='current-description' style='padding-left:24px;'>";
-                        $content .= $itemData['Description'];
-                    $content .= "</div>";
-
-                    $descriptionLanguage = "";
-                    foreach($languages as $language) {
-                        if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
-                            $descriptionLanguage = $language['Name'];
-                        }
-                    }
-                    if($descriptionLanguage != '') {
-                        $content .= "<div class='description-language'>";
-                    } else {
-                        $content .= "<div class='description-language' style='display:none;'>";
-                    }
-                        $content .= "<h6 class='enrich-language'> Language of Description </h6>";
-                        $content .= "<div style='padding-left:24px;'>";
-                        if($descriptionLanguage != null || $descriptionLanguage != "") {
-                            $content .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
-                        }
-                        $content .= "</div>";
-                    $content .= "</div>";
-
-                    $content .= "<div class='type-of-media'>";
-                        $content .= "<h6 class='enrich-headers'> Type of Media <i id='media-open' class=\"fas fa-edit\"></i></h6>";
-                        $content .= "<div style='padding-left:24px;'>";
-                        foreach($itemData['Properties'] as $property) {
-                            if($property['PropertyType'] == "Category") {
-                                $content .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
-                            }
-                        }
-                        $content .= "</div>";
-                    $content .= "</div>";
+            // $content .= "<div id='description-container'>";
+                $content .= "<div id='description-view'>";
+                    $content .= $descriptionTab;
                 $content .= "</div>";
 
                 $content .= "<div id='enrich-view'>";
                     $content .= $enrichmentTab;
                 $content .= "</div>";
-            $content .= "</div>"; // end of enrichment
+            // $content .= "</div>"; // end of enrichment
 
         $content .= "</div>"; // end of right side
         $content .= "<div style='clear:both;'></div>";
@@ -2025,16 +2023,16 @@ function _TCT_ration_cards($atts)
 
                     $content .= "<li>";
                         $content .= "<div id='desc-tab' class='theme-color tablinks' title='Description' onclick='switchItemTab(event, \"description-tab\");'>";
-                            $content .= "<i class='fa fa-book tab-i'></i>";
+                            $content .= "<i class='fa fa-tag tab-i'></i>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['DescriptionStatusColorCode'].";background-color:".$itemData['DescriptionStatusColorCode'].";'></i>";
                             $content .= "<span><b> DESCRIPTION</b></span></p>";
                         $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
                         $content .= "<div id='tagi-tab' class='theme-color tablinks' title='Enrichments/Tagging' onclick='switchItemTab(event, \"tag-tab\");'>";
-                            $content .= "<i class='fa fa-tag tab-i' aria-hidden='true'></i>";
+                            $content .= "<i class='fa fa-user tab-i' aria-hidden='true'></i>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TaggingStatusColorCode'].";background-color:".$itemData['TaggingStatusColorCode'].";'></i>";
-                            $content .= "<span><b> ENRICHMENTS</b></span></p>";
+                            $content .= "<span><b> PEOPLE</b></span></p>";
                         $content .= "</div>";
                     $content .= "</li>";
                     // $content .= "<li style='max-width:10px;'>";
@@ -2067,7 +2065,7 @@ function _TCT_ration_cards($atts)
                 $content .= "</div>";
                 // Description Tab
                 $content .= "<div id='description-tab' class='tabcontent' style='display:none;'>";
-                    $content .= $descriptionTab;
+                   // $content .= $descriptionTab;
                 $content .= "</div>";
                 // Info tab
                 $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
