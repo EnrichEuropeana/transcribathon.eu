@@ -2154,21 +2154,24 @@ function _TCT_ration_cards($atts)
                             // Top adress and card registration number
                             $content .= "<table class='rc-top-address'>";
                                 $content .= "<tr>";
-                                    $content .= "<td class='rc-first-col top-part'>Ulica, trg ili ina oznaka: </td>";
+                                    $content .= "<td class='rc-first-col top-part'> &nbsp</td>";
                                     $content .= "<td class='rc-second-col'> Reg. broj: </td>";
                                     $content .= "<td class='rc-third-col'> Prezime i ime podnosioca prijave:</td>";
                                     $content .= "<td class='btn-col'>&nbsp</td>";
                                 $content .= "</tr>";
                                 $content .= "<tr>";
-                                    $content .= "<td class='rc-first-col mid-part' style='position:relative;'>";
-                                        $content .= "<input type='text' placeholder='Ulica' id='m-address' style='border: none;border-bottom: 1px dotted #ccc;'>";
-                                        $content .= "<div class='spinner-container'>";
-                                            $content .= "<div class='spinner'></div>";
-                                        $content .= "</div>";
-                                        $content .= "<div id='m-address-res'></div>";
-                                        $content .= "<i id='m-address-check' class='fas fa-check' style='display:none;'></i>";
+
+                                    $content .= "<td class='rc-first-col mid-part' style='position:relative;'> &nbsp";
+                                        // $content .= "<input type='text' placeholder='Ulica' id='m-address' style='border: none;border-bottom: 1px dotted #ccc;'>";
+                                        // $content .= "<div class='spinner-container'>";
+                                        //     $content .= "<div class='spinner'></div>";
+                                        // $content .= "</div>";
+                                        // $content .= "<div id='m-address-res'></div>";
+                                        // $content .= "<i id='m-address-check' class='fas fa-check' style='display:none;'></i>";
                                     $content .= "</td>";
+
                                     $content .= "<td class='rc-second-col'><input type='text' id='regnumb' style='border: none;border-bottom: 1px dotted #ccc;'></td>";
+
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;'>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='submitter-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
@@ -2176,10 +2179,47 @@ function _TCT_ration_cards($atts)
                                             $content .= "<div class='spinner'></div>";
                                         $content .= "</div>";
                                     $content .= "</td>";
+
                                     $content .= "<td class='btn-col'><i id='save-submitter' class='fas fa-save'></i></td>";
+
+                                $content .= "</tr>";
+
+                                $content .= "<tr>";
+                                    $content .= "<td class='rc-first-col bot-part' style='vertical-align:top!important;position:relative;'>Ulica, trg ili ina oznaka: </td>";
+
+                                    $content .= "<td class='rc-second-col'> &nbsp </td>";
+
+                                    $content .= "<td class='rc-third-col'>Prezime i ime i stan kucevlasnika:</td>";
+
+                                    $content .= "<td class='btn-col'>&nbsp</td>";
                                 $content .= "</tr>";
                                 $content .= "<tr>";
-                                    $content .= "<td class='rc-first-col bot-part' style='vertical-align:top!important;position:relative;'>";
+                                    $content .= "<td class='rc-first-col bot-part' style='vertical-align:top!important;position:relative;'> &nbsp";
+                                        $content .= "<input type='text' placeholder='Ulica' id='m-address' style='border: none;border-bottom: 1px dotted #ccc;'>";
+                                        $content .= "<div class='spinner-container'>";
+                                           $content .= "<div class='spinner'></div>";
+                                        $content .= "</div>";
+                                        $content .= "<div id='m-address-res'></div>";
+                                        $content .= "<i id='m-address-check' class='fas fa-check' style='display:none;'></i>";
+                                    $content .= "</td>";
+
+                                    $content .= "<td class='rc-second-col'> &nbsp </td>";
+
+                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;'>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='landlord-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<div id='landlord-spinner' class='spinner-container'>";
+                                            $content .= "<div class='spinner'></div>";
+                                        $content .= "</div>";
+                                    $content .= "</td>";
+
+                                    $content .= "<td class='btn-col'>";
+                                        $content .= "<i id='save-l-lord' class='fas fa-save'></i>";
+                                    $content .= "</td>";
+
+                                $content .= "</tr>";
+                                $content .= "<tr>";
+                                    $content .= "<td class='rc-first-col' style='vertical-align:top!important;position:relative;'>";
                                         $content .= "<label for='kbr' style='position:absolute;left:10%;'>Kbr:</label>";
                                         $content .= "<input type='text' placeholder='Kucni Broj' id='kbr' style='border: none;border-bottom: 1px dotted #ccc;'>";
                                         $content .= "<i class='fas fa-check' id='kbr-check' style='display:none;'></i>";
@@ -2189,27 +2229,9 @@ function _TCT_ration_cards($atts)
                                           //  $content .= "<i class='fas fa-pen' id='edit-subm'></i>";
                                         $content .= "</div>";
                                     $content .= "</td>";
+
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
-                                    $content .= "<td class='rc-third-col'>Prezime i ime i stan kucevlasnika:</td>";
-                                    $content .= "<td class='btn-col'>&nbsp</td>";
-                                $content .= "</tr>";
-                                $content .= "<tr>";
-                                    $content .= "<td class='rc-first-col'>&nbsp</td>";
-                                    $content .= "<td class='rc-second-col'> &nbsp </td>";
-                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;'>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='landlord-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
-                                        $content .= "<div id='landlord-spinner' class='spinner-container'>";
-                                            $content .= "<div class='spinner'></div>";
-                                        $content .= "</div>";
-                                    $content .= "</td>";
-                                    $content .= "<td class='btn-col'>";
-                                        $content .= "<i id='save-l-lord' class='fas fa-save'></i>";
-                                    $content .= "</td>";
-                                $content .= "</tr>";
-                                $content .= "<tr>";
-                                    $content .= "<td class='rc-first-col'> &nbsp </td>";
-                                    $content .= "<td class='rc-second-col'> &nbsp </td>";
+
                                     $content .= "<td class='rc-third-col' style='position:relative;'>";
                                         $content .= "<input type='text' id='landlord-loc' placeholder='Stan' style='border: none;border-bottom: 1px dotted #ccc;'>";
                                         $content .= "<i class='fas fa-check' id='landlord-check' style='display:none;'></i>";
@@ -2247,8 +2269,8 @@ function _TCT_ration_cards($atts)
                             $content .= "<form id='rc-list-form'>";
                                // $content .= "<table id='rc-table'>";
                                     // Table head
-                                    $content .= "<div class='rc-list-head' title='Redni Broj'>";
-                                        $content .= "<span class='start-span'>Redni Broj</span>";
+                                    $content .= "<div class='rc-list-head'>";
+                                        $content .= "<span class='start-span' title='Redni Broj'>Redni Broj</span>";
                                         $content .= "<span class='first-span'>Prezime i ime</span>";
                                         $content .= "<span class='second-span'>God. Rod.</span>";
                                         $content .= "<span class='third-span' title='Odnos prema podnosiocu prijave odn. Starjesini'>Odnos prema podnosiocu prijave odn. Starjesini</span>";
@@ -2283,6 +2305,17 @@ function _TCT_ration_cards($atts)
                                     $content .= "</div>";
                               //  $content .= "</table>";
                                 $content .= "</form>";
+                            $content .= "</div>";
+                            // Add Prirast/Odpad table
+                            $content .= "<div id='prirast-odpad'>";
+                                $content .= "<div id='prirast-btn'>";
+                                    $content .= "<i class='fas fa-plus'></i>";
+                                    $content .= "<p> Prirast </p>";
+                                $content .= "</div>";
+                                $content .= "<div id='odpad-btn'>";
+                                    $content .= "<i class='fas fa-plus'></i>";
+                                    $content .= "<p> Odpad </p>";
+                                $content .= "</div>";
                             $content .= "</div>";
                             // Shop address
                             $content .= "<div id='shop-place' style='position:relative;'>";

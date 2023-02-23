@@ -898,5 +898,85 @@ ready(() => {
 
     })
 
+    // Add Prirast/Odpad tables on button click
+    const prirastBtn = document.querySelector('#prirast-btn');
+    const odpadBtn = document.querySelector('#odpad-btn');
+
+    prirastBtn.addEventListener('click', function() {
+        let newPrirast = document.createElement('div');
+        newPrirast.Id = 'rc-prirast-list';
+        newPrirast.style.width = '100%';
+        newPrirast.style.display = 'block';
+
+        let showPrirast = document.querySelector('#prirast-odpad');
+
+        newPrirast.innerHTML =
+            `<p style='font-size:9px;font-weight:600;'>PRIRAST: </p>` +
+            `<form id='prirast-list-form'>` +
+                `<div id='show-prirast-ppl'></div>` +
+                `<div class='rc-list-td' style='position: relative;'>`+
+                    `<span id='prirast-redni-broj' class='start-span'> 1 </span>` +
+                    `<span class='first-span'>` +
+                        `<span class='left-half'><input type='text' id='prirast-lname' placeholder=' Prezime' name='plname'></span>` +
+                        `<span class='right-half'><input type='text' id='prirast-fname' placeholder=' Ime' name='pfname'></span>` +
+                    `</span>` +
+                    `<span class='second-span'><input type='text' id='prirast-bdate' name='prirast-bdate'></span>` +
+                    `<span class='third-span'><input type='text' id='prirast-rel' name='p-relation'></span>` +
+                    `<span class='fourth-span'><input type='text' id='prirast-voc' name='p-vocation'></span>` +
+                    `<span class='fifth-span'><input type='text' id='prirast-wp' name='p-workplace'></span>` +
+                    `<span class='sixth-span'>` +
+                        `<i id='save-prirast-person' class='fas fa-plus'></i>` +
+                        `<div id='prirast-spinner' class='spinner-container'>` +
+                            `<span class='spinner'></span>` +
+                        `</div>` +
+                    `</span>` +
+                `</div>` +
+            `</form>`;
+
+        showPrirast.insertBefore(newPrirast, showPrirast.firstChild);
+
+        prirastBtn.style.display = 'none';
+    });
+
+    odpadBtn.addEventListener('click', function() {
+        let newOdpad = document.createElement('div');
+        newOdpad.Id = 'rc-odpad-list';
+        newOdpad.style.width = '100%';
+        newOdpad.style.display = 'block';
+
+        let showOdpad = document.querySelector('#prirast-odpad');
+
+        newOdpad.innerHTML =
+            `<p style='font-size:9px;font-weight:600;'>ODPAD: </p>` +
+            `<form id='odpad-list-form'>` +
+                `<div id='show-odpad-ppl'></div>` +
+                `<div class='rc-list-td' style='position: relative;'>`+
+                    `<span id='odpad-redni-broj' class='start-span'> 1 </span>` +
+                    `<span class='first-span'>` +
+                        `<span class='left-half'><input type='text' id='odpad-lname' placeholder=' Prezime' name='olname'></span>` +
+                        `<span class='right-half'><input type='text' id='odpad-fname' placeholder=' Ime' name='ofname'></span>` +
+                    `</span>` +
+                    `<span class='second-span'><input type='text' id='odpad-bdate' name='odpad-bdate'></span>` +
+                    `<span class='third-span'><input type='text' id='odpad-rel' name='o-relation'></span>` +
+                    `<span class='fourth-span'><input type='text' id='odpad-voc' name='o-vocation'></span>` +
+                    `<span class='fifth-span'><input type='text' id='odpad-wp' name='o-workplace'></span>` +
+                    `<span class='sixth-span'>` +
+                        `<i id='save-odpad-person' class='fas fa-plus'></i>` +
+                        `<div id='odpad-spinner' class='spinner-container'>` +
+                            `<span class='spinner'></span>` +
+                        `</div>` +
+                    `</span>` +
+                `</div>` +
+            `</form>`;
+
+        //showOdpad.insertBefore(newOdpad, showOdpad.firstChild);
+        if(showOdpad.querySelector('#prirast-list-form')) {
+            showOdpad.insertAdjacentElement('beforeend', newOdpad);
+        } else {
+            showOdpad.insertBefore(newOdpad, showOdpad.firstChild);
+        }
+        odpadBtn.style.display = 'none';
+    });
+
 });
 
