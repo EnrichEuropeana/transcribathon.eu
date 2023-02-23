@@ -2230,10 +2230,10 @@ function _TCT_ration_cards($atts)
                                 $content .= "</tr>";
                             $content .= "</table>";
 
-                            $content .= "<div id='show-top-loc'>";
+                            $content .= "<div id='show-sub-loc'>";
                             // Saved locations (submitter/landlord) will be shown here
                             $content .= "</div>";
-                            $content .= "<div id='show-top-ppl'>";
+                            $content .= "<div id='show-land-loc'>";
                             // Saved persons (submitter/landlord) will be shown here
                             $content .= "</div>";
                             $content .= "<div style='clear:both;'></div>";
@@ -2277,7 +2277,7 @@ function _TCT_ration_cards($atts)
                                         $content .= "<span class='fourth-span'><input type='text' id='desc-voc' name='vocation'></span>";
                                         $content .= "<span class='fifth-span'><input type='text' id='desc-wp' name='workplace'></span>";
                                         $content .= "<span class='sixth-span'>";
-                                            $content .= "<i id='save-list-person' class='fas fa-save'></i>";
+                                            $content .= "<i id='save-list-person' class='fas fa-plus'></i>";
                                             $content .= "<div id='listed-person-spinner' class='spinner-container'>";
                                                 $content .= "<span class='spinner'></span>";
                                             $content .= "</div>";

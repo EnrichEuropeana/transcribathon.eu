@@ -30,10 +30,8 @@ function loadRcPerson(itemId, userId) {
         var response = JSON.parse(response);
         var allPpl = JSON.parse(response.content);
 
-        const pplTopContainer = document.querySelector('#show-top-ppl');
         const pplListContainer = document.querySelector('#show-list-ppl');
 
-        pplTopContainer.innerHTML = '';
         pplListContainer.innerHTML = '';
 
         let topPpl = [];
@@ -48,16 +46,16 @@ function loadRcPerson(itemId, userId) {
         }
 
         for(let person of topPpl) {
-            let newPerson = document.createElement('div')
-            newPerson.classList = 'top-person-single';
-            console.log(person);
-            newPerson.innerHTML = 
-                `<i class='fas fa-user' style='float:left;margin-right:5px;'></i>` +
-                `<p class='person-data'>${escapeRcHtml(person.FirstName)} ${escapeRcHtml(person.LastName)}</p>` +
-                `<p class='person-description'>Description: ${escapeRcHtml(person.Description)}</p>` +
-                `<i class='fas fa-trash-alt' onClick='deleteRcPerson(${person.PersonId}, ${itemId}, ${userId});'></i>`;
+            // let newPerson = document.createElement('div')
+            // newPerson.classList = 'top-person-single';
+            // console.log(person);
+            // newPerson.innerHTML = 
+            //     `<i class='fas fa-user' style='float:left;margin-right:5px;'></i>` +
+            //     `<p class='person-data'>${escapeRcHtml(person.FirstName)} ${escapeRcHtml(person.LastName)}</p>` +
+            //     `<p class='person-description'>Description: ${escapeRcHtml(person.Description)}</p>` +
+            //     `<i class='fas fa-trash-alt' onClick='deleteRcPerson(${person.PersonId}, ${itemId}, ${userId});'></i>`;
         
-            pplTopContainer.appendChild(newPerson);
+            // pplTopContainer.appendChild(newPerson);
 
             if(person.Description == 'Landlord / Kucevlasnik') {
                 document.querySelector('#landlord-lname').setAttribute('disabled', true);
@@ -294,11 +292,11 @@ function saveRcDate() {
             // document.querySelector('.date-top').style.display = 'block';
            // document.querySelector('#rc-doc-date').textContent = `Zagreb, ${jQuery('#rc-date-entry').val()}`;
 
-            // if (startDate != "" && startDate != oldStartDate) {
-            //     jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
-            //     jQuery('#startdateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
-            //     jQuery('#startdateDisplay').html(jQuery('#startdateentry').val())
-            // }
+            if (startDate != "" && startDate != oldStartDate) {
+                jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
+                jQuery('#startdateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
+                jQuery('#startdateDisplay').html(jQuery('#startdateentry').val())
+            }
             // if (endDate != "" && endDate != oldEndDate) {
             //     jQuery('#enddateDisplay').parent('.item-date-display-container').css('display', 'block')
             //     jQuery('#enddateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
@@ -431,6 +429,23 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
         });
     });
 }
+function loadRcDateData(itemId, userId) {
+    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+        'type': 'GET',
+        'url': TP_API_HOST + '/tp-api/items/' + itemId
+    }, function(response) {
+        response = JSON.parse(response);
+        let itemData = JSON.parse(response.content);
+
+        // let rationCardDateArr = itemData.DateStartDisplay.split('/');
+        // let rationCardDate = `${rationCardDateArr[2]}/${rationCardDateArr[1]}/${rationCardDateArr[0]}`;
+
+        document.querySelector('#rc-date-entry').value = itemData.DateStartDisplay;
+
+        console.log(itemData);
+
+    });
+}
 
 // Load Rc places
 function loadRcPlaceData(itemId, userId) {
@@ -457,7 +472,8 @@ function loadRcPlaceData(itemId, userId) {
             }
         }
 
-        document.querySelector('#show-top-loc').innerHTML = '';
+        document.querySelector('#show-sub-loc').innerHTML = '';
+        document.querySelector('#show-land-loc').innerHTML = '';
         document.querySelector('#show-bot-loc').innerHTML = '';
         // Submitter address -add delete button after saving it
         if(Object.keys(submPlace).length > 0) {
@@ -511,7 +527,7 @@ function loadRcPlaceData(itemId, userId) {
                 `<p style='margin-top:0px;font-size:12px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
                     `${escapeRcHtml(submPlace.WikidataName)}, ${escapeRcHtml(submPlace.WikidataId)}</a></p>`;
 
-            document.querySelector('#show-top-loc').appendChild(showPlace);
+            document.querySelector('#show-sub-loc').appendChild(showPlace);
                 
 
             // editSubmBtn.addEventListener('click', function() {
@@ -580,7 +596,7 @@ function loadRcPlaceData(itemId, userId) {
                 `<p style='margin-top:0px;font-size:12px;margin-left:30px;'>Wikidata Reference: <a href='https://wikidata.org/wiki/${escapeRcHtml(submPlace.WikidataId)}' style='text-decoration:none;' target='_blank'>` +
                     `${escapeRcHtml(lLordPlace.WikidataName)}, ${escapeRcHtml(lLordPlace.WikidataId)}</a></p>`;
 
-            document.querySelector('#show-top-loc').appendChild(showPlace);
+            document.querySelector('#show-land-loc').appendChild(showPlace);
 
         }
 
@@ -660,6 +676,7 @@ ready(() => {
     
     loadRcPlaceData(itemId, userId);
     loadRcPerson(itemId, userId);
+    loadRcDateData(itemId, userId);
 
     // Ration Cards Javascript
     // Submitter Address
@@ -860,9 +877,9 @@ ready(() => {
                 `<p class='display-shop-label'> Živežne namirnice nabavljat ću: </p>` +
                 `<p class='display-shop'>` +
                     ` U radnji: ` +
-                    `<span style='border-bottom: 1px dotted #000;'> ${shopName} </span>` +
+                    `<span style='border-bottom: 1px dotted #000;min-width:20%;margin:0 10px;'> ${shopName} </span>` +
                     ` ulica ` + 
-                    `<span style='border-bottom: 1px dotted #000;'> ${shopLoc} </span>` +
+                    `<span style='border-bottom: 1px dotted #000;min-width:20%;margin:0 10px;'> ${shopLoc} </span>` +
                 `</p>` +
             `</div>` +
             `<p class='display-form-date'> Zagreb, <span style='border-bottom: 1px dotted #000;'> ${docDate ? docDate : '&nbsp &nbsp &nbsp'} </span></p>`+
