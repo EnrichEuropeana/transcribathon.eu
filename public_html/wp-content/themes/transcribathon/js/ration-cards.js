@@ -76,8 +76,9 @@ function loadRcPerson(itemId, userId) {
             }
 
         }
-
+        let listIndex = 0 ;
         for(let listPerson of listPpl) {
+            listIndex += 1;
             let listPersonDescription = listPerson.Description.split('-');
 
             let listPersonBirthYear = '&nbsp';
@@ -91,6 +92,7 @@ function loadRcPerson(itemId, userId) {
             newListPerson.classList = 'list-person-single';
 
             newListPerson.innerHTML = 
+                `<span class='start-span'> ${listIndex} </span>` +
                 `<span class='first-span'>${listPerson.LastName} ${listPerson.FirstName} </span>` +
                 `<span class='second-span'>${listPersonBirthYear}</span>` +
                 `<span class='third-span'>${listPersonDescription[0] ? listPersonDescription[0] : '&nbsp'}</span>` +
@@ -100,8 +102,9 @@ function loadRcPerson(itemId, userId) {
 
             pplListContainer.appendChild(newListPerson);
         }
-        console.log(topPpl);
-        console.log(listPpl);
+        document.querySelector('#redni-broj-start').textContent = listPpl.length + 1;
+        // console.log(topPpl);
+        // console.log(listPpl);
     });
 }
 
@@ -821,43 +824,53 @@ ready(() => {
         // Build transcription
         const transcriptionTemplate = document.createElement('div');
         transcriptionTemplate.classList = 'transcription-form';
-
+        // Spans need classes, otherwise Tinymce doesn't add them to the editor
         transcriptionTemplate.innerHTML = 
-            `<p class='display-first-row'><span> Grad Zagreb </span><span> A. </span><span> Prezime i Ime podnosioca prijave: </span></p>` +
-            `<p class='display-second-row'>` +
-                `<span> Ulica, trg ili ina oznaka <span style='border-bottom:1px dotted #000;'> ${submitterLoc} </span></span>` +
-                `<span> REG. BROJ:</span>` +
-                `<span style='border-bottom: 1px dotted #000;'> ${submitterLName} ${submitterFName} </span>` +
+            `<p class='out-first-row'><span class='out-first-span'> Grad Zagreb </span><span class='out-second-span'> A. </span><span class='out-third-span'> Prezime i Ime podnosioca prijave: </span></p>` +
+            `<p class='out-second-row'>` +
+                `<span class='out-first-span'> &nbsp </span>` +
+                `<span class='out-second-span' style='font-size:9px;'> &nbsp REG. BROJ:</span>` +
+                `<span class='out-third-span' style='border-bottom: 1px dotted #000;'> ${submitterLName} ${submitterFName} </span>` +
             `</p>` +
-            `<p class='display-third-row'>` +
-                `<span> Kbr. <span style='border-bottom:1px dotted #000'> ${submitterHouseNr} </span></span>` +
-                `<span> ${formNumber} </span>` +
-                `<span> ${landlordLName} ${landlordFName} </span>` +
+            `<p class='out-third-row'>` +
+                `<span class='out-first-span'> Ulica, trg ili ina oznaka <span style='border-bottom:1px dotted #000;'> ${submitterLoc} </span> </span>` +
+                `<span class='out-second-span'> ${formNumber ? formNumber : '&nbsp'} </span>` +
+                `<span class='out-third-span' style='border-bottom: 1px dotted #000;'> ${landlordLName} ${landlordFName} </span>` +
             `</p>` +
-            `<p class='display-fourth-row'>` +
-                `<span> &nbsp </span>` +
-                `<span> &nbsp </span>` +
-                `<span> ${landlordLoc} </span>` +
+            `<p class='out-fourth-row'>` +
+                `<span class='out-first-span'> Kbr. <span style='border-bottom:1px dotted #000'> ${submitterHouseNr} </span></span>` +
+                `<span class='out-second-span'> &nbsp </span>` +
+                `<span class='out-third-span' style='border-bottom: 1px dotted #000;'> ${landlordLoc} </span>` +
             `</p>` +
             `<p class='form-title'> Potrošačka prijavnica </p>` +
             `<p class='form-sub-title'> za kućanstva i samce - samice </p>` +
             `<p class='form-cookies'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </p>` +
             `<p class='form-sub-cookies'> Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
-
-            /// Maybe add other parts of form?? 
-            `<p class='display-shop-label'> Živežne namirnice nabavljat ću: </p>` +
-            `<p class='display-shop'>` +
-                ` U radnji: ` +
-                `<span style='border-bottom: 1px dotted #000;'> ${shopName} </span>` +
-                ` ulica ` + 
-                `<span style='border-bottom: 1px dotted #000;'> ${shopLoc} </span>` +
+            // Listed people head
+            `<p class='rc-list-head'>` +
+                `<span class='start-span' style='width: 5%;'> REDNI BROJ </span>` +
+                `<span class='first-span'> PREZIME I IME </span>` +
+                `<span class='second-span'> GODINA ROĐENJA </span>` +
+                `<span class='third-span'> ODNOS PREMA PODNOSIOCU PRIJAVE ODN: STARJEŠINI </span>` +
+                `<span class='fourth-span'> ZANIMANJE </span>` +
+                `<span class='fifth-span'> MJESTO RADA </span>` +
             `</p>` +
-            `<p class='display-form-date'> Zagreb, <span style='border-bottom: 1px dotted #000;'> ${docDate} </span></p>`+
+            /// Maybe add other parts of form??
+            `<div id='shop-container'>` +
+                `<p class='display-shop-label'> Živežne namirnice nabavljat ću: </p>` +
+                `<p class='display-shop'>` +
+                    ` U radnji: ` +
+                    `<span style='border-bottom: 1px dotted #000;'> ${shopName} </span>` +
+                    ` ulica ` + 
+                    `<span style='border-bottom: 1px dotted #000;'> ${shopLoc} </span>` +
+                `</p>` +
+            `</div>` +
+            `<p class='display-form-date'> Zagreb, <span style='border-bottom: 1px dotted #000;'> ${docDate ? docDate : '&nbsp &nbsp &nbsp'} </span></p>`+
             `<p class='form-footer'> Ova prijavnica stoji din 0*75 i ne smije se skuplje prodavati. </p>` +
             `<p class='form-sub-footer'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>`;
 
             // append listed persons to the transcription
-            transcriptionTemplate.insertBefore(displayDiv, transcriptionTemplate.querySelector('.display-shop-label'));
+            transcriptionTemplate.insertBefore(displayDiv, transcriptionTemplate.querySelector('#shop-container'));
 
             // append transcription to test div
             tinymce.get('item-page-transcription-text').setContent(transcriptionTemplate.innerHTML);

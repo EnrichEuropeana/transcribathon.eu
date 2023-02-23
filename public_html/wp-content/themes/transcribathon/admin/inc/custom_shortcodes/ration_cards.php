@@ -2249,7 +2249,8 @@ function _TCT_ration_cards($atts)
                             $content .= "<form id='rc-list-form'>";
                                // $content .= "<table id='rc-table'>";
                                     // Table head
-                                    $content .= "<div class='rc-list-head'>";
+                                    $content .= "<div class='rc-list-head' title='Redni Broj'>";
+                                        $content .= "<span class='start-span'>Redni Broj</span>";
                                         $content .= "<span class='first-span'>Prezime i ime</span>";
                                         $content .= "<span class='second-span'>God. Rod.</span>";
                                         $content .= "<span class='third-span' title='Odnos prema podnosiocu prijave odn. Starjesini'>Odnos prema podnosiocu prijave odn. Starjesini</span>";
@@ -2266,6 +2267,7 @@ function _TCT_ration_cards($atts)
                                    // $content .= "</div>";
                                     // Table inputs
                                     $content .= "<div class='rc-list-td' style='position:relative;'>";
+                                        $content .= "<span id='redni-broj-start' class='start-span'> 1 </span>";
                                         $content .= "<span class='first-span'>";
                                             $content .= "<span class='left-half'><input type='text' id='lst-p-lname' placeholder=' Prezime' name='lname'></span>";
                                             $content .= "<span class='right-half'><input type='text' id='lst-p-fname' placeholder=' Ime' name='fname'></span>";
