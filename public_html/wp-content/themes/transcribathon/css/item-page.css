@@ -3704,6 +3704,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 .rc-list-head span {
     font-size: 12px;
+    height: 28px;
 }
 .start-span {
     width: 5%;
@@ -3780,11 +3781,11 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .top-person-single .person-description {
     font-size: 12px!important;
 }
-.out-first-row {
+/* .out-first-row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
+} */
 .out-first-span, .out-third-span {
     display: inline-block;
     width: 44%;
@@ -3855,4 +3856,16 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 #prirast-odpad p {
     font-size: 12px;
     margin: 0!important;
+}
+.out-first-row .out-first-span, .out-first-row .out-second-span,
+.out-first-row .out-third-span, .out-second-row .out-second-span,
+.out-second-subrow .out-third-span, .out-third-row .out-first-span,
+.out-fourth-row .out-first-span {
+    font-weight: 600;
+}
+.out-first-row .out-third-span, .out-second-subrow .out-third-span {
+    font-size: 12px;
+}
+.out-third-row .out-first-span, .out-fourth-row .out-first-span {
+    font-size: 14px;
 }

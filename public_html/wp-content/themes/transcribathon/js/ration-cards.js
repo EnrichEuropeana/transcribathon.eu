@@ -326,8 +326,8 @@ function saveRcDate() {
     });
 }
 // Save Ration Card Persons
-// listedPerson argument is just to make difference between listed people and other people on ration cards, false by default
-function saveRcPerson(itemId, userId, firstName, lastName, description, spinner, listedPerson = false) {
+// Person Type argument is just to make difference between listed people and other people on ration cards, regular by default
+function saveRcPerson(itemId, userId, firstName, lastName, description, spinner, personType = 'regular') {
 
     let itemIde = parseInt(document.querySelector('#rc-item-id').textContent);
     let userIde = parseInt(document.querySelector('#rc-user-id').textContent);
@@ -339,8 +339,12 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
     // let birthDate = escapeHtml(jQuery('#rc-bdate').val());
     let birthDate = '';
 
-    if(listedPerson == true) {
+    if(personType == 'rc-list') {
         birthDate = document.querySelector('#rc-bdate').value + '-01-01';
+    } else if(personType == 'prirast') {
+        birthDate = document.querySelector('#prirast-bdate').value + '-01-01';
+    } else if(personType == 'odpad') {
+        birthDate = document.querySelector('#odpad-bdate').value + '-01-01';
     }
     
     console.log(birthDate);
@@ -800,7 +804,7 @@ ready(() => {
 
             console.log(description);
     
-            saveRcPerson(itemId, userId, firstName, lastName, description, 'listed-person', true);
+            saveRcPerson(itemId, userId, firstName, lastName, description, 'listed-person', 'rc-list');
     
             document.querySelector('#rc-list-form').reset();
         })
@@ -837,54 +841,74 @@ ready(() => {
             let clonedPerson = person.cloneNode(true);
             displayDiv.appendChild(clonedPerson);
         }
-         
+         console.log(displayDiv);
         // Build transcription
         const transcriptionTemplate = document.createElement('div');
         transcriptionTemplate.classList = 'transcription-form';
         // Spans need classes, otherwise Tinymce doesn't add them to the editor
         transcriptionTemplate.innerHTML = 
-            `<p class='out-first-row'><span class='out-first-span'> Grad Zagreb </span><span class='out-second-span'> A. </span><span class='out-third-span'> Prezime i Ime podnosioca prijave: </span></p>` +
+            `<p class='out-first-row' contenteditable='false'><span class='out-first-span'> Grad Zagreb </span><span class='out-second-span'> A. </span><span class='out-third-span'> Prezime i Ime podnosioca prijave: </span></p>` +
             `<p class='out-second-row'>` +
-                `<span class='out-first-span'> &nbsp </span>` +
-                `<span class='out-second-span' style='font-size:9px;'> &nbsp REG. BROJ:</span>` +
-                `<span class='out-third-span' style='border-bottom: 1px dotted #000;'> ${submitterLName} ${submitterFName} </span>` +
+                `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
+                `<span class='out-second-span' style='font-size:9px;' contenteditable='false'> &nbsp REG. BROJ:</span>` +
+                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${submitterLName ? submitterLName : '&nbsp'} ${submitterFName ? submitterFName : '&nbsp'} </span>` +
+            `</p>` +
+            `<p class='out-second-subrow'>` +
+                `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
+                `<span class='out-second-span' style='font-size:9px;border-bottom: 1px dotted #000;'> &nbsp &nbsp </span>` +
+                `<span class='out-third-span' contenteditable='false'> Prezime i ime i stan kućevlasnika: </span>` +
             `</p>` +
             `<p class='out-third-row'>` +
-                `<span class='out-first-span'> Ulica, trg ili ina oznaka <span style='border-bottom:1px dotted #000;'> ${submitterLoc} </span> </span>` +
+                `<span class='out-first-span' contenteditable='false'> Ulica, trg ili ina oznaka <span style='border-bottom:1px dotted #000;min-width:70px;display:inline-block;' contenteditable='true'> ${submitterLoc ? submitterLoc : '&nbsp'} </span> </span>` +
                 `<span class='out-second-span'> ${formNumber ? formNumber : '&nbsp'} </span>` +
-                `<span class='out-third-span' style='border-bottom: 1px dotted #000;'> ${landlordLName} ${landlordFName} </span>` +
+                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLName ? landlordLName : '&nbsp'} ${landlordFName ? landlordFName : '&nbsp'} </span>` +
             `</p>` +
             `<p class='out-fourth-row'>` +
-                `<span class='out-first-span'> Kbr. <span style='border-bottom:1px dotted #000'> ${submitterHouseNr} </span></span>` +
+                `<span class='out-first-span'> Kbr. <span style='border-bottom:1px dotted #000;display:inline-block;min-width:50px;'> ${submitterHouseNr ? submitterHouseNr : '&nbsp'} </span></span>` +
                 `<span class='out-second-span'> &nbsp </span>` +
-                `<span class='out-third-span' style='border-bottom: 1px dotted #000;'> ${landlordLoc} </span>` +
+                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLoc ? landlordLoc : '&nbsp &nbsp'} </span>` +
             `</p>` +
-            `<p class='form-title'> Potrošačka prijavnica </p>` +
-            `<p class='form-sub-title'> za kućanstva i samce - samice </p>` +
-            `<p class='form-cookies'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </p>` +
-            `<p class='form-sub-cookies'> Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
+            `<p class='form-title' contenteditable='false'> Potrošačka prijavnica </p>` +
+            `<p class='form-sub-title' contenteditable='false'> za kućanstva i samce - samice </p>` +
+            `<p class='form-cookies' contenteditable='false'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </p>` +
+            `<p class='form-sub-cookies' contenteditable='false'> Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
             // Listed people head
             `<p class='rc-list-head'>` +
-                `<span class='start-span' style='width: 5%;'> REDNI BROJ </span>` +
-                `<span class='first-span'> PREZIME I IME </span>` +
-                `<span class='second-span'> GODINA ROĐENJA </span>` +
-                `<span class='third-span'> ODNOS PREMA PODNOSIOCU PRIJAVE ODN: STARJEŠINI </span>` +
-                `<span class='fourth-span'> ZANIMANJE </span>` +
-                `<span class='fifth-span'> MJESTO RADA </span>` +
+                `<span class='start-span' style='width: 5%;' contenteditable='false'> REDNI BROJ </span>` +
+                `<span class='first-span' contenteditable='false'> PREZIME I IME </span>` +
+                `<span class='second-span' contenteditable='false'> GODINA ROĐENJA </span>` +
+                `<span class='third-span' contenteditable='false'> ODNOS PREMA PODNOSIOCU PRIJAVE ODN: STARJEŠINI </span>` +
+                `<span class='fourth-span' contenteditable='false'> ZANIMANJE </span>` +
+                `<span class='fifth-span' contenteditable='false'> MJESTO RADA </span>` +
             `</p>` +
+            `${displayDiv.querySelector('.list-person-single') ? 
+                '' 
+                :
+                `<p class='list-person-single'>` +
+                `<span class='start-span' style='width: 5%;' > 1 </span>` +
+                `<span class='first-span' > &nbsp </span>` +
+                `<span class='second-span' > &nbsp </span>` +
+                `<span class='third-span' > &nbsp </span>` +
+                `<span class='fourth-span' > &nbsp </span>` +
+                `<span class='fifth-span' > &nbsp </span>` +
+            `</p>` }` +
             /// Maybe add other parts of form??
             `<div id='shop-container'>` +
-                `<p class='display-shop-label'> Živežne namirnice nabavljat ću: </p>` +
-                `<p class='display-shop'>` +
+                `<p class='display-shop-label' contenteditable='false'> Živežne namirnice nabavljat ću: </p>` +
+                `<p class='display-shop' contenteditable='false'>` +
                     ` U radnji: ` +
-                    `<span style='border-bottom: 1px dotted #000;min-width:20%;margin:0 10px;'> ${shopName} </span>` +
+                    `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopName ? shopName : '&nbsp'} </span>` +
                     ` ulica ` + 
-                    `<span style='border-bottom: 1px dotted #000;min-width:20%;margin:0 10px;'> ${shopLoc} </span>` +
+                    `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopLoc ? shopLoc : '&nbsp'} </span>` +
                 `</p>` +
             `</div>` +
-            `<p class='display-form-date'> Zagreb, <span style='border-bottom: 1px dotted #000;'> ${docDate ? docDate : '&nbsp &nbsp &nbsp'} </span></p>`+
-            `<p class='form-footer'> Ova prijavnica stoji din 0*75 i ne smije se skuplje prodavati. </p>` +
-            `<p class='form-sub-footer'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>`;
+            `<p class='display-form-date' contenteditable='false'> Zagreb, <span style='border-bottom: 1px dotted #000;' contenteditable='true'> ${docDate ? docDate : '&nbsp &nbsp &nbsp'} </span></p>`+
+            `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;font-size:10px;font-weight:600;'>POTPIS PODNOSIOCA PRIJAVE</span></p>` +
+            `<div style='clear:both;height:5px;' contenteditable='false'></div>` +
+            `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;min-width:80px;border-bottom: 1px dotted #000;' contenteditable='true'> &nbsp </span></p>` +
+            `<div style='clear:both;' contenteditable='false'></div>` +
+            `<p class='form-footer' contenteditable='false'> Ova prijavnica stoji din 0*75 i ne smije se skuplje prodavati. </p>` +
+            `<p class='form-sub-footer' contenteditable='false'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>`;
 
             // append listed persons to the transcription
             transcriptionTemplate.insertBefore(displayDiv, transcriptionTemplate.querySelector('#shop-container'));
@@ -935,6 +959,16 @@ ready(() => {
 
         showPrirast.insertBefore(newPrirast, showPrirast.firstChild);
 
+        showPrirast.querySelector('#save-prirast-person').addEventListener('click', function() {
+            let description = `Prirast - ${document.querySelector('#prirast-rel').value} - ${document.querySelector('#prirast-voc').value} - ${document.querySelector('#prirast-wp').value}`;
+            let firstName = document.querySelector('#prirast-fname').value;
+            let lastName = document.querySelector('#prirast-lname').value;
+
+            saveRcPerson(itemId, userId, firstName, lastName, description, 'prirast', 'prirast')
+
+            document.querySelector('#prirast-list-form').reset();
+        })
+
         prirastBtn.style.display = 'none';
     });
 
@@ -975,6 +1009,17 @@ ready(() => {
         } else {
             showOdpad.insertBefore(newOdpad, showOdpad.firstChild);
         }
+
+        showOdpad.querySelector('#save-odpad-person').addEventListener('click', function() {
+            let description = `Odpad - ${document.querySelector('#odpad-rel').value} - ${document.querySelector('#odpad-voc').value} - ${document.querySelector('#odpad-wp').value}`;
+            let firstName = document.querySelector('#odpad-fname').value;
+            let lastName = document.querySelector('#odpad-lname').value;
+
+            saveRcPerson(itemId, userId, firstName, lastName, description, 'odpad', 'odpad')
+
+            document.querySelector('#odpad-list-form').reset();
+        })
+
         odpadBtn.style.display = 'none';
     });
 
