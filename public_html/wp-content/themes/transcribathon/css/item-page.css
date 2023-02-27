@@ -3260,6 +3260,15 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     display: inline-block;
     width: 80%;
 }
+.enrich-body-left p {
+    margin: 0!important;
+}
+.enrich-body-left .auto-description {
+    font-size: 12px;
+    padding-left: 30px;
+    position: relative;
+    bottom: 8px;
+}
 .enrich-body-right {
     position: relative;
     float: right;
@@ -3295,9 +3304,15 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .ait-decline-btn i {
     color: red!important;
 }
-.enrich-body-left img, .enrich-body-left i {
+.enrich-body-left img {
     margin-right: 10px;
     color: var(--main-color);
+}
+.enrich-body-left i {
+    color: var(--main-color);
+    margin-right: 16px;
+    position: relative;
+    left: 3px;
 }
 .ait-accept-btn button, .ait-decline-btn button {
     padding: 0!important;

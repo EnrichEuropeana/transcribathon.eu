@@ -2809,10 +2809,11 @@ ready(() => {
                                 `<div class="enrich-body-left">` +
                                     `<p>` +
                                         singlIcon +
-                                        `<span class="enrich-label"> ${itm.body.prefLabel.en} </span>` +
+                                        `<span class="enrich-label">${itm.body.prefLabel.en} </span>` +
                                         ` - WikiID: ` +
                                         `<span class="enrich-wiki"> ${wikiId} </span>` +
                                     `</p>` +
+                                    `<p class='auto-description'>Description: ${itm.body.description} </p>` +
                                 `</div>` +
                                 `<div class="enrich-body-right">` +
                                     `<div class="slider-track" ><div class="slider-slider"></div></div>` +
@@ -2881,6 +2882,7 @@ ready(() => {
                                             ` - ` +
                                             `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'> Wikidata ID: ${wikiId} </a></span>` +
                                         `</p>` +
+                                        `<p class='auto-description'>Description: ${itm.body.description} </p>` +
                                     `</div>` +
                                     `<div class="enrich-body-right">` +
                                         `<div class="slider-track" ><div class="slider-slider"></div></div>` +
