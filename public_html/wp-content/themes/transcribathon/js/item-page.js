@@ -1406,6 +1406,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
         },
         // Check success and create confirmation message
         function(response) {
+            console.log(response);
 
             scoreData = {
                 ItemId: itemId,
@@ -2888,6 +2889,46 @@ ready(() => {
                                 singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
                                     // document.querySelector('.single-annotation-' + itmNr).classList.toggle('accept');
                                     singlEnrich.classList.toggle('accept');
+
+                                    if(itm.body.type == 'Person' && singlEnrich.classList.contains('accept')) {
+                                        // let firstLastName = itm.body.prefLabel.en.split(' ');
+                                        // let lastName = firstLastName.pop();
+                                        // let firstName = firstLastName.join(' ');
+                                        console.log('save me');
+
+                                        // let newPerson = {
+                                        //     FirstName: firstName,
+                                        //     LastName: lastName,
+                                        //     BirthPlace: null,
+                                        //     DeathPlace: null,
+                                        //     Link: wikiId,
+                                        //     Description: itm.body.description,
+                                        //     ItemId: itemId
+                                        // }
+
+                                        // jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                                        //     'type': 'POST',
+                                        //     'url': TP_API_HOST + '/tp-api/persons',
+                                        //     'data': data
+                                        // }, function(response) {
+
+                                        // });
+                                    } else if (itm.body.type == 'Person' && !singlEnrich.classList.contains('accept')) {
+                                        console.log('Don\'t save');
+                                    }
+
+                                    // jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                                    //     'type': 'POST',
+                                    //     'data': singlEnrichment,
+                                    //     'url': 'http://tp_api_v2/v2/autoenrichments',
+                                    //     'token': 'yes'
+                                    //   },
+                                    //   function(response) {
+                                    //     console.log(response);
+                                    //     // var response = JSON.parse(response);
+                                    //     // console.log(response);
+                                  
+                                    //  });
                                 });
                                 singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
                                     event.stopPropagation();
