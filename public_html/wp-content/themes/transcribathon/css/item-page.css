@@ -3842,7 +3842,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 #item-page-transcription-text span.first-span {
     width: 25%!important;
 }
-#prirast-odpad i:not(#save-prirast-person, #save-odpad-person) {
+#prirast-odpad i:not(#save-prirast-person, #save-odpad-person, .fa-trash-alt) {
     float: left;
     position: relative;
     top: 7px;
@@ -3868,4 +3868,15 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 .out-third-row .out-first-span, .out-fourth-row .out-first-span {
     font-size: 14px;
+}
+#zalihe-container {
+    border: 1px solid #000;
+}
+#zalihe-container span {
+    display: inline-block;
+    font-size: 10px;
+    line-height: normal;
+    text-align: center;
+    border: 1px solid #000;
+    vertical-align: top;
 }

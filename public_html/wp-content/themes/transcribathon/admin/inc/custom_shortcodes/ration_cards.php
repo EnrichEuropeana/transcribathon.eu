@@ -2170,11 +2170,11 @@ function _TCT_ration_cards($atts)
                                         // $content .= "<i id='m-address-check' class='fas fa-check' style='display:none;'></i>";
                                     $content .= "</td>";
 
-                                    $content .= "<td class='rc-second-col'><input type='text' id='regnumb' style='border: none;border-bottom: 1px dotted #ccc;'></td>";
+                                    $content .= "<td class='rc-second-col'><input type='text' id='regnumb' style='border: none;border-bottom: 1px dotted #ccc;width: 60%;margin: 0 auto;'></td>";
 
-                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;'>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='submitter-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
+                                        $content .= "<span style='width:48%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:48%;display:inline-block;'><input type='text' placeholder='Ime' id='submitter-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<div id='submitter-spinner' class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";
                                         $content .= "</div>";
@@ -2205,9 +2205,9 @@ function _TCT_ration_cards($atts)
 
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
 
-                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;'>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='landlord-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                    $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
+                                        $content .= "<span style='width:48%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:48%;display:inline-block;'><input type='text' placeholder='Ime' id='landlord-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<div id='landlord-spinner' class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";
                                         $content .= "</div>";
@@ -2232,8 +2232,8 @@ function _TCT_ration_cards($atts)
 
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
 
-                                    $content .= "<td class='rc-third-col' style='position:relative;'>";
-                                        $content .= "<input type='text' id='landlord-loc' placeholder='Stan' style='border: none;border-bottom: 1px dotted #ccc;'>";
+                                    $content .= "<td class='rc-third-col' style='position:relative;padding-left:4%;'>";
+                                        $content .= "<input type='text' id='landlord-loc' placeholder='Stan' style='border: none;border-bottom: 1px dotted #ccc;width:96%;'>";
                                         $content .= "<i class='fas fa-check' id='landlord-check' style='display:none;'></i>";
                                         $content .= "<div class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";
@@ -2312,10 +2312,62 @@ function _TCT_ration_cards($atts)
                                     $content .= "<i class='fas fa-plus'></i>";
                                     $content .= "<p> Prirast </p>";
                                 $content .= "</div>";
+                                // Prirast container 
+                                $content .= "<div id='prirast-container' style='display:none;'>";
+                                    $content .= "<p style='font-size:9px;font-weight:600;'>PRIRAST: </p>";
+                                    $content .= "<form id='prirast-list-form'>";
+                                        $content .= "<div id='show-prirast-ppl'></div>";
+                                        $content .= "<div class='rc-list-td' style='position:relative;'>";
+                                            $content .= "<span id='prirast-redni-broj' class='start-span'> 1 </span>";
+                                            $content .= "<span class='first-span'>";
+                                                $content .= "<span class='left-half'><input type='text' id='prirast-lname' placeholder=' Prezime' name='plname'></span>";
+                                                $content .= "<span class='right-half'><input type='text' id='prirast-fname' placeholder=' Ime' name='pfname'></span>";
+                                            $content .= "</span>";
+                                            $content .= "<span class='second-span'><input type='text' id='prirast-bdate' name='prirast-bdate'></span>";
+                                            $content .= "<span class='third-span'><input type='text' id='prirast-rel' name='p-relation'></span>";
+                                            $content .= "<span class='fourth-span'><input type='text' id='prirast-voc' name='p-vocation'></span>";
+                                            $content .= "<span class='fifth-span'><input type='text' id='prirast-wp' name='p-workplace'></span>";
+                                            $content .= "<span class='sixth-span'>";
+                                                $content .= "<i id='save-prirast-person' class='fas fa-plus'></i>";
+                                                $content .= "<div id='prirast-spinner' class='spinner-container'>";
+                                                    $content .= "<span class='spinner'></span>";
+                                                $content .= "</div>";
+                                            $content .= "</span>";
+                                        $content .= "</div>";
+                                    $content .= "</form>";
+                                $content .= "</div>";
+                                
+                                //
                                 $content .= "<div id='odpad-btn'>";
                                     $content .= "<i class='fas fa-plus'></i>";
                                     $content .= "<p> Odpad </p>";
                                 $content .= "</div>";
+                                // Odpad container
+                                $content .= "<div id='odpad-container' style='display:none;'>";
+                                    $content .= "<p style='font-size:9px;font-weight:600;'>ODPAD: </p>";
+                                    $content .= "<form id='odpad-list-form'>";
+                                        $content .= "<div id='show-odpad-ppl'></div>";
+                                        $content .= "<div class='rc-list-td' style='position:relative;'>";
+                                            $content .= "<span id='odpad-redni-broj' class='start-span'> 1 </span>";
+                                            $content .= "<span class='first-span'>";
+                                                $content .= "<span class='left-half'><input type='text' id='odpad-lname' placeholder=' Prezime' name='olname'></span>";
+                                                $content .= "<span class='right-half'><input type='text' id='odpad-fname' placeholder=' Ime' name='ofname'></span>";
+                                            $content .= "</span>";
+                                            $content .= "<span class='second-span'><input type='text' id='odpad-bdate' name='odpad-bdate'></span>";
+                                            $content .= "<span class='third-span'><input type='text' id='odpad-rel' name='o-relation'></span>";
+                                            $content .= "<span class='fourth-span'><input type='text' id='odpad-voc' name='o-vocation'></span>";
+                                            $content .= "<span class='fifth-span'><input type='text' id='odpad-wp' name='o-workplace'></span>";
+                                            $content .= "<span class='sixth-span'>";
+                                                $content .= "<i id='save-odpad-person' class='fas fa-plus'></i>";
+                                                $content .= "<div id='odpad-spinner' class='spinner-container'>";
+                                                    $content .= "<span class='spinner'></span>";
+                                                $content .= "</div>";
+                                            $content .= "</span>";
+                                        $content .= "</div>";
+                                    $content .= "</form>";
+                                $content .= "</div>";
+                                
+                                //
                             $content .= "</div>";
                             // Shop address
                             $content .= "<div id='shop-place' style='position:relative;'>";

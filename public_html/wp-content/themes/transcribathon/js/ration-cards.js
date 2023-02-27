@@ -31,15 +31,25 @@ function loadRcPerson(itemId, userId) {
         var allPpl = JSON.parse(response.content);
 
         const pplListContainer = document.querySelector('#show-list-ppl');
+        const pplPrirastContainer = document.querySelector('#show-prirast-ppl');
+        const pplOdpadContainer = document.querySelector('#show-odpad-ppl');
 
         pplListContainer.innerHTML = '';
+        pplPrirastContainer.innerHTML = '';
+        pplOdpadContainer.innerHTML = '';
 
         let topPpl = [];
         let listPpl = [];
+        let prirastPpl = [];
+        let odpadPpl = [];
 
         for(let person of allPpl) {
             if(person.Description == 'Landlord / Kucevlasnik' || person.Description == 'Submitter Podnositelj prijave') {
                 topPpl.push(person);
+            } else if (person.Description.includes('Prirast')) {
+                prirastPpl.push(person);
+            } else if (person.Description.includes('Odpad')) {
+                odpadPpl.push(person);
             } else {
                 listPpl.push(person);
             }
@@ -74,7 +84,7 @@ function loadRcPerson(itemId, userId) {
             }
 
         }
-        let listIndex = 0 ;
+        let listIndex = 0;
         for(let listPerson of listPpl) {
             listIndex += 1;
             let listPersonDescription = listPerson.Description.split('-');
@@ -100,7 +110,74 @@ function loadRcPerson(itemId, userId) {
 
             pplListContainer.appendChild(newListPerson);
         }
+
         document.querySelector('#redni-broj-start').textContent = listPpl.length + 1;
+    
+        if(prirastPpl.length > 0) {
+
+            document.querySelector('#prirast-container').style.display = 'block';
+            document.querySelector('#prirast-btn').style.display = 'none';
+
+            let prirastIndex = 0;
+            for(let prirast of prirastPpl) {
+                prirastIndex += 1;
+                let prirastPersonDescription = prirast.Description.split('-');
+    
+                let prirastPersonBirthYear = '&nbsp';
+                if(prirast.BirthDate && prirast.BirthDate.includes('-01-01')) {
+                    let prirastPersonBirthArr = prirast.BirthDate.split('-');
+                    prirastPersonBirthYear = prirastPersonBirthArr[0];
+                }
+                
+                let newPrirast = document.createElement('div');
+                newPrirast.classList = 'list-person-single';
+    
+                newPrirast.innerHTML =
+                    `<span class='start-span'> ${prirastIndex} </span>` +
+                    `<span class='first-span'> ${prirast.LastName} ${prirast.FirstName} </span>` +
+                    `<span class='second-span'> ${prirastPersonBirthYear} </span>` +
+                    `<span class='third-span'> ${prirastPersonDescription[0] ? prirastPersonDescription[0] : '&nbsp'} </span>` +
+                    `<span class='fourth-span'> ${prirastPersonDescription[1] ? prirastPersonDescription[1] : '&nbsp'} </span>` +
+                    `<span class='fifth-span'> ${prirastPersonDescription[2] ? prirastPersonDescription[2] : '&nbsp'} </span>` +
+                    `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='deleteRcPerson(${prirast.PersonId}, ${itemId}, ${userId});'></i></span>`;
+                
+                pplPrirastContainer.appendChild(newPrirast);
+            }
+            document.querySelector('#prirast-redni-broj').textContent = prirastPpl.length + 1;
+        }
+
+        if(odpadPpl.length > 0) {
+
+            document.querySelector('#odpad-container').style.display = 'block';
+            document.querySelector('#odpad-btn').style.display = 'none';
+
+            let odpadIndex = 0;
+            for(let odpad of odpadPpl) {
+                odpadIndex += 1;
+                let odpadPersonDescription = odpad.Description.split('-');
+    
+                let odpadPersonBirthYear = '&nbsp';
+                if(odpad.BirthDate && odpad.BirthDate.includes('-01-01')) {
+                    let odpadPersonBirthArr = odpad.BirthDate.split('-');
+                    odpadPersonBirthYear = odpadPersonBirthArr[0];
+                }
+                
+                let newOdpad = document.createElement('div');
+                newOdpad.classList = 'list-person-single';
+    
+                newOdpad.innerHTML =
+                    `<span class='start-span'> ${odpadIndex} </span>` +
+                    `<span class='first-span'> ${odpad.LastName} ${odpad.FirstName} </span>` +
+                    `<span class='second-span'> ${odpadPersonBirthYear} </span>` +
+                    `<span class='third-span'> ${odpadPersonDescription[0] ? odpadPersonDescription[0] : '&nbsp'} </span>` +
+                    `<span class='fourth-span'> ${odpadPersonDescription[1] ? odpadPersonDescription[1] : '&nbsp'} </span>` +
+                    `<span class='fifth-span'> ${odpadPersonDescription[2] ? odpadPersonDescription[2] : '&nbsp'} </span>` +
+                    `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='deleteRcPerson(${odpad.PersonId}, ${itemId}, ${userId});'></i></span>`;
+                
+                pplOdpadContainer.appendChild(newOdpad);
+            }
+            document.querySelector('#odpad-redni-broj').textContent = odpadPpl.length + 1;
+        }
         // console.log(topPpl);
         // console.log(listPpl);
     });
@@ -841,7 +918,26 @@ ready(() => {
             let clonedPerson = person.cloneNode(true);
             displayDiv.appendChild(clonedPerson);
         }
-         console.log(displayDiv);
+        // Get prirast people
+        const prirastPersons = document.querySelector('#show-prirast-ppl').querySelectorAll('.list-person-single');
+        let prirastDisplay = document.createElement('div');
+        prirastDisplay.Id = 'display-prirast-ppl';
+        prirastDisplay.innerHTML = "<p style='font-size:9px;font-weight:600;'>PRIRAST: (ispunjava vlast) </p>";
+
+        for(let person of prirastPersons) {
+            let clonedPerson = person.cloneNode(true);
+            prirastDisplay.appendChild(clonedPerson);
+        }
+        // Get odpad people
+        const odpadPersons = document.querySelector('#show-odpad-ppl').querySelectorAll('.list-person-single');
+        let odpadDisplay = document.createElement('div');
+        odpadDisplay.Id = 'display-odpad-ppl';
+        odpadDisplay.innerHTML = "<p style='font-size:9px;font-weight:600;'>ODPAD: (ispunjava vlast)</p>";
+
+        for(let person of odpadPersons) {
+            let clonedPerson = person.cloneNode(true);
+            odpadDisplay.appendChild(clonedPerson);
+        }
         // Build transcription
         const transcriptionTemplate = document.createElement('div');
         transcriptionTemplate.classList = 'transcription-form';
@@ -882,17 +978,124 @@ ready(() => {
                 `<span class='fifth-span' contenteditable='false'> MJESTO RADA </span>` +
             `</p>` +
             `${displayDiv.querySelector('.list-person-single') ? 
-                '' 
+                `<span id='list-placeholder'></span>` 
                 :
                 `<p class='list-person-single'>` +
-                `<span class='start-span' style='width: 5%;' > 1 </span>` +
-                `<span class='first-span' > &nbsp </span>` +
-                `<span class='second-span' > &nbsp </span>` +
-                `<span class='third-span' > &nbsp </span>` +
-                `<span class='fourth-span' > &nbsp </span>` +
-                `<span class='fifth-span' > &nbsp </span>` +
-            `</p>` }` +
-            /// Maybe add other parts of form??
+                    `<span class='start-span' style='width: 5%;' > 1 </span>` +
+                    `<span class='first-span' > &nbsp </span>` +
+                    `<span class='second-span' > &nbsp </span>` +
+                    `<span class='third-span' > &nbsp </span>` +
+                    `<span class='fourth-span' > &nbsp </span>` +
+                    `<span class='fifth-span' > &nbsp </span>` +
+                `</p>` 
+            }` +
+            /// Prirast
+            `${document.querySelector('#show-prirast-ppl').innerHTML != '' ?
+                `<span id='prirast-placeholder'></span>`
+                :
+                `<p style='font-size:9px;font-weight:600;'>PRIRAST: (ispunjava vlast)</p>` +
+                `<p class='list-person-single'>` +
+                    `<span class='start-span' style='width: 5%;' > 1 </span>` +
+                    `<span class='first-span' > &nbsp </span>` +
+                    `<span class='second-span' > &nbsp </span>` +
+                    `<span class='third-span' > &nbsp </span>` +
+                    `<span class='fourth-span' > &nbsp </span>` +
+                    `<span class='fifth-span' > &nbsp </span>` +
+                `</p>` 
+            }` +
+            /// Odpad
+            `${document.querySelector('#show-odpad-ppl').innerHTML != '' ?
+                `<span id='odpad-placeholder'></span>`
+                :
+                `<p style='font-size:9px;font-weight:600;'>ODPAD: (ispunjava vlast)</p>` +
+                `<p class='list-person-single'>` +
+                    `<span class='start-span' style='width: 5%;' > 1 </span>` +
+                    `<span class='first-span' > &nbsp </span>` +
+                    `<span class='second-span' > &nbsp </span>` +
+                    `<span class='third-span' > &nbsp </span>` +
+                    `<span class='fourth-span' > &nbsp </span>` +
+                    `<span class='fifth-span' > &nbsp </span>` +
+                `</p>` 
+            }` +
+            // Zalihe
+            `<p class='form-cookies'> Ujedno izjavljujem pod istom odgovornošću, da u mojem kućanstvu postoje slijedeće zalihe životnih namirnica u</p>` +
+            `<p class='form-sub-cookies'> Kilogramima odnosno litrama: </p>` +
+
+            `<div id='zalihe-container'>` +
+                `<div id='zalihe-head'>` +
+                    `<span style='width:11.6%;height:50px;'>` +
+                        `<span style='width:100%;height:50%;'> PSENICA </span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO </span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO </span>` +
+                    `</span>` +
+                    `<span style='width:11.6%;height:50px;'>` +
+                        `<span style='width:100%;height:50%;'> RAZ </span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO </span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO </span>` +
+                    `</span>` +
+                    `<span style='width:11.6%;height:50px;'>` +
+                        `<span style='width:100%;height:50%;'> JECAM </span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO </span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO </span>` +
+                    `</span>` +
+                    `<span style='width:17.4%;height:50px;'>` +
+                        `<span style='width:100%;height:50%;'> KUKURUZ </span>` +
+                        `<span style='width:33%;font-size:8px;height:50%;'> ZRNO </span>` +
+                        `<span style='width:34%;font-size:8px;height:50%;'> KLIP </span>` +
+                        `<span style='width:33%;font-size:8px;height:50%;'> BRASNO </span>` +
+                    `</span>` +
+
+                    `<span style='width:5.8%;height:50px;'> TJESTENINE </span>` +
+                    `<span style='width:5.8%;height:50px;'> JESTIVO ULJE </span>` +
+                    `<span style='width:5.8%;height:50px;'> MAST </span>` +
+                    `<span style='width:5.8%;height:50px;'> SOL </span>` +
+                    `<span style='width:5.8%;height:50px;'> SECER </span>` +
+                    `<span style='width:5.8%;height:50px;'> KAVA </span>` +
+                    `<span style='width:5.8%;height:50px;'> SAPUN ZA PRANJE </span>` +
+                    `<span style='width:7.2%;height:50px;'> PETROLEJ </span>` +
+                `</div>` +
+                `<div id='zalihe-top'>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:7.2%;height:50px;'> &nbsp </span>` +
+                `</div>` +
+                `<div id='zalihe-mid'>` +
+                    `<p style='text-align:center;'> POVEĆANJE </p>` +
+                `</div>` +
+                `<div id='zalihe-bot'>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:7.2%;height:50px;'> &nbsp </span>` +
+                `</div>` +
+            `</div>` +
             `<div id='shop-container'>` +
                 `<p class='display-shop-label' contenteditable='false'> Živežne namirnice nabavljat ću: </p>` +
                 `<p class='display-shop' contenteditable='false'>` +
@@ -911,7 +1114,16 @@ ready(() => {
             `<p class='form-sub-footer' contenteditable='false'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>`;
 
             // append listed persons to the transcription
-            transcriptionTemplate.insertBefore(displayDiv, transcriptionTemplate.querySelector('#shop-container'));
+            transcriptionTemplate.insertBefore(displayDiv, transcriptionTemplate.querySelector('#list-placeholder'));
+
+            ////
+            if(document.querySelector('#show-prirast-ppl').innerHTML != '') {
+                transcriptionTemplate.insertBefore(prirastDisplay, transcriptionTemplate.querySelector('#prirast-placeholder'));
+            }
+            if(document.querySelector('#show-odpad-ppl').innerHTML != '') {
+                transcriptionTemplate.insertBefore(odpadDisplay, transcriptionTemplate.querySelector('#odpad-placeholder'));
+            }
+
 
             // append transcription to test div
             tinymce.get('item-page-transcription-text').setContent(transcriptionTemplate.innerHTML);
@@ -927,101 +1139,124 @@ ready(() => {
     const odpadBtn = document.querySelector('#odpad-btn');
 
     prirastBtn.addEventListener('click', function() {
-        let newPrirast = document.createElement('div');
-        newPrirast.Id = 'rc-prirast-list';
-        newPrirast.style.width = '100%';
-        newPrirast.style.display = 'block';
+        // let newPrirast = document.createElement('div');
+        // newPrirast.Id = 'rc-prirast-list';
+        // newPrirast.style.width = '100%';
+        // newPrirast.style.display = 'block';
 
-        let showPrirast = document.querySelector('#prirast-odpad');
+        // let showPrirast = document.querySelector('#prirast-odpad');
 
-        newPrirast.innerHTML =
-            `<p style='font-size:9px;font-weight:600;'>PRIRAST: </p>` +
-            `<form id='prirast-list-form'>` +
-                `<div id='show-prirast-ppl'></div>` +
-                `<div class='rc-list-td' style='position: relative;'>`+
-                    `<span id='prirast-redni-broj' class='start-span'> 1 </span>` +
-                    `<span class='first-span'>` +
-                        `<span class='left-half'><input type='text' id='prirast-lname' placeholder=' Prezime' name='plname'></span>` +
-                        `<span class='right-half'><input type='text' id='prirast-fname' placeholder=' Ime' name='pfname'></span>` +
-                    `</span>` +
-                    `<span class='second-span'><input type='text' id='prirast-bdate' name='prirast-bdate'></span>` +
-                    `<span class='third-span'><input type='text' id='prirast-rel' name='p-relation'></span>` +
-                    `<span class='fourth-span'><input type='text' id='prirast-voc' name='p-vocation'></span>` +
-                    `<span class='fifth-span'><input type='text' id='prirast-wp' name='p-workplace'></span>` +
-                    `<span class='sixth-span'>` +
-                        `<i id='save-prirast-person' class='fas fa-plus'></i>` +
-                        `<div id='prirast-spinner' class='spinner-container'>` +
-                            `<span class='spinner'></span>` +
-                        `</div>` +
-                    `</span>` +
-                `</div>` +
-            `</form>`;
+        // newPrirast.innerHTML =
+        //     `<p style='font-size:9px;font-weight:600;'>PRIRAST: </p>` +
+        //     `<form id='prirast-list-form'>` +
+        //         `<div id='show-prirast-ppl'></div>` +
+        //         `<div class='rc-list-td' style='position: relative;'>`+
+        //             `<span id='prirast-redni-broj' class='start-span'> 1 </span>` +
+        //             `<span class='first-span'>` +
+        //                 `<span class='left-half'><input type='text' id='prirast-lname' placeholder=' Prezime' name='plname'></span>` +
+        //                 `<span class='right-half'><input type='text' id='prirast-fname' placeholder=' Ime' name='pfname'></span>` +
+        //             `</span>` +
+        //             `<span class='second-span'><input type='text' id='prirast-bdate' name='prirast-bdate'></span>` +
+        //             `<span class='third-span'><input type='text' id='prirast-rel' name='p-relation'></span>` +
+        //             `<span class='fourth-span'><input type='text' id='prirast-voc' name='p-vocation'></span>` +
+        //             `<span class='fifth-span'><input type='text' id='prirast-wp' name='p-workplace'></span>` +
+        //             `<span class='sixth-span'>` +
+        //                 `<i id='save-prirast-person' class='fas fa-plus'></i>` +
+        //                 `<div id='prirast-spinner' class='spinner-container'>` +
+        //                     `<span class='spinner'></span>` +
+        //                 `</div>` +
+        //             `</span>` +
+        //         `</div>` +
+        //     `</form>`;
 
-        showPrirast.insertBefore(newPrirast, showPrirast.firstChild);
+        // showPrirast.insertBefore(newPrirast, showPrirast.firstChild);
 
-        showPrirast.querySelector('#save-prirast-person').addEventListener('click', function() {
-            let description = `Prirast - ${document.querySelector('#prirast-rel').value} - ${document.querySelector('#prirast-voc').value} - ${document.querySelector('#prirast-wp').value}`;
-            let firstName = document.querySelector('#prirast-fname').value;
-            let lastName = document.querySelector('#prirast-lname').value;
+        // showPrirast.querySelector('#save-prirast-person').addEventListener('click', function() {
+        //     let description = `${document.querySelector('#prirast-rel').value} - ${document.querySelector('#prirast-voc').value} - ${document.querySelector('#prirast-wp').value} - Prirast`;
+        //     let firstName = document.querySelector('#prirast-fname').value;
+        //     let lastName = document.querySelector('#prirast-lname').value;
 
-            saveRcPerson(itemId, userId, firstName, lastName, description, 'prirast', 'prirast')
+        //     saveRcPerson(itemId, userId, firstName, lastName, description, 'prirast', 'prirast')
 
-            document.querySelector('#prirast-list-form').reset();
-        })
+        //     document.querySelector('#prirast-list-form').reset();
+        // })
+        document.querySelector('#prirast-container').style.display = 'block';
 
         prirastBtn.style.display = 'none';
     });
 
     odpadBtn.addEventListener('click', function() {
-        let newOdpad = document.createElement('div');
-        newOdpad.Id = 'rc-odpad-list';
-        newOdpad.style.width = '100%';
-        newOdpad.style.display = 'block';
+        // let newOdpad = document.createElement('div');
+        // newOdpad.Id = 'rc-odpad-list';
+        // newOdpad.style.width = '100%';
+        // newOdpad.style.display = 'block';
 
-        let showOdpad = document.querySelector('#prirast-odpad');
+        // let showOdpad = document.querySelector('#prirast-odpad');
 
-        newOdpad.innerHTML =
-            `<p style='font-size:9px;font-weight:600;'>ODPAD: </p>` +
-            `<form id='odpad-list-form'>` +
-                `<div id='show-odpad-ppl'></div>` +
-                `<div class='rc-list-td' style='position: relative;'>`+
-                    `<span id='odpad-redni-broj' class='start-span'> 1 </span>` +
-                    `<span class='first-span'>` +
-                        `<span class='left-half'><input type='text' id='odpad-lname' placeholder=' Prezime' name='olname'></span>` +
-                        `<span class='right-half'><input type='text' id='odpad-fname' placeholder=' Ime' name='ofname'></span>` +
-                    `</span>` +
-                    `<span class='second-span'><input type='text' id='odpad-bdate' name='odpad-bdate'></span>` +
-                    `<span class='third-span'><input type='text' id='odpad-rel' name='o-relation'></span>` +
-                    `<span class='fourth-span'><input type='text' id='odpad-voc' name='o-vocation'></span>` +
-                    `<span class='fifth-span'><input type='text' id='odpad-wp' name='o-workplace'></span>` +
-                    `<span class='sixth-span'>` +
-                        `<i id='save-odpad-person' class='fas fa-plus'></i>` +
-                        `<div id='odpad-spinner' class='spinner-container'>` +
-                            `<span class='spinner'></span>` +
-                        `</div>` +
-                    `</span>` +
-                `</div>` +
-            `</form>`;
+        // newOdpad.innerHTML =
+        //     `<p style='font-size:9px;font-weight:600;'>ODPAD: </p>` +
+        //     `<form id='odpad-list-form'>` +
+        //         `<div id='show-odpad-ppl'></div>` +
+        //         `<div class='rc-list-td' style='position: relative;'>`+
+        //             `<span id='odpad-redni-broj' class='start-span'> 1 </span>` +
+        //             `<span class='first-span'>` +
+        //                 `<span class='left-half'><input type='text' id='odpad-lname' placeholder=' Prezime' name='olname'></span>` +
+        //                 `<span class='right-half'><input type='text' id='odpad-fname' placeholder=' Ime' name='ofname'></span>` +
+        //             `</span>` +
+        //             `<span class='second-span'><input type='text' id='odpad-bdate' name='odpad-bdate'></span>` +
+        //             `<span class='third-span'><input type='text' id='odpad-rel' name='o-relation'></span>` +
+        //             `<span class='fourth-span'><input type='text' id='odpad-voc' name='o-vocation'></span>` +
+        //             `<span class='fifth-span'><input type='text' id='odpad-wp' name='o-workplace'></span>` +
+        //             `<span class='sixth-span'>` +
+        //                 `<i id='save-odpad-person' class='fas fa-plus'></i>` +
+        //                 `<div id='odpad-spinner' class='spinner-container'>` +
+        //                     `<span class='spinner'></span>` +
+        //                 `</div>` +
+        //             `</span>` +
+        //         `</div>` +
+        //     `</form>`;
 
-        //showOdpad.insertBefore(newOdpad, showOdpad.firstChild);
-        if(showOdpad.querySelector('#prirast-list-form')) {
-            showOdpad.insertAdjacentElement('beforeend', newOdpad);
-        } else {
-            showOdpad.insertBefore(newOdpad, showOdpad.firstChild);
-        }
+        // //showOdpad.insertBefore(newOdpad, showOdpad.firstChild);
+        // if(showOdpad.querySelector('#prirast-list-form')) {
+        //     showOdpad.insertAdjacentElement('beforeend', newOdpad);
+        // } else {
+        //     showOdpad.insertBefore(newOdpad, showOdpad.firstChild);
+        // }
 
-        showOdpad.querySelector('#save-odpad-person').addEventListener('click', function() {
-            let description = `Odpad - ${document.querySelector('#odpad-rel').value} - ${document.querySelector('#odpad-voc').value} - ${document.querySelector('#odpad-wp').value}`;
-            let firstName = document.querySelector('#odpad-fname').value;
-            let lastName = document.querySelector('#odpad-lname').value;
+        // showOdpad.querySelector('#save-odpad-person').addEventListener('click', function() {
+        //     let description = `${document.querySelector('#odpad-rel').value} - ${document.querySelector('#odpad-voc').value} - ${document.querySelector('#odpad-wp').value} - Odpad`;
+        //     let firstName = document.querySelector('#odpad-fname').value;
+        //     let lastName = document.querySelector('#odpad-lname').value;
 
-            saveRcPerson(itemId, userId, firstName, lastName, description, 'odpad', 'odpad')
+        //     saveRcPerson(itemId, userId, firstName, lastName, description, 'odpad', 'odpad')
 
-            document.querySelector('#odpad-list-form').reset();
-        })
+        //     document.querySelector('#odpad-list-form').reset();
+        // })
+        document.querySelector('#odpad-container').style.display = 'block';
 
         odpadBtn.style.display = 'none';
     });
+
+    document.querySelector('#save-odpad-person').addEventListener('click', function() {
+
+        let description = `${document.querySelector('#odpad-rel').value} - ${document.querySelector('#odpad-voc').value} - ${document.querySelector('#odpad-wp').value} - Odpad`;
+        let firstName = document.querySelector('#odpad-fname').value;
+        let lastName = document.querySelector('#odpad-lname').value;
+
+        saveRcPerson(itemId, userId, firstName, lastName, description, 'odpad', 'odpad');
+
+        document.querySelector('#odpad-list-form').reset();
+    })
+
+    document.querySelector('#save-prirast-person').addEventListener('click', function() {
+        let description = `${document.querySelector('#prirast-rel').value} - ${document.querySelector('#prirast-voc').value} - ${document.querySelector('#prirast-wp').value} - Prirast`;
+        let firstName = document.querySelector('#prirast-fname').value;
+        let lastName = document.querySelector('#prirast-lname').value;
+
+        saveRcPerson(itemId, userId, firstName, lastName, description, 'prirast', 'prirast');
+
+        document.querySelector('#prirast-list-form').reset();
+        })
 
 });
 

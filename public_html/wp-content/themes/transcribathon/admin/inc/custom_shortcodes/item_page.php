@@ -643,7 +643,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span style='font-weight:600;'>" . htmlspecialchars(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
+                                $enrichmentTab .= "<span style='font-weight:600;'>" . htmlspecialchars(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . ($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
                                 if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                                     $enrichmentTab .= " (" . $person['BirthDate'];
                                     if($person['BirthPlace'] != 'NULL') {
