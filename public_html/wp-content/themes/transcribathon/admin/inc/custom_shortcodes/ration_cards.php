@@ -2173,8 +2173,8 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-second-col'><input type='text' id='regnumb' style='border: none;border-bottom: 1px dotted #ccc;width: 60%;margin: 0 auto;'></td>";
 
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
-                                        $content .= "<span style='width:48%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
-                                        $content .= "<span style='width:48%;display:inline-block;'><input type='text' placeholder='Ime' id='submitter-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='submitter-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<div id='submitter-spinner' class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";
                                         $content .= "</div>";
@@ -2206,8 +2206,8 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
 
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
-                                        $content .= "<span style='width:48%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
-                                        $content .= "<span style='width:48%;display:inline-block;'><input type='text' placeholder='Ime' id='landlord-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='landlord-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<div id='landlord-spinner' class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";
                                         $content .= "</div>";
@@ -2233,7 +2233,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
 
                                     $content .= "<td class='rc-third-col' style='position:relative;padding-left:4%;'>";
-                                        $content .= "<input type='text' id='landlord-loc' placeholder='Stan' style='border: none;border-bottom: 1px dotted #ccc;width:96%;'>";
+                                        $content .= "<input type='text' id='landlord-loc' placeholder='Stan' style='border: none;border-bottom: 1px dotted #ccc;'>";
                                         $content .= "<i class='fas fa-check' id='landlord-check' style='display:none;'></i>";
                                         $content .= "<div class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";

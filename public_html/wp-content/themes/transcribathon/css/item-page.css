@@ -3602,6 +3602,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #rc-date-entry {
     margin-left: 8px;
+    max-width: 100px;
 }
 #rc-date i {
     position: relative;
@@ -3673,13 +3674,9 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     color: #61e02f!important;
     cursor: default!important;
 }
-#m-address-check {
+#m-address-check, #kbr-check {
     top: 6px;
-    right: 15px;
-}
-#kbr-check {
-    top: 6px;
-    right: 45px;
+    right: -10px;
 }
 #landlord-check {
     top: 6px;
