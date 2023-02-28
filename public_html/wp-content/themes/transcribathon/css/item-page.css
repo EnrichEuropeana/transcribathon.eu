@@ -3460,6 +3460,8 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #rc-form i {
     color: #0a72cc;
+    cursor: pointer;
+    font-size: 14px;
 }
 .rc-top-address tr {
     height: 30px;
@@ -3645,9 +3647,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .res-single:hover p {
     color: #fff;
     font-size: 12px;
-    cursor: pointer;
-}
-#rc-form i {
     cursor: pointer;
 }
 .edit-delete {

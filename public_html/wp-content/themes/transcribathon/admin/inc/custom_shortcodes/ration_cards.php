@@ -2151,7 +2151,7 @@ function _TCT_ration_cards($atts)
                     //$content .= do_shortcode('[tutorial_item_slider]');
                     $content .= "<div id='rc-form'>";
                         $content .= "<h3><b> Grad Zagreb </b></h3>";
-                            // Top adress and card registration number
+                            // Top adress and card registration number(just labels)
                             $content .= "<table class='rc-top-address'>";
                                 $content .= "<tr>";
                                     $content .= "<td class='rc-first-col top-part'> &nbsp</td>";
@@ -2161,13 +2161,8 @@ function _TCT_ration_cards($atts)
                                 $content .= "</tr>";
                                 $content .= "<tr>";
 
-                                    $content .= "<td class='rc-first-col mid-part' style='position:relative;'> &nbsp";
-                                        // $content .= "<input type='text' placeholder='Ulica' id='m-address' style='border: none;border-bottom: 1px dotted #ccc;'>";
-                                        // $content .= "<div class='spinner-container'>";
-                                        //     $content .= "<div class='spinner'></div>";
-                                        // $content .= "</div>";
-                                        // $content .= "<div id='m-address-res'></div>";
-                                        // $content .= "<i id='m-address-check' class='fas fa-check' style='display:none;'></i>";
+                                    $content .= "<td class='rc-first-col mid-part' style='position:relative;'>";
+                                        $content .= "&nbsp;";
                                     $content .= "</td>";
 
                                     $content .= "<td class='rc-second-col'><input type='text' id='regnumb' style='border: none;border-bottom: 1px dotted #ccc;width: 60%;margin: 0 auto;'></td>";

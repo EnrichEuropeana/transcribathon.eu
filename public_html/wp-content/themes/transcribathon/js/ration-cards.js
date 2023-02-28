@@ -61,17 +61,37 @@ function loadRcPerson(itemId, userId) {
             if(person.Description == 'Landlord / Kucevlasnik') {
                 document.querySelector('#landlord-lname').setAttribute('disabled', true);
                 document.querySelector('#landlord-lname').value = person.LastName;
+                document.querySelector('#landlord-lname').style.cssText = `
+                    border-left: 1px solid #0a72cc;
+                    border-top: 1px solid #0a72cc;
+                    border-right: none;
+                    border-bottom: 1px solid #0a72cc;
+                `;
                 document.querySelector('#landlord-fname').setAttribute('disabled', true);
                 document.querySelector('#landlord-fname').value = person.FirstName;
-
-                document.querySelector('#landlord-lname').parentElement.parentElement.style.border = '1px solid #0a72cc';
+                document.querySelector('#landlord-fname').style.cssText = `
+                    border-top: 1px solid #0a72cc;
+                    border-right: 1px solid #0a72cc;
+                    border-bottom: 1px solid #0a72cc;
+                    border-left: none;
+                `;
             } else if(person.Description == 'Submitter Podnositelj prijave') {
                 document.querySelector('#submitter-lname').setAttribute('disabled', true);
                 document.querySelector('#submitter-lname').value = person.LastName;
+                document.querySelector('#submitter-lname').style.cssText = `
+                    border-top: 1px solid #0a72cc;
+                    border-right: none;
+                    border-bottom: 1px solid #0a72cc;
+                    border-left: 1px solid #0a72cc;
+                `;
                 document.querySelector('#submitter-fname').setAttribute('disabled', true);
-                document.querySelector('#submitter-fname').value = person.FirstName;
-
-                document.querySelector('#submitter-lname').parentElement.parentElement.style.border = '1px solid #0a72cc';
+                document.querySelector('#submitter-fname').value = person.FirstName; 
+                document.querySelector('#submitter-fname').style.cssText = `
+                    border-top: 1px solid #0a72cc;
+                    border-right: 1px solid #0a72cc;
+                    border-bottom: 1px solid #0a72cc;
+                    border-left: none;
+                `;
             }
 
         }
