@@ -57,16 +57,6 @@ function loadRcPerson(itemId, userId) {
         }
 
         for(let person of topPpl) {
-            // let newPerson = document.createElement('div')
-            // newPerson.classList = 'top-person-single';
-            // console.log(person);
-            // newPerson.innerHTML = 
-            //     `<i class='fas fa-user' style='float:left;margin-right:5px;'></i>` +
-            //     `<p class='person-data'>${escapeRcHtml(person.FirstName)} ${escapeRcHtml(person.LastName)}</p>` +
-            //     `<p class='person-description'>Description: ${escapeRcHtml(person.Description)}</p>` +
-            //     `<i class='fas fa-trash-alt' onClick='deleteRcPerson(${person.PersonId}, ${itemId}, ${userId});'></i>`;
-        
-            // pplTopContainer.appendChild(newPerson);
 
             if(person.Description == 'Landlord / Kucevlasnik') {
                 document.querySelector('#landlord-lname').setAttribute('disabled', true);
@@ -333,19 +323,6 @@ function saveRcDate() {
         }
     }
 
-    // endDate = jQuery('#enddateentry').val().split('/');
-    // if (!isNaN(endDate[2]) && !isNaN(endDate[1]) && !isNaN(endDate[0])) {
-    //     data['DateEnd'] = endDate[2] + "-" + endDate[1] + "-" + endDate[0];
-    // } else if (endDate.length == 1 && endDate[0].length <=4 && endDate[0].length > 0 && !isNaN(endDate[0])) {
-    //     data['DateEnd'] = endDate[0] + "-01-01";
-    // } else {
-    //     if (endDate[0] != "" && endDate[0] != null) {
-    //         jQuery('#item-date-spinner-container').css('display', 'none')
-    //         alert("Please enter a valid date or year");
-    //         return 0
-    //     }
-    // }
-
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'GET',
@@ -363,23 +340,13 @@ function saveRcDate() {
         },
         // Check success and create confirmation message
         function(response) {
-            // Update date 'view' when changing date in editor
-            // document.querySelector('.date-bottom .start-date').textContent = startDate.join('/');
-            // document.querySelector('.date-bottom .end-date').textContent = endDate.join('/');
-            // document.querySelector('.date-bottom').style.display = 'block';
-            // document.querySelector('.date-top').style.display = 'block';
-           // document.querySelector('#rc-doc-date').textContent = `Zagreb, ${jQuery('#rc-date-entry').val()}`;
 
             if (startDate != "" && startDate != oldStartDate) {
                 jQuery('#startdateDisplay').parent('.item-date-display-container').css('display', 'block')
                 jQuery('#startdateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
                 jQuery('#startdateDisplay').html(jQuery('#startdateentry').val())
             }
-            // if (endDate != "" && endDate != oldEndDate) {
-            //     jQuery('#enddateDisplay').parent('.item-date-display-container').css('display', 'block')
-            //     jQuery('#enddateDisplay').parent('.item-date-display-container').siblings('.item-date-input-container').css('display', 'none')
-            //     jQuery('#enddateDisplay').html(jQuery('#enddateentry').val())
-            // }
+
             scoreData = {
                 ItemId: itemIde,
                 UserId: userIde,
@@ -412,8 +379,7 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
 
     jQuery('#' + spinner + '-spinner').css('display', 'block');
 
-    // let firstName = escapeHtml(jQuery('#person-firstName-input').val());
-    // let lastName = escapeHtml(jQuery('#person-lastName-input').val());
+
     // let birthDate = escapeHtml(jQuery('#rc-bdate').val());
     let birthDate = '';
 
@@ -424,9 +390,6 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
     } else if(personType == 'odpad') {
         birthDate = document.querySelector('#odpad-bdate').value + '-01-01';
     }
-    
-    console.log(birthDate);
-
 
         deathDate = escapeHtml(jQuery('#person-deathDate-input').val().split('/'));
 
@@ -480,7 +443,6 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
         },
         // Check success and create confirmation message
         function(response) {
-            console.log(response);
 
             scoreData = {
                 ItemId: itemIde,
@@ -495,7 +457,7 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
             },
             // Check success and create confirmation message
             function(response) {
-                console.log(response);
+
                 jQuery('#' + spinner + '-spinner').css('display', 'none');
 
                 loadRcPerson(itemId, userId);
@@ -505,9 +467,6 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
             if (taggingCompletion == "Not Started") {
                 changeStatus(itemIde, "Not Started", "Edit", "TaggingStatusId", 2, "#fff700", 4)
             }
-            // jQuery('#person-input-container').removeClass('show')
-            // jQuery('#person-input-container input').val("")
-            // jQuery('#item-person-spinner-container').css('display', 'none')
         });
     });
 }
@@ -519,13 +478,9 @@ function loadRcDateData(itemId, userId) {
         response = JSON.parse(response);
         let itemData = JSON.parse(response.content);
 
-        // let rationCardDateArr = itemData.DateStartDisplay.split('/');
-        // let rationCardDate = `${rationCardDateArr[2]}/${rationCardDateArr[1]}/${rationCardDateArr[0]}`;
-
-        document.querySelector('#rc-date-entry').value = itemData.DateStartDisplay;
-
-        console.log(itemData);
-
+        if(itemData.DateStartDisplay) {
+            document.querySelector('#rc-date-entry').value = itemData.DateStartDisplay;
+        }
     });
 }
 
@@ -610,31 +565,6 @@ function loadRcPlaceData(itemId, userId) {
                     `${escapeRcHtml(submPlace.WikidataName)}, ${escapeRcHtml(submPlace.WikidataId)}</a></p>`;
 
             document.querySelector('#show-sub-loc').appendChild(showPlace);
-                
-
-            // editSubmBtn.addEventListener('click', function() {
-
-            //     data = {
-            //         Name: locationName,
-            //         Latitude: latitude,
-            //         Longitude: longitude,
-            //         Comment: description,
-            //         WikidataName: wikidata[0],
-            //         WikidataId: wikidata[1]
-            //     }
-
-            //     var dataString= JSON.stringify(data);
-      
-            //     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-            //         'type': 'POST',
-            //         'url': TP_API_HOST + '/tp-api/places/' + placeId,
-            //         'data': data
-            //     },
-            //     // Check success and create confirmation message
-            //     function(response) {
-            //     });
-
-            // })
         }
 
         // Landlord address - add delete button after saving
@@ -777,13 +707,6 @@ ready(() => {
             locOneStreet.style.border = '1px solid #0a72cc';
             locOneNumb.setAttribute('disabled', true);
             locOneNumb.style.border = '1px solid #0a72cc';
-            
-           // document.querySelector('#rc-place-one').classList = 'fas fa-check';
-            // document.querySelector('#rc-place-one').style.display = 'none';
-            // document.querySelector('#edit-subm-container').style.display = 'inline-block';
-    
-            // document.querySelector('#submitter-place').textContent = locOneStreet.value;
-            // document.querySelector('#house-nr').textContent = 'Kbr. ' + locOneNumb.value;
         })
     }
 
@@ -799,8 +722,6 @@ ready(() => {
 
             lLordStreet.setAttribute('disabled', true);
             lLordStreet.style.border = '1px solid #0a72cc';
-    
-            // document.querySelector('#llord-place').textContent = lLordStreet.value;
         })
     }
 
@@ -822,13 +743,10 @@ ready(() => {
                 getRCLocation(queryLoc, description, locName, '#shop-loc-res');
     
                 shopStreet.setAttribute('disabled', true);
-        
-                // document.querySelector('#tr-shop-name').textContent = shopName.value;
-                // document.querySelector('#tr-shop-place').textContent = shopStreet.value;
+
             }
         })
     }
-
 
     // Date
     const rcDateBtn = document.querySelector('#save-rc-date');
@@ -838,7 +756,6 @@ ready(() => {
             saveRcDate()
         })
     }
-
 
     // People
     // Form Submitter
@@ -850,9 +767,6 @@ ready(() => {
             let lastName = document.querySelector('#submitter-lname').value;
     
             saveRcPerson(itemId, userId, firstName, lastName, description, 'submitter');
-    
-            // document.querySelector('#submitter-lf-name').textContent = lastName + ' ' + firstName;
-            // document.querySelector('#reg-num').textContent = document.querySelector('#regnumb').value;
         })
     }
 
@@ -865,9 +779,6 @@ ready(() => {
             let lastName = document.querySelector('#landlord-lname').value;
     
             saveRcPerson(itemId, userId, firstName, lastName, description, 'landlord');
-    
-            // document.querySelector('#llord-lf-name').textContent = lastName + ' ' + firstName;
-            
         })
     }
 
@@ -887,13 +798,8 @@ ready(() => {
             document.querySelector('#rc-list-form').reset();
         })
     }
-    // Set document language to Croatian if it's Ration Card
-    // if(document.querySelector('#rc-form')) {
-    //     if(!document.querySelector('#transcription-selected-languages li')) {
-    //         document.querySelector('#transcription-language-selector div[value="Hrvatski (Croatian)"]').click();
-    //     }
-    // }
 
+    // Generate transcription and append it to the Tinymce texeditor
     const submitForm = document.getElementById('submit-form');
 
     submitForm.addEventListener('click', function() {
@@ -914,7 +820,7 @@ ready(() => {
         const listedPersons = document.querySelector('#show-list-ppl').querySelectorAll('.list-person-single');
         let displayDiv = document.createElement('div');
         displayDiv.Id = 'display-list-ppl';
-        // Loop trough nodes, clone them and add them to container
+        // Loop trough nodes, clone them and add them to container(If we don't clone them, they are removed from RC form, same for all people)
         for(let person of listedPersons) {
             let clonedPerson = person.cloneNode(true);
             displayDiv.appendChild(clonedPerson);
@@ -939,7 +845,7 @@ ready(() => {
             let clonedPerson = person.cloneNode(true);
             odpadDisplay.appendChild(clonedPerson);
         }
-        // Build transcription
+        // Generate the transcription and fill it with data from Ration Card form
         const transcriptionTemplate = document.createElement('div');
         transcriptionTemplate.classList = 'transcription-form';
         // Spans need classes, otherwise Tinymce doesn't add them to the editor
@@ -1124,9 +1030,7 @@ ready(() => {
             if(document.querySelector('#show-odpad-ppl').innerHTML != '') {
                 transcriptionTemplate.insertBefore(odpadDisplay, transcriptionTemplate.querySelector('#odpad-placeholder'));
             }
-
-
-            // append transcription to test div
+            // Set Transcription as textcontent in
             tinymce.get('item-page-transcription-text').setContent(transcriptionTemplate.innerHTML);
 
             if(!document.querySelector('#transcription-selected-languages li')) {
@@ -1139,108 +1043,24 @@ ready(() => {
     const prirastBtn = document.querySelector('#prirast-btn');
     const odpadBtn = document.querySelector('#odpad-btn');
 
+    // Show 'Prirast' Container and hide 'Prirast' Button
     prirastBtn.addEventListener('click', function() {
-        // let newPrirast = document.createElement('div');
-        // newPrirast.Id = 'rc-prirast-list';
-        // newPrirast.style.width = '100%';
-        // newPrirast.style.display = 'block';
 
-        // let showPrirast = document.querySelector('#prirast-odpad');
-
-        // newPrirast.innerHTML =
-        //     `<p style='font-size:9px;font-weight:600;'>PRIRAST: </p>` +
-        //     `<form id='prirast-list-form'>` +
-        //         `<div id='show-prirast-ppl'></div>` +
-        //         `<div class='rc-list-td' style='position: relative;'>`+
-        //             `<span id='prirast-redni-broj' class='start-span'> 1 </span>` +
-        //             `<span class='first-span'>` +
-        //                 `<span class='left-half'><input type='text' id='prirast-lname' placeholder=' Prezime' name='plname'></span>` +
-        //                 `<span class='right-half'><input type='text' id='prirast-fname' placeholder=' Ime' name='pfname'></span>` +
-        //             `</span>` +
-        //             `<span class='second-span'><input type='text' id='prirast-bdate' name='prirast-bdate'></span>` +
-        //             `<span class='third-span'><input type='text' id='prirast-rel' name='p-relation'></span>` +
-        //             `<span class='fourth-span'><input type='text' id='prirast-voc' name='p-vocation'></span>` +
-        //             `<span class='fifth-span'><input type='text' id='prirast-wp' name='p-workplace'></span>` +
-        //             `<span class='sixth-span'>` +
-        //                 `<i id='save-prirast-person' class='fas fa-plus'></i>` +
-        //                 `<div id='prirast-spinner' class='spinner-container'>` +
-        //                     `<span class='spinner'></span>` +
-        //                 `</div>` +
-        //             `</span>` +
-        //         `</div>` +
-        //     `</form>`;
-
-        // showPrirast.insertBefore(newPrirast, showPrirast.firstChild);
-
-        // showPrirast.querySelector('#save-prirast-person').addEventListener('click', function() {
-        //     let description = `${document.querySelector('#prirast-rel').value} - ${document.querySelector('#prirast-voc').value} - ${document.querySelector('#prirast-wp').value} - Prirast`;
-        //     let firstName = document.querySelector('#prirast-fname').value;
-        //     let lastName = document.querySelector('#prirast-lname').value;
-
-        //     saveRcPerson(itemId, userId, firstName, lastName, description, 'prirast', 'prirast')
-
-        //     document.querySelector('#prirast-list-form').reset();
-        // })
         document.querySelector('#prirast-container').style.display = 'block';
 
         prirastBtn.style.display = 'none';
     });
-
+    // Show 'Odpad' container and hide 'Odpad' button
     odpadBtn.addEventListener('click', function() {
-        // let newOdpad = document.createElement('div');
-        // newOdpad.Id = 'rc-odpad-list';
-        // newOdpad.style.width = '100%';
-        // newOdpad.style.display = 'block';
 
-        // let showOdpad = document.querySelector('#prirast-odpad');
-
-        // newOdpad.innerHTML =
-        //     `<p style='font-size:9px;font-weight:600;'>ODPAD: </p>` +
-        //     `<form id='odpad-list-form'>` +
-        //         `<div id='show-odpad-ppl'></div>` +
-        //         `<div class='rc-list-td' style='position: relative;'>`+
-        //             `<span id='odpad-redni-broj' class='start-span'> 1 </span>` +
-        //             `<span class='first-span'>` +
-        //                 `<span class='left-half'><input type='text' id='odpad-lname' placeholder=' Prezime' name='olname'></span>` +
-        //                 `<span class='right-half'><input type='text' id='odpad-fname' placeholder=' Ime' name='ofname'></span>` +
-        //             `</span>` +
-        //             `<span class='second-span'><input type='text' id='odpad-bdate' name='odpad-bdate'></span>` +
-        //             `<span class='third-span'><input type='text' id='odpad-rel' name='o-relation'></span>` +
-        //             `<span class='fourth-span'><input type='text' id='odpad-voc' name='o-vocation'></span>` +
-        //             `<span class='fifth-span'><input type='text' id='odpad-wp' name='o-workplace'></span>` +
-        //             `<span class='sixth-span'>` +
-        //                 `<i id='save-odpad-person' class='fas fa-plus'></i>` +
-        //                 `<div id='odpad-spinner' class='spinner-container'>` +
-        //                     `<span class='spinner'></span>` +
-        //                 `</div>` +
-        //             `</span>` +
-        //         `</div>` +
-        //     `</form>`;
-
-        // //showOdpad.insertBefore(newOdpad, showOdpad.firstChild);
-        // if(showOdpad.querySelector('#prirast-list-form')) {
-        //     showOdpad.insertAdjacentElement('beforeend', newOdpad);
-        // } else {
-        //     showOdpad.insertBefore(newOdpad, showOdpad.firstChild);
-        // }
-
-        // showOdpad.querySelector('#save-odpad-person').addEventListener('click', function() {
-        //     let description = `${document.querySelector('#odpad-rel').value} - ${document.querySelector('#odpad-voc').value} - ${document.querySelector('#odpad-wp').value} - Odpad`;
-        //     let firstName = document.querySelector('#odpad-fname').value;
-        //     let lastName = document.querySelector('#odpad-lname').value;
-
-        //     saveRcPerson(itemId, userId, firstName, lastName, description, 'odpad', 'odpad')
-
-        //     document.querySelector('#odpad-list-form').reset();
-        // })
         document.querySelector('#odpad-container').style.display = 'block';
 
         odpadBtn.style.display = 'none';
     });
-
+    // Add saving to the '+' in Odpad Container
     document.querySelector('#save-odpad-person').addEventListener('click', function() {
 
-        let description = `${document.querySelector('#odpad-rel').value} - ${document.querySelector('#odpad-voc').value} - ${document.querySelector('#odpad-wp').value} - Odpad`;
+        let description = `${document.querySelector('#odpad-rel').value} - ${document.querySelector('#odpad-voc').value} - ${document.querySelector('#odpad-wp').value} - (Odpad) `;
         let firstName = document.querySelector('#odpad-fname').value;
         let lastName = document.querySelector('#odpad-lname').value;
 
@@ -1248,9 +1068,9 @@ ready(() => {
 
         document.querySelector('#odpad-list-form').reset();
     })
-
+    // Add saving to the '+' in Prirast Container
     document.querySelector('#save-prirast-person').addEventListener('click', function() {
-        let description = `${document.querySelector('#prirast-rel').value} - ${document.querySelector('#prirast-voc').value} - ${document.querySelector('#prirast-wp').value} - Prirast`;
+        let description = `${document.querySelector('#prirast-rel').value} - ${document.querySelector('#prirast-voc').value} - ${document.querySelector('#prirast-wp').value} - (Prirast)`;
         let firstName = document.querySelector('#prirast-fname').value;
         let lastName = document.querySelector('#prirast-lname').value;
 
