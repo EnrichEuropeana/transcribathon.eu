@@ -2170,6 +2170,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='submitter-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<i id='submitter-check' class='fas fa-check' style='display:none;'></i>";
                                         $content .= "<div id='submitter-spinner' class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";
                                         $content .= "</div>";
@@ -2203,6 +2204,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='landlord-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<i id='landlord-name-check' class='fas fa-check' style='display:none;'></i>";
                                         $content .= "<div id='landlord-spinner' class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";
                                         $content .= "</div>";
@@ -2396,6 +2398,7 @@ function _TCT_ration_cards($atts)
                             $content .= "<div id='rc-date'>";
                                 $content .= "<span>Zagreb, </span><input type='text' id='rc-date-entry' placeholder='dd/mm/yyyy' class='datepicker-input-field'><i id='save-rc-date' class='fas fa-save'></i>";
                                 // Saving spinner
+                                $content .= "<i id='date-check' class='fas fa-check' style='display:none;'></i>";
                                 $content .= "<div id='rc-date-spinner-container' class='spinner-container'>";
                                     $content .= "<div class='spinner'></div>";
                                 $content .= "</div>";

@@ -75,6 +75,8 @@ function loadRcPerson(itemId, userId) {
                     border-bottom: 1px solid #0a72cc;
                     border-left: none;
                 `;
+                document.querySelector('#landlord-name-check').style.display = 'block';
+
             } else if(person.Description == 'Submitter Podnositelj prijave') {
                 document.querySelector('#submitter-lname').setAttribute('disabled', true);
                 document.querySelector('#submitter-lname').value = person.LastName;
@@ -92,6 +94,8 @@ function loadRcPerson(itemId, userId) {
                     border-bottom: 1px solid #0a72cc;
                     border-left: none;
                 `;
+                document.querySelector('#submitter-check').style.display = 'block';
+
             }
 
         }
@@ -111,7 +115,7 @@ function loadRcPerson(itemId, userId) {
             newListPerson.classList = 'list-person-single';
 
             newListPerson.innerHTML = 
-                `<span class='start-span'> ${listIndex} &nbsp</span>` +
+                `<span class='start-span'>&nbsp ${listIndex} &nbsp</span>` +
                 `<span class='first-span'>${listPerson.LastName} ${listPerson.FirstName} &nbsp</span>` +
                 `<span class='second-span'>${listPersonBirthYear} &nbsp</span>` +
                 `<span class='third-span'>${listPersonDescription[0] ? listPersonDescription[0] : '&nbsp'} &nbsp</span>` +
@@ -122,7 +126,7 @@ function loadRcPerson(itemId, userId) {
             pplListContainer.appendChild(newListPerson);
         }
 
-        document.querySelector('#redni-broj-start').textContent = listPpl.length + 1;
+        document.querySelector('#redni-broj-start').textContent = (listPpl.length + 1) + ' ';
     
         if(prirastPpl.length > 0) {
 

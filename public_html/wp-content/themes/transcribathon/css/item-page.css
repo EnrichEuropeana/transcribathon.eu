@@ -3524,9 +3524,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     right: 25px;
     top: -3px;
 }
-#shop-loc {
-    width: 65%;
-}
 #shop-loc-btn {
     margin-left: 5px;
 }
@@ -3668,23 +3665,24 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     position: absolute;
     right: 0;
 }
-#m-address-check, #kbr-check, #landlord-check, #shop-check, #shop-name-check {
+#m-address-check, #kbr-check, #landlord-check, #shop-check, #shop-name-check, #submitter-check, #landlord-name-check {
     position: absolute;
     color: #61e02f!important;
     cursor: default!important;
 }
 #m-address-check, #kbr-check {
-    top: 6px;
+    top: 7px;
     right: -10px;
 }
-#landlord-check {
-    top: 6px;
-    right: 5px;
+#landlord-check, #submitter-check, #landlord-name-check {
+    top: 7px;
+    right: -16px;
 }
 #shop-loc {
     position: absolute!important;
-    right: 20px!important;
+    right: 42px!important;
     top: -3px!important;
+    width: 65%!important;
 }
 #shop-loc-btn {
     position: absolute!important;
@@ -3693,11 +3691,11 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #shop-check {
     right: 25px;
-    top: 4px;
+    top: 5px;
 }
 #shop-name-check {
-    right: 30px;
-    top: 4px;
+    right: 8px;
+    top: 5px;
 }
 #show-sub-loc {
     float: left;
