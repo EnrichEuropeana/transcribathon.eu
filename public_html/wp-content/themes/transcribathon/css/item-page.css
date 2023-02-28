@@ -3853,8 +3853,11 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .form-footer {
     border-top: 1px solid #000;
 }
-#item-page-transcription-text span.first-span {
+#item-page-transcription-text span.first-span, .current-transcription span.first-span {
     width: 25%!important;
+}
+.current-transcription p.rc-list-head {
+    margin: 0!important;
 }
 #prirast-odpad i:not(#save-prirast-person, #save-odpad-person, .fa-trash-alt) {
     float: left;
