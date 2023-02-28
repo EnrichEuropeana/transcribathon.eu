@@ -44,13 +44,14 @@ function loadRcPerson(itemId, userId) {
         let odpadPpl = [];
 
         for(let person of allPpl) {
+            console.log(person);
             if(person.Description == 'Landlord / Kucevlasnik' || person.Description == 'Submitter Podnositelj prijave') {
                 topPpl.push(person);
-            } else if (person.Description.includes('Prirast')) {
+            } else if (person.Description && person.Description.includes('Prirast')) {
                 prirastPpl.push(person);
-            } else if (person.Description.includes('Odpad')) {
+            } else if (person.Description && person.Description.includes('Odpad')) {
                 odpadPpl.push(person);
-            } else {
+            } else if (person.Description) {
                 listPpl.push(person);
             }
         }
@@ -100,12 +101,12 @@ function loadRcPerson(itemId, userId) {
             newListPerson.classList = 'list-person-single';
 
             newListPerson.innerHTML = 
-                `<span class='start-span'> ${listIndex} </span>` +
-                `<span class='first-span'>${listPerson.LastName} ${listPerson.FirstName} </span>` +
-                `<span class='second-span'>${listPersonBirthYear}</span>` +
-                `<span class='third-span'>${listPersonDescription[0] ? listPersonDescription[0] : '&nbsp'}</span>` +
-                `<span class='fourth-span'>${listPersonDescription[1] ? listPersonDescription[1] : '&nbsp'}</span>` +
-                `<span class='fifth-span'>${listPersonDescription[2] ? listPersonDescription[2] : '&nbsp'}</span>` +
+                `<span class='start-span'> ${listIndex} &nbsp</span>` +
+                `<span class='first-span'>${listPerson.LastName} ${listPerson.FirstName} &nbsp</span>` +
+                `<span class='second-span'>${listPersonBirthYear} &nbsp</span>` +
+                `<span class='third-span'>${listPersonDescription[0] ? listPersonDescription[0] : '&nbsp'} &nbsp</span>` +
+                `<span class='fourth-span'>${listPersonDescription[1] ? listPersonDescription[1] : '&nbsp'} &nbsp</span>` +
+                `<span class='fifth-span'>${listPersonDescription[2] ? listPersonDescription[2] : '&nbsp'} &nbsp</span>` +
                 `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='deleteRcPerson(${listPerson.PersonId}, ${itemId}, ${userId});'></i></span>`;
 
             pplListContainer.appendChild(newListPerson);
@@ -133,12 +134,12 @@ function loadRcPerson(itemId, userId) {
                 newPrirast.classList = 'list-person-single';
     
                 newPrirast.innerHTML =
-                    `<span class='start-span'> ${prirastIndex} </span>` +
-                    `<span class='first-span'> ${prirast.LastName} ${prirast.FirstName} </span>` +
-                    `<span class='second-span'> ${prirastPersonBirthYear} </span>` +
-                    `<span class='third-span'> ${prirastPersonDescription[0] ? prirastPersonDescription[0] : '&nbsp'} </span>` +
-                    `<span class='fourth-span'> ${prirastPersonDescription[1] ? prirastPersonDescription[1] : '&nbsp'} </span>` +
-                    `<span class='fifth-span'> ${prirastPersonDescription[2] ? prirastPersonDescription[2] : '&nbsp'} </span>` +
+                    `<span class='start-span'> ${prirastIndex} &nbsp</span>` +
+                    `<span class='first-span'> ${prirast.LastName} ${prirast.FirstName} &nbsp</span>` +
+                    `<span class='second-span'> ${prirastPersonBirthYear} &nbsp</span>` +
+                    `<span class='third-span'> ${prirastPersonDescription[0] ? prirastPersonDescription[0] : '&nbsp'} &nbsp</span>` +
+                    `<span class='fourth-span'> ${prirastPersonDescription[1] ? prirastPersonDescription[1] : '&nbsp'} &nbsp</span>` +
+                    `<span class='fifth-span'> ${prirastPersonDescription[2] ? prirastPersonDescription[2] : '&nbsp'} &nbsp</span>` +
                     `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='deleteRcPerson(${prirast.PersonId}, ${itemId}, ${userId});'></i></span>`;
                 
                 pplPrirastContainer.appendChild(newPrirast);
@@ -166,12 +167,12 @@ function loadRcPerson(itemId, userId) {
                 newOdpad.classList = 'list-person-single';
     
                 newOdpad.innerHTML =
-                    `<span class='start-span'> ${odpadIndex} </span>` +
-                    `<span class='first-span'> ${odpad.LastName} ${odpad.FirstName} </span>` +
-                    `<span class='second-span'> ${odpadPersonBirthYear} </span>` +
-                    `<span class='third-span'> ${odpadPersonDescription[0] ? odpadPersonDescription[0] : '&nbsp'} </span>` +
-                    `<span class='fourth-span'> ${odpadPersonDescription[1] ? odpadPersonDescription[1] : '&nbsp'} </span>` +
-                    `<span class='fifth-span'> ${odpadPersonDescription[2] ? odpadPersonDescription[2] : '&nbsp'} </span>` +
+                    `<span class='start-span'> ${odpadIndex} &nbsp</span>` +
+                    `<span class='first-span'> ${odpad.LastName} ${odpad.FirstName} &nbsp</span>` +
+                    `<span class='second-span'> ${odpadPersonBirthYear} &nbsp</span>` +
+                    `<span class='third-span'> ${odpadPersonDescription[0] ? odpadPersonDescription[0] : '&nbsp'} &nbsp</span>` +
+                    `<span class='fourth-span'> ${odpadPersonDescription[1] ? odpadPersonDescription[1] : '&nbsp'} &nbsp</span>` +
+                    `<span class='fifth-span'> ${odpadPersonDescription[2] ? odpadPersonDescription[2] : '&nbsp'} &nbsp</span>` +
                     `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='deleteRcPerson(${odpad.PersonId}, ${itemId}, ${userId});'></i></span>`;
                 
                 pplOdpadContainer.appendChild(newOdpad);
@@ -943,39 +944,39 @@ ready(() => {
         transcriptionTemplate.classList = 'transcription-form';
         // Spans need classes, otherwise Tinymce doesn't add them to the editor
         transcriptionTemplate.innerHTML = 
-            `<p class='out-first-row' contenteditable='false'><span class='out-first-span'> Grad Zagreb </span><span class='out-second-span'> A. </span><span class='out-third-span'> Prezime i Ime podnosioca prijave: </span></p>` +
+            `<p class='out-first-row' contenteditable='false'><span class='out-first-span'> Grad Zagreb &emsp;</span>  <span class='out-second-span'> A. &emsp;</span><span class='out-third-span'> Prezime i Ime podnosioca prijave: </span></p>` +
             `<p class='out-second-row'>` +
                 `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
-                `<span class='out-second-span' style='font-size:9px;' contenteditable='false'> &nbsp REG. BROJ:</span>` +
+                `<span class='out-second-span' style='font-size:9px;' contenteditable='false'> &nbsp REG. BROJ: &emsp;</span>` +
                 `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${submitterLName ? submitterLName : '&nbsp'} ${submitterFName ? submitterFName : '&nbsp'} </span>` +
             `</p>` +
             `<p class='out-second-subrow'>` +
                 `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
-                `<span class='out-second-span' style='font-size:9px;border-bottom: 1px dotted #000;'> &nbsp &nbsp </span>` +
+                `<span class='out-second-span' style='font-size:9px;border-bottom: 1px dotted #000;'> ${formNumber ? formNumber : '&nbsp'} &emsp;</span>` +
                 `<span class='out-third-span' contenteditable='false'> Prezime i ime i stan kućevlasnika: </span>` +
             `</p>` +
             `<p class='out-third-row'>` +
-                `<span class='out-first-span' contenteditable='false'> Ulica, trg ili ina oznaka <span style='border-bottom:1px dotted #000;min-width:70px;display:inline-block;' contenteditable='true'> ${submitterLoc ? submitterLoc : '&nbsp'} </span> </span>` +
-                `<span class='out-second-span'> ${formNumber ? formNumber : '&nbsp'} </span>` +
+                `<span class='out-first-span' contenteditable='false'> Ulica, trg ili ina oznaka: <span style='border-bottom:1px dotted #000;min-width:70px;display:inline-block;' contenteditable='true'> ${submitterLoc ? submitterLoc : '&nbsp'} </span> </span>` +
+                `<span class='out-second-span'> &nbsp &emsp; </span>` +
                 `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLName ? landlordLName : '&nbsp'} ${landlordFName ? landlordFName : '&nbsp'} </span>` +
             `</p>` +
             `<p class='out-fourth-row'>` +
-                `<span class='out-first-span'> Kbr. <span style='border-bottom:1px dotted #000;display:inline-block;min-width:50px;'> ${submitterHouseNr ? submitterHouseNr : '&nbsp'} </span></span>` +
+                `<span class='out-first-span'> Kbr. <span style='border-bottom:1px dotted #000;display:inline-block;min-width:50px;'> ${submitterHouseNr ? submitterHouseNr : '&nbsp'} &emsp;</span></span>` +
                 `<span class='out-second-span'> &nbsp </span>` +
-                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLoc ? landlordLoc : '&nbsp &nbsp'} </span>` +
+                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'>&emsp; ${landlordLoc ? landlordLoc : '&nbsp &nbsp'} </span>` +
             `</p>` +
-            `<p class='form-title' contenteditable='false'> Potrošačka prijavnica </p>` +
-            `<p class='form-sub-title' contenteditable='false'> za kućanstva i samce - samice </p>` +
-            `<p class='form-cookies' contenteditable='false'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </p>` +
-            `<p class='form-sub-cookies' contenteditable='false'> Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
+            `<p class='form-title' contenteditable='false'> Potrošačka prijavnica </br>` +
+            `za kućanstva i samce - samice </p>` +
+            `<p class='form-cookies' contenteditable='false'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </br>` +
+            `Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
             // Listed people head
             `<p class='rc-list-head'>` +
-                `<span class='start-span' style='width: 5%;' contenteditable='false'> REDNI BROJ </span>` +
-                `<span class='first-span' contenteditable='false'> PREZIME I IME </span>` +
-                `<span class='second-span' contenteditable='false'> GODINA ROĐENJA </span>` +
-                `<span class='third-span' contenteditable='false'> ODNOS PREMA PODNOSIOCU PRIJAVE ODN: STARJEŠINI </span>` +
-                `<span class='fourth-span' contenteditable='false'> ZANIMANJE </span>` +
-                `<span class='fifth-span' contenteditable='false'> MJESTO RADA </span>` +
+                `<span class='start-span' style='width: 5%;' contenteditable='false'> REDNI BROJ &nbsp</span>` +
+                `<span class='first-span' contenteditable='false'> PREZIME I IME &nbsp</span>` +
+                `<span class='second-span' contenteditable='false'> GODINA ROĐENJA &nbsp</span>` +
+                `<span class='third-span' contenteditable='false'> ODNOS PREMA PODNOSIOCU PRIJAVE ODN. STARJEŠINI &nbsp</span>` +
+                `<span class='fourth-span' contenteditable='false'> ZANIMANJE &nbsp</span>` +
+                `<span class='fifth-span' contenteditable='false'> MJESTO RADA &nbsp</span>` +
             `</p>` +
             `${displayDiv.querySelector('.list-person-single') ? 
                 `<span id='list-placeholder'></span>` 
@@ -1018,41 +1019,41 @@ ready(() => {
                 `</p>` 
             }` +
             // Zalihe
-            `<p class='form-cookies'> Ujedno izjavljujem pod istom odgovornošću, da u mojem kućanstvu postoje slijedeće zalihe životnih namirnica u</p>` +
-            `<p class='form-sub-cookies'> Kilogramima odnosno litrama: </p>` +
+            `<p class='form-cookies'> Ujedno izjavljujem pod istom odgovornošću, da u mojem kućanstvu postoje slijedeće zalihe životnih namirnica u</br>` +
+            `Kilogramima odnosno litrama: </p>` +
 
             `<div id='zalihe-container'>` +
                 `<div id='zalihe-head'>` +
                     `<span style='width:11.6%;height:50px;'>` +
-                        `<span style='width:100%;height:50%;'> PSENICA </span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO </span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO </span>` +
+                        `<span style='width:100%;height:50%;'> PSENICA &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
                     `</span>` +
                     `<span style='width:11.6%;height:50px;'>` +
-                        `<span style='width:100%;height:50%;'> RAZ </span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO </span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO </span>` +
+                        `<span style='width:100%;height:50%;'> RAZ &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
                     `</span>` +
                     `<span style='width:11.6%;height:50px;'>` +
-                        `<span style='width:100%;height:50%;'> JECAM </span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO </span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO </span>` +
+                        `<span style='width:100%;height:50%;'> JECAM &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
                     `</span>` +
                     `<span style='width:17.4%;height:50px;'>` +
-                        `<span style='width:100%;height:50%;'> KUKURUZ </span>` +
-                        `<span style='width:33%;font-size:8px;height:50%;'> ZRNO </span>` +
-                        `<span style='width:34%;font-size:8px;height:50%;'> KLIP </span>` +
-                        `<span style='width:33%;font-size:8px;height:50%;'> BRASNO </span>` +
+                        `<span style='width:100%;height:50%;'> KUKURUZ &nbsp</span>` +
+                        `<span style='width:33%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
+                        `<span style='width:34%;font-size:8px;height:50%;'> KLIP &nbsp</span>` +
+                        `<span style='width:33%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
                     `</span>` +
 
-                    `<span style='width:5.8%;height:50px;'> TJESTENINE </span>` +
-                    `<span style='width:5.8%;height:50px;'> JESTIVO ULJE </span>` +
-                    `<span style='width:5.8%;height:50px;'> MAST </span>` +
-                    `<span style='width:5.8%;height:50px;'> SOL </span>` +
-                    `<span style='width:5.8%;height:50px;'> SECER </span>` +
-                    `<span style='width:5.8%;height:50px;'> KAVA </span>` +
-                    `<span style='width:5.8%;height:50px;'> SAPUN ZA PRANJE </span>` +
-                    `<span style='width:7.2%;height:50px;'> PETROLEJ </span>` +
+                    `<span style='width:5.8%;height:50px;'> TJESTENINE &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;'> JESTIVO ULJE &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;'> MAST &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;'> SOL &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;'> SECER &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;'> KAVA &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;'> SAPUN ZA PRANJE &nbsp</span>` +
+                    `<span style='width:7.2%;height:50px;'> PETROLEJ &nbsp</span>` +
                 `</div>` +
                 `<div id='zalihe-top'>` +
                     `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
