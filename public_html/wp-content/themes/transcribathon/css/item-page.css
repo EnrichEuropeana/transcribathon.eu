@@ -3551,9 +3551,8 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     display: inline-block;
 }
 #kbr {
-    width: 60%;
-    position: absolute;
-    right: 40px;
+    width: 30%;
+    text-align: center;
 }
 #rc-table td {
     display: inline-block;

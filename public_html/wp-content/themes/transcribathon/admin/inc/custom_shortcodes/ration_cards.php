@@ -961,7 +961,7 @@ function _TCT_ration_cards($atts)
                         $editorTab .= "</label>";
                     $editorTab .= "</div>";
 
-                    $editorTab .= "<button disabled class='item-page-save-button language-tooltip' id='transcription-update-button'
+                    $editorTab .= "<button class='item-page-save-button language-tooltip' id='transcription-update-button' style='display:block!important;background:#0a72cc;border-color:#0a72cc;color:#fff;'
                                     onClick='updateItemTranscription(" . $itemData["ItemId"] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                         $editorTab .= "SAVE"; // Save transcription
                         $editorTab .= "<span class='language-tooltip-text'>Please select a language</span>";
