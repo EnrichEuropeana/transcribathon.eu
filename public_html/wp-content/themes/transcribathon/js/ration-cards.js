@@ -59,43 +59,107 @@ function loadRcPerson(itemId, userId) {
         for(let person of topPpl) {
 
             if(person.Description == 'Landlord / Kucevlasnik') {
-                document.querySelector('#landlord-lname').setAttribute('disabled', true);
-                document.querySelector('#landlord-lname').value = person.LastName;
-                document.querySelector('#landlord-lname').style.cssText = `
+                let landLName = document.querySelector('#landlord-lname');
+                let landFName = document.querySelector('#landlord-fname');
+                let landCheckmark = document.querySelector('#landlord-name-check');
+                let landSave = document.querySelector('#save-l-lord');
+                let landDelete = document.querySelector('#delete-l-lord');
+
+                landLName.setAttribute('disabled', true);
+                landLName.value = person.LastName;
+                landLName.style.cssText = `
                     border-left: 1px solid #0a72cc;
                     border-top: 1px solid #0a72cc;
                     border-right: none;
                     border-bottom: 1px solid #0a72cc;
                 `;
-                document.querySelector('#landlord-fname').setAttribute('disabled', true);
-                document.querySelector('#landlord-fname').value = person.FirstName;
-                document.querySelector('#landlord-fname').style.cssText = `
+                landFName.setAttribute('disabled', true);
+                landFName.value = person.FirstName;
+                landFName.style.cssText = `
                     border-top: 1px solid #0a72cc;
                     border-right: 1px solid #0a72cc;
                     border-bottom: 1px solid #0a72cc;
                     border-left: none;
                 `;
-                document.querySelector('#landlord-name-check').style.display = 'block';
+                landCheckmark.style.display = 'block';
+
+                landSave.style.display = 'none';
+                landDelete.style.display = 'block';
+
+                // add delete event listener to delete btn
+                landDelete.addEventListener('click', function() {
+                    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                        'type': 'DELETE',
+                        'url': TP_API_HOST + '/tp-api/persons/' + person.PersonId
+                    }, function(response) {
+                        
+                        landSave.style.display = 'block';
+                        landDelete.style.display = 'none';
+
+                        landFName.value = '';
+                        landFName.style.border = 'none';
+                        landFName.style.borderBottom = '1px dotted #ccc';
+                        landFName.removeAttribute('disabled');
+
+                        landLName.value = '';
+                        landLName.style.border = 'none';
+                        landLName.style.borderBottom = '1px dotted #ccc';
+                        landLName.removeAttribute('disabled');
+
+                        landCheckmark.style.display = 'none';
+                    });
+                })
 
             } else if(person.Description == 'Submitter Podnositelj prijave') {
-                document.querySelector('#submitter-lname').setAttribute('disabled', true);
-                document.querySelector('#submitter-lname').value = person.LastName;
-                document.querySelector('#submitter-lname').style.cssText = `
+                let subLName = document.querySelector('#submitter-lname');
+                let subFName = document.querySelector('#submitter-fname');
+                let subCheckmark = document.querySelector('#submitter-check');
+                let subSave = document.querySelector('#save-submitter');
+                let subDelete = document.querySelector('#delete-submitter');
+
+                subLName.setAttribute('disabled', true);
+                subLName.value = person.LastName;
+                subLName.style.cssText = `
                     border-top: 1px solid #0a72cc;
                     border-right: none;
                     border-bottom: 1px solid #0a72cc;
                     border-left: 1px solid #0a72cc;
                 `;
-                document.querySelector('#submitter-fname').setAttribute('disabled', true);
-                document.querySelector('#submitter-fname').value = person.FirstName; 
-                document.querySelector('#submitter-fname').style.cssText = `
+                subFName.setAttribute('disabled', true);
+                subFName.value = person.FirstName; 
+                subFName.style.cssText = `
                     border-top: 1px solid #0a72cc;
                     border-right: 1px solid #0a72cc;
                     border-bottom: 1px solid #0a72cc;
                     border-left: none;
                 `;
-                document.querySelector('#submitter-check').style.display = 'block';
+                subCheckmark.style.display = 'block';
 
+                subSave.style.display = 'none';
+                subDelete.style.display = 'block';
+
+                subDelete.addEventListener('click', function() {
+                    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                        'type': 'DELETE',
+                        'url': TP_API_HOST + '/tp-api/persons/' + person.PersonId
+                    }, function(response) {
+                        
+                        subSave.style.display = 'block';
+                        subDelete.style.display = 'none';
+
+                        subFName.value = '';
+                        subFName.style.border = 'none';
+                        subFName.style.borderBottom = '1px dotted #ccc';
+                        subFName.removeAttribute('disabled');
+
+                        subLName.value = '';
+                        subLName.style.border = 'none';
+                        subLName.style.borderBottom = '1px dotted #ccc';
+                        subLName.removeAttribute('disabled');
+
+                        subCheckmark.style.display = 'none';
+                    });
+                })
             }
 
         }
@@ -130,8 +194,11 @@ function loadRcPerson(itemId, userId) {
     
         if(prirastPpl.length > 0) {
 
-            document.querySelector('#prirast-container').style.display = 'block';
-            document.querySelector('#prirast-btn').style.display = 'none';
+            let prirastContainer = document.querySelector('#prirast-container');
+            let prirastBtn = document.querySelector('#prirast-btn');
+
+            prirastContainer.style.display = 'block';
+            prirastBtn.style.display = 'none';
 
             let prirastIndex = 0;
             for(let prirast of prirastPpl) {
@@ -163,8 +230,11 @@ function loadRcPerson(itemId, userId) {
 
         if(odpadPpl.length > 0) {
 
-            document.querySelector('#odpad-container').style.display = 'block';
-            document.querySelector('#odpad-btn').style.display = 'none';
+            let odpadContainer = document.querySelector('#odpad-container');
+            let odpadBtn = document.querySelector('#odpad-btn');
+
+            odpadContainer.style.display = 'block';
+            odpadBtn.style.display = 'none';
 
             let odpadIndex = 0;
             for(let odpad of odpadPpl) {
