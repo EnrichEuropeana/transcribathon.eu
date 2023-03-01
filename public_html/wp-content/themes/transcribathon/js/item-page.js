@@ -1337,14 +1337,14 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
 function savePerson(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-person-spinner-container').css('display', 'block')
 
-    firstName = escapeHtml(jQuery('#person-firstName-input').val());
-    lastName = escapeHtml(jQuery('#person-lastName-input').val());
-    birthPlace = escapeHtml(jQuery('#person-birthPlace-input').val());
-    birthDate = escapeHtml(jQuery('#person-birthDate-input').val().split('/'));
-    deathPlace = escapeHtml(jQuery('#person-deathPlace-input').val());
-    deathDate = escapeHtml(jQuery('#person-deathDate-input').val().split('/'));
-    description = escapeHtml(jQuery('#person-description-input-field').val());
-    link = escapeHtml(jQuery('#person-wiki-input-field').val());
+    firstName = jQuery('#person-firstName-input').val();
+    lastName = jQuery('#person-lastName-input').val();
+    birthPlace = jQuery('#person-birthPlace-input').val();
+    birthDate = jQuery('#person-birthDate-input').val().split('/');
+    deathPlace = jQuery('#person-deathPlace-input').val();
+    deathDate = jQuery('#person-deathDate-input').val().split('/');
+    description = jQuery('#person-description-input-field').val();
+    link = jQuery('#person-wiki-input-field').val();
 
     if (firstName == "" && lastName == "") {
         return 0;
@@ -1676,7 +1676,7 @@ function loadPersonData(itemId, userId) {
                         `<div class='single-person'>` +
                             `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
                             `<p class='person-data'>` +
-                                `${person['FirstName'] ? escapeHtml(person['FirstName']) : ''} ${person['LastName'] ? escapeHtml(person['LastName']) : ''}` +
+                                `${person['FirstName'] ? htmlDecode(person['FirstName']) : ''} ${person['LastName'] ? htmlDecode(person['LastName']) : ''}` +
                                 // Sorry for this one, but it looks like best solution for now xD
                                 `${(person['BirthDate']) && (person['DeathDate']) ?
                                     ` (${person['BirthDate']}${isItString(person['BirthPlace'], 2)} - ${person['DeathDate']}${isItString(person['DeathPlace'], 2)})`
@@ -1693,7 +1693,7 @@ function loadPersonData(itemId, userId) {
                                 }` +
                             `</p>` +
                             `${person['Description'] ?
-                                `<p class='person-description'>Description: ${escapeHtml(person['Description'])}</p>`
+                                `<p class='person-description'>Description: ${htmlDecode(person['Description'])}</p>`
                                 :
                                 ``
                             }` +
@@ -2330,6 +2330,9 @@ async function showActiveTranscription(itemId) {
     return source;
 }
 
+function htmlDecode(value) {
+    return jQuery("<textarea/>").html(value).text();
+}
 
 
 // Declaration of replacement for jQuery document.ready, it runs the check if DOM has loaded until it loads
