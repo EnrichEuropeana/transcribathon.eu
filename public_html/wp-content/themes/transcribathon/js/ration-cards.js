@@ -8,6 +8,51 @@ function escapeRcHtml(html){
 
     return p.innerHTML;
 }
+function updateRcPerson(itemId, userId, firstName, lastName, description, spinner, personId) {
+
+    jQuery('#' + spinner + '-spinner').css('display', 'block');
+
+    birthDate = document.querySelector('#rc-bdate').value != '' ? document.querySelector('#rc-bdate').value + '-01-01' : '';
+    // Prepare data and send API request
+    let birthPlace = '';
+    let deathPlace = '';
+    let link = '';
+
+    if (firstName == "" && lastName == "") {
+        return 0;
+    }
+
+    data = {
+        FirstName: firstName,
+        LastName: lastName,
+        BirthPlace: birthPlace,
+        DeathPlace: deathPlace,
+        Link: link,
+        Description: description,
+        ItemId: itemId,
+        BirthDate: birthDate
+    }
+    data['DeathDate'] = null;
+  
+    for (var key in data) {
+        if (data[key] == "") {
+          data[key] = null;
+        }
+    }
+  
+    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+        'type': 'POST',
+        'url': TP_API_HOST + '/tp-api/persons/' + personId,
+        'data': data
+    },
+      // Check success and create confirmation message
+      function(response) {
+        
+        loadRcPerson(itemId, userId);
+
+        jQuery('#' + spinner + '-spinner').css('display', 'none');
+      });
+}
 function deleteRcPerson(personId, itemId, userId) {
 
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
@@ -125,6 +170,10 @@ function loadRcPerson(itemId, userId) {
                     border-bottom: 1px solid #0a72cc;
                     border-left: 1px solid #0a72cc;
                 `;
+                // add person ID to the last name input, we need it for updating submitter
+                subLName.setAttribute('person-id', person.PersonId);
+
+
                 subFName.setAttribute('disabled', true);
                 subFName.value = person.FirstName; 
                 subFName.style.cssText = `
@@ -167,14 +216,77 @@ function loadRcPerson(itemId, userId) {
         for(let listPerson of listPpl) {
             listIndex += 1;
             let listPersonDescription = listPerson.Description.split('-');
+            let lastSpan = `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='deleteRcPerson(${listPerson.PersonId}, ${itemId}, ${userId});'></i></span>`;
 
             let listPersonBirthYear = '&nbsp';
             if(listPerson.BirthDate && listPerson.BirthDate.includes('-01-01')) {
                 let listPersonBirthArr = listPerson.BirthDate.split('-');
                 listPersonBirthYear = listPersonBirthArr[0];
             }
+            if(listPerson.Description && listPerson.Description.includes('(Submitter)')) {
 
-            console.log(listPersonBirthYear);
+                let subLName = document.querySelector('#submitter-lname');
+                let subFName = document.querySelector('#submitter-fname');
+                let subCheckmark = document.querySelector('#submitter-check');
+                let subSave = document.querySelector('#save-submitter');
+                let subDelete = document.querySelector('#delete-submitter');
+
+                // Change 'delete' icon function, so it just updates submitter description and removes him from list
+
+                let submitterDescription = 'Submitter Podnositelj prijave';
+                
+                //
+                lastSpan = `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='updateRcPerson(${itemId}, ${userId}, "${listPerson.FirstName}", "${listPerson.LastName}", "${submitterDescription}", "listed-person", ${listPerson.PersonId});'></i></span>`;
+
+                subLName.setAttribute('disabled', true);
+                subLName.value = listPerson.LastName;
+                subLName.style.cssText = `
+                    border-top: 1px solid #0a72cc;
+                    border-right: none;
+                    border-bottom: 1px solid #0a72cc;
+                    border-left: 1px solid #0a72cc;
+                `;
+                // add person ID to the last name input, we need it for updating submitter
+                subLName.setAttribute('person-id', listPerson.PersonId);
+
+
+                subFName.setAttribute('disabled', true);
+                subFName.value = listPerson.FirstName; 
+                subFName.style.cssText = `
+                    border-top: 1px solid #0a72cc;
+                    border-right: 1px solid #0a72cc;
+                    border-bottom: 1px solid #0a72cc;
+                    border-left: none;
+                `;
+                subCheckmark.style.display = 'block';
+
+                subSave.style.display = 'none';
+                subDelete.style.display = 'block';
+
+                subDelete.addEventListener('click', function() {
+                    jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                        'type': 'DELETE',
+                        'url': TP_API_HOST + '/tp-api/persons/' + listPerson.PersonId
+                    }, function(response) {
+                        
+                        subSave.style.display = 'block';
+                        subDelete.style.display = 'none';
+
+                        subFName.value = '';
+                        subFName.style.border = 'none';
+                        subFName.style.borderBottom = '1px dotted #ccc';
+                        subFName.removeAttribute('disabled');
+
+                        subLName.value = '';
+                        subLName.style.border = 'none';
+                        subLName.style.borderBottom = '1px dotted #ccc';
+                        subLName.removeAttribute('disabled');
+
+                        subCheckmark.style.display = 'none';
+                    });
+                })
+            }
+
             let newListPerson = document.createElement('div');
             newListPerson.classList = 'list-person-single';
 
@@ -185,9 +297,10 @@ function loadRcPerson(itemId, userId) {
                 `<span class='third-span'>${listPersonDescription[0] ? listPersonDescription[0] : '&nbsp'} &nbsp</span>` +
                 `<span class='fourth-span'>${listPersonDescription[1] ? listPersonDescription[1] : '&nbsp'} &nbsp</span>` +
                 `<span class='fifth-span'>${listPersonDescription[2] ? listPersonDescription[2] : '&nbsp'} &nbsp</span>` +
-                `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='deleteRcPerson(${listPerson.PersonId}, ${itemId}, ${userId});'></i></span>`;
+                lastSpan;
 
             pplListContainer.appendChild(newListPerson);
+
         }
 
         document.querySelector('#redni-broj-start').textContent = (listPpl.length + 1) + ' ';
@@ -468,9 +581,6 @@ function saveRcDate() {
 // Person Type argument is just to make difference between listed people and other people on ration cards, regular by default
 function saveRcPerson(itemId, userId, firstName, lastName, description, spinner, personType = 'regular') {
 
-    let itemIde = parseInt(document.querySelector('#rc-item-id').textContent);
-    let userIde = parseInt(document.querySelector('#rc-user-id').textContent);
-
     jQuery('#' + spinner + '-spinner').css('display', 'block');
 
 
@@ -503,7 +613,7 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
             DeathPlace: deathPlace,
             Link: link,
             Description: description,
-            ItemId: itemIde,
+            ItemId: itemId,
             BirthDate: birthDate
         }
 
@@ -524,7 +634,7 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
     var dataString= JSON.stringify(data);
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'GET',
-        'url': TP_API_HOST + '/tp-api/items/' + itemIde
+        'url': TP_API_HOST + '/tp-api/items/' + itemId
     },
     function(response) {
         // console.log(response);
@@ -539,8 +649,8 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
         function(response) {
 
             scoreData = {
-                ItemId: itemIde,
-                UserId: userIde,
+                ItemId: itemId,
+                UserId: userId,
                 ScoreType: "Enrichment",
                 Amount: 1
             }
@@ -559,7 +669,7 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
 
             //loadPersonData(itemIde, userIde);
             if (taggingCompletion == "Not Started") {
-                changeStatus(itemIde, "Not Started", "Edit", "TaggingStatusId", 2, "#fff700", 4)
+                changeStatus(itemId, "Not Started", "Edit", "TaggingStatusId", 2, "#fff700", 4)
             }
         });
     });
@@ -885,9 +995,13 @@ ready(() => {
             let firstName = document.querySelector('#lst-p-fname').value;
             let lastName = document.querySelector('#lst-p-lname').value;
 
-            console.log(description);
-    
-            saveRcPerson(itemId, userId, firstName, lastName, description, 'listed-person', 'rc-list');
+            if(firstName == document.querySelector('#submitter-fname').value && lastName == document.querySelector('#submitter-lname').value) {
+                let personId = document.querySelector('#submitter-lname').getAttribute('person-id');
+                let submitterDescription = description + ' - (Submitter)';
+                updateRcPerson(itemId, userId, firstName, lastName, submitterDescription, 'listed-person', personId);
+            } else {
+                saveRcPerson(itemId, userId, firstName, lastName, description, 'listed-person', 'rc-list');
+            }
     
             document.querySelector('#rc-list-form').reset();
         })
