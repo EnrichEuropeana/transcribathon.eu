@@ -215,7 +215,7 @@ function loadRcPerson(itemId, userId) {
                 newPrirast.classList = 'list-person-single';
     
                 newPrirast.innerHTML =
-                    `<span class='start-span'> ${prirastIndex} &nbsp</span>` +
+                    `<span class='start-span'>&nbsp ${prirastIndex} &nbsp</span>` +
                     `<span class='first-span'> ${prirast.LastName} ${prirast.FirstName} &nbsp</span>` +
                     `<span class='second-span'> ${prirastPersonBirthYear} &nbsp</span>` +
                     `<span class='third-span'> ${prirastPersonDescription[0] ? prirastPersonDescription[0] : '&nbsp'} &nbsp</span>` +
@@ -225,7 +225,7 @@ function loadRcPerson(itemId, userId) {
                 
                 pplPrirastContainer.appendChild(newPrirast);
             }
-            document.querySelector('#prirast-redni-broj').textContent = prirastPpl.length + 1;
+            document.querySelector('#prirast-redni-broj').textContent = (prirastPpl.length + 1) + ' ';
         }
 
         if(odpadPpl.length > 0) {
@@ -251,7 +251,7 @@ function loadRcPerson(itemId, userId) {
                 newOdpad.classList = 'list-person-single';
     
                 newOdpad.innerHTML =
-                    `<span class='start-span'> ${odpadIndex} &nbsp</span>` +
+                    `<span class='start-span'>&nbsp ${odpadIndex} &nbsp</span>` +
                     `<span class='first-span'> ${odpad.LastName} ${odpad.FirstName} &nbsp</span>` +
                     `<span class='second-span'> ${odpadPersonBirthYear} &nbsp</span>` +
                     `<span class='third-span'> ${odpadPersonDescription[0] ? odpadPersonDescription[0] : '&nbsp'} &nbsp</span>` +
@@ -261,7 +261,7 @@ function loadRcPerson(itemId, userId) {
                 
                 pplOdpadContainer.appendChild(newOdpad);
             }
-            document.querySelector('#odpad-redni-broj').textContent = odpadPpl.length + 1;
+            document.querySelector('#odpad-redni-broj').textContent = (odpadPpl.length + 1) + ' ';
         }
         // console.log(topPpl);
         // console.log(listPpl);
