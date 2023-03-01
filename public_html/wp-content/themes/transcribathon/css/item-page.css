@@ -3868,10 +3868,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     font-size: 12px;
     margin: 0!important;
 }
-.out-first-row .out-first-span, .out-first-row .out-second-span,
-.out-first-row .out-third-span, .out-second-row .out-second-span,
-.out-second-subrow .out-third-span, .out-third-row .out-first-span,
-.out-fourth-row .out-first-span {
+.out-first-row .out-first-span {
     font-weight: 600;
 }
 .out-first-row .out-third-span, .out-second-subrow .out-third-span {

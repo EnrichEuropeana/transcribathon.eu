@@ -2176,7 +2176,10 @@ function _TCT_ration_cards($atts)
                                         $content .= "</div>";
                                     $content .= "</td>";
 
-                                    $content .= "<td class='btn-col'><i id='save-submitter' class='fas fa-save'></i></td>";
+                                    $content .= "<td class='btn-col'>";
+                                        $content .= "<i id='save-submitter' class='fas fa-save'></i>";
+                                        $content .= "<i id='delete-submitter' class='fas fa-trash-alt' style='display:none;'></i>";
+                                    $content .= "</td>";
 
                                 $content .= "</tr>";
 
@@ -2212,6 +2215,7 @@ function _TCT_ration_cards($atts)
 
                                     $content .= "<td class='btn-col'>";
                                         $content .= "<i id='save-l-lord' class='fas fa-save'></i>";
+                                        $content .= "<i id='delete-l-lord' class='fas fa-trash-alt' style='display:none;'></i>";
                                     $content .= "</td>";
 
                                 $content .= "</tr>";

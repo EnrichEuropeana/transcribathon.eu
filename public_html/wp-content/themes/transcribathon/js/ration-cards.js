@@ -1061,6 +1061,29 @@ ready(() => {
                 document.querySelector('#transcription-language-selector div[value="Hrvatski (Croatian)"]').click();
             }
 
+            // Generate Description if Form number is entered and save it
+            if(formNumber != '') {
+                let itemDescription = `Potrošačka kartica prezimena ${submitterLName} , Registracijski Broj kartice: ${formNumber}.`
+
+                data = {
+                    Description: itemDescription
+                }
+
+                
+                updateDataProperty('items', itemId, 'DescriptionLanguage', '12');
+                
+
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'url': TP_API_HOST + '/tp-api/items/' + itemId,
+                    'data': data
+                },
+                // Check success and create confirmation message
+                function(response) {
+                    console.log(response);
+                });
+            }
+
     })
 
     // Add Prirast/Odpad tables on button click
