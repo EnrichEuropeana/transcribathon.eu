@@ -2887,6 +2887,10 @@ ready(() => {
                                     `<div class="enrich-body-right">` +
                                         `<div class="slider-track" ><div class="slider-slider"></div></div>` +
                                     `</div>`;
+                            if(itm.body.type == 'Place') {
+                                singlEnrich.setAttribute('lat', itm.body.lat);
+                                singlEnrich.setAttribute('long', itm.body.long);
+                            }
 
                                 singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
                                     // document.querySelector('.single-annotation-' + itmNr).classList.toggle('accept');
@@ -2992,36 +2996,50 @@ ready(() => {
     // Submit Location Enrichments
     const locSubmit = document.querySelector('#accept-loc-enrich');
     if(locSubmit) {
+        const userId = parseInt(document.querySelector('#missing-info').textContent);
         //const enrichLocArr = [];
         locSubmit.addEventListener('click', function() {
             let acceptedEnrich = document.querySelector('#loc-auto-enrich').querySelectorAll('.accept');
             for(let enrichment of acceptedEnrich) {
-                console.log(enrichment);
-                let singlEnrichment = {
-                    'Name': enrichment.querySelector('.enrich-label').textContent,
-                    'Type': enrichment.querySelector('.ann-type').textContent,
-                    'WikiData': enrichment.querySelector('.ann-id').textContent,
-                    'StoryId': null,
-                    'ItemId': itemId,
-                    'ExternalAnnotationId': enrichment.querySelector('.ext-id').textContent
+
+                // Store data into variables
+                let locationName = enrichment.querySelector('.enrich-label').textContent;
+                let latitude = (enrichment.getAttribute('lat')).toString();
+                let longitude = (enrichment.getAttribute('long')).toString();
+                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' - Automatically Generated.';
+                let wikidata = (enrichment.querySelector('.enrich-wiki a').getAttribute('href')).split('/');
+                let wikidataId = wikidata.pop();
+                // Convert lat/long to float number
+                latitude = parseFloat(latitude);
+                longitude = parseFloat(longitude);
+            
+                // Save it also to the 'Place' table
+                let data = {
+                    Name: locationName,
+                    Latitude: latitude,
+                    Longitude: longitude,
+                    ItemId: itemId,
+                    Link: "",
+                    Zoom: 10,
+                    Comment: description,
+                    WikidataName: locationName,
+                    WikidataId: wikidataId,
+                    UserId: userId,
+                    UserGenerated: 0
                 }
+
+                console.log(data);
 
                 jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                     'type': 'POST',
-                    'data': singlEnrichment,
-                    'url': 'http://tp_api_v2/v2/autoenrichments',
-                    'token': 'yes'
-                  },
-                  function(response) {
-                    console.log(response);
-                    // var response = JSON.parse(response);
-                    // console.log(response);
-              
-                  });
+                    'url': TP_API_HOST + '/tp-api/places',
+                    'data': data
+                },function(response) {
+                    //console.log(response);
+                });
 
-                //enrichLocArr.push(singlEnrichment);
+                //console.log(data);
             }
-            //   });
         })
     }
     // Submit Ppl Enrichments
