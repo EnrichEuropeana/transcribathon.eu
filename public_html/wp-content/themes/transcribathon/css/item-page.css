@@ -3430,11 +3430,19 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     position: relative;
     bottom: 5px;
 }
+.enrich-view .enrich-description {
+    font-size: 13px;
+    margin: 0!important;
+    padding-left: 25px;
+    position: relative;
+}
 .enrich-view .auto-delete {
-    top: 5px!important;
+    top: 3px!important;
 }
 .enrich-view {
     position: relative;
+    line-height: 1.1em;
+    margin-bottom: 10px;
 }
 .enrich-view .left-i {
     color: var(--main-color);

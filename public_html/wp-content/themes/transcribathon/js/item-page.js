@@ -2793,6 +2793,7 @@ ready(() => {
                     const autoEnrichmentsResponse = JSON.parse(response);
                     const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
                     let enrichNr = 1;
+                    
                     for(let itm of autoEnrichments.items) {
                         let wikiDataArr = itm.body.id.split('/');
                         let wikiId = wikiDataArr.pop();
@@ -2810,8 +2811,8 @@ ready(() => {
                                     `<p>` +
                                         singlIcon +
                                         `<span class="enrich-label">${itm.body.prefLabel.en} </span>` +
-                                        ` - WikiID: ` +
-                                        `<span class="enrich-wiki"> ${wikiId} </span>` +
+                                        ` - ` +
+                                        `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'>Wikidata ID: ${wikiId} </a></span>` +
                                     `</p>` +
                                     `<p class='auto-description'>Description: ${itm.body.description} </p>` +
                                 `</div>` +
@@ -3082,6 +3083,11 @@ ready(() => {
         storySubmit.addEventListener('click', function() {
             let acceptedEnrich = document.querySelector('#auto-enrich-story').querySelectorAll('.accept');
             for(let enrichment of acceptedEnrich) {
+
+                let description = null;
+                if(enrichment.querySelector('.auto-description') && enrichment.querySelector('.auto-description').textContent != 'Description: ') {
+                    description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
+                }
                 console.log(enrichment);
                 let singlEnrichment = {
                     Name: enrichment.querySelector('.enrich-label').textContent,
@@ -3089,7 +3095,8 @@ ready(() => {
                     WikiData: enrichment.querySelector('.ann-id').textContent,
                     StoryId: stryId,
                     ItemId: null,
-                    ExternalAnnotationId: enrichment.querySelector('.ext-id').textContent
+                    ExternalAnnotationId: enrichment.querySelector('.ext-id').textContent,
+                    Comment: description
                 }
                 
                 jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {

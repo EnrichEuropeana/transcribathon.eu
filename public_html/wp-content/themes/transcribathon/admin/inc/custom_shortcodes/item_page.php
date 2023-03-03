@@ -2107,7 +2107,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<p class='auto-h'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
                         foreach($storyAutoE['data'] as $enrichment) {
-                            var_dump($enrichment);
+                            //var_dump($enrichment);
                             $wikiIdArr = explode('/', $enrichment['WikiData']);
                             $wikiId = array_pop($wikiIdArr);
                             $content .= "<div class='enrich-view'>";
@@ -2115,6 +2115,9 @@ if (event.target.id != "tagging-status-indicator") {
                                     $content .= $enrichment['Type'] == 'Place' ? "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>" : "<i class='fas fa-user left-i'></i>";
                                     $content .= "<span class='enrich-label'>" . $enrichment['Name'] . "</span>";
                                 $content .= "</p>";
+                                if($enrichment['Comment'] != 'NULL') {
+                                    $content .= "<p class='enrich-description'>Description: " . $enrichment['Comment'] . "</p>";
+                                }
                                 $content .= "<p class='enrich-wiki'> Wikidata Reference: <a href='" . $enrichment['WikiData'] . "' target='_blank'>" . $wikiId . "</a></p>";
                                 $content .= "<i class='fas fa-trash-alt auto-delete' onClick='deleteAutoEnrichment(".$enrichment['AutoEnrichmentId'].",event)'></i>";
                             $content .= "</div>";
