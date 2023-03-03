@@ -2843,6 +2843,8 @@ ready(() => {
     const url_string = window.location.href;
     const url = new URL(url_string);
     const itemId = parseInt(url.searchParams.get('item'));
+    const userId = parseInt(document.querySelector('#missing-info').textContent);
+
     let autoProp = 'transcription';
     if(autoEnrichBtn) {
 
@@ -2861,124 +2863,105 @@ ready(() => {
                     if(autoEnrichments.items) {
                         let itmNr = 1;
                         for(let itm of autoEnrichments.items) {
-                            
-                            let wikiDataArr = itm.body.id.split('/');
-                            let wikiId = wikiDataArr.pop();
-                            let singlIcon = itm.body.type == 'Person' ? 
-                                '<i class="fas fa-user enrich-icon"></i>' : `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
-                            console.log(itm);
-                            let singlEnrich = document.createElement('div');
-                            singlEnrich.classList.add('single-annotation-' + itmNr);
-                            singlEnrich.innerHTML = 
-                                    `<p class="type-n-id" style="display:none;">` +
-                                        `<span class="ann-type">${itm.body.type}</span>` +
-                                        `<span class="ext-id">${itm.id}</span>` +
-                                        `<span class="ann-id">${itm.body.id}</span>` +
-                                    `</p>` +
-                                    `<div class="enrich-body-left">` +
-                                        `<p>` +
-                                            singlIcon +
-                                            `<span class="enrich-label">${itm.body.prefLabel.en}</span>` +
-                                            ` - ` +
-                                            `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'> Wikidata ID: ${wikiId} </a></span>` +
-                                        `</p>` +
-                                        `<p class='auto-description'>Description: ${itm.body.description} </p>` +
-                                    `</div>` +
-                                    `<div class="enrich-body-right">` +
-                                        `<div class="slider-track" ><div class="slider-slider"></div></div>` +
-                                    `</div>`;
+
+                            //// refactor this part
                             if(itm.body.type == 'Place') {
+
+                                let wikiDataArr = itm.body.id.split('/');
+                                let wikiId = wikiDataArr.pop();
+                                let singlIcon = `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
+                                
+                                let singlEnrich = document.createElement('div');
+                                singlEnrich.classList.add('single-annotation-' + itmNr);
+                                singlEnrich.innerHTML = 
+                                        `<p class="type-n-id" style="display:none;">` +
+                                            `<span class="ann-type">${itm.body.type}</span>` +
+                                            `<span class="ext-id">${itm.id}</span>` +
+                                            `<span class="ann-id">${itm.body.id}</span>` +
+                                        `</p>` +
+                                        `<div class="enrich-body-left">` +
+                                            `<p>` +
+                                                singlIcon +
+                                                `<span class="enrich-label">${itm.body.prefLabel.en}</span>` +
+                                                ` - ` +
+                                                `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'> Wikidata ID: ${wikiId} </a></span>` +
+                                            `</p>` +
+                                            `<p class='auto-description'>Description: ${itm.body.description ? itm.body.description : ''} </p>` +
+                                        `</div>` +
+                                        `<div class="enrich-body-right">` +
+                                            `<div class="slider-track" ><div class="slider-slider"></div></div>` +
+                                        `</div>`;
+
                                 singlEnrich.setAttribute('lat', itm.body.lat);
                                 singlEnrich.setAttribute('long', itm.body.long);
-                            }
 
                                 singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
                                     // document.querySelector('.single-annotation-' + itmNr).classList.toggle('accept');
                                     singlEnrich.classList.toggle('accept');
 
-                                    if(itm.body.type == 'Person' && singlEnrich.classList.contains('accept')) {
-                                        // let firstLastName = itm.body.prefLabel.en.split(' ');
-                                        // let lastName = firstLastName.pop();
-                                        // let firstName = firstLastName.join(' ');
-                                        console.log('save me');
-
-                                        // let newPerson = {
-                                        //     FirstName: firstName,
-                                        //     LastName: lastName,
-                                        //     BirthPlace: null,
-                                        //     DeathPlace: null,
-                                        //     Link: wikiId,
-                                        //     Description: itm.body.description,
-                                        //     ItemId: itemId
-                                        // }
-
-                                        // jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                                        //     'type': 'POST',
-                                        //     'url': TP_API_HOST + '/tp-api/persons',
-                                        //     'data': data
-                                        // }, function(response) {
-
-                                        // });
-                                    } else if (itm.body.type == 'Person' && !singlEnrich.classList.contains('accept')) {
-                                        console.log('Don\'t save');
-                                    }
-
-                                    // jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                                    //     'type': 'POST',
-                                    //     'data': singlEnrichment,
-                                    //     'url': 'http://tp_api_v2/v2/autoenrichments',
-                                    //     'token': 'yes'
-                                    //   },
-                                    //   function(response) {
-                                    //     console.log(response);
-                                    //     // var response = JSON.parse(response);
-                                    //     // console.log(response);
-                                  
-                                    //  });
                                 });
                                 singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
                                     event.stopPropagation();
                                     this.parentElement.click();
                                 });
 
-                                // singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
-
-                                //     let enrichArr = [];
-                                //     data = {
-                                //         Name: itm.body.prefLabel.en,
-                                //         Type: itm.body.type,
-                                //         WikiData: itm.body.id,
-                                //         ItemId: itemId,
-                                //         ExternalId: itm.id
-                                //     }
-                                //     data = {
-                                //         'Enrichments': enrichArr
-                                //     }
-
-                                    // jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                                    //     'type': 'POST',
-                                    //     'data': data,
-                                    //     'url': 'http://tp_api_v2/v2/autoenrichments',
-                                    //     'token': 'HQadnqNt27Fx7xz5I92iJPAHxO7MuelorJzIMpFyP3MYaot4Mx246Eq49KRV'
-                                    //   },
-                                    //   function(response) {
-                                    //     console.log(response);
-                                    //     // var response = JSON.parse(response);
-                                    //     // console.log(response);
-                                  
-                                    //   });
-                                // });
-                            
-                            if(itm.body.type == 'Place') {
                                 autoLocCont.appendChild(singlEnrich);
+
                             } else if (itm.body.type == 'Person') {
-                                autoPplCont.appendChild(singlEnrich);
+
+                                let firstName = itm.body.prefLabel.en;
+                                let lastName = itm.body.familyName;
+                                // Remove last name from label
+                                if(firstName.includes(lastName)) {
+                                    firstName = firstName.replace(` ${lastName}`, '');
+                                }
+
+                                let wikiDataArr = itm.body.id.split('/');
+                                let wikiId = wikiDataArr.pop();
+                                let singlIcon = '<i class="fas fa-user enrich-icon"></i>';
+                                
+                                let singlEnrich = document.createElement('div');
+                                singlEnrich.classList.add('single-annotation-' + itmNr);
+                                singlEnrich.innerHTML = 
+                                        `<p class="type-n-id" style="display:none;">` +
+                                            `<span class="ann-type">${itm.body.type}</span>` +
+                                            `<span class="ext-id">${itm.id}</span>` +
+                                            `<span class="ann-id">${itm.body.id}</span>` +
+                                        `</p>` +
+                                        `<div class="enrich-body-left">` +
+                                            `<p>` +
+                                                singlIcon +
+                                                `<span class="enrich-label"><span class='firstName'>${firstName}</span>  <span class='lastName'>${lastName ? lastName : ''}</span></span>` +
+                                                ` - ` +
+                                                `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'> Wikidata ID: <span class='wikiId'>${wikiId}</span></a></span>` +
+                                            `</p>` +
+                                            `<p class='auto-description'>Description: ${itm.body.description ? itm.body.description : ''} (AI generated)</p>` +
+                                        `</div>` +
+                                        `<div class="enrich-body-right">` +
+                                            `<div class="slider-track" ><div class="slider-slider"></div></div>` +
+                                        `</div>`;
+    
+    
+                                    singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
+                                        // document.querySelector('.single-annotation-' + itmNr).classList.toggle('accept');
+                                        singlEnrich.classList.toggle('accept');
+    
+                                    });
+                                    singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
+                                        event.stopPropagation();
+                                        this.parentElement.click();
+                                    });
+
+                                    autoPplCont.appendChild(singlEnrich);
+    
                             }
+                            
                             itmNr += 1;
                         }
                     } else if (autoEnrichments.info) {
                         alert(autoEnrichments.info);
                     }
+                    // Show saving Button if there is something to save
                     document.querySelector('#auto-itm-spinner-container').style.display = 'none';
                     if(autoLocCont.querySelector('div') != null) {
                         document.querySelector('#loc-verify').style.display = 'block';
@@ -2996,7 +2979,7 @@ ready(() => {
     // Submit Location Enrichments
     const locSubmit = document.querySelector('#accept-loc-enrich');
     if(locSubmit) {
-        const userId = parseInt(document.querySelector('#missing-info').textContent);
+
         //const enrichLocArr = [];
         locSubmit.addEventListener('click', function() {
             let acceptedEnrich = document.querySelector('#loc-auto-enrich').querySelectorAll('.accept');
@@ -3049,28 +3032,45 @@ ready(() => {
         pplSubmit.addEventListener('click', function() {
             let acceptedEnrich = document.querySelector('#ppl-auto-enrich').querySelectorAll('.accept');
             for(let enrichment of acceptedEnrich) {
+                ///
                 console.log(enrichment);
-                let singlEnrichment = {
-                    Name: enrichment.querySelector('.enrich-label').textContent,
-                    Type: enrichment.querySelector('.ann-type').textContent,
-                    WikiData: enrichment.querySelector('.ann-id').textContent,
-                    StoryId: null,
+                // Store data into variables
+                let firstName = enrichment.querySelector('.firstName').textContent;
+                let lastName = enrichment.querySelector('.lastName').textContent;
+                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
+                let link = enrichment.querySelector('.wikiId').textContent;
+                ///
+
+                data = {
+                    FirstName: firstName,
+                    LastName: lastName,
+                    BirthPlace: null,
+                    DeathPlace: null,
+                    Link: link,
+                    Description: description,
                     ItemId: itemId,
-                    ExternalAnnotationId: enrichment.querySelector('.ext-id').textContent
+                    BirthDate: null,
+                    DeathDate: null
                 }
-                
+
+                for (var key in data) {
+                    if (data[key] == "") {
+                        data[key] = null;
+                    }
+                }
+
                 jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                     'type': 'POST',
-                    'data': singlEnrichment,
-                    'url': 'http://tp_api_v2/v2/autoenrichments',
-                    'token': 'yes'
-                  },
-                  function(response) {
+                    'url': TP_API_HOST + '/tp-api/persons',
+                    'data': data
+                },
+                // Check success and create confirmation message
+                function(response) {
                     console.log(response);
-                    // var response = JSON.parse(response);
-                    // console.log(response);
-              
-                  });
+                });
+
+                console.log(data);
+
             }
 
         })

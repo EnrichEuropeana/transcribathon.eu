@@ -462,7 +462,7 @@ h6.enrich-headers {
 .person-data {
     margin: 0!important;
     border-bottom: 1px solid var(--bg-main-color);
-    height: 27px;
+    height: 24px;
     padding-right: 60px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -3348,14 +3348,13 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .slider-track {
     width: 40px;
     height: 20px;
-    background-color: #b1b1b3;
+    background-color: #ebe8e8;
     position: relative;
-    right: 10px;
     border-radius: 15px;
     top: 9px;
 }
 .slider-slider {
-    background-color: #6d6d6e;
+    background-color: #cfcfcf;
     width: 20px;
     height: 20px;
     float: left;
