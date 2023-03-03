@@ -462,7 +462,7 @@ h6.enrich-headers {
 .person-data {
     margin: 0!important;
     border-bottom: 1px solid var(--bg-main-color);
-    height: 24px;
+    height: auto;
     padding-right: 60px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -470,8 +470,7 @@ h6.enrich-headers {
 }
 .person-data:hover:not(.top-person-single .person-data) {
     overflow: visible;
-    height: auto;
-    min-height: 27px;
+    height: unset;
     white-space: normal;
 }
 .edit-del-person {
@@ -1432,13 +1431,16 @@ p.mb-1 {
     height: auto;
 }
 .panel-right .view-switcher {
-    float: right;
+    position: absolute;
+    right: 0;
+    top: 13px;
 }
 .switch-list {
     overflow: hidden;
     background-color: inherit;
     float: right;
     margin: 0;
+    background-color: #fff;
 }
 .switch-list li {
     display: inline;
@@ -1765,6 +1767,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     color: #2b2b2b;
     background-color: var(--bg-main-color);
     font-weight: 600;
+    margin-top: 5px;
 }
 .panel-right .tablinks {
     height: 65px!important;

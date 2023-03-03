@@ -674,7 +674,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $enrichmentTab .= "<p class='person-description'>Description: " . $person['Description'] . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <b><a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . $person['Link'] . "</a></b></p>";
+                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . $person['Link'] . "</a></p>";
                             }
                             // Edit/Delete buttons
                             $enrichmentTab .= "<div class='edit-del-person'>";
@@ -1704,7 +1704,7 @@ if (event.target.id != "tagging-status-indicator") {
         // Title
     $content .= "<section id='title-n-progress'>";
         $content .= "<div class='title-n-btn'>";
-        $content .= "<div id='missing-info' style='display:none;'>" . get_current_user_id() . "</div>";
+            $content .= "<div id='missing-info' style='display:none;'>" . get_current_user_id() . "</div>";
             $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title' class='storypg-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
         $content .= "</div>";
         // if(current_user_can('administrator')) {
@@ -2107,6 +2107,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<p class='auto-h'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
                         foreach($storyAutoE['data'] as $enrichment) {
+                            var_dump($enrichment);
                             $wikiIdArr = explode('/', $enrichment['WikiData']);
                             $wikiId = array_pop($wikiIdArr);
                             $content .= "<div class='enrich-view'>";
