@@ -1071,13 +1071,13 @@ ready(() => {
             `</p>` +
             `<p class='out-third-row'>` +
                 `<span class='out-first-span' contenteditable='false'> Ulica, trg ili ina oznaka: <span style='border-bottom:1px dotted #000;min-width:70px;display:inline-block;' contenteditable='true'> ${submitterLoc ? submitterLoc : '&nbsp'} </span> </span>` +
-                `<span class='out-second-span'> &nbsp &emsp; </span>` +
+                `<span class='out-second-span' contenteditable='false'> &nbsp &emsp; </span>` +
                 `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLName ? landlordLName : '&nbsp'} ${landlordFName ? landlordFName : '&nbsp'} </span>` +
             `</p>` +
             `<p class='out-fourth-row'>` +
                 `<span class='out-first-span'> Kbr. <span style='border-bottom:1px dotted #000;display:inline-block;min-width:50px;'> ${submitterHouseNr ? submitterHouseNr : '&nbsp'} &emsp;</span></span>` +
                 `<span class='out-second-span'> &nbsp </span>` +
-                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'>&emsp; ${landlordLoc ? landlordLoc : '&nbsp &nbsp'} </span>` +
+                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLoc ? landlordLoc : '&nbsp &nbsp'} </span>` +
             `</p>` +
             `<p class='form-title' contenteditable='false'> Potrošačka prijavnica </br>` +
             `za kućanstva i samce - samice </p>` +
@@ -1132,39 +1132,39 @@ ready(() => {
                     `<span class='fifth-span' > &nbsp </span>` +
                 `</p>` 
             }` +
-            // Zalihe
+            // Zalihe // Without Inline Style, tinymce gets rid of 'span' tags and breaks layout
             `<p class='form-cookies'> Ujedno izjavljujem pod istom odgovornošću, da u mojem kućanstvu postoje slijedeće zalihe životnih namirnica u</br>` +
             `Kilogramima odnosno litrama: </p>` +
 
             `<div id='zalihe-container'>` +
                 `<div id='zalihe-head'>` +
                     `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> PSENICA &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;border-right: 1px solid #000;'> ZRNO &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
+                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> PŠENICA &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;border-left: 1px solid #000;'> BRAŠNO &nbsp</span>` +
                     `</span>` +
                     `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> RAZ &nbsp</span>` +
+                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> RAŽ &nbsp</span>` +
                         `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
                     `</span>` +
                     `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> JECAM &nbsp</span>` +
+                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> JEČAM &nbsp</span>` +
                         `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
                     `</span>` +
                     `<span style='width:17.4%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
                         `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> KUKURUZ &nbsp</span>` +
                         `<span style='width:33%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
                         `<span style='width:34%;font-size:8px;height:50%;border-right:1px solid #000;'> KLIP &nbsp</span>` +
-                        `<span style='width:33%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
+                        `<span style='width:33%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
                     `</span>` +
 
                     `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> TJESTENINE &nbsp</span>` +
                     `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> JESTIVO ULJE &nbsp</span>` +
                     `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> MAST &nbsp</span>` +
                     `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SOL &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SECER &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> ŠEĆER &nbsp</span>` +
                     `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> KAVA &nbsp</span>` +
                     `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SAPUN ZA PRANJE &nbsp</span>` +
                     `<span style='width:7.2%;height:50px;border-bottom:1px solid #000;'> PETROLEJ &nbsp</span>` +
@@ -1186,10 +1186,10 @@ ready(() => {
                     `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
                     `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
                     `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:7.2%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:7.2%;height:50px;border-bottom:1px solid #000;'> &nbsp </span>` +
                 `</div>` +
                 `<div id='zalihe-mid'>` +
-                    `<p style='text-align:center;'> POVEĆANJE </p>` +
+                    `<p style='text-align:center;font-size:12px;letter-spacing:1em;'> POVEĆANJE </p>` +
                 `</div>` +
                 `<div id='zalihe-bot'>` +
                     `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
@@ -1208,7 +1208,7 @@ ready(() => {
                     `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
                     `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
                     `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:7.2%;height:50px;'> &nbsp </span>` +
+                    `<span style='width:7.2%;height:50px;border-top:1px solid #000;'> &nbsp </span>` +
                 `</div>` +
             `</div>` +
             `<div id='shop-container'>` +

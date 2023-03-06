@@ -626,7 +626,7 @@ function _TCT_ration_cards($atts)
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span style='font-weight:500;'>" . htmlspecialchars(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
+                                $enrichmentTab .= "<span style='font-weight:500;'>" . htmlspecialchars_decode(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars_decode($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
                                 if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                                     $enrichmentTab .= " (" . $person['BirthDate'];
                                     if($person['BirthPlace'] != 'NULL') {
@@ -2316,7 +2316,7 @@ function _TCT_ration_cards($atts)
                                 $content .= "</div>";
                                 // Prirast container 
                                 $content .= "<div id='prirast-container' style='display:none;'>";
-                                    $content .= "<p style='font-size:9px;font-weight:600;'>PRIRAST: </p>";
+                                    $content .= "<p style='font-size:9px;font-weight:600;'>PRIRAST: (Ispunjava vlast) </p>";
                                     $content .= "<form id='prirast-list-form'>";
                                         $content .= "<div id='show-prirast-ppl'></div>";
                                         $content .= "<div class='rc-list-td' style='position:relative;'>";
@@ -2346,7 +2346,7 @@ function _TCT_ration_cards($atts)
                                 $content .= "</div>";
                                 // Odpad container
                                 $content .= "<div id='odpad-container' style='display:none;'>";
-                                    $content .= "<p style='font-size:9px;font-weight:600;'>ODPAD: </p>";
+                                    $content .= "<p style='font-size:9px;font-weight:600;'>ODPAD: (Ispunjava vlast) </p>";
                                     $content .= "<form id='odpad-list-form'>";
                                         $content .= "<div id='show-odpad-ppl'></div>";
                                         $content .= "<div class='rc-list-td' style='position:relative;'>";
