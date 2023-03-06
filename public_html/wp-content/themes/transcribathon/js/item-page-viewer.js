@@ -39,19 +39,21 @@ var tct_viewer = (function($, document, window) {
 		jQuery('#full-page').click(function() {
 			document.querySelector('#transcription-edit-container').style.display = 'none';
 			document.querySelector('#transcription-view-container').style.display = 'block';
-			document.querySelector('#switch-tr-view i').className = 'fa fa-pencil';
+			document.querySelector('#switch-tr-view i').classList = 'fa fa-pencil';
 			toggleFS();
 
 		});
 		jQuery('#no-text-placeholder').click(function() {
-			jQuery('#switch-tr-view').click();
+			document.querySelector('#transcription-edit-container').style.display = 'block';
+			document.querySelector('#transcription-view-container').style.display = 'none';
+			document.querySelector('#switch-tr-view i').classList = 'fa fa-pencil';
 			toggleFS();
             tinymce.EditorManager.get('item-page-transcription-text').focus();
 		});
 		jQuery('.mtr-active').click(function() {
 			document.querySelector('#transcription-edit-container').style.display = 'none';
 			document.querySelector('#transcription-view-container').style.display = 'block';
-			document.querySelector('#switch-tr-view i').className = 'fa fa-pencil';
+			document.querySelector('#switch-tr-view i').classList = 'fa fa-times';
 			toggleFS();
 		});
 		jQuery('#startDescription').click(function() {
