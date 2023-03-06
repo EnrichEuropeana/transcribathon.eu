@@ -77,6 +77,9 @@ ready(() => {
     const prevBtn = document.querySelector('.prev-slide');
     const nextBtn = document.querySelector('.next-slide');
 
+    // Get path to the item, if ration cards go to /ration-cards/
+    let itemPath = document.querySelector('.storypg-title').innerHTML.includes('otrošačka kartica') ? 'ration-cards' : 'item';
+
     if(sliderImages.length < numOfStickers) {
         prevBtn.style.display = 'none';
         nextBtn.style.display = 'none';
@@ -96,7 +99,7 @@ ready(() => {
         sliderContainer.innerHTML +=
             `<div class='slide-sticker' data-value='${x + 1}'>` +
                 `<div class='slide-img-wrap'>` +
-                    `<a href='${home_url}/documents/story/item/?item=${imgId}' class='slider-link'>` +
+                    `<a href='${home_url}/documents/story/${itemPath}/?item=${imgId}' class='slider-link'>` +
                         `<img src='${imgUri}' class='slider-image' alt='slider-img-${x+1}' width='200' height='200'>` +
                     `</a>` +
                     `<div class='image-completion-status' style='background-color:${imgCompStatus};'>` +
@@ -143,7 +146,7 @@ ready(() => {
             let imgArr = imageInfo[i].split(' || ');
 
             slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
-            slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?item=${imgArr[1]}`);
+            slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/${itemPath}/?item=${imgArr[1]}`);
             slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
             slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
 

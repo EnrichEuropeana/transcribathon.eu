@@ -79,23 +79,23 @@ function installEventListeners() {
       })
     }
     // Add event listener to save all of the tagging
-    const saveAlltags = document.querySelector('#save-all-tags');
-    if(saveAlltags) {
-        saveAlltags.addEventListener('click', function() {
-            if(jQuery('#startdateentry').val().length > 0 || jQuery('#enddateentry').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#item-date-save-button').click()}, 100);
-            }
-            if(jQuery('#person-firstName-input').val().length > 0 || jQuery('#person-lastName-input').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 700);
-            }
-            if(jQuery('#keyword-input').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 1200);
-            }
-            if(jQuery('#link-input-container .link-url-input input').val().length > 0 || jQuery('#link-input-container .link-description-input textarea').val().length > 0) {
-                setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1600);
-            }
-        });
-    }
+    // const saveAlltags = document.querySelector('#save-all-tags');
+    // if(saveAlltags) {
+    //     saveAlltags.addEventListener('click', function() {
+    //         if(jQuery('#startdateentry').val().length > 0 || jQuery('#enddateentry').val().length > 0) {
+    //             setTimeout(()=>{document.querySelector('#item-date-save-button').click()}, 100);
+    //         }
+    //         if(jQuery('#person-firstName-input').val().length > 0 || jQuery('#person-lastName-input').val().length > 0) {
+    //             setTimeout(()=>{document.querySelector('#save-personinfo-button').click()}, 700);
+    //         }
+    //         if(jQuery('#keyword-input').val().length > 0) {
+    //             setTimeout(()=>{document.querySelector('#keyword-save-button').click()}, 1200);
+    //         }
+    //         if(jQuery('#link-input-container .link-url-input input').val().length > 0 || jQuery('#link-input-container .link-description-input textarea').val().length > 0) {
+    //             setTimeout(()=>{document.querySelector('#link-save-button').click()}, 1600);
+    //         }
+    //     });
+    // }
 
     // When the user clicks the button(pen on the image viewer), open the login modal
     jQuery('#lock-login').click(function() {
@@ -631,12 +631,24 @@ function switchItemPageView() {
         fsMapContainer.appendChild(mapEditor);
       }
     }
-    // Move Enrichments to enrichments tab
-    const enrichEditor = document.getElementById('tagging-section');
-    const enrichViewCont = document.getElementById('enrich-view');
-    const enrichFsCont = document.getElementById('tag-tab');
+    // Move People to People tab
+    const pplEditor = document.getElementById('tagging-section');
+    const pplViewCont = document.getElementById('enrich-view');
+    const pplFsCont = document.getElementById('tag-tab');
+    if(pplEditor != null) {
+        if(pplFsCont.querySelector('#tagging-section') == null) {
+            pplFsCont.insertBefore(pplEditor, pplFsCont.querySelector('#ppl-auto-e-container'));
+        } else {
+            pplViewCont.appendChild(pplEditor);
+        }
+    }
+    // Move Enrichments to Enrichments tab
+    const enrichEditor = document.getElementById('description-editor');
+    const enrichViewCont = document.getElementById('description-view');
+    const enrichFsCont = document.getElementById('description-tab');
+
     if(enrichEditor != null) {
-        if(enrichFsCont.querySelector('#tagging-section') == null) {
+        if(enrichFsCont.querySelector('#description-editor') == null) {
             enrichFsCont.appendChild(enrichEditor);
         } else {
             enrichViewCont.appendChild(enrichEditor);
@@ -1394,6 +1406,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
         },
         // Check success and create confirmation message
         function(response) {
+            console.log(response);
 
             scoreData = {
                 ItemId: itemId,
@@ -1865,6 +1878,7 @@ function deleteItemData(type, id, itemId, section, userId) {
       'url': TP_API_HOST + '/tp-api/' + type + '/' + id
     },
     function(response) {
+        console.log(response);
       switch (section) {
         case "place":
             loadPlaceData(itemId, userId);
@@ -2449,6 +2463,7 @@ ready(() => {
         create a new DIV that will act as an option item:*/
         c = document.createElement("div");
         c.setAttribute("class", "selected-option");
+        c.setAttribute("value", selElmnt.options[j].innerHTML);
         c.innerHTML = selElmnt.options[j].innerHTML;
         b.appendChild(c);
       }
@@ -2457,166 +2472,170 @@ ready(() => {
     // Start of Image slider functions
     /// Test slider
     const sliderContainer = document.querySelector('#inner-slider');
-    const sliderImages = JSON.parse(document.querySelector('#slider-images').innerHTML);
-    const sliderWidth = sliderContainer.offsetWidth;
-    let numOfStickers = Math.floor(sliderWidth/200);
-    const storyId = document.querySelector('#story-id').textContent;
-    const currentItm = parseInt(document.querySelector('#current-itm').textContent);
-
-    const prevBtn = document.querySelector('.prev-slide');
-    const nextBtn = document.querySelector('.next-slide');
-
-    if(sliderImages.length < numOfStickers) {
-        prevBtn.style.display = 'none';
-        nextBtn.style.display = 'none';
-        numOfStickers = sliderImages.length;
-    }
-    if(sliderWidth < 750) {
-        document.querySelector('#vertical-split').click();
-        document.querySelector('#switcher-casephase').style.display = 'none';
-    }
-
-    let startSlide = 0;
-    let endSlide = numOfStickers;
-
-    // Create initial slides on the screen
-    for(let x=0; x < numOfStickers; x++) {
-        let imgInfo = sliderImages[x].split(' || ');
-        let imgUri = imgInfo[0];
-        let imgId = imgInfo[1];
-        let imgCompStatus = imgInfo[2];
-
-        sliderContainer.innerHTML +=
-            `<div class='slide-sticker' data-value='${x + 1}'>` +
-                `<div class='slide-img-wrap'>` +
-                    `<a href='${home_url}/documents/story/item/?item=${imgId}' class='slider-link'>` +
-                        `<img src='${imgUri}' class='slider-image' alt='slider-img-${x+1}' width='200' height='200'>` +
-                    `</a>` +
-                    `<div class='image-completion-status' style='background-color:${imgCompStatus};'>` +
-                        `<div class='slide-number-wrap'>${x + 1}</div>` +
+    if(sliderContainer) {
+        const sliderImages = JSON.parse(document.querySelector('#slider-images').innerHTML);
+        const sliderWidth = sliderContainer.offsetWidth;
+        let numOfStickers = Math.floor(sliderWidth/200);
+        const storyId = document.querySelector('#story-id').textContent;
+        const currentItm = parseInt(document.querySelector('#current-itm').textContent);
+        
+        const prevBtn = document.querySelector('.prev-slide');
+        const nextBtn = document.querySelector('.next-slide');
+    
+        // Get path to the item, if ration cards go to /ration-cards/
+        let itemPath = document.querySelector('.storypg-title').innerHTML.includes('otrošačka kartica') ? 'ration-cards' : 'item';
+    
+        if(sliderImages.length < numOfStickers) {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            numOfStickers = sliderImages.length;
+        }
+        if(sliderWidth < 750) {
+            document.querySelector('#vertical-split').click();
+            document.querySelector('#switcher-casephase').style.display = 'none';
+        }
+    
+        let startSlide = 0;
+        let endSlide = numOfStickers;
+    
+        // Create initial slides on the screen
+        for(let x=0; x < numOfStickers; x++) {
+            let imgInfo = sliderImages[x].split(' || ');
+            let imgUri = imgInfo[0];
+            let imgId = imgInfo[1];
+            let imgCompStatus = imgInfo[2];
+    
+            sliderContainer.innerHTML +=
+                `<div class='slide-sticker' data-value='${x + 1}'>` +
+                    `<div class='slide-img-wrap'>` +
+                        `<a href='${home_url}/documents/story/${itemPath}/?item=${imgId}' class='slider-link'>` +
+                            `<img src='${imgUri}' class='slider-image' alt='slider-img-${x+1}' width='200' height='200'>` +
+                        `</a>` +
+                        `<div class='image-completion-status' style='background-color:${imgCompStatus};'>` +
+                            `<div class='slide-number-wrap'>${x + 1}</div>` +
+                        `</div>` +
                     `</div>` +
-                `</div>` +
-            `</div>`;
-    }
-    ////// Second set of variables, after initial slider is rendered
-    // Make nodelist of slides so we can manipulate them
-    const sliderSlides = sliderContainer.querySelectorAll('.slide-sticker');
-    // Get number of dots we need to show on screen
-    const numOfSlides = Math.ceil(sliderImages.length / numOfStickers);
-    const dotContainer = document.querySelector('#dot-indicators');
-    let currentDot = 1;
-
-    // Create dot indicators to jump to desired set of slides
-    for(let z = 1; z <= numOfSlides; z++) {
-        let singleDot = document.createElement('div');
-        singleDot.classList.add('slider-dot');
-        singleDot.setAttribute('data-value', (z));
-        // Add event to the dot
-        singleDot.addEventListener('click', function() {
-            currentDot = parseInt(this.getAttribute('data-value'));
-            this.classList.add('current');
-
-            endSlide = numOfStickers * z;
-            if(endSlide > sliderImages.length) {
-                endSlide = sliderImages.length;
-            }
-            startSlide = endSlide - numOfStickers;
-            slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
-            activeDot(currentDot);
-        });
-        dotContainer.appendChild(singleDot);
-    }
-    // dotContainer.querySelector('div').classList.add('current');
-    if(currentItm) {
-        let currPosition = Math.floor(currentItm/numOfStickers);
-        for(let dot of dotContainer.querySelectorAll('.slider-dot')) {
-            if(currPosition + 1 == parseInt(dot.getAttribute('data-value'))) {
-                dot.click();
-            }
+                `</div>`;
         }
-    }
-
-    function slideImages(slideStart, slideEnd, slides, imageInfo, storyid, currItm) {
-        let indexOfSlide = 0;
-        for(let i = slideStart; i < slideEnd; i++) {
-            let imgArr = imageInfo[i].split(' || ');
-
-            slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
-            slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/item/?item=${imgArr[1]}`);
-            slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
-            slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
-            if(i === currItm) {
-                slides[indexOfSlide].querySelector('.slide-img-wrap').classList.add('active');
-            } else if(slides[indexOfSlide].querySelector('.slide-img-wrap').classList.contains('active')) {
-                slides[indexOfSlide].querySelector('.slide-img-wrap').classList.remove('active');
-            }
-            indexOfSlide ++;
+        ////// Second set of variables, after initial slider is rendered
+        // Make nodelist of slides so we can manipulate them
+        const sliderSlides = sliderContainer.querySelectorAll('.slide-sticker');
+        // Get number of dots we need to show on screen
+        const numOfSlides = Math.ceil(sliderImages.length / numOfStickers);
+        const dotContainer = document.querySelector('#dot-indicators');
+        let currentDot = 1;
+    
+        // Create dot indicators to jump to desired set of slides
+        for(let z = 1; z <= numOfSlides; z++) {
+            let singleDot = document.createElement('div');
+            singleDot.classList.add('slider-dot');
+            singleDot.setAttribute('data-value', (z));
+            // Add event to the dot
+            singleDot.addEventListener('click', function() {
+                currentDot = parseInt(this.getAttribute('data-value'));
+                this.classList.add('current');
+    
+                endSlide = numOfStickers * z;
+                if(endSlide > sliderImages.length) {
+                    endSlide = sliderImages.length;
+                }
+                startSlide = endSlide - numOfStickers;
+                slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+                activeDot(currentDot);
+            });
+            dotContainer.appendChild(singleDot);
         }
-    }
-
-    function activeDot(number) {
-        const sliderDots = dotContainer.querySelectorAll('.slider-dot');
-        for(let dot of sliderDots) {
-            if(dot.getAttribute('data-value') < number || dot.getAttribute('data-value') > number) {
-                if(dot.classList.contains('current')) {
-                    dot.classList.remove('current');
+        // dotContainer.querySelector('div').classList.add('current');
+        if(currentItm) {
+            let currPosition = Math.floor(currentItm/numOfStickers);
+            for(let dot of dotContainer.querySelectorAll('.slider-dot')) {
+                if(currPosition + 1 == parseInt(dot.getAttribute('data-value'))) {
+                    dot.click();
                 }
             }
         }
+    
+        function slideImages(slideStart, slideEnd, slides, imageInfo, storyid, currItm) {
+            let indexOfSlide = 0;
+            for(let i = slideStart; i < slideEnd; i++) {
+                let imgArr = imageInfo[i].split(' || ');
+    
+                slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
+                slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/${itemPath}/?item=${imgArr[1]}`);
+                slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
+                slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
+                if(i === currItm) {
+                    slides[indexOfSlide].querySelector('.slide-img-wrap').classList.add('active');
+                } else if(slides[indexOfSlide].querySelector('.slide-img-wrap').classList.contains('active')) {
+                    slides[indexOfSlide].querySelector('.slide-img-wrap').classList.remove('active');
+                }
+                indexOfSlide ++;
+            }
+        }
+    
+        function activeDot(number) {
+            const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+            for(let dot of sliderDots) {
+                if(dot.getAttribute('data-value') < number || dot.getAttribute('data-value') > number) {
+                    if(dot.classList.contains('current')) {
+                        dot.classList.remove('current');
+                    }
+                }
+            }
+        }
+    
+        nextBtn.addEventListener('click', function () {
+    
+            if(endSlide === sliderImages.length) {
+                endSlide = numOfStickers;
+                startSlide = 0;
+            } else if((endSlide + numOfStickers) > sliderImages.length) {
+                endSlide = sliderImages.length;
+                startSlide = sliderImages.length - numOfStickers;
+            } else {
+                endSlide = endSlide + numOfStickers;
+                startSlide = startSlide + numOfStickers;
+            }
+    
+            slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+            // change active dot
+            const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+            let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
+            if(curDot == sliderDots.length) {
+                sliderDots[curDot-1].classList.remove('current');
+                sliderDots[0].classList.add('current');
+            } else {
+                sliderDots[curDot-1].classList.remove('current');
+                sliderDots[curDot].classList.add('current');
+            }
+        });
+    
+        prevBtn.addEventListener('click', function() {
+            if(startSlide === 0) {
+                endSlide = sliderImages.length;
+                startSlide = sliderImages.length - numOfStickers;
+            } else if((startSlide - numOfStickers) < 0) {
+                startSlide = 0;
+                endSlide = numOfStickers;
+            } else {
+                startSlide -= numOfStickers;
+                endSlide -= numOfStickers;
+            }
+            slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+            // Change active dot
+            const sliderDots = dotContainer.querySelectorAll('.slider-dot');
+            let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
+            if(curDot - 2 < 0) {
+                sliderDots[curDot - 1].classList.remove('current');
+                sliderDots[sliderDots.length-1].classList.add('current');
+            } else {
+                sliderDots[curDot - 1].classList.remove('current');
+                sliderDots[curDot - 2].classList.add('current');
+            }
+        });
     }
-
-    nextBtn.addEventListener('click', function () {
-
-        if(endSlide === sliderImages.length) {
-            endSlide = numOfStickers;
-            startSlide = 0;
-        } else if((endSlide + numOfStickers) > sliderImages.length) {
-            endSlide = sliderImages.length;
-            startSlide = sliderImages.length - numOfStickers;
-        } else {
-            endSlide = endSlide + numOfStickers;
-            startSlide = startSlide + numOfStickers;
-        }
-
-        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
-        // change active dot
-        const sliderDots = dotContainer.querySelectorAll('.slider-dot');
-        let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
-        if(curDot == sliderDots.length) {
-            sliderDots[curDot-1].classList.remove('current');
-            sliderDots[0].classList.add('current');
-        } else {
-            sliderDots[curDot-1].classList.remove('current');
-            sliderDots[curDot].classList.add('current');
-        }
-    });
-
-    prevBtn.addEventListener('click', function() {
-        if(startSlide === 0) {
-            endSlide = sliderImages.length;
-            startSlide = sliderImages.length - numOfStickers;
-        } else if((startSlide - numOfStickers) < 0) {
-            startSlide = 0;
-            endSlide = numOfStickers;
-        } else {
-            startSlide -= numOfStickers;
-            endSlide -= numOfStickers;
-        }
-        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
-        // Change active dot
-        const sliderDots = dotContainer.querySelectorAll('.slider-dot');
-        let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
-        if(curDot - 2 < 0) {
-            sliderDots[curDot - 1].classList.remove('current');
-            sliderDots[sliderDots.length-1].classList.add('current');
-        } else {
-            sliderDots[curDot - 1].classList.remove('current');
-            sliderDots[curDot - 2].classList.add('current');
-        }
-    });
-
-
-
+    
+    
     // Item Page, Open full screen if user comes to page from fullscreen viewer
     if(document.querySelector('#openseadragon')){
         const url_string = window.location.href;
@@ -2753,6 +2772,383 @@ ready(() => {
         });
         currDescLang.insertAdjacentHTML('beforeend', '<i id="del-desc-lang" class="far fa-times" style="margin-left: 5px;"></i>');
     }
+    // People input collapse controller
+    const pplInput = document.querySelector('#show-ppl-input');
+    if(pplInput) {
+        pplInput.addEventListener('click', function() {
+            document.querySelector('#person-input-container').classList.toggle('show');
+        })
+    }
+    // Auto Generated Enrichments
+    /// Story automatic enrichments
+    const autoEnrichCont = document.querySelector('#auto-enrich-story');
+    const runBtn = document.querySelector('#run-stry-enrich');
+    const stryId = parseInt(document.querySelector('#story-id').textContent);
+    if(runBtn) {
+        runBtn.addEventListener('click', function() {
+            document.querySelector('#auto-story-spinner-container').style.display = 'block';
+            jQuery.post(
+                home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
+                  type: 'GET',
+                  url: `https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/annotation?property=description&storyId=${stryId}&wskey=apidemo`
+                },
+                function(response) {
+                    const autoEnrichmentsResponse = JSON.parse(response);
+                    const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
+                    let enrichNr = 1;
+                    
+                    for(let itm of autoEnrichments.items) {
+                        let wikiDataArr = itm.body.id.split('/');
+                        let wikiId = wikiDataArr.pop();
+                        let singlIcon = itm.body.type == 'Person' ? 
+                            '<i class="fas fa-user enrich-icon"></i>' : `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
+                        let singlEnrich = document.createElement('div');
+                        singlEnrich.classList.add('single-annotation-' + enrichNr);
+                        singlEnrich.innerHTML =
+                                `<p class="type-n-id" style="display:none;">` +
+                                    `<span class="ann-type">${itm.body.type}</span>` +
+                                    `<span class="ext-id">${itm.id}</span>` +
+                                    `<span class="ann-id">${itm.body.id}</span>` +
+                                `</p>` +
+                                `<div class="enrich-body-left">` +
+                                    `<p>` +
+                                        singlIcon +
+                                        `<span class="enrich-label">${itm.body.prefLabel.en} </span>` +
+                                        ` - ` +
+                                        `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'>Wikidata ID: ${wikiId} </a></span>` +
+                                    `</p>` +
+                                    `<p class='auto-description'>Description: ${itm.body.description} </p>` +
+                                `</div>` +
+                                `<div class="enrich-body-right">` +
+                                    `<div class="slider-track" ><div class="slider-slider"></div></div>` +
+                                `</div>` ;
+                        autoEnrichCont.appendChild(singlEnrich);
+                        singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
+                            singlEnrich.classList.toggle('accept');
+                        });
+                        singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
+                            event.stopPropagation();
+                            this.parentElement.click();
+                        })
+                    
+                        enrichNr += 1;
+                    }
+                    document.querySelector('#auto-story-spinner-container').style.display = 'none';
+                    document.querySelector('#verify-h').style.display = 'block';
+                    document.querySelector('#accept-story-enrich').style.display = 'block';
+                });
+
+        })
+    }
+    /// Auto enrich Items 
+    const autoPplCont = document.querySelector('#ppl-auto-enrich');
+    const autoLocCont = document.querySelector('#loc-auto-enrich');
+    const autoEnrichBtn = document.querySelector('#run-itm-enrich');
+    const url_string = window.location.href;
+    const url = new URL(url_string);
+    const itemId = parseInt(url.searchParams.get('item'));
+    const userId = parseInt(document.querySelector('#missing-info').textContent);
+
+    let autoProp = 'transcription';
+    if(autoEnrichBtn) {
+
+        autoEnrichBtn.addEventListener('click', function() {
+            document.querySelector('#auto-itm-spinner-container').style.display = 'block';
+            jQuery.post(
+                home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
+                  type: 'GET',
+                  url: `http://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/annotation?storyId=${stryId}&itemId=${itemId}&property=${autoProp}&wskey=apidemo`,
+                  token: ''
+                },
+                function(response) {
+                    const autoEnrichmentsResponse = JSON.parse(response);
+                    const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
+                    console.log(autoEnrichments);
+                    if(autoEnrichments.items) {
+                        let itmNr = 1;
+                        for(let itm of autoEnrichments.items) {
+
+                            //// refactor this part
+                            if(itm.body.type == 'Place') {
+
+                                let wikiDataArr = itm.body.id.split('/');
+                                let wikiId = wikiDataArr.pop();
+                                let singlIcon = `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
+                                
+                                let singlEnrich = document.createElement('div');
+                                singlEnrich.classList.add('single-annotation-' + itmNr);
+                                singlEnrich.innerHTML = 
+                                        `<p class="type-n-id" style="display:none;">` +
+                                            `<span class="ann-type">${itm.body.type}</span>` +
+                                            `<span class="ext-id">${itm.id}</span>` +
+                                            `<span class="ann-id">${itm.body.id}</span>` +
+                                        `</p>` +
+                                        `<div class="enrich-body-left">` +
+                                            `<p>` +
+                                                singlIcon +
+                                                `<span class="enrich-label">${itm.body.prefLabel.en}</span>` +
+                                                ` - ` +
+                                                `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'> Wikidata ID: ${wikiId} </a></span>` +
+                                            `</p>` +
+                                            `<p class='auto-description'>Description: ${itm.body.description ? itm.body.description : ''} </p>` +
+                                        `</div>` +
+                                        `<div class="enrich-body-right">` +
+                                            `<div class="slider-track" ><div class="slider-slider"></div></div>` +
+                                        `</div>`;
+
+                                singlEnrich.setAttribute('lat', itm.body.lat);
+                                singlEnrich.setAttribute('long', itm.body.long);
+
+                                singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
+                                    // document.querySelector('.single-annotation-' + itmNr).classList.toggle('accept');
+                                    singlEnrich.classList.toggle('accept');
+
+                                });
+                                singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
+                                    event.stopPropagation();
+                                    this.parentElement.click();
+                                });
+
+                                autoLocCont.appendChild(singlEnrich);
+
+                            } else if (itm.body.type == 'Person') {
+
+                                let firstName = itm.body.prefLabel.en;
+                                let lastName = itm.body.familyName;
+                                // Remove last name from label
+                                if(firstName.includes(lastName)) {
+                                    firstName = firstName.replace(` ${lastName}`, '');
+                                }
+
+                                let wikiDataArr = itm.body.id.split('/');
+                                let wikiId = wikiDataArr.pop();
+                                let singlIcon = '<i class="fas fa-user enrich-icon"></i>';
+                                
+                                let singlEnrich = document.createElement('div');
+                                singlEnrich.classList.add('single-annotation-' + itmNr);
+                                singlEnrich.innerHTML = 
+                                        `<p class="type-n-id" style="display:none;">` +
+                                            `<span class="ann-type">${itm.body.type}</span>` +
+                                            `<span class="ext-id">${itm.id}</span>` +
+                                            `<span class="ann-id">${itm.body.id}</span>` +
+                                        `</p>` +
+                                        `<div class="enrich-body-left">` +
+                                            `<p>` +
+                                                singlIcon +
+                                                `<span class="enrich-label"><span class='firstName'>${firstName}</span>  <span class='lastName'>${lastName ? lastName : ''}</span></span>` +
+                                                ` - ` +
+                                                `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'> Wikidata ID: <span class='wikiId'>${wikiId}</span></a></span>` +
+                                            `</p>` +
+                                            `<p class='auto-description'>Description: ${itm.body.description ? itm.body.description : ''} (AI generated)</p>` +
+                                        `</div>` +
+                                        `<div class="enrich-body-right">` +
+                                            `<div class="slider-track" ><div class="slider-slider"></div></div>` +
+                                        `</div>`;
+    
+    
+                                    singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
+                                        // document.querySelector('.single-annotation-' + itmNr).classList.toggle('accept');
+                                        singlEnrich.classList.toggle('accept');
+    
+                                    });
+                                    singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
+                                        event.stopPropagation();
+                                        this.parentElement.click();
+                                    });
+
+                                    autoPplCont.appendChild(singlEnrich);
+    
+                            }
+                            
+                            itmNr += 1;
+                        }
+                    } else if (autoEnrichments.info) {
+                        alert(autoEnrichments.info);
+                    }
+                    // Show saving Button if there is something to save
+                    document.querySelector('#auto-itm-spinner-container').style.display = 'none';
+                    if(autoLocCont.querySelector('div') != null) {
+                        document.querySelector('#loc-verify').style.display = 'block';
+                        document.querySelector('#accept-loc-enrich').style.display = 'block';
+                    }
+                    if(autoPplCont.querySelector('div') != null) {
+                        document.querySelector('#ppl-verify').style.display = 'block';
+                        document.querySelector('#accept-ppl-enrich').style.display = 'block';
+                    }
+                    
+                });
+        })
+    }
+
+    // Submit Location Enrichments
+    const locSubmit = document.querySelector('#accept-loc-enrich');
+    if(locSubmit) {
+
+        //const enrichLocArr = [];
+        locSubmit.addEventListener('click', function() {
+            let acceptedEnrich = document.querySelector('#loc-auto-enrich').querySelectorAll('.accept');
+            for(let enrichment of acceptedEnrich) {
+
+                // Store data into variables
+                let locationName = enrichment.querySelector('.enrich-label').textContent;
+                let latitude = (enrichment.getAttribute('lat')).toString();
+                let longitude = (enrichment.getAttribute('long')).toString();
+                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' - Automatically Generated.';
+                let wikidata = (enrichment.querySelector('.enrich-wiki a').getAttribute('href')).split('/');
+                let wikidataId = wikidata.pop();
+                // Convert lat/long to float number
+                latitude = parseFloat(latitude);
+                longitude = parseFloat(longitude);
+            
+                // Save it also to the 'Place' table
+                let data = {
+                    Name: locationName,
+                    Latitude: latitude,
+                    Longitude: longitude,
+                    ItemId: itemId,
+                    Link: "",
+                    Zoom: 10,
+                    Comment: description,
+                    WikidataName: locationName,
+                    WikidataId: wikidataId,
+                    UserId: userId,
+                    UserGenerated: 0
+                }
+
+                console.log(data);
+
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'url': TP_API_HOST + '/tp-api/places',
+                    'data': data
+                },function(response) {
+                    //console.log(response);
+                });
+
+                //console.log(data);
+            }
+        })
+    }
+    // Submit Ppl Enrichments
+    const pplSubmit = document.querySelector('#accept-ppl-enrich');
+    if(pplSubmit) {
+        //const enrichPplArr = [];
+        pplSubmit.addEventListener('click', function() {
+            let acceptedEnrich = document.querySelector('#ppl-auto-enrich').querySelectorAll('.accept');
+            for(let enrichment of acceptedEnrich) {
+                ///
+                console.log(enrichment);
+                // Store data into variables
+                let firstName = enrichment.querySelector('.firstName').textContent;
+                let lastName = enrichment.querySelector('.lastName').textContent;
+                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
+                let link = enrichment.querySelector('.wikiId').textContent;
+                ///
+
+                data = {
+                    FirstName: firstName,
+                    LastName: lastName,
+                    BirthPlace: null,
+                    DeathPlace: null,
+                    Link: link,
+                    Description: description,
+                    ItemId: itemId,
+                    BirthDate: null,
+                    DeathDate: null
+                }
+
+                for (var key in data) {
+                    if (data[key] == "") {
+                        data[key] = null;
+                    }
+                }
+
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'url': TP_API_HOST + '/tp-api/persons',
+                    'data': data
+                },
+                // Check success and create confirmation message
+                function(response) {
+                    console.log(response);
+                });
+
+                console.log(data);
+
+            }
+
+        })
+    }
+    // Submit Story Enrichments
+    const storySubmit = document.querySelector('#accept-story-enrich');
+    if(storySubmit) {
+        const enrichStoryArr = [];
+        storySubmit.addEventListener('click', function() {
+            let acceptedEnrich = document.querySelector('#auto-enrich-story').querySelectorAll('.accept');
+            for(let enrichment of acceptedEnrich) {
+
+                let description = null;
+                if(enrichment.querySelector('.auto-description') && enrichment.querySelector('.auto-description').textContent != 'Description: ') {
+                    description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
+                }
+                console.log(enrichment);
+                let singlEnrichment = {
+                    Name: enrichment.querySelector('.enrich-label').textContent,
+                    Type: enrichment.querySelector('.ann-type').textContent,
+                    WikiData: enrichment.querySelector('.ann-id').textContent,
+                    StoryId: stryId,
+                    ItemId: null,
+                    ExternalAnnotationId: enrichment.querySelector('.ext-id').textContent,
+                    Comment: description
+                }
+                
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'data': singlEnrichment,
+                    'url': 'http://tp_api_v2/v2/autoenrichments',
+                    'token': 'yes'
+                  },
+                  function(response) {
+                    console.log(response);
+                    // var response = JSON.parse(response);
+                    // console.log(response);
+              
+                  });
+            }
+
+        })
+    }
+
+    // Get En translation of transcription
+    const translateTrBtn = document.querySelector('#translate-tr');
+    const translatedCont = document.querySelector('#translated-tr');
+
+    if(translateTrBtn) {
+        translateTrBtn.addEventListener('click', function() {
+            if(translatedCont.classList.contains('show')) {
+                translatedCont.classList.remove('show');
+            } else {
+                if(translatedCont.classList.contains('translated')) {
+                    translatedCont.classList.add('show');
+                } else {
+                    jQuery.post(
+                        home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
+                          type: 'GET',
+                          url: `http://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/${stryId}/${itemId}?property=${autoProp}&wskey=apidemo`
+                        },
+                        function(response) {
+                            let engTranslation = JSON.parse(response);
+                            console.log(engTranslation);
+        
+                            translatedCont.querySelector('p').innerHTML = engTranslation.content;
+                            translatedCont.classList.add('show');
+                            translatedCont.classList.add('translated');
+        
+                        });
+                }
+            }
+        })
+    }
 
 
     installEventListeners();
@@ -2760,3 +3156,16 @@ ready(() => {
 
 
 });
+
+function deleteAutoEnrichment(enrichmentId, event) {
+    jQuery.post(
+        home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
+          type: 'DELETE',
+          url: 'http://tp_api_v2/v2/autoenrichments/' + enrichmentId,
+          token: 'yes'
+        },
+        function(response) {
+            console.log(response);
+            event.target.parentElement.remove();
+        });
+}
