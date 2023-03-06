@@ -1138,36 +1138,36 @@ ready(() => {
 
             `<div id='zalihe-container'>` +
                 `<div id='zalihe-head'>` +
-                    `<span style='width:11.6%;height:50px;'>` +
-                        `<span style='width:100%;height:50%;'> PSENICA &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
+                    `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
+                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> PSENICA &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;border-right: 1px solid #000;'> ZRNO &nbsp</span>` +
                         `<span style='width:50%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
                     `</span>` +
-                    `<span style='width:11.6%;height:50px;'>` +
-                        `<span style='width:100%;height:50%;'> RAZ &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
+                    `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
+                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> RAZ &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
                         `<span style='width:50%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
                     `</span>` +
-                    `<span style='width:11.6%;height:50px;'>` +
-                        `<span style='width:100%;height:50%;'> JECAM &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
+                    `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
+                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> JECAM &nbsp</span>` +
+                        `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
                         `<span style='width:50%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
                     `</span>` +
-                    `<span style='width:17.4%;height:50px;'>` +
-                        `<span style='width:100%;height:50%;'> KUKURUZ &nbsp</span>` +
-                        `<span style='width:33%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
-                        `<span style='width:34%;font-size:8px;height:50%;'> KLIP &nbsp</span>` +
+                    `<span style='width:17.4%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
+                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> KUKURUZ &nbsp</span>` +
+                        `<span style='width:33%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
+                        `<span style='width:34%;font-size:8px;height:50%;border-right:1px solid #000;'> KLIP &nbsp</span>` +
                         `<span style='width:33%;font-size:8px;height:50%;'> BRASNO &nbsp</span>` +
                     `</span>` +
 
-                    `<span style='width:5.8%;height:50px;'> TJESTENINE &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;'> JESTIVO ULJE &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;'> MAST &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;'> SOL &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;'> SECER &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;'> KAVA &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;'> SAPUN ZA PRANJE &nbsp</span>` +
-                    `<span style='width:7.2%;height:50px;'> PETROLEJ &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> TJESTENINE &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> JESTIVO ULJE &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> MAST &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SOL &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SECER &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> KAVA &nbsp</span>` +
+                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SAPUN ZA PRANJE &nbsp</span>` +
+                    `<span style='width:7.2%;height:50px;border-bottom:1px solid #000;'> PETROLEJ &nbsp</span>` +
                 `</div>` +
                 `<div id='zalihe-top'>` +
                     `<span style='width:5.8%;height:50px;'> &nbsp </span>` +

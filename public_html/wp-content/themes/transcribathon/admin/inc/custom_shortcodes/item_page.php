@@ -1851,15 +1851,17 @@ if (event.target.id != "tagging-status-indicator") {
                                 $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
                             }
                         }
-                        if(strlen($formattedTranscription) < 700 && strlen($formattedTranscription) != 0) {
-                            $content .= "<div class='current-transcription' style='padding-left:24px;'>";
+                        if(strlen($formattedTranscription) < 600 && strlen($formattedTranscription) != 0) {
+                            $content .= "<div class='current-transcription' style='padding-left:24px;height:calc(100% - 135px);'>";
                                 $content .= $formattedTranscription;
                             $content .= "</div>";
                             $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
-                                foreach($currentTranscription['Languages'] as $language) {
-                                    $content .= "<div class='language-single'>" . $language['Name'] . "</div>";
+                                if(!empty($currentTranscription['Languages'])) {
+                                    foreach($currentTranscription['Languages'] as $language) {
+                                        $content .= "<div class='language-single'>" . $language['Name'] . "</div>";
+                                    }
                                 }
                             $content .= "</div>";
                         } else if(strlen($formattedTranscription) != 0) {
