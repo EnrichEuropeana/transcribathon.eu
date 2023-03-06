@@ -440,11 +440,16 @@ function _TCT_solr_search( $atts ) {
                             $compStatus .= "<div class='search-status' style='width:100%;background-color:#eeeeee;z-index:1;' title='Not Started:" . round($progressCount['Not Started']) . "%'>&nbsp</div>";
                         $compStatus .= "</div>";
 
+                        $itemPath = 'item';
+                        if(str_contains($doc['Title'], 'Potrošačka kartica')) {
+                            $itemPath = 'ration-cards';
+                        }
+
 
                         $image = json_decode($doc['PreviewImageLink'], true);
                         $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
 
-                        $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/item/?item=" . $doc['ItemId'] . "'>";
+                        $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/" . $itemPath . "/?item=" . $doc['ItemId'] . "'>";
                             $content .= "<div class='search-page-result-image'>";
                                 $content .= "<img src='" . $imageLink . "' alt='result image' width='280' height='140'>";
                             $content .= "</div>";
