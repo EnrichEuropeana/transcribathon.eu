@@ -1001,9 +1001,12 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= $currentTranscription['Text'];
             $editorTab .= "</div>";
             // Transcription Translation
-            $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;'>";
+            $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;'>";
                 $editorTab .= "English Translation";
                 $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
+                $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
+                    $editorTab .= "<div class='spinner'></div>";
+                $editorTab .= "</div>";
             $editorTab .= "</h4>";
             $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
 

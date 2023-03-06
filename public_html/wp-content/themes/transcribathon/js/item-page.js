@@ -3131,6 +3131,9 @@ ready(() => {
                 if(translatedCont.classList.contains('translated')) {
                     translatedCont.classList.add('show');
                 } else {
+                    // Show spinner while we wait for translation
+                    document.querySelector('#eng-tr-spinner').style.display = 'block';
+
                     jQuery.post(
                         home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
                           type: 'GET',
@@ -3138,11 +3141,12 @@ ready(() => {
                         },
                         function(response) {
                             let engTranslation = JSON.parse(response);
-                            console.log(engTranslation);
         
                             translatedCont.querySelector('p').innerHTML = engTranslation.content;
                             translatedCont.classList.add('show');
                             translatedCont.classList.add('translated');
+
+                            document.querySelector('#eng-tr-spinner').style.display = 'none';
         
                         });
                 }
