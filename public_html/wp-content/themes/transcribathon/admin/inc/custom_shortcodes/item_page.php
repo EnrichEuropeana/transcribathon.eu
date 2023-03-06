@@ -195,34 +195,32 @@ if (event.target.id != "tagging-status-indicator") {
 
     $currentTranscription = null;
 
-        // Transkribus Client, include required files
-        require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
-        require_once(get_stylesheet_directory() . '/htr-client/config.php');
-
-        // create new Transkribus client and inject configuration
-        $transkribusClient = new TranskribusClient($config);
-        // get the HTR-transcribed data from database if there is one
-        $htrDataJson = $transkribusClient->getDataFromTranscribathon(
-            null,
-            array(
-                'ItemId' => $_GET['item'],
-                    'orderBy' => 'LastUpdated',
-                    'orderDir' => 'desc'
-            )
-        );
-        $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
-        $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
-
-        $transcriptionList = [];
-        if($itemData['Transcriptions'] != null) {
-            foreach($itemData['Transcriptions'] as $transcription) {
-                if($transcription['CurrentVersion'] == '1') {
-                    $currentTranscription = $transcription;
-                } else {
-                    array_push($transcriptionList, $transcription);
-                }
+    // Transkribus Client, include required files
+    require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
+    require_once(get_stylesheet_directory() . '/htr-client/config.php');
+    // create new Transkribus client and inject configuration
+    $transkribusClient = new TranskribusClient($config);
+    // get the HTR-transcribed data from database if there is one
+    $htrDataJson = $transkribusClient->getDataFromTranscribathon(
+        null,
+        array(
+            'ItemId' => $_GET['item'],
+                'orderBy' => 'LastUpdated',
+                'orderDir' => 'desc'
+        )
+    );
+    $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
+    $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
+    $transcriptionList = [];
+    if($itemData['Transcriptions'] != null) {
+        foreach($itemData['Transcriptions'] as $transcription) {
+            if($transcription['CurrentVersion'] == '1') {
+                $currentTranscription = $transcription;
+            } else {
+                array_push($transcriptionList, $transcription);
             }
         }
+    }
     // Get the progress data
     $progressData = array(
         $itemData['TranscriptionStatusName'],
@@ -886,7 +884,7 @@ if (event.target.id != "tagging-status-indicator") {
         if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
           //  $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
             $mtrTranscription = $currentTranscription['Text'];
-            $currentTranscription['Text'] = $htrTranscription;
+            //$currentTranscription['Text'] = $htrTranscription;
 
             $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
                 // MCE Editor
@@ -1815,7 +1813,6 @@ if (event.target.id != "tagging-status-indicator") {
 
             $content .= "</div>";
             $content .= "<div id='full-view-r'>";
-            //var_dump($itemData);
                 // Transcription
                 $content .= "<div id='transcription-container' style='height:600px;'>";
                     $content .= "<div id='startTranscription' class='mtr-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
@@ -1838,9 +1835,11 @@ if (event.target.id != "tagging-status-indicator") {
                             $content .= "<div style='padding-left:24px;'></div>";
                         $content .= "</div>";
                     } else {
+
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
                             if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
                                 $formattedTranscription = $htrTranscription;
+
                                 $content .= "<script>
                                     document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';
                                     document.querySelector('#startTranscription').classList.replace('mtr-active', 'htr-active');
@@ -2110,7 +2109,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<p class='auto-h'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
                         foreach($storyAutoE['data'] as $enrichment) {
-                            //var_dump($enrichment);
+
                             $wikiIdArr = explode('/', $enrichment['WikiData']);
                             $wikiId = array_pop($wikiIdArr);
                             $content .= "<div class='enrich-view'>";

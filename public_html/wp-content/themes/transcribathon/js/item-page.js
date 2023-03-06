@@ -221,7 +221,6 @@ function installEventListeners() {
       delay: 100,
       minLength: 3
     });
-    //console.log(keyWordList);
   });
   }
 
@@ -744,7 +743,6 @@ function switchItemPageView() {
     urlParameter.delete('fs');
     let newUrl = '?' + urlParameter.toString()
     window.history.replaceState(null, null, newUrl);
-    // console.log(document.location.pathname);
 
    }
     //installEventListeners();
@@ -792,7 +790,7 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-description-spinner-container').css('display', 'block')
 
     var descriptionLanguage = jQuery('#description-language-selector select').val();
-    //console.log(descriptionLanguage);
+
     updateDataProperty('items', itemId, 'DescriptionLanguage', descriptionLanguage);
 
     var description = jQuery('#item-page-description-text').val()
@@ -861,7 +859,7 @@ function updateItemDescription(itemId, userId, editStatusColor, statusCount) {
                 },
                 // Check success and create confirmation message
                 function(response) {
-                    //console.log(response);
+
                 })
                 var response = JSON.parse(response);
                 if (response.code == "200") {
@@ -999,7 +997,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                 }
 
                 if (response.code == "200") {
-                    //console.log(data);
+
                     if (itemCompletion == "Not Started") {
                         changeStatus(itemId, "Not Started", "Edit", "CompletionStatusId", 2, editStatusColor, statusCount)
                     }
@@ -1406,7 +1404,6 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
         },
         // Check success and create confirmation message
         function(response) {
-            console.log(response);
 
             scoreData = {
                 ItemId: itemId,
@@ -1878,7 +1875,6 @@ function deleteItemData(type, id, itemId, section, userId) {
       'url': TP_API_HOST + '/tp-api/' + type + '/' + id
     },
     function(response) {
-        console.log(response);
       switch (section) {
         case "place":
             loadPlaceData(itemId, userId);
@@ -2339,7 +2335,6 @@ async function showActiveTranscription(itemId) {
     const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/items/' + itemId;
     const result = await (await fetch(requestUri)).json();
     source = result.data.TranscriptionSource;
-    //console.log(source);
 
     return source;
 }
@@ -2863,7 +2858,7 @@ ready(() => {
                 function(response) {
                     const autoEnrichmentsResponse = JSON.parse(response);
                     const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
-                    console.log(autoEnrichments);
+
                     if(autoEnrichments.items) {
                         let itmNr = 1;
                         for(let itm of autoEnrichments.items) {
@@ -3015,17 +3010,13 @@ ready(() => {
                     UserGenerated: 0
                 }
 
-                console.log(data);
-
                 jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                     'type': 'POST',
                     'url': TP_API_HOST + '/tp-api/places',
                     'data': data
                 },function(response) {
-                    //console.log(response);
+                    
                 });
-
-                //console.log(data);
             }
         })
     }
@@ -3036,14 +3027,11 @@ ready(() => {
         pplSubmit.addEventListener('click', function() {
             let acceptedEnrich = document.querySelector('#ppl-auto-enrich').querySelectorAll('.accept');
             for(let enrichment of acceptedEnrich) {
-                ///
-                console.log(enrichment);
                 // Store data into variables
                 let firstName = enrichment.querySelector('.firstName').textContent;
                 let lastName = enrichment.querySelector('.lastName').textContent;
                 let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
                 let link = enrichment.querySelector('.wikiId').textContent;
-                ///
 
                 data = {
                     FirstName: firstName,
@@ -3070,10 +3058,8 @@ ready(() => {
                 },
                 // Check success and create confirmation message
                 function(response) {
-                    console.log(response);
+                    
                 });
-
-                console.log(data);
 
             }
 
@@ -3091,7 +3077,6 @@ ready(() => {
                 if(enrichment.querySelector('.auto-description') && enrichment.querySelector('.auto-description').textContent != 'Description: ') {
                     description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
                 }
-                console.log(enrichment);
                 let singlEnrichment = {
                     Name: enrichment.querySelector('.enrich-label').textContent,
                     Type: enrichment.querySelector('.ann-type').textContent,
@@ -3109,10 +3094,7 @@ ready(() => {
                     'token': 'yes'
                   },
                   function(response) {
-                    console.log(response);
-                    // var response = JSON.parse(response);
-                    // console.log(response);
-              
+
                   });
             }
 
@@ -3169,7 +3151,6 @@ function deleteAutoEnrichment(enrichmentId, event) {
           token: 'yes'
         },
         function(response) {
-            console.log(response);
             event.target.parentElement.remove();
         });
 }
