@@ -875,8 +875,180 @@ function loadRcPlaceData(itemId, userId) {
     });
 }
 
+// Updates the item transcription
+function updateRcItemTranscription(itemId, userId, editStatusColor, statusCount) {
+
+    // Char count for 'empty' ration cards, or characters included in form template
+    const rcTemplateLength = 937;
+
+    jQuery('#transcription-update-button').removeClass('theme-color-background');
+    jQuery('#transcription-update-button').prop('disabled', true);
+    jQuery('#item-transcription-spinner-container').css('display', 'block')
+
+    let checkIfDirty = '';
+    var noText = 0;
+    if (jQuery('#no-text-checkbox').is(':checked') && document.querySelector('#item-page-transcription-text').textContent == '') {
+        noText = 1
+    }
+    if(noText == 0) {
+        checkIfDirty = tinymce.get('item-page-transcription-text').getContent({format : 'text'});
+    } else {
+        checkIfDirty = 1;
+    }
+
+    if(isWhitelisted(checkIfDirty) == 0){
+        jQuery('#item-transcription-spinner-container').css('display', 'none')
+        return null;
+    } else {
+        // Get languages
+        var transcriptionLanguages = [];
+        jQuery("#transcription-language-selector option").each(function() {
+            var nextLanguage = {};
+            if (jQuery(this).prop('disabled') == true && jQuery(this).val() != "") {
+                nextLanguage.LanguageId = jQuery(this).val();
+                transcriptionLanguages.push(nextLanguage);
+            }
+        });
+
+        var noText = 0;
+        if (jQuery('#no-text-checkbox').is(':checked') && document.querySelector('#item-page-transcription-text').textContent == '') {
+            noText = 1
+        }
+
+        jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+            'type': 'GET',
+            'url': TP_API_HOST + '/tp-api/items/' + itemId
+        },
+        function(response) {
+            var response = JSON.parse(response);
+            var itemCompletion = JSON.parse(response.content)["CompletionStatusName"];
+            var transcriptionCompletion = JSON.parse(response.content)["TranscriptionStatusName"];
+            var currentTranscription = "";
+
+            for (var i = 0; i < JSON.parse(response.content)["Transcriptions"].length; i++) {
+                if (JSON.parse(response.content)["Transcriptions"][i]["CurrentVersion"] == 1) {
+                    currentTranscription = JSON.parse(response.content)["Transcriptions"][i]["TextNoTags"];
+                }
+            }
+
+            if(noText === 0) {
+                const wordcount = tinymce.get('item-page-transcription-text').plugins.wordcount;
+                // var newTranscriptionLength = tinyMCE.editors[jQuery('#item-page-transcription-text').attr('id')].getContent({format : 'text'}).length;
+                // var newTranscriptionLength = tinyMCE.editors.get([jQuery('#item-page-transcription-text').attr('id')]).getContent({format : 'text'}).length;
+                if(jQuery('#item-page-transcription-text').text()) {
+                    var newTranscriptionLength = wordcount.body.getCharacterCountWithoutSpaces();
+                }
+            } else {
+                var newTranscriptionLength = 0;
+            }
+
+            // Prepare data and send API request
+            data = {
+                UserId: userId,
+                ItemId: itemId,
+                CurrentVersion: 1,
+                NoText: noText,
+                Languages: transcriptionLanguages,
+            }
+
+            if (jQuery('#item-page-transcription-text').html()) {
+                data['Text'] = tinymce.get('item-page-transcription-text').getContent({format : 'html'});
+                data['TextNoTags'] = tinymce.get('item-page-transcription-text').getContent({format : 'text'});
+            } else {
+                data['Text'] = "";
+                data['TextNoTags'] = "";
+            }
+            const curTrToUpdate = data['Text'];
+
+            var dataString= JSON.stringify(data);
+
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/transcriptions',
+                'data': data
+            },
+            // Check success and create confirmation message
+            function(response) {
+                currentTranscription = currentTranscription.replace(/\s+/g, '');
+                
+                oldTranscriptionLength = 0;
+                newTranscriptionLength = newTranscriptionLength - rcTemplateLength;
+                if(currentTranscription != '') {
+                    oldTranscriptionLength = currentTranscription.length - rcTemplateLength;
+                }
+            
+                //var amount = newTranscriptionLength - currentTranscription.length;
+                var amount = newTranscriptionLength - oldTranscriptionLength;
+
+                if (amount > 0) {
+                    amount = amount;
+                } else {
+                    amount = 0;
+                }
+                scoreData = {
+                    ItemId: itemId,
+                    UserId: userId,
+                    ScoreType: "Transcription",
+                    Amount: amount
+                }
+
+                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                    'type': 'POST',
+                    'url': TP_API_HOST + '/tp-api/scores',
+                    'data': scoreData
+                },
+                // Check success and create confirmation message
+                function(response) {
+                })
+                updateSolr();
+
+                var response = JSON.parse(response);
+                const selTrLangs = document.querySelectorAll('#transcription-selected-languages ul li');
+                const selLanCont = document.querySelector('.transcription-language div');
+                if(selLanCont) {
+                    const oldLanguages = selLanCont.querySelectorAll('.language-single');
+                }
+
+                if (response.code == "200") {
+
+                    if (itemCompletion == "Not Started") {
+                        changeStatus(itemId, "Not Started", "Edit", "CompletionStatusId", 2, editStatusColor, statusCount)
+                    }
+                    if (transcriptionCompletion == "Not Started") {
+                        changeStatus(itemId, "Not Started", "Edit", "TranscriptionStatusId", 2, editStatusColor, statusCount)
+                    }
+                    document.querySelector('.current-transcription').innerHTML = curTrToUpdate;
+                    // Remove old languages
+                    if(selLanCont) {
+                        selLanCont.innerHTML = '';
+                    }
+
+                    // Add new Languages
+                    for(let langSingle of selTrLangs) {
+                        let langEl = document.createElement('div');
+                        langEl.classList.add('language-single');
+                        let langName = langSingle.textContent.split(' ');
+                        langEl.textContent = langName[0];
+                        selLanCont.appendChild(langEl);
+                    }
+
+                    if(document.querySelector('#no-text-placeholder')) {
+                        document.querySelector('#no-text-placeholder').style.display = 'none';
+                        document.querySelector('.current-transcription').style.display = 'block';
+                        document.querySelector('.current-transcription').style.paddingLeft = '24px';
+                    }
+                    document.querySelector('#current-tr-view').innerHTML = curTrToUpdate;
+                }
+                jQuery('#item-transcription-spinner-container').css('display', 'none')
+
+            });
+        });
+    }
+
+}
 
 
+///////////////////////////
 // Declaration of replacement for jQuery document.ready, it runs the check if DOM has loaded until it loads
 var ready = (callback) => {
     if (document.readyState != "loading") callback();
@@ -1273,8 +1445,11 @@ ready(() => {
     
                         document.querySelector('#description-language-selector').appendChild(newLang);
                     }
+
+                    
                 });
             }
+            document.querySelector('#tr-tab').parentElement.style.display = 'block';
     })
 
     // Add Prirast/Odpad tables on button click
