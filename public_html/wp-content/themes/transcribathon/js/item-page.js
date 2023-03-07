@@ -2512,7 +2512,8 @@ ready(() => {
                         `</div>` +
                     `</div>` +
                 `</div>`;
-    }
+            `</div>`;
+        }
     ////// Second set of variables, after initial slider is rendered
     // Make nodelist of slides so we can manipulate them
     const sliderSlides = sliderContainer.querySelectorAll('.slide-sticker');
@@ -2552,7 +2553,7 @@ ready(() => {
                 dot.click();
             }
         }
-    
+    }
         function slideImages(slideStart, slideEnd, slides, imageInfo, storyid, currItm) {
             let indexOfSlide = 0;
             for(let i = slideStart; i < slideEnd; i++) {
