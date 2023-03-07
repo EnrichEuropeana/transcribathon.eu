@@ -2511,6 +2511,9 @@ ready(() => {
     for(let z = 1; z <= numOfSlides; z++) {
         let singleDot = document.createElement('div');
         singleDot.classList.add('slider-dot');
+        // if(z == 1) {
+        //     singleDot.classList.add('current');
+        // }
         singleDot.setAttribute('data-value', (z));
         // Add event to the dot
         singleDot.addEventListener('click', function() {
@@ -2528,7 +2531,7 @@ ready(() => {
         dotContainer.appendChild(singleDot);
     }
     // dotContainer.querySelector('div').classList.add('current');
-    if(currentItm) {
+    if(currentItm || currentItm == 0) {
         let currPosition = Math.floor(currentItm/numOfStickers);
         for(let dot of dotContainer.querySelectorAll('.slider-dot')) {
             if(currPosition + 1 == parseInt(dot.getAttribute('data-value'))) {
@@ -2577,12 +2580,17 @@ ready(() => {
         } else {
             endSlide = endSlide + numOfStickers;
             startSlide = startSlide + numOfStickers;
+            console.log(startSlide);
+            console.log('hehe');
         }
 
         slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
         // change active dot
         const sliderDots = dotContainer.querySelectorAll('.slider-dot');
-        let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
+        let curDot = 1;
+        if(dotContainer.querySelector('.current')) {
+            curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
+        }
         if(curDot == sliderDots.length) {
             sliderDots[curDot-1].classList.remove('current');
             sliderDots[0].classList.add('current');
