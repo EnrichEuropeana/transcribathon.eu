@@ -1228,177 +1228,468 @@ ready(() => {
         // Generate the transcription and fill it with data from Ration Card form
         const transcriptionTemplate = document.createElement('div');
         transcriptionTemplate.classList = 'transcription-form';
+        ///////////////
+        transcriptionTemplate.innerHTML =
+        `<p><b> Grad Zagreb </b></p>` +
+        `<div class='rc-first-left-block' contenteditable='false' style='vertical-align:top;'>` +
+            `<div class='rc-inner-left'>` + 
+                `<p> Ulica, trg ili ina oznaka: <span class='sub-street-out' contenteditable='true'> ${submitterLoc ? submitterLoc : '&nbsp'} </span></p>` +
+                `<p> Kbr. <span class='sub-street-out' contenteditable='true'> ${submitterHouseNr ? submitterHouseNr : '&nbsp'} </span></p>` +
+            `</div>` +
+            `<div class='rc-inner-right'>` +
+                `<p> A. </p>` +
+                `<p> REG.BROJ: </p>` +
+                `<p contenteditable='true'> ${formNumber ? formNumber : '&nbsp'} </p>` +
+            `</div>` +
+        `</div>` +
+
+        `<div class='rc-first-right-block' contenteditable='false'>` +
+            `<p> Prezime i ime podnosioca prijave: </p>` +
+            `<p contenteditable='true'>  ${submitterLName ? submitterLName : '&nbsp'} ${submitterFName ? submitterFName : '&nbsp'} </p>` +
+            `<p> Prezime i ime i stan kućevlasnika: </p>` +
+            `<p contenteditable='true'> ${landlordLName ? landlordLName : '&nbsp'} ${landlordFName ? landlordFName : '&nbsp'} </p>` +
+            `<p contenteditable='true'> ${landlordLoc ? landlordLoc : '&nbsp &nbsp'} </p>` +
+        `</div>` +
+
+        `<p class='form-title' contenteditable='false'> Potrošačka prijavnica </br>` +
+        `za kućanstva i samce - samice </p>` +
+        `<p class='form-cookies' contenteditable='false'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </br>` +
+        `Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
+
+
+        // Listed people head
+        `<p class='rc-list-head'>` +
+            `<span class='start-span' style='width: 5%;' contenteditable='false'> REDNI BROJ &nbsp</span>` +
+            `<span class='first-span' contenteditable='false'> PREZIME I IME &nbsp</span>` +
+            `<span class='second-span' contenteditable='false'> GODINA ROĐENJA &nbsp</span>` +
+            `<span class='third-span' contenteditable='false'> ODNOS PREMA PODNOSIOCU PRIJAVE ODN. STARJEŠINI &nbsp</span>` +
+            `<span class='fourth-span' contenteditable='false'> ZANIMANJE &nbsp</span>` +
+            `<span class='fifth-span' contenteditable='false'> MJESTO RADA &nbsp</span>` +
+        `</p>` +
+        `${displayDiv.querySelector('.list-person-single') ? 
+            `<span id='list-placeholder'></span>` 
+            :
+            `<p class='list-person-single'>` +
+                `<span class='start-span' style='width: 5%;' > 1 </span>` +
+                `<span class='first-span' > &nbsp </span>` +
+                `<span class='second-span' > &nbsp </span>` +
+                `<span class='third-span' > &nbsp </span>` +
+                `<span class='fourth-span' > &nbsp </span>` +
+                `<span class='fifth-span' > &nbsp </span>` +
+            `</p>` 
+        }` +
+        /// Prirast
+        `${document.querySelector('#show-prirast-ppl').innerHTML != '' ?
+            `<span id='prirast-placeholder'></span>`
+            :
+            `<p style='font-size:9px;font-weight:600;'>PRIRAST: (ispunjava vlast)</p>` +
+            `<p class='list-person-single'>` +
+                `<span class='start-span' style='width: 5%;' > 1 </span>` +
+                `<span class='first-span' > &nbsp </span>` +
+                `<span class='second-span' > &nbsp </span>` +
+                `<span class='third-span' > &nbsp </span>` +
+                `<span class='fourth-span' > &nbsp </span>` +
+                `<span class='fifth-span' > &nbsp </span>` +
+            `</p>` 
+        }` +
+        /// Odpad
+        `${document.querySelector('#show-odpad-ppl').innerHTML != '' ?
+            `<span id='odpad-placeholder'></span>`
+            :
+            `<p style='font-size:9px;font-weight:600;'>ODPAD: (ispunjava vlast)</p>` +
+            `<p class='list-person-single'>` +
+                `<span class='start-span' style='width: 5%;' > 1 </span>` +
+                `<span class='first-span' > &nbsp </span>` +
+                `<span class='second-span' > &nbsp </span>` +
+                `<span class='third-span' > &nbsp </span>` +
+                `<span class='fourth-span' > &nbsp </span>` +
+                `<span class='fifth-span' > &nbsp </span>` +
+            `</p>` 
+        }` +
+        // Zalihe // Without Inline Style, tinymce gets rid of 'span' tags and breaks layout
+        `<p class='form-cookies'> Ujedno izjavljujem pod istom odgovornošću, da u mojem kućanstvu postoje slijedeće zalihe životnih namirnica u</br>` +
+        `Kilogramima odnosno litrama: </p>` +
+
+        `<div class='rc-namirnice-table'>` +
+            `<div class='rc-psenica rc-not' contenteditable='false'>` +
+                `<p class='rc-namirnice-name'> PŠENICA &nbsp </p>` +
+                `<div class='rc-namirnice-left rc-not'>` +
+                    `<p> ZRNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='rc-namirnice-right rc-not'>` +
+                    `<p style='font-size:9px!important;border-left:1px solid #000;border-bottom:1px solid #000;'> BRAŠNO </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-raz rc-not' contenteditable='false'>` +
+                `<p class='rc-namirnice-name'> RAŽ &nbsp </p>` +
+                `<div class='rc-namirnice-left rc-not'>` +
+                    `<p> ZRNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='rc-namirnice-right rc-not'>` +
+                    `<p style='font-size:9px!important;border-left:1px solid #000;border-bottom:1px solid #000;'> BRAŠNO </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-jecam rc-not' contenteditable='false'>` +
+                `<p class='rc-namirnice-name'> JEČAM &nbsp </p>` +
+                `<div class='rc-namirnice-left rc-not'>` +
+                    `<p> ZRNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='rc-namirnice-right rc-not'>` +
+                    `<p style='font-size:9px!important;border-left:1px solid #000;border-bottom:1px solid #000;'> BRAŠNO </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-kukuruz rc-not' contenteditable='false'>` +
+                `<p class='rc-namirnice-name'> KUKURUZ &nbsp </p>` +
+                `<div class='kukuruz-left rc-not'>` +
+                    `<p> ZRNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='kukuruz-mid rc-not'>` +
+                    `<p> KLIP &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='kukuruz-right rc-not'>` +
+                    `<p style='font-size:9px!important;border-left:1px solid #000;border-bottom:1px solid #000;'> BRAŠNO </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p class='rc-namirnice-name'> TJESTENINE &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+        
+            `<div class='rc-namirnice-head-other'>` +
+                `<p class='rc-namirnice-name'> JESTIVO ULJE &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p class='rc-namirnice-name'> MAST &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p class='rc-namirnice-name'> SOL &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p class='rc-namirnice-name'> ŠEĆER &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p class='rc-namirnice-name'> KAVA &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p class='rc-namirnice-name'> SAPUN ZA PRANJE &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p class='rc-namirnice-name'> PETROLEJ &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<p class='rc-povecanje' contenteditable='false' style='border-left: 1px solid #000;border-right:1px solid #000;'> POVEĆANJE </p>` +
+
+            `<div class='rc-psenica' contenteditable='false'>` +
+                `<p style='display:none;'> PŠENICA &nbsp </p>` +
+                `<div class='rc-namirnice-left rc-not'>` +
+                    `<p style='display:none;'> ZRNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='rc-namirnice-right rc-not'>` +
+                    `<p style='display:none;'> BRAŠNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-raz' contenteditable='false'>` +
+                `<p style='display:none;'> RAŽ &nbsp </p>` +
+                `<div class='rc-namirnice-left rc-not'>` +
+                    `<p style='display:none;'> ZRNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='rc-namirnice-right rc-not'>` +
+                    `<p style='display:none;'> BRAŠNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-jecam' contenteditable='false'>` +
+                `<p style='display:none;'> JEČAM &nbsp </p>` +
+                `<div class='rc-namirnice-left rc-not'>` +
+                    `<p style='display:none;'> ZRNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='rc-namirnice-right rc-not'>` +
+                    `<p style='display:none;'> BRAŠNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-kukuruz' contenteditable='false'>` +
+                `<p style='display:none;'> KUKURUZ &nbsp </p>` +
+                `<div class='kukuruz-left rc-not'>` +
+                    `<p style='display:none;'> ZRNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='kukuruz-mid rc-not'>` +
+                    `<p style='display:none;'> KLIP &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+                `<div class='kukuruz-right rc-not'>` +
+                    `<p style='display:none;'> BRAŠNO &nbsp </p>` +
+                    `<p contenteditable='true'> &nbsp </p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p style='display:none;'> TJESTENINE &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+        
+            `<div class='rc-namirnice-head-other'>` +
+                `<p style='display:none;'> JESTIVO ULJE &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p style='display:none;'> MAST &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p style='display:none;'> SOL &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p style='display:none;'> ŠEĆER &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p style='display:none;'> KAVA &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p style='display:none;'> SAPUN ZA PRANJE &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other'>` +
+                `<p style='display:none;'> PETROLEJ &nbsp </p>` +
+                `<p> &nbsp </p>` +
+            `</div>` +
+        `</div>` +
+
+
+        `<div id='shop-container'>` +
+            `<p class='display-shop-label' contenteditable='false'> Živežne namirnice nabavljat ću: </p>` +
+            `<p class='display-shop' contenteditable='false'>` +
+                ` U radnji: ` +
+                `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopName ? shopName : '&nbsp'} </span>` +
+                ` ulica ` + 
+                `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopLoc ? shopLoc : '&nbsp'} </span>` +
+            `</p>` +
+        `</div>` +
+        `<p class='display-form-date' contenteditable='false'> Zagreb, <span style='border-bottom: 1px dotted #000;' contenteditable='true'> ${docDate ? docDate : '&nbsp &nbsp &nbsp'} </span></p>`+
+        `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;font-size:10px;font-weight:600;'>POTPIS PODNOSIOCA PRIJAVE</span></p>` +
+        `<div style='clear:both;height:5px;' contenteditable='false'></div>` +
+        `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;min-width:80px;border-bottom: 1px dotted #000;' contenteditable='true'> &nbsp </span></p>` +
+        `<div style='clear:both;' contenteditable='false'></div>` +
+        `<p class='form-footer' contenteditable='false'> Ova prijavnica stoji din 0*75 i ne smije se skuplje prodavati. </p>` +
+        `<p class='form-sub-footer' contenteditable='false'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>`;
+
+
+
+        //////////////////
         // Spans need classes, otherwise Tinymce doesn't add them to the editor
-        transcriptionTemplate.innerHTML = 
-            `<p class='out-first-row' contenteditable='false'><span class='out-first-span'> Grad Zagreb &emsp;</span>  <span class='out-second-span'> A. &emsp;</span><span class='out-third-span'> Prezime i Ime podnosioca prijave: </span></p>` +
-            `<p class='out-second-row'>` +
-                `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
-                `<span class='out-second-span' style='font-size:9px;' contenteditable='false'> &nbsp REG. BROJ: &emsp;</span>` +
-                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${submitterLName ? submitterLName : '&nbsp'} ${submitterFName ? submitterFName : '&nbsp'} </span>` +
-            `</p>` +
-            `<p class='out-second-subrow'>` +
-                `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
-                `<span class='out-second-span' style='font-size:9px;border-bottom: 1px dotted #000;'> ${formNumber ? formNumber : '&nbsp'} &emsp;</span>` +
-                `<span class='out-third-span' contenteditable='false'> Prezime i ime i stan kućevlasnika: </span>` +
-            `</p>` +
-            `<p class='out-third-row'>` +
-                `<span class='out-first-span' contenteditable='false'> Ulica, trg ili ina oznaka: <span style='border-bottom:1px dotted #000;min-width:70px;display:inline-block;' contenteditable='true'> ${submitterLoc ? submitterLoc : '&nbsp'} </span> </span>` +
-                `<span class='out-second-span' contenteditable='false'> &nbsp &emsp; </span>` +
-                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLName ? landlordLName : '&nbsp'} ${landlordFName ? landlordFName : '&nbsp'} </span>` +
-            `</p>` +
-            `<p class='out-fourth-row'>` +
-                `<span class='out-first-span'> Kbr. <span style='border-bottom:1px dotted #000;display:inline-block;min-width:50px;'> ${submitterHouseNr ? submitterHouseNr : '&nbsp'} &emsp;</span></span>` +
-                `<span class='out-second-span'> &nbsp </span>` +
-                `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLoc ? landlordLoc : '&nbsp &nbsp'} </span>` +
-            `</p>` +
-            `<p class='form-title' contenteditable='false'> Potrošačka prijavnica </br>` +
-            `za kućanstva i samce - samice </p>` +
-            `<p class='form-cookies' contenteditable='false'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </br>` +
-            `Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
-            // Listed people head
-            `<p class='rc-list-head'>` +
-                `<span class='start-span' style='width: 5%;' contenteditable='false'> REDNI BROJ &nbsp</span>` +
-                `<span class='first-span' contenteditable='false'> PREZIME I IME &nbsp</span>` +
-                `<span class='second-span' contenteditable='false'> GODINA ROĐENJA &nbsp</span>` +
-                `<span class='third-span' contenteditable='false'> ODNOS PREMA PODNOSIOCU PRIJAVE ODN. STARJEŠINI &nbsp</span>` +
-                `<span class='fourth-span' contenteditable='false'> ZANIMANJE &nbsp</span>` +
-                `<span class='fifth-span' contenteditable='false'> MJESTO RADA &nbsp</span>` +
-            `</p>` +
-            `${displayDiv.querySelector('.list-person-single') ? 
-                `<span id='list-placeholder'></span>` 
-                :
-                `<p class='list-person-single'>` +
-                    `<span class='start-span' style='width: 5%;' > 1 </span>` +
-                    `<span class='first-span' > &nbsp </span>` +
-                    `<span class='second-span' > &nbsp </span>` +
-                    `<span class='third-span' > &nbsp </span>` +
-                    `<span class='fourth-span' > &nbsp </span>` +
-                    `<span class='fifth-span' > &nbsp </span>` +
-                `</p>` 
-            }` +
-            /// Prirast
-            `${document.querySelector('#show-prirast-ppl').innerHTML != '' ?
-                `<span id='prirast-placeholder'></span>`
-                :
-                `<p style='font-size:9px;font-weight:600;'>PRIRAST: (ispunjava vlast)</p>` +
-                `<p class='list-person-single'>` +
-                    `<span class='start-span' style='width: 5%;' > 1 </span>` +
-                    `<span class='first-span' > &nbsp </span>` +
-                    `<span class='second-span' > &nbsp </span>` +
-                    `<span class='third-span' > &nbsp </span>` +
-                    `<span class='fourth-span' > &nbsp </span>` +
-                    `<span class='fifth-span' > &nbsp </span>` +
-                `</p>` 
-            }` +
-            /// Odpad
-            `${document.querySelector('#show-odpad-ppl').innerHTML != '' ?
-                `<span id='odpad-placeholder'></span>`
-                :
-                `<p style='font-size:9px;font-weight:600;'>ODPAD: (ispunjava vlast)</p>` +
-                `<p class='list-person-single'>` +
-                    `<span class='start-span' style='width: 5%;' > 1 </span>` +
-                    `<span class='first-span' > &nbsp </span>` +
-                    `<span class='second-span' > &nbsp </span>` +
-                    `<span class='third-span' > &nbsp </span>` +
-                    `<span class='fourth-span' > &nbsp </span>` +
-                    `<span class='fifth-span' > &nbsp </span>` +
-                `</p>` 
-            }` +
-            // Zalihe // Without Inline Style, tinymce gets rid of 'span' tags and breaks layout
-            `<p class='form-cookies'> Ujedno izjavljujem pod istom odgovornošću, da u mojem kućanstvu postoje slijedeće zalihe životnih namirnica u</br>` +
-            `Kilogramima odnosno litrama: </p>` +
+        // transcriptionTemplate.innerHTML = 
+        //     `<p class='out-first-row' contenteditable='false'><span class='out-first-span'> Grad Zagreb &emsp;</span>  <span class='out-second-span'> A. &emsp;</span><span class='out-third-span'> Prezime i Ime podnosioca prijave: </span></p>` +
+        //     `<p class='out-second-row'>` +
+        //         `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
+        //         `<span class='out-second-span' style='font-size:9px;' contenteditable='false'> &nbsp REG. BROJ: &emsp;</span>` +
+        //         `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${submitterLName ? submitterLName : '&nbsp'} ${submitterFName ? submitterFName : '&nbsp'} </span>` +
+        //     `</p>` +
+        //     `<p class='out-second-subrow'>` +
+        //         `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
+        //         `<span class='out-second-span' style='font-size:9px;border-bottom: 1px dotted #000;'> ${formNumber ? formNumber : '&nbsp'} &emsp;</span>` +
+        //         `<span class='out-third-span' contenteditable='false'> Prezime i ime i stan kućevlasnika: </span>` +
+        //     `</p>` +
+        //     `<p class='out-third-row'>` +
+        //         `<span class='out-first-span' contenteditable='false'> Ulica, trg ili ina oznaka: <span style='border-bottom:1px dotted #000;min-width:70px;display:inline-block;' contenteditable='true'> ${submitterLoc ? submitterLoc : '&nbsp'} </span> </span>` +
+        //         `<span class='out-second-span' contenteditable='false'> &nbsp &emsp; </span>` +
+        //         `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLName ? landlordLName : '&nbsp'} ${landlordFName ? landlordFName : '&nbsp'} </span>` +
+        //     `</p>` +
+        //     `<p class='out-fourth-row'>` +
+        //         `<span class='out-first-span'> Kbr. <span style='border-bottom:1px dotted #000;display:inline-block;min-width:50px;'> ${submitterHouseNr ? submitterHouseNr : '&nbsp'} &emsp;</span></span>` +
+        //         `<span class='out-second-span'> &nbsp </span>` +
+        //         `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLoc ? landlordLoc : '&nbsp &nbsp'} </span>` +
+        //     `</p>` +
+        //     `<p class='form-title' contenteditable='false'> Potrošačka prijavnica </br>` +
+        //     `za kućanstva i samce - samice </p>` +
+        //     `<p class='form-cookies' contenteditable='false'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </br>` +
+        //     `Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
+        //     // Listed people head
+        //     `<p class='rc-list-head'>` +
+        //         `<span class='start-span' style='width: 5%;' contenteditable='false'> REDNI BROJ &nbsp</span>` +
+        //         `<span class='first-span' contenteditable='false'> PREZIME I IME &nbsp</span>` +
+        //         `<span class='second-span' contenteditable='false'> GODINA ROĐENJA &nbsp</span>` +
+        //         `<span class='third-span' contenteditable='false'> ODNOS PREMA PODNOSIOCU PRIJAVE ODN. STARJEŠINI &nbsp</span>` +
+        //         `<span class='fourth-span' contenteditable='false'> ZANIMANJE &nbsp</span>` +
+        //         `<span class='fifth-span' contenteditable='false'> MJESTO RADA &nbsp</span>` +
+        //     `</p>` +
+        //     `${displayDiv.querySelector('.list-person-single') ? 
+        //         `<span id='list-placeholder'></span>` 
+        //         :
+        //         `<p class='list-person-single'>` +
+        //             `<span class='start-span' style='width: 5%;' > 1 </span>` +
+        //             `<span class='first-span' > &nbsp </span>` +
+        //             `<span class='second-span' > &nbsp </span>` +
+        //             `<span class='third-span' > &nbsp </span>` +
+        //             `<span class='fourth-span' > &nbsp </span>` +
+        //             `<span class='fifth-span' > &nbsp </span>` +
+        //         `</p>` 
+        //     }` +
+        //     /// Prirast
+        //     `${document.querySelector('#show-prirast-ppl').innerHTML != '' ?
+        //         `<span id='prirast-placeholder'></span>`
+        //         :
+        //         `<p style='font-size:9px;font-weight:600;'>PRIRAST: (ispunjava vlast)</p>` +
+        //         `<p class='list-person-single'>` +
+        //             `<span class='start-span' style='width: 5%;' > 1 </span>` +
+        //             `<span class='first-span' > &nbsp </span>` +
+        //             `<span class='second-span' > &nbsp </span>` +
+        //             `<span class='third-span' > &nbsp </span>` +
+        //             `<span class='fourth-span' > &nbsp </span>` +
+        //             `<span class='fifth-span' > &nbsp </span>` +
+        //         `</p>` 
+        //     }` +
+        //     /// Odpad
+        //     `${document.querySelector('#show-odpad-ppl').innerHTML != '' ?
+        //         `<span id='odpad-placeholder'></span>`
+        //         :
+        //         `<p style='font-size:9px;font-weight:600;'>ODPAD: (ispunjava vlast)</p>` +
+        //         `<p class='list-person-single'>` +
+        //             `<span class='start-span' style='width: 5%;' > 1 </span>` +
+        //             `<span class='first-span' > &nbsp </span>` +
+        //             `<span class='second-span' > &nbsp </span>` +
+        //             `<span class='third-span' > &nbsp </span>` +
+        //             `<span class='fourth-span' > &nbsp </span>` +
+        //             `<span class='fifth-span' > &nbsp </span>` +
+        //         `</p>` 
+        //     }` +
+        //     // Zalihe // Without Inline Style, tinymce gets rid of 'span' tags and breaks layout
+        //     `<p class='form-cookies'> Ujedno izjavljujem pod istom odgovornošću, da u mojem kućanstvu postoje slijedeće zalihe životnih namirnica u</br>` +
+        //     `Kilogramima odnosno litrama: </p>` +
 
-            `<div id='zalihe-container'>` +
-                `<div id='zalihe-head'>` +
-                    `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> PŠENICA &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;border-left: 1px solid #000;'> BRAŠNO &nbsp</span>` +
-                    `</span>` +
-                    `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> RAŽ &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
-                    `</span>` +
-                    `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> JEČAM &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
-                        `<span style='width:50%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
-                    `</span>` +
-                    `<span style='width:17.4%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-                        `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> KUKURUZ &nbsp</span>` +
-                        `<span style='width:33%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
-                        `<span style='width:34%;font-size:8px;height:50%;border-right:1px solid #000;'> KLIP &nbsp</span>` +
-                        `<span style='width:33%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
-                    `</span>` +
+        //     `<div id='zalihe-container'>` +
+        //         `<div id='zalihe-head'>` +
+        //             `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
+        //                 `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> PŠENICA &nbsp</span>` +
+        //                 `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
+        //                 `<span style='width:50%;font-size:8px;height:50%;border-left: 1px solid #000;'> BRAŠNO &nbsp</span>` +
+        //             `</span>` +
+        //             `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
+        //                 `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> RAŽ &nbsp</span>` +
+        //                 `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
+        //                 `<span style='width:50%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
+        //             `</span>` +
+        //             `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
+        //                 `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> JEČAM &nbsp</span>` +
+        //                 `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
+        //                 `<span style='width:50%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
+        //             `</span>` +
+        //             `<span style='width:17.4%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
+        //                 `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> KUKURUZ &nbsp</span>` +
+        //                 `<span style='width:33%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
+        //                 `<span style='width:34%;font-size:8px;height:50%;border-right:1px solid #000;'> KLIP &nbsp</span>` +
+        //                 `<span style='width:33%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
+        //             `</span>` +
 
-                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> TJESTENINE &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> JESTIVO ULJE &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> MAST &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SOL &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> ŠEĆER &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> KAVA &nbsp</span>` +
-                    `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SAPUN ZA PRANJE &nbsp</span>` +
-                    `<span style='width:7.2%;height:50px;border-bottom:1px solid #000;'> PETROLEJ &nbsp</span>` +
-                `</div>` +
-                `<div id='zalihe-top'>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:7.2%;height:50px;border-bottom:1px solid #000;'> &nbsp </span>` +
-                `</div>` +
-                `<div id='zalihe-mid'>` +
-                    `<p style='text-align:center;font-size:12px;letter-spacing:1em;'> POVEĆANJE </p>` +
-                `</div>` +
-                `<div id='zalihe-bot'>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-                    `<span style='width:7.2%;height:50px;border-top:1px solid #000;'> &nbsp </span>` +
-                `</div>` +
-            `</div>` +
-            `<div id='shop-container'>` +
-                `<p class='display-shop-label' contenteditable='false'> Živežne namirnice nabavljat ću: </p>` +
-                `<p class='display-shop' contenteditable='false'>` +
-                    ` U radnji: ` +
-                    `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopName ? shopName : '&nbsp'} </span>` +
-                    ` ulica ` + 
-                    `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopLoc ? shopLoc : '&nbsp'} </span>` +
-                `</p>` +
-            `</div>` +
-            `<p class='display-form-date' contenteditable='false'> Zagreb, <span style='border-bottom: 1px dotted #000;' contenteditable='true'> ${docDate ? docDate : '&nbsp &nbsp &nbsp'} </span></p>`+
-            `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;font-size:10px;font-weight:600;'>POTPIS PODNOSIOCA PRIJAVE</span></p>` +
-            `<div style='clear:both;height:5px;' contenteditable='false'></div>` +
-            `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;min-width:80px;border-bottom: 1px dotted #000;' contenteditable='true'> &nbsp </span></p>` +
-            `<div style='clear:both;' contenteditable='false'></div>` +
-            `<p class='form-footer' contenteditable='false'> Ova prijavnica stoji din 0*75 i ne smije se skuplje prodavati. </p>` +
-            `<p class='form-sub-footer' contenteditable='false'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>`;
+        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> TJESTENINE &nbsp</span>` +
+        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> JESTIVO ULJE &nbsp</span>` +
+        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> MAST &nbsp</span>` +
+        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SOL &nbsp</span>` +
+        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> ŠEĆER &nbsp</span>` +
+        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> KAVA &nbsp</span>` +
+        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SAPUN ZA PRANJE &nbsp</span>` +
+        //             `<span style='width:7.2%;height:50px;border-bottom:1px solid #000;'> PETROLEJ &nbsp</span>` +
+        //         `</div>` +
+        //         `<div id='zalihe-top'>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:7.2%;height:50px;border-bottom:1px solid #000;'> &nbsp </span>` +
+        //         `</div>` +
+        //         `<div id='zalihe-mid'>` +
+        //             `<p style='text-align:center;font-size:12px;letter-spacing:1em;'> POVEĆANJE </p>` +
+        //         `</div>` +
+        //         `<div id='zalihe-bot'>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
+        //             `<span style='width:7.2%;height:50px;border-top:1px solid #000;'> &nbsp </span>` +
+        //         `</div>` +
+        //     `</div>` +
+        //     `<div id='shop-container'>` +
+        //         `<p class='display-shop-label' contenteditable='false'> Živežne namirnice nabavljat ću: </p>` +
+        //         `<p class='display-shop' contenteditable='false'>` +
+        //             ` U radnji: ` +
+        //             `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopName ? shopName : '&nbsp'} </span>` +
+        //             ` ulica ` + 
+        //             `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopLoc ? shopLoc : '&nbsp'} </span>` +
+        //         `</p>` +
+        //     `</div>` +
+        //     `<p class='display-form-date' contenteditable='false'> Zagreb, <span style='border-bottom: 1px dotted #000;' contenteditable='true'> ${docDate ? docDate : '&nbsp &nbsp &nbsp'} </span></p>`+
+        //     `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;font-size:10px;font-weight:600;'>POTPIS PODNOSIOCA PRIJAVE</span></p>` +
+        //     `<div style='clear:both;height:5px;' contenteditable='false'></div>` +
+        //     `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;min-width:80px;border-bottom: 1px dotted #000;' contenteditable='true'> &nbsp </span></p>` +
+        //     `<div style='clear:both;' contenteditable='false'></div>` +
+        //     `<p class='form-footer' contenteditable='false'> Ova prijavnica stoji din 0*75 i ne smije se skuplje prodavati. </p>` +
+        //     `<p class='form-sub-footer' contenteditable='false'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>`;
 
             // append listed persons to the transcription
             transcriptionTemplate.insertBefore(displayDiv, transcriptionTemplate.querySelector('#list-placeholder'));

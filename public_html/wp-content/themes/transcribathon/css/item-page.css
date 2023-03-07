@@ -3910,3 +3910,54 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     border-top: 1px solid #000;
     border-right: 1px solid #000;
 }
+/* -------------------------------- */
+.rc-first-left-block, .rc-first-right-block {
+    display: inline-block;
+    width: 50%;
+}
+.rc-inner-left {
+    display: inline-block;
+    width: 70%;
+}
+.rc-inner-right {
+    display: inline-block;
+    width: 30%;
+    padding-left: 20px;
+    text-align: center;
+}
+.rc-first-right-block {
+    padding-left: 20px;
+}
+.rc-namirnice-table p{
+    font-size: 10px!important;
+    vertical-align: top!important;
+    text-align: center;
+    line-height: 1.1em!important;
+    min-height: 30px;
+}
+.rc-namirnice-table div:not(div.rc-not) {
+    display: inline-block;
+    width: 5.7%;
+    border: 1px solid #000;
+}
+.rc-namirnice-left, .rc-namirnice-right {
+    display: inline-block;
+    width: 49%;
+}
+.rc-psenica, .rc-raz, .rc-jecam {
+    display: inline-block;
+    width: 11.6%;
+    border: 1px solid #000;
+}
+.rc-kukuruz {
+    display: inline-block;
+    width: 17.4%;
+    border: 1px solid #000;
+}
+.kukuruz-left, .kukuruz-mid, .kukuruz-right {
+    display: inline-block;
+    width: 33%;
+}
+.rc-namirnice-name {
+    border-bottom: 1px solid #000;
+}
