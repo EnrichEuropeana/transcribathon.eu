@@ -358,6 +358,7 @@ function installEventListeners() {
 
 } // End of event listeners
 
+
 function closeAllSelect(elmnt) {
     /*a function that will close all select boxes in the document,
     except the current select box:*/
@@ -743,6 +744,7 @@ function switchItemPageView() {
     urlParameter.delete('fs');
     let newUrl = '?' + urlParameter.toString()
     window.history.replaceState(null, null, newUrl);
+
 
    }
     //installEventListeners();
@@ -1405,6 +1407,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
         // Check success and create confirmation message
         function(response) {
 
+
             scoreData = {
                 ItemId: itemId,
                 UserId: userId,
@@ -1815,7 +1818,6 @@ function loadLinkData(itemId, userId) {
         if (response.code == "200") {
             const extLinkCont = document.querySelector('#item-link-list');;
             var content = JSON.parse(response.content);
-            //let propDesc = null;
 
             extLinkCont.innerHTML = '';
 
@@ -1891,6 +1893,7 @@ function deleteItemData(type, id, itemId, section, userId) {
             break;
       }
     });
+
 }
 
 function stripHTML(dirtyString) {
@@ -2337,6 +2340,7 @@ async function showActiveTranscription(itemId) {
     const result = await (await fetch(requestUri)).json();
     source = result.data.TranscriptionSource;
 
+
     return source;
 }
 
@@ -2512,48 +2516,45 @@ ready(() => {
                         `</div>` +
                     `</div>` +
                 `</div>`;
-            `</div>`;
         }
-    ////// Second set of variables, after initial slider is rendered
-    // Make nodelist of slides so we can manipulate them
-    const sliderSlides = sliderContainer.querySelectorAll('.slide-sticker');
-    // Get number of dots we need to show on screen
-    const numOfSlides = Math.ceil(sliderImages.length / numOfStickers);
-    const dotContainer = document.querySelector('#dot-indicators');
-    let currentDot = 1;
-
-    // Create dot indicators to jump to desired set of slides
-    for(let z = 1; z <= numOfSlides; z++) {
-        let singleDot = document.createElement('div');
-        singleDot.classList.add('slider-dot');
-        // if(z == 1) {
-        //     singleDot.classList.add('current');
-        // }
-        singleDot.setAttribute('data-value', (z));
-        // Add event to the dot
-        singleDot.addEventListener('click', function() {
-            currentDot = parseInt(this.getAttribute('data-value'));
-            this.classList.add('current');
-
-            endSlide = numOfStickers * z;
-            if(endSlide > sliderImages.length) {
-                endSlide = sliderImages.length;
-            }
-            startSlide = endSlide - numOfStickers;
-            slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
-            activeDot(currentDot);
-        });
-        dotContainer.appendChild(singleDot);
-    }
-    // dotContainer.querySelector('div').classList.add('current');
-    if(currentItm || currentItm == 0) {
-        let currPosition = Math.floor(currentItm/numOfStickers);
-        for(let dot of dotContainer.querySelectorAll('.slider-dot')) {
-            if(currPosition + 1 == parseInt(dot.getAttribute('data-value'))) {
-                dot.click();
+        ////// Second set of variables, after initial slider is rendered
+        // Make nodelist of slides so we can manipulate them
+        const sliderSlides = sliderContainer.querySelectorAll('.slide-sticker');
+        // Get number of dots we need to show on screen
+        const numOfSlides = Math.ceil(sliderImages.length / numOfStickers);
+        const dotContainer = document.querySelector('#dot-indicators');
+        let currentDot = 1;
+    
+        // Create dot indicators to jump to desired set of slides
+        for(let z = 1; z <= numOfSlides; z++) {
+            let singleDot = document.createElement('div');
+            singleDot.classList.add('slider-dot');
+            singleDot.setAttribute('data-value', (z));
+            // Add event to the dot
+            singleDot.addEventListener('click', function() {
+                currentDot = parseInt(this.getAttribute('data-value'));
+                this.classList.add('current');
+    
+                endSlide = numOfStickers * z;
+                if(endSlide > sliderImages.length) {
+                    endSlide = sliderImages.length;
+                }
+                startSlide = endSlide - numOfStickers;
+                slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
+                activeDot(currentDot);
+            });
+            dotContainer.appendChild(singleDot);
+        }
+        // dotContainer.querySelector('div').classList.add('current');
+        if(currentItm || currentItm == 0) {
+            let currPosition = Math.floor(currentItm/numOfStickers);
+            for(let dot of dotContainer.querySelectorAll('.slider-dot')) {
+                if(currPosition + 1 == parseInt(dot.getAttribute('data-value'))) {
+                    dot.click();
+                }
             }
         }
-    }
+        
         function slideImages(slideStart, slideEnd, slides, imageInfo, storyid, currItm) {
             let indexOfSlide = 0;
             for(let i = slideStart; i < slideEnd; i++) {
