@@ -2001,14 +2001,27 @@ function _TCT_ration_cards($atts)
                         $content .= "</div>";
                     $content .= "</li>";
 
-                    $content .= "<li>";
-                        $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
-                            onclick='switchItemTab(event, \"editor-tab\")'>";
-                            $content .= '<i class="fa fa-quote-right tab-i"></i>';
-                            $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TranscriptionStatusColorCode'].";background-color:".$itemData['TranscriptionStatusColorCode'].";'></i>";
-                            $content .= "<span ><b> TRANSCRIPTION</b></span></p>";
-                        $content .= "</div>";
-                    $content .= "</li>";
+                    
+                   // var_dump($itemData);
+                    if($itemData['TranscriptionStatusName'] == 'Not Started') {
+                        $content .= "<li style='display:none;'>";
+                            $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
+                                onclick='switchItemTab(event, \"editor-tab\")' style='display:none;'>";
+                                $content .= '<i class="fa fa-quote-right tab-i"></i>';
+                                $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TranscriptionStatusColorCode'].";background-color:".$itemData['TranscriptionStatusColorCode'].";'></i>";
+                                $content .= "<span ><b> TRANSCRIPTION</b></span></p>";
+                            $content .= "</div>";
+                        $content .= "</li>";
+                    } else {
+                        $content .= "<li>";
+                            $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
+                                onclick='switchItemTab(event, \"editor-tab\")'>";
+                                $content .= '<i class="fa fa-quote-right tab-i"></i>';
+                                $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TranscriptionStatusColorCode'].";background-color:".$itemData['TranscriptionStatusColorCode'].";'></i>";
+                                $content .= "<span ><b> TRANSCRIPTION</b></span></p>";
+                            $content .= "</div>";
+                        $content .= "</li>";
+                    }
 
                     $content .= "<li>";
                         $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
