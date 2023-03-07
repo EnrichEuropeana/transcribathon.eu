@@ -1815,14 +1815,15 @@ function loadLinkData(itemId, userId) {
         if (response.code == "200") {
             const extLinkCont = document.querySelector('#item-link-list');;
             var content = JSON.parse(response.content);
-            let propDesc = null;
+            //let propDesc = null;
 
             extLinkCont.innerHTML = '';
 
             for (let property of content['Properties']) {
                 if(property['PropertyType'] === 'Link') {
+                    let propDesc = null;
                     if(property['PropertyDescription'] != 'NULL') {
-                        propDesc = `<div class='prop-desc' style='padding-left:23px;bottom:6px;'>Description: <b>${escapeHtml(property['PropertyDescription'])}</b></div>`;
+                        propDesc = `<div class='prop-desc' style='padding-left:23px;bottom:6px;'> ${escapeHtml(property['PropertyDescription'])} </div>`;
                     }
                     extLinkCont.innerHTML +=
                         `<div id='link-${property['PropertyId']}'>` +

@@ -669,7 +669,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $enrichmentTab .= "</p>";
 
                             if($person['Description'] != 'NULL' && $person['Description'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>Description: " . htmlspecialchars_decode($person['Description']) . "</p>";
+                                $enrichmentTab .= "<p class='person-description'>" . htmlspecialchars_decode($person['Description']) . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
                                 $enrichmentTab .= "<p class='person-description'>Wikidata ID: <a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></p>";
@@ -689,7 +689,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-firstName-edit' class='input-response person-input-field person-re-edit'
                                                 placeholder='&nbsp First Name' value='" . htmlspecialchars_decode($person['FirstName']) . "'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
-                                                placeholder='&nbsp Last Name' value='" . htmlspecialchars_decode($person['LastName'] != 'NULL' ? $person['LastName'] : '') . "'>";
+                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? htmlspecialchars_decode($person['LastName']) : '') . "'>";
                             $enrichmentTab .= "</div>";
 
                             $enrichmentTab .= "<div class='person-description-input'>";
