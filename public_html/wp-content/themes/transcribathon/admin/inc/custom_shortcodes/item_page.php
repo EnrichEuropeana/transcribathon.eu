@@ -669,10 +669,10 @@ if (event.target.id != "tagging-status-indicator") {
                             $enrichmentTab .= "</p>";
 
                             if($person['Description'] != 'NULL' && $person['Description'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>Description: " . $person['Description'] . "</p>";
+                                $enrichmentTab .= "<p class='person-description'>Description: " . htmlspecialchars_decode($person['Description']) . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . $person['Link'] . "</a></p>";
+                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></p>";
                             }
                             // Edit/Delete buttons
                             $enrichmentTab .= "<div class='edit-del-person'>";
@@ -689,7 +689,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-firstName-edit' class='input-response person-input-field person-re-edit'
                                                 placeholder='&nbsp First Name' value='" . htmlspecialchars_decode($person['FirstName']) . "'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
-                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? $person['LastName'] : '') . "'>";
+                                                placeholder='&nbsp Last Name' value='" . htmlspecialchars_decode($person['LastName'] != 'NULL' ? $person['LastName'] : '') . "'>";
                             $enrichmentTab .= "</div>";
 
                             $enrichmentTab .= "<div class='person-description-input'>";
@@ -1214,7 +1214,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $descriptionTab .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
             $descriptionTab .= "</div></div>";
 
-            $descriptionTab .= "<textarea id='item-page-description-text' class='login-required' name='description' rows='4'>";
+            $descriptionTab .= "<textarea id='item-page-description-text' class='login-required' name='description' rows='2'>";
                 if($itemData['Description'] != null) {
                     $descriptionTab .= htmlspecialchars($itemData['Description'], ENT_QUOTES, 'UTF-8');
                 }
@@ -1266,10 +1266,6 @@ if (event.target.id != "tagging-status-indicator") {
                 $descriptionTab .= "</div>";
 
                 $descriptionTab .= "<div style='clear:both;'></div>";
-            // $descriptionTab .= "</div>";
-            // $descriptionTab .= "<div style='clear:both;'></div>";
-            // $descriptionTab .= "</div>";
-            // $descriptionTab .= "<span id='description-update-message'></span>";
         $descriptionTab .= "</div>";
 
         // Keywords
@@ -1300,17 +1296,17 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .= '</div>';
 
             $descriptionTab .= '<div id="item-keyword-list" class="item-data-output-listt">';
-// $taggingTab .= '<ul>';
+
                 foreach ($itemData['Properties'] as $property) {
                     if ($property['PropertyType'] == "Keyword") {
                         $descriptionTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
-                            $descriptionTab .= $property['PropertyValue'];
+                            $descriptionTab .= htmlspecialchars_decode($property['PropertyValue']);
                             $descriptionTab .= '<i class="login-required delete-item-datas far fa-times" style="margin-left:5px;"
                                                 onClick="deleteItemData(\'properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'keyword\', '.get_current_user_id().')"></i>';
                         $descriptionTab .= '</div>';
                     }
                 }
-// $taggingTab .= '</ul>';
+
                 $descriptionTab .= '</div>';
         $descriptionTab .= "</div>";
 
@@ -1319,19 +1315,13 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .= '<div class="collapse-headline collapse-controller" data-toggle="collapse" href="#link-input-container">';
                 $descriptionTab .= '<h6 class="theme-color item-data-input-headline login-required" title="Click to add a link">';
                     $descriptionTab .= 'External Web Resources ';
-                    // $taggingTab .= "<button type='submit' class='edit-data-save-right' id='link-save-button'
-                    // onClick='saveLink(".$itemData['ItemId'].", ".get_current_user_id()."
-                    // , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
-                    // $taggingTab .= '<div>Save</div>';
-                    // $taggingTab .= "</button>";
+
                     $descriptionTab .= '<i style="margin-left: 5px;" class="fas fa-plus-circle"></i>';
                 $descriptionTab .= '<i id="links-open" class="fas fa-edit"></i></h6>';
             $descriptionTab .= '</div>';
 
             $descriptionTab .= '<div id="link-input-container" class="collapse" style="padding-right:70px;position:relative;">';
-    // $taggingTab .= '<div>';
-    //     $taggingTab .= "<span>Link:</span><br/>";
-    // $taggingTab .= '</div>';
+
 
                 $descriptionTab .= '<div class="link-url-input">';
                     $descriptionTab .= '<input type="url" name="" placeholder="&nbsp Enter URL here">';
@@ -1358,8 +1348,8 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .= '<div id="item-link-list" class="item-data-output-list">';
             foreach ($itemData['Properties'] as $property) {
                 if($property['PropertyDescription'] != 'NULL') {
-                    $propDescription =  $property['PropertyDescription'];
-                    $descPHolder = $property['PropertyDescription'];
+                    $propDescription =  htmlspecialchars_decode($property['PropertyDescription']);
+                    $descPHolder = htmlspecialchars_decode($property['PropertyDescription']);
                 } else {
                     $propDescription = "";
                     $descPHolder = "";
@@ -1369,7 +1359,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $descriptionTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
                             $descriptionTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
                                 $descriptionTab .= "<i class='far fa-external-link' style='margin-left: 3px;margin-right:5px;color:#0a72cc;font-size:14px;'></i>";
-                                $descriptionTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
+                                $descriptionTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . htmlspecialchars_decode($property['PropertyValue']) . "</a>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div class='edit-del-link'>";
                                 $descriptionTab .= "<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required'

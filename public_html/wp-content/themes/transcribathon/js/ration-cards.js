@@ -1247,15 +1247,11 @@ ready(() => {
 
             // Generate Description if Form number is entered and save it
             if(formNumber != '') {
-                let itemDescription = `Potrošačka kartica prezimena ${submitterLName} , Registracijski Broj kartice: ${formNumber}.`
+                let itemDescription = `Potrošačka kartica prezimena ${submitterLName}, Registracijski Broj kartice: ${formNumber}.`
 
                 data = {
                     Description: itemDescription
                 }
-
-                
-                updateDataProperty('items', itemId, 'DescriptionLanguage', '12');
-                
 
                 jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                     'type': 'POST',
@@ -1265,9 +1261,20 @@ ready(() => {
                 // Check success and create confirmation message
                 function(response) {
                     console.log(response);
+
+                    updateDataProperty('items', itemId, 'DescriptionLanguage', '12');
+                    // show description in description tab
+                    document.querySelector('#item-page-description-text').textContent = itemDescription;
+                    if(!document.querySelector('#description-language-selector').querySelector('#language-sel-placeholder')) {
+                        // show description language
+                        let newLang = document.createElement('div');
+                        newLang.classList = 'language-select-selected';
+                        newLang.textContent = 'Hrvatski';
+    
+                        document.querySelector('#description-language-selector').appendChild(newLang);
+                    }
                 });
             }
-
     })
 
     // Add Prirast/Odpad tables on button click

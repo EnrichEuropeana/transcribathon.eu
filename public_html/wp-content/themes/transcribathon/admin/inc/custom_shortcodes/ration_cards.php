@@ -1196,7 +1196,7 @@ function _TCT_ration_cards($atts)
                 $descriptionTab .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
             $descriptionTab .= "</div></div>";
 
-            $descriptionTab .= "<textarea id='item-page-description-text' class='login-required' name='description' rows='4'>";
+            $descriptionTab .= "<textarea id='item-page-description-text' class='login-required' name='description' rows='2'>";
                 if($itemData['Description'] != null) {
                     $descriptionTab .= htmlspecialchars($itemData['Description'], ENT_QUOTES, 'UTF-8');
                 }
@@ -1282,17 +1282,17 @@ function _TCT_ration_cards($atts)
             $descriptionTab .= '</div>';
 
             $descriptionTab .= '<div id="item-keyword-list" class="item-data-output-listt">';
-// $taggingTab .= '<ul>';
+
                 foreach ($itemData['Properties'] as $property) {
                     if ($property['PropertyType'] == "Keyword") {
                         $descriptionTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
-                            $descriptionTab .= $property['PropertyValue'];
+                            $descriptionTab .= htmlspecialchars_decode($property['PropertyValue']);
                             $descriptionTab .= '<i class="login-required delete-item-datas far fa-times" style="margin-left:5px;"
                                                 onClick="deleteItemData(\'properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'keyword\', '.get_current_user_id().')"></i>';
                         $descriptionTab .= '</div>';
                     }
                 }
-// $taggingTab .= '</ul>';
+
                 $descriptionTab .= '</div>';
         $descriptionTab .= "</div>";
 
@@ -1311,9 +1311,6 @@ function _TCT_ration_cards($atts)
             $descriptionTab .= '</div>';
 
             $descriptionTab .= '<div id="link-input-container" class="collapse" style="padding-right:70px;position:relative;">';
-    // $taggingTab .= '<div>';
-    //     $taggingTab .= "<span>Link:</span><br/>";
-    // $taggingTab .= '</div>';
 
                 $descriptionTab .= '<div class="link-url-input">';
                     $descriptionTab .= '<input type="url" name="" placeholder="&nbsp Enter URL here">';
@@ -1351,7 +1348,7 @@ function _TCT_ration_cards($atts)
                         $descriptionTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
                             $descriptionTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
                                 $descriptionTab .= "<i class='far fa-external-link' style='margin-left: 3px;margin-right:5px;color:#0a72cc;font-size:14px;'></i>";
-                                $descriptionTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
+                                $descriptionTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . htmlspecialchars_decode($property['PropertyValue']) . "</a>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div class='edit-del-link'>";
                                 $descriptionTab .= "<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required'
@@ -1367,7 +1364,7 @@ function _TCT_ration_cards($atts)
                                 $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-description-input' class='link-description-input'>";
-                                $descriptionTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars($descPHolder, ENT_QUOTES, 'UTF-8') . "</textarea>";
+                                $descriptionTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars_decode($descPHolder) . "</textarea>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div class='form-buttons-right'>";
                                 $descriptionTab .= "<div class='link-btn-right'>" ;
