@@ -654,7 +654,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $enrichmentTab .= "</p>";
 
                             if($person['Description'] != 'NULL' && $person['Description'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>" . $person['Description'] . "</p>";
+                                $enrichmentTab .= "<p class='person-description'>" . htmlspecialchars_decode($person['Description']) . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
                                 $enrichmentTab .= "<p class='person-description'>Wikidata ID: <a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . $person['Link'] . "</a></p>";
@@ -674,7 +674,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-firstName-edit' class='input-response person-input-field person-re-edit'
                                                 placeholder='&nbsp First Name' value='" . htmlspecialchars_decode($person['FirstName']) . "'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
-                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? $person['LastName'] : '') . "'>";
+                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? htmlspecialchars_decode($person['LastName']) : '') . "'>";
                             $enrichmentTab .= "</div>";
 
                             $enrichmentTab .= "<div class='person-description-input'>";
@@ -761,7 +761,7 @@ if (event.target.id != "tagging-status-indicator") {
                 foreach ($itemData['Properties'] as $property) {
                     if ($property['PropertyType'] == "Keyword") {
                         $enrichmentTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
-                            $enrichmentTab .= $property['PropertyValue'];
+                            $enrichmentTab .= htmlspecialchars_decode($property['PropertyValue']);
                             $enrichmentTab .= '<i class="login-required delete-item-datas far fa-times" style="margin-left:5px;"
                                                 onClick="deleteItemData(\'properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'keyword\', '.get_current_user_id().')"></i>';
                         $enrichmentTab .= '</div>';
@@ -826,7 +826,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $enrichmentTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
                                 $enrichmentTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
                                     $enrichmentTab .= "<i class='far fa-external-link' style='margin-left: 3px;margin-right:5px;color:#0a72cc;font-size:14px;'></i>";
-                                    $enrichmentTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . $property['PropertyValue'] . "</a>";
+                                    $enrichmentTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . htmlspecialchars_decode($property['PropertyValue']) . "</a>";
                                 $enrichmentTab .= "</div>";
                                 $enrichmentTab .= "<div class='edit-del-link'>";
                                     $enrichmentTab .= "<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required'
@@ -834,7 +834,7 @@ if (event.target.id != "tagging-status-indicator") {
                                     $enrichmentTab .= "<i class='edit-item-data-icon delete-item-data fas fa-trash-alt theme-color-hover login-required'
                                         onClick='deleteItemData(\"properties\", " . $property['PropertyId'] . ", " . $itemData['ItemId'] . ", \"link\", " . get_current_user_id() .")'></i>";
                                 $enrichmentTab .= "</div>";
-                                $enrichmentTab .= "<div class='prop-desc' style='bottom:6px;padding-left:23px;'>" . $propDescription . "</div>";
+                                $enrichmentTab .= "<div class='prop-desc' style='bottom:6px;padding-left:23px;'>" . htmlspecialchars_decode($propDescription) . "</div>";
                             $enrichmentTab .= "</div>";
 
                             $enrichmentTab .= "<div class='link-data-edit-container' id='link-data-edit-" . $property['PropertyId'] . "'>";
