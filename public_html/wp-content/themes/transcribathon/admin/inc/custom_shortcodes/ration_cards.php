@@ -962,7 +962,7 @@ function _TCT_ration_cards($atts)
                     $editorTab .= "</div>";
 
                     $editorTab .= "<button class='item-page-save-button language-tooltip' id='transcription-update-button' style='display:block!important;background:#0a72cc;border-color:#0a72cc;color:#fff;'
-                                    onClick='updateItemTranscription(" . $itemData["ItemId"] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
+                                    onClick='updateRcItemTranscription(" . $itemData["ItemId"] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                         $editorTab .= "SAVE"; // Save transcription
                         $editorTab .= "<span class='language-tooltip-text'>Please select a language</span>";
                     $editorTab .= "</button>";
@@ -2006,7 +2006,7 @@ function _TCT_ration_cards($atts)
                     if($itemData['TranscriptionStatusName'] == 'Not Started') {
                         $content .= "<li style='display:none;'>";
                             $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
-                                onclick='switchItemTab(event, \"editor-tab\")' style='display:none;'>";
+                                onclick='switchItemTab(event, \"editor-tab\")'>";
                                 $content .= '<i class="fa fa-quote-right tab-i"></i>';
                                 $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TranscriptionStatusColorCode'].";background-color:".$itemData['TranscriptionStatusColorCode'].";'></i>";
                                 $content .= "<span ><b> TRANSCRIPTION</b></span></p>";
