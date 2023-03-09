@@ -903,7 +903,7 @@ function _TCT_ration_cards($atts)
                 $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
                     $editorTab .= "<div id='mytoolbar-transcription'></div>";
                     
-                    $editorTab .= "<div id='item-page-transcription-text' rows='8'>";
+                    $editorTab .= "<div id='item-page-transcription-text' rows='8' style='white-space:nowrap!important;'>";
                         // if($currentTranscription != null) {
                             $editorTab .= $currentTranscription['Text'];
                         // }
@@ -1797,7 +1797,7 @@ function _TCT_ration_cards($atts)
             $content .= "<div id='full-view-r'>";
             //var_dump($itemData);
                 // Transcription
-                $content .= "<div id='transcription-container' style='height:600px;'>";
+                $content .= "<div id='transcription-container' style='height:600px;white-space:nowrap!important;'>";
                     $content .= "<div id='startTranscription' class='mtr-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         $content .= "<div>";
