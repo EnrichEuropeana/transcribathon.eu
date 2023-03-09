@@ -1155,7 +1155,7 @@ p.mb-1 {
     min-height: 100%;
     width: 55%;
     min-width: 250px;
-    max-width: calc(100% - 33vw)!important;
+    max-width: calc(100% - 750px)!important;
     white-space: nowrap;
     background: #eeeeee;
     color: white;
@@ -1218,8 +1218,8 @@ p.mb-1 {
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
     overflow: hidden;
-    width: 33vw;
-    min-width: 33vw!important;
+    width: 750px;
+    min-width: 750px!important;
     height: 100%!important;
     align-content: space-evenly;
 }
@@ -3928,36 +3928,90 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .rc-first-right-block {
     padding-left: 20px;
 }
-.rc-namirnice-table p{
+.rc-namirnice-table p:not(.rc-povecanje, .rc-namirnice-input, .rc-brasno){
     font-size: 10px!important;
     vertical-align: top!important;
     text-align: center;
-    line-height: 1.1em!important;
+    line-height: 1!important;
     min-height: 30px;
 }
 .rc-namirnice-table div:not(div.rc-not) {
     display: inline-block;
-    width: 5.7%;
+    width: 5.9%;
     border: 1px solid #000;
+    height: 30px;
+    border-left: none;
+}
+.rc-namirnice-table div:not(div.rc-bot-div, div.rc-inner-bot-div) {
+    height: 60px;
+}
+div.rc-inner-bot-div {
+    height: 44px;
 }
 .rc-namirnice-left, .rc-namirnice-right {
     display: inline-block;
-    width: 49%;
+}
+.rc-namirnice-left {
+    width: 50%;
+    border-right: 1px solid #000;
+}
+.rc-namirnice-right {
+    width: 50%;
 }
 .rc-psenica, .rc-raz, .rc-jecam {
     display: inline-block;
-    width: 11.6%;
+    width: 11.8%;
     border: 1px solid #000;
+    border-right: none;
 }
 .rc-kukuruz {
     display: inline-block;
     width: 17.4%;
     border: 1px solid #000;
 }
-.kukuruz-left, .kukuruz-mid, .kukuruz-right {
+.kukuruz-left, .kukuruz-mid {
     display: inline-block;
     width: 33%;
+    border-right: 1px solid #000;
+}
+.kukuruz-right {
+    display: inline-block;
+    width: 34%;
 }
 .rc-namirnice-name {
+    border-bottom: 1px solid #000;
+}
+.rc-hidden-head {
+    position: absolute;
+    opacity: 0;
+    right: -100px;
+}
+.rc-povecanje {
+    line-height: 30px!important;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    font-size: 12px!important;
+    letter-spacing: 15px;
+    text-align: center;
+}
+.rc-bot-div {
+    height: 30px!important;
+    font-size: 14px!important;
+}
+.rc-namirnice-input {
+    line-height: 30px!important;
+    font-size: 15px!important;
+    text-align: center;
+}
+.rc-brasno {
+    font-size: 8px!important;
+    line-height: 12px!important;
+    text-overflow: clip;
+}
+.rc-brasno {
+    font-size: 8px!important;
+    line-height: 12px!important;
+    text-align: center;
+    min-height: 15px!important;
     border-bottom: 1px solid #000;
 }

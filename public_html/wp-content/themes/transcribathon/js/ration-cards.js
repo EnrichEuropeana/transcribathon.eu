@@ -1310,191 +1310,191 @@ ready(() => {
         `<p class='form-cookies'> Ujedno izjavljujem pod istom odgovornošću, da u mojem kućanstvu postoje slijedeće zalihe životnih namirnica u</br>` +
         `Kilogramima odnosno litrama: </p>` +
 
-        `<div class='rc-namirnice-table'>` +
-            `<div class='rc-psenica rc-not' contenteditable='false'>` +
-                `<p class='rc-namirnice-name'> PŠENICA &nbsp </p>` +
-                `<div class='rc-namirnice-left rc-not'>` +
-                    `<p> ZRNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+        `<div class='rc-namirnice-table' style='line-height:0!important;'>` +
+            `<div class='rc-psenica rc-not'>` +
+                `<p class='rc-namirnice-name' style='min-height:15px!important;' contenteditable='false'> PŠENICA </p>` +
+                `<div class='rc-namirnice-left rc-not rc-inner-bot-div'>` +
+                    `<p style='border-bottom:1px solid #000;min-height:15px!important;' contenteditable='false'> ZRNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
                 `</div>` +
-                `<div class='rc-namirnice-right rc-not'>` +
-                    `<p style='font-size:9px!important;border-left:1px solid #000;border-bottom:1px solid #000;'> BRAŠNO </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
-                `</div>` +
-            `</div>` +
-
-            `<div class='rc-raz rc-not' contenteditable='false'>` +
-                `<p class='rc-namirnice-name'> RAŽ &nbsp </p>` +
-                `<div class='rc-namirnice-left rc-not'>` +
-                    `<p> ZRNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
-                `</div>` +
-                `<div class='rc-namirnice-right rc-not'>` +
-                    `<p style='font-size:9px!important;border-left:1px solid #000;border-bottom:1px solid #000;'> BRAŠNO </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+                `<div class='rc-namirnice-right rc-not rc-inner-bot-div'>` +
+                    `<p class='rc-brasno' contenteditable='false'> BRAŠNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
                 `</div>` +
             `</div>` +
 
-            `<div class='rc-jecam rc-not' contenteditable='false'>` +
-                `<p class='rc-namirnice-name'> JEČAM &nbsp </p>` +
-                `<div class='rc-namirnice-left rc-not'>` +
-                    `<p> ZRNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+            `<div class='rc-raz rc-not'>` +
+                `<p class='rc-namirnice-name' style='min-height:15px!important;' contenteditable='false'> RAŽ </p>` +
+                `<div class='rc-namirnice-left rc-not rc-inner-bot-div'>` +
+                    `<p style='border-bottom:1px solid #000;min-height:15px!important;' contenteditable='false'> ZRNO </p>` +
+                    `<p class='rc-namirnice-input' ></p>` +
                 `</div>` +
-                `<div class='rc-namirnice-right rc-not'>` +
-                    `<p style='font-size:9px!important;border-left:1px solid #000;border-bottom:1px solid #000;'> BRAŠNO </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+                `<div class='rc-namirnice-right rc-not rc-inner-bot-div'>` +
+                    `<p class='rc-brasno' contenteditable='false'> BRAŠNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
                 `</div>` +
             `</div>` +
 
-            `<div class='rc-kukuruz rc-not' contenteditable='false'>` +
-                `<p class='rc-namirnice-name'> KUKURUZ &nbsp </p>` +
-                `<div class='kukuruz-left rc-not'>` +
-                    `<p> ZRNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+            `<div class='rc-jecam rc-not'>` +
+                `<p class='rc-namirnice-name' style='min-height:15px!important;' contenteditable='false'> JEČAM </p>` +
+                `<div class='rc-namirnice-left rc-not rc-inner-bot-div'>` +
+                    `<p style='border-bottom:1px solid #000;min-height:15px!important;' contenteditable='false'> ZRNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
                 `</div>` +
-                `<div class='kukuruz-mid rc-not'>` +
-                    `<p> KLIP &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+                `<div class='rc-namirnice-right rc-not rc-inner-bot-div'>` +
+                    `<p class='rc-brasno' contenteditable='false'> BRAŠNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
                 `</div>` +
-                `<div class='kukuruz-right rc-not'>` +
-                    `<p style='font-size:9px!important;border-left:1px solid #000;border-bottom:1px solid #000;'> BRAŠNO </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+            `</div>` +
+
+            `<div class='rc-kukuruz rc-not'>` +
+                `<p class='rc-namirnice-name' style='min-height:15px!important;' contenteditable='false'> KUKURUZ </p>` +
+                `<div class='kukuruz-left rc-not rc-inner-bot-div'>` +
+                    `<p style='border-bottom:1px solid #000;min-height:15px!important;' contenteditable='false'> ZRNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
+                `</div>` +
+                `<div class='kukuruz-mid rc-not rc-inner-bot-div'>` +
+                    `<p style='border-bottom:1px solid #000;min-height:15px!important;' contenteditable='false'> KLIP </p>` +
+                    `<p class='rc-namirnice-input' ></p>` +
+                `</div>` +
+                `<div class='kukuruz-right rc-not rc-inner-bot-div'>` +
+                    `<p class='rc-brasno' contenteditable='false'> BRAŠNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
                 `</div>` +
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name'> TJESTENINE &nbsp </p>` +
-                `<p> &nbsp </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false'> TJESTENINE </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
         
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name'> JESTIVO ULJE &nbsp </p>` +
-                `<p> &nbsp </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false'> JESTIVO ULJE </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name'> MAST &nbsp </p>` +
-                `<p> &nbsp </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false'> MAST </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name'> SOL &nbsp </p>` +
-                `<p> &nbsp </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false'> SOL </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name'> ŠEĆER &nbsp </p>` +
-                `<p> &nbsp </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false'> ŠEĆER </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name'> KAVA &nbsp </p>` +
-                `<p> &nbsp </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false'> KAVA </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name'> SAPUN ZA PRANJE &nbsp </p>` +
-                `<p> &nbsp </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false' style='height:30px;font-size:9px!important;'> SAPUN ZA PRANJE </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name'> PETROLEJ &nbsp </p>` +
-                `<p> &nbsp </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false'> PETROLEJ </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
             `<p class='rc-povecanje' contenteditable='false' style='border-left: 1px solid #000;border-right:1px solid #000;'> POVEĆANJE </p>` +
 
-            `<div class='rc-psenica' contenteditable='false'>` +
-                `<p style='display:none;'> PŠENICA &nbsp </p>` +
-                `<div class='rc-namirnice-left rc-not'>` +
-                    `<p style='display:none;'> ZRNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+            `<div class='rc-psenica rc-not rc-bot-div'>` +
+                `<p class='rc-hidden-head'> PŠENICA </p>` +
+                `<div class='rc-namirnice-left rc-not rc-bot-div' style='height:29px!important;'>` +
+                    `<p class='rc-hidden-head'> ZRNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
                 `</div>` +
-                `<div class='rc-namirnice-right rc-not'>` +
-                    `<p style='display:none;'> BRAŠNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
-                `</div>` +
-            `</div>` +
-
-            `<div class='rc-raz' contenteditable='false'>` +
-                `<p style='display:none;'> RAŽ &nbsp </p>` +
-                `<div class='rc-namirnice-left rc-not'>` +
-                    `<p style='display:none;'> ZRNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
-                `</div>` +
-                `<div class='rc-namirnice-right rc-not'>` +
-                    `<p style='display:none;'> BRAŠNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+                `<div class='rc-namirnice-right rc-not rc-bot-div'>` +
+                    `<p class='rc-hidden-head'> BRAŠNO </p>` +
+                    `<p class='rc-namirnice-input' ></p>` +
                 `</div>` +
             `</div>` +
 
-            `<div class='rc-jecam' contenteditable='false'>` +
-                `<p style='display:none;'> JEČAM &nbsp </p>` +
-                `<div class='rc-namirnice-left rc-not'>` +
-                    `<p style='display:none;'> ZRNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+            `<div class='rc-raz rc-not rc-bot-div'>` +
+                `<p class='rc-hidden-head'> RAŽ </p>` +
+                `<div class='rc-namirnice-left rc-not rc-bot-div' style='height:29px!important;'>` +
+                    `<p class='rc-hidden-head'> ZRNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
                 `</div>` +
-                `<div class='rc-namirnice-right rc-not'>` +
-                    `<p style='display:none;'> BRAŠNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
-                `</div>` +
-            `</div>` +
-
-            `<div class='rc-kukuruz' contenteditable='false'>` +
-                `<p style='display:none;'> KUKURUZ &nbsp </p>` +
-                `<div class='kukuruz-left rc-not'>` +
-                    `<p style='display:none;'> ZRNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
-                `</div>` +
-                `<div class='kukuruz-mid rc-not'>` +
-                    `<p style='display:none;'> KLIP &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
-                `</div>` +
-                `<div class='kukuruz-right rc-not'>` +
-                    `<p style='display:none;'> BRAŠNO &nbsp </p>` +
-                    `<p contenteditable='true'> &nbsp </p>` +
+                `<div class='rc-namirnice-right rc-not rc-bot-div'>` +
+                    `<p class='rc-hidden-head'> BRAŠNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
                 `</div>` +
             `</div>` +
 
-            `<div class='rc-namirnice-head-other'>` +
-                `<p style='display:none;'> TJESTENINE &nbsp </p>` +
-                `<p> &nbsp </p>` +
+            `<div class='rc-jecam rc-not rc-bot-div'>` +
+                `<p class='rc-hidden-head'> JEČAM </p>` +
+                `<div class='rc-namirnice-left rc-not rc-bot-div' style='height:29px!important;'>` +
+                    `<p class='rc-hidden-head'> ZRNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
+                `</div>` +
+                `<div class='rc-namirnice-right rc-not rc-bot-div'>` +
+                    `<p class='rc-hidden-head'> BRAŠNO </p>` +
+                    `<p class='rc-namirnice-input' ></p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-kukuruz rc-not rc-bot-div'>` +
+                `<p class='rc-hidden-head'> KUKURUZ </p>` +
+                `<div class='kukuruz-left rc-not rc-bot-div' style='height:29px!important;'>` +
+                    `<p class='rc-hidden-head'> ZRNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
+                `</div>` +
+                `<div class='kukuruz-mid rc-not rc-bot-div' style='height:29px!important;'>` +
+                    `<p class='rc-hidden-head'> KLIP </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
+                `</div>` +
+                `<div class='kukuruz-right rc-not rc-bot-div'>` +
+                    `<p class='rc-hidden-head'> BRAŠNO </p>` +
+                    `<p class='rc-namirnice-input'></p>` +
+                `</div>` +
+            `</div>` +
+
+            `<div class='rc-namirnice-head-other rc-bot-div'>` +
+                `<p class='rc-hidden-head'> TJESTENINE </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
         
-            `<div class='rc-namirnice-head-other'>` +
-                `<p style='display:none;'> JESTIVO ULJE &nbsp </p>` +
-                `<p> &nbsp </p>` +
+            `<div class='rc-namirnice-head-other rc-bot-div'>` +
+                `<p class='rc-hidden-head'> JESTIVO ULJE </p>` + 
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
-            `<div class='rc-namirnice-head-other'>` +
-                `<p style='display:none;'> MAST &nbsp </p>` +
-                `<p> &nbsp </p>` +
+            `<div class='rc-namirnice-head-other rc-bot-div'>` +
+                `<p class='rc-hidden-head'> MAST </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
-            `<div class='rc-namirnice-head-other'>` +
-                `<p style='display:none;'> SOL &nbsp </p>` +
-                `<p> &nbsp </p>` +
+            `<div class='rc-namirnice-head-other rc-bot-div'>` +
+                `<p class='rc-hidden-head'> SOL </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
-            `<div class='rc-namirnice-head-other'>` +
-                `<p style='display:none;'> ŠEĆER &nbsp </p>` +
-                `<p> &nbsp </p>` +
+            `<div class='rc-namirnice-head-other rc-bot-div'>` +
+                `<p class='rc-hidden-head'> ŠEĆER </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
-            `<div class='rc-namirnice-head-other'>` +
-                `<p style='display:none;'> KAVA &nbsp </p>` +
-                `<p> &nbsp </p>` +
+            `<div class='rc-namirnice-head-other rc-bot-div'>` +
+                `<p class='rc-hidden-head'> KAVA </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
-            `<div class='rc-namirnice-head-other'>` +
-                `<p style='display:none;'> SAPUN ZA PRANJE &nbsp </p>` +
-                `<p> &nbsp </p>` +
+            `<div class='rc-namirnice-head-other rc-bot-div'>` +
+                `<p class='rc-hidden-head'> SAPUN ZA PRANJE </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
-            `<div class='rc-namirnice-head-other'>` +
-                `<p style='display:none;'> PETROLEJ &nbsp </p>` +
-                `<p> &nbsp </p>` +
+            `<div class='rc-namirnice-head-other rc-bot-div'>` +
+                `<p class='rc-hidden-head'> PETROLEJ </p>` +
+                `<p class='rc-namirnice-input'></p>` +
             `</div>` +
         `</div>` +
 
