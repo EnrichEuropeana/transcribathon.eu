@@ -401,12 +401,12 @@ if (event.target.id != "tagging-status-indicator") {
             // Status changer
             //$mapEditor .= "<div class='item-page-section-headline-right-site'>";
                 $mapEditor .= "<div id='location-status-changer' class='status-changer section-status-changer login-required' style='background-color:" . $itemData['LocationStatusColorCode'] . ";'>";
-                    if(current_user_can('administrator')) {
+                    //if(current_user_can('administrator')) {
                         $mapEditor .= "<span id='location-status-indicator' class='status-indicator'
                                         onClick='event.stopPropagation(); document.getElementById(\"location-status-dropdown\").classList.toggle(\"show\")'> " . $itemData['LocationStatusName'] . " </span>";
-                    } else {
-                        $mapEditor .= "<span id='location-status-indicator' class='status-indicator'> " . $itemData['LocationStatusName'] . " </span>";
-                    }
+                    // } else {
+                    //     $mapEditor .= "<span id='location-status-indicator' class='status-indicator'> " . $itemData['LocationStatusName'] . " </span>";
+                    // }
 
                     $mapEditor .= "<div id='location-status-dropdown' class='sub-status status-dropdown-content'>";
                         foreach($statusTypes as $statusType) {
@@ -514,12 +514,12 @@ if (event.target.id != "tagging-status-indicator") {
                 $enrichmentTab .= "<i id='show-ppl-input' class='fas fa-plus-circle'></i>";
             //$enrichmentTab .= "<div class='item-page-headline-right-site'>";
                 $enrichmentTab .= "<div id='tagging-status-changer' class='status-changer section-status-changer login-required' style='background-color:" . $itemData['TaggingStatusColorCode'] . ";'>";
-                    if(current_user_can('administrator')) {
+                   // if(current_user_can('administrator')) {
                         $enrichmentTab .= "<span id='tagging-status-indicator' class='status-indicator'
                                             onClick='event.stopPropagation(); document.getElementById(\"tagging-status-dropdown\").classList.toggle(\"show\")'> " . $itemData['TaggingStatusName'] . " </span>";
-                    } else {
-                        $enrichmentTab .= "<span id='tagging-status-indicator' class='status-indicator'> " . $itemData['TaggingStatusName'] . " </span>";
-                    }
+                    // } else {
+                    //     $enrichmentTab .= "<span id='tagging-status-indicator' class='status-indicator'> " . $itemData['TaggingStatusName'] . " </span>";
+                    // }
 
                     $enrichmentTab .= "<div id='tagging-status-dropdown' class='sub-status status-dropdown-content'>";
                         foreach($statusTypes as $statusType) {
@@ -1024,12 +1024,12 @@ if (event.target.id != "tagging-status-indicator") {
         //$descriptionTab .= "</div>";
         // description status  changer
                 $descriptionTab .= "<div id='description-status-changer' class='status-changer section-status-changer login-required' style='background-color:" . $itemData['DescriptionStatusColorCode'] . ";' >";
-                if(current_user_can('administrator')) {
+                //if(current_user_can('administrator')) {
                     $descriptionTab .= "<span id='description-status-indicator' class='status-indicator'
                                         onClick='event.stopPropagation(); document.getElementById(\"description-status-dropdown\").classList.toggle(\"show\")'> " . $itemData['DescriptionStatusName'] . " </span>";
-                } else {
-                    $descriptionTab .= "<span id='description-status-indicator' class='status-indicator'> " . $itemData['DescriptionStatusName'] . " </span>";
-                }
+                // } else {
+                //     $descriptionTab .= "<span id='description-status-indicator' class='status-indicator'> " . $itemData['DescriptionStatusName'] . " </span>";
+                // }
 
                     $descriptionTab .= "<div id='description-status-dropdown' class='sub-status status-dropdown-content'>";
                         foreach($statusTypes as $sType) {
