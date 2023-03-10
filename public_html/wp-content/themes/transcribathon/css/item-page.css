@@ -3837,7 +3837,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     font-size: 9px;
 }
 .form-cookies {
-    text-align: right;
+    text-align: center;
 }
 .form-sub-cookies {
     text-align: left;
@@ -4014,4 +4014,19 @@ div.rc-inner-bot-div {
     text-align: center;
     min-height: 15px!important;
     border-bottom: 1px solid #000;
+}
+#current-tr-view .form-title, .current-transcription p.form-title {
+    margin-top: 40px!important;
+    margin-bottom: 25px!important;
+}
+.rc-namirnice-table {
+    white-space: nowrap!important;
+    font-size: 0;
+}
+.rc-namirnice-table div {
+    font-size: 0;
+}
+.rc-namirnice-table p, .rc-namirnice-table div {
+    white-space: nowrap!important;
+    margin: 0!important;
 }

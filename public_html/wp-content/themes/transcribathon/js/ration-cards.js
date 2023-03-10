@@ -1340,7 +1340,7 @@ ready(() => {
                 `<div class='rc-namirnice-left rc-not rc-inner-bot-div'>` +
                     `<p style='border-bottom:1px solid #000;min-height:15px!important;' contenteditable='false'> ZRNO </p>` +
                     `<p class='rc-namirnice-input'></p>` +
-                `</div>` +
+                `</div>`+
                 `<div class='rc-namirnice-right rc-not rc-inner-bot-div'>` +
                     `<p class='rc-brasno' contenteditable='false'> BRAŠNO </p>` +
                     `<p class='rc-namirnice-input'></p>` +
@@ -1364,12 +1364,12 @@ ready(() => {
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name' contenteditable='false'> TJESTENINE </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false' style='overflow:hidden;text-overflow:ellipsis;'> TJESTENINE </p>` +
                 `<p class='rc-namirnice-input'></p>` +
             `</div>` +
         
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name' contenteditable='false'> JESTIVO ULJE </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false' style='overflow:hidden;text-overflow:ellipsis;'> JESTIVO ULJE </p>` +
                 `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
@@ -1394,12 +1394,12 @@ ready(() => {
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name' contenteditable='false' style='height:30px;font-size:9px!important;'> SAPUN ZA PRANJE </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false' style='height:30px;font-size:9px!important;overflow:hidden;text-overflow:ellipsis;'> SAPUN ZA PRANJE </p>` +
                 `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 
             `<div class='rc-namirnice-head-other'>` +
-                `<p class='rc-namirnice-name' contenteditable='false'> PETROLEJ </p>` +
+                `<p class='rc-namirnice-name' contenteditable='false' style='overflow:hidden;text-overflow:ellipsis;'> PETROLEJ </p>` +
                 `<p class='rc-namirnice-input'></p>` +
             `</div>` +
 

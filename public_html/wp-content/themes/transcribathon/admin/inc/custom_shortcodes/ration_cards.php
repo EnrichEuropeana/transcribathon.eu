@@ -981,7 +981,7 @@ function _TCT_ration_cards($atts)
         $editorTab .= "</div>"; // End of 'editable' section
 
         $editorTab .= "<div id='transcription-view-container' style='display:block;'>";
-            $editorTab .= "<div id='current-tr-view' style='padding-top: 11px;'>";
+            $editorTab .= "<div id='current-tr-view' style='padding-top: 11px;white-space:nowrap;'>";
                 $editorTab .= $currentTranscription['Text'];
             $editorTab .= "</div>";
             // Transcription Translation
