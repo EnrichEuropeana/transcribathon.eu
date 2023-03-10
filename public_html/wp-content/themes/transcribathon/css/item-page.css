@@ -3929,10 +3929,10 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     padding-left: 20px;
 }
 .rc-namirnice-table p:not(.rc-povecanje, .rc-namirnice-input, .rc-brasno){
-    font-size: 10px!important;
+    font-size: 10px;
     vertical-align: top!important;
     text-align: center;
-    line-height: 1!important;
+    line-height: 1;
     min-height: 30px;
 }
 .rc-namirnice-table div:not(div.rc-not) {
@@ -4029,4 +4029,63 @@ div.rc-inner-bot-div {
 .rc-namirnice-table p, .rc-namirnice-table div {
     white-space: nowrap!important;
     margin: 0!important;
+}
+
+/* Ration Cards for Smaller Screens */
+@media screen and (max-width: 1200px) {
+    .rc-inner-right {
+        display: block;
+    }
+}
+@media screen and (max-width: 600px) {
+    .rc-first-left-block p, .rc-first-right-block p {
+        font-size: 13px;
+    }
+    .rc-namirnice-table p {
+        font-size: 8px!important;
+        line-height: 10px!important;
+    }
+    #transcription-container .rc-namirnice-table p {
+        font-size: 7px!important;
+        line-height: 10px;
+    }
+}
+@media screen and (max-width: 470px) {
+    .rc-inner-right {
+        display: block;
+    }
+    .list-person-single span, .rc-list-head span {
+        font-size: 11px;
+    }
+    #transcription-container .rc-namirnice-table p {
+        font-size: 6px!important;
+        line-height: 10px!important;
+    }
+    .rc-namirnice-table p {
+        font-size: 7px!important;
+        line-height: 10px!important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .form-title {
+        font-size: 14px;
+    }
+    #shop-container p {
+        font-size: 11px;
+    }
+    .form-cookies, .form-sub-cookies, .form-footer, .form-sub-footer {
+        font-size: 6px;
+    }
+}
+@media screen and (max-width: 300px) {
+    .rc-first-left-block {
+        display: block;
+    }
+    .list-person-single span, .rc-list-head span {
+        font-size: 9px;
+        line-height: 27px;
+    }
+    #shop-container p {
+        font-size: 10px;
+    }
 }

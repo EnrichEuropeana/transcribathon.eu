@@ -1183,6 +1183,9 @@ ready(() => {
     const submitForm = document.getElementById('submit-form');
 
     submitForm.addEventListener('click', function() {
+
+        // Show spinner
+        document.querySelector('#rc-submit-spinner').style.display = 'block';
         // Get data from form and pass it to variables
         const submitterLoc = document.getElementById('m-address').value;
         const submitterHouseNr = document.getElementById('kbr').value;
@@ -1740,6 +1743,7 @@ ready(() => {
                     
                 });
             }
+            document.querySelector('#rc-submit-spinner').style.display = 'none';
             document.querySelector('#tr-tab').parentElement.style.display = 'block';
     })
 
