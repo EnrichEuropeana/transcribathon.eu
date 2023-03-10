@@ -473,7 +473,7 @@ function _TCT_ration_cards($atts)
                                 onClick='saveItemLocation(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" .$statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                     $mapEditor .= "SAVE";
                 $mapEditor .= "</button>";
-                $mapEditor .= "<div id='item-location-spinner-container' class='spinner-container spinner-container-right'>";
+                $mapEditor .= "<div id='item-location-spinner-container' class='spinner-container' style='bottom:150px;'>";
                     $mapEditor .= "<div class='spinner'></div>";
                 $mapEditor .= "</div>";
                 $mapEditor .= "<div style='clear:both;'></div>";
@@ -606,10 +606,10 @@ function _TCT_ration_cards($atts)
                                     onClick='savePerson(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                         $enrichmentTab .= "<i style='margin-left:5px;font-size:20px;' class='fas fa-save'></i>";
                     $enrichmentTab .= "</button>";
-                    $enrichmentTab .= "<div id='item-person-spinner-container' class='spinner-container spinner-container-left'>";
-                        $enrichmentTab .= "<div class='spinner'></div>";
-                    $enrichmentTab .= "</div>";
                     $enrichmentTab .= "<div style='clear:both;'></div>";
+                $enrichmentTab .= "</div>";
+                $enrichmentTab .= "<div id='item-person-spinner-container' class='spinner-container' style='bottom:100px;'>";
+                    $enrichmentTab .= "<div class='spinner'></div>";
                 $enrichmentTab .= "</div>";
                 $enrichmentTab .= "<div style='clear:both;'></div>";
             $enrichmentTab .= "</div>";
@@ -903,7 +903,7 @@ function _TCT_ration_cards($atts)
                 $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
                     $editorTab .= "<div id='mytoolbar-transcription'></div>";
                     
-                    $editorTab .= "<div id='item-page-transcription-text' rows='8' style='white-space:nowrap!important;'>";
+                    $editorTab .= "<div id='item-page-transcription-text' rows='8' style='white-space:nowrap!important;overflow-x:hidden;'>";
                         // if($currentTranscription != null) {
                             $editorTab .= $currentTranscription['Text'];
                         // }
@@ -968,16 +968,14 @@ function _TCT_ration_cards($atts)
                     $editorTab .= "</button>";
 
 
-
-
-                    $editorTab .= "<div id='item-transcription-spinner-container' class='spinner-container spinner-container-right'>";
-                        $editorTab .= "<div class='spinner'></div>";
-                    $editorTab .= "</div>";
-
                     $editorTab .= "<div style='clear:both;'></div>";
                 $editorTab .= "</div>";
-                $editorTab .= "<div style='clear:both;'></div>";
             $editorTab .= "</div>";
+            // $editorTab .= "<div id='item-transcription-spinner-container' class='spinner-container spinner-container-right'>";
+            //     $editorTab .= "<div class='spinner'></div>";
+            // $editorTab .= "</div>";
+
+            // $editorTab .= "<div style='clear:both;'></div>";
         $editorTab .= "</div>"; // End of 'editable' section
 
         $editorTab .= "<div id='transcription-view-container' style='display:block;'>";
@@ -985,10 +983,10 @@ function _TCT_ration_cards($atts)
                 $editorTab .= $currentTranscription['Text'];
             $editorTab .= "</div>";
             // Transcription Translation
-            $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;'>";
-                $editorTab .= "<i class='far fa-caret-circle-down' style='margin-right:8px;font-size:17px;'></i>";
-                $editorTab .= "English Translation";
-            $editorTab .= "</h4>";
+            // $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;'>";
+            //     $editorTab .= "<i class='far fa-caret-circle-down' style='margin-right:8px;font-size:17px;'></i>";
+            //     $editorTab .= "English Translation";
+            // $editorTab .= "</h4>";
             $editorTab .= "<div id='translated-tr' style='display:none;'></div>";
             $editorTab .= $trHistory;
             $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";
@@ -1123,7 +1121,7 @@ function _TCT_ration_cards($atts)
                                 onClick='saveItemDate(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                 $descriptionTab .= "<i class='fas fa-save'></i>";
             $descriptionTab .= "</button>";
-            $descriptionTab .= "<div id='item-date-spinner-container' class='spinner-container spinner-container-right'>";
+            $descriptionTab .= "<div id='item-date-spinner-container' class='spinner-container' style='bottom:50px;'>";
                 $descriptionTab .= "<div class='spinner'></div>";
             $descriptionTab .= "</div>";
             $descriptionTab .= "<div style='clear:both;'></div>";
@@ -1243,7 +1241,7 @@ function _TCT_ration_cards($atts)
                     $descriptionTab .= "<span class='language-tooltip-text'>Please select a language</span>";
                 $descriptionTab .= "</button>";
 
-                $descriptionTab .= "<div id='item-description-spinner-container' class='spinner-container spinner-container-right'>";
+                $descriptionTab .= "<div id='item-description-spinner-container' class='spinner-container' style='bottom:100px;'>";
                     $descriptionTab .= "<div class='spinner'></div>";
                 $descriptionTab .= "</div>";
 
@@ -1274,11 +1272,11 @@ function _TCT_ration_cards($atts)
                                         , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
                         $descriptionTab .= '<i style="font-size:20px;" class="fas fa-save"></i>';
                     $descriptionTab .= '</button>';
-                    $descriptionTab .= '<div id="item-keyword-spinner-container" class="spinner-container spinner-container-left">';
-                        $descriptionTab .= '<div class="spinner"></div>';
-                    $descriptionTab .= "</div>";
                     $descriptionTab .= '<div style="clear: both;"></div>';
                 $descriptionTab .= '</div>';
+                $descriptionTab .= '<div id="item-keyword-spinner-container" class="spinner-container">';
+                    $descriptionTab .= '<div class="spinner"></div>';
+                $descriptionTab .= "</div>";
             $descriptionTab .= '</div>';
 
             $descriptionTab .= '<div id="item-keyword-list" class="item-data-output-listt">';
@@ -1326,11 +1324,12 @@ function _TCT_ration_cards($atts)
                                     , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
                         $descriptionTab .= "<i style='font-size:20px;' class='fas fa-save'></i>";
                     $descriptionTab .= "</button>";
-                    $descriptionTab .= '<div id="item-link-spinner-container" class="spinner-container spinner-container-left">';
-                        $descriptionTab .= '<div class="spinner"></div>';
-                    $descriptionTab .= "</div>";
+
                     $descriptionTab .= '<div style="clear:both;"></div>';
                 $descriptionTab .=    "</div>";
+                $descriptionTab .= '<div id="item-link-spinner-container" class="spinner-container" style="left:35px;bottom:75px;">';
+                    $descriptionTab .= '<div class="spinner"></div>';
+                $descriptionTab .= "</div>";
                 $descriptionTab .= '<div style="clear:both;"></div>';
             $descriptionTab .=    "</div>";
 
@@ -1684,154 +1683,6 @@ function _TCT_ration_cards($atts)
         //$content .= "<div class='back-to-story'><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "'><i class='fas fa-arrow-left' style='margin-right:7.5px;'></i> Back to the Story </a></div>";
     $content .= "</section>";
 
-    // Spinner test
-    // $content .= "<div class='spinner-test'>";
-    //     $content .= '<span class="loader"></span>';
-    // $content .= "</div>";
-    // // Spinner 2
-    // $content .= "<div class='spinner-two'>";
-    //     $content .= '<span class="loader-2"></span>';
-    // $content .= "</div>";
-
-    // $content .= "<div class='spinner-three' style='position:relative;left:300px;'>";
-    //     $content .= "<span class='loader-3'></span>";
-    // $content .= "</div>";
-
-    // $content .= "<div class='spinner-four' style='position:relative;left:400px;'>";
-    //     $content .= "<span class='loader-4'></span>";
-    // $content .= "</div>";
-
-    // $content .= "<div class='spinner-five'>";
-    //     $content .= "<span class='loader-5'></span>";
-    // $content .= "</div>";
-
-
-    // $content .= "<style>
-    // .loader {
-    //     width: 48px;
-    //     height: 48px;
-    //     border: 5px dotted #000;
-    //     border-radius: 50%;
-    //     display: inline-block;
-    //     position: relative;
-    //     box-sizing: border-box;
-    //     animation: rotation 2s linear infinite;
-    //   }
-      
-    //   @keyframes rotation {
-    //     0% {
-    //       transform: rotate(0deg);
-    //     }
-    //     100% {
-    //       transform: rotate(360deg);
-    //     }
-    //   } 
-
-    //   .loader-2 {
-    //     border: 24px solid;
-    //     border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.35) rgba(0, 0, 0, 0.5);
-    //     border-radius: 50%;
-    //     display: inline-block;
-    //     box-sizing: border-box;
-    //     animation: animloader 1s linear infinite;
-    //   }
-    
-    // @keyframes animloader {
-    //     0% {
-    //       border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.35) rgba(0, 0, 0, 0.75);
-    // }
-    //     33% {
-    //       border-color: rgba(0, 0, 0, 0.75) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.35);
-    // }
-    //     66% {
-    //       border-color: rgba(0, 0, 0, 0.35) rgba(0, 0, 0, 0.75) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
-    // }
-    //     100% {
-    //       border-color: rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.35) rgba(0, 0, 0, 0.75) rgba(0, 0, 0, 0.15);
-    // }
-    //   }
-      
-      
-    // .loader-3 {
-    //     display: inline-block;
-    //     font-size: 10px;
-    //     width: 1em;
-    //     height: 1em;
-    //     border-radius: 50%;
-    //     position: relative;
-    //     text-indent: -9999em;
-    //     animation: mulShdSpin 1.1s infinite ease;
-    //     transform: translateZ(0);
-    //   }
-    //   @keyframes mulShdSpin {
-    //     0%,
-    //     100% {
-    //       box-shadow: 0em -2.6em 0em 0em #000, 1.8em -1.8em 0 0em rgba(0,0,0, 0.2), 2.5em 0em 0 0em rgba(0,0,0, 0.2), 1.75em 1.75em 0 0em rgba(0,0,0, 0.2), 0em 2.5em 0 0em rgba(0,0,0, 0.2), -1.8em 1.8em 0 0em rgba(0, 0, 0, 0.2), -2.6em 0em 0 0em rgba(0, 0, 0, 0.5), -1.8em -1.8em 0 0em rgba(0, 0, 0, 0.7);
-    //     }
-    //     12.5% {
-    //       box-shadow: 0em -2.6em 0em 0em rgba(0,0,0, 0.7), 1.8em -1.8em 0 0em #000, 2.5em 0em 0 0em rgba(0,0,0, 0.2), 1.75em 1.75em 0 0em rgba(0,0,0, 0.2), 0em 2.5em 0 0em rgba(0,0,0, 0.2), -1.8em 1.8em 0 0em rgba(0, 0, 0, 0.2), -2.6em 0em 0 0em rgba(0, 0, 0, 0.2), -1.8em -1.8em 0 0em rgba(0, 0, 0, 0.5);
-    //     }
-    //     25% {
-    //       box-shadow: 0em -2.6em 0em 0em rgba(0,0,0, 0.5), 1.8em -1.8em 0 0em rgba(0,0,0, 0.7), 2.5em 0em 0 0em #000, 1.75em 1.75em 0 0em rgba(0,0,0, 0.2), 0em 2.5em 0 0em rgba(0,0,0, 0.2), -1.8em 1.8em 0 0em rgba(0, 0, 0, 0.2), -2.6em 0em 0 0em rgba(0, 0, 0, 0.2), -1.8em -1.8em 0 0em rgba(0, 0, 0, 0.2);
-    //     }
-    //     37.5% {
-    //       box-shadow: 0em -2.6em 0em 0em rgba(0,0,0, 0.2), 1.8em -1.8em 0 0em rgba(0,0,0, 0.5), 2.5em 0em 0 0em rgba(0,0,0, 0.7), 1.75em 1.75em 0 0em #000, 0em 2.5em 0 0em rgba(0,0,0, 0.2), -1.8em 1.8em 0 0em rgba(0, 0, 0, 0.2), -2.6em 0em 0 0em rgba(0, 0, 0, 0.2), -1.8em -1.8em 0 0em rgba(0, 0, 0, 0.2);
-    //     }
-    //     50% {
-    //       box-shadow: 0em -2.6em 0em 0em rgba(0,0,0, 0.2), 1.8em -1.8em 0 0em rgba(0,0,0, 0.2), 2.5em 0em 0 0em rgba(0,0,0, 0.5), 1.75em 1.75em 0 0em rgba(0,0,0, 0.7), 0em 2.5em 0 0em #000, -1.8em 1.8em 0 0em rgba(0, 0, 0, 0.2), -2.6em 0em 0 0em rgba(0, 0, 0, 0.2), -1.8em -1.8em 0 0em rgba(0, 0, 0, 0.2);
-    //     }
-    //     62.5% {
-    //       box-shadow: 0em -2.6em 0em 0em rgba(0,0,0, 0.2), 1.8em -1.8em 0 0em rgba(0,0,0, 0.2), 2.5em 0em 0 0em rgba(0,0,0, 0.2), 1.75em 1.75em 0 0em rgba(0,0,0, 0.5), 0em 2.5em 0 0em rgba(0, 0, 0, 0.7), -1.8em 1.8em 0 0em #000, -2.6em 0em 0 0em rgba(0, 0, 0, 0.2), -1.8em -1.8em 0 0em rgba(0, 0, 0, 0.2);
-    //     }
-    //     75% {
-    //       box-shadow: 0em -2.6em 0em 0em rgba(0,0,0, 0.2), 1.8em -1.8em 0 0em rgba(0,0,0, 0.2), 2.5em 0em 0 0em rgba(0,0,0, 0.2), 1.75em 1.75em 0 0em rgba(0,0,0, 0.2), 0em 2.5em 0 0em rgba(0, 0, 0, 0.5), -1.8em 1.8em 0 0em rgba(0, 0, 0, 0.7), -2.6em 0em 0 0em #000, -1.8em -1.8em 0 0em rgba(0, 0, 0, 0.2);
-    //     }
-    //     87.5% {
-    //       box-shadow: 0em -2.6em 0em 0em rgba(0,0,0, 0.2), 1.8em -1.8em 0 0em rgba(0,0,0, 0.2), 2.5em 0em 0 0em rgba(0,0,0, 0.2), 1.75em 1.75em 0 0em rgba(0,0,0, 0.2), 0em 2.5em 0 0em rgba(0, 0, 0, 0.2), -1.8em 1.8em 0 0em rgba(0, 0, 0, 0.5), -2.6em 0em 0 0em rgba(0, 0, 0, 0.7), -1.8em -1.8em 0 0em #000;
-    //     }
-    //   }
-        
-
-    //   .loader-4, .loader-4:before, .loader-4:after {
-    //     border-radius: 50%;
-    //     width: 2.5em;
-    //     height: 2.5em;
-    //     animation-fill-mode: both;
-    //     animation: bblFadInOut 1.8s infinite ease-in-out;
-    //   }
-    //   .loader-4 {
-    //     display: inline-block;
-    //     color: #0a72cc;
-    //     font-size: 7px;
-    //     position: relative;
-    //     text-indent: -9999em;
-    //     transform: translateZ(0);
-    //     animation-delay: -0.16s;
-    //   }
-    //   .loader-4:before,
-    //   .loader-4:after {
-    //     content: '';
-    //     position: absolute;
-    //     top: 0;
-    //   }
-    //   .loader-4:before {
-    //      left: -3.5em;
-    //     animation-delay: -0.32s;
-    //   }
-    //   .loader-4:after {
-    //     left: 3.5em;
-    //   }
-      
-    //   @keyframes bblFadInOut {
-    //     0%, 80%, 100% { box-shadow: 0 2.5em 0 -1.3em }
-    //     40% { box-shadow: 0 2.5em 0 0 }
-    //   }
-          
-
-
-
-    // </style>";
-
     $content .= "<div style='margin-top:100px;'> &nbsp </div>";
         // Title
     $content .= "<section id='title-n-progress'>";
@@ -1946,7 +1797,7 @@ function _TCT_ration_cards($atts)
             $content .= "<div id='full-view-r'>";
             //var_dump($itemData);
                 // Transcription
-                $content .= "<div id='transcription-container' style='height:600px;white-space:nowrap!important;'>";
+                $content .= "<div id='transcription-container' style='height:600px;white-space:nowrap!important;overflowX:hidden;'>";
                     $content .= "<div id='startTranscription' class='mtr-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         $content .= "<div>";
@@ -2214,11 +2065,15 @@ function _TCT_ration_cards($atts)
                     // Content will be added here in switchItemPageView function
                     $content .= $editorTab;
 
+                    $content .= "<div id='item-transcription-spinner-container' class='spinner-container' style='bottom:50%;'>";
+                        $content .= "<div class='spinner'></div>";
+                    $content .= "</div>";
+
                     //$content .= $trHistory;
                     // Automatic Enrichments 
                     if(empty($itemAutoE['data'])) {
                         $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
-                        $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container'>";
+                        $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='bottom:100px;'>";
                             $content .= "<div class='spinner'></div>";
                         $content .= "</div></div>";
                     }

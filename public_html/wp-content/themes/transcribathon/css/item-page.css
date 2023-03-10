@@ -997,18 +997,19 @@ p.mb-1 {
     width: 18px;
     border: 2px solid var(--main-color);
 }
-.spinner-container-right {
+/* .spinner-container-right {
     float: right;
 }
 .spinner-container-left {
     float: left;
-}
-.spinner-container {
+} */
+.spinner-container, .spinner-container-right, .spinner-container-left {
+    position: relative;
     display: none;
     padding: 10px;
-    width: 40px;
+    width: 100%;
 }
-.spinner, .spinner-full::before {
+/* .spinner, .spinner-full::before {
     border: 3px solid #eee;
     border-radius: 50%;
     content: "";
@@ -1030,6 +1031,45 @@ p.mb-1 {
 .spinner {
     -webkit-transition: opacity linear 0.1s;
     transition: opacity linear 0.1s;
+} */
+.spinner {
+    display: inline-block;
+    font-size: 7px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    position: relative;
+    text-indent: -9999em;
+    animation: mulShdSpin 1.1s infinite ease;
+    transform: translateZ(0);
+    left: calc(50% - 10px);
+}
+@keyframes mulShdSpin {
+    0%,
+    100% {
+      box-shadow: 0em -2.6em 0em 0em #0a72cc, 1.8em -1.8em 0 0em rgba(10, 114, 204, 0.2), 2.5em 0em 0 0em rgba(10, 114, 204, 0.2), 1.75em 1.75em 0 0em rgba(10, 114, 204, 0.2), 0em 2.5em 0 0em rgba(10, 114, 204, 0.2), -1.8em 1.8em 0 0em rgba(10, 114, 204, 0.2), -2.6em 0em 0 0em rgba(10, 114, 204, 0.5), -1.8em -1.8em 0 0em rgba(10, 114, 204, 0.7);
+    }
+    12.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(10, 114, 204, 0.7), 1.8em -1.8em 0 0em #0a72cc, 2.5em 0em 0 0em rgba(10, 114, 204, 0.2), 1.75em 1.75em 0 0em rgba(10, 114, 204, 0.2), 0em 2.5em 0 0em rgba(10, 114, 204, 0.2), -1.8em 1.8em 0 0em rgba(10, 114, 204, 0.2), -2.6em 0em 0 0em rgba(10, 114, 204, 0.2), -1.8em -1.8em 0 0em rgba(10, 114, 204, 0.5);
+    }
+    25% {
+      box-shadow: 0em -2.6em 0em 0em rgba(10, 114, 204, 0.5), 1.8em -1.8em 0 0em rgba(10, 114, 204, 0.7), 2.5em 0em 0 0em #0a72cc, 1.75em 1.75em 0 0em rgba(10, 114, 204, 0.2), 0em 2.5em 0 0em rgba(10, 114, 204, 0.2), -1.8em 1.8em 0 0em rgba(10, 114, 204, 0.2), -2.6em 0em 0 0em rgba(10, 114, 204, 0.2), -1.8em -1.8em 0 0em rgba(10, 114, 204, 0.2);
+    }
+    37.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(10, 114, 204, 0.2), 1.8em -1.8em 0 0em rgba(10, 114, 204, 0.5), 2.5em 0em 0 0em rgba(10, 114, 204, 0.7), 1.75em 1.75em 0 0em #0a72cc, 0em 2.5em 0 0em rgba(10, 114, 204, 0.2), -1.8em 1.8em 0 0em rgba(10, 114, 204, 0.2), -2.6em 0em 0 0em rgba(10, 114, 204, 0.2), -1.8em -1.8em 0 0em rgba(10, 114, 204, 0.2);
+    }
+    50% {
+      box-shadow: 0em -2.6em 0em 0em rgba(0,0,0, 0.2), 1.8em -1.8em 0 0em rgba(0,0,0, 0.2), 2.5em 0em 0 0em rgba(0,0,0, 0.5), 1.75em 1.75em 0 0em rgba(0,0,0, 0.7), 0em 2.5em 0 0em #0a72cc, -1.8em 1.8em 0 0em rgba(10, 114, 204, 0.2), -2.6em 0em 0 0em rgba(10, 114, 204, 0.2), -1.8em -1.8em 0 0em rgba(10, 114, 204, 0.2);
+    }
+    62.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(10, 114, 204, 0.2), 1.8em -1.8em 0 0em rgba(10, 114, 204, 0.2), 2.5em 0em 0 0em rgba(10, 114, 204, 0.2), 1.75em 1.75em 0 0em rgba(10, 114, 204, 0.5), 0em 2.5em 0 0em rgba(10, 114, 204, 0.7), -1.8em 1.8em 0 0em #0a72cc, -2.6em 0em 0 0em rgba(10, 114, 204, 0.2), -1.8em -1.8em 0 0em rgba(10, 114, 204, 0.2);
+    }
+    75% {
+      box-shadow: 0em -2.6em 0em 0em rgba(10, 114, 204, 0.2), 1.8em -1.8em 0 0em rgba(10, 114, 204, 0.2), 2.5em 0em 0 0em rgba(10, 114, 204, 0.2), 1.75em 1.75em 0 0em rgba(10, 114, 204, 0.2), 0em 2.5em 0 0em rgba(10, 114, 204, 0.5), -1.8em 1.8em 0 0em rgba(10, 114, 204, 0.7), -2.6em 0em 0 0em #0a72cc, -1.8em -1.8em 0 0em rgba(10, 114, 204, 0.2);
+    }
+    87.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(10, 114, 204, 0.2), 1.8em -1.8em 0 0em rgba(10, 114, 204, 0.2), 2.5em 0em 0 0em rgba(10, 114, 204, 0.2), 1.75em 1.75em 0 0em rgba(10, 114, 204, 0.2), 0em 2.5em 0 0em rgba(10, 114, 204, 0.2), -1.8em 1.8em 0 0em rgba(10, 114, 204, 0.5), -2.6em 0em 0 0em rgba(10, 114, 204, 0.7), -1.8em -1.8em 0 0em #0a72cc;
+    }
 }
 .collapse-controller {
     cursor: pointer;
@@ -1096,6 +1136,7 @@ p.mb-1 {
 }
 #transcription-view-container {
     overflow-y: auto;
+    overflow-x: hidden;
     max-height: 70vh;
 }
 #transcription-view-container #current-tr-view {
