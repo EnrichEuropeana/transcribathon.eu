@@ -490,13 +490,14 @@ if (event.target.id != "tagging-status-indicator") {
                                 onClick='saveItemLocation(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" .$statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                     $mapEditor .= "SAVE";
                 $mapEditor .= "</button>";
-                $mapEditor .= "<div id='item-location-spinner-container' class='spinner-container spinner-container-right'>";
-                    $mapEditor .= "<div class='spinner'></div>";
-                $mapEditor .= "</div>";
-                $mapEditor .= "<div style='clear:both;'></div>";
+
             $mapEditor .= "</div>";
             $mapEditor .= "<div style='clear:both;'></div>";
         $mapEditor .= "</div>";
+        $mapEditor .= "<div id='item-location-spinner-container' class='spinner-container spinner-container-right'>";
+            $mapEditor .= "<div class='spinner'></div>";
+        $mapEditor .= "</div>";
+        $mapEditor .= "<div style='clear:both;'></div>";
 
         $mapEditor .= "<div style='clear:both;'></div>";
         // Editor Location Display and Location Edit/Delete
@@ -623,10 +624,11 @@ if (event.target.id != "tagging-status-indicator") {
                                     onClick='savePerson(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                         $enrichmentTab .= "<i style='margin-left:5px;font-size:20px;' class='fas fa-save'></i>";
                     $enrichmentTab .= "</button>";
-                    $enrichmentTab .= "<div id='item-person-spinner-container' class='spinner-container spinner-container-left'>";
-                        $enrichmentTab .= "<div class='spinner'></div>";
-                    $enrichmentTab .= "</div>";
+
                     $enrichmentTab .= "<div style='clear:both;'></div>";
+                $enrichmentTab .= "</div>";
+                $enrichmentTab .= "<div id='item-person-spinner-container' class='spinner-container spinner-container-left'>";
+                    $enrichmentTab .= "<div class='spinner'></div>";
                 $enrichmentTab .= "</div>";
                 $enrichmentTab .= "<div style='clear:both;'></div>";
             $enrichmentTab .= "</div>";
@@ -991,28 +993,26 @@ if (event.target.id != "tagging-status-indicator") {
                         $editorTab .= "<span class='language-tooltip-text'>Please select a language</span>";
                     $editorTab .= "</button>";
 
-
-
-
-                    $editorTab .= "<div id='item-transcription-spinner-container' class='spinner-container spinner-container-right'>";
-                        $editorTab .= "<div class='spinner'></div>";
-                    $editorTab .= "</div>";
-
                     $editorTab .= "<div style='clear:both;'></div>";
                 $editorTab .= "</div>";
                 $editorTab .= "<div style='clear:both;'></div>";
             $editorTab .= "</div>";
         $editorTab .= "</div>"; // End of 'editable' section
 
+        // New spinner position
+        $editorTab .= "<div id='item-transcription-spinner-container' class='spinner-container'>";
+            $editorTab .= "<div class='spinner'></div>";
+        $editorTab .= "</div>";
+
         $editorTab .= "<div id='transcription-view-container' style='display:block;'>";
             $editorTab .= "<div id='current-tr-view' style='padding-top: 11px;'>";
                 $editorTab .= $transcriptionView;
             $editorTab .= "</div>";
             // Transcription Translation
-            $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;'>";
+            $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
                 $editorTab .= "English Translation";
                 $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
-                $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
+                $editorTab .= "<div id='eng-tr-spinner' class='spinner-container' style='left:12px;'>";
                     $editorTab .= "<div class='spinner'></div>";
                 $editorTab .= "</div>";
             $editorTab .= "</h4>";
@@ -1347,11 +1347,11 @@ if (event.target.id != "tagging-status-indicator") {
                                     , \"".$statusTypes[1]['ColorCode']."\", ".sizeof($progressData).")'>";
                         $descriptionTab .= "<i style='font-size:20px;' class='fas fa-save'></i>";
                     $descriptionTab .= "</button>";
-                    $descriptionTab .= '<div id="item-link-spinner-container" class="spinner-container spinner-container-left">';
-                        $descriptionTab .= '<div class="spinner"></div>';
-                    $descriptionTab .= "</div>";
                     $descriptionTab .= '<div style="clear:both;"></div>';
                 $descriptionTab .=    "</div>";
+                $descriptionTab .= '<div id="item-link-spinner-container" class="spinner-container spinner-container-left">';
+                    $descriptionTab .= '<div class="spinner"></div>';
+                $descriptionTab .= "</div>";
                 $descriptionTab .= '<div style="clear:both;"></div>';
             $descriptionTab .=    "</div>";
 
@@ -2069,7 +2069,7 @@ if (event.target.id != "tagging-status-indicator") {
                     // Automatic Enrichments 
                     if(empty($itemAutoE['data'])) {
                         $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
-                        $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container'>";
+                        $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
                             $content .= "<div class='spinner'></div>";
                         $content .= "</div></div>";
                     }
