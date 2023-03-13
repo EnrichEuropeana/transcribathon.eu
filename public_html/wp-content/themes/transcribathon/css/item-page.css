@@ -132,6 +132,7 @@ body {
     margin: 5px 4px;
     border-radius: 50%;
     background-color: #c4c4c4;
+    cursor: pointer;
 }
 .slider-dot.current {
     background-color: #7e7e7e;
@@ -1027,7 +1028,7 @@ p.mb-1 {
 } */
 .spinner-container, .spinner-container-right, .spinner-container-left {
     position: absolute;
-    display: block!important;
+    display: none;
     padding: 10px;
     width: 100%;
     top: calc(50% - 10px);
