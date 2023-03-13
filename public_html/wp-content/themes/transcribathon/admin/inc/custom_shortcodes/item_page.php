@@ -76,6 +76,8 @@ function _TCT_mtr_transcription($atts)
     // Check which Transcription is active
     $trCheck = json_decode(checkActiveTranscription($itemData['ItemId']));
     $activeTr = $trCheck->data->TranscriptionSource;
+    // Transcription to show in transcription View
+    $transcriptionView = '';
 
     // Get English translation of story description
     $engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
@@ -846,7 +848,7 @@ if (event.target.id != "tagging-status-indicator") {
     $editorTab = "";
     $editorTab .= "<div style='display:none;'><span id='completion-status-indicator' class='status-indicator'></span></div>";
     $editorTab .= "<div id='transcription-section' class='item-page-section'>";
-        $editorTab .= "<div class='item-page-section-headline-container transcription-headline-header'>";
+        $editorTab .= "<div class='item-page-section-headline-container transcription-headline-header' style='position:relative;'>";
             $editorTab .= "<div class='theme-color item-page-section-headline'>";
                 $editorTab .= "<span class='headline-header'>TRANSCRIPTION</span>";
 
@@ -878,12 +880,19 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= "<div id='popout-language-holder'></div>";
             $editorTab .= "</div>"; // End of inner Header
             $editorTab .= "<div id='switch-tr-view' style='float:right;'><i class='fa fa-pencil' style='font-size:30px;color:#0a72cc;cursor:pointer;margin-top:5px;'></i></div>";
+            // Add link to HTR Editor when there is HTR data available
+            if($htrTranscription != 'NULL' && $htrTranscription != '') {
+                $editorTab .= "<div id='fs-htr-link'>";
+                    $editorTab .= "<a href='" . home_url() . "/documents/story/item-page-htr/?item=" . $itemId . "' target='_blank'> HTR EDITOR </a>";
+                $editorTab .= "</div>"; 
+            }
         $editorTab .= "</div>"; // End of header
         $editorTab .= "<div style='clear:both;'></div>";
         // Editor and Language Selector
         if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
           //  $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
             $mtrTranscription = $currentTranscription['Text'];
+            $transcriptionView = $htrTranscription;
             //$currentTranscription['Text'] = $htrTranscription;
 
             $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
@@ -914,6 +923,7 @@ if (event.target.id != "tagging-status-indicator") {
             </script>";
 
         } else {
+            $transcriptionView = $currentTranscription['Text'];
             $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
                 // MCE Editor
                 $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
@@ -996,7 +1006,7 @@ if (event.target.id != "tagging-status-indicator") {
 
         $editorTab .= "<div id='transcription-view-container' style='display:block;'>";
             $editorTab .= "<div id='current-tr-view' style='padding-top: 11px;'>";
-                $editorTab .= $currentTranscription['Text'];
+                $editorTab .= $transcriptionView;
             $editorTab .= "</div>";
             // Transcription Translation
             $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;'>";
@@ -1788,7 +1798,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "</div>";
                     if($htrTranscription != '') {
                         $content .= "<div>";
-                            $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR Editor ";
+                            $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?item=" . $itemData['ItemId'] . "'>HTR Editor ";
                             $content .= "<i class='fas fa-keyboard'></i></a>";
                         $content .= "</div>";
 
@@ -1834,7 +1844,7 @@ if (event.target.id != "tagging-status-indicator") {
                                     document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';
                                     document.querySelector('#startTranscription').classList.replace('mtr-active', 'htr-active');
                                     document.querySelector('#startTranscription').addEventListener('click', function() {
-                                        location.href = '" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "';
+                                        location.href = '" . home_url() . "/documents/story/item-page-htr/?item=" . $itemData['ItemId'] . "';
                                     });
                                 </script>";
                             } else {

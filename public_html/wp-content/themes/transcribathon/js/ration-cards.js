@@ -1787,5 +1787,6 @@ ready(() => {
         document.querySelector('#prirast-list-form').reset();
         })
 
+    
 });
 

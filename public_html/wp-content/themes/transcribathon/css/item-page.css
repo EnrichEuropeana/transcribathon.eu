@@ -912,6 +912,28 @@ p.mb-1 {
     padding-left: 11px;
     padding-bottom: 10px;
 }
+#fs-htr-link {
+    display: inline-block;
+    position: absolute;
+    right: 50px;
+    top: 6px;
+    font-size: 10px;
+    letter-spacing: 0px;
+    background-color: var(--main-color);
+    padding: 1px 3px;
+    cursor: pointer;
+}
+#fs-htr-link:hover {
+    background-color: #fff;
+    border: 1px solid var(--main-color);
+}
+#fs-htr-link a {
+    color: #fff;
+    font-weight: 600;
+}
+#fs-htr-link:hover a {
+    color: var(--main-color);
+}
 .language-tooltip {
     position: relative;
     display: inline-block;

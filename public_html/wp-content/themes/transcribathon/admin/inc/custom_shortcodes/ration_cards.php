@@ -904,10 +904,12 @@ function _TCT_ration_cards($atts)
                     $editorTab .= "<div id='mytoolbar-transcription'></div>";
                     
                     $editorTab .= "<div id='item-page-transcription-text' rows='8' style='white-space:nowrap!important;overflow-x:hidden;'>";
+                        $editorTab .= "<div id='rc-form-test' contenteditable='false'>";
                         // if($currentTranscription != null) {
                             $editorTab .= $currentTranscription['Text'];
                         // }
                        // $editorTab .= $formTr;
+                        $editorTab .= "</div>";
                     $editorTab .= "</div>";
                 $editorTab .= "</div>";
         }
