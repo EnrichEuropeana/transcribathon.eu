@@ -1030,8 +1030,10 @@ p.mb-1 {
     position: absolute;
     display: none;
     padding: 10px;
-    width: 100%;
+    width: 10px;
+    left: calc(50% - 10px);
     top: calc(50% - 10px);
+    z-index: 999;
 }
 /* .spinner, .spinner-full::before {
     border: 3px solid #eee;
@@ -3426,6 +3428,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     height: 20px;
     float: left;
     border-radius: 50%;
+    cursor: pointer;
 }
 #loc-auto-enrich .accept .slider-track, #ppl-auto-enrich .accept .slider-track, #auto-enrich-story .accept .slider-track {
     background-color: rgba(97, 224, 47, 0.9);
@@ -3443,6 +3446,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     font-weight: 700;
     text-align: center;
     letter-spacing: 00.025em;
+    cursor: pointer;
 }
 #ppl-auto-e-container {
     margin-left: 30px;

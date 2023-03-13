@@ -1012,7 +1012,7 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
                 $editorTab .= "English Translation";
                 $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
-                $editorTab .= "<div id='eng-tr-spinner' class='spinner-container' style='left:12px;'>";
+                $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
                     $editorTab .= "<div class='spinner'></div>";
                 $editorTab .= "</div>";
             $editorTab .= "</h4>";
@@ -2106,7 +2106,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $content .= "<div class='spinner'></div>";
                             $content .= "</div>";
                         $content .= "</div>";
-                        $content .= "<div id='accept-story-enrich' style='display:none;'> SUBMIT </div>";
+                        $content .= "<div id='accept-story-enrich' style='display:none;margin-left:25px;'> SUBMIT </div>";
                     } elseif(!empty($storyAutoE['data'])) {
                         $content .= "<p class='auto-h'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";

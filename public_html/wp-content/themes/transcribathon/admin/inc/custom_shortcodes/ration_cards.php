@@ -980,6 +980,10 @@ function _TCT_ration_cards($atts)
             // $editorTab .= "<div style='clear:both;'></div>";
         $editorTab .= "</div>"; // End of 'editable' section
 
+        $editorTab .= "<div id='item-transcription-spinner-container' class='spinner-container' style='bottom:50%;'>";
+            $editorTab .= "<div class='spinner'></div>";
+        $editorTab .= "</div>";
+
         $editorTab .= "<div id='transcription-view-container' style='display:block;'>";
             $editorTab .= "<div id='current-tr-view' style='padding-top: 11px;white-space:nowrap;'>";
                 $editorTab .= $currentTranscription['Text'];
@@ -1329,7 +1333,7 @@ function _TCT_ration_cards($atts)
 
                     $descriptionTab .= '<div style="clear:both;"></div>';
                 $descriptionTab .=    "</div>";
-                $descriptionTab .= '<div id="item-link-spinner-container" class="spinner-container" style="left:35px;bottom:75px;">';
+                $descriptionTab .= '<div id="item-link-spinner-container" class="spinner-container" style="bottom:75px;">';
                     $descriptionTab .= '<div class="spinner"></div>';
                 $descriptionTab .= "</div>";
                 $descriptionTab .= '<div style="clear:both;"></div>';
@@ -2067,15 +2071,15 @@ function _TCT_ration_cards($atts)
                     // Content will be added here in switchItemPageView function
                     $content .= $editorTab;
 
-                    $content .= "<div id='item-transcription-spinner-container' class='spinner-container' style='bottom:50%;'>";
-                        $content .= "<div class='spinner'></div>";
-                    $content .= "</div>";
+                    // $content .= "<div id='item-transcription-spinner-container' class='spinner-container' style='bottom:50%;'>";
+                    //     $content .= "<div class='spinner'></div>";
+                    // $content .= "</div>";
 
                     //$content .= $trHistory;
                     // Automatic Enrichments 
                     if(empty($itemAutoE['data'])) {
                         $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
-                        $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='bottom:100px;'>";
+                        $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
                             $content .= "<div class='spinner'></div>";
                         $content .= "</div></div>";
                     }
@@ -2109,7 +2113,7 @@ function _TCT_ration_cards($atts)
                                 $content .= "<div class='spinner'></div>";
                             $content .= "</div>";
                         $content .= "</div>";
-                        $content .= "<div id='accept-story-enrich' style='display:none;'> SUBMIT </div>";
+                        $content .= "<div id='accept-story-enrich' style='display:none;margin-left:25px;'> SUBMIT </div>";
                     } elseif(!empty($storyAutoE['data'])) {
                         $content .= "<p class='auto-h'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
@@ -2404,7 +2408,7 @@ function _TCT_ration_cards($atts)
                                         $content .= "<i class='fas fa-trash-alt' id='del-shop'></i>";
                                         // $content .= "<i class='fas fa-pen' id='edit-shop'></i>;
                                     $content .= "</div>";
-                                    $content .= "<div class='spinner-container'>";
+                                    $content .= "<div class='spinner-container' style='left:0px;'>";
                                         $content .= "<div class='spinner'></div>";
                                     $content .= "</div>";
                                     $content .= "<div id='shop-loc-res'></div>";
@@ -2430,7 +2434,7 @@ function _TCT_ration_cards($atts)
 
                             // Submit spinner
                             $content .= "<div id='rc-submit-spinner' class='spinner-container'>";
-                                $content .= "<div class='spinner' style='width:40px;height:40px;'></div>";
+                                $content .= "<div class='spinner'></div>";
                             $content .= "</div>";
                             // Returned places form mapbox api
                             // $content .= "<div id='rc-loc-results-container'>";
