@@ -862,13 +862,18 @@ function _TCT_ration_cards($atts)
                 $editorTab .= "<div id='popout-language-holder'></div>";
             $editorTab .= "</div>"; // End of inner Header
             $editorTab .= "<div id='switch-tr-view' style='float:right;'><i class='fa fa-pencil' style='font-size:30px;color:#0a72cc;cursor:pointer;margin-top:5px;'></i></div>";
+            if($htrTranscription != 'NULL' && $htrTranscription != '') {
+                $editorTab .= "<div id='fs-htr-link'>";
+                    $editorTab .= "<a href='" . home_url() . "/documents/story/item-page-htr/?item=" . $itemId . "' target='_blank'> HTR EDITOR </a>";
+                $editorTab .= "</div>"; 
+            }
         $editorTab .= "</div>"; // End of header
         $editorTab .= "<div style='clear:both;'></div>";
         // Editor and Language Selector
         if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
           //  $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
             $mtrTranscription = $currentTranscription['Text'];
-            $currentTranscription['Text'] = $htrTranscription;
+            $transcriptionView = $htrTranscription;
 
             $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
                 // MCE Editor
@@ -881,23 +886,13 @@ function _TCT_ration_cards($atts)
                     $editorTab .= "</div>";
                 $editorTab .= "</div>";
 
-
-            ////
-            // $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
-            // // MCE Editor
-            // $editorTab .= "<div id='mce-wrapper-transcription' class='login-required htr-active-tr'>";
-            //     $editorTab .= "<div id='mytoolbar-transcription'></div>";
-            //     $editorTab .= "<div id='item-page-transcription-text' rows='8'>";
-            //         $editorTab .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/htr_active.svg' style='margin-left:15px;'>";
-            //     $editorTab .= "</div>";
-            // $editorTab .= "</div>";
-
             $editorTab .= "<script>
                 document.querySelector('.transcription-headline-header span').textContent = 'HTR TRANSCRIPTION';
                 document.querySelector('#switch-tr-view').classList.add('htr-trans');
             </script>";
 
         } else {
+            $transcriptionView = $currentTranscription['Text'];
             $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
                 // MCE Editor
                 $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
@@ -905,9 +900,9 @@ function _TCT_ration_cards($atts)
                     
                     $editorTab .= "<div id='item-page-transcription-text' rows='8' style='white-space:nowrap!important;overflow-x:hidden;'>";
                         $editorTab .= "<div id='rc-form-test' contenteditable='false'>";
-                        // if($currentTranscription != null) {
+                        if($currentTranscription != null) {
                             $editorTab .= $currentTranscription['Text'];
-                        // }
+                        }
                        // $editorTab .= $formTr;
                         $editorTab .= "</div>";
                     $editorTab .= "</div>";
@@ -986,7 +981,7 @@ function _TCT_ration_cards($atts)
 
         $editorTab .= "<div id='transcription-view-container' style='display:block;'>";
             $editorTab .= "<div id='current-tr-view' style='padding-top: 11px;white-space:nowrap;'>";
-                $editorTab .= $currentTranscription['Text'];
+                $editorTab .= $transcriptionView;
             $editorTab .= "</div>";
             // Transcription Translation
             // $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;'>";
@@ -1786,12 +1781,12 @@ function _TCT_ration_cards($atts)
                     $content .= "</div>";
                     if($htrTranscription != '') {
                         $content .= "<div>";
-                            $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "'>HTR Editor ";
+                            $content .= "<a href='" . home_url() . "/documents/story/item-page-htr/?item=" . $itemData['ItemId'] . "'>HTR Editor ";
                             $content .= "<i class='fas fa-keyboard'></i></a>";
                         $content .= "</div>";
 
                         $content .= "<div>";
-                            $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?story=" . $itemData['StoryId'] . "&item=" . $itemData['ItemId'] . "'>Compare Transcriptions <i class=\"far fa-columns\"></i></a>";
+                            $content .= "<a href='" . home_url() . "/documents/story/transcription-comparison/?item=" . $itemData['ItemId'] . "'>Compare Transcriptions <i class=\"far fa-columns\"></i></a>";
                         $content .= "</div>";
                     }
                 }

@@ -4099,6 +4099,11 @@ div.rc-inner-bot-div {
     white-space: nowrap!important;
     margin: 0!important;
 }
+.sub-street-out {
+    display: inline-block;
+    min-width: 50px;
+}
+
 
 /* Ration Cards for Smaller Screens */
 @media screen and (max-width: 1200px) {
