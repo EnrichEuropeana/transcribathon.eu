@@ -1212,6 +1212,7 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
             Comment: description,
             WikidataName: wikidata[0],
             WikidataId: wikidata[1],
+            PlaceRole: 'True',
             UserId: userId,
             UserGenerated: 1
         }
@@ -1261,7 +1262,8 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
     // Prepare data and send API request
     data = {
         DateStartDisplay: jQuery('#startdateentry').val(),
-        DateEndDisplay: jQuery('#enddateentry').val()
+        DateEndDisplay: jQuery('#enddateentry').val(),
+        CreationDate: 'True'
     }
     startDate = jQuery('#startdateentry').val().split('/');
     if (!isNaN(startDate[2]) && !isNaN(startDate[1]) && !isNaN(startDate[0])) {
@@ -1357,6 +1359,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
     deathDate = jQuery('#person-deathDate-input').val().split('/');
     description = jQuery('#person-description-input-field').val();
     link = jQuery('#person-wiki-input-field').val();
+    personRole = 'test';
 
     if (firstName == "" && lastName == "") {
         return 0;
@@ -1370,6 +1373,7 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
         DeathPlace: deathPlace,
         Link: link,
         Description: description,
+        PersonRole: personRole,
         ItemId: itemId
     }
     if (!isNaN(birthDate[2]) && !isNaN(birthDate[1]) && !isNaN(birthDate[0])) {
