@@ -472,7 +472,7 @@ if (event.target.id != "tagging-status-indicator") {
                         // $mapEditor .= "<input class='loc-type-check' type='checkbox' name='CreationPlace' value='Creation Place'>";
                     $mapEditor .= "</span>";
                     $mapEditor .= "<span class='loc-check-right'>";
-                        $mapEditor .= "<input class='loc-type-check' type='checkbox' name='CreationPlace' value='Creation Place'>";
+                        $mapEditor .= "<input class='loc-type-check' type='checkbox' id='place-role' name='CreationPlace' value='Creation Place'>";
                         $mapEditor .= "<span class='loc-checkmark'></span>";
                     $mapEditor .= "</span>";
                 $mapEditor .= "</label>";
@@ -578,23 +578,25 @@ if (event.target.id != "tagging-status-indicator") {
                         $enrichmentTab .= "</div>";
                     $enrichmentTab .= "</div>";
                     $enrichmentTab .= "<div class='person-desc-right'>";
+                    $enrichmentTab .= "<form id='ppl-role-form'>";
                         $enrichmentTab .= "<div class='person-role-input' style='margin-bottom: 0!important;'>";
                             $enrichmentTab .= "<label id='document-creator'>";
-                                $enrichmentTab .= "<input type='radio' id='doc-creator' name='person-role' value='document-creator' required>";
+                                $enrichmentTab .= "<input type='radio' id='doc-creator' name='person-role' value='Document Creator'>";
                                 $enrichmentTab .= "<span> Document Creator</span>";
                             $enrichmentTab .= "</label>";
                             $enrichmentTab .= "</br>";
                             $enrichmentTab .= "<label id='important-person'>";
-                                $enrichmentTab .= "<input type='radio' id='main-actor' name='person-role' value='main-actor'>";
+                                $enrichmentTab .= "<input type='radio' id='main-actor' name='person-role' value='Person Addressed'>";
                                 $enrichmentTab .= "<span> Person Addressed </span>";
                             $enrichmentTab .= "</label>";
                             $enrichmentTab .= "</br>";
                             $enrichmentTab .= "<label id='others'>";
-                                $enrichmentTab .= "<input type='radio' id='other-ppl' name='person-role' value='other-people'>";
+                                $enrichmentTab .= "<input type='radio' id='other-ppl' name='person-role' value='Person Mentioned' checked>";
                                 $enrichmentTab .= "<span> Person Mentioned </span>";
                             $enrichmentTab .= "</label>";
                             $enrichmentTab .= "</br>";
                         $enrichmentTab .= "</div>";
+                    $enrichmentTab .= "</form>";
                         $enrichmentTab .= "<i class='fas fa-question-circle'></i>";
                     $enrichmentTab .= "</div>";
                     $enrichmentTab .= "<div style='clear:both;'></div>";
@@ -1142,7 +1144,7 @@ if (event.target.id != "tagging-status-indicator") {
             // Date type checkmark
             $descriptionTab .= "<div class='creation-date-container'>";
                 $descriptionTab .= "<label class='date-checkbox-container'> Creation Date <i class='fas fa-question-circle' title='Is this the date when the document was created?'></i>";
-                    $descriptionTab .= "<input class='date-type-check' type='checkbox' name='CreationDate' value='Creation Date'>";
+                    $descriptionTab .= "<input class='date-type-check' type='checkbox' id='creation-date' name='CreationDate' value='Creation Date'>";
                     $descriptionTab .= "<span class='date-checkmark'></span>";
                 $descriptionTab .= "</label>";
             $descriptionTab .= "</div>";

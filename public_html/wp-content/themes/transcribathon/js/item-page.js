@@ -1166,6 +1166,12 @@ function removeTranscriptionLanguage(languageId, e) {
 
 function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-location-spinner-container').css('display', 'block')
+
+    // Add place role to the location
+    let placeRole = "";
+    if(document.querySelector('#place-role').checked) {
+        placeRole = 'Creation Place';
+    }
     // Prepare data and send API request
     locationName = escapeHtml(jQuery('#location-name-display input').val());
     [latitude, longitude] = jQuery('#location-input-section .location-input-coordinates-container input').val().split(',');
@@ -1212,7 +1218,7 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
             Comment: description,
             WikidataName: wikidata[0],
             WikidataId: wikidata[1],
-            PlaceRole: 'True',
+            PlaceRole: placeRole,
             UserId: userId,
             UserGenerated: 1
         }
@@ -1259,11 +1265,15 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
         return 0;
     }
     jQuery('#item-date-spinner-container').css('display', 'block')
+    creationDate = 'false';
+    if(document.querySelector('#creation-date').checked) {
+        creationDate = 'true';
+    }
     // Prepare data and send API request
     data = {
         DateStartDisplay: jQuery('#startdateentry').val(),
         DateEndDisplay: jQuery('#enddateentry').val(),
-        CreationDate: 'True'
+        CreationDate: creationDate
     }
     startDate = jQuery('#startdateentry').val().split('/');
     if (!isNaN(startDate[2]) && !isNaN(startDate[1]) && !isNaN(startDate[0])) {
@@ -1359,7 +1369,15 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
     deathDate = jQuery('#person-deathDate-input').val().split('/');
     description = jQuery('#person-description-input-field').val();
     link = jQuery('#person-wiki-input-field').val();
-    personRole = 'test';
+    let personRole = 'Person Mentioned';
+
+    if(document.querySelector('#main-actor').checked) {
+        personRole = 'Person Addressed';
+    } else if (document.querySelector('#doc-creator').checked) {
+        personRole = 'Document Creator';
+    }
+
+    console.log(personRole);
 
     if (firstName == "" && lastName == "") {
         return 0;
@@ -1434,6 +1452,11 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
             jQuery('#person-input-container').removeClass('show')
             jQuery('#person-input-container input').val("")
             jQuery('#item-person-spinner-container').css('display', 'none')
+
+
+            document.querySelector('#ppl-role-form').reset();
+
+
         });
     });
 }
