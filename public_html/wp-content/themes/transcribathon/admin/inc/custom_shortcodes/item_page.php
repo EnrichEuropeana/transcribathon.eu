@@ -675,7 +675,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $enrichmentTab .= "</p>";
 
                             if($person['Description'] != 'NULL' && $person['Description'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>" . htmlspecialchars_decode($person['Description']) . "</p>";
+                                $enrichmentTab .= "<p class='person-description'>Description: " . htmlspecialchars_decode($person['Description']) . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
                                 $enrichmentTab .= "<p class='person-description'>Wikidata ID: <a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></p>";
