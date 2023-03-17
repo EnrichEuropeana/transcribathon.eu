@@ -8,7 +8,7 @@ function escapeRcHtml(html){
 
     return p.innerHTML;
 }
-function updateRcPerson(itemId, userId, firstName, lastName, description, spinner, personId) {
+function updateRcPerson(itemId, userId, firstName, lastName, description, personRole, spinner, personId) {
 
     jQuery('#' + spinner + '-spinner').css('display', 'block');
 
@@ -29,6 +29,7 @@ function updateRcPerson(itemId, userId, firstName, lastName, description, spinne
         DeathPlace: deathPlace,
         Link: link,
         Description: description,
+        PersonRole: personRole,
         ItemId: itemId,
         BirthDate: birthDate
     }
@@ -236,7 +237,7 @@ function loadRcPerson(itemId, userId) {
                 let submitterDescription = 'Submitter Podnositelj prijave';
                 
                 //
-                lastSpan = `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='updateRcPerson(${itemId}, ${userId}, "${listPerson.FirstName}", "${listPerson.LastName}", "${submitterDescription}", "listed-person", ${listPerson.PersonId});'></i></span>`;
+                lastSpan = `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='updateRcPerson(${itemId}, ${userId}, "${listPerson.FirstName}", "${listPerson.LastName}", "${submitterDescription}", "Document Creator", "listed-person", ${listPerson.PersonId});'></i></span>`;
 
                 subLName.setAttribute('disabled', true);
                 subLName.value = listPerson.LastName;
@@ -387,6 +388,12 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
     let resContainer = document.querySelector(autoCompleteContainer);
     let itemIde = parseInt(document.querySelector('#rc-item-id').textContent);
     let userIde = parseInt(document.querySelector('#rc-user-id').textContent);
+    let placeRole = 'Other';
+
+    if(description.includes('Submitter')) {
+        placeRole = 'Creation Place';
+    }
+
     resContainer.innerHTML = '';
     const requestUri = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?country=hr&proximity=15.96%2C45.81&types=place%2Caddress%2Ccountry&access_token=pk.eyJ1IjoiZmFuZGYiLCJhIjoiY2pucHoybmF6MG5uMDN4cGY5dnk4aW80NSJ9.U8roKG6-JV49VZw5ji6YiQ`;
     //const requestUri = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?types=place%2Caddress%2Ccountry&access_token=pk.eyJ1IjoiZmFuZGYiLCJhIjoiY2pucHoybmF6MG5uMDN4cGY5dnk4aW80NSJ9.U8roKG6-JV49VZw5ji6YiQ`;
@@ -403,6 +410,7 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
             let wikiCode = '';
             let wikiName = '';
             let elWiki = '';
+            
             if(element.place_type.includes('country') || element.place_type.includes('place')) {
                 elWiki = `${element.text} ${element.properties['wikidata']}`;
                 wikiCode = element.properties['wikidata'];
@@ -450,6 +458,7 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
                         Comment: description,
                         WikidataName: wikiName,
                         WikidataId: wikiCode,
+                        PlaceRole: placeRole,
                         UserId: userIde,
                         UserGenerated: 1
                     };
@@ -515,7 +524,8 @@ function saveRcDate() {
     // Prepare data and send API request
     data = {
         DateStartDisplay: jQuery('#rc-date-entry').val(),
-        DateEndDisplay: ''
+        DateEndDisplay: '',
+        CreationDate: 'true'
     }
     startDate = jQuery('#rc-date-entry').val().split('/');
     if (!isNaN(startDate[2]) && !isNaN(startDate[1]) && !isNaN(startDate[0])) {
@@ -579,7 +589,7 @@ function saveRcDate() {
 }
 // Save Ration Card Persons
 // Person Type argument is just to make difference between listed people and other people on ration cards, regular by default
-function saveRcPerson(itemId, userId, firstName, lastName, description, spinner, personType = 'regular') {
+function saveRcPerson(itemId, userId, firstName, lastName, description, personRole, spinner, personType = 'regular') {
 
     jQuery('#' + spinner + '-spinner').css('display', 'block');
 
@@ -613,6 +623,7 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, spinner,
             DeathPlace: deathPlace,
             Link: link,
             Description: description,
+            PersonRole: personRole,
             ItemId: itemId,
             BirthDate: birthDate
         }
@@ -1141,8 +1152,9 @@ ready(() => {
             let description = 'Submitter Podnositelj prijave';
             let firstName = document.querySelector('#submitter-fname').value;
             let lastName = document.querySelector('#submitter-lname').value;
-    
-            saveRcPerson(itemId, userId, firstName, lastName, description, 'submitter');
+            let personRole = 'Document Creator';
+            
+            saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'submitter', 'submitter');
         })
     }
 
@@ -1153,8 +1165,9 @@ ready(() => {
             let description = 'Landlord / Kucevlasnik';
             let firstName = document.querySelector('#landlord-fname').value;
             let lastName = document.querySelector('#landlord-lname').value;
+            let personRole = 'Person Mentioned';
     
-            saveRcPerson(itemId, userId, firstName, lastName, description, 'landlord');
+            saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'landlord');
         })
     }
 
@@ -1166,13 +1179,14 @@ ready(() => {
             let description = `${document.querySelector('#desc-rel').value} - ${document.querySelector('#desc-voc').value} - ${document.querySelector('#desc-wp').value}`;
             let firstName = document.querySelector('#lst-p-fname').value;
             let lastName = document.querySelector('#lst-p-lname').value;
+            let personRole = 'Person Mentioned';
 
             if(firstName == document.querySelector('#submitter-fname').value && lastName == document.querySelector('#submitter-lname').value) {
                 let personId = document.querySelector('#submitter-lname').getAttribute('person-id');
                 let submitterDescription = description + ' - (Submitter)';
-                updateRcPerson(itemId, userId, firstName, lastName, submitterDescription, 'listed-person', personId);
+                updateRcPerson(itemId, userId, firstName, lastName, submitterDescription, 'Document Creator', 'listed-person', personId);
             } else {
-                saveRcPerson(itemId, userId, firstName, lastName, description, 'listed-person', 'rc-list');
+                saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'listed-person', 'rc-list');
             }
     
             document.querySelector('#rc-list-form').reset();
@@ -1620,231 +1634,51 @@ ready(() => {
         `</div>`; 
 
 
+        // append listed persons to the transcription
+        transcriptionTemplate.querySelector('#rc-tr-wrapper').insertBefore(displayDiv, transcriptionTemplate.querySelector('#list-placeholder'));
+        ////
+        if(document.querySelector('#show-prirast-ppl').innerHTML != '') {
+            transcriptionTemplate.querySelector('#rc-tr-wrapper').insertBefore(prirastDisplay, transcriptionTemplate.querySelector('#prirast-placeholder'));
+        }
+        if(document.querySelector('#show-odpad-ppl').innerHTML != '') {
+            transcriptionTemplate.querySelector('#rc-tr-wrapper').insertBefore(odpadDisplay, transcriptionTemplate.querySelector('#odpad-placeholder'));
+        }
+        // Set Transcription as textcontent in
+        tinymce.get('item-page-transcription-text').setContent(transcriptionTemplate.innerHTML);
+        if(!document.querySelector('#transcription-selected-languages li')) {
+            document.querySelector('#transcription-language-selector div[value="Hrvatski (Croatian)"]').click();
+        }
+        // Generate Description if Form number is entered and save it
+        if(formNumber != '') {
+            let itemDescription = `Potrošačka kartica prezimena ${submitterLName}, Registracijski Broj kartice: ${formNumber}.`;
 
-        //////////////////
-        // Spans need classes, otherwise Tinymce doesn't add them to the editor
-        // transcriptionTemplate.innerHTML = 
-        //     `<p class='out-first-row' contenteditable='false'><span class='out-first-span'> Grad Zagreb &emsp;</span>  <span class='out-second-span'> A. &emsp;</span><span class='out-third-span'> Prezime i Ime podnosioca prijave: </span></p>` +
-        //     `<p class='out-second-row'>` +
-        //         `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
-        //         `<span class='out-second-span' style='font-size:9px;' contenteditable='false'> &nbsp REG. BROJ: &emsp;</span>` +
-        //         `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${submitterLName ? submitterLName : '&nbsp'} ${submitterFName ? submitterFName : '&nbsp'} </span>` +
-        //     `</p>` +
-        //     `<p class='out-second-subrow'>` +
-        //         `<span class='out-first-span' contenteditable='false'> &nbsp </span>` +
-        //         `<span class='out-second-span' style='font-size:9px;border-bottom: 1px dotted #000;'> ${formNumber ? formNumber : '&nbsp'} &emsp;</span>` +
-        //         `<span class='out-third-span' contenteditable='false'> Prezime i ime i stan kućevlasnika: </span>` +
-        //     `</p>` +
-        //     `<p class='out-third-row'>` +
-        //         `<span class='out-first-span' contenteditable='false'> Ulica, trg ili ina oznaka: <span style='border-bottom:1px dotted #000;min-width:70px;display:inline-block;' contenteditable='true'> ${submitterLoc ? submitterLoc : '&nbsp'} </span> </span>` +
-        //         `<span class='out-second-span' contenteditable='false'> &nbsp &emsp; </span>` +
-        //         `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLName ? landlordLName : '&nbsp'} ${landlordFName ? landlordFName : '&nbsp'} </span>` +
-        //     `</p>` +
-        //     `<p class='out-fourth-row'>` +
-        //         `<span class='out-first-span'> Kbr. <span style='border-bottom:1px dotted #000;display:inline-block;min-width:50px;'> ${submitterHouseNr ? submitterHouseNr : '&nbsp'} &emsp;</span></span>` +
-        //         `<span class='out-second-span'> &nbsp </span>` +
-        //         `<span class='out-third-span' style='border-bottom: 1px dotted #000;text-align:left;'> ${landlordLoc ? landlordLoc : '&nbsp &nbsp'} </span>` +
-        //     `</p>` +
-        //     `<p class='form-title' contenteditable='false'> Potrošačka prijavnica </br>` +
-        //     `za kućanstva i samce - samice </p>` +
-        //     `<p class='form-cookies' contenteditable='false'> Potpisani ovim molim, da mi se izda potrošačka iskaznica, te podjedno izjavljujem pod odgovornošću iz čl. 18 st. 1 </br>` +
-        //     `Naredbe o raspodjeli (racioniranju) životnih namirnica, da se u mojem kućanstvu hrane slijedeće osobe: </p>` +
-        //     // Listed people head
-        //     `<p class='rc-list-head'>` +
-        //         `<span class='start-span' style='width: 5%;' contenteditable='false'> REDNI BROJ &nbsp</span>` +
-        //         `<span class='first-span' contenteditable='false'> PREZIME I IME &nbsp</span>` +
-        //         `<span class='second-span' contenteditable='false'> GODINA ROĐENJA &nbsp</span>` +
-        //         `<span class='third-span' contenteditable='false'> ODNOS PREMA PODNOSIOCU PRIJAVE ODN. STARJEŠINI &nbsp</span>` +
-        //         `<span class='fourth-span' contenteditable='false'> ZANIMANJE &nbsp</span>` +
-        //         `<span class='fifth-span' contenteditable='false'> MJESTO RADA &nbsp</span>` +
-        //     `</p>` +
-        //     `${displayDiv.querySelector('.list-person-single') ? 
-        //         `<span id='list-placeholder'></span>` 
-        //         :
-        //         `<p class='list-person-single'>` +
-        //             `<span class='start-span' style='width: 5%;' > 1 </span>` +
-        //             `<span class='first-span' > &nbsp </span>` +
-        //             `<span class='second-span' > &nbsp </span>` +
-        //             `<span class='third-span' > &nbsp </span>` +
-        //             `<span class='fourth-span' > &nbsp </span>` +
-        //             `<span class='fifth-span' > &nbsp </span>` +
-        //         `</p>` 
-        //     }` +
-        //     /// Prirast
-        //     `${document.querySelector('#show-prirast-ppl').innerHTML != '' ?
-        //         `<span id='prirast-placeholder'></span>`
-        //         :
-        //         `<p style='font-size:9px;font-weight:600;'>PRIRAST: (ispunjava vlast)</p>` +
-        //         `<p class='list-person-single'>` +
-        //             `<span class='start-span' style='width: 5%;' > 1 </span>` +
-        //             `<span class='first-span' > &nbsp </span>` +
-        //             `<span class='second-span' > &nbsp </span>` +
-        //             `<span class='third-span' > &nbsp </span>` +
-        //             `<span class='fourth-span' > &nbsp </span>` +
-        //             `<span class='fifth-span' > &nbsp </span>` +
-        //         `</p>` 
-        //     }` +
-        //     /// Odpad
-        //     `${document.querySelector('#show-odpad-ppl').innerHTML != '' ?
-        //         `<span id='odpad-placeholder'></span>`
-        //         :
-        //         `<p style='font-size:9px;font-weight:600;'>ODPAD: (ispunjava vlast)</p>` +
-        //         `<p class='list-person-single'>` +
-        //             `<span class='start-span' style='width: 5%;' > 1 </span>` +
-        //             `<span class='first-span' > &nbsp </span>` +
-        //             `<span class='second-span' > &nbsp </span>` +
-        //             `<span class='third-span' > &nbsp </span>` +
-        //             `<span class='fourth-span' > &nbsp </span>` +
-        //             `<span class='fifth-span' > &nbsp </span>` +
-        //         `</p>` 
-        //     }` +
-        //     // Zalihe // Without Inline Style, tinymce gets rid of 'span' tags and breaks layout
-        //     `<p class='form-cookies'> Ujedno izjavljujem pod istom odgovornošću, da u mojem kućanstvu postoje slijedeće zalihe životnih namirnica u</br>` +
-        //     `Kilogramima odnosno litrama: </p>` +
-
-        //     `<div id='zalihe-container'>` +
-        //         `<div id='zalihe-head'>` +
-        //             `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-        //                 `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> PŠENICA &nbsp</span>` +
-        //                 `<span style='width:50%;font-size:8px;height:50%;'> ZRNO &nbsp</span>` +
-        //                 `<span style='width:50%;font-size:8px;height:50%;border-left: 1px solid #000;'> BRAŠNO &nbsp</span>` +
-        //             `</span>` +
-        //             `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-        //                 `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> RAŽ &nbsp</span>` +
-        //                 `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
-        //                 `<span style='width:50%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
-        //             `</span>` +
-        //             `<span style='width:11.6%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-        //                 `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> JEČAM &nbsp</span>` +
-        //                 `<span style='width:50%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
-        //                 `<span style='width:50%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
-        //             `</span>` +
-        //             `<span style='width:17.4%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'>` +
-        //                 `<span style='width:100%;height:50%;border-bottom:1px solid #000;'> KUKURUZ &nbsp</span>` +
-        //                 `<span style='width:33%;font-size:8px;height:50%;border-right:1px solid #000;'> ZRNO &nbsp</span>` +
-        //                 `<span style='width:34%;font-size:8px;height:50%;border-right:1px solid #000;'> KLIP &nbsp</span>` +
-        //                 `<span style='width:33%;font-size:8px;height:50%;'> BRAŠNO &nbsp</span>` +
-        //             `</span>` +
-
-        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> TJESTENINE &nbsp</span>` +
-        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> JESTIVO ULJE &nbsp</span>` +
-        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> MAST &nbsp</span>` +
-        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SOL &nbsp</span>` +
-        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> ŠEĆER &nbsp</span>` +
-        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> KAVA &nbsp</span>` +
-        //             `<span style='width:5.8%;height:50px;border-bottom:1px solid #000;border-right:1px solid #000;'> SAPUN ZA PRANJE &nbsp</span>` +
-        //             `<span style='width:7.2%;height:50px;border-bottom:1px solid #000;'> PETROLEJ &nbsp</span>` +
-        //         `</div>` +
-        //         `<div id='zalihe-top'>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:7.2%;height:50px;border-bottom:1px solid #000;'> &nbsp </span>` +
-        //         `</div>` +
-        //         `<div id='zalihe-mid'>` +
-        //             `<p style='text-align:center;font-size:12px;letter-spacing:1em;'> POVEĆANJE </p>` +
-        //         `</div>` +
-        //         `<div id='zalihe-bot'>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:5.8%;height:50px;'> &nbsp </span>` +
-        //             `<span style='width:7.2%;height:50px;border-top:1px solid #000;'> &nbsp </span>` +
-        //         `</div>` +
-        //     `</div>` +
-        //     `<div id='shop-container'>` +
-        //         `<p class='display-shop-label' contenteditable='false'> Živežne namirnice nabavljat ću: </p>` +
-        //         `<p class='display-shop' contenteditable='false'>` +
-        //             ` U radnji: ` +
-        //             `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopName ? shopName : '&nbsp'} </span>` +
-        //             ` ulica ` + 
-        //             `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopLoc ? shopLoc : '&nbsp'} </span>` +
-        //         `</p>` +
-        //     `</div>` +
-        //     `<p class='display-form-date' contenteditable='false'> Zagreb, <span style='border-bottom: 1px dotted #000;' contenteditable='true'> ${docDate ? docDate : '&nbsp &nbsp &nbsp'} </span></p>`+
-        //     `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;font-size:10px;font-weight:600;'>POTPIS PODNOSIOCA PRIJAVE</span></p>` +
-        //     `<div style='clear:both;height:5px;' contenteditable='false'></div>` +
-        //     `<p class='form-signature' contenteditable='false'><span style='display:inline-block;float:right;min-width:80px;border-bottom: 1px dotted #000;' contenteditable='true'> &nbsp </span></p>` +
-        //     `<div style='clear:both;' contenteditable='false'></div>` +
-        //     `<p class='form-footer' contenteditable='false'> Ova prijavnica stoji din 0*75 i ne smije se skuplje prodavati. </p>` +
-        //     `<p class='form-sub-footer' contenteditable='false'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>`;
-
-            // append listed persons to the transcription
-            transcriptionTemplate.querySelector('#rc-tr-wrapper').insertBefore(displayDiv, transcriptionTemplate.querySelector('#list-placeholder'));
-
-            ////
-            if(document.querySelector('#show-prirast-ppl').innerHTML != '') {
-                transcriptionTemplate.querySelector('#rc-tr-wrapper').insertBefore(prirastDisplay, transcriptionTemplate.querySelector('#prirast-placeholder'));
+            data = {
+                Description: itemDescription
             }
-            if(document.querySelector('#show-odpad-ppl').innerHTML != '') {
-                transcriptionTemplate.querySelector('#rc-tr-wrapper').insertBefore(odpadDisplay, transcriptionTemplate.querySelector('#odpad-placeholder'));
-            }
-            // Set Transcription as textcontent in
-            tinymce.get('item-page-transcription-text').setContent(transcriptionTemplate.innerHTML);
+            jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
+                'type': 'POST',
+                'url': TP_API_HOST + '/tp-api/items/' + itemId,
+                'data': data
+            },
+            // Check success and create confirmation message
+            function(response) {
+                console.log(response);
+                updateDataProperty('items', itemId, 'DescriptionLanguage', '12');
+                // show description in description tab
+                document.querySelector('#item-page-description-text').textContent = itemDescription;
+                if(!document.querySelector('#description-language-selector').querySelector('#language-sel-placeholder')) {
+                    // show description language
+                    let newLang = document.createElement('div');
+                    newLang.classList = 'language-select-selected';
+                    newLang.textContent = 'Hrvatski';
 
-            if(!document.querySelector('#transcription-selected-languages li')) {
-                document.querySelector('#transcription-language-selector div[value="Hrvatski (Croatian)"]').click();
-            }
-
-            // Generate Description if Form number is entered and save it
-            if(formNumber != '') {
-                let itemDescription = `Potrošačka kartica prezimena ${submitterLName}, Registracijski Broj kartice: ${formNumber}.`
-
-                data = {
-                    Description: itemDescription
+                    document.querySelector('#description-language-selector').appendChild(newLang);
                 }
-
-                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                    'type': 'POST',
-                    'url': TP_API_HOST + '/tp-api/items/' + itemId,
-                    'data': data
-                },
-                // Check success and create confirmation message
-                function(response) {
-                    console.log(response);
-
-                    updateDataProperty('items', itemId, 'DescriptionLanguage', '12');
-                    // show description in description tab
-                    document.querySelector('#item-page-description-text').textContent = itemDescription;
-                    if(!document.querySelector('#description-language-selector').querySelector('#language-sel-placeholder')) {
-                        // show description language
-                        let newLang = document.createElement('div');
-                        newLang.classList = 'language-select-selected';
-                        newLang.textContent = 'Hrvatski';
-    
-                        document.querySelector('#description-language-selector').appendChild(newLang);
-                    }
-
-                    
-                });
-            }
-            document.querySelector('#rc-submit-spinner').style.display = 'none';
-            document.querySelector('#tr-tab').parentElement.style.display = 'block';
+                
+            });
+        }
+        document.querySelector('#rc-submit-spinner').style.display = 'none';
+        document.querySelector('#tr-tab').parentElement.style.display = 'block';
     })
 
     // Add Prirast/Odpad tables on button click
@@ -1871,8 +1705,9 @@ ready(() => {
         let description = `${document.querySelector('#odpad-rel').value} - ${document.querySelector('#odpad-voc').value} - ${document.querySelector('#odpad-wp').value} - (Odpad) `;
         let firstName = document.querySelector('#odpad-fname').value;
         let lastName = document.querySelector('#odpad-lname').value;
+        let personRole = 'Person Mentioned';
 
-        saveRcPerson(itemId, userId, firstName, lastName, description, 'odpad', 'odpad');
+        saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'odpad', 'odpad');
 
         document.querySelector('#odpad-list-form').reset();
     })
@@ -1881,8 +1716,9 @@ ready(() => {
         let description = `${document.querySelector('#prirast-rel').value} - ${document.querySelector('#prirast-voc').value} - ${document.querySelector('#prirast-wp').value} - (Prirast)`;
         let firstName = document.querySelector('#prirast-fname').value;
         let lastName = document.querySelector('#prirast-lname').value;
+        let personRole = 'Person Mentioned';
 
-        saveRcPerson(itemId, userId, firstName, lastName, description, 'prirast', 'prirast');
+        saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'prirast', 'prirast');
 
         document.querySelector('#prirast-list-form').reset();
         })

@@ -1626,13 +1626,6 @@ function loadPlaceData(itemId, userId) {
                                 `</div>` +
                                 `<div style='clear:both;'></div>` +
                             `</div>` +
-                            // Wikidata ref container
-                            `<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>` +
-                                `<label>Wikidata Reference:` +
-                                    `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>` +
-                                `</label>` +
-                                `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value='${isItString(location['WikidataName'])}; ${isItString(location['WikidataId'])};' >` +
-                            `</div>` +
                             // Description
                             `<div class='location-input-description-container' style='height:50px;'>` +
                                 `<label>Description: ` +
@@ -1645,6 +1638,25 @@ function loadPlaceData(itemId, userId) {
                                 ``
                                 }` +
                                 `</textarea>` +
+                            `</div>` +
+                            // Creation Place
+                            `<div class='loc-type'>` +
+                                `<label class='loc-checkbox-container' style='width:100%!important;'>` +
+                                    `<span style='display:inline-block;width:30%;'> Creation Place ` +
+                                    `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Is this location the place where the document was created?'></i>` +
+                                    `</span>` +
+                                    `<span class='loc-check-right' style='float:none!important;display:inline-block;'>` +
+                                        `<input type='checkbox' class='loc-type-check' id='place-role-${location['PlaceId']}' name='CreationPlace' value='Creation Place'>` +
+                                        `<span class='loc-checkmark'></span>` +
+                                    `</span>` +
+                                `</label>` +
+                            `</div>` +
+                            // Wikidata ref container
+                            `<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>` +
+                                `<label>Wikidata Reference:` +
+                                    `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>` +
+                                `</label>` +
+                                `<input class='edit-input' id='lgns' type='text' placeholder='' name='' value='${isItString(location['WikidataName'])};${isItString(location['WikidataId'])}' >` +
                             `</div>` +
                             // Buttons
                             `<div class='form-buttons-right'>` +
@@ -1757,15 +1769,49 @@ function loadPersonData(itemId, userId) {
                                     placeholder='&nbsp Last Name' value='${isItString(person['LastName'])}'>` +
                             `</div>` +
 
-                            `<div class='person-description-input'>` +
-                                `<input type='text' id='person-${person['PersonId']}-description-edit' class='input-response person-edit-field'
-                                    placeholder='&nbsp Add more info about this person...' value='${isItString(person['Description'])}'>` +
+                            `<div class='person-input-desc-cont'>` +
+                                `<div class='person-desc-left' style='margin-bottom: 0!important;'>` +
+                                    `<div class='person-description-input'>` +
+                                        `<input type='text' id='person-${person['PersonId']}-description-edit' class='input-response person-edit-field'
+                                            placeholder='&nbsp; Add more info to this person...' value='${person['Description'] != 'NULL' ? htmlDecode(person['Description']) : ''}'>` +
+                                    `</div>` +
+                                    `<div class='person-description-input'>` +
+                                        `<input type='text' id='person-${person['PersonId']}-wiki-edit' class='input-response person-edit-field'
+                                            placeholder='&nbsp; Add Wikidata ID to this person.' title='e.g. Wikidata Title ID' value='${person['Link'] != 'NULL' ? htmlDecode(person['Link']) : ''}'>` +
+                                    `</div>` +
+                                `</div>` +
+                                `<div class='person-desc-right'>` +
+                                    `<form id='ppl-role-form-${person['PersonId']}'>` +
+                                        `<div class='person-role-input' style='margin-bottom: 0!important;'>` +
+                                            `<label id='document-creator-${person['PersonId']}'>` +
+                                                `<input type='radio' id='doc-creator-${person['PersonId']}' name='person-role' value='Document Creator'>` +
+                                                `<span> Document Creator </span>` +
+                                            `</label>` +
+                                            `</br>` +
+                                            `<label id='important-person-${person['PersonId']}'>` +
+                                                `<input type='radio' id='main-actor-${person['PersonId']}' name='person-role' value='Person Addressed'>` +
+                                                `<span> Person Addressed </span>` +
+                                            `</label>` +
+                                            `</br>` +
+                                            `<label id='others-${person['PersonId']}'>` +
+                                                `<input type='radio' id='other-ppl-${person['PersonId']}' name='person-role' value='Person Mentioned'>` +
+                                                `<span> Person Mentioned </span>` +
+                                            `</label>` +
+                                            `</br>` +
+                                        `</div>` +
+                                    `</form>` +
+                                `</div>` +
                             `</div>` +
 
-                            `<div class='person-description-input'>` +
-                                `<input type='text' id='person-${person['PersonId']}-wiki-edit' class='input-response person-edit-field'
-                                    placeholder='&nbsp Add Wikidata ID to this person' title='e.g. Wikidata Title ID' value='${isItString(person['Link'])}'>` +
-                            `</div>` +
+                            // `<div class='person-description-input'>` +
+                            //     `<input type='text' id='person-${person['PersonId']}-description-edit' class='input-response person-edit-field'
+                            //         placeholder='&nbsp Add more info about this person...' value='${isItString(person['Description'])}'>` +
+                            // `</div>` +
+
+                            // `<div class='person-description-input'>` +
+                            //     `<input type='text' id='person-${person['PersonId']}-wiki-edit' class='input-response person-edit-field'
+                            //         placeholder='&nbsp Add Wikidata ID to this person' title='e.g. Wikidata Title ID' value='${isItString(person['Link'])}'>` +
+                            // `</div>` +
 
                             `<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>` +
                                 `<input type='text' id='person-${person['PersonId']}-birthPlace-edit' class='input-response person-input-field person-re-edit'
@@ -1938,6 +1984,7 @@ function openLocationEdit(placeId) {
         lockWarning();
         return 0;
     }
+    document.querySelector('#location-input-section').style.display = 'none';
     if (locSingle.querySelector('.location-data-edit-container').style.display == 'none') {
         locSingle.querySelector('.location-data-edit-container').style.display = 'block';
         locSingle.querySelector('.location-single').style.dispay = 'none';
@@ -1954,6 +2001,7 @@ function openPersonEdit(personId) {
       lockWarning();
       return 0;
     }
+    
     if (jQuery('#person-data-edit-' + personId).css('display') == 'none') {
       jQuery('#person-data-edit-' + personId).css('display', 'block');
       jQuery('#person-data-output-display-' + personId).css('display', 'none');
@@ -1996,6 +2044,10 @@ function editItemLocation(placeId, itemId, userId) {
       jQuery('#item-location-' + placeId + '-spinner-container').css('display', 'none')
       return 0;
     }
+    let placeRole = 'Other';
+    if(document.querySelector('#place-role-' + placeId).checked) {
+        placeRole = 'Creation Place';
+    }
 
     description = jQuery('#location-data-edit-' + placeId + ' .location-input-description-container textarea').val();
     wikidata = jQuery('#location-data-edit-' + placeId + '  .location-input-geonames-container input').val().split(";");
@@ -2006,9 +2058,12 @@ function editItemLocation(placeId, itemId, userId) {
               Longitude: longitude,
               Comment: description,
               WikidataName: wikidata[0],
-              WikidataId: wikidata[1]
+              WikidataId: wikidata[1],
+              PlaceRole: placeRole
             }
     var dataString= JSON.stringify(data);
+
+    console.log(data);
 
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'POST',
@@ -2035,6 +2090,14 @@ function editPerson(personId, itemId, userId) {
     deathDate = jQuery('#person-' + personId + '-deathDate-edit').val().split('/');
     description = jQuery('#person-' + personId + '-description-edit').val();
     wiki = jQuery('#person-' + personId + '-wiki-edit').val();
+    let personRole = 'Person Mentioned';
+
+    if(document.querySelector('#main-actor-' + personId).checked) {
+        personRole = 'Person Addressed';
+    } else if (document.querySelector('#doc-creator-' + personId).checked) {
+        personRole = 'Document Creator';
+    }
+
 
     if (firstName == "" && lastName == "") {
       return 0;
@@ -2047,6 +2110,7 @@ function editPerson(personId, itemId, userId) {
       DeathPlace: deathPlace,
       Link: wiki,
       Description: description,
+      PersonRole: personRole,
       ItemId: itemId
     }
     if (!isNaN(birthDate[2]) && !isNaN(birthDate[1]) && !isNaN(birthDate[0])) {

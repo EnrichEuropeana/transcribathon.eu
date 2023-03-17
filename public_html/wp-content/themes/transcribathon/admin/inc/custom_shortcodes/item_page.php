@@ -312,18 +312,6 @@ if (event.target.id != "tagging-status-indicator") {
                         $locationDisplay .= "<div style='clear:both;'></div>";
                     $locationDisplay .= "</div>";
 
-                    $locationDisplay .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
-                        $locationDisplay .= "<label>Wikidata Reference:";
-                            $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
-                        $locationDisplay .= "</label>";
-                        if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != '' && $place['WikidataName'] != 'NULL' && $place['WikidataName'] != '') {
-                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='"
-                                . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . "; "
-                                . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
-                        } else {
-                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
-                        }
-                    $locationDisplay .= "</div>";
                     $locationDisplay .= "<div class='location-input-description-container' style='height:50px;'>";
                         $locationDisplay .= "<label>";
                             $locationDisplay .= "Description: ";
@@ -336,6 +324,33 @@ if (event.target.id != "tagging-status-indicator") {
                         }
                         $locationDisplay .= "</textarea>";
                     $locationDisplay .= "</div>";
+                    $locationDisplay .= "<div style='clear:both;'></div>";
+
+                    $locationDisplay .= "<div class='loc-type'>";
+                        $locationDisplay .= "<label class='loc-checkbox-container' style='width:100%!important;'>";
+                            $locationDisplay .= "<span style='display:inline-block;width:30%;'> Creation Place ";
+                                $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Is this the location where the document was created?'></i>";
+                            $locationDisplay .= "</span>";
+                            $locationDisplay .= "<span class='loc-check-right' style='float:none!important;display:inline-block;'>";
+                                $locationDisplay .= "<input type='checkbox' class='loc-type-check' id='place-role-" . $place['PlaceId'] . "' name='CreationPlace' value='Creation Place'>";
+                                $locationDisplay .= "<span class='loc-checkmark'></span>";
+                            $locationDisplay .= "</span>";
+                        $locationDisplay .= "</label>";
+                    $locationDisplay .= "</div>";
+
+                    $locationDisplay .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
+                        $locationDisplay .= "<label>Wikidata Reference:";
+                            $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
+                        $locationDisplay .= "</label>";
+                        if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != '' && $place['WikidataName'] != 'NULL' && $place['WikidataName'] != '') {
+                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='"
+                                . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . ";"
+                                . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
+                        } else {
+                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
+                        }
+                    $locationDisplay .= "</div>";
+
 
                     $locationDisplay .= "<div class='form-buttons-right'>";
                         $locationDisplay .= "<div class='form-btn-left'>";
@@ -697,17 +712,53 @@ if (event.target.id != "tagging-status-indicator") {
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
                                                 placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? htmlspecialchars_decode($person['LastName']) : '') . "'>";
                             $enrichmentTab .= "</div>";
+                            ///////////
+                            $enrichmentTab .= "<div class='person-input-desc-cont'>";
+                                $enrichmentTab .= "<div class='person-desc-left' style='margin-bottom: 0!important;'>";
+                                    $enrichmentTab .= "<div class='person-description-input'>";
+                                        $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
+                                                        placeholder='&nbsp; Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars_decode($person['Description']) : '' ) . "'>";
+                                    $enrichmentTab .= "</div>";
 
-                            $enrichmentTab .= "<div class='person-description-input'>";
-                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
-                                                placeholder='&nbsp Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars_decode($person['Description']) : '') . "'>";
+                                    $enrichmentTab .= "<div class='person-description-input'>";
+                                        $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp; Add Wikidata ID to this person.'
+                                                        title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars_decode($person['Link']) : '') . "'>";
+                                    $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "<div class='person-desc-right'>";
+                                    $enrichmentTab .= "<form id='ppl-role-form-" . $person['PersonId'] . "'>";
+                                        $enrichmentTab .= "<div class='person-role-input' style='margin-bottom: 0!important;'>";
+                                            $enrichmentTab .= "<label id='document-creator-" . $person['PersonId'] . "'>";
+                                                $enrichmentTab .= "<input type='radio' id='doc-creator-" . $person['PersonId'] . "' name='person-role' value='Document Creator'>";
+                                                $enrichmentTab .= "<span> Document Creator </span>";
+                                            $enrichmentTab .= "</label>";
+                                            $enrichmentTab .= "</br>";
+                                            $enrichmentTab .= "<label id='important-person-" . $person['PersonId'] . "'>";
+                                                $enrichmentTab .= "<input type='radio' id='main-actor-" . $person['PersonId'] . "' name='person-role' value='Person Addressed'>";
+                                                $enrichmentTab .= "<span> Person Addressed </span>";
+                                            $enrichmentTab .= "</label>";
+                                            $enrichmentTab .= "</br>";
+                                            $enrichmentTab .= "<label id='others-" . $person['PersonId'] . "'>";
+                                                $enrichmentTab .= "<input type='radio' id='other-ppl-" . $person['PersonId'] . "' name='person-role' value='Person Mentioned'>";
+                                                $enrichmentTab .= "<span> Person Mentioned </span>";
+                                            $enrichmentTab .= "</label>";
+                                            $enrichmentTab .= "</br>";
+                                        $enrichmentTab .= "</div>";
+                                    $enrichmentTab .= "</form>";
+                                    $enrichmentTab .= "<i class='fas fa-question-circle'></i>";
+                                $enrichmentTab .= "</div>";
                             $enrichmentTab .= "</div>";
+                            ////////////
+                            // $enrichmentTab .= "<div class='person-description-input'>";
+                            //     $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
+                            //                     placeholder='&nbsp; Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars_decode($person['Description']) : '') . "'>";
+                            // $enrichmentTab .= "</div>";
 
-                            $enrichmentTab .= "<div class='person-description-input'>";
-                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp Add Wikidata ID to this person'
-                                                title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars_decode($person['Link']) : '') . "'>";
-                            $enrichmentTab .= "</div>";
-
+                            // $enrichmentTab .= "<div class='person-description-input'>";
+                            //     $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp Add Wikidata ID to this person'
+                            //                     title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars_decode($person['Link']) : '') . "'>";
+                            // $enrichmentTab .= "</div>";
+                            ///////////////
                             $enrichmentTab .= "<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-birthPlace-edit' class='input-response person-input-field person-re-edit'
                                                 value='" . ($person['BirthPlace'] != 'NULL' ? htmlspecialchars_decode($person['BirthPlace']) : '') . "' placeholder='&nbsp Birth Location'>";

@@ -775,6 +775,7 @@ p.mb-1 {
     background-color: #fff!important;
     border: 1px solid var(--main-color)!important;
     width: 58%!important;
+    border-radius: 0!important;
     float: unset;
 }
 .location-output {
@@ -2079,7 +2080,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 #location-name-display, .location-input-coordinates-container, #location-input-geonames-search-container,
 .location-input-description-container {
-    margin: 10px 0 0 0;
+    margin: 5px 0 0 0;
 }
 /*
 .location-input-container textarea {
