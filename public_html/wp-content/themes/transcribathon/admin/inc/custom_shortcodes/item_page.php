@@ -25,16 +25,24 @@ function _TCT_mtr_transcription($atts)
 
     $getJsonOptions = [
         'http' => [
-            'header' => [ 'Content-type: application/json' ],
+            'header' => [ 
+                'Content-type: application/json',
+                'Authorization: Bearer ' . TP_API_V2_TOKEN
+            ],
             'method' => 'GET'
         ]
     ];
 
-    $itemData = sendQuery(TP_API_HOST . '/tp-api/items/' . $itemId, $getJsonOptions, true);
+    $itemDataset = sendQuery(TP_API_V2_ENDPOINT . '/items/' . $itemId, $getJsonOptions, true);
+    $itemData = $itemDataset['data'];
 
     if (empty($itemData['StoryId'])) {
         return;
     }
+
+    // Replace Item endpoint
+   // dd($itemData);
+
 
     $storyId = $itemData['StoryId'];;
 
@@ -74,8 +82,7 @@ function _TCT_mtr_transcription($atts)
 
 
     // Check which Transcription is active
-    $trCheck = json_decode(checkActiveTranscription($itemData['ItemId']));
-    $activeTr = $trCheck->data->TranscriptionSource;
+    $activeTr = $itemData['TranscriptionSource'];
     // Transcription to show in transcription View
     $transcriptionView = '';
 
@@ -213,16 +220,18 @@ if (event.target.id != "tagging-status-indicator") {
     );
     $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
     $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
-    $transcriptionList = [];
-    if($itemData['Transcriptions'] != null) {
-        foreach($itemData['Transcriptions'] as $transcription) {
-            if($transcription['CurrentVersion'] == '1') {
-                $currentTranscription = $transcription;
-            } else {
-                array_push($transcriptionList, $transcription);
-            }
-        }
-    }
+    // $transcriptionList = [];
+    // if($itemData['Transcriptions'] != null) {
+    //     foreach($itemData['Transcriptions'] as $transcription) {
+    //         if($transcription['CurrentVersion'] == '1') {
+    //             $currentTranscription = $transcription;
+    //         } else {
+    //             array_push($transcriptionList, $transcription);
+    //         }
+    //     }
+    // }
+
+    $currentTranscription = $itemData['Transcription'];
     // Get the progress data
     $progressData = array(
         $itemData['TranscriptionStatusName'],
@@ -269,6 +278,16 @@ if (event.target.id != "tagging-status-indicator") {
     $mapBox .= "<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />";
         $mapBox .= "<i class='fas fa-map map-placeholder'></i>";
     $mapBox .= "</div>";
+
+    ///Change places endpoint
+    $getJsonOptions = [
+        'http' => [
+            'header' => [ 'Content-type: application/json' ],
+            'method' => 'GET'
+        ]
+    ];
+
+    $itemData['Places'] = sendQuery(TP_API_HOST . '/tp-api/places?ItemId=' . $itemId, $getJsonOptions, true);
 
     // Locations Display
     $locationDisplay = "";
@@ -572,6 +591,16 @@ if (event.target.id != "tagging-status-indicator") {
                 $enrichmentTab .= "<i id='people-open' class=\"fas fa-edit\"></i></h6>";
             $enrichmentTab .= "</div>";
             // add person form
+            // Change PErsons endpoint
+            $getJsonOptions = [
+                'http' => [
+                    'header' => [ 'Content-type: application/json' ],
+                    'method' => 'GET'
+                ]
+            ];
+        
+            $itemData['Persons'] = sendQuery(TP_API_HOST . '/tp-api/persons?ItemId=' . $itemId, $getJsonOptions, true);
+            ///
             if(count($itemData['Persons']) > 0) {
                 $enrichmentTab .= '<div class="collapse person-item-data-container" id="person-input-container" style="position:relative;">';
             } else {
@@ -1219,8 +1248,8 @@ if (event.target.id != "tagging-status-indicator") {
 
             // Document type, view only
             $descriptionTab .= "<div id='doc-type-view'>";
-            foreach($itemData['Properties'] as $property) {
-                if($property['PropertyType'] == "Category") {
+            foreach($itemData['Property'] as $property) {
+                if($property['PropertyTypeId'] == 3) {
                     $descriptionTab .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
                 }
             }
@@ -1229,8 +1258,8 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .= "<div id='category-checkboxes' class='login-required'>";
             foreach($categories as $category) {
                 $checked = "";
-                if($itemData['Properties'] != null) {
-                    foreach($itemData['Properties'] as $itemProp) {
+                if($itemData['Property'] != null) {
+                    foreach($itemData['Property'] as $itemProp) {
                         if($itemProp['PropertyId'] == $category['PropertyId']) {
                             $checked = "checked";
                             break;
@@ -1360,8 +1389,8 @@ if (event.target.id != "tagging-status-indicator") {
 
             $descriptionTab .= '<div id="item-keyword-list" class="item-data-output-listt">';
 
-                foreach ($itemData['Properties'] as $property) {
-                    if ($property['PropertyType'] == "Keyword") {
+                foreach ($itemData['Property'] as $property) {
+                    if ($property['PropertyTypeId'] == 4) {
                         $descriptionTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
                             $descriptionTab .= htmlspecialchars_decode($property['PropertyValue']);
                             $descriptionTab .= '<i class="login-required delete-item-datas far fa-times" style="margin-left:5px;"
@@ -1409,7 +1438,7 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .=    "</div>";
 
             $descriptionTab .= '<div id="item-link-list" class="item-data-output-list">';
-            foreach ($itemData['Properties'] as $property) {
+            foreach ($itemData['Property'] as $property) {
                 if($property['PropertyDescription'] != 'NULL') {
                     $propDescription =  htmlspecialchars_decode($property['PropertyDescription']);
                     $descPHolder = htmlspecialchars_decode($property['PropertyDescription']);
@@ -1417,7 +1446,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $propDescription = "";
                     $descPHolder = "";
                 }
-                if($property['PropertyType'] == "Link") {
+                if($property['PropertyTypeId'] == 5) {
                     $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "'>";
                         $descriptionTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
                             $descriptionTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
