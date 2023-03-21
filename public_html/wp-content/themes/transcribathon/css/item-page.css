@@ -660,8 +660,10 @@ p.mb-1 {
     color: var(--main-color);
     text-align: center;
     z-index: 9;
-    bottom: 0;
+    bottom: -15px;
     margin-right: 100px;
+    margin-bottom: 20px;
+
 }
 /* --- Full Screen Css --*/
 .item-page-section {
