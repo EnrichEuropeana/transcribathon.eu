@@ -1,6 +1,6 @@
 <?php
 
-namespace FACTSANDFILES\Transcribathon;
+namespace FactsAndFiles\Transcribathon;
 
 class ApiRequest
 {
