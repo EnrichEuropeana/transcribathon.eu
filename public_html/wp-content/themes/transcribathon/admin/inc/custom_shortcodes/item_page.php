@@ -220,18 +220,20 @@ if (event.target.id != "tagging-status-indicator") {
     );
     $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
     $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
-    // $transcriptionList = [];
-    // if($itemData['Transcriptions'] != null) {
-    //     foreach($itemData['Transcriptions'] as $transcription) {
-    //         if($transcription['CurrentVersion'] == '1') {
-    //             $currentTranscription = $transcription;
-    //         } else {
-    //             array_push($transcriptionList, $transcription);
-    //         }
-    //     }
-    // }
 
-    $currentTranscription = $itemData['Transcription'];
+    $currentTranscription = '';
+    $transcriptionList = array_reverse(sendQuery(TP_API_HOST . '/tp-api/transcriptions?ItemId=' . $itemId, $getJsonOptions, true));
+   // dd($transcriptionList);
+    if(!empty($transcriptionList)) {
+        foreach($transcriptionList as $transcription) {
+            if($transcription['CurrentVersion'] == '1') {
+                $currentTranscription = $transcription;
+            } 
+        }
+    }
+
+
+    //$currentTranscription = $itemData['Transcription'];
     // Get the progress data
     $progressData = array(
         $itemData['TranscriptionStatusName'],
@@ -852,15 +854,16 @@ if (event.target.id != "tagging-status-indicator") {
     $enrichmentTab .= "</div>";
 
     // Transcription History
+  //  var_dump($currentTranscription);
     $trHistory = "";
-    // if($currentTranscription['Text'] == null ) {
-    //     $trHistory .= "<div class='tr-history-section' style='display:none;'>";
-    // } else {
-         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
-    // }
-        $trHistory .= "<div class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' data-toggle='collapse' href='#transcription-history'
-                        onClick='jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")
-                        jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-up\")' style='margin-bottom: 0;'>";
+    if($currentTranscription['Text'] == null ) {
+        $trHistory .= "<div class='tr-history-section' style='display:none;'>";
+    } else {
+        $trHistory .= "<div class='tr-history-section' style='display:block;'>";
+    }
+    $trHistory .= "<div class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' data-toggle='collapse' href='#transcription-history'
+    onClick='jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")
+    jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-up\")' style='margin-bottom: 0;'>";
             $trHistory .= "<h4 id='transcription-history-collapse-heading' class='theme-color item-page-section-headline'>";
                 $trHistory .= "TRANSCRIPTION HISTORY";
             $trHistory .= "</h4>";
@@ -868,7 +871,7 @@ if (event.target.id != "tagging-status-indicator") {
         $trHistory .= "</div>";
         $trHistory .= "<div style='clear:both;'></div>";
 
-        $trHistory .= "<div id='transcription-history' class='collapse'>";
+        $trHistory .= "<div id='transcription-history' style='display:none;'>";
         // Get User data
         $user = get_userdata($currentTranscription['WP_UserId']);
 
@@ -898,32 +901,36 @@ if (event.target.id != "tagging-status-indicator") {
 
             if($transcriptionList != null) {
                 foreach($transcriptionList as $transcription) {
-                    $user = get_userdata($transcription['WP_UserId']);
-                    $trHistory .= "<div class='transcription-toggle' data-toggle='collapse' data-target='#transcription-" . $i . "'>";
-                        $trHistory .= "<i class='fas fa-calendar-day' style='margin-right: 6px;'></i>";
-                        $date = strtotime($transcription['Timestamp']);
-                        $trHistory .= "<span class='day-n-time'>";
-                            $trHistory .= $transcription['Timestamp'];
-                        $trHistory .= "</span>";
-                        $trHistory .= "<i class='fas fa-user-alt' style='margin: 0 6px;'></i>";
-                        $trHistory .= "<span class='day-n-time'>";
-                            $trHistory .= "<a target='_blank' href='" . network_home_url() . "profile/" . $user->data->user_nicename . "'>";
-                                $trHistory .= $user->data->user_nicename;
-                            $trHistory .= "</a>";
-                        $trHistory .= "</span>";
-                        $trHistory .= "<i class='fas fa-angle-down' style='float:right;'></i>";
-                    $trHistory .= "</div>";
-
-                    $trHistory .= "<div id='transcription-" . $i . "' class='collapse transcription-history-collapse-content'>";
-                        $trHistory .= "<p>";
-                            $trHistory .= $transcription['TextNoTags'];
-                        $trHistory .= "</p>";
-                        $trHistory .= "<input class='transcription-comparison-button theme-color-background' type='button'
-                                        onClick='compareTranscription(" . htmlentities(json_encode($transcriptionList[$i]['TextNoTags']), ENT_QUOTES) . ",
-                                        " . htmlentities(json_encode($currentTranscription['TextNoTags']), ENT_QUOTES)."," . $i . ")' value='Compare to current transcription'>";
-                        $trHistory .= "<div id='transcription-comparison-output-" . $i . "' class='transcription-comparison-output'></div>";
-                    $trHistory .= "</div>";
-                    $i ++;
+                    if($transcription['CurrentVersion'] == '1') {
+                        continue;
+                    } else {
+                        $user = get_userdata($transcription['WP_UserId']);
+                        $trHistory .= "<div class='transcription-toggle' data-toggle='collapse' data-target='#transcription-" . $i . "'>";
+                            $trHistory .= "<i class='fas fa-calendar-day' style='margin-right: 6px;'></i>";
+                            $date = strtotime($transcription['Timestamp']);
+                            $trHistory .= "<span class='day-n-time'>";
+                                $trHistory .= $transcription['Timestamp'];
+                            $trHistory .= "</span>";
+                            $trHistory .= "<i class='fas fa-user-alt' style='margin: 0 6px;'></i>";
+                            $trHistory .= "<span class='day-n-time'>";
+                                $trHistory .= "<a target='_blank' href='" . network_home_url() . "profile/" . $user->data->user_nicename . "'>";
+                                    $trHistory .= $user->data->user_nicename;
+                                $trHistory .= "</a>";
+                            $trHistory .= "</span>";
+                            $trHistory .= "<i class='fas fa-angle-down' style='float:right;'></i>";
+                        $trHistory .= "</div>";
+    
+                        $trHistory .= "<div id='transcription-" . $i . "' class='collapse transcription-history-collapse-content'>";
+                            $trHistory .= "<p>";
+                                $trHistory .= $transcription['TextNoTags'];
+                            $trHistory .= "</p>";
+                            $trHistory .= "<input class='transcription-comparison-button theme-color-background' type='button'
+                                            onClick='compareTranscription(" . htmlentities(json_encode($transcriptionList[$i]['TextNoTags']), ENT_QUOTES) . ",
+                                            " . htmlentities(json_encode($currentTranscription['TextNoTags']), ENT_QUOTES)."," . $i . ")' value='Compare to current transcription'>";
+                            $trHistory .= "<div id='transcription-comparison-output-" . $i . "' class='transcription-comparison-output'></div>";
+                        $trHistory .= "</div>";
+                        $i ++;
+                    }
                 }
             }
         $trHistory .= "</div>";
@@ -1537,243 +1544,243 @@ if (event.target.id != "tagging-status-indicator") {
     $metaData .= "";
     $metaData .= "<div id='meta-container'>";
 
-        // Contributor
-        if($itemData['StorydcContributor']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'> Contributor </p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ' | ', $itemData['StorydcContributor']) . "</p>";
-            $metaData .= "</div>";
-        }
+        // // Contributor
+        // if($itemData['StorydcContributor']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'> Contributor </p>";
+        //         $metaData .= "<p class='meta-p'>" . str_replace(' || ', ' | ', $itemData['StorydcContributor']) . "</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        //Creator
-        if($itemData['StorydcCreator']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Creator</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydcCreator']) . "</p>";
-            $metaData .= "</div>";
-        }
+        // //Creator
+        // if($itemData['StorydcCreator']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Creator</p>";
+        //         $metaData .= "<p class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydcCreator']) . "</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Date
-        if($itemData['StorydcDate']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Date</p>";
-                $storyDates = array_unique(explode(' || ', $itemData['StorydcDate']));
-                foreach($storyDates as $date){
-                    if(substr($date, 0, 4) == 'http'){
-                        // $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
-                        continue;
-                    } else {
-                        $metaData .= "<p class='meta-p'>" . $date . ";</p>";
-                    }
-                }
-            $metaData .= "</div>";
-        }
+        // // Date
+        // if($itemData['StorydcDate']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Date</p>";
+        //         $storyDates = array_unique(explode(' || ', $itemData['StorydcDate']));
+        //         foreach($storyDates as $date){
+        //             if(substr($date, 0, 4) == 'http'){
+        //                 // $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
+        //                 continue;
+        //             } else {
+        //                 $metaData .= "<p class='meta-p'>" . $date . ";</p>";
+        //             }
+        //         }
+        //     $metaData .= "</div>";
+        // }
 
-        // Institution
-        if($itemData['StoryedmDataProvider']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Institution</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmDataProvider']."</p>";
-            $metaData .= "</div>";
-        }
+        // // Institution
+        // if($itemData['StoryedmDataProvider']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Institution</p>";
+        //         $metaData .= "<p class='meta-p'>".$itemData['StoryedmDataProvider']."</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        //Identifier
-        if($itemData['StoryExternalRecordId']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Identifier</p>";
-                if(substr($itemData['StoryExternalRecordId'], 0, 4) == 'http'){
-                    $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . substr($itemData['StoryExternalRecordId'], 0, 45) . "</a></p>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
+        // //Identifier
+        // if($itemData['StoryExternalRecordId']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Identifier</p>";
+        //         if(substr($itemData['StoryExternalRecordId'], 0, 4) == 'http'){
+        //             $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . substr($itemData['StoryExternalRecordId'], 0, 45) . "</a></p>";
+        //         } else {
+        //             $metaData .= "<p class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</p>";
+        //         }
+        //     $metaData .= "</div>";
+        // }
 
-        //Document Language
-        if($itemData['StorydcLanguage']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Document Language</p>";
-                $dcLanguage = array_unique(explode(' || ', $itemData['StorydcLanguage']));
-                $metaData .= "<p class='meta-p'>" . implode(';', $dcLanguage) . "</p>";
-            $metaData .= "</div>";
-        }
+        // //Document Language
+        // if($itemData['StorydcLanguage']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Document Language</p>";
+        //         $dcLanguage = array_unique(explode(' || ', $itemData['StorydcLanguage']));
+        //         $metaData .= "<p class='meta-p'>" . implode(';', $dcLanguage) . "</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Creation Start
-        if($itemData['StoryedmBegin']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Creation Start</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ";", $itemData['StoryedmBegin']) . "</p>";
-            $metaData .= "</div>";
-        }
+        // // Creation Start
+        // if($itemData['StoryedmBegin']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Creation Start</p>";
+        //         $metaData .= "<p class='meta-p'>" . str_replace(' || ', ";", $itemData['StoryedmBegin']) . "</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Creation End
-        if($itemData['StoryedmEnd']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Creation End</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ";", $itemData['StoryedmEnd']) . "</p>";
-            $metaData .= "</div>";
-        }
+        // // Creation End
+        // if($itemData['StoryedmEnd']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Creation End</p>";
+        //         $metaData .= "<p class='meta-p'>" . str_replace(' || ', ";", $itemData['StoryedmEnd']) . "</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Story Source
-        if($itemData['StorydcSource']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Story Source</p>";
-                $source = array_unique(explode(' || ', $itemData['StorydcSource']));
-                $metaData .= "<p class='meta-p'>" . implode('</br>', $source) . "</p>";
-            $metaData .= "</div>";
-        }
+        // // Story Source
+        // if($itemData['StorydcSource']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Story Source</p>";
+        //         $source = array_unique(explode(' || ', $itemData['StorydcSource']));
+        //         $metaData .= "<p class='meta-p'>" . implode('</br>', $source) . "</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Story Title
-        $metaData .= "<div class='single-meta'>";
-            $metaData .= "<p class='mb-1'>Story Title</p>";
-            $metaData .= "<p class='meta-p'>". str_replace(' || ', ";", $itemData['StorydcTitle']) . "</p>";
-        $metaData .= "</div>";
+        // // Story Title
+        // $metaData .= "<div class='single-meta'>";
+        //     $metaData .= "<p class='mb-1'>Story Title</p>";
+        //     $metaData .= "<p class='meta-p'>". str_replace(' || ', ";", $itemData['StorydcTitle']) . "</p>";
+        // $metaData .= "</div>";
 
-        // dctermsProvenance
-        if($itemData['StorydctermsProvenance']) {
-            $metaData .= "<div class='meta-sticker'>";
-                $metaData .= "<p class='mb-1'>Provenance</p>";
-                $provenance = array_unique(explode(' || ', $itemData['StorydctermsProvenance']));
-                $metaData .= "<p class='meta-p'>". implode(';' , $provenance) ."</p>";
-            $metaData .= "</div>";
-        }
+        // // dctermsProvenance
+        // if($itemData['StorydctermsProvenance']) {
+        //     $metaData .= "<div class='meta-sticker'>";
+        //         $metaData .= "<p class='mb-1'>Provenance</p>";
+        //         $provenance = array_unique(explode(' || ', $itemData['StorydctermsProvenance']));
+        //         $metaData .= "<p class='meta-p'>". implode(';' , $provenance) ."</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Type
-        if($itemData['StorydcType']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Type</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydcType']) . "</p>";
-            $metaData .= "</div>";
-        }
+        // // Type
+        // if($itemData['StorydcType']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Type</p>";
+        //         $metaData .= "<p class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydcType']) . "</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Rights
-        if($itemData['StoryedmRights']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Rights</p>";
-                $edmRights = array_unique(explode(' || ', $itemData['StoryedmRights']));
-                foreach($edmRights as $right) {
-                    if(substr($right, 0, 4) == 'http'){
-                        $metaData .= "<p class='meta-p'><a target='_blank' href='".$right."'>" . $right . ";</a></p>";
-                    } else {
-                        $metaData .= "<p class='meta-p'>" . $right . ";</p>";
-                    }
-                }
-            $metaData .= "</div>";
-        }
+        // // Rights
+        // if($itemData['StoryedmRights']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Rights</p>";
+        //         $edmRights = array_unique(explode(' || ', $itemData['StoryedmRights']));
+        //         foreach($edmRights as $right) {
+        //             if(substr($right, 0, 4) == 'http'){
+        //                 $metaData .= "<p class='meta-p'><a target='_blank' href='".$right."'>" . $right . ";</a></p>";
+        //             } else {
+        //                 $metaData .= "<p class='meta-p'>" . $right . ";</p>";
+        //             }
+        //         }
+        //     $metaData .= "</div>";
+        // }
 
-        // Image Rights
-        if($itemData['StorydcRights']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Image Rights</p>";
-                $imgRights = array_unique(explode(' || ', $itemData['StorydcRights']));
-                foreach($imgRights as $iRight) {
-                    if(substr($iRight, 0, 4) == 'http'){
-                        $metaData .= "<p class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></p>";
-                    } else {
-                        $metaData .= "<p class='meta-p'>" . $iRight . ";</p>";
-                    }
-                }
-            $metaData .= "</div>";
-        }
+        // // Image Rights
+        // if($itemData['StorydcRights']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Image Rights</p>";
+        //         $imgRights = array_unique(explode(' || ', $itemData['StorydcRights']));
+        //         foreach($imgRights as $iRight) {
+        //             if(substr($iRight, 0, 4) == 'http'){
+        //                 $metaData .= "<p class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></p>";
+        //             } else {
+        //                 $metaData .= "<p class='meta-p'>" . $iRight . ";</p>";
+        //             }
+        //         }
+        //     $metaData .= "</div>";
+        // }
 
-        // Provider
-        if($itemData['StoryedmProvider']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Provider Language</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmProvider']."</p>";
-            $metaData .= "</div>";
-        }
+        // // Provider
+        // if($itemData['StoryedmProvider']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Provider Language</p>";
+        //         $metaData .= "<p class='meta-p'>".$itemData['StoryedmProvider']."</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Providing Country
-        if($itemData['StoryedmCountry']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Providing Country</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmCountry']."</p>";
-            $metaData .= "</div>";
-        }
+        // // Providing Country
+        // if($itemData['StoryedmCountry']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Providing Country</p>";
+        //         $metaData .= "<p class='meta-p'>".$itemData['StoryedmCountry']."</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Provider Language
-        if($itemData['StoryedmLanguage']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Provider Language</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmLanguage']."</p>";
-            $metaData .= "</div>";
-        }
+        // // Provider Language
+        // if($itemData['StoryedmLanguage']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Provider Language</p>";
+        //         $metaData .= "<p class='meta-p'>".$itemData['StoryedmLanguage']."</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Dataset
-        if($itemData['StoryedmDatasetName']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Dataset</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmDatasetName']."</p>";
-            $metaData .= "</div>";
-        }
+        // // Dataset
+        // if($itemData['StoryedmDatasetName']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Dataset</p>";
+        //         $metaData .= "<p class='meta-p'>".$itemData['StoryedmDatasetName']."</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Publisher
-        if($itemData['StoryedmProvider']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Publisher</p>";
-                if(substr($itemData['StoryedmProvider'], 0, 4) == 'http'){
-                    $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></p>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryedmProvider'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
+        // // Publisher
+        // if($itemData['StoryedmProvider']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Publisher</p>";
+        //         if(substr($itemData['StoryedmProvider'], 0, 4) == 'http'){
+        //             $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></p>";
+        //         } else {
+        //             $metaData .= "<p class='meta-p'>" . $itemData['StoryedmProvider'] . "</p>";
+        //         }
+        //     $metaData .= "</div>";
+        // }
 
-        // Medium
-        if($itemData['StorydctermsMedium']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Medium</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydctermsMedium']) . "</p>";
-            $metaData .= "</div>";
-        }
+        // // Medium
+        // if($itemData['StorydctermsMedium']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Medium</p>";
+        //         $metaData .= "<p class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydctermsMedium']) . "</p>";
+        //     $metaData .= "</div>";
+        // }
 
-        // Source Url
-        if($itemData['StoryedmIsShownAt']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Source Url</p>";
-                if(substr($itemData['StoryedmIsShownAt'], 0, 4) == 'http'){
-                    $metaData .= "<a class='meta-p' target='_blank' href='".$itemData['StoryedmIsShownAt']."'>" . $itemData['StoryedmIsShownAt'] . "</a>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryedmIsShownAt'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
+        // // Source Url
+        // if($itemData['StoryedmIsShownAt']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Source Url</p>";
+        //         if(substr($itemData['StoryedmIsShownAt'], 0, 4) == 'http'){
+        //             $metaData .= "<a class='meta-p' target='_blank' href='".$itemData['StoryedmIsShownAt']."'>" . $itemData['StoryedmIsShownAt'] . "</a>";
+        //         } else {
+        //             $metaData .= "<p class='meta-p'>" . $itemData['StoryedmIsShownAt'] . "</p>";
+        //         }
+        //     $metaData .= "</div>";
+        // }
 
-        // Story Landing Page
-        if($itemData['StoryedmLandingPage']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Landing Page</p>";
-                if(substr($itemData['StoryedmLandingPage'], 0, 4) == 'http'){
-                    $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmLandingPage']."'>" . substr($itemData['StoryedmLandingPage'], 0, 45) . "</a></p>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryedmLandingPage'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
+        // // Story Landing Page
+        // if($itemData['StoryedmLandingPage']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Landing Page</p>";
+        //         if(substr($itemData['StoryedmLandingPage'], 0, 4) == 'http'){
+        //             $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmLandingPage']."'>" . substr($itemData['StoryedmLandingPage'], 0, 45) . "</a></p>";
+        //         } else {
+        //             $metaData .= "<p class='meta-p'>" . $itemData['StoryedmLandingPage'] . "</p>";
+        //         }
+        //     $metaData .= "</div>";
+        // }
 
-        // Parent Story
-        if($itemData['StoryParentStory']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Parent Story</p>";
-                if(substr($itemData['StoryParentStory'], 0, 4) == 'http'){
-                    $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryParentStory']."'>" . $itemData['StoryParentStory'] . "</a></p>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryParentStory'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
+        // // Parent Story
+        // if($itemData['StoryParentStory']) {
+        //     $metaData .= "<div class='single-meta'>";
+        //         $metaData .= "<p class='mb-1'>Parent Story</p>";
+        //         if(substr($itemData['StoryParentStory'], 0, 4) == 'http'){
+        //             $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryParentStory']."'>" . $itemData['StoryParentStory'] . "</a></p>";
+        //         } else {
+        //             $metaData .= "<p class='meta-p'>" . $itemData['StoryParentStory'] . "</p>";
+        //         }
+        //     $metaData .= "</div>";
+        // }
 
 
     $metaData .= "</div>"; // End of meta container
 
     // Story Description
     $storyDescription .= "<div id='storydesc'>";
-        $storyDescription .= "<p class='mb-1'> Story Description</p>";
-        $storyDescriptions = array_unique(explode(" || ", $itemData['StorydcDescription']));
-        foreach($storyDescriptions as $description) {
-            $storyDescription .= "<p class='meta-p'>" . $description . "</p>";
-        }
+        // $storyDescription .= "<p class='mb-1'> Story Description</p>";
+        // $storyDescriptions = array_unique(explode(" || ", $itemData['StorydcDescription']));
+        // foreach($storyDescriptions as $description) {
+        //     $storyDescription .= "<p class='meta-p'>" . $description . "</p>";
+        // }
     $storyDescription .= "</div>";
     // Item progress bar
 
@@ -1788,7 +1795,8 @@ if (event.target.id != "tagging-status-indicator") {
     $content .= "<section id='title-n-progress'>";
         $content .= "<div class='title-n-btn'>";
             $content .= "<div id='missing-info' style='display:none;'>" . get_current_user_id() . "</div>";
-            $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title' class='storypg-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
+            $titleFilter = "Item " . ($startingSlide + 1);
+            $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title' class='storypg-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i>" . str_replace($titleFilter, "", $itemData['Title']) . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
         $content .= "</div>";
         // if(current_user_can('administrator')) {
         //     $content .= "<div class='tr-comp-btn' style='float:right;cursor:pointer;margin-right:25px;'>";
@@ -2034,19 +2042,21 @@ if (event.target.id != "tagging-status-indicator") {
         $content .= "<div style='clear:both;'></div>";
     $content .= "</section>";
 
-    $content .= "<section id='story-info' class='collapsed' style='height:325px;'>";
+    $content .= "<section id='story-info' class='collapsed'>";
         $content .= "<div id='meta-collapse' class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;margin:25px 0;' role='button' aria-expanded='false'>";
             $content .= "<span><h5><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>STORY INFORMATION</span><span style='float:right;padding-right:10px;'><i id='angle-i' style='font-size:25px;' class='fas fa-angle-down'></i></h5></span>";
         $content .= "</div>";
         $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:25px;'> &nbsp </div>";
-        $content .= "<div id='meta-left'>";
-            // Metadata
-            $content .= $metaData;
+        $content .= "<div id='meta-wrapper' style='display:none;'>";
+            $content .= "<div id='meta-left'>";
+                // Metadata
+                $content .= $metaData;
+            $content .= "</div>";
+            $content .= "<div id='meta-right'>";
+                $content .= $storyDescription;
+            $content .= "</div>";
+            $content .= "<div style='clear:both;'></div>";
         $content .= "</div>";
-        $content .= "<div id='meta-right'>";
-            $content .= $storyDescription;
-        $content .= "</div>";
-        $content .= "<div style='clear:both;'></div>";
         $content .= "<div id='meta-cover'><i class='fas fa-angle-double-down'></i></div>";
     $content .= "</section>";
 
@@ -2286,23 +2296,6 @@ if(collapseBtn) {
 const metaCollapseBtn = document.querySelector('#meta-collapse');
 const metaSection = document.querySelector('#story-info');
 
-metaCollapseBtn.addEventListener('click', function() {
-    if(metaSection.classList.contains('collapsed')) {
-        metaSection.style.height = 'unset';
-        metaSection.classList.remove('collapsed');
-        metaCollapseBtn.querySelector('#angle-i').classList.remove('fa-angle-down');
-        metaCollapseBtn.querySelector('#angle-i').classList.add('fa-angle-up');
-        metaSection.querySelector('#meta-cover i').classList.add('fa-angle-double-up');
-        metaSection.querySelector('#meta-cover i').classList.remove('fa-angle-double-down');
-} else {
-    metaSection.style.height = '325px';
-    metaSection.classList.add('collapsed');
-    metaCollapseBtn.querySelector('#angle-i').classList.remove('fa-angle-up');
-    metaCollapseBtn.querySelector('#angle-i').classList.add('fa-angle-down');
-    metaSection.querySelector('#meta-cover i').classList.remove('fa-angle-double-up');
-    metaSection.querySelector('#meta-cover i').classList.add('fa-angle-double-down');
-}
-});
 metaSection.querySelector('#meta-cover').addEventListener('click', function() {
     metaCollapseBtn.click();
 });
