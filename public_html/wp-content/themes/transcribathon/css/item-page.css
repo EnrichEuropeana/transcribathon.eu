@@ -2638,6 +2638,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     height: 165px;
     bottom: 35px!important;
 }
+#item-data-content .description-language {
+    display: none!important;
+}
 .data-popout #item-page-transcription-text {
     max-height: unset;
     height: 99%;
