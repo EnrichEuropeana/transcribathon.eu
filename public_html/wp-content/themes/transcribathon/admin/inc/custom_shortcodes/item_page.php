@@ -221,7 +221,7 @@ if (event.target.id != "tagging-status-indicator") {
     $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
     $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
 
-    $currentTranscription = '';
+    $currentTranscription = [];
     $transcriptionList = array_reverse(sendQuery(TP_API_HOST . '/tp-api/transcriptions?ItemId=' . $itemId, $getJsonOptions, true));
    // dd($transcriptionList);
     if(!empty($transcriptionList)) {
@@ -231,6 +231,7 @@ if (event.target.id != "tagging-status-indicator") {
             } 
         }
     }
+
 
 
     //$currentTranscription = $itemData['Transcription'];
@@ -856,7 +857,7 @@ if (event.target.id != "tagging-status-indicator") {
     // Transcription History
   //  var_dump($currentTranscription);
     $trHistory = "";
-    if($currentTranscription['Text'] == null ) {
+    if(!$currentTranscription['Text']) {
         $trHistory .= "<div class='tr-history-section' style='display:none;'>";
     } else {
         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
@@ -893,7 +894,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             $trHistory .= "<div id='transcription-0' class='collapse transcription-history-collapse-content'>";
                 $trHistory .= "<p>";
-                    $trHistory .= $currentTranscription['TextNoTags'];
+                    $trHistory .= $currentTranscription['TextNoTags'] ? $currentTranscription['TextNoTags'] : "";
                 $trHistory .= "</p>";
             $trHistory .= "</div>";
 

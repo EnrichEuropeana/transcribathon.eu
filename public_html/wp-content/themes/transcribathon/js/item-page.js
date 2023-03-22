@@ -3344,7 +3344,7 @@ ready(() => {
             
         });
     }
-   // getUserdata(1646);
+    
 
     installEventListeners();
     initializeMap();
@@ -3371,20 +3371,20 @@ async function getMetadata(storyId) {
     
 }
 
-// async function getUserdata(userId) {
-//     const data = {"userId":userId};
-//     const postData = JSON.stringify(data);
-    
-//     const requestUri = home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_username.php';
-//     const result = await fetch(requestUri, {
-//         method: "POST",
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//         },
-//         body: {userId: userId}
-//     }).then((response) => response.json()).then((data) => console.log(data));
-    
-//     return result;
-    
-// }
+async function getUserdata(UserId) {
+
+    const params = {
+        userId: UserId
+    };
+    const options = {
+        method: 'POST',
+        body: JSON.stringify( params )  
+    };
+    const response = await fetch(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_username.php', options );
+
+    const result = await response.json();
+
+    return result
+
+
+}
