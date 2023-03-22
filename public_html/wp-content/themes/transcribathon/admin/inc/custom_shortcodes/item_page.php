@@ -242,15 +242,15 @@ if (event.target.id != "tagging-status-indicator") {
 
     $currentTranscription = [];
     $transcriptionList = array_reverse(sendQuery(TP_API_HOST . '/tp-api/transcriptions?ItemId=' . $itemId, $getJsonOptions, true));
-   // dd($transcriptionList);
+ //   dd($transcriptionList);
     if(!empty($transcriptionList)) {
         foreach($transcriptionList as $transcription) {
             if($transcription['CurrentVersion'] == '1') {
                 $currentTranscription = $transcription;
+                $itemData['TranscriptionLanguages'] = $transcription['Languages'];
             } 
         }
     }
-
 
 
     //$currentTranscription = $itemData['Transcription'];
@@ -1062,8 +1062,9 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= "</div>";
                 $editorTab .= "<div id='transcription-selected-languages' class='language-selected'>";
                     $editorTab .= "<ul>";
-                        if($itemData['Transcriptions'][0]['Languages'] != null) {
-                            $transcriptionLanguages = $itemData['Transcriptions'][0]['Languages'];
+                        if($itemData['TranscriptionLanguages'] != null) {
+                            $transcriptionLanguages = $itemData['TranscriptionLanguages'];
+
                             foreach($transcriptionLanguages as $trLanguage) {
                                 $editorTab .= "<li class='theme-colored-data-box'>";
                                     $editorTab .= $trLanguage['Name'] . " (" . $trLanguage['NameEnglish'] . ")";
