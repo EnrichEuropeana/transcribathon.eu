@@ -52,6 +52,25 @@ function _TCT_mtr_transcription($atts)
     $languages = $pageData['Languages'];
     $categories = $pageData['Categories'];
     $itemImages = $pageData['ItemImages'];
+    // Get item status name and color
+    foreach($statusTypes as $typ) {
+        if($itemData['TranscriptionStatusId'] == $typ['CompletionStatusId']) {
+            $itemData['TranscriptionStatusName'] = $typ['Name'];
+            $itemData['TranscriptionStatusColorCode'] = $typ['ColorCode'];
+        }
+        if($itemData['LocationStatusId'] == $typ['CompletionStatusId']) {
+            $itemData['LocationStatusName'] = $typ['Name'];
+            $itemData['LocationStatusColorCode'] = $typ['ColorCode'];
+        }
+        if($itemData['TaggingStatusId'] == $typ['CompletionStatusId']) {
+            $itemData['TaggingStatusName'] = $typ['Name'];
+            $itemData['TaggingStatusColorCode'] = $typ['ColorCode'];
+        }
+        if($itemData['DescriptionStatusId'] == $typ['CompletionStatusId']) {
+            $itemData['DescriptionStatusName'] = $typ['Name'];
+            $itemData['DescriptionStatusColorCode'] = $typ['ColorCode'];
+        }
+    }
 
     // Get Auto Enrichments for item/story if there are auto enrichments in database
     $getAutoJsonOptions = [
@@ -855,7 +874,6 @@ if (event.target.id != "tagging-status-indicator") {
     $enrichmentTab .= "</div>";
 
     // Transcription History
-  //  var_dump($currentTranscription);
     $trHistory = "";
     if(!$currentTranscription['Text']) {
         $trHistory .= "<div class='tr-history-section' style='display:none;'>";
@@ -937,6 +955,7 @@ if (event.target.id != "tagging-status-indicator") {
         $trHistory .= "</div>";
     $trHistory .= "</div>";
     // Editor Tab
+
     $editorTab = "";
     $editorTab .= "<div style='display:none;'><span id='completion-status-indicator' class='status-indicator'></span></div>";
     $editorTab .= "<div id='transcription-section' class='item-page-section'>";
