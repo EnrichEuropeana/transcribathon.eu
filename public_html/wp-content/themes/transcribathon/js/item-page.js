@@ -1172,9 +1172,9 @@ function saveItemLocation(itemId, userId, editStatusColor, statusCount) {
     jQuery('#item-location-spinner-container').css('display', 'block')
 
     // Add place role to the location
-    let placeRole = "";
+    let placeRole = "Other";
     if(document.querySelector('#place-role').checked) {
-        placeRole = 'Creation Place';
+        placeRole = 'CreationPlace';
     }
     // Prepare data and send API request
     locationName = escapeHtml(jQuery('#location-name-display input').val());
@@ -1269,15 +1269,15 @@ function saveItemDate(itemId, userId, editStatusColor, statusCount) {
         return 0;
     }
     jQuery('#item-date-spinner-container').css('display', 'block')
-    creationDate = 'false';
+    creationDate = 'Other';
     if(document.querySelector('#creation-date').checked) {
-        creationDate = 'true';
+        creationDate = 'CreationDate';
     }
     // Prepare data and send API request
     data = {
         DateStartDisplay: jQuery('#startdateentry').val(),
         DateEndDisplay: jQuery('#enddateentry').val(),
-        CreationDate: creationDate
+        DateRole: creationDate
     }
     startDate = jQuery('#startdateentry').val().split('/');
     if (!isNaN(startDate[2]) && !isNaN(startDate[1]) && !isNaN(startDate[0])) {
@@ -1373,15 +1373,13 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
     deathDate = jQuery('#person-deathDate-input').val().split('/');
     description = jQuery('#person-description-input-field').val();
     link = jQuery('#person-wiki-input-field').val();
-    let personRole = 'Person Mentioned';
+    let personRole = 'PersonMentioned';
 
     if(document.querySelector('#main-actor').checked) {
-        personRole = 'Person Addressed';
+        personRole = 'AddressedPerson';
     } else if (document.querySelector('#doc-creator').checked) {
-        personRole = 'Document Creator';
+        personRole = 'DocumentCreator';
     }
-
-    console.log(personRole);
 
     if (firstName == "" && lastName == "") {
         return 0;

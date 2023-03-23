@@ -622,6 +622,7 @@ if (event.target.id != "tagging-status-indicator") {
             ];
         
             $itemData['Persons'] = sendQuery(TP_API_HOST . '/tp-api/persons?ItemId=' . $itemId, $getJsonOptions, true);
+            
             ///
             if(count($itemData['Persons']) > 0) {
                 $enrichmentTab .= '<div class="collapse person-item-data-container" id="person-input-container" style="position:relative;">';
@@ -703,10 +704,10 @@ if (event.target.id != "tagging-status-indicator") {
 
             $enrichmentTab .= '<div id="item-person-list" class="item-data-output-list">';
                 foreach($itemData['Persons'] as $person) {
-                    $person['BirthDate'] = $person['BirthDate'] !== 'NULL'
+                    $person['BirthDate'] = !empty($person['BirthDate'])
                         ? date('d/m/Y', strtotime($person['BirthDate']))
                         : 'NULL';
-                    $person['DeathDate'] = $person['DeathDate'] !== 'NULL'
+                    $person['DeathDate'] = !empty($person['DeathDate'])
                         ? date('d/m/Y', strtotime($person['DeathDate']))
                         : 'NULL';
                     $enrichmentTab .= "<div id='person-" . $person['PersonId'] . "'>";
