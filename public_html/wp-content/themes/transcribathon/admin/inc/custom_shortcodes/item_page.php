@@ -1276,7 +1276,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             // Document type, view only
             $descriptionTab .= "<div id='doc-type-view'>";
-            foreach($itemData['Property'] as $property) {
+            foreach($itemData['Properties'] as $property) {
                 if($property['PropertyTypeId'] == 3) {
                     $descriptionTab .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
                 }
@@ -1417,7 +1417,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             $descriptionTab .= '<div id="item-keyword-list" class="item-data-output-listt">';
 
-                foreach ($itemData['Property'] as $property) {
+                foreach ($itemData['Properties'] as $property) {
                     if ($property['PropertyTypeId'] == 4) {
                         $descriptionTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
                             $descriptionTab .= htmlspecialchars_decode($property['PropertyValue']);
@@ -1466,7 +1466,7 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .=    "</div>";
 
             $descriptionTab .= '<div id="item-link-list" class="item-data-output-list">';
-            foreach ($itemData['Property'] as $property) {
+            foreach ($itemData['Properties'] as $property) {
                 if($property['PropertyDescription'] != 'NULL') {
                     $propDescription =  htmlspecialchars_decode($property['PropertyDescription']);
                     $descPHolder = htmlspecialchars_decode($property['PropertyDescription']);
