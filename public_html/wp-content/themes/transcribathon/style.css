@@ -3013,7 +3013,7 @@ a.ow-icon-placement-top.ow-button-hover {
   width: 25%;
   padding: 0% 3%;
 }
-.spinner {
+/* .spinner {
   height: 20px;
   position: relative;
   opacity: 1;
@@ -3080,8 +3080,8 @@ a.ow-icon-placement-top.ow-button-hover {
     -webkit-transform: translate3d(-50%, -50%, 0) rotate(360deg);
     transform: translate3d(-50%, -50%, 0) rotate(360deg);
   }
-}
-.spinner-container {
+} */
+/* .spinner-container {
   display: none;
   padding: 10px;
   width: 40px;
@@ -3091,7 +3091,7 @@ a.ow-icon-placement-top.ow-button-hover {
 }
 .spinner-container-right {
   float: right;
-}
+} */
 .full-spinner-container {
   display: none;
   width: 100%;

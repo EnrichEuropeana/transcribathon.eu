@@ -121,56 +121,56 @@ function _TCT_solr_search( $atts ) {
         $currPs = intval($_GET['ps']);
         $pagination .= "<div class='search-pgntn'>";
         if($currPs == null || $currPs <= 3) {
-            $pagination .= "<label class='pag-lbl' title='first'> 1";
+            $pagination .= "<label class='pag-lbl' title='1'> 1";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='1' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'> 2";
+            $pagination .= "<label class='pag-lbl' title='2'> 2";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='2' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'> 3";
+            $pagination .= "<label class='pag-lbl' title='3'> 3";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='3' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-right\"></i>";
+            $pagination .= "<label class='pag-lbl' title='Next'><i class=\"fas fa-chevron-right\"></i>";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='4' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-right\"></i>";
+            $pagination .= "<label class='pag-lbl' title='Last'><i class=\"fas fa-chevron-double-right\"></i>";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
     
             $pagination .= "<style>.pag-lbl:nth-of-type(".$currPs."){color:#000;font-weight:500;}</style>";
     
         } else if($currPs > $totalPs - 3) {
-            $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-left\"></i>";
+            $pagination .= "<label class='pag-lbl' title='First'><i class=\"fas fa-chevron-double-left\"></i>";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='1' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-left\"></i>";
+            $pagination .= "<label class='pag-lbl' title='Previous'><i class=\"fas fa-chevron-left\"></i>";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs - 3)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'>" . strval($totalPs - 2);
+            $pagination .= "<label class='pag-lbl' title='" . strval($totalPs - 2) . "'>" . strval($totalPs - 2);
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs - 2)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'>" . strval($totalPs - 1);
+            $pagination .= "<label class='pag-lbl' title='" . strval($totalPs - 1) . "'>" . strval($totalPs - 1);
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs - 1)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'>" . strval($totalPs);
+            $pagination .= "<label class='pag-lbl' title='" . strval($totalPs) . "'>" . strval($totalPs);
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
     
             $pagination .= "<style>.pag-lbl:nth-of-type(".(5 - $totalPs + $currPs)."){color:#000;font-weight:600;}</style>";
         } else {
-            $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-left\"></i>";
+            $pagination .= "<label class='pag-lbl' title='First'><i class=\"fas fa-chevron-double-left\"></i>";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='1' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'>" . strval($currPs - 1);
+            $pagination .= "<label class='pag-lbl' title='" . strval($currPs - 1) . "'>" . strval($currPs - 1);
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($currPs - 1)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl curr' title='first'>" . strval($currPs);
+            $pagination .= "<label class='pag-lbl curr' title='" . strval($currPs) . "'>" . strval($currPs);
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($currPs)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'>" . strval($currPs + 1);
+            $pagination .= "<label class='pag-lbl' title='" . strval($currPs + 1) . "'>" . strval($currPs + 1);
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($currPs + 1)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
-            $pagination .= "<label class='pag-lbl' title='first'><i class=\"fas fa-chevron-double-right\"></i>";
+            $pagination .= "<label class='pag-lbl' title='Last'><i class=\"fas fa-chevron-double-right\"></i>";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
         }
@@ -440,11 +440,16 @@ function _TCT_solr_search( $atts ) {
                             $compStatus .= "<div class='search-status' style='width:100%;background-color:#eeeeee;z-index:1;' title='Not Started:" . round($progressCount['Not Started']) . "%'>&nbsp</div>";
                         $compStatus .= "</div>";
 
+                        $itemPath = 'item';
+                        if(str_contains($doc['Title'], 'Potrošačka kartica')) {
+                            $itemPath = 'ration-cards';
+                        }
+
 
                         $image = json_decode($doc['PreviewImageLink'], true);
                         $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
 
-                        $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/item/?item=" . $doc['ItemId'] . "'>";
+                        $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/" . $itemPath . "/?item=" . $doc['ItemId'] . "'>";
                             $content .= "<div class='search-page-result-image'>";
                                 $content .= "<img src='" . $imageLink . "' alt='result image' width='280' height='140'>";
                             $content .= "</div>";
