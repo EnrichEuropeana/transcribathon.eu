@@ -66,14 +66,18 @@ class HtrData
 		return $result;
 	}
 
-	public function sendStoryData($items, $htrId)
+	public function sendStoryData($items, $htrModelId, $languageId)
 	{
 		$this->amount = count($items);
 		$this->currentSuccess = 0;
 		$this->currentErrors = 0;
 		$this->errorMessages = array();
 
-		array_walk($items, array($this, 'handleItem'), $htrId);
+		array_walk(
+			$items,
+			[$this, 'handleItem'],
+			['htrModelId' => $htrModelId, 'languageId' => $languageId]
+		);
 
 		$result = array(
 			'amount' => $this->getAmount(),
@@ -87,24 +91,26 @@ class HtrData
 		return $result;
 	}
 
-	protected function handleItem($item, $index, $htrId)
+	protected function handleItem($item, $index, $args)
 	{
 		$itemId = intval($item['ItemId']);
-		$htrId = intval($htrId);
+		$htrModelId = intval($args['htrModelId']);
+		$languageId = intval($args['languageId']);
 
 		$itemResultJson = $this->transkribusClient->getDataFromTranscribathon(
 			null,
 			array(
-				'ItemId' => $itemId,
-				'HtrId' => $htrId,
-				'orderBy' => 'LastUpdated',
-				'orderDir' => 'desc'
+				'ItemId'     => $itemId,
+				'HtrModelId' => $htrModelId,
+				'orderBy'    => 'LastUpdated',
+				'orderDir'   => 'desc'
 			)
 		);
+
 		$storedHtr = json_decode($itemResultJson, true);
 		$isItemWithHtrIdInHtrDb = !empty($storedHtr['data'][0]['HtrDataId']) ? true : false;
 
-		// check item existence in db here by itemId and $htrId
+		// check item existence in db here by itemId and $htrModelId
 		if (!$isItemWithHtrIdInHtrDb) {
 
 			if (!array_key_exists('ImageLink', $item)) {
@@ -115,18 +121,18 @@ class HtrData
 
 			$imageUrl = $this->buildImageUrlFromItem($item);
 
-			$this->insertItem($itemId, $imageUrl, $htrId);
+			$this->insertItem($itemId, $imageUrl, $htrModelId, $languageId);
 
 		} else {
 
 			$storedHtrData = $storedHtr['data'][0];
-			$processId = intval($storedHtrData['ProcessId']);
+			$htrProcessId = intval($storedHtrData['HtrProcessId']);
 			$id = intval($storedHtrData['HtrDataId']);
 
 			// can be updated
 			if (in_array($storedHtrData['HtrStatus'], array('CREATED', 'WAITING', 'RUNNING'))) {
 
-				$transkribusData = $this->transkribusClient->getJSONDatafromTranskribus($processId);
+				$transkribusData = $this->transkribusClient->getJSONDatafromTranskribus($htrProcessId);
 
 				if (!$transkribusData) {
 					$this->currentErrors += 1;
@@ -143,7 +149,7 @@ class HtrData
 				}
 
 				if ($transkribusDataArray['status'] === 'FINISHED') {
-					$transkribusXmlData = $this->transkribusClient->getPageXMLfromTranskribus($processId);
+					$transkribusXmlData = $this->transkribusClient->getPageXMLfromTranskribus($htrProcessId);
 
 					if (!$transkribusXmlData) {
 						$this->currentErrors += 1;
@@ -206,10 +212,11 @@ class HtrData
 		}
 	}
 
-	protected function insertItem($itemId, $imageUrl, $htrId)
+	protected function insertItem($itemId, $imageUrl, $htrModelId, $languageId)
 	{
-
-		$createEntry = $this->transkribusClient->submitDataToTranskribus($itemId, $imageUrl, $htrId);
+		$createEntry = $this
+			->transkribusClient
+			->submitDataToTranskribus($itemId, $imageUrl, $htrModelId, [$languageId]);
 
 		if (!$createEntry) {
 			$this->currentErrors += 1;
