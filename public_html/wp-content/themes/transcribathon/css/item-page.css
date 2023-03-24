@@ -3293,8 +3293,10 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 } */
 /* Auto enrichments */
 #full-v-metadata h3 {
+    font-size: 17px!important;
     margin-left: 25px;
-    margin-top: 20px;
+    margin-top: 20px!important;
+    margin-bottom: 20px!important;
     font-weight: 600;
     color: var(--main-color);
     font-family: var(--h-font-family);
@@ -3413,6 +3415,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     letter-spacing: 0.025em;
     margin: 10px 0;
     font-weight: 600;
+    font-size: 17px!important;
 }
 #eng-desc-fs {
     padding-left: 25px;
