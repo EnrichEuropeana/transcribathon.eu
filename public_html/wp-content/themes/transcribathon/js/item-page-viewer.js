@@ -80,6 +80,17 @@ var tct_viewer = (function($, document, window) {
 		jQuery('#closeFilterContainer').click(function() {
 			jQuery('#filterContainer').hide();
 		});
+		// Ration Cards
+		jQuery('#full-page-rc').click(function() {
+
+			toggleFS();
+            switchItemTab(event, "rc-tab");
+		});
+		jQuery('#startTranscription-rc').click(function() {
+
+			toggleFS();
+            switchItemTab(event, "rc-tab");
+		});
 
 		jQuery('#transcribeIcon').click(function() {
 			toggleFS();

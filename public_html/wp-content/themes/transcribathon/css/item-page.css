@@ -285,11 +285,11 @@ body {
     height: 25px;
     padding-top: 5px;
 }
-#startTranscription, #startHtrTranscription {
+#startTranscription, #startHtrTranscription, #startTranscription-rc {
     padding: 0 25px 15px 25px;
     background: #fff;
 }
-#startTranscription h5, #startHtrTranscription h5 {
+#startTranscription h5, #startHtrTranscription h5, #startTranscription-rc h5 {
     position: relative;
     top: 5px;
     margin: 0!important;
@@ -298,10 +298,10 @@ body {
     letter-spacing: 0.025em;
     font-size: 19.5px!important;
 }
-#startTranscription i, #startHtrTranscription i {
+#startTranscription i, #startHtrTranscription i, #startTranscription-rc i {
     margin-right: 14px;
 }
-#startTranscription i.right-i, #startHtrTranscription i.right-i {
+#startTranscription i.right-i, #startHtrTranscription i.right-i, #startTranscription-rc i.right-i {
     margin-right: 0px;
 }
 .right-i {

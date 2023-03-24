@@ -255,7 +255,7 @@ function _TCT_ration_cards($atts)
             $imageViewer .= "<div id='rotate-right' class='theme-color theme-color-hover'><i class='fas fa-redo'></i></div>";
             $imageViewer .= "<div id='rotate-left' class='theme-color theme-color-hover'><i class='fas fa-undo'></i></div>";
             $imageViewer .= "<div id='filterButton' class='theme-color theme-color-hover'><i class='fas fa-sliders-h'></i></div>";
-            $imageViewer .= "<div id='full-page' title='Full Screen' class='theme-color theme-color-hover'><i class='fas fa-expand-arrows-alt'></i></div>";
+            $imageViewer .= "<div id='full-page-rc' title='Full Screen' class='theme-color theme-color-hover'><i class='fas fa-expand-arrows-alt'></i></div>";
         $imageViewer .= "</div>";
     $imageViewer .= "</div>"; // End of Image Viewer
 
@@ -1799,7 +1799,7 @@ function _TCT_ration_cards($atts)
             //var_dump($itemData);
                 // Transcription
                 $content .= "<div id='transcription-container' style='height:600px;white-space:nowrap!important;overflowX:hidden;'>";
-                    $content .= "<div id='startTranscription' class='mtr-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
+                    $content .= "<div id='startTranscription-rc' class='rc-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         $content .= "<div>";
                             $content .= "<div class='status-display' style='line-height: normal;background-color:".$itemData['TranscriptionStatusColorCode']."'>";
@@ -1822,13 +1822,13 @@ function _TCT_ration_cards($atts)
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
                             if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
                                 $formattedTranscription = $htrTranscription;
-                                $content .= "<script>
-                                    document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';
-                                    document.querySelector('#startTranscription').classList.replace('mtr-active', 'htr-active');
-                                    document.querySelector('#startTranscription').addEventListener('click', function() {
-                                        location.href = '" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "';
-                                    });
-                                </script>";
+                                // $content .= "<script>
+                                //     document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';
+                                //     document.querySelector('#startTranscription').classList.replace('mtr-active', 'htr-active');
+                                //     document.querySelector('#startTranscription').addEventListener('click', function() {
+                                //         location.href = '" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "';
+                                //     });
+                                // </script>";
                             } else {
                                 $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
                             }
@@ -1996,7 +1996,7 @@ function _TCT_ration_cards($atts)
 
                     $content .= "<li>";
                         $content .= "<div class='theme-color tablinks' title='Tutorial'
-                            onclick='switchItemTab(event, \"help-tab\")'>";
+                            onclick='switchItemTab(event, \"rc-tab\")'>";
                             $content .= '<i class="fas fa-file-spreadsheet"></i>';
                             $content .= "<p class='tab-h it'><span><b>RATION CARD</b></span></p>";
                         $content .= "</div>";
@@ -2163,7 +2163,7 @@ function _TCT_ration_cards($atts)
                     $content .= "</div>";
                 $content .= "</div>";
                 // Help tab
-                $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";
+                $content .= "<div id='rc-tab' class='tabcontent' style='display:none;'>";
                     //$content .= do_shortcode('[tutorial_item_slider]');
                     $content .= "<div id='rc-form' style='position:relative;'>";
                         $content .= "<h3><b> Grad Zagreb </b></h3>";

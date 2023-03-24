@@ -61,7 +61,7 @@ function deleteRcPerson(personId, itemId, userId) {
         'url': TP_API_HOST + '/tp-api/persons/' + personId
     },
     function(response) {
-        console.log(response);
+        //console.log(response);
         loadRcPerson(itemId, userId);
     });
 
@@ -90,7 +90,7 @@ function loadRcPerson(itemId, userId) {
         let odpadPpl = [];
 
         for(let person of allPpl) {
-            console.log(person);
+            //console.log(person);
             if(person.Description == 'Landlord / Kucevlasnik' || person.Description == 'Submitter Podnositelj prijave') {
                 topPpl.push(person);
             } else if (person.Description && person.Description.includes('Prirast')) {
@@ -402,7 +402,7 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
 
     fetch(requestUri).then(response => response.json()).then(data => {
         source = data.features;
-        console.log(source);
+        //console.log(source);
 
         resContainer.parentElement.querySelector('.spinner-container').style.display = 'none';
 
@@ -462,7 +462,7 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
                         UserId: userIde,
                         UserGenerated: 1
                     };
-                    console.log(data);
+                    //console.log(data);
                     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                         'type': 'POST',
                         'url': TP_API_HOST + '/tp-api/places',
@@ -470,7 +470,7 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
                     },
                     // Check success and create confirmation message
                     function(response) {
-                        console.log(response);
+                        //console.log(response);
                         if(document.querySelector('#location-input-section').style.display == 'block') {
                             document.querySelector('#location-input-section').style.display = 'none';
                         }
@@ -712,7 +712,7 @@ function loadRcPlaceData(itemId, userId) {
         let submPlace = {};
         let lLordPlace = {};
         let shopPlace = {};
-        console.log(allPlaces);
+        //console.log(allPlaces);
 
         for(let pl of allPlaces) {
             if(pl.Comment == 'Submitter Address/ Adresa Domacinstva') {
@@ -1662,7 +1662,7 @@ ready(() => {
             },
             // Check success and create confirmation message
             function(response) {
-                console.log(response);
+                //console.log(response);
                 updateDataProperty('items', itemId, 'DescriptionLanguage', '12');
                 // show description in description tab
                 document.querySelector('#item-page-description-text').textContent = itemDescription;
