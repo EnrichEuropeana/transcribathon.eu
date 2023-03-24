@@ -3417,6 +3417,21 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     font-weight: 600;
     font-size: 17px!important;
 }
+#auto-e-link {
+    padding-left: 25px!important;
+}
+#auto-e-link button {
+    padding: 10px!important;
+    border-top: 1px solid var(--main-color);
+    border-right: 1px solid var(--main-color);
+    border-bottom: 1px solid var(--main-color);
+    border-left: 1px solid var(--main-color);
+    background: #fff!important;
+    border-radius: 0!important;
+    color: var(--main-color);
+    margin-top: 10px!important;
+    margin-right: 10px!important;
+}
 #eng-desc-fs {
     padding-left: 25px;
     padding-right: 35px;
