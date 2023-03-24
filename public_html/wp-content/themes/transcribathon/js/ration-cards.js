@@ -48,7 +48,7 @@ function updateRcPerson(itemId, userId, firstName, lastName, description, person
     },
       // Check success and create confirmation message
       function(response) {
-        
+
         loadRcPerson(itemId, userId);
 
         jQuery('#' + spinner + '-spinner').css('display', 'none');
@@ -237,7 +237,7 @@ function loadRcPerson(itemId, userId) {
                 let submitterDescription = 'Submitter Podnositelj prijave';
                 
                 //
-                lastSpan = `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='updateRcPerson(${itemId}, ${userId}, "${listPerson.FirstName}", "${listPerson.LastName}", "${submitterDescription}", "Document Creator", "listed-person", ${listPerson.PersonId});'></i></span>`;
+                lastSpan = `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='updateRcPerson(${itemId}, ${userId}, "${listPerson.FirstName}", "${listPerson.LastName}", "${submitterDescription}", "DocumentCreator", "listed-person", ${listPerson.PersonId});'></i></span>`;
 
                 subLName.setAttribute('disabled', true);
                 subLName.value = listPerson.LastName;
@@ -383,7 +383,7 @@ function loadRcPerson(itemId, userId) {
 }
 
 // Ration Cards get address from mapbox and save place
-function getRCLocation(query, description, locName, autoCompleteContainer) {
+function getRCLocation(query, description, locName, autoCompleteContainer, saveCheck) {
     let source = null;
     let resContainer = document.querySelector(autoCompleteContainer);
     let itemIde = parseInt(document.querySelector('#rc-item-id').textContent);
@@ -470,6 +470,13 @@ function getRCLocation(query, description, locName, autoCompleteContainer) {
                     },
                     // Check success and create confirmation message
                     function(response) {
+                        let resultCode = (JSON.parse(response)).code;
+
+                        if(resultCode != 200) {
+                            return;
+                        } else {
+                            document.querySelector(saveCheck).classList.remove('not-saved');
+                        }
                         //console.log(response);
                         if(document.querySelector('#location-input-section').style.display == 'block') {
                             document.querySelector('#location-input-section').style.display = 'none';
@@ -589,7 +596,7 @@ function saveRcDate() {
 }
 // Save Ration Card Persons
 // Person Type argument is just to make difference between listed people and other people on ration cards, regular by default
-function saveRcPerson(itemId, userId, firstName, lastName, description, personRole, spinner, personType = 'regular') {
+function saveRcPerson(itemId, userId, firstName, lastName, description, personRole, spinner, personType = 'regular', saveCheck) {
 
     jQuery('#' + spinner + '-spinner').css('display', 'block');
 
@@ -658,6 +665,13 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, personRo
         },
         // Check success and create confirmation message
         function(response) {
+            let resultCode = (JSON.parse(response)).code;
+
+            if(resultCode != 200) {
+                return;
+            } else {
+                document.querySelector(saveCheck).classList.remove('not-saved');
+            }
 
             scoreData = {
                 ItemId: itemId,
@@ -1087,8 +1101,9 @@ ready(() => {
             let queryLoc = `${locOneStreet.value} ${locOneNumb.value}`;
             let description = 'Submitter Address/ Adresa Domacinstva';
             let locName = `${locOneStreet.value}, ${locOneNumb.value}`;
+            let saveCheck = '#m-address';
     
-            getRCLocation(queryLoc, description, locName, '#m-address-res');
+            getRCLocation(queryLoc, description, locName, '#m-address-res', saveCheck);
 
             locOneStreet.setAttribute('disabled', true);
             locOneStreet.style.border = '1px solid #0a72cc';
@@ -1104,8 +1119,9 @@ ready(() => {
         lLordBtn.addEventListener('click', function() {
             let queryLoc = `Zagreb, ${lLordStreet.value}`;
             let description = 'Property owner Address/ Adresa Kucevlasnika';
+            let saveCheck = '#landlord-loc';
     
-            getRCLocation(queryLoc, description, lLordStreet.value, '#landlord-loc-res');
+            getRCLocation(queryLoc, description, lLordStreet.value, '#landlord-loc-res', saveCheck);
 
             lLordStreet.setAttribute('disabled', true);
             lLordStreet.style.border = '1px solid #0a72cc';
@@ -1118,6 +1134,7 @@ ready(() => {
     const shopStreet = document.querySelector('#shop-loc');
     const shopName = document.querySelector('#shop-name');
 
+
     if(shopBtn) {
         shopBtn.addEventListener('click', function() {
             if(shopName.value == '' || shopStreet.value == '') {
@@ -1126,8 +1143,9 @@ ready(() => {
                 let queryLoc = `${shopStreet.value}`;
                 let description = 'Shop Address/ Adresa Trgovine'
                 let locName = `${shopName.value}, ${shopStreet.value}`;
+                let saveCheck = '#shop-name';
         
-                getRCLocation(queryLoc, description, locName, '#shop-loc-res');
+                getRCLocation(queryLoc, description, locName, '#shop-loc-res', saveCheck);
     
                 shopStreet.setAttribute('disabled', true);
 
@@ -1152,9 +1170,10 @@ ready(() => {
             let description = 'Submitter Podnositelj prijave';
             let firstName = document.querySelector('#submitter-fname').value;
             let lastName = document.querySelector('#submitter-lname').value;
-            let personRole = 'Document Creator';
+            let personRole = 'DocumentCreator';
+            let saveCheck = '#submitter-lname';
             
-            saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'submitter', 'submitter');
+            saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'submitter', 'submitter', saveCheck);
         })
     }
 
@@ -1165,9 +1184,10 @@ ready(() => {
             let description = 'Landlord / Kucevlasnik';
             let firstName = document.querySelector('#landlord-fname').value;
             let lastName = document.querySelector('#landlord-lname').value;
-            let personRole = 'Person Mentioned';
-    
-            saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'landlord');
+            let personRole = 'PersonMentioned';
+            let saveCheck = '#landlord-lname';
+
+            saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'landlord', 'regular', saveCheck);
         })
     }
 
@@ -1179,12 +1199,12 @@ ready(() => {
             let description = `${document.querySelector('#desc-rel').value} - ${document.querySelector('#desc-voc').value} - ${document.querySelector('#desc-wp').value}`;
             let firstName = document.querySelector('#lst-p-fname').value;
             let lastName = document.querySelector('#lst-p-lname').value;
-            let personRole = 'Person Mentioned';
+            let personRole = 'PersonMentioned';
 
             if(firstName == document.querySelector('#submitter-fname').value && lastName == document.querySelector('#submitter-lname').value) {
                 let personId = document.querySelector('#submitter-lname').getAttribute('person-id');
                 let submitterDescription = description + ' - (Submitter)';
-                updateRcPerson(itemId, userId, firstName, lastName, submitterDescription, 'Document Creator', 'listed-person', personId);
+                updateRcPerson(itemId, userId, firstName, lastName, submitterDescription, 'DocumentCreator', 'listed-person', personId);
             } else {
                 saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'listed-person', 'rc-list');
             }
@@ -1197,6 +1217,12 @@ ready(() => {
     const submitForm = document.getElementById('submit-form');
 
     submitForm.addEventListener('click', function() {
+
+        // Alert user if the fields are not saved
+        if(document.querySelector('#rc-form').querySelector('.not-saved')) {
+            window.alert("Please save Persons and Locations before proceeding!");
+            return;
+        }
 
         // Show spinner
         document.querySelector('#rc-submit-spinner').style.display = 'block';
@@ -1705,7 +1731,7 @@ ready(() => {
         let description = `${document.querySelector('#odpad-rel').value} - ${document.querySelector('#odpad-voc').value} - ${document.querySelector('#odpad-wp').value} - (Odpad) `;
         let firstName = document.querySelector('#odpad-fname').value;
         let lastName = document.querySelector('#odpad-lname').value;
-        let personRole = 'Person Mentioned';
+        let personRole = 'PersonMentioned';
 
         saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'odpad', 'odpad');
 
@@ -1716,7 +1742,7 @@ ready(() => {
         let description = `${document.querySelector('#prirast-rel').value} - ${document.querySelector('#prirast-voc').value} - ${document.querySelector('#prirast-wp').value} - (Prirast)`;
         let firstName = document.querySelector('#prirast-fname').value;
         let lastName = document.querySelector('#prirast-lname').value;
-        let personRole = 'Person Mentioned';
+        let personRole = 'PersonMentioned';
 
         saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'prirast', 'prirast');
 

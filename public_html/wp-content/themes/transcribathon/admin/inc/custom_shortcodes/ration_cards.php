@@ -2004,7 +2004,7 @@ function _TCT_ration_cards($atts)
 
                     
                    // var_dump($itemData);
-                    if($itemData['TranscriptionStatusName'] == 'Not Started') {
+                    if(empty($currentTranscription)) {
                         $content .= "<li style='display:none;'>";
                             $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
                                 onclick='switchItemTab(event, \"editor-tab\")'>";
@@ -2059,7 +2059,8 @@ function _TCT_ration_cards($atts)
                     $content .= "</li>";
                 $content .= '</ul>';
             $content .= "</div>";
-
+            
+            
             $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
                 // Editor tab
                 $content .= "<div id='editor-tab' class='tabcontent'>";
@@ -2184,7 +2185,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-second-col'><input type='text' id='regnumb' style='border: none;border-bottom: 1px dotted #ccc;width: 60%;margin: 0 auto;'></td>";
 
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' class='not-saved' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='submitter-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<i id='submitter-check' class='fas fa-check' style='display:none;'></i>";
                                         $content .= "<div id='submitter-spinner' class='spinner-container'>";
@@ -2210,7 +2211,7 @@ function _TCT_ration_cards($atts)
                                 $content .= "</tr>";
                                 $content .= "<tr>";
                                     $content .= "<td class='rc-first-col bot-part' style='vertical-align:top!important;position:relative;'> &nbsp";
-                                        $content .= "<input type='text' placeholder='Ulica' id='m-address' style='border: none;border-bottom: 1px dotted #ccc;'>";
+                                        $content .= "<input type='text' placeholder='Ulica' id='m-address' class='not-saved' style='border: none;border-bottom: 1px dotted #ccc;'>";
                                         $content .= "<div class='spinner-container'>";
                                            $content .= "<div class='spinner'></div>";
                                         $content .= "</div>";
@@ -2221,7 +2222,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
 
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' class='not-saved' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='landlord-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<i id='landlord-name-check' class='fas fa-check' style='display:none;'></i>";
                                         $content .= "<div id='landlord-spinner' class='spinner-container'>";
@@ -2250,7 +2251,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
 
                                     $content .= "<td class='rc-third-col' style='position:relative;padding-left:4%;'>";
-                                        $content .= "<input type='text' id='landlord-loc' placeholder='Stan' style='border: none;border-bottom: 1px dotted #ccc;'>";
+                                        $content .= "<input type='text' id='landlord-loc' class='not-saved' placeholder='Stan' style='border: none;border-bottom: 1px dotted #ccc;'>";
                                         $content .= "<i class='fas fa-check' id='landlord-check' style='display:none;'></i>";
                                         $content .= "<div class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";
@@ -2391,7 +2392,7 @@ function _TCT_ration_cards($atts)
                                 $content .= "<p> Zivezne namirnice nabavljat cu:</p>";
                                 $content .= "<label for='shop-name' style='position:relative;'>";
                                     $content .= "U radnji: ";
-                                    $content .= "<input type='text' name='shop-name' id='shop-name'>";
+                                    $content .= "<input type='text' name='shop-name' id='shop-name' class='not-saved'>";
                                     $content .= "<i class='fas fa-check' id='shop-name-check' style='display:none;'></i>";
                                 $content .= "</label>";
                                 $content .= "<label for='shop-loc' style='position:relative;'>";

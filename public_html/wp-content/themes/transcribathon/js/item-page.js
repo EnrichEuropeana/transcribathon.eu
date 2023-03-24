@@ -2735,7 +2735,11 @@ ready(() => {
         const url = new URL(url_string);
         const fullScreen = url.searchParams.get('fs');
         if(fullScreen) {
-            setTimeout(() => {document.querySelector('#full-page').click();}, 10);
+            if(document.querySelector('#full-page')) {
+                setTimeout(() => {document.querySelector('#full-page').click();}, 10);
+            } else if (document.querySelector('#full-page-rc')) {
+                setTimeout(() => {document.querySelector('#full-page-rc').click();}, 10);
+            }
         }
     }
 

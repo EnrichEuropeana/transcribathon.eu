@@ -82,14 +82,13 @@ var tct_viewer = (function($, document, window) {
 		});
 		// Ration Cards
 		jQuery('#full-page-rc').click(function() {
-
-			toggleFS();
             switchItemTab(event, "rc-tab");
+			toggleFS();
+            
 		});
 		jQuery('#startTranscription-rc').click(function() {
-
-			toggleFS();
             switchItemTab(event, "rc-tab");
+			toggleFS();
 		});
 
 		jQuery('#transcribeIcon').click(function() {
