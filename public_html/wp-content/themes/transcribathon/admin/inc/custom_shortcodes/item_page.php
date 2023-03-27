@@ -106,7 +106,7 @@ function _TCT_mtr_transcription($atts)
     $transcriptionView = '';
 
     // Get English translation of story description
-    $engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
+    //$engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
 
 
     // Build required components for the page
@@ -1120,13 +1120,13 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= $transcriptionView;
             $editorTab .= "</div>";
             // Transcription Translation
-            $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
-                $editorTab .= "English Translation";
-                $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
-                $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
-                    $editorTab .= "<div class='spinner'></div>";
-                $editorTab .= "</div>";
-            $editorTab .= "</h4>";
+            // $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
+            //     $editorTab .= "English Translation";
+            //     $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
+            //     $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
+            //         $editorTab .= "<div class='spinner'></div>";
+            //     $editorTab .= "</div>";
+            // $editorTab .= "</h4>";
             $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
 
             $editorTab .= $trHistory;
@@ -2205,12 +2205,12 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<div id='story-full-collapse'>Show More</div>";
                     }
                     // English translation
-                    if($engDescription != null) {
-                        $content .= "<div id='eng-desc-fs'>";
-                            $content .= "<p class='mb-1'> English Translation </p>";
-                            $content .= $engDescription;
-                        $content .= "</div>";
-                    }
+                    // if($engDescription != null) {
+                    //     $content .= "<div id='eng-desc-fs'>";
+                    //         $content .= "<p class='mb-1'> English Translation </p>";
+                    //         $content .= $engDescription;
+                    //     $content .= "</div>";
+                    // }
 
                     $content .= "<div id='full-v-metadata'>";
                     // Story Auto Enrichments
