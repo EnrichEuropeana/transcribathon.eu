@@ -1279,17 +1279,16 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .= "<div id='doc-type-view'>";
             foreach($itemData['Properties'] as $property) {
                 if($property['PropertyTypeId'] == 3) {
-                    $descriptionTab .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                    $descriptionTab .= "<div class='keyword-single' >" . $property['Value'] . "</div>";
                 }
             }
             $descriptionTab .= "</div>";
-
             $descriptionTab .= "<div id='category-checkboxes' class='login-required'>";
             foreach($categories as $category) {
                 $checked = "";
-                if($itemData['Property'] != null) {
-                    foreach($itemData['Property'] as $itemProp) {
-                        if($itemProp['PropertyId'] == $category['PropertyId']) {
+                if($itemData['Properties'] != null) {
+                    foreach($itemData['Properties'] as $itemProp) {
+                        if($itemProp['PropertyTypeId'] == $category['PropertyId']) {
                             $checked = "checked";
                             break;
                         }
@@ -1320,7 +1319,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             $descriptionLanguage = "";
             foreach($languages as $language) {
-                if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                if($itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
                     $descriptionLanguage = $language['Name'];
                 }
             }
@@ -1345,11 +1344,11 @@ if (event.target.id != "tagging-status-indicator") {
 
             // New position for Description Language
             $descriptionTab .= "<div id='description-language-selector' class='language-selector-background language-selector login-required'>";
-            if($itemData['DescriptionLanguage'] != null) {
+            if($itemData['DescriptionLang'] != null) {
                 $descriptionTab .= "<span id='language-sel-placeholder' class='language-select-selected' style='margin-right:5px;'>Language of Description: </span>";
             }
                 $descriptionTab .= "<select>";
-                    if($itemData['DescriptionLanguage'] == null) {
+                    if($itemData['DescriptionLang'] == null) {
                         $descriptionTab .= "<option value='' disabled selected hidden>";
                             $descriptionTab .= "Language of the Description";
                         $descriptionTab .= "</option>";
@@ -1360,7 +1359,7 @@ if (event.target.id != "tagging-status-indicator") {
                         }
                     } else {
                         foreach($languages as $language) {
-                            if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                            if($itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
                                 $descriptionTab .= "<option value='" . $language['LanguageId'] . "' selected>";
                                     $descriptionTab .= $language['Name'];
                                 $descriptionTab .= "</option>";
@@ -1421,7 +1420,7 @@ if (event.target.id != "tagging-status-indicator") {
                 foreach ($itemData['Properties'] as $property) {
                     if ($property['PropertyTypeId'] == 4) {
                         $descriptionTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
-                            $descriptionTab .= htmlspecialchars_decode($property['PropertyValue']);
+                            $descriptionTab .= htmlspecialchars_decode($property['Value']);
                             $descriptionTab .= '<i class="login-required delete-item-datas far fa-times" style="margin-left:5px;"
                                                 onClick="deleteItemData(\'properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'keyword\', '.get_current_user_id().')"></i>';
                         $descriptionTab .= '</div>';
@@ -1468,9 +1467,9 @@ if (event.target.id != "tagging-status-indicator") {
 
             $descriptionTab .= '<div id="item-link-list" class="item-data-output-list">';
             foreach ($itemData['Properties'] as $property) {
-                if($property['PropertyDescription'] != 'NULL') {
-                    $propDescription =  htmlspecialchars_decode($property['PropertyDescription']);
-                    $descPHolder = htmlspecialchars_decode($property['PropertyDescription']);
+                if($property['Description'] != 'NULL') {
+                    $propDescription =  htmlspecialchars_decode($property['Description']);
+                    $descPHolder = htmlspecialchars_decode($property['Description']);
                 } else {
                     $propDescription = "";
                     $descPHolder = "";
@@ -1480,7 +1479,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $descriptionTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
                             $descriptionTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
                                 $descriptionTab .= "<i class='far fa-external-link' style='margin-left: 3px;margin-right:5px;color:#0a72cc;font-size:14px;'></i>";
-                                $descriptionTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . htmlspecialchars_decode($property['PropertyValue']) . "</a>";
+                                $descriptionTab .= "<a href='". $property['Value'] . "' target='_blank'>" . htmlspecialchars_decode($property['Value']) . "</a>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div class='edit-del-link'>";
                                 $descriptionTab .= "<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required'
