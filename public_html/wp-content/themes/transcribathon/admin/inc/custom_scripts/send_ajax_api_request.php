@@ -22,12 +22,21 @@ if (!empty($post['type']) && !empty($post['url'])) {
     curl_setopt($ch, CURLINFO_HEADER_OUT, true);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $post['type']);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postContent);
-
-    // Set HTTP Header for request
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/json',
-        'Content-Length: ' . strlen($postContent))
-    );
+    
+    if($post['token'] == 'yes') {
+        // Set HTTP Header for request
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($postContent),
+            'Authorization: Bearer ' . TP_API_V2_TOKEN )
+        );
+    } else {
+        // Set HTTP Header for request
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($postContent))
+        );
+    }
 
     // Submit the request
     $result = curl_exec($ch);

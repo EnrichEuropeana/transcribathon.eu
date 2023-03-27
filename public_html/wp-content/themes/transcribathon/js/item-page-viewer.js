@@ -53,7 +53,7 @@ var tct_viewer = (function($, document, window) {
 		jQuery('.mtr-active').click(function() {
 			document.querySelector('#transcription-edit-container').style.display = 'none';
 			document.querySelector('#transcription-view-container').style.display = 'block';
-			document.querySelector('#switch-tr-view i').classList = 'fa fa-times';
+			document.querySelector('#switch-tr-view i').classList = 'fa fa-pencil';
 			toggleFS();
 		});
 		jQuery('#startDescription').click(function() {
@@ -130,17 +130,17 @@ var tct_viewer = (function($, document, window) {
 		});
 		jQuery('#date-open').click(function() {
 			toggleFS();
-			document.querySelector('#tagi-tab').click();
+			document.querySelector('#desc-tab').click();
 		});
 		jQuery('#keywords-open').click(function(e) {
 			e.stopPropagation();
 			toggleFS();
-			document.querySelector('#tagi-tab').click();
+			document.querySelector('#desc-tab').click();
 		});
 		jQuery('#links-open').click(function(e) {
 			e.stopPropagation();
 			toggleFS();
-			document.querySelector('#tagi-tab').click();
+			document.querySelector('#desc-tab').click();
 		});
 		jQuery('#people-open').click(function(e) {
 			e.stopPropagation();
