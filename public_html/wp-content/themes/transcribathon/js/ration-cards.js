@@ -391,7 +391,7 @@ function getRCLocation(query, description, locName, autoCompleteContainer, saveC
     let placeRole = 'Other';
 
     if(description.includes('Submitter')) {
-        placeRole = 'Creation Place';
+        placeRole = 'CreationPlace';
     }
 
     resContainer.innerHTML = '';
@@ -532,7 +532,7 @@ function saveRcDate() {
     data = {
         DateStartDisplay: jQuery('#rc-date-entry').val(),
         DateEndDisplay: '',
-        CreationDate: 'true'
+        DateRole: 'CreationDate'
     }
     startDate = jQuery('#rc-date-entry').val().split('/');
     if (!isNaN(startDate[2]) && !isNaN(startDate[1]) && !isNaN(startDate[0])) {
@@ -1200,13 +1200,14 @@ ready(() => {
             let firstName = document.querySelector('#lst-p-fname').value;
             let lastName = document.querySelector('#lst-p-lname').value;
             let personRole = 'PersonMentioned';
+            let saveCheck ='#lst-p-lname';
 
             if(firstName == document.querySelector('#submitter-fname').value && lastName == document.querySelector('#submitter-lname').value) {
                 let personId = document.querySelector('#submitter-lname').getAttribute('person-id');
                 let submitterDescription = description + ' - (Submitter)';
                 updateRcPerson(itemId, userId, firstName, lastName, submitterDescription, 'DocumentCreator', 'listed-person', personId);
             } else {
-                saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'listed-person', 'rc-list');
+                saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'listed-person', 'rc-list', saveCheck);
             }
     
             document.querySelector('#rc-list-form').reset();
