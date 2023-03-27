@@ -82,17 +82,18 @@ class TranskribusClient
  	 *
  	 * send an imageUrl to be procssed by handwriting recognition
  	 *
- 	 * @param  integer $itemId   Item from the Transcribathon DB
- 	 * @param  string  $imageUrl Url of the image
- 	 * @param  integer $htrId    HTR model ID
- 	 * @return mixed             string response on success otherwise false
+ 	 * @param  integer $itemId     Item from the Transcribathon DB
+ 	 * @param  string  $imageUrl   Url of the image
+ 	 * @param  integer $htrModelId HTR model ID
+ 	 * @param  array   $language   Language ID as array
+ 	 * @return mixed               string response on success otherwise false
  	 */
-	public function submitDataToTranskribus($itemId, $imageUrl, $htrId)
+	public function submitDataToTranskribus($itemId, $imageUrl, $htrModelId, $language = [])
 	{
 		$payload = array(
 			"config" => array(
 				"textRecognition" => array(
-					'htrId' => $htrId
+					'htrId' => $htrModelId
 				)
 			),
 			"image" => array(
@@ -112,15 +113,16 @@ class TranskribusClient
 			return false;
 		}
 
-		$resultArray = json_decode($result, true);
-		$processId   = $resultArray['processId'];
-		$status      = $resultArray['status'];
+		$resultArray  = json_decode($result, true);
+		$htrProcessId = $resultArray['processId'];
+		$htrStatus    = $resultArray['status'];
 
 		$postData = array(
-			'ItemId' => $itemId,
-			'HtrId'  => $htrId,
-			'ProcessId' => $processId,
-			'HtrStatus' => $status
+			'ItemId'       => $itemId,
+			'HtrModelId'   => $htrModelId,
+			'HtrProcessId' => $htrProcessId,
+			'HtrStatus'    => $htrStatus,
+			'Language'     => $language
 		);
 
 		$tpResult = $this->postToTranscribathon($postData);
@@ -137,13 +139,13 @@ class TranskribusClient
  	 *
  	 * get JSON data from Transkribus
  	 *
- 	 * @param  integer $processId  ID of the Transkribus process
- 	 * @return mixed               string JSON response on success otherwise false
+ 	 * @param  integer $htrProcessId  ID of the Transkribus process
+ 	 * @return mixed                  string JSON response on success otherwise false
  	 */
-	public function getJSONDatafromTranskribus($processId)
+	public function getJSONDatafromTranskribus($htrProcessId)
 	{
 		$queryOptions = array(
-			'processId' => $processId
+			'processId' => $htrProcessId
 		);
 
 		$query = $this->queryTranskribus($queryOptions);
@@ -156,13 +158,13 @@ class TranskribusClient
  	 *
  	 * get PAGE XML data from Transkribus
  	 *
- 	 * @param  integer $processId  ID of the Transkribus process
- 	 * @return mixed               string PAGE XML response on success otherwise false
+ 	 * @param  integer $htrProcessId  ID of the Transkribus process
+ 	 * @return mixed                  string PAGE XML response on success otherwise false
  	 */
-	public function getPageXMLfromTranskribus($processId)
+	public function getPageXMLfromTranskribus($htrProcessId)
 	{
 		$queryOptions = array(
-			'processId' => $processId,
+			'processId' => $htrProcessId,
 			'accept'    => 'xml',
 			'what'      => 'page'
 		);
@@ -203,12 +205,13 @@ class TranskribusClient
  	 *
  	 * array(
  	 * 	"HtrStatus" => $status,
- 	 * 	"TranscriptionData" => $data
+ 	 * 	"TranscriptionData" => $xmlData
+ 	 * 	"TranscriptionText" => $plainText
  	 * );
  	 *
  	 * @param  integer $HtrDataId ID of the entry to be updated
  	 * @param  array   $data      $data array with data to be updated
- 	 * @result mixed              response string on success otherwise false
+ 	 * @return bool|string        response string on success otherwise false
  	 */
 	public function updateDataToTranscribathon($HtrDataId, $data)
 	{
@@ -237,25 +240,25 @@ class TranskribusClient
  	 * $data example for data from Transkribus:
  	 *
  	 * array(
- 	 *	"ItemId"    => 1111,
- 	 *	"HtrId"     => 2025,
- 	 *	"ProcessId" => 3333,
- 	 *	"HtrStatus" => 'CREATED'
+ 	 *	"ItemId"       => 1111,
+ 	 *	"HtrModerlId"  => 2025,
+ 	 *	"HtrProcessId" => 3333,
+ 	 *	"HtrStatus"    => 'CREATED'
  	 * );
  	 *
  	 * $data example for data from Transcribathon user:
  	 *
  	 * array(
- 	 *	"ItemId"                 => 1111,
- 	 *	"UserId"                 => 2222,
- 	 * 	"TranscriptionData"      => '<xml />'
+ 	 *	"ItemId"            => 1111,
+ 	 *	"UserId"            => 2222,
+ 	 * 	"TranscriptionData" => '<xml />'
+ 	 * 	"TranscriptionTest" => 'plain text'
  	 * );
  	 *
  	 * @param  array $body array with entries for the payload
- 	 * @result mixed       response string on success otherwise false
+ 	 * @return bool|string response string on success otherwise false
  	 */
 	public function postToTranscribathon($data = array())
-
 	{
 		if (empty($data['ItemId'])) {
 			$this->error = 'No item ID in posted data';
@@ -280,7 +283,7 @@ class TranskribusClient
  	 * query the Transcribathon API
  	 *
  	 * @param  array $queryOptions array with data for building the query
- 	 * @return mixed               response string on success (statusCode <= 299) otherwise false
+ 	 * @return bool|string         response string on success (statusCode <= 299) otherwise false
  	 */
 	protected function queryTranscribathon($queryOptions)
 	{
@@ -328,7 +331,7 @@ class TranskribusClient
  	 *
  	 * @param  string $url     API endpoint
  	 * @param  array  $options options array for context ceating
- 	 * @return mixed           repsonse string on success, otherwise false
+ 	 * @return bool|string     repsonse string on success, otherwise false
  	 */
 	protected function sendQuery($url, $options)
 	{
@@ -362,8 +365,9 @@ class TranskribusClient
  	 *
  	 * query the Transkribus API
  	 *
- 	 * @param  array $queryOptions array with data for building the query
- 	 * @return mixed               response string on success (statusCode <= 299) otherwise false
+ 	 * @param  array       $queryOptions array with data for building the query
+ 	 * @param  null|string $endpoint     url endpoint
+ 	 * @return bool|string               response string on success (statusCode <= 299) otherwise false
  	 */
 	protected function queryTranskribus($queryOptions, $endpoint = null)
 	{
@@ -434,7 +438,7 @@ class TranskribusClient
  	 *
  	 * Get a new token when old one is expired.
  	 *
- 	 * return bool true on success otherwise false
+ 	 * @return bool true on success otherwise false
  	 */
 	protected function handleTranskribusAccess()
 	{

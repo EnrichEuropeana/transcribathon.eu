@@ -1,5 +1,6 @@
 <?php
 
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
 require_once('config.php');
 require_once('lib/HtrData.php');
 require_once('lib/TranskribusClient.php');
@@ -21,9 +22,13 @@ $storyId = ($_GET['storyId'] && $_GET['storyId'] !== 'null')
 	? $_GET['storyId']
 	: null;
 
-$htrId = $_GET['htrId'] ?? null;
+$htrModelId = $_GET['htrModelId'] ?? null;
+
+$languageId = $_GET['languageId'] ?? null;
 
 $htrModel = $_GET['htrModel'] ?? null;
+
+$languages = $_GET['languages'] ?? null;
 
 $htrUserData = file_get_contents('php://input');
 
@@ -32,38 +37,40 @@ if ($storyId && $itemId) {
 	exit(1);
 }
 
-if (($storyId || $itemId) && $htrId) {
+if (($storyId || $itemId) && $htrModelId) {
 
 	$path = $storyId
-		? '/stories/' . $storyId
+		? '/items?limit=1000&StoryId=' . $storyId
 		: '/items/' . $itemId;
 
 	$HtrData = new HtrData($config);
 
-	// get itemData with Java API
-	$oldApiEndpoint .= $path;
+	$apiV2Endpoint = $config['transcribathon']['endpoint'] . $path;
 	$queryOptions = array(
 		'http' => array(
 			'ignore_errors' => true,
 			'header' => array(
-				'Content-type: application/json'
+				'Content-type: application/json',
+				'Authorization: Bearer ' . $config['transcribathon']['apiToken']
 			),
 			'method' => 'GET'
 		)
 	);
 
-	$queryData = $HtrData::sendQuery($oldApiEndpoint, $queryOptions);
+	$queryData = $HtrData::sendQuery($apiV2Endpoint, $queryOptions);
 
 	if (!$queryData) {
-		echo '{"error":"An error occurred when consuming the Java API."}';
+		echo '{"error":"An error occurred while getting the item data."}';
 		exit(1);
 	}
 
 	$queryDataArray = json_decode($queryData, true);
 
-	$itemsData = $storyId ? $queryDataArray[0]['Items'] : array($queryDataArray);
+	$itemsData = $storyId
+		? $queryDataArray['data']
+		: [$queryDataArray['data']];
 
-	$sendedData = $HtrData->sendStoryData($itemsData, $htrId);
+	$sendedData = $HtrData->sendStoryData($itemsData, $htrModelId, $languageId);
 
 	echo $sendedData;
 
@@ -77,6 +84,7 @@ if ($htrModel) {
 	echo $htrModels;
 
 	exit(0);
+
 }
 
 if ($htrUserData) {
@@ -90,6 +98,28 @@ if ($htrUserData) {
 	}
 
 	echo $htrUserTranscription;
+
+	exit(0);
+
+}
+
+if ($languages) {
+
+	$languageEndpoint = $config['transcribathon']['endpoint'] . '/languages?orderBy=LanguageId&orderDir=asc';
+	$languageQueryOptions = array(
+		'http' => array(
+			'ignore_errors' => true,
+			'header' => array(
+				'Content-type: application/json',
+				'Authorization: Bearer ' . $config['transcribathon']['apiToken']
+			),
+			'method' => 'GET'
+		)
+	);
+
+	$languageQueryData = HtrData::sendQuery($languageEndpoint, $languageQueryOptions);
+
+	echo $languageQueryData;
 
 	exit(0);
 
