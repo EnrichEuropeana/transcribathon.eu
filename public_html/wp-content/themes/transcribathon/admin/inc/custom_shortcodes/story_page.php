@@ -125,6 +125,7 @@ function _TCT_get_document_data( $atts ) {
     $imageSlider = "";
     $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
     $imageSlider .= "<div id='story-id' style='display:none;'>" . $storyData['StoryId'] . "</div>";
+    $imageSlider .= "<div id='current-itm' style='display:none;'>" . $randomItem . "</div>";
     $imageSlider .= "<div id='img-slider'>";
         $imageSlider .= "<div id='slider-container'>";
             $imageSlider .= "<button class='prev-slide' type='button' aria-label='Previous'><i class='fas fa-chevron-left'></i></button>";
