@@ -602,13 +602,13 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, personRo
 
 
     // let birthDate = escapeHtml(jQuery('#rc-bdate').val());
-    let birthDate = '';
+    let birthDate = null;
 
-    if(personType == 'rc-list') {
+    if(personType == 'rc-list' && document.querySelector('#rc-bdate').value != '') {
         birthDate = document.querySelector('#rc-bdate').value + '-01-01';
-    } else if(personType == 'prirast') {
+    } else if(personType == 'prirast' && document.querySelector('#prirast-bdate').value != '') {
         birthDate = document.querySelector('#prirast-bdate').value + '-01-01';
-    } else if(personType == 'odpad') {
+    } else if(personType == 'odpad' && document.querySelector('#odpad-bdate').value != '') {
         birthDate = document.querySelector('#odpad-bdate').value + '-01-01';
     }
 
@@ -669,7 +669,7 @@ function saveRcPerson(itemId, userId, firstName, lastName, description, personRo
 
             if(resultCode != 200) {
                 return;
-            } else {
+            } else if (!saveCheck == 'list' || !saveCheck == 'prirast' || !saveCheck == 'odpad') {
                 document.querySelector(saveCheck).classList.remove('not-saved');
             }
 
@@ -1200,7 +1200,7 @@ ready(() => {
             let firstName = document.querySelector('#lst-p-fname').value;
             let lastName = document.querySelector('#lst-p-lname').value;
             let personRole = 'PersonMentioned';
-            let saveCheck ='#lst-p-lname';
+            let saveCheck ='list';
 
             if(firstName == document.querySelector('#submitter-fname').value && lastName == document.querySelector('#submitter-lname').value) {
                 let personId = document.querySelector('#submitter-lname').getAttribute('person-id');
@@ -1733,8 +1733,9 @@ ready(() => {
         let firstName = document.querySelector('#odpad-fname').value;
         let lastName = document.querySelector('#odpad-lname').value;
         let personRole = 'PersonMentioned';
+        let saveCheck = 'odpad';
 
-        saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'odpad', 'odpad');
+        saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'odpad', 'odpad', saveCheck);
 
         document.querySelector('#odpad-list-form').reset();
     })
@@ -1744,8 +1745,9 @@ ready(() => {
         let firstName = document.querySelector('#prirast-fname').value;
         let lastName = document.querySelector('#prirast-lname').value;
         let personRole = 'PersonMentioned';
+        let saveCheck = 'prirast';
 
-        saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'prirast', 'prirast');
+        saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'prirast', 'prirast', saveCheck);
 
         document.querySelector('#prirast-list-form').reset();
         })
