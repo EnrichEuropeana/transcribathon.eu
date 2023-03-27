@@ -1288,7 +1288,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $checked = "";
                 if($itemData['Properties'] != null) {
                     foreach($itemData['Properties'] as $itemProp) {
-                        if($itemProp['PropertyTypeId'] == $category['PropertyId']) {
+                        if($itemProp['Value'] == $category['PropertyValue']) {
                             $checked = "checked";
                             break;
                         }

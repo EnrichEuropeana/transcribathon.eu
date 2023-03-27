@@ -242,6 +242,7 @@ function loadRcPerson(itemId, userId) {
                 lastSpan = `<span class='sixth-span'><i class='fas fa-trash-alt' onClick='updateRcPerson(${itemId}, ${userId}, "${listPerson.FirstName}", "${listPerson.LastName}", "${submitterDescription}", "DocumentCreator", "listed-person", ${listPerson.PersonId});'></i></span>`;
 
                 subLName.setAttribute('disabled', true);
+                subLName.classList = '';
                 subLName.value = listPerson.LastName;
                 subLName.style.cssText = `
                     border-top: 1px solid #0a72cc;
@@ -1665,7 +1666,7 @@ ready(() => {
         `<p class='form-sub-footer'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>` +
         `</div>`; 
 
-
+console.log(document.querySelector('#item-page-description-text').value);
         // append listed persons to the transcription
         transcriptionTemplate.querySelector('#rc-tr-wrapper').insertBefore(displayDiv, transcriptionTemplate.querySelector('#list-placeholder'));
         ////

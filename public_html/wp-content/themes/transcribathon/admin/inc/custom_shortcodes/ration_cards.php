@@ -2307,7 +2307,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<div class='rc-list-td' style='position:relative;'>";
                                         $content .= "<span id='redni-broj-start' class='start-span'> 1 </span>";
                                         $content .= "<span class='first-span'>";
-                                            $content .= "<span class='left-half'><input type='text' id='lst-p-lname' class='not-saved' placeholder=' Prezime' name='lname'></span>";
+                                            $content .= "<span class='left-half'><input type='text' id='lst-p-lname' placeholder=' Prezime' name='lname'></span>";
                                             $content .= "<span class='right-half'><input type='text' id='lst-p-fname' placeholder=' Ime' name='fname'></span>";
                                         $content .= "</span>";
                                         $content .= "<span class='second-span'><input type='text' name='bdate' id='rc-bdate'></span>";
