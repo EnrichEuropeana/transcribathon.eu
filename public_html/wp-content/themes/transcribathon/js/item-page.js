@@ -3098,6 +3098,7 @@ ready(() => {
                 let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' - Automatically Generated.';
                 let wikidata = (enrichment.querySelector('.enrich-wiki a').getAttribute('href')).split('/');
                 let wikidataId = wikidata.pop();
+                let placeRole = 'Other';
                 // Convert lat/long to float number
                 latitude = parseFloat(latitude);
                 longitude = parseFloat(longitude);
@@ -3113,6 +3114,7 @@ ready(() => {
                     Comment: description,
                     WikidataName: locationName,
                     WikidataId: wikidataId,
+                    PlaceRole: placeRole,
                     UserId: userId,
                     UserGenerated: 0
                 }
@@ -3147,6 +3149,7 @@ ready(() => {
                     DeathPlace: null,
                     Link: link,
                     Description: description,
+                    PersonRole: 'PersonMentioned',
                     ItemId: itemId,
                     BirthDate: null,
                     DeathDate: null
