@@ -1166,7 +1166,7 @@ p.mb-1 {
 #transcription-view-container {
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 70vh;
+    max-height: calc(70vh - 100px);
 }
 #transcription-view-container #current-tr-view {
     min-height: 40vh;

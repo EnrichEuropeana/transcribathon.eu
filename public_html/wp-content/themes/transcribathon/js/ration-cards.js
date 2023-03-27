@@ -112,6 +112,7 @@ function loadRcPerson(itemId, userId) {
                 let landDelete = document.querySelector('#delete-l-lord');
 
                 landLName.setAttribute('disabled', true);
+                landLName.classList = '';
                 landLName.value = person.LastName;
                 landLName.style.cssText = `
                     border-left: 1px solid #0a72cc;
@@ -164,6 +165,7 @@ function loadRcPerson(itemId, userId) {
                 let subDelete = document.querySelector('#delete-submitter');
 
                 subLName.setAttribute('disabled', true);
+                subLName.classList = '';
                 subLName.value = person.LastName;
                 subLName.style.cssText = `
                     border-top: 1px solid #0a72cc;
@@ -754,6 +756,7 @@ function loadRcPlaceData(itemId, userId) {
             document.querySelector('#m-address').value = submAddressArr[0];
             document.querySelector('#m-address').setAttribute('disabled', true);
             document.querySelector('#m-address').style.border = '1px solid #0a72cc';
+            document.querySelector('#m-address').classList = '';
             document.querySelector('#kbr').value = submAddressArr[1];
             document.querySelector('#kbr').setAttribute('disabled', true);
             document.querySelector('#kbr').style.border = '1px solid #0a72cc';
@@ -806,6 +809,7 @@ function loadRcPlaceData(itemId, userId) {
             document.querySelector('#landlord-loc').value = lLordPlace.Name;
             document.querySelector('#landlord-loc').setAttribute('disabled', true);
             document.querySelector('#landlord-loc').style.border = '1px solid #0a72cc';
+            document.querySelector('#landlord-loc').classList = '';
 
             let deleteLLordBtn = document.querySelector('#del-llord');
 
@@ -853,6 +857,7 @@ function loadRcPlaceData(itemId, userId) {
             document.querySelector('#shop-name').value = shopAddressArr[0];
             document.querySelector('#shop-name').setAttribute('disabled', true);
             document.querySelector('#shop-name').style.border = '1px solid #0a72cc';
+            document.querySelector('#shop-name').classList = '';
             document.querySelector('#shop-loc').value = shopAddressArr[1];
             document.querySelector('#shop-loc').setAttribute('disabled', true);
             document.querySelector('#shop-loc').style.border = '1px solid #0a72cc';
