@@ -20,5 +20,3 @@ $config = array(
 	'verifySSL' => false
 );
 
-$oldApiEndpoint = TP_API_HOST . '/tp-api' ;
-

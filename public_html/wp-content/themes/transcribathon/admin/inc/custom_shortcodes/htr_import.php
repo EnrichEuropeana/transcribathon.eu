@@ -176,8 +176,16 @@ function _TCT_htr_import()
 
 	<p class="row">
 		{$labels}
+	  <label class="col">Document Language
+			<select id="languageId" class="form-control" x-model="languageId">
+	    	<option></option>
+	    	<template x-for="language in languages.data" :key="language.LanguageId">
+	    		<option :value="language.LanguageId" x-text="language.NameEnglish"></option>
+	    	</template>
+	    </select>
+	  </label>
 	  <label class="col">HTR Model ID
-	    <input class="form-control" id="id-input" type="text" x-model="htrId" list="htrList"/>
+	    <input class="form-control" id="id-input" type="text" x-model="htrModelId" list="htrList"/>
 	    <datalist id="htrList">
 	    	<option></option>
 	    	<template x-for="model in htrModels.trpModelMetadata" :key="model.modelId">
@@ -194,6 +202,7 @@ function _TCT_htr_import()
 	</p>
 	<p class="alert my-4" :class="('alert-' + status)" role="alert">
 		<span id="loading" x-show="processing"></span>
+		</span>
 		<span x-text="processText"></span>
 </p>
 
@@ -216,7 +225,7 @@ function _TCT_htr_import()
 		<div class="row" id="htrModels">
 			<template x-for="model in htrModels.trpModelMetadata" :key="model.modelId">
 				<div class="card">
-					<div class="card-body" @click="htrId = model.modelId">
+					<div class="card-body" @click="htrModelId = model.modelId">
 						<h5 class="card-title" x-text="model.name"></h5>
 						<span class="card-text"><b>Languages:</b> <span x-text="Array.isArray(model.isoLanguages) ? model.isoLanguages.join(', ') : 'n.n.'"></span></span>
 						<span class="card-text"><b>Material:</b> <span x-text="model.docType"></span></span>
@@ -241,9 +250,11 @@ document.addEventListener('alpine:init', () => {
 		filterString: '',
 		requestUri: '{$requestUri}',
 		htrModels: {},
+		languages: {},
 		storyId: {$safeStorIds},
 		itemId: {$safeItemIds},
-		htrId: null,
+		languageId: null,
+		htrModelId: null,
 		percent: 0,
 		processing: true,
 		disabled: false,
@@ -255,6 +266,7 @@ document.addEventListener('alpine:init', () => {
 			error:  false
 		},
 		processText: 'Loading all HTR models, please wait...',
+		storyRefreshTime: 180, // seconds
 
 		async init () {
 
@@ -277,11 +289,24 @@ document.addEventListener('alpine:init', () => {
 				this.status = 'success';
 			}
 
+			const languageParams = new URLSearchParams({
+				languages: '1'
+			});
+			const langUrl = this.requestUri + '?' + languageParams;
+
+			this.languages = await (await fetch(langUrl)).json();
+
+			this.languages.data = this.languages.data.sort((a, b) => {
+				if (a.NameEnglish < b.NameEnglish) {
+					return -1;
+				}
+			});
+
 		},
 
 		async getHtrData () {
 
-			if ((!this.storyId && !this.itemId) || !this.htrId) {
+			if ((!this.storyId && !this.itemId) || !this.htrModelId || !this.languageId) {
 
 				this.processText = 'Not all input fields are filled.';
 				this.status = 'danger';
@@ -292,7 +317,8 @@ document.addEventListener('alpine:init', () => {
 			const params = new URLSearchParams({
 				storyId: this.storyId,
 				itemId: this.itemId,
-				htrId: this.htrId
+				htrModelId: this.htrModelId,
+				languageId: this.languageId
 			});
 			const url = this.requestUri + '?' + params;
 
@@ -338,12 +364,12 @@ document.addEventListener('alpine:init', () => {
 						: 'success';
 				}
 
-				const intervall = this.storyId ? 180000 : 5000;
+				const interval = this.storyId ? this.storyRefreshTime * 1000 : 5000;
 
 				if (this.processing) {
 					setTimeout(() => {
 						query.call()
-					}, intervall);
+					}, interval);
 				}
 
 			};
