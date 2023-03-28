@@ -156,7 +156,7 @@ function _TCT_solr_search( $atts ) {
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='".strval($totalPs)."' name='ps' onChange='this.form.submit()'>";
             $pagination .= "</label>";
     
-            $pagination .= "<style>.pag-lbl:nth-of-type(".(5 - $totalPs + $currPs)."){color:#000;font-weight:600;}</style>";
+            $pagination .= "<style>.pag-lbl:nth-of-type(".(5 - $totalPs + $currPs)."){color:#000;font-weight:500;}</style>";
         } else {
             $pagination .= "<label class='pag-lbl' title='First'><i class=\"fas fa-chevron-double-left\"></i>";
                 $pagination .= "<input type='checkbox' class='pagi-ctrl' form='query-form' value='1' name='ps' onChange='this.form.submit()'>";
