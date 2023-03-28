@@ -1494,7 +1494,7 @@ if (event.target.id != "tagging-status-indicator") {
         
                         $descriptionTab .= "<div class='link-data-edit-container' id='link-data-edit-" . $property['PropertyId'] . "'>";
                             $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-url-input' class='link-url-input'>";
-                                $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
+                                $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['Value'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-description-input' class='link-description-input'>";
                                 $descriptionTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars($descPHolder, ENT_QUOTES, 'UTF-8') . "</textarea>";
