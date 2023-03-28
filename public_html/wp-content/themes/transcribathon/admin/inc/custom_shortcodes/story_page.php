@@ -89,8 +89,6 @@ function _TCT_get_document_data( $atts ) {
 
 
     $randomItem = rand(0,(count($allItems)-1));
-    $imgDescription = json_decode($allItems[$randomItem]['Image'], true);
-    $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => 'full', 'region' => 'full'));
     // if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
     //     $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
     // } else {
@@ -110,7 +108,13 @@ function _TCT_get_document_data( $atts ) {
     // $restPhotos = $numbPhotos - ($numbSlides * 9);
     //// NEW IMAGE SLIDER
     $allImages = [];
+    $compStatusCheck = 0;
     for($x = 0; $x < $numbPhotos; $x++) {
+
+        if(($allItems[$x]['CompletionStatus'] == '#ffd800' || $allItems[$x]['CompletionStatus'] == '#eeeeee') && $compStatusCheck < 1) {
+            $randomItem = $x;
+            $compStatusCheck = 1;
+        }
 
         $sliderImg = json_decode($allItems[$x]['Image'], true);
         $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
@@ -121,6 +125,9 @@ function _TCT_get_document_data( $atts ) {
 
         array_push($allImages, ($sliderImgLink . ' || ' . $allItems[$x]['Id'] . ' || ' . $allItems[$x]['CompletionStatus']));
     }
+    $imgDescription = json_decode($allItems[$randomItem]['Image'], true);
+    $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => 'full', 'region' => 'full'));
+    //dd($allImages);
 
     $imageSlider = "";
     $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
