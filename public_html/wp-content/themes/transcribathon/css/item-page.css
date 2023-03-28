@@ -1588,10 +1588,9 @@ p.mb-1 {
     font-weight: bold;
 }
 .person-location-birth-inputs .ui-datepicker-trigger, .person-location-death-inputs .ui-datepicker-trigger {
-    float: right;
-    position: relative;
-    bottom: 25px;
-    left: 40px;
+    right: -30px;
+    top: 25px;
+    position: absolute;
 }
 #back-to-story-title {
     color: var(--main-color)!important;
@@ -1673,7 +1672,7 @@ button.ui-datepicker-trigger {
 }
 input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-input, #person-deathDate-input,
 .link-description-input textarea, .link-url-input input  {
-    width: 49%;
+    width: 48.5%;
     margin-right: 0!important;
     display: inline-block;
     background-color: var(--bg-main-color);
@@ -2507,9 +2506,10 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     bottom: 8px;
 }
 .ui-datepicker-trigger img {
-    height: 18px;
-    position: relative;
+    height: 18px!important;
+    position: absolute;
     bottom: 3px;
+    right: 3px;
 }
 
 /* only showing status, no functionality */

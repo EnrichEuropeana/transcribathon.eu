@@ -678,15 +678,17 @@ if (event.target.id != "tagging-status-indicator") {
                 //     $enrichmentTab .= '<input id="person-wiki-input-field" type="text" placeholder="&nbsp Add Wikidata Id to this person..." title="e.g. Wikidata Title Id" class="input-response person-input-field">';
                 // $enrichmentTab .= '</div>';
 
-                $enrichmentTab .= '<div class="person-location-birth-inputs">';
+                $enrichmentTab .= '<div class="person-location-birth-inputs" style="position:relative;margin-bottom:10px;">';
                     $enrichmentTab .= '<input type="text" id="person-birthPlace-input" class="input-response person-input-field" name="" placeholder="&nbsp Birth Location">';
-                    $enrichmentTab .= '<span style="display:inline-block;width:48.5%;" class="input-response"><input type="text" id="person-birthDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Birth: dd/mm/yyyy" style="width:100%;margin-left:15px;"></span>';
+                    $enrichmentTab .= '<input type="text" id="person-birthDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Birth: dd/mm/yyyy" style="width:48.5%;float:right">';
                 $enrichmentTab .= '</div>';
+                $enrichmentTab .= "<div style='clear:both;'></div>";
 
-                $enrichmentTab .= '<div class="person-location-death-inputs">';
+                $enrichmentTab .= '<div class="person-location-death-inputs" style="position:relative;">';
                     $enrichmentTab .= '<input type="text" id="person-deathPlace-input" class="input-response person-input-field" name="" placeholder="&nbsp Death Location">';
-                    $enrichmentTab .= '<span style="display:inline-block;width:48.5%;" class="input-response"><input type="text" id="person-deathDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Death: dd/mm/yyyy" style="width:100%;margin-left:15px;"></span>';
+                    $enrichmentTab .= '<input type="text" id="person-deathDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Death: dd/mm/yyyy" style="width:48.5%;float:right;">';
                 $enrichmentTab .= '</div>';
+                $enrichmentTab .= "<div style='clear:both;'></div>";
 
                 $enrichmentTab .= "<div class='person form-buttons-right' style='display:block;margin-top:0px;'>";
                     $enrichmentTab .= "<button id='save-personinfo-button' class='edit-data-save-right' id='person-save-button'
