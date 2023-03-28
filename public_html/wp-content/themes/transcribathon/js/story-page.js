@@ -73,6 +73,7 @@ ready(() => {
     const sliderWidth = sliderContainer.offsetWidth;
     let numOfStickers = Math.floor(sliderWidth/200);
     const storyId = document.querySelector('#story-id').textContent;
+    const currentItm = parseInt(document.querySelector('#current-itm').textContent);
 
     const prevBtn = document.querySelector('.prev-slide');
     const nextBtn = document.querySelector('.next-slide');
@@ -131,16 +132,25 @@ ready(() => {
                 endSlide = sliderImages.length;
             }
             startSlide = endSlide - numOfStickers;
-            slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
+            slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
             activeDot(currentDot);
         });
         dotContainer.appendChild(singleDot);
     }
-    dotContainer.querySelector('.slider-dot').classList.add('current');
+   // dotContainer.querySelector('.slider-dot').classList.add('current');
+
+    if(currentItm || currentItm == 0) {
+        let currPosition = Math.floor(currentItm/numOfStickers);
+        for(let dot of dotContainer.querySelectorAll('.slider-dot')) {
+            if(currPosition + 1 == parseInt(dot.getAttribute('data-value'))) {
+                dot.click();
+            }
+        }
+    }
 
 
 
-    function slideImages(slideStart, slideEnd, slides, imageInfo, storyid) {
+    function slideImages(slideStart, slideEnd, slides, imageInfo, storyid, currItm) {
         let indexOfSlide = 0;
         for(let i = slideStart; i < slideEnd; i++) {
             let imgArr = imageInfo[i].split(' || ');
@@ -149,6 +159,12 @@ ready(() => {
             slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/${itemPath}/?item=${imgArr[1]}`);
             slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
             slides[indexOfSlide].querySelector('.slide-number-wrap').textContent = i + 1;
+
+            if(i === currItm) {
+                slides[indexOfSlide].querySelector('.slide-img-wrap').classList.add('active');
+            } else if(slides[indexOfSlide].querySelector('.slide-img-wrap').classList.contains('active')) {
+                slides[indexOfSlide].querySelector('.slide-img-wrap').classList.remove('active');
+            }
 
             indexOfSlide ++;
         }
@@ -178,7 +194,7 @@ ready(() => {
             startSlide = startSlide + numOfStickers;
         }
 
-        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
+        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
         // change active dot
         const sliderDots = dotContainer.querySelectorAll('.slider-dot');
         let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));
@@ -202,7 +218,7 @@ ready(() => {
             startSlide -= numOfStickers;
             endSlide -= numOfStickers;
         }
-        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId);
+        slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
         // Change active dot
         const sliderDots = dotContainer.querySelectorAll('.slider-dot');
         let curDot = parseInt(dotContainer.querySelector('.current').getAttribute('data-value'));

@@ -1029,6 +1029,9 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                         document.querySelector('#no-text-placeholder').style.display = 'none';
                         document.querySelector('.current-transcription').style.display = 'block';
                         document.querySelector('.current-transcription').style.paddingLeft = '24px';
+                        if(curTrToUpdate.length > 699) {
+                            document.querySelector('#transcription-collapse-btn').style.display = 'block';
+                        }
                     }
                     document.querySelector('#current-tr-view').innerHTML = curTrToUpdate;
                 }
@@ -2735,7 +2738,11 @@ ready(() => {
         const url = new URL(url_string);
         const fullScreen = url.searchParams.get('fs');
         if(fullScreen) {
-            setTimeout(() => {document.querySelector('#full-page').click();}, 10);
+            if(document.querySelector('#full-page')) {
+                setTimeout(() => {document.querySelector('#full-page').click();}, 10);
+            } else if (document.querySelector('#full-page-rc')) {
+                setTimeout(() => {document.querySelector('#full-page-rc').click();}, 10);
+            }
         }
     }
 
@@ -2954,8 +2961,11 @@ ready(() => {
                   token: ''
                 },
                 function(response) {
+                    
                     const autoEnrichmentsResponse = JSON.parse(response);
                     const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
+
+                    console.log(autoEnrichments);
 
                     if(autoEnrichments.items) {
                         let itmNr = 1;
@@ -3055,18 +3065,20 @@ ready(() => {
                             
                             itmNr += 1;
                         }
-                    } else if (autoEnrichments.info) {
-                        alert(autoEnrichments.info);
+                    } else  {
+                        alert('We are sorry! We haven\'t been able to generate auto enrichments.');
                     }
                     // Show saving Button if there is something to save
                     document.querySelector('#auto-itm-spinner-container').style.display = 'none';
                     if(autoLocCont.querySelector('div') != null) {
                         document.querySelector('#loc-verify').style.display = 'block';
                         document.querySelector('#accept-loc-enrich').style.display = 'block';
+                        document.querySelector('#auto-loc-btn').style.display = 'block';
                     }
                     if(autoPplCont.querySelector('div') != null) {
                         document.querySelector('#ppl-verify').style.display = 'block';
                         document.querySelector('#accept-ppl-enrich').style.display = 'block';
+                        document.querySelector('#auto-ppl-btn').style.display = 'block';
                     }
                     
                 });
@@ -3089,6 +3101,7 @@ ready(() => {
                 let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' - Automatically Generated.';
                 let wikidata = (enrichment.querySelector('.enrich-wiki a').getAttribute('href')).split('/');
                 let wikidataId = wikidata.pop();
+                let placeRole = 'Other';
                 // Convert lat/long to float number
                 latitude = parseFloat(latitude);
                 longitude = parseFloat(longitude);
@@ -3104,6 +3117,7 @@ ready(() => {
                     Comment: description,
                     WikidataName: locationName,
                     WikidataId: wikidataId,
+                    PlaceRole: placeRole,
                     UserId: userId,
                     UserGenerated: 0
                 }
@@ -3138,6 +3152,7 @@ ready(() => {
                     DeathPlace: null,
                     Link: link,
                     Description: description,
+                    PersonRole: 'PersonMentioned',
                     ItemId: itemId,
                     BirthDate: null,
                     DeathDate: null

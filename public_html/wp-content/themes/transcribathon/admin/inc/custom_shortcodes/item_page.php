@@ -106,7 +106,7 @@ function _TCT_mtr_transcription($atts)
     $transcriptionView = '';
 
     // Get English translation of story description
-    $engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
+    //$engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
 
 
     // Build required components for the page
@@ -678,15 +678,17 @@ if (event.target.id != "tagging-status-indicator") {
                 //     $enrichmentTab .= '<input id="person-wiki-input-field" type="text" placeholder="&nbsp Add Wikidata Id to this person..." title="e.g. Wikidata Title Id" class="input-response person-input-field">';
                 // $enrichmentTab .= '</div>';
 
-                $enrichmentTab .= '<div class="person-location-birth-inputs">';
+                $enrichmentTab .= '<div class="person-location-birth-inputs" style="position:relative;margin-bottom:10px;">';
                     $enrichmentTab .= '<input type="text" id="person-birthPlace-input" class="input-response person-input-field" name="" placeholder="&nbsp Birth Location">';
-                    $enrichmentTab .= '<span style="display:inline-block;width:48.5%;" class="input-response"><input type="text" id="person-birthDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Birth: dd/mm/yyyy" style="width:100%;margin-left:15px;"></span>';
+                    $enrichmentTab .= '<input type="text" id="person-birthDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Birth: dd/mm/yyyy" style="width:48.5%;float:right">';
                 $enrichmentTab .= '</div>';
+                $enrichmentTab .= "<div style='clear:both;'></div>";
 
-                $enrichmentTab .= '<div class="person-location-death-inputs">';
+                $enrichmentTab .= '<div class="person-location-death-inputs" style="position:relative;">';
                     $enrichmentTab .= '<input type="text" id="person-deathPlace-input" class="input-response person-input-field" name="" placeholder="&nbsp Death Location">';
-                    $enrichmentTab .= '<span style="display:inline-block;width:48.5%;" class="input-response"><input type="text" id="person-deathDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Death: dd/mm/yyyy" style="width:100%;margin-left:15px;"></span>';
+                    $enrichmentTab .= '<input type="text" id="person-deathDate-input" class="date-input-response person-input-field datepicker-input-field" name="" placeholder="&nbsp Death: dd/mm/yyyy" style="width:48.5%;float:right;">';
                 $enrichmentTab .= '</div>';
+                $enrichmentTab .= "<div style='clear:both;'></div>";
 
                 $enrichmentTab .= "<div class='person form-buttons-right' style='display:block;margin-top:0px;'>";
                     $enrichmentTab .= "<button id='save-personinfo-button' class='edit-data-save-right' id='person-save-button'
@@ -1120,13 +1122,13 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= $transcriptionView;
             $editorTab .= "</div>";
             // Transcription Translation
-            $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
-                $editorTab .= "English Translation";
-                $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
-                $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
-                    $editorTab .= "<div class='spinner'></div>";
-                $editorTab .= "</div>";
-            $editorTab .= "</h4>";
+            // $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
+            //     $editorTab .= "English Translation";
+            //     $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
+            //     $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
+            //         $editorTab .= "<div class='spinner'></div>";
+            //     $editorTab .= "</div>";
+            // $editorTab .= "</h4>";
             $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
 
             $editorTab .= $trHistory;
@@ -1279,17 +1281,16 @@ if (event.target.id != "tagging-status-indicator") {
             $descriptionTab .= "<div id='doc-type-view'>";
             foreach($itemData['Properties'] as $property) {
                 if($property['PropertyTypeId'] == 3) {
-                    $descriptionTab .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                    $descriptionTab .= "<div class='keyword-single' >" . $property['Value'] . "</div>";
                 }
             }
             $descriptionTab .= "</div>";
-
             $descriptionTab .= "<div id='category-checkboxes' class='login-required'>";
             foreach($categories as $category) {
                 $checked = "";
-                if($itemData['Property'] != null) {
-                    foreach($itemData['Property'] as $itemProp) {
-                        if($itemProp['PropertyId'] == $category['PropertyId']) {
+                if($itemData['Properties'] != null) {
+                    foreach($itemData['Properties'] as $itemProp) {
+                        if($itemProp['Value'] == $category['PropertyValue']) {
                             $checked = "checked";
                             break;
                         }
@@ -1320,7 +1321,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             $descriptionLanguage = "";
             foreach($languages as $language) {
-                if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                if($itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
                     $descriptionLanguage = $language['Name'];
                 }
             }
@@ -1345,11 +1346,11 @@ if (event.target.id != "tagging-status-indicator") {
 
             // New position for Description Language
             $descriptionTab .= "<div id='description-language-selector' class='language-selector-background language-selector login-required'>";
-            if($itemData['DescriptionLanguage'] != null) {
+            if($itemData['DescriptionLang'] != null) {
                 $descriptionTab .= "<span id='language-sel-placeholder' class='language-select-selected' style='margin-right:5px;'>Language of Description: </span>";
             }
                 $descriptionTab .= "<select>";
-                    if($itemData['DescriptionLanguage'] == null) {
+                    if($itemData['DescriptionLang'] == null) {
                         $descriptionTab .= "<option value='' disabled selected hidden>";
                             $descriptionTab .= "Language of the Description";
                         $descriptionTab .= "</option>";
@@ -1360,7 +1361,7 @@ if (event.target.id != "tagging-status-indicator") {
                         }
                     } else {
                         foreach($languages as $language) {
-                            if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                            if($itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
                                 $descriptionTab .= "<option value='" . $language['LanguageId'] . "' selected>";
                                     $descriptionTab .= $language['Name'];
                                 $descriptionTab .= "</option>";
@@ -1421,7 +1422,7 @@ if (event.target.id != "tagging-status-indicator") {
                 foreach ($itemData['Properties'] as $property) {
                     if ($property['PropertyTypeId'] == 4) {
                         $descriptionTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
-                            $descriptionTab .= htmlspecialchars_decode($property['PropertyValue']);
+                            $descriptionTab .= htmlspecialchars_decode($property['Value']);
                             $descriptionTab .= '<i class="login-required delete-item-datas far fa-times" style="margin-left:5px;"
                                                 onClick="deleteItemData(\'properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'keyword\', '.get_current_user_id().')"></i>';
                         $descriptionTab .= '</div>';
@@ -1468,9 +1469,9 @@ if (event.target.id != "tagging-status-indicator") {
 
             $descriptionTab .= '<div id="item-link-list" class="item-data-output-list">';
             foreach ($itemData['Properties'] as $property) {
-                if($property['PropertyDescription'] != 'NULL') {
-                    $propDescription =  htmlspecialchars_decode($property['PropertyDescription']);
-                    $descPHolder = htmlspecialchars_decode($property['PropertyDescription']);
+                if($property['Description'] != 'NULL') {
+                    $propDescription =  htmlspecialchars_decode($property['Description']);
+                    $descPHolder = htmlspecialchars_decode($property['Description']);
                 } else {
                     $propDescription = "";
                     $descPHolder = "";
@@ -1480,7 +1481,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $descriptionTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
                             $descriptionTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
                                 $descriptionTab .= "<i class='far fa-external-link' style='margin-left: 3px;margin-right:5px;color:#0a72cc;font-size:14px;'></i>";
-                                $descriptionTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . htmlspecialchars_decode($property['PropertyValue']) . "</a>";
+                                $descriptionTab .= "<a href='". $property['Value'] . "' target='_blank'>" . htmlspecialchars_decode($property['Value']) . "</a>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div class='edit-del-link'>";
                                 $descriptionTab .= "<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required'
@@ -1493,7 +1494,7 @@ if (event.target.id != "tagging-status-indicator") {
         
                         $descriptionTab .= "<div class='link-data-edit-container' id='link-data-edit-" . $property['PropertyId'] . "'>";
                             $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-url-input' class='link-url-input'>";
-                                $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
+                                $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['Value'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-description-input' class='link-description-input'>";
                                 $descriptionTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars($descPHolder, ENT_QUOTES, 'UTF-8') . "</textarea>";
@@ -1926,6 +1927,7 @@ if (event.target.id != "tagging-status-indicator") {
             $content .= "</div>";
             $content .= "<div id='full-view-r'>";
                 // Transcription
+                //dd($currentTranscription);
                 $content .= "<div id='transcription-container' style='height:600px;'>";
                     $content .= "<div id='startTranscription' class='mtr-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
@@ -1937,7 +1939,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "</div>";
                     $content .= "</div>";
                     $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px'> &nbsp </div>";
-                    if($itemData['Transcriptions'][0]['NoText'] == '1') {
+                    if($currentTranscription['NoText'] == '1') {
                         $content .= "<div id='no-text-placeholder'>";
                             $content .= "<p style='position:relative;top:30%;'><i class=\"far fa-check-circle\" ></i> <b>ITEM CONTAINS <br> NO TEXT</b></p>";
                         $content .= "</div>";
@@ -1967,6 +1969,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $content .= "<div class='current-transcription' style='padding-left:24px;height:calc(100% - 135px);'>";
                                 $content .= $formattedTranscription;
                             $content .= "</div>";
+                            $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
                             $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
@@ -1995,6 +1998,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
                             $content .= "</div>";
                             $content .= "<div class='current-transcription' style='display:none;'></div>";
+                            $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
                                 $content .= "<div class='transcription-language' style='display:none;'>";
                                     $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                     $content .= "<div style='padding-left: 24px;'></div>";
@@ -2183,6 +2187,10 @@ if (event.target.id != "tagging-status-indicator") {
                     // Automatic Enrichments 
                     if(empty($itemAutoE['data'])) {
                         $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
+                        $content .= "<div id='auto-e-link'>";
+                            $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\");'> Locations </button>";
+                            $content .= "<button id='auto-ppl-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tag-tab\");'> People </button>";
+                        $content .= "</div>";
                         $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
                             $content .= "<div class='spinner'></div>";
                         $content .= "</div></div>";
@@ -2202,12 +2210,12 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<div id='story-full-collapse'>Show More</div>";
                     }
                     // English translation
-                    if($engDescription != null) {
-                        $content .= "<div id='eng-desc-fs'>";
-                            $content .= "<p class='mb-1'> English Translation </p>";
-                            $content .= $engDescription;
-                        $content .= "</div>";
-                    }
+                    // if($engDescription != null) {
+                    //     $content .= "<div id='eng-desc-fs'>";
+                    //         $content .= "<p class='mb-1'> English Translation </p>";
+                    //         $content .= $engDescription;
+                    //     $content .= "</div>";
+                    // }
 
                     $content .= "<div id='full-v-metadata'>";
                     // Story Auto Enrichments

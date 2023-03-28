@@ -46,9 +46,14 @@ var tct_viewer = (function($, document, window) {
 		jQuery('#no-text-placeholder').click(function() {
 			document.querySelector('#transcription-edit-container').style.display = 'block';
 			document.querySelector('#transcription-view-container').style.display = 'none';
-			document.querySelector('#switch-tr-view i').classList = 'fa fa-pencil';
+			document.querySelector('#switch-tr-view i').classList = 'fa fa-times';
 			toggleFS();
             tinymce.EditorManager.get('item-page-transcription-text').focus();
+		});
+		jQuery('#no-text-placeholder-rc').click(function() {
+            switchItemTab(event, "rc-tab");
+			toggleFS();
+            
 		});
 		jQuery('.mtr-active').click(function() {
 			document.querySelector('#transcription-edit-container').style.display = 'none';
@@ -79,6 +84,16 @@ var tct_viewer = (function($, document, window) {
 
 		jQuery('#closeFilterContainer').click(function() {
 			jQuery('#filterContainer').hide();
+		});
+		// Ration Cards
+		jQuery('#full-page-rc').click(function() {
+            switchItemTab(event, "rc-tab");
+			toggleFS();
+            
+		});
+		jQuery('#startTranscription-rc').click(function() {
+            switchItemTab(event, "rc-tab");
+			toggleFS();
 		});
 
 		jQuery('#transcribeIcon').click(function() {

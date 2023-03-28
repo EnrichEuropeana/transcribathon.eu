@@ -25,12 +25,16 @@ function _TCT_ration_cards($atts)
 
     $getJsonOptions = [
         'http' => [
-            'header' => [ 'Content-type: application/json' ],
+            'header' => [ 
+                'Content-type: application/json',
+                'Authorization: Bearer ' . TP_API_V2_TOKEN
+            ],
             'method' => 'GET'
         ]
     ];
 
-    $itemData = sendQuery(TP_API_HOST . '/tp-api/items/' . $itemId, $getJsonOptions, true);
+    $itemDataset = sendQuery(TP_API_V2_ENDPOINT . '/items/' . $itemId, $getJsonOptions, true);
+    $itemData = $itemDataset['data'];
 
     if (empty($itemData['StoryId'])) {
         return;
@@ -44,6 +48,25 @@ function _TCT_ration_cards($atts)
     $languages = $pageData['Languages'];
     $categories = $pageData['Categories'];
     $itemImages = $pageData['ItemImages'];
+    // Get Item statuses and color codes
+    foreach($statusTypes as $typ) {
+        if($itemData['TranscriptionStatusId'] == $typ['CompletionStatusId']) {
+            $itemData['TranscriptionStatusName'] = $typ['Name'];
+            $itemData['TranscriptionStatusColorCode'] = $typ['ColorCode'];
+        }
+        if($itemData['LocationStatusId'] == $typ['CompletionStatusId']) {
+            $itemData['LocationStatusName'] = $typ['Name'];
+            $itemData['LocationStatusColorCode'] = $typ['ColorCode'];
+        }
+        if($itemData['TaggingStatusId'] == $typ['CompletionStatusId']) {
+            $itemData['TaggingStatusName'] = $typ['Name'];
+            $itemData['TaggingStatusColorCode'] = $typ['ColorCode'];
+        }
+        if($itemData['DescriptionStatusId'] == $typ['CompletionStatusId']) {
+            $itemData['DescriptionStatusName'] = $typ['Name'];
+            $itemData['DescriptionStatusColorCode'] = $typ['ColorCode'];
+        }
+    }
     
     // Automatic Enrichments
     $getAutoJsonOptions = [
@@ -73,8 +96,7 @@ function _TCT_ration_cards($atts)
     }
 
     // Check which Transcription is active
-    $trCheck = json_decode(checkActiveTranscription($itemData['ItemId']));
-    $activeTr = $trCheck->data->TranscriptionSource;
+    $activeTr = $itemData['TranscriptionSource'];
 
 
     // Get English translation of story description
@@ -211,32 +233,34 @@ function _TCT_ration_cards($atts)
     $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
     $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
 
-    $transcriptionList = [];
-    if($itemData['Transcriptions'] != null) {
-        foreach($itemData['Transcriptions'] as $transcription) {
+    $currentTranscription = [];
+    $transcriptionList = array_reverse(sendQuery(TP_API_HOST . '/tp-api/transcriptions?ItemId=' . $itemId, $getJsonOptions, true));
+    if(!empty($transcriptionList)) {
+        foreach($transcriptionList as $transcription) {
             if($transcription['CurrentVersion'] == '1') {
                 $currentTranscription = $transcription;
-            } else {
-                array_push($transcriptionList, $transcription);
-            }
+                $itemData['TranscriptionLanguages'] = $transcription['Languages'];
+            } 
         }
     }
+
     // Get the progress data
     $progressData = array(
-        $itemData['TranscriptionStatusName'],
-        $itemData['DescriptionStatusName'],
-        $itemData['LocationStatusName'],
-        $itemData['TaggingStatusName']
+        $itemData['TranscriptionStatusId'],
+        $itemData['DescriptionStatusId'],
+        $itemData['LocationStatusId'],
+        $itemData['TaggingStatusId']
     );
     $progressCount = array(
-        'Not Started' => 0,
-        'Edit' => 0,
-        'Review' => 0,
-        'Completed' => 0
+        '1' => 0,
+        '2' => 0,
+        '3' => 0,
+        '4' => 0
     );
     foreach($progressData as $status) {
         $progressCount[$status] += 1;
     }
+ 
     $imageData = json_decode($itemData['ImageLink'], true);
     $imageData['service'] = extractImageService($imageData);
     $imageDataJson = json_encode($imageData);
@@ -255,7 +279,7 @@ function _TCT_ration_cards($atts)
             $imageViewer .= "<div id='rotate-right' class='theme-color theme-color-hover'><i class='fas fa-redo'></i></div>";
             $imageViewer .= "<div id='rotate-left' class='theme-color theme-color-hover'><i class='fas fa-undo'></i></div>";
             $imageViewer .= "<div id='filterButton' class='theme-color theme-color-hover'><i class='fas fa-sliders-h'></i></div>";
-            $imageViewer .= "<div id='full-page' title='Full Screen' class='theme-color theme-color-hover'><i class='fas fa-expand-arrows-alt'></i></div>";
+            $imageViewer .= "<div id='full-page-rc' title='Full Screen' class='theme-color theme-color-hover'><i class='fas fa-expand-arrows-alt'></i></div>";
         $imageViewer .= "</div>";
     $imageViewer .= "</div>"; // End of Image Viewer
 
@@ -268,6 +292,8 @@ function _TCT_ration_cards($atts)
         $mapBox .= "<i class='fas fa-map map-placeholder'></i>";
     $mapBox .= "</div>";
 
+    // Get Places
+    $itemData['Places'] = sendQuery(TP_API_HOST . '/tp-api/places?ItemId=' . $itemId, $getJsonOptions, true);
     // Locations Display
     $locationDisplay = "";
     $locationDisplay .= "<div id='location-editor' class='location-display-container' style='margin-top:20px;'>";
@@ -531,6 +557,8 @@ function _TCT_ration_cards($atts)
             $enrichmentTab .= "</div>";
         $enrichmentTab .= "</div>";
 
+        // Get Persons data
+        $itemData['Persons'] = sendQuery(TP_API_HOST . '/tp-api/persons?ItemId=' . $itemId, $getJsonOptions, true);
         // PERSON ENTRY
         $enrichmentTab .= "<div class='item-page-person-container'>";
             $enrichmentTab .= "<div id='item-page-person-headline' class='theme-color'>";
@@ -616,10 +644,10 @@ function _TCT_ration_cards($atts)
 
             $enrichmentTab .= '<div id="item-person-list" class="item-data-output-list">';
                 foreach($itemData['Persons'] as $person) {
-                    $person['BirthDate'] = $person['BirthDate'] !== 'NULL'
+                    $person['BirthDate'] = !empty($person['BirthDate'])
                         ? date('d/m/Y', strtotime($person['BirthDate']))
                         : 'NULL';
-                    $person['DeathDate'] = $person['DeathDate'] !== 'NULL'
+                    $person['DeathDate'] = !empty($person['DeathDate'])
                         ? date('d/m/Y', strtotime($person['DeathDate']))
                         : 'NULL';
                     $enrichmentTab .= "<div id='person-" . $person['PersonId'] . "'>";
@@ -654,10 +682,10 @@ function _TCT_ration_cards($atts)
                             $enrichmentTab .= "</p>";
 
                             if($person['Description'] != 'NULL' && $person['Description'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>" . $person['Description'] . "</p>";
+                                $enrichmentTab .= "<p class='person-description'>" . htmlspecialchars_decode($person['Description']) . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <b><a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . $person['Link'] . "</a></b></p>";
+                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <b><a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></b></p>";
                             }
                             // Edit/Delete buttons
                             $enrichmentTab .= "<div class='edit-del-person'>";
@@ -672,24 +700,24 @@ function _TCT_ration_cards($atts)
                         $enrichmentTab .= "<div id='person-data-edit-". $person['PersonId'] . "' class='person-data-edit-container person-item-data-container'>";
                             $enrichmentTab .= "<div class='person-input-names-container'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-firstName-edit' class='input-response person-input-field person-re-edit'
-                                                placeholder='&nbsp First Name' value='" . htmlspecialchars($person['FirstName']) . "'>";
+                                                placeholder='&nbsp First Name' value='" . htmlspecialchars_decode($person['FirstName']) . "'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
-                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? $person['LastName'] : '') . "'>";
+                                                placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? htmlspecialchars_decode($person['LastName']) : '') . "'>";
                             $enrichmentTab .= "</div>";
 
                             $enrichmentTab .= "<div class='person-description-input'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
-                                                placeholder='&nbsp Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars($person['Description']) : '') . "'>";
+                                                placeholder='&nbsp Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars_decode($person['Description']) : '') . "'>";
                             $enrichmentTab .= "</div>";
 
                             $enrichmentTab .= "<div class='person-description-input'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp Add Wikidata ID to this person'
-                                                title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars($person['Link']) : '') . "'>";
+                                                title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars_decode($person['Link']) : '') . "'>";
                             $enrichmentTab .= "</div>";
 
                             $enrichmentTab .= "<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-birthPlace-edit' class='input-response person-input-field person-re-edit'
-                                                value='" . ($person['BirthPlace'] != 'NULL' ? htmlspecialchars($person['BirthPlace']) : '') . "' placeholder='&nbsp Birth Location'>";
+                                                value='" . ($person['BirthPlace'] != 'NULL' ? htmlspecialchars_decode($person['BirthPlace']) : '') . "' placeholder='&nbsp Birth Location'>";
                                 $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-birthDate-edit'
                                                 class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['BirthDate'] != 'NULL' ? htmlspecialchars($person['BirthDate']) : '') .
                                                 "' placeholder='&nbsp Birth: dd/mm/yyyy'></span>";
@@ -697,7 +725,7 @@ function _TCT_ration_cards($atts)
 
                             $enrichmentTab .= "<div class='person-location-death-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-deathPlace-edit' class='input-response person-input-field person-re-edit'
-                                                value='" . ($person['DeathPlace'] != 'NULL' ? htmlspecialchars($person['DeathPlace']) : '') . "' placeholder='&nbsp Death Location'>";
+                                                value='" . ($person['DeathPlace'] != 'NULL' ? htmlspecialchars_decode($person['DeathPlace']) : '') . "' placeholder='&nbsp Death Location'>";
                                 $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-deathDate-edit'
                                                 class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['DeathDate'] != 'NULL' ? htmlspecialchars($person['DeathDate']) : '') .
                                                 "' placeholder='&nbsp Death: dd/mm/yyyy'></span>";
@@ -752,11 +780,11 @@ function _TCT_ration_cards($atts)
 
     // Transcription History
     $trHistory = "";
-    // if($currentTranscription['Text'] == null ) {
-    //     $trHistory .= "<div class='tr-history-section' style='display:none;'>";
-    // } else {
-         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
-    // }
+        if(empty($currentTranscription['Text'])) {
+            $trHistory .= "<div class='tr-history-section' style='display:none;'>";
+        } else {
+            $trHistory .= "<div class='tr-history-section' style='display:block;'>";
+        }
         $trHistory .= "<div class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' data-toggle='collapse' href='#transcription-history'
                         onClick='jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")
                         jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-up\")' style='margin-bottom: 0;'>";
@@ -924,8 +952,8 @@ function _TCT_ration_cards($atts)
                 $editorTab .= "</div>";
                 $editorTab .= "<div id='transcription-selected-languages' class='language-selected'>";
                     $editorTab .= "<ul>";
-                        if($itemData['Transcriptions'][0]['Languages'] != null) {
-                            $transcriptionLanguages = $itemData['Transcriptions'][0]['Languages'];
+                        if($itemData['TranscriptionLanguages'] != null) {
+                            $transcriptionLanguages = $itemData['TranscriptionLanguages'];
                             foreach($transcriptionLanguages as $trLanguage) {
                                 $editorTab .= "<li class='theme-colored-data-box'>";
                                     $editorTab .= $trLanguage['Name'] . " (" . $trLanguage['NameEnglish'] . ")";
@@ -1138,8 +1166,8 @@ function _TCT_ration_cards($atts)
             // Document type, view only
             $descriptionTab .= "<div id='doc-type-view'>";
             foreach($itemData['Properties'] as $property) {
-                if($property['PropertyType'] == "Category") {
-                    $descriptionTab .= "<div class='keyword-single' >" . $property['PropertyValue'] . "</div>";
+                if($property['PropertyTypeId'] == 3) {
+                    $descriptionTab .= "<div class='keyword-single' >" . $property['Value'] . "</div>";
                 }
             }
             $descriptionTab .= "</div>";
@@ -1149,7 +1177,7 @@ function _TCT_ration_cards($atts)
                 $checked = "";
                 if($itemData['Properties'] != null) {
                     foreach($itemData['Properties'] as $itemProp) {
-                        if($itemProp['PropertyId'] == $category['PropertyId']) {
+                        if($itemProp['Value'] == $category['PropertyValue']) {
                             $checked = "checked";
                             break;
                         }
@@ -1180,7 +1208,7 @@ function _TCT_ration_cards($atts)
 
             $descriptionLanguage = "";
             foreach($languages as $language) {
-                if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                if($itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
                     $descriptionLanguage = $language['Name'];
                 }
             }
@@ -1205,11 +1233,11 @@ function _TCT_ration_cards($atts)
 
             // New position for Description Language
             $descriptionTab .= "<div id='description-language-selector' class='language-selector-background language-selector login-required'>";
-            if($itemData['DescriptionLanguage'] != null) {
+            if($itemData['DescriptionLang'] != null) {
                 $descriptionTab .= "<span id='language-sel-placeholder' class='language-select-selected' style='margin-right:5px;'>Language of Description: </span>";
             }
                 $descriptionTab .= "<select>";
-                    if($itemData['DescriptionLanguage'] == null) {
+                    if($itemData['DescriptionLang'] == null) {
                         $descriptionTab .= "<option value='' disabled selected hidden>";
                             $descriptionTab .= "Language of the Description";
                         $descriptionTab .= "</option>";
@@ -1220,7 +1248,7 @@ function _TCT_ration_cards($atts)
                         }
                     } else {
                         foreach($languages as $language) {
-                            if($itemData['DescriptionLanguage'] == $language['LanguageId']) {
+                            if($itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
                                 $descriptionTab .= "<option value='" . $language['LanguageId'] . "' selected>";
                                     $descriptionTab .= $language['Name'];
                                 $descriptionTab .= "</option>";
@@ -1283,9 +1311,9 @@ function _TCT_ration_cards($atts)
             $descriptionTab .= '<div id="item-keyword-list" class="item-data-output-listt">';
 
                 foreach ($itemData['Properties'] as $property) {
-                    if ($property['PropertyType'] == "Keyword") {
+                    if ($property['PropertyTypeId'] == 4) {
                         $descriptionTab .= '<div id="'.$property['PropertyId'].'" class="keyword-single">';
-                            $descriptionTab .= htmlspecialchars_decode($property['PropertyValue']);
+                            $descriptionTab .= htmlspecialchars_decode($property['Value']);
                             $descriptionTab .= '<i class="login-required delete-item-datas far fa-times" style="margin-left:5px;"
                                                 onClick="deleteItemData(\'properties\', '.$property['PropertyId'].', '.$_GET['item'].', \'keyword\', '.get_current_user_id().')"></i>';
                         $descriptionTab .= '</div>';
@@ -1336,19 +1364,19 @@ function _TCT_ration_cards($atts)
 
             $descriptionTab .= '<div id="item-link-list" class="item-data-output-list">';
             foreach ($itemData['Properties'] as $property) {
-                if($property['PropertyDescription'] != 'NULL') {
-                    $propDescription =  $property['PropertyDescription'];
-                    $descPHolder = $property['PropertyDescription'];
+                if($property['Description'] != 'NULL') {
+                    $propDescription =  $property['Description'];
+                    $descPHolder = $property['Description'];
                 } else {
                     $propDescription = "";
                     $descPHolder = "";
                 }
-                if($property['PropertyType'] == "Link") {
+                if($property['PropertyTypeId'] == 5) {
                     $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "'>";
                         $descriptionTab .= "<div id='link-data-output-" . $property['PropertyId'] . "' class='link-single'>";
                             $descriptionTab .= "<div id='link-data-output-display-" . $property['PropertyId'] . "' class='link-data-output-content'>";
                                 $descriptionTab .= "<i class='far fa-external-link' style='margin-left: 3px;margin-right:5px;color:#0a72cc;font-size:14px;'></i>";
-                                $descriptionTab .= "<a href='". $property['PropertyValue'] . "' target='_blank'>" . htmlspecialchars_decode($property['PropertyValue']) . "</a>";
+                                $descriptionTab .= "<a href='". $property['Value'] . "' target='_blank'>" . htmlspecialchars_decode($property['Value']) . "</a>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div class='edit-del-link'>";
                                 $descriptionTab .= "<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required'
@@ -1361,7 +1389,7 @@ function _TCT_ration_cards($atts)
         
                         $descriptionTab .= "<div class='link-data-edit-container' id='link-data-edit-" . $property['PropertyId'] . "'>";
                             $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-url-input' class='link-url-input'>";
-                                $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['PropertyValue'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
+                                $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['Value'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-description-input' class='link-description-input'>";
                                 $descriptionTab .= "<textarea rows='3' type='text' placeholder='' name=''>" . htmlspecialchars_decode($descPHolder) . "</textarea>";
@@ -1434,244 +1462,16 @@ function _TCT_ration_cards($atts)
     // Metadata
     $metaData .= "";
     $metaData .= "<div id='meta-container'>";
-
-        // Contributor
-        if($itemData['StorydcContributor']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'> Contributor </p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ' | ', $itemData['StorydcContributor']) . "</p>";
-            $metaData .= "</div>";
-        }
-
-        //Creator
-        if($itemData['StorydcCreator']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Creator</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydcCreator']) . "</p>";
-            $metaData .= "</div>";
-        }
-
-        // Date
-        if($itemData['StorydcDate']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Date</p>";
-                $storyDates = array_unique(explode(' || ', $itemData['StorydcDate']));
-                foreach($storyDates as $date){
-                    if(substr($date, 0, 4) == 'http'){
-                        // $content .= "<p class='meta-p'><a target='_blank' href='".$date."'>" . $date . "</a></p>";
-                        continue;
-                    } else {
-                        $metaData .= "<p class='meta-p'>" . $date . ";</p>";
-                    }
-                }
-            $metaData .= "</div>";
-        }
-
-        // Institution
-        if($itemData['StoryedmDataProvider']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Institution</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmDataProvider']."</p>";
-            $metaData .= "</div>";
-        }
-
-        //Identifier
-        if($itemData['StoryExternalRecordId']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Identifier</p>";
-                if(substr($itemData['StoryExternalRecordId'], 0, 4) == 'http'){
-                    $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryExternalRecordId']."'>" . substr($itemData['StoryExternalRecordId'], 0, 45) . "</a></p>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryExternalRecordId'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
-
-        //Document Language
-        if($itemData['StorydcLanguage']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Document Language</p>";
-                $dcLanguage = array_unique(explode(' || ', $itemData['StorydcLanguage']));
-                $metaData .= "<p class='meta-p'>" . implode(';', $dcLanguage) . "</p>";
-            $metaData .= "</div>";
-        }
-
-        // Creation Start
-        if($itemData['StoryedmBegin']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Creation Start</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ";", $itemData['StoryedmBegin']) . "</p>";
-            $metaData .= "</div>";
-        }
-
-        // Creation End
-        if($itemData['StoryedmEnd']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Creation End</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ";", $itemData['StoryedmEnd']) . "</p>";
-            $metaData .= "</div>";
-        }
-
-        // Story Source
-        if($itemData['StorydcSource']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Story Source</p>";
-                $source = array_unique(explode(' || ', $itemData['StorydcSource']));
-                $metaData .= "<p class='meta-p'>" . implode('</br>', $source) . "</p>";
-            $metaData .= "</div>";
-        }
-
-        // Story Title
-        $metaData .= "<div class='single-meta'>";
-            $metaData .= "<p class='mb-1'>Story Title</p>";
-            $metaData .= "<p class='meta-p'>". str_replace(' || ', ";", $itemData['StorydcTitle']) . "</p>";
-        $metaData .= "</div>";
-
-        // dctermsProvenance
-        if($itemData['StorydctermsProvenance']) {
-            $metaData .= "<div class='meta-sticker'>";
-                $metaData .= "<p class='mb-1'>Provenance</p>";
-                $provenance = array_unique(explode(' || ', $itemData['StorydctermsProvenance']));
-                $metaData .= "<p class='meta-p'>". implode(';' , $provenance) ."</p>";
-            $metaData .= "</div>";
-        }
-
-        // Type
-        if($itemData['StorydcType']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Type</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydcType']) . "</p>";
-            $metaData .= "</div>";
-        }
-
-        // Rights
-        if($itemData['StoryedmRights']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Rights</p>";
-                $edmRights = array_unique(explode(' || ', $itemData['StoryedmRights']));
-                foreach($edmRights as $right) {
-                    if(substr($right, 0, 4) == 'http'){
-                        $metaData .= "<p class='meta-p'><a target='_blank' href='".$right."'>" . $right . ";</a></p>";
-                    } else {
-                        $metaData .= "<p class='meta-p'>" . $right . ";</p>";
-                    }
-                }
-            $metaData .= "</div>";
-        }
-
-        // Image Rights
-        if($itemData['StorydcRights']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Image Rights</p>";
-                $imgRights = array_unique(explode(' || ', $itemData['StorydcRights']));
-                foreach($imgRights as $iRight) {
-                    if(substr($iRight, 0, 4) == 'http'){
-                        $metaData .= "<p class='meta-p'><a target='_blank' href='".$iRight."'>" . $iRight . "</a></p>";
-                    } else {
-                        $metaData .= "<p class='meta-p'>" . $iRight . ";</p>";
-                    }
-                }
-            $metaData .= "</div>";
-        }
-
-        // Provider
-        if($itemData['StoryedmProvider']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Provider Language</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmProvider']."</p>";
-            $metaData .= "</div>";
-        }
-
-        // Providing Country
-        if($itemData['StoryedmCountry']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Providing Country</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmCountry']."</p>";
-            $metaData .= "</div>";
-        }
-
-        // Provider Language
-        if($itemData['StoryedmLanguage']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Provider Language</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmLanguage']."</p>";
-            $metaData .= "</div>";
-        }
-
-        // Dataset
-        if($itemData['StoryedmDatasetName']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Dataset</p>";
-                $metaData .= "<p class='meta-p'>".$itemData['StoryedmDatasetName']."</p>";
-            $metaData .= "</div>";
-        }
-
-        // Publisher
-        if($itemData['StoryedmProvider']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Publisher</p>";
-                if(substr($itemData['StoryedmProvider'], 0, 4) == 'http'){
-                    $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmProvider']."'>" . $itemData['StoryedmProvider'] . "</a></p>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryedmProvider'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
-
-        // Medium
-        if($itemData['StorydctermsMedium']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Medium</p>";
-                $metaData .= "<p class='meta-p'>" . str_replace(' || ', ';', $itemData['StorydctermsMedium']) . "</p>";
-            $metaData .= "</div>";
-        }
-
-        // Source Url
-        if($itemData['StoryedmIsShownAt']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Source Url</span>";
-                if(substr($itemData['StoryedmIsShownAt'], 0, 4) == 'http'){
-                    $metaData .= "<a class='meta-p' target='_blank' href='".$itemData['StoryedmIsShownAt']."'>" . $itemData['StoryedmIsShownAt'] . "</a>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryedmIsShownAt'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
-
-        // Story Landing Page
-        if($itemData['StoryedmLandingPage']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Landing Page</p>";
-                if(substr($itemData['StoryedmLandingPage'], 0, 4) == 'http'){
-                    $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryedmLandingPage']."'>" . substr($itemData['StoryedmLandingPage'], 0, 45) . "</a></p>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryedmLandingPage'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
-
-        // Parent Story
-        if($itemData['StoryParentStory']) {
-            $metaData .= "<div class='single-meta'>";
-                $metaData .= "<p class='mb-1'>Parent Story</p>";
-                if(substr($itemData['StoryParentStory'], 0, 4) == 'http'){
-                    $metaData .= "<p class='meta-p'><a target='_blank' href='".$itemData['StoryParentStory']."'>" . $itemData['StoryParentStory'] . "</a></p>";
-                } else {
-                    $metaData .= "<p class='meta-p'>" . $itemData['StoryParentStory'] . "</p>";
-                }
-            $metaData .= "</div>";
-        }
-
-
+        // Data will show on click
     $metaData .= "</div>"; // End of meta container
 
     // Story Description
     $storyDescription .= "<div id='storydesc'>";
-        $storyDescription .= "<p class='mb-1'> Story Description</p>";
-        $storyDescriptions = array_unique(explode(" || ", $itemData['StorydcDescription']));
-        foreach($storyDescriptions as $description) {
-            $storyDescription .= "<p class='meta-p'>" . $description . "</p>";
-        }
+        // $storyDescription .= "<p class='mb-1'> Story Description</p>";
+        // $storyDescriptions = array_unique(explode(" || ", $itemData['StorydcDescription']));
+        // foreach($storyDescriptions as $description) {
+        //     $storyDescription .= "<p class='meta-p'>" . $description . "</p>";
+        // }
     $storyDescription .= "</div>";
     // Item progress bar
 
@@ -1689,7 +1489,8 @@ function _TCT_ration_cards($atts)
     $content .= "<section id='title-n-progress'>";
         $content .= "<div class='title-n-btn'>";
             $content .= "<div id='missing-info' style='display:none;'>" . get_current_user_id() . "</div>";
-            $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title' class='storypg-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i>" . $itemData['StorydcTitle'] . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i> Item " . ($startingSlide + 1) . "</span></b></h4>";
+            $titleFilter = "Item " . ($itemData['OrderIndex']);
+            $content .= "<h4 id='item-header' title='Back to the Story Page'><b><a href='" . home_url() . "/documents/story/?story=" . $itemData['StoryId'] . "' style='text-decoration:none;'><span id='back-to-story-title' class='storypg-title'><i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i>" . str_replace($titleFilter, "", $itemData['Title']) . "</span></a><span> <i class='fas fa-chevron-right' style='margin-right:5px;font-size:14px;bottom:2px;position:relative;'></i> Item " . ($itemData['OrderIndex']) . "</span></b></h4>";
         $content .= "</div>";
         // if(current_user_can('administrator')) {
         //     $content .= "<div class='tr-comp-btn' style='float:right;cursor:pointer;margin-right:25px;'>";
@@ -1799,7 +1600,7 @@ function _TCT_ration_cards($atts)
             //var_dump($itemData);
                 // Transcription
                 $content .= "<div id='transcription-container' style='height:600px;white-space:nowrap!important;overflowX:hidden;'>";
-                    $content .= "<div id='startTranscription' class='mtr-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
+                    $content .= "<div id='startTranscription-rc' class='rc-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
                         $content .= "<div>";
                             $content .= "<div class='status-display' style='line-height: normal;background-color:".$itemData['TranscriptionStatusColorCode']."'>";
@@ -1809,8 +1610,8 @@ function _TCT_ration_cards($atts)
                         $content .= "</div>";
                     $content .= "</div>";
                     $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px'> &nbsp </div>";
-                    if($itemData['Transcriptions'][0]['NoText'] == '1') {
-                        $content .= "<div id='no-text-placeholder'>";
+                    if($currentTranscription['NoText'] == '1') {
+                        $content .= "<div id='no-text-placeholder-rc'>";
                             $content .= "<p style='position:relative;top:30%;'><i class=\"far fa-check-circle\" ></i> <b>ITEM CONTAINS <br> NO TEXT</b></p>";
                         $content .= "</div>";
                         $content .= "<div class='current-transcription' style='display:none;'></div>";
@@ -1822,13 +1623,13 @@ function _TCT_ration_cards($atts)
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
                             if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
                                 $formattedTranscription = $htrTranscription;
-                                $content .= "<script>
-                                    document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';
-                                    document.querySelector('#startTranscription').classList.replace('mtr-active', 'htr-active');
-                                    document.querySelector('#startTranscription').addEventListener('click', function() {
-                                        location.href = '" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "';
-                                    });
-                                </script>";
+                                // $content .= "<script>
+                                //     document.querySelector('#startTranscription h5').textContent = 'HTR TRANSCRIPTION';
+                                //     document.querySelector('#startTranscription').classList.replace('mtr-active', 'htr-active');
+                                //     document.querySelector('#startTranscription').addEventListener('click', function() {
+                                //         location.href = '" . home_url() . "/documents/story/item-page-htr/?story=". $itemData['StoryId'] ."&item=" . $itemData['ItemId'] . "';
+                                //     });
+                                // </script>";
                             } else {
                                 $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
                             }
@@ -1837,7 +1638,7 @@ function _TCT_ration_cards($atts)
                             $content .= "<div class='current-transcription' style='padding-left:24px;'>";
                                 $content .= $formattedTranscription;
                             $content .= "</div>";
-
+                            $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
                             $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
@@ -1850,7 +1651,7 @@ function _TCT_ration_cards($atts)
                                 $content .= $formattedTranscription;
                             $content .= "</div>";
                             $content .= "<div id='transcription-collapse-btn'> Show More </div>";
-
+ 
                             $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
@@ -1861,10 +1662,11 @@ function _TCT_ration_cards($atts)
                                 }
                                 $content .= "</div>";
                             } else {
-                                $content .= "<div id='no-text-placeholder'>";
+                                $content .= "<div id='no-text-placeholder-rc'>";
                                     $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
                                 $content .= "</div>";
                                 $content .= "<div class='current-transcription' style='display:none;'></div>";
+                                $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
                                 $content .= "<div class='transcription-language' style='display:none;'>";
                                     $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                     $content .= "<div style='padding-left: 24px;'></div>";
@@ -1935,19 +1737,21 @@ function _TCT_ration_cards($atts)
         $content .= "<div style='clear:both;'></div>";
     $content .= "</section>";
 
-    $content .= "<section id='story-info' class='collapsed' style='height:325px;'>";
+    $content .= "<section id='story-info' class='collapsed'>";
         $content .= "<div id='meta-collapse' class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;margin:25px 0;' role='button' aria-expanded='false'>";
             $content .= "<span><h5><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>STORY INFORMATION</span><span style='float:right;padding-right:10px;'><i id='angle-i' style='font-size:25px;' class='fas fa-angle-down'></i></h5></span>";
         $content .= "</div>";
         $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:25px;'> &nbsp </div>";
-        $content .= "<div id='meta-left'>";
-            // Metadata
-            $content .= $metaData;
+        $content .= "<div id='meta-wrapper' style='display:none;'>";
+            $content .= "<div id='meta-left'>";
+                // Metadata
+                $content .= $metaData;
+            $content .= "</div>";
+            $content .= "<div id='meta-right'>";
+                $content .= $storyDescription;
+            $content .= "</div>";
+            $content .= "<div style='clear:both;'></div>";
         $content .= "</div>";
-        $content .= "<div id='meta-right'>";
-            $content .= $storyDescription;
-        $content .= "</div>";
-        $content .= "<div style='clear:both;'></div>";
         $content .= "<div id='meta-cover'><i class='fas fa-angle-double-down'></i></div>";
     $content .= "</section>";
 
@@ -1996,7 +1800,7 @@ function _TCT_ration_cards($atts)
 
                     $content .= "<li>";
                         $content .= "<div class='theme-color tablinks' title='Tutorial'
-                            onclick='switchItemTab(event, \"help-tab\")'>";
+                            onclick='switchItemTab(event, \"rc-tab\")'>";
                             $content .= '<i class="fas fa-file-spreadsheet"></i>';
                             $content .= "<p class='tab-h it'><span><b>RATION CARD</b></span></p>";
                         $content .= "</div>";
@@ -2004,7 +1808,7 @@ function _TCT_ration_cards($atts)
 
                     
                    // var_dump($itemData);
-                    if($itemData['TranscriptionStatusName'] == 'Not Started') {
+                    if(empty($currentTranscription)) {
                         $content .= "<li style='display:none;'>";
                             $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
                                 onclick='switchItemTab(event, \"editor-tab\")'>";
@@ -2059,7 +1863,8 @@ function _TCT_ration_cards($atts)
                     $content .= "</li>";
                 $content .= '</ul>';
             $content .= "</div>";
-
+            
+            
             $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
                 // Editor tab
                 $content .= "<div id='editor-tab' class='tabcontent'>";
@@ -2163,7 +1968,7 @@ function _TCT_ration_cards($atts)
                     $content .= "</div>";
                 $content .= "</div>";
                 // Help tab
-                $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";
+                $content .= "<div id='rc-tab' class='tabcontent' style='display:none;'>";
                     //$content .= do_shortcode('[tutorial_item_slider]');
                     $content .= "<div id='rc-form' style='position:relative;'>";
                         $content .= "<h3><b> Grad Zagreb </b></h3>";
@@ -2184,7 +1989,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-second-col'><input type='text' id='regnumb' style='border: none;border-bottom: 1px dotted #ccc;width: 60%;margin: 0 auto;'></td>";
 
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='submitter-lname' class='not-saved' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='submitter-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<i id='submitter-check' class='fas fa-check' style='display:none;'></i>";
                                         $content .= "<div id='submitter-spinner' class='spinner-container'>";
@@ -2210,7 +2015,7 @@ function _TCT_ration_cards($atts)
                                 $content .= "</tr>";
                                 $content .= "<tr>";
                                     $content .= "<td class='rc-first-col bot-part' style='vertical-align:top!important;position:relative;'> &nbsp";
-                                        $content .= "<input type='text' placeholder='Ulica' id='m-address' style='border: none;border-bottom: 1px dotted #ccc;'>";
+                                        $content .= "<input type='text' placeholder='Ulica' id='m-address' class='not-saved' style='border: none;border-bottom: 1px dotted #ccc;'>";
                                         $content .= "<div class='spinner-container'>";
                                            $content .= "<div class='spinner'></div>";
                                         $content .= "</div>";
@@ -2221,7 +2026,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
 
                                     $content .= "<td class='rc-third-col' style='vertical-align: bottom;position:relative;padding-left:4%;'>";
-                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
+                                        $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Prezime' id='landlord-lname' class='not-saved' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<span style='width:50%;display:inline-block;'><input type='text' placeholder='Ime' id='landlord-fname' style='border: none;border-bottom: 1px dotted #ccc;'></span>";
                                         $content .= "<i id='landlord-name-check' class='fas fa-check' style='display:none;'></i>";
                                         $content .= "<div id='landlord-spinner' class='spinner-container'>";
@@ -2250,7 +2055,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
 
                                     $content .= "<td class='rc-third-col' style='position:relative;padding-left:4%;'>";
-                                        $content .= "<input type='text' id='landlord-loc' placeholder='Stan' style='border: none;border-bottom: 1px dotted #ccc;'>";
+                                        $content .= "<input type='text' id='landlord-loc' class='not-saved' placeholder='Stan' style='border: none;border-bottom: 1px dotted #ccc;'>";
                                         $content .= "<i class='fas fa-check' id='landlord-check' style='display:none;'></i>";
                                         $content .= "<div class='spinner-container'>";
                                             $content .= "<div class='spinner'></div>";
@@ -2391,7 +2196,7 @@ function _TCT_ration_cards($atts)
                                 $content .= "<p> Zivezne namirnice nabavljat cu:</p>";
                                 $content .= "<label for='shop-name' style='position:relative;'>";
                                     $content .= "U radnji: ";
-                                    $content .= "<input type='text' name='shop-name' id='shop-name'>";
+                                    $content .= "<input type='text' name='shop-name' id='shop-name' class='not-saved'>";
                                     $content .= "<i class='fas fa-check' id='shop-name-check' style='display:none;'></i>";
                                 $content .= "</label>";
                                 $content .= "<label for='shop-loc' style='position:relative;'>";
@@ -2492,23 +2297,7 @@ if(collapseBtn) {
 // Metadata collapse
 const metaCollapseBtn = document.querySelector('#meta-collapse');
 const metaSection = document.querySelector('#story-info');
-metaCollapseBtn.addEventListener('click', function() {
-    if(metaSection.classList.contains('collapsed')) {
-        metaSection.style.height = 'unset';
-        metaSection.classList.remove('collapsed');
-        metaCollapseBtn.querySelector('#angle-i').classList.remove('fa-angle-down');
-        metaCollapseBtn.querySelector('#angle-i').classList.add('fa-angle-up');
-        metaSection.querySelector('#meta-cover i').classList.add('fa-angle-double-up');
-        metaSection.querySelector('#meta-cover i').classList.remove('fa-angle-double-down');
-} else {
-    metaSection.style.height = '325px';
-    metaSection.classList.add('collapsed');
-    metaCollapseBtn.querySelector('#angle-i').classList.remove('fa-angle-up');
-    metaCollapseBtn.querySelector('#angle-i').classList.add('fa-angle-down');
-    metaSection.querySelector('#meta-cover i').classList.remove('fa-angle-double-up');
-    metaSection.querySelector('#meta-cover i').classList.add('fa-angle-double-down');
-}
-});
+
 metaSection.querySelector('#meta-cover').addEventListener('click', function() {
     metaCollapseBtn.click();
 });
@@ -2518,7 +2307,7 @@ if(descLangDel) {
         updateDataProperty('items', ". $itemData['ItemId'] .", 'DescriptionLanguage', 0);
         this.parentNode.style.display = 'none';
 }
-);
+); 
 }
 });
 </script>";
