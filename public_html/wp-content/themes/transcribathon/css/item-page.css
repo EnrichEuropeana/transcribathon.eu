@@ -2536,6 +2536,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 /* data-poput view */
 .data-popout #transcription-edit-container {
     height: 95%;
+    margin-top: 12px;
 }
 .data-popout .tab-list li {
     margin: 0;
@@ -2797,7 +2798,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 #item-data-section.panel-bottom .tablinks .tab-i {
     font-size: 15px;
     position: relative;
-    margin-left: 5px;
+    margin-right: 5px;
 }
 #item-data-section.panel-bottom .tablinks .tab-status {
     float: left;
