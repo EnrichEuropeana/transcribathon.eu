@@ -1610,7 +1610,7 @@ function _TCT_ration_cards($atts)
                         $content .= "</div>";
                     $content .= "</div>";
                     $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px'> &nbsp </div>";
-                    if($itemData['Transcriptions'][0]['NoText'] == '1') {
+                    if($currentTranscription['NoText'] == '1') {
                         $content .= "<div id='no-text-placeholder-rc'>";
                             $content .= "<p style='position:relative;top:30%;'><i class=\"far fa-check-circle\" ></i> <b>ITEM CONTAINS <br> NO TEXT</b></p>";
                         $content .= "</div>";
@@ -1638,7 +1638,7 @@ function _TCT_ration_cards($atts)
                             $content .= "<div class='current-transcription' style='padding-left:24px;'>";
                                 $content .= $formattedTranscription;
                             $content .= "</div>";
-
+                            $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
                             $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
@@ -1651,7 +1651,7 @@ function _TCT_ration_cards($atts)
                                 $content .= $formattedTranscription;
                             $content .= "</div>";
                             $content .= "<div id='transcription-collapse-btn'> Show More </div>";
-
+ 
                             $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
@@ -1666,6 +1666,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
                                 $content .= "</div>";
                                 $content .= "<div class='current-transcription' style='display:none;'></div>";
+                                $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
                                 $content .= "<div class='transcription-language' style='display:none;'>";
                                     $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                     $content .= "<div style='padding-left: 24px;'></div>";

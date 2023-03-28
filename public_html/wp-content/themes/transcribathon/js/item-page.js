@@ -1029,6 +1029,9 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
                         document.querySelector('#no-text-placeholder').style.display = 'none';
                         document.querySelector('.current-transcription').style.display = 'block';
                         document.querySelector('.current-transcription').style.paddingLeft = '24px';
+                        if(curTrToUpdate.length > 699) {
+                            document.querySelector('#transcription-collapse-btn').style.display = 'block';
+                        }
                     }
                     document.querySelector('#current-tr-view').innerHTML = curTrToUpdate;
                 }

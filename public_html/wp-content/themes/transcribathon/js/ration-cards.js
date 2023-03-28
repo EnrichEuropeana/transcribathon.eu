@@ -1063,10 +1063,13 @@ function updateRcItemTranscription(itemId, userId, editStatusColor, statusCount)
                         selLanCont.appendChild(langEl);
                     }
 
-                    if(document.querySelector('#no-text-placeholder')) {
-                        document.querySelector('#no-text-placeholder').style.display = 'none';
+                    if(document.querySelector('#no-text-placeholder-rc')) {
+                        document.querySelector('#no-text-placeholder-rc').style.display = 'none';
                         document.querySelector('.current-transcription').style.display = 'block';
                         document.querySelector('.current-transcription').style.paddingLeft = '24px';
+                        if(curTrToUpdate.length > 699) {
+                            document.querySelector('#transcription-collapse-btn').style.display = 'block';
+                        }
                     }
                     document.querySelector('#current-tr-view').innerHTML = curTrToUpdate;
                 }
@@ -1654,7 +1657,7 @@ ready(() => {
             `<p class='display-shop'>` +
                 ` U radnji: ` +
                 `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopName ? shopName : '&nbsp'} </span>` +
-                ` ulica ` + 
+                `, Ulica: ` + 
                 `<span style='border-bottom: 1px dotted #000;min-width:30%;margin:0 10px;display:inline-block;' contenteditable='true'> ${shopLoc ? shopLoc : '&nbsp'} </span>` +
             `</p>` +
         `</div>` +

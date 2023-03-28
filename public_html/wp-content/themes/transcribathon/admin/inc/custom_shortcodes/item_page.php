@@ -1969,6 +1969,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $content .= "<div class='current-transcription' style='padding-left:24px;height:calc(100% - 135px);'>";
                                 $content .= $formattedTranscription;
                             $content .= "</div>";
+                            $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
                             $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
@@ -1997,6 +1998,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
                             $content .= "</div>";
                             $content .= "<div class='current-transcription' style='display:none;'></div>";
+                            $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
                                 $content .= "<div class='transcription-language' style='display:none;'>";
                                     $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                     $content .= "<div style='padding-left: 24px;'></div>";
