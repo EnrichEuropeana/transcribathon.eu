@@ -32,30 +32,47 @@ $languages = $_GET['languages'] ?? null;
 
 $htrUserData = file_get_contents('php://input');
 
+$queryOptions = array(
+	'http' => array(
+		'ignore_errors' => true,
+		'header' => array(
+			'Content-type: application/json',
+			'Authorization: Bearer ' . $config['transcribathon']['apiToken']
+		),
+		'method' => 'GET'
+	)
+);
+
+$HtrData = new HtrData($config);
+
 if ($storyId && $itemId) {
 	echo '{"error":"Please, choose a storyID or an itemID."}';
 	exit(1);
 }
 
-if (($storyId || $itemId) && $htrModelId) {
+if ($storyId) {
 
-	$path = $storyId
-		? '/items?limit=1000&StoryId=' . $storyId
-		: '/items/' . $itemId;
-
-	$HtrData = new HtrData($config);
+	$path = '/stories/' . $storyId;
 
 	$apiV2Endpoint = $config['transcribathon']['endpoint'] . $path;
-	$queryOptions = array(
-		'http' => array(
-			'ignore_errors' => true,
-			'header' => array(
-				'Content-type: application/json',
-				'Authorization: Bearer ' . $config['transcribathon']['apiToken']
-			),
-			'method' => 'GET'
-		)
-	);
+
+	$storyData = $HtrData::sendQuery($apiV2Endpoint, $queryOptions);
+
+	if (!$storyData) {
+		echo '{"error":"An error occurred while getting the story data."}';
+		exit(1);
+	}
+
+	echo $storyData;
+
+	exit(0);
+}
+
+if ($itemId && $htrModelId) {
+
+	$path = '/items/' . $itemId;
+
+	$apiV2Endpoint = $config['transcribathon']['endpoint'] . $path;
 
 	$queryData = $HtrData::sendQuery($apiV2Endpoint, $queryOptions);
 
@@ -66,9 +83,7 @@ if (($storyId || $itemId) && $htrModelId) {
 
 	$queryDataArray = json_decode($queryData, true);
 
-	$itemsData = $storyId
-		? $queryDataArray['data']
-		: [$queryDataArray['data']];
+	$itemsData = [$queryDataArray['data']];
 
 	$sendedData = $HtrData->sendStoryData($itemsData, $htrModelId, $languageId);
 
@@ -106,18 +121,8 @@ if ($htrUserData) {
 if ($languages) {
 
 	$languageEndpoint = $config['transcribathon']['endpoint'] . '/languages?orderBy=LanguageId&orderDir=asc';
-	$languageQueryOptions = array(
-		'http' => array(
-			'ignore_errors' => true,
-			'header' => array(
-				'Content-type: application/json',
-				'Authorization: Bearer ' . $config['transcribathon']['apiToken']
-			),
-			'method' => 'GET'
-		)
-	);
 
-	$languageQueryData = HtrData::sendQuery($languageEndpoint, $languageQueryOptions);
+	$languageQueryData = HtrData::sendQuery($languageEndpoint, $queryOptions);
 
 	echo $languageQueryData;
 
