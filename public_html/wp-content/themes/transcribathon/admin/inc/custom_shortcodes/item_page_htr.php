@@ -19,7 +19,7 @@ function _TCT_item_page_htr( $atts) {
 
     $textEditorUrl = get_stylesheet_directory_uri() . '/htr-client/texteditor/';
     $layoutEditorUrl = get_stylesheet_directory_uri() . '/htr-client/layouteditor/';
-    $requestUri = get_stylesheet_directory_uri() . '/htr-client/request.php';
+    $apiRequestUri = get_stylesheet_directory_uri() . '/api-request.php';
     $homeUri = home_url();
 
     $isLoggedIn = is_user_logged_in();
@@ -66,7 +66,7 @@ function _TCT_item_page_htr( $atts) {
     // extract the data itself
     $htrDataArray = json_decode($htrDataJson, true);
     $htrData = $htrDataArray['data'][0]['TranscriptionData'];
-
+		$htrDataId = $htrDataArray['data'][0]['HtrDataId'];
 
     $minimalPageXML = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         . '<PcGts xmlns="" xmlns:xsi="" xsi:schemaLocation="">'
@@ -203,8 +203,8 @@ ready(() => {
             TranscriptionText: data.text
         };
 
-        const sendData = await fetch('{$requestUri}', {
-            method: 'POST',
+        const sendData = await fetch('{$apiRequestUri}/htrdata/{$htrDataId}', {
+            method: 'PUT',
             body: JSON.stringify(payload)
         });
 
@@ -292,8 +292,8 @@ ready(() => {
             TranscriptionData: xml
         };
 
-        const sendData = await fetch('{$requestUri}', {
-            method: 'POST',
+        const sendData = await fetch('{$apiRequestUri}/htrdata/{$htrDataId}', {
+            method: 'PUT',
             body: JSON.stringify(payload)
         });
 
