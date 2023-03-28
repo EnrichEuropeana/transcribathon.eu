@@ -19,7 +19,6 @@ function _TCT_item_page_htr( $atts) {
 
     $textEditorUrl = get_stylesheet_directory_uri() . '/htr-client/texteditor/';
     $layoutEditorUrl = get_stylesheet_directory_uri() . '/htr-client/layouteditor/';
-    $requestUri = get_stylesheet_directory_uri() . '/htr-client/request.php';
     $apiRequestUri = get_stylesheet_directory_uri() . '/api-request.php';
     $homeUri = home_url();
 
