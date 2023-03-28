@@ -6,7 +6,7 @@
 */
 
 // include required files
-include($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/wp-load.php');
 
 function customCSS ()
 {
@@ -113,32 +113,32 @@ function getInputs($ids = null, $type = null)
 function _TCT_htr_import()
 {
   $isLoggedIn = is_user_logged_in();
-	$itemIds = sanitizeDigit($_GET['itemId']);
-	$storyIds = sanitizeDigit($_GET['storyId']);
+	$itemId = sanitizeDigit($_GET['itemId']);
+	$storyId = sanitizeDigit($_GET['storyId']);
 
 	$alpineJs = get_stylesheet_directory_uri(). '/js/alpinejs.3.10.4.min.js';
 
 	$requestUri = get_stylesheet_directory_uri() . '/htr-client/request.php';
 
-	$labels = $itemIds
-		? getInputs($itemIds, 'items')
-		: ($storyIds ? getInputs($storyIds, 'stories') : getInputs());
+	$labels = $itemId
+		? getInputs($itemId, 'items')
+		: ($storyId ? getInputs($storyId, 'stories') : getInputs());
 
 	$customCSS = customCSS();
 
-	$safeItemIds = $itemIds ?: 'null';
-	$safeStorIds = $storyIds ?: 'null';
+	$safeItemId = $itemId ?: 'null';
+	$safeStoryId = $storyId ?: 'null';
 
 	$backlink = get_europeana_url() . '/documents/';
 	$backtext = 'Back to the documents';
 
-	if ($itemIds) {
-		$backlink = get_europeana_url() . '/documents/story/item/?item=' . $itemIds;
+	if ($itemId) {
+		$backlink = get_europeana_url() . '/documents/story/item/?item=' . $itemId;
 		$backtext = 'Back to the item';
 	}
 
-	if ($storyIds) {
-		$backlink = get_europeana_url() . '/documents/story/?story=' . $storyIds;
+	if ($storyId) {
+		$backlink = get_europeana_url() . '/documents/story/?story=' . $storyId;
 		$backtext = 'Back to the story';
 	}
 
@@ -204,8 +204,14 @@ function _TCT_htr_import()
 		<span id="loading" x-show="processing"></span>
 		</span>
 		<span x-text="processText"></span>
-</p>
-
+	</p>
+	<p class="alert alert-info my-4" x-show="showStatus">
+		Initialized: <span x-text="itemStatus.initialized.length"></span>/<span x-text="itemStatus.amount"></span>
+		<br />
+		Transcribed: <span x-text="itemStatus.transcribed.length"></span>/<span x-text="itemStatus.amount"></span>
+		<br />
+		Errors: <span x-text="itemStatus.errors.length"></span>/<span x-text="itemStatus.amount"></span>
+	</p>
 
 	<h2>HTR public models</h2>
 
@@ -251,22 +257,24 @@ document.addEventListener('alpine:init', () => {
 		requestUri: '{$requestUri}',
 		htrModels: {},
 		languages: {},
-		storyId: {$safeStorIds},
-		itemId: {$safeItemIds},
+		storyId: {$safeStoryId},
+		itemId: {$safeItemId},
+		itemIds : [],
 		languageId: null,
 		htrModelId: null,
 		percent: 0,
 		processing: true,
+		showStatus: false,
 		disabled: false,
 		status: 'warning', // info, danger, warning, success
-		importResponse: {
+		itemStatus: {
 			amount: 0,
-			success: 0,
-			errors: 0,
-			error:  false
+			initialized: [],
+			transcribed: [],
+			errors: [],
+			error: false
 		},
 		processText: 'Loading all HTR models, please wait...',
-		storyRefreshTime: 180, // seconds
 
 		async init () {
 
@@ -304,7 +312,91 @@ document.addEventListener('alpine:init', () => {
 
 		},
 
+		async getItemIds () {
+
+			const itemIds = [];
+
+			if (this.itemId) {
+				itemIds.push(this.itemId);
+				return itemIds;
+			}
+
+			const params = new URLSearchParams({
+				storyId: this.storyId,
+			});
+			const url = this.requestUri + '?' + params;
+
+			const data = await (await fetch(url)).json();
+
+			if (data['error']) {
+				this.processing = false;
+				return [];
+			}
+
+			return data['data']['ItemIds'];
+
+		},
+
+		async processImage (item) {
+
+			if (!item) {
+				return;
+			}
+
+			// item already succeded
+			if (this.itemStatus.transcribed.indexOf(item) >= 0) {
+				return;
+			}
+
+			const errorIndex       = this.itemStatus.errors.indexOf(item);
+			const initializedIndex = this.itemStatus.initialized.indexOf(item);
+
+			const params = new URLSearchParams({
+				itemId: item,
+				htrModelId: this.htrModelId,
+				languageId: this.languageId
+			});
+
+			const url = this.requestUri + '?' + params;
+
+			const data = await (await fetch(url)).json();
+
+			this.percent = (this.itemStatus.initialized.length + this.itemStatus.transcribed.length + this.itemStatus.errors.length) * 100 / (this.itemStatus.amount * 2);
+
+			if (data.errors) {
+				if (errorIndex < 0) {
+					this.itemStatus.errors.push(item);
+				}
+				this.itemStatus.error = data.error;
+				return data;
+			}
+
+			if (data.success) {
+				this.itemStatus.transcribed.push(item);
+
+				// if not already in initialized index from previous passes insert it
+				if (initializedIndex < 0) {
+					this.itemStatus.initialized.push(item);
+				}
+
+				// if item succeeds in one of the following passes remove it from errors
+				if (errorIndex >= 0) {
+					this.itemStatus.errors.splice(errorIndex, 1);
+				}
+
+				return data;
+			}
+
+			if (initializedIndex < 0) {
+				this.itemStatus.initialized.push(item);
+			}
+
+			return data;
+		},
+
 		async getHtrData () {
+
+			this.showStatus = false;
 
 			if ((!this.storyId && !this.itemId) || !this.htrModelId || !this.languageId) {
 
@@ -314,69 +406,79 @@ document.addEventListener('alpine:init', () => {
 
 			}
 
-			const params = new URLSearchParams({
-				storyId: this.storyId,
-				itemId: this.itemId,
-				htrModelId: this.htrModelId,
-				languageId: this.languageId
-			});
-			const url = this.requestUri + '?' + params;
+			if (this.itemIds.length <= 0) {
+				this.itemIds = await this.getItemIds();
+			}
 
-			this.processText = 'Processing...please wait.';
+			this.itemStatus.amount = this.itemIds.length;
+
+			if (this.itemStatus.amount < 1) {
+				this.processText = 'Could not get item data from API.';
+				this.status = 'danger';
+				this.disabled = false;
+				this.processing = false;
+				this.showStatus = false;
+				return;
+			}
+
+			this.processText = 'Processing ' + this.itemStatus.amount + ' images...please wait.';
 			this.status = 'warning';
 			this.disabled = true;
 			this.processing = true;
+			this.showStatus = true;
 
 			const query = async () => {
 
-				this.importResponse = await (await fetch(url)).json();
+				for (let i = 0 ; i < this.itemIds.length; i++) {
 
-				console.log(this.importResponse);
+					const result = await this.processImage(this.itemIds[i]);
 
-				if (this.importResponse.error) {
-					this.processText = 'Could not get story or item data from API.';
-					this.status = 'danger';
-					this.disabled = false;
-					this.processing = false;
 				}
 
-				if (this.importResponse.amount > 0
-						&& this.importResponse.success === 0
-						&& this.importResponse.errors === 0) {
-					this.percent = 1;
-					this.processText = this.importResponse.amount + ' images are sent to Transkribus and initially stored in TP database, processing...';
-					this.status = 'info';
-				}
+				if (this.itemStatus.errors.length + this.itemStatus.transcribed.length >= this.itemStatus.amount) {
 
-				if (this.importResponse.success > 0 || this.importResponse.errors > 0) {
-					this.percent = (this.importResponse.success + this.importResponse.errors) / this.importResponse.amount * 100;
-					this.processText = this.importResponse.success + '/'  + this.importResponse.amount + ' images are successfully transcribed. ' + this.importResponse.errors + ' images failed in transcribing.';
+					if (this.itemStatus.transcribed.length === this.itemStatus.amount) {
+						this.processText = 'All ' + this.itemStatus.amount + ' images successfully transcribed.';
+						this.status = 'success';
+						this.disabled = false;
+						this.processing = false;
+						this.showStatus = true;
+						return;
+					}
+
+					if (this.itemStatus.error.length >= this.itemStatus.amount) {
+						this.processText = 'None of the ' + this.itemStatus.amount + ' images could be transcribed.';
+						this.status = 'error';
+						this.disabled = false;
+						this.processing = false;
+						this.showStatus = true;
+						return;
+					}
+
+					this.processText = 'Some of the ' + this.itemStatus.amount + ' images could be transcribed.';
 					this.status = 'warning';
-				}
-
-				if (this.percent === 100) {
 					this.disabled = false;
 					this.processing = false;
-					this.status = this.importResponse.errors
-						? (this.importResponse.errors < this.importResponse.amount
-								? 'warning'
-								: 'danger')
-						: 'success';
+					this.showStatus = true;
+					return;
 				}
-
-				const interval = this.storyId ? this.storyRefreshTime * 1000 : 5000;
 
 				if (this.processing) {
-					setTimeout(() => {
-						query.call()
-					}, interval);
+					setTimeout(
+						() => {
+							console.log('Running pass!');
+							query();
+						},
+						5000
+					);
 				}
 
-			};
+			}
 
 			query();
 
 		},
+
 
 		filterModels () {
 
