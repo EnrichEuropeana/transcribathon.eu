@@ -2458,34 +2458,34 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     color: #fff;
     font-size: 12px;
 }
-#no-text-placeholder, #htr-no-text-placeholder {
+#no-text-placeholder, #htr-no-text-placeholder, #no-text-placeholder-rc {
     background-color: var(--bg-main-color);
     text-align: center;
     height: 500px;
     margin-top: 14px;
     cursor: pointer;
 }
-#no-text-placeholder p, #htr-no-text-placeholder p {
+#no-text-placeholder p, #htr-no-text-placeholder p, #no-text-placeholder-rc p {
     font-family: var(--h-font-family);
     letter-spacing: 0.025em;
     font-size: 32px;
     font-weight: 700;
     color: var(--main-color);
 }
-#no-text-placeholder span, #htr-no-text-placeholder span{
+#no-text-placeholder span, #htr-no-text-placeholder span, #no-text-placeholder-rc span{
     line-height: 1;
     display: inline-block;
     width: 35%;
     text-align: left;
     margin-left: 20px;
 }
-#no-text-placeholder img, #htr-no-text-placeholder img{
+#no-text-placeholder img, #htr-no-text-placeholder img, #no-text-placeholder-rc img{
     height: 70px;
     vertical-align: unset;
     position: relative;
     top: 5px;
 }
-#no-text-placeholder i, #htr-no-text-placeholder i {
+#no-text-placeholder i, #htr-no-text-placeholder i , #no-text-placeholder-rc i{
     color: var(--main-color);
     font-size: 70px;
     position: relative;
@@ -4128,7 +4128,11 @@ div.rc-inner-bot-div {
     display: inline-block;
     min-width: 50px;
 }
-
+#rc-date .ui-datepicker-trigger img {
+    position: relative!important;
+    bottom: 3px!important;
+    top: unset;
+}
 
 /* Ration Cards for Smaller Screens */
 @media screen and (max-width: 1200px) {

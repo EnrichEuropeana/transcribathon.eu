@@ -1611,7 +1611,7 @@ function _TCT_ration_cards($atts)
                     $content .= "</div>";
                     $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px'> &nbsp </div>";
                     if($itemData['Transcriptions'][0]['NoText'] == '1') {
-                        $content .= "<div id='no-text-placeholder'>";
+                        $content .= "<div id='no-text-placeholder-rc'>";
                             $content .= "<p style='position:relative;top:30%;'><i class=\"far fa-check-circle\" ></i> <b>ITEM CONTAINS <br> NO TEXT</b></p>";
                         $content .= "</div>";
                         $content .= "<div class='current-transcription' style='display:none;'></div>";
@@ -1662,7 +1662,7 @@ function _TCT_ration_cards($atts)
                                 }
                                 $content .= "</div>";
                             } else {
-                                $content .= "<div id='no-text-placeholder'>";
+                                $content .= "<div id='no-text-placeholder-rc'>";
                                     $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
                                 $content .= "</div>";
                                 $content .= "<div class='current-transcription' style='display:none;'></div>";

@@ -1227,8 +1227,9 @@ ready(() => {
 
         // Alert user if the fields are not saved
         if(document.querySelector('#rc-form').querySelector('.not-saved')) {
-            window.alert("Please save Persons and Locations before proceeding!");
-            return;
+            if(!window.confirm("Not all entries are saved, please confirm if you want to proceed!")){
+                return;
+            }
         }
 
         // Show spinner
@@ -1666,7 +1667,7 @@ ready(() => {
         `<p class='form-sub-footer'> Obrazac k. čl. 2 st. 3 naredbe o raspodjeli (racioniranju) životnih namirnica od 27. Siječnja 1941. </p>` +
         `</div>`; 
 
-console.log(document.querySelector('#item-page-description-text').value);
+
         // append listed persons to the transcription
         transcriptionTemplate.querySelector('#rc-tr-wrapper').insertBefore(displayDiv, transcriptionTemplate.querySelector('#list-placeholder'));
         ////
@@ -1707,11 +1708,18 @@ console.log(document.querySelector('#item-page-description-text').value);
 
                     document.querySelector('#description-language-selector').appendChild(newLang);
                 }
+
+                document.querySelector('#type-Handwritten-checkbox').click();
+                document.querySelector('#type-Printed-checkbox').click();
                 
             });
         }
         document.querySelector('#rc-submit-spinner').style.display = 'none';
         document.querySelector('#tr-tab').parentElement.style.display = 'block';
+        document.querySelector('#transcription-edit-container').style.display = 'block';
+        document.querySelector('#transcription-view-container').style.display = 'none';
+        document.querySelector('#switch-tr-view i').classList = 'fa fa-times';
+        switchItemTab(event, 'editor-tab');
     })
 
     // Add Prirast/Odpad tables on button click

@@ -1927,6 +1927,7 @@ if (event.target.id != "tagging-status-indicator") {
             $content .= "</div>";
             $content .= "<div id='full-view-r'>";
                 // Transcription
+                //dd($currentTranscription);
                 $content .= "<div id='transcription-container' style='height:600px;'>";
                     $content .= "<div id='startTranscription' class='mtr-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
                         $content .= "<div style='display:inline-block;'><h5 style='color:#0a72cc;'><i style=\"font-size: 20px;margin-bottom:5px;\" class=\"fa fa-quote-right\" aria-hidden=\"true\"></i> TRANSCRIPTION</h5></div>";
@@ -1938,7 +1939,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "</div>";
                     $content .= "</div>";
                     $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px'> &nbsp </div>";
-                    if($itemData['Transcriptions'][0]['NoText'] == '1') {
+                    if($currentTranscription['NoText'] == '1') {
                         $content .= "<div id='no-text-placeholder'>";
                             $content .= "<p style='position:relative;top:30%;'><i class=\"far fa-check-circle\" ></i> <b>ITEM CONTAINS <br> NO TEXT</b></p>";
                         $content .= "</div>";
