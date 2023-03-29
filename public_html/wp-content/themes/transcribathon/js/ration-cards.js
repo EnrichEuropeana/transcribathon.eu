@@ -103,6 +103,7 @@ function loadRcPerson(itemId, userId) {
         }
 
         for(let person of topPpl) {
+            console.log(person);
 
             if(person.Description == 'Landlord / Kucevlasnik') {
                 let landLName = document.querySelector('#landlord-lname');
@@ -113,7 +114,7 @@ function loadRcPerson(itemId, userId) {
 
                 landLName.setAttribute('disabled', true);
                 landLName.classList = '';
-                landLName.value = person.LastName;
+                landLName.value = person.LastName ? person.LastName : '';
                 landLName.style.cssText = `
                     border-left: 1px solid #0a72cc;
                     border-top: 1px solid #0a72cc;
@@ -121,7 +122,7 @@ function loadRcPerson(itemId, userId) {
                     border-bottom: 1px solid #0a72cc;
                 `;
                 landFName.setAttribute('disabled', true);
-                landFName.value = person.FirstName;
+                landFName.value = person.FirstName ? person.FirstName : '';
                 landFName.style.cssText = `
                     border-top: 1px solid #0a72cc;
                     border-right: 1px solid #0a72cc;
@@ -166,7 +167,7 @@ function loadRcPerson(itemId, userId) {
 
                 subLName.setAttribute('disabled', true);
                 subLName.classList = '';
-                subLName.value = person.LastName;
+                subLName.value = person.LastName ? person.LastName : '';
                 subLName.style.cssText = `
                     border-top: 1px solid #0a72cc;
                     border-right: none;
@@ -178,7 +179,7 @@ function loadRcPerson(itemId, userId) {
 
 
                 subFName.setAttribute('disabled', true);
-                subFName.value = person.FirstName; 
+                subFName.value = person.FirstName ? person.FirstName : ''; 
                 subFName.style.cssText = `
                     border-top: 1px solid #0a72cc;
                     border-right: 1px solid #0a72cc;
@@ -243,7 +244,7 @@ function loadRcPerson(itemId, userId) {
 
                 subLName.setAttribute('disabled', true);
                 subLName.classList = '';
-                subLName.value = listPerson.LastName;
+                subLName.value = listPerson.LastName ? listPerson.LastName : '';
                 subLName.style.cssText = `
                     border-top: 1px solid #0a72cc;
                     border-right: none;
@@ -255,7 +256,7 @@ function loadRcPerson(itemId, userId) {
 
 
                 subFName.setAttribute('disabled', true);
-                subFName.value = listPerson.FirstName; 
+                subFName.value = listPerson.FirstName ? listPerson.FirstName : ''; 
                 subFName.style.cssText = `
                     border-top: 1px solid #0a72cc;
                     border-right: 1px solid #0a72cc;
@@ -296,7 +297,7 @@ function loadRcPerson(itemId, userId) {
 
             newListPerson.innerHTML = 
                 `<span class='start-span'>&nbsp ${listIndex} &nbsp</span>` +
-                `<span class='first-span'>${listPerson.LastName} ${listPerson.FirstName} &nbsp</span>` +
+                `<span class='first-span'>${listPerson.LastName ? listPerson.LastName : ''} ${listPerson.FirstName ? listPerson.FirstName : ''} &nbsp</span>` +
                 `<span class='second-span'>${listPersonBirthYear} &nbsp</span>` +
                 `<span class='third-span'>${listPersonDescription[0] ? listPersonDescription[0] : '&nbsp'} &nbsp</span>` +
                 `<span class='fourth-span'>${listPersonDescription[1] ? listPersonDescription[1] : '&nbsp'} &nbsp</span>` +
@@ -333,7 +334,7 @@ function loadRcPerson(itemId, userId) {
     
                 newPrirast.innerHTML =
                     `<span class='start-span'>&nbsp ${prirastIndex} &nbsp</span>` +
-                    `<span class='first-span'> ${prirast.LastName} ${prirast.FirstName} &nbsp</span>` +
+                    `<span class='first-span'> ${prirast.LastName ? prirast.LastName : ''} ${prirast.FirstName ? prirast.FirstName : ''} &nbsp</span>` +
                     `<span class='second-span'> ${prirastPersonBirthYear} &nbsp</span>` +
                     `<span class='third-span'> ${prirastPersonDescription[0] ? prirastPersonDescription[0] : '&nbsp'} &nbsp</span>` +
                     `<span class='fourth-span'> ${prirastPersonDescription[1] ? prirastPersonDescription[1] : '&nbsp'} &nbsp</span>` +
@@ -369,7 +370,7 @@ function loadRcPerson(itemId, userId) {
     
                 newOdpad.innerHTML =
                     `<span class='start-span'>&nbsp ${odpadIndex} &nbsp</span>` +
-                    `<span class='first-span'> ${odpad.LastName} ${odpad.FirstName} &nbsp</span>` +
+                    `<span class='first-span'> ${odpad.LastName ? odpad.LastName : ''} ${odpad.FirstName ? odpad.FirstName : ''} &nbsp</span>` +
                     `<span class='second-span'> ${odpadPersonBirthYear} &nbsp</span>` +
                     `<span class='third-span'> ${odpadPersonDescription[0] ? odpadPersonDescription[0] : '&nbsp'} &nbsp</span>` +
                     `<span class='fourth-span'> ${odpadPersonDescription[1] ? odpadPersonDescription[1] : '&nbsp'} &nbsp</span>` +
@@ -1111,6 +1112,11 @@ ready(() => {
             let description = 'Submitter Address/ Adresa Domacinstva';
             let locName = `${locOneStreet.value}, ${locOneNumb.value}`;
             let saveCheck = '#m-address';
+
+            if(queryLoc == ' ') {
+                window.alert('Please enter the street and house number!');
+                return;
+            }
     
             getRCLocation(queryLoc, description, locName, '#m-address-res', saveCheck);
 
@@ -1129,6 +1135,11 @@ ready(() => {
             let queryLoc = `Zagreb, ${lLordStreet.value}`;
             let description = 'Property owner Address/ Adresa Kucevlasnika';
             let saveCheck = '#landlord-loc';
+
+            if(queryLoc == 'Zagreb, ') {
+                window.alert('Please enter the street!');
+                return;
+            }
     
             getRCLocation(queryLoc, description, lLordStreet.value, '#landlord-loc-res', saveCheck);
 
@@ -1147,7 +1158,8 @@ ready(() => {
     if(shopBtn) {
         shopBtn.addEventListener('click', function() {
             if(shopName.value == '' || shopStreet.value == '') {
-                window.alert('Please fil both Shop Name and Shop Street!')
+                window.alert('Please fil both Shop Name and Shop Street!');
+                return;
             } else {
                 let queryLoc = `${shopStreet.value}`;
                 let description = 'Shop Address/ Adresa Trgovine'
@@ -1206,10 +1218,15 @@ ready(() => {
     if(lPersSaveBtn) {
         lPersSaveBtn.addEventListener('click', function() {
             let description = `${document.querySelector('#desc-rel').value} - ${document.querySelector('#desc-voc').value} - ${document.querySelector('#desc-wp').value}`;
-            let firstName = document.querySelector('#lst-p-fname').value;
-            let lastName = document.querySelector('#lst-p-lname').value;
+            let firstName = document.querySelector('#lst-p-fname').value != '' ? document.querySelector('#lst-p-fname').value : '';
+            let lastName = document.querySelector('#lst-p-lname').value != '' ? document.querySelector('#lst-p-lname').value : '';
             let personRole = 'PersonMentioned';
             let saveCheck ='list';
+
+            if(firstName == '' && lastName == '') {
+                window.alert('Please enter the name!');
+                return;
+            }
 
             if(firstName == document.querySelector('#submitter-fname').value && lastName == document.querySelector('#submitter-lname').value) {
                 let personId = document.querySelector('#submitter-lname').getAttribute('person-id');
@@ -1752,6 +1769,11 @@ ready(() => {
         let personRole = 'PersonMentioned';
         let saveCheck = 'odpad';
 
+        if(firstName == '' && lastName == '') {
+            window.alert('Please enter the name!');
+            return;
+        }        
+
         saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'odpad', 'odpad', saveCheck);
 
         document.querySelector('#odpad-list-form').reset();
@@ -1763,6 +1785,11 @@ ready(() => {
         let lastName = document.querySelector('#prirast-lname').value;
         let personRole = 'PersonMentioned';
         let saveCheck = 'prirast';
+
+        if(firstName == '' && lastName == '') {
+            window.alert('Please enter the name!');
+            return;
+        }
 
         saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'prirast', 'prirast', saveCheck);
 
