@@ -303,7 +303,7 @@ function _TCT_ration_cards($atts)
                     $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>";
                     $locationDisplay .= "<p><b>" . $place['Name'] . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
                     if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
-                        $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: <b>" . $place['Comment'] . "</b></p>";
+                        $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: " . $place['Comment'] . "</p>";
                     }
                     if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
                         $locationDisplay .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
@@ -336,18 +336,6 @@ function _TCT_ration_cards($atts)
                         $locationDisplay .= "<div style='clear:both;'></div>";
                     $locationDisplay .= "</div>";
 
-                    $locationDisplay .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
-                        $locationDisplay .= "<label>Wikidata Reference:";
-                            $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
-                        $locationDisplay .= "</label>";
-                        if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != '' && $place['WikidataName'] != 'NULL' && $place['WikidataName'] != '') {
-                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='"
-                                . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . "; "
-                                . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
-                        } else {
-                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
-                        }
-                    $locationDisplay .= "</div>";
                     $locationDisplay .= "<div class='location-input-description-container' style='height:50px;'>";
                         $locationDisplay .= "<label>";
                             $locationDisplay .= "Description: ";
@@ -360,6 +348,37 @@ function _TCT_ration_cards($atts)
                         }
                         $locationDisplay .= "</textarea>";
                     $locationDisplay .= "</div>";
+                    $locationDisplay .= "<div style='clear:both;'></div>";
+
+                    $locationCheck = '';
+                    if($place['PlaceRole'] == 'CreationPlace') {
+                        $locationCheck = 'checked';
+                    }
+                    $locationDisplay .= "<div class='loc-type'>";
+                        $locationDisplay .= "<label class='loc-checkbox-container' style='width:100%!important;'>";
+                            $locationDisplay .= "<span style='display:inline-block;width:30%;'> Creation Place ";
+                                $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Is this the location where the document was created?'></i>";
+                            $locationDisplay .= "</span>";
+                            $locationDisplay .= "<span class='loc-check-right' style='float:none!important;display:inline-block;'>";
+                                $locationDisplay .= "<input type='checkbox' class='loc-type-check' id='place-role-" . $place['PlaceId'] . "' name='CreationPlace' value='Creation Place' " . $locationCheck . ">";
+                                $locationDisplay .= "<span class='loc-checkmark'></span>";
+                            $locationDisplay .= "</span>";
+                        $locationDisplay .= "</label>";
+                    $locationDisplay .= "</div>";
+
+                    $locationDisplay .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
+                        $locationDisplay .= "<label>Wikidata Reference:";
+                            $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
+                        $locationDisplay .= "</label>";
+                        if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != '' && $place['WikidataName'] != 'NULL' && $place['WikidataName'] != '') {
+                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='"
+                                . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . ";"
+                                . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
+                        } else {
+                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
+                        }
+                    $locationDisplay .= "</div>";
+
 
                     $locationDisplay .= "<div class='form-buttons-right'>";
                         $locationDisplay .= "<div class='form-btn-left'>";
@@ -472,7 +491,7 @@ function _TCT_ration_cards($atts)
                     $mapEditor .= "<input type='text' name='' placeholder='&nbsp&nbsp&nbsp e.g. Berlin' style='display:inline-block;'>";
                     $mapEditor .= '<div id="loc-name-check" class="loc-input-fa"><i class="fas fa-check" style="float:right;color:#61e02f;display:none;"></i></div>';
                 $mapEditor .= "</div>";
-
+        
                 $mapEditor .= "<div class='location-display location-input-coordinates-container location-input-container' style='min-height:25px;'>";
                     $mapEditor .= "<label>Coordinates:</label>";
                     $mapEditor .= "<span class='required-field'>*</span>";
@@ -482,14 +501,27 @@ function _TCT_ration_cards($atts)
                 $mapEditor .= "<div style='clear:both;'></div>";
             $mapEditor .= "</div>";
 
-            $mapEditor .= "<div id='location-input-geonames-search-container' class='location-input-container location-search-container' style='margin-top:9px;min-height:25px;'>";
-                $mapEditor .= "<label>WikiData Reference:<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i></label>";
-                $mapEditor .= "<input type='text' id='lgns' class='wiki-input' palceholder='&nbsp&nbsp&nbsp e.g.: Q64' name=''>";
-            $mapEditor .= "</div>";
-
             $mapEditor .= "<div class='location-input-description-container location-input-container'>";
                 $mapEditor .= "<label>Description:<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Add more information to this location, e.g. the building name, or its significance to the item'></i></label>";
                 $mapEditor .= "<textarea rows='2' style='resize:none;' class='gsearch-form' type='text' id='ldsc' placeholder='' name=''></textarea>";
+            $mapEditor .= "</div>";
+            $mapEditor .= "<div style='clear:both;'></div>";
+
+            $mapEditor .= "<div class='loc-type'>";
+                $mapEditor .= "<label class='loc-checkbox-container'>";
+                    $mapEditor .= "<span> Creation Place <i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Is this location the place where the document was created?'></i>";
+                        // $mapEditor .= "<input class='loc-type-check' type='checkbox' name='CreationPlace' value='Creation Place'>";
+                    $mapEditor .= "</span>";
+                    $mapEditor .= "<span class='loc-check-right'>";
+                        $mapEditor .= "<input class='loc-type-check' type='checkbox' id='place-role' name='CreationPlace' value='Creation Place'>";
+                        $mapEditor .= "<span class='loc-checkmark'></span>";
+                    $mapEditor .= "</span>";
+                $mapEditor .= "</label>";
+            $mapEditor .= "</div>";
+
+            $mapEditor .= "<div id='location-input-geonames-search-container' class='location-input-container location-search-container' style='margin-top:9px;min-height:25px;'>";
+                $mapEditor .= "<label>WikiData Reference:<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i></label>";
+                $mapEditor .= "<input type='text' id='lgns' class='wiki-input' palceholder='&nbsp&nbsp&nbsp e.g.: Q64' name=''>";
             $mapEditor .= "</div>";
 
             $mapEditor .= "<div style='clear:both;'></div>";
@@ -499,13 +531,14 @@ function _TCT_ration_cards($atts)
                                 onClick='saveItemLocation(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" .$statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                     $mapEditor .= "SAVE";
                 $mapEditor .= "</button>";
-                $mapEditor .= "<div id='item-location-spinner-container' class='spinner-container' style='bottom:150px;'>";
-                    $mapEditor .= "<div class='spinner'></div>";
-                $mapEditor .= "</div>";
-                $mapEditor .= "<div style='clear:both;'></div>";
+        
             $mapEditor .= "</div>";
             $mapEditor .= "<div style='clear:both;'></div>";
         $mapEditor .= "</div>";
+        $mapEditor .= "<div id='item-location-spinner-container' class='spinner-container spinner-container-right'>";
+            $mapEditor .= "<div class='spinner'></div>";
+        $mapEditor .= "</div>";
+        $mapEditor .= "<div style='clear:both;'></div>";
 
         $mapEditor .= "<div style='clear:both;'></div>";
         // Editor Location Display and Location Edit/Delete
@@ -654,7 +687,7 @@ function _TCT_ration_cards($atts)
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span style='font-weight:500;'>" . htmlspecialchars_decode(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars_decode($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
+                                $enrichmentTab .= "<span>" . htmlspecialchars_decode(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars_decode($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
                                 if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
                                     $enrichmentTab .= " (" . $person['BirthDate'];
                                     if($person['BirthPlace'] != 'NULL') {
@@ -682,10 +715,10 @@ function _TCT_ration_cards($atts)
                             $enrichmentTab .= "</p>";
 
                             if($person['Description'] != 'NULL' && $person['Description'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>" . htmlspecialchars_decode($person['Description']) . "</p>";
+                                $enrichmentTab .= "<p class='person-description'>Description: " . htmlspecialchars_decode($person['Description']) . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <b><a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></b></p>";
+                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></p>";
                             }
                             // Edit/Delete buttons
                             $enrichmentTab .= "<div class='edit-del-person'>";
@@ -704,22 +737,66 @@ function _TCT_ration_cards($atts)
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-lastName-edit' class='input-response person-input-field person-re-edit-right'
                                                 placeholder='&nbsp Last Name' value='" . ($person['LastName'] != 'NULL' ? htmlspecialchars_decode($person['LastName']) : '') . "'>";
                             $enrichmentTab .= "</div>";
+                            ///////////
+                            $enrichmentTab .= "<div class='person-input-desc-cont'>";
+                                $enrichmentTab .= "<div class='person-desc-left' style='margin-bottom: 0!important;'>";
+                                    $enrichmentTab .= "<div class='person-description-input'>";
+                                        $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
+                                                        placeholder='&nbsp; Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars_decode($person['Description']) : '' ) . "'>";
+                                    $enrichmentTab .= "</div>";
 
-                            $enrichmentTab .= "<div class='person-description-input'>";
-                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
-                                                placeholder='&nbsp Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars_decode($person['Description']) : '') . "'>";
+                                    $enrichmentTab .= "<div class='person-description-input'>";
+                                        $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp; Add Wikidata ID to this person.'
+                                                        title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars_decode($person['Link']) : '') . "'>";
+                                    $enrichmentTab .= "</div>";
+                                $enrichmentTab .= "</div>";
+                                $personCheckArr = array(
+                                    'DocumentCreator' => '',
+                                    'AddressedPerson' => '',
+                                    'PersonMentioned' => ''
+                                );
+                                if(!empty($person['PersonRole'])) {
+                                    $personCheckArr[$person['PersonRole']] = 'checked';
+                                }
+                                $enrichmentTab .= "<div class='person-desc-right'>";
+                                    $enrichmentTab .= "<form id='ppl-role-form-" . $person['PersonId'] . "'>";
+                                        $enrichmentTab .= "<div class='person-role-input' style='margin-bottom: 0!important;'>";
+                                            $enrichmentTab .= "<label id='document-creator-" . $person['PersonId'] . "'>";
+                                                $enrichmentTab .= "<input type='radio' id='doc-creator-" . $person['PersonId'] . "' name='person-role' value='DocumentCreator' " . $personCheckArr['DocumentCreator'] . ">";
+                                                $enrichmentTab .= "<span> Document Creator </span>";
+                                            $enrichmentTab .= "</label>";
+                                            $enrichmentTab .= "</br>";
+                                            $enrichmentTab .= "<label id='important-person-" . $person['PersonId'] . "'>";
+                                                $enrichmentTab .= "<input type='radio' id='main-actor-" . $person['PersonId'] . "' name='person-role' value='AddressedPerson' " . $personCheckArr['AddressedPerson'] . ">";
+                                                $enrichmentTab .= "<span> Person Addressed </span>";
+                                            $enrichmentTab .= "</label>";
+                                            $enrichmentTab .= "</br>";
+                                            $enrichmentTab .= "<label id='others-" . $person['PersonId'] . "'>";
+                                                $enrichmentTab .= "<input type='radio' id='other-ppl-" . $person['PersonId'] . "' name='person-role' value='PersonMentioned' " . $personCheckArr['PersonMentioned'] . ">";
+                                                $enrichmentTab .= "<span> Person Mentioned </span>";
+                                            $enrichmentTab .= "</label>";
+                                            $enrichmentTab .= "</br>";
+                                        $enrichmentTab .= "</div>";
+                                    $enrichmentTab .= "</form>";
+                                    $enrichmentTab .= "<i class='fas fa-question-circle'></i>";
+                                $enrichmentTab .= "</div>";
                             $enrichmentTab .= "</div>";
+                            ////////////
+                            // $enrichmentTab .= "<div class='person-description-input'>";
+                            //     $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-description-edit' class='input-response person-edit-field'
+                            //                     placeholder='&nbsp; Add more info to this person...' value='" . ($person['Description'] != 'NULL' ? htmlspecialchars_decode($person['Description']) : '') . "'>";
+                            // $enrichmentTab .= "</div>";
 
-                            $enrichmentTab .= "<div class='person-description-input'>";
-                                $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp Add Wikidata ID to this person'
-                                                title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars_decode($person['Link']) : '') . "'>";
-                            $enrichmentTab .= "</div>";
-
+                            // $enrichmentTab .= "<div class='person-description-input'>";
+                            //     $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-wiki-edit' placeholder='&nbsp Add Wikidata ID to this person'
+                            //                     title='e.g. Wikidata Title ID' value='" . ($person['Link'] != 'NULL' ? htmlspecialchars_decode($person['Link']) : '') . "'>";
+                            // $enrichmentTab .= "</div>";
+                            ///////////////
                             $enrichmentTab .= "<div class='person-location-birth-inputs' style='margin-top:5px;position:relative;'>";
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-birthPlace-edit' class='input-response person-input-field person-re-edit'
                                                 value='" . ($person['BirthPlace'] != 'NULL' ? htmlspecialchars_decode($person['BirthPlace']) : '') . "' placeholder='&nbsp Birth Location'>";
                                 $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-birthDate-edit'
-                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['BirthDate'] != 'NULL' ? htmlspecialchars($person['BirthDate']) : '') .
+                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['BirthDate'] != 'NULL' ? htmlspecialchars_decode($person['BirthDate']) : '') .
                                                 "' placeholder='&nbsp Birth: dd/mm/yyyy'></span>";
                             $enrichmentTab .= "</div>";
 
@@ -727,7 +804,7 @@ function _TCT_ration_cards($atts)
                                 $enrichmentTab .= "<input type='text' id='person-" . $person['PersonId'] . "-deathPlace-edit' class='input-response person-input-field person-re-edit'
                                                 value='" . ($person['DeathPlace'] != 'NULL' ? htmlspecialchars_decode($person['DeathPlace']) : '') . "' placeholder='&nbsp Death Location'>";
                                 $enrichmentTab .= "<span class='input-response'><input type='text' id='person-" . $person['PersonId'] . "-deathDate-edit'
-                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['DeathDate'] != 'NULL' ? htmlspecialchars($person['DeathDate']) : '') .
+                                                class='date-input-response person-input-field datepicker-input-field person-re-edit-right' value='" . ($person['DeathDate'] != 'NULL' ? htmlspecialchars_decode($person['DeathDate']) : '') .
                                                 "' placeholder='&nbsp Death: dd/mm/yyyy'></span>";
                             $enrichmentTab .= "</div>";
 
@@ -1139,9 +1216,13 @@ function _TCT_ration_cards($atts)
             $descriptionTab .= "</div>";
             
             // Date type checkmark
+            $dateCheck = '';
+            if($itemData['DateRole'] == 'CreationDate') {
+                $dateCheck = 'checked';
+            }
             $descriptionTab .= "<div class='creation-date-container'>";
                 $descriptionTab .= "<label class='date-checkbox-container'> Creation Date <i class='fas fa-question-circle' title='Is this the date when the document was created?'></i>";
-                    $descriptionTab .= "<input class='date-type-check' type='checkbox' name='CreationDate' value='Creation Date'>";
+                    $descriptionTab .= "<input class='date-type-check' type='checkbox' id='creation-date' name='CreationDate' value='CreationDate' " . $dateCheck . ">";
                     $descriptionTab .= "<span class='date-checkmark'></span>";
                 $descriptionTab .= "</label>";
             $descriptionTab .= "</div>";

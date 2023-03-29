@@ -1593,6 +1593,9 @@ function loadPlaceData(itemId, userId) {
             locContainer.innerHTML = "";
 
             for(let location of content) {
+
+                let placeRoleCheck = location['PlaceRole'] == 'CreationPlace' ? 'checked' : '' ;
+
                 locContainer.innerHTML +=
                     `<div id='location-${escapeHtml(location['PlaceId'])}' >` +
                         `<div id='location-data-output-${location['PlaceId']}' class='location-single'>` +
@@ -1651,7 +1654,7 @@ function loadPlaceData(itemId, userId) {
                                     `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Is this location the place where the document was created?'></i>` +
                                     `</span>` +
                                     `<span class='loc-check-right' style='float:none!important;display:inline-block;'>` +
-                                        `<input type='checkbox' class='loc-type-check' id='place-role-${location['PlaceId']}' name='CreationPlace' value='Creation Place'>` +
+                                        `<input type='checkbox' class='loc-type-check' id='place-role-${location['PlaceId']}' name='CreationPlace' value='Creation Place' ${placeRoleCheck}>` +
                                         `<span class='loc-checkmark'></span>` +
                                     `</span>` +
                                 `</label>` +
@@ -1721,6 +1724,10 @@ function loadPersonData(itemId, userId) {
 
             for(let person of content) {
 
+                let docCreatorCheck = person['PersonRole'] == 'DocumentCreator' ? 'checked' : '';
+                let addressedPersonCheck = person['PersonRole'] == 'AddressedPerson' ? 'checked' : '';
+                let personMentionedCheck = person['PersonRole'] == 'PersonMentioned' ? 'checked' : '';
+
                 person['BirthDate'] = !isNaN(Date.parse(person['BirthDate']))
                     ? new Date(person['BirthDate']).toLocaleDateString('en-GB')
                     : null;
@@ -1789,17 +1796,17 @@ function loadPersonData(itemId, userId) {
                                     `<form id='ppl-role-form-${person['PersonId']}'>` +
                                         `<div class='person-role-input' style='margin-bottom: 0!important;'>` +
                                             `<label id='document-creator-${person['PersonId']}'>` +
-                                                `<input type='radio' id='doc-creator-${person['PersonId']}' name='person-role' value='Document Creator'>` +
+                                                `<input type='radio' id='doc-creator-${person['PersonId']}' name='person-role' value='Document Creator' ${docCreatorCheck}>` +
                                                 `<span> Document Creator </span>` +
                                             `</label>` +
                                             `</br>` +
                                             `<label id='important-person-${person['PersonId']}'>` +
-                                                `<input type='radio' id='main-actor-${person['PersonId']}' name='person-role' value='Person Addressed'>` +
+                                                `<input type='radio' id='main-actor-${person['PersonId']}' name='person-role' value='Person Addressed' ${addressedPersonCheck}>` +
                                                 `<span> Person Addressed </span>` +
                                             `</label>` +
                                             `</br>` +
                                             `<label id='others-${person['PersonId']}'>` +
-                                                `<input type='radio' id='other-ppl-${person['PersonId']}' name='person-role' value='Person Mentioned'>` +
+                                                `<input type='radio' id='other-ppl-${person['PersonId']}' name='person-role' value='Person Mentioned' ${personMentionedCheck}>` +
                                                 `<span> Person Mentioned </span>` +
                                             `</label>` +
                                             `</br>` +
@@ -2095,12 +2102,12 @@ function editPerson(personId, itemId, userId) {
     deathDate = jQuery('#person-' + personId + '-deathDate-edit').val().split('/');
     description = jQuery('#person-' + personId + '-description-edit').val();
     wiki = jQuery('#person-' + personId + '-wiki-edit').val();
-    let personRole = 'Person Mentioned';
+    let personRole = 'PersonMentioned';
 
     if(document.querySelector('#main-actor-' + personId).checked) {
-        personRole = 'Person Addressed';
+        personRole = 'AddressedPerson';
     } else if (document.querySelector('#doc-creator-' + personId).checked) {
-        personRole = 'Document Creator';
+        personRole = 'DocumentCreator';
     }
 
 
