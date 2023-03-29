@@ -91,8 +91,8 @@
 
 #filterContainer {
 	position: absolute;
-  top: 168px;
-  left: 30px;
+  top: 193px;
+  left: 35px;
 	z-index: 9;
 	background-color: white;
 	padding: 8px 16px;
@@ -115,6 +115,8 @@
 #invertRange {
   vertical-align: text-bottom;
   margin-left: -2px;
+  position: relative;
+  bottom: 3px;
 }
 
 .slidecontainer > * {
@@ -160,12 +162,13 @@
 	font-size: 20px;
 	margin-right: 5px;
 	float: left;
-  color: #0e4c63;
+  color: #0a72cc;
 }
 
 .sliderIcon {
-  color: #0e4c63;
+  color: #0a72cc;
   margin-right: 6px;
+  filter: brightness(0);
 }
 
 .sliderValue {
@@ -183,7 +186,7 @@
 .resetText:hover {
 	cursor: pointer;
 	text-decoration: underline;
-	color: #134d65;
+	color: #0a72cc;
 }
 
 .tabFilterIcon {

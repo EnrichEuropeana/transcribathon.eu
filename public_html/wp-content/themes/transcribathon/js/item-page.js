@@ -380,10 +380,9 @@ function closeAllSelect(elmnt) {
 }
 
 // Switches between different tabs within the item page image view
-function switchItemTab(event, tabName) {
+function switchItemTab(event, tabName, tabControler) {
     if (tabName == 'info-tab' && !document.querySelector('.single-meta')) {
         document.querySelector('#meta-collapse').click();
-        console.log('click');
     }
     var i, tabcontent, tablinks;
     // Hide all tab contents
@@ -398,9 +397,8 @@ function switchItemTab(event, tabName) {
     }
     // Show clicked tab content and make icon active
     document.getElementById(tabName).style.display = "block";
-    if(event.currentTarget) {
-      event.currentTarget.className += " active";
-    }
+    document.getElementById(tabControler).classList.add('active');
+
     if(map) {
         map.resize();
     }
@@ -1458,8 +1456,9 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
             jQuery('#person-input-container input').val("")
             jQuery('#item-person-spinner-container').css('display', 'none')
 
-
-            document.querySelector('#ppl-role-form').reset();
+            if(document.querySelector('#ppl-role-form')) {
+                document.querySelector('#ppl-role-form').reset();
+            }
 
 
         });
@@ -1593,6 +1592,9 @@ function loadPlaceData(itemId, userId) {
             locContainer.innerHTML = "";
 
             for(let location of content) {
+
+                let placeRoleCheck = location['PlaceRole'] == 'CreationPlace' ? 'checked' : '' ;
+
                 locContainer.innerHTML +=
                     `<div id='location-${escapeHtml(location['PlaceId'])}' >` +
                         `<div id='location-data-output-${location['PlaceId']}' class='location-single'>` +
@@ -1651,7 +1653,7 @@ function loadPlaceData(itemId, userId) {
                                     `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Is this location the place where the document was created?'></i>` +
                                     `</span>` +
                                     `<span class='loc-check-right' style='float:none!important;display:inline-block;'>` +
-                                        `<input type='checkbox' class='loc-type-check' id='place-role-${location['PlaceId']}' name='CreationPlace' value='Creation Place'>` +
+                                        `<input type='checkbox' class='loc-type-check' id='place-role-${location['PlaceId']}' name='CreationPlace' value='Creation Place' ${placeRoleCheck}>` +
                                         `<span class='loc-checkmark'></span>` +
                                     `</span>` +
                                 `</label>` +
@@ -1721,12 +1723,22 @@ function loadPersonData(itemId, userId) {
 
             for(let person of content) {
 
+                let docCreatorCheck = person['PersonRole'] == 'DocumentCreator' ? 'checked' : '';
+                let addressedPersonCheck = person['PersonRole'] == 'AddressedPerson' ? 'checked' : '';
+                let personMentionedCheck = person['PersonRole'] == 'PersonMentioned' ? 'checked' : '';
+
                 person['BirthDate'] = !isNaN(Date.parse(person['BirthDate']))
                     ? new Date(person['BirthDate']).toLocaleDateString('en-GB')
                     : null;
                 person['DeathDate'] = !isNaN(Date.parse(person['DeathDate']))
                     ? new Date(person['DeathDate']).toLocaleDateString('en-GB')
                     : null;
+
+                if(person['BirthDate'].includes('01/01/')){
+                    person['BirthDate'] = person['BirthDate'].replace('01/01/','');
+                }
+
+                
 
                 personOutCont.innerHTML +=
                     `<div id='person-${person['PersonId']}'>` +
@@ -1739,10 +1751,10 @@ function loadPersonData(itemId, userId) {
                                     ` (${person['BirthDate']}${isItString(person['BirthPlace'], 2)} - ${person['DeathDate']}${isItString(person['DeathPlace'], 2)})`
                                     :
                                     `${person['BirthDate'] || person['BirthPlace'] ?
-                                        ` (Birth: ${isItString(person['BirthDate'])}${person['BirthDate'] ? ',' : ''}${isItString(person['BirthPlace'])})`
+                                        ` (Birth: ${isItString(person['BirthDate'])}${person['BirthPlace'] ? ',' : ''}${isItString(person['BirthPlace'])})`
                                         :
                                         `${person['DeathDate'] || person['DeathPlace'] ?
-                                            ` (Death: ${isItString(person['DeathDate'])}${person['DeathDate'] ? ',' : ''}${isItString(person['DeathPlace'])})`
+                                            ` (Death: ${isItString(person['DeathDate'])}${person['DeatPlace'] ? ',' : ''}${isItString(person['DeathPlace'])})`
                                             :
                                             ``
                                         }`
@@ -1789,17 +1801,17 @@ function loadPersonData(itemId, userId) {
                                     `<form id='ppl-role-form-${person['PersonId']}'>` +
                                         `<div class='person-role-input' style='margin-bottom: 0!important;'>` +
                                             `<label id='document-creator-${person['PersonId']}'>` +
-                                                `<input type='radio' id='doc-creator-${person['PersonId']}' name='person-role' value='Document Creator'>` +
+                                                `<input type='radio' id='doc-creator-${person['PersonId']}' name='person-role' value='Document Creator' ${docCreatorCheck}>` +
                                                 `<span> Document Creator </span>` +
                                             `</label>` +
                                             `</br>` +
                                             `<label id='important-person-${person['PersonId']}'>` +
-                                                `<input type='radio' id='main-actor-${person['PersonId']}' name='person-role' value='Person Addressed'>` +
+                                                `<input type='radio' id='main-actor-${person['PersonId']}' name='person-role' value='Person Addressed' ${addressedPersonCheck}>` +
                                                 `<span> Person Addressed </span>` +
                                             `</label>` +
                                             `</br>` +
                                             `<label id='others-${person['PersonId']}'>` +
-                                                `<input type='radio' id='other-ppl-${person['PersonId']}' name='person-role' value='Person Mentioned'>` +
+                                                `<input type='radio' id='other-ppl-${person['PersonId']}' name='person-role' value='Person Mentioned' ${personMentionedCheck}>` +
                                                 `<span> Person Mentioned </span>` +
                                             `</label>` +
                                             `</br>` +
@@ -1874,7 +1886,7 @@ function loadKeywordData(itemId, userId) {
           if (content['Properties'][i]['PropertyType'] == "Keyword") {
             jQuery('#item-keyword-list').append(
               '<div id="'+ content['Properties'][i]['PropertyId'] + '" class="keyword-single">' +
-                  escapeHtml(content['Properties'][i]['PropertyValue']) +
+                  escapeHtml(htmlDecode(content['Properties'][i]['PropertyValue'])) +
                   '<i style="margin-left:5px;" class="login-required delete-item-datas far fa-times"' +
                       'onClick="deleteItemData(\'properties\', ' + content['Properties'][i]['PropertyId'] + ', ' + itemId + ', \'keyword\', ' + userId + ')"></i>' +
               '</div>'
@@ -1903,14 +1915,14 @@ function loadLinkData(itemId, userId) {
                 if(property['PropertyType'] === 'Link') {
                     let propDesc = null;
                     if(property['PropertyDescription'] != 'NULL') {
-                        propDesc = `<div class='prop-desc' style='padding-left:23px;bottom:6px;'> ${escapeHtml(property['PropertyDescription'])} </div>`;
+                        propDesc = `<div class='prop-desc' style='padding-left:23px;bottom:6px;'> ${htmlDecode(property['PropertyDescription'])} </div>`;
                     }
                     extLinkCont.innerHTML +=
                         `<div id='link-${property['PropertyId']}'>` +
                             `<div id='link-data-output-${property['PropertyId']}' class='link-single'>` +
                                 `<div id='link-data-output-display-${property['PropertyId']}' class='link-data-output-content'>` +
                                     `<i class='far fa-external-link' style='margin-left: 3px;margin-right: 5px; color:#0a72cc;font-size:14px;'></i>` +
-                                    `<a href='${escapeHtml(property['PropertyValue'])}' target='_blank'>${escapeHtml(property['PropertyValue'])}</a>` +
+                                    `<a href='${escapeHtml(property['PropertyValue'])}' target='_blank'>${escapeHtml(htmlDecode(property['PropertyValue']))}</a>` +
                                 `</div>` +
                                 `<div class='edit-del-link'>` +
                                     `<i class='edit-item-data-icon fas fa-pencil theme-color-hover login-required' onClick='openLinksourceEdit(${property['PropertyId']})'></i>` +
@@ -1921,10 +1933,10 @@ function loadLinkData(itemId, userId) {
                             // Edit Container
                             `<div class='link-data-edit-container' id='link-data-edit-${property['PropertyId']}'>` +
                                 `<div id='link-${property['PropertyId']}-url-input' class='link-url-input'>` +
-                                    `<input type='url' value='${escapeHtml(property['PropertyValue'])}' placeholder='Enter URL Here'>` +
+                                    `<input type='url' value='${escapeHtml(htmlDecode(property['PropertyValue']))}' placeholder='Enter URL Here'>` +
                                 `</div>` +
                                 `<div id='link-${property['PropertyId']}-description-input' class='link-description-input'>` +
-                                    `<textarea rows='3' type='text' placeholder='' name=''>${escapeHtml(property['PropertyDescription'] != 'NULL' ? property['PropertyDescription'] : '')}</textarea>` +
+                                    `<textarea rows='3' type='text' placeholder='' name=''>${escapeHtml(property['PropertyDescription'] != 'NULL' ? htmlDecode(property['PropertyDescription']) : '')}</textarea>` +
                                 `</div>` +
                                 `<div class='form-buttons-right'>` +
                                     `<div class='link-btn-right'>` +
@@ -2068,8 +2080,6 @@ function editItemLocation(placeId, itemId, userId) {
             }
     var dataString= JSON.stringify(data);
 
-    console.log(data);
-
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'POST',
         'url': TP_API_HOST + '/tp-api/places/' + placeId,
@@ -2095,12 +2105,12 @@ function editPerson(personId, itemId, userId) {
     deathDate = jQuery('#person-' + personId + '-deathDate-edit').val().split('/');
     description = jQuery('#person-' + personId + '-description-edit').val();
     wiki = jQuery('#person-' + personId + '-wiki-edit').val();
-    let personRole = 'Person Mentioned';
+    let personRole = 'PersonMentioned';
 
     if(document.querySelector('#main-actor-' + personId).checked) {
-        personRole = 'Person Addressed';
+        personRole = 'AddressedPerson';
     } else if (document.querySelector('#doc-creator-' + personId).checked) {
-        personRole = 'Document Creator';
+        personRole = 'DocumentCreator';
     }
 
 
@@ -2896,42 +2906,47 @@ ready(() => {
                     const autoEnrichmentsResponse = JSON.parse(response);
                     const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
                     let enrichNr = 1;
-                    
-                    for(let itm of autoEnrichments.items) {
-                        let wikiDataArr = itm.body.id.split('/');
-                        let wikiId = wikiDataArr.pop();
-                        let singlIcon = itm.body.type == 'Person' ? 
-                            '<i class="fas fa-user enrich-icon"></i>' : `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
-                        let singlEnrich = document.createElement('div');
-                        singlEnrich.classList.add('single-annotation-' + enrichNr);
-                        singlEnrich.innerHTML =
-                                `<p class="type-n-id" style="display:none;">` +
-                                    `<span class="ann-type">${itm.body.type}</span>` +
-                                    `<span class="ext-id">${itm.id}</span>` +
-                                    `<span class="ann-id">${itm.body.id}</span>` +
-                                `</p>` +
-                                `<div class="enrich-body-left">` +
-                                    `<p>` +
-                                        singlIcon +
-                                        `<span class="enrich-label">${itm.body.prefLabel.en} </span>` +
-                                        ` - ` +
-                                        `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'>Wikidata ID: ${wikiId} </a></span>` +
+                    if(autoEnrichments.items) {
+                        for(let itm of autoEnrichments.items) {
+                            let wikiDataArr = itm.body.id.split('/');
+                            let wikiId = wikiDataArr.pop();
+                            let singlIcon = itm.body.type == 'Person' ? 
+                                '<i class="fas fa-user enrich-icon"></i>' : `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
+                            let singlEnrich = document.createElement('div');
+                            singlEnrich.classList.add('single-annotation-' + enrichNr);
+                            singlEnrich.innerHTML =
+                                    `<p class="type-n-id" style="display:none;">` +
+                                        `<span class="ann-type">${itm.body.type}</span>` +
+                                        `<span class="ext-id">${itm.id}</span>` +
+                                        `<span class="ann-id">${itm.body.id}</span>` +
                                     `</p>` +
-                                    `<p class='auto-description'>Description: ${itm.body.description} </p>` +
-                                `</div>` +
-                                `<div class="enrich-body-right">` +
-                                    `<div class="slider-track" ><div class="slider-slider"></div></div>` +
-                                `</div>` ;
-                        autoEnrichCont.appendChild(singlEnrich);
-                        singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
-                            singlEnrich.classList.toggle('accept');
-                        });
-                        singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
-                            event.stopPropagation();
-                            this.parentElement.click();
-                        })
-                    
-                        enrichNr += 1;
+                                    `<div class="enrich-body-left">` +
+                                        `<p>` +
+                                            singlIcon +
+                                            `<span class="enrich-label">${itm.body.prefLabel.en} </span>` +
+                                            ` - ` +
+                                            `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'>Wikidata ID: ${wikiId} </a></span>` +
+                                        `</p>` +
+                                        `<p class='auto-description'>Description: ${itm.body.description} </p>` +
+                                    `</div>` +
+                                    `<div class="enrich-body-right">` +
+                                        `<div class="slider-track" ><div class="slider-slider"></div></div>` +
+                                    `</div>` ;
+                            autoEnrichCont.appendChild(singlEnrich);
+                            singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
+                                singlEnrich.classList.toggle('accept');
+                            });
+                            singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
+                                event.stopPropagation();
+                                this.parentElement.click();
+                            })
+                        
+                            enrichNr += 1;
+                        }
+                    } else {
+                        alert('We are sorry! We haven\'t been able to generate auto enrichments.');
+                        document.querySelector('#auto-story-spinner-container').style.display = 'none';
+                        return;
                     }
                     document.querySelector('#auto-story-spinner-container').style.display = 'none';
                     document.querySelector('#verify-h').style.display = 'block';
@@ -2964,8 +2979,6 @@ ready(() => {
                     
                     const autoEnrichmentsResponse = JSON.parse(response);
                     const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
-
-                    console.log(autoEnrichments);
 
                     if(autoEnrichments.items) {
                         let itmNr = 1;
@@ -3067,6 +3080,8 @@ ready(() => {
                         }
                     } else  {
                         alert('We are sorry! We haven\'t been able to generate auto enrichments.');
+                        document.querySelector('#auto-itm-spinner-container').style.display = 'none';
+                        return;
                     }
                     // Show saving Button if there is something to save
                     document.querySelector('#auto-itm-spinner-container').style.display = 'none';
@@ -3267,13 +3282,13 @@ ready(() => {
                 }
 
             } else {
-                console.log('calling metadata');
+
                 let storyId = document.querySelector('#story-id').textContent;
                 const metadataLeft = document.querySelector('#meta-container');
                 const metadataRight = document.querySelector('#storydesc');
                 
                 getMetadata(storyId).then((data) => {
-                   // console.log(data);
+
                     const storyData = data.data;
                     const storyDc = storyData.Dc;
                     const storyDcterms = storyData.Dcterms;
@@ -3352,7 +3367,7 @@ ready(() => {
                     doubleDownIcon.classList = 'fas fa-angle-double-up';
                 });
             }
-
+            
 
             
         });
@@ -3384,20 +3399,20 @@ async function getMetadata(storyId) {
     
 }
 
-async function getUserdata(UserId) {
+// async function getUserdata(UserId) {
 
-    const params = {
-        userId: UserId
-    };
-    const options = {
-        method: 'POST',
-        body: JSON.stringify( params )  
-    };
-    const response = await fetch(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_username.php', options );
+//     const params = {
+//         userId: UserId
+//     };
+//     const options = {
+//         method: 'POST',
+//         body: JSON.stringify( params )  
+//     };
+//     const response = await fetch(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_username.php', options );
 
-    const result = await response.json();
+//     const result = await response.json();
 
-    return result
+//     return result
 
 
-}
+// }
