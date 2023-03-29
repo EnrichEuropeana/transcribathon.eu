@@ -2465,7 +2465,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     margin-top: 14px;
     cursor: pointer;
 }
-#no-text-placeholder p, #htr-no-text-placeholder p, #no-text-placeholder-rc p {
+#no-text-placeholder p, #htr-no-text-placeholder p, #no-text-placeholder-rc p, #fs-start-tr {
     font-family: var(--h-font-family);
     letter-spacing: 0.025em;
     font-size: 32px;
@@ -2479,7 +2479,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     text-align: left;
     margin-left: 20px;
 }
-#no-text-placeholder img, #htr-no-text-placeholder img, #no-text-placeholder-rc img{
+#no-text-placeholder img, #htr-no-text-placeholder img, #no-text-placeholder-rc img, #fs-start-tr img{
     height: 70px;
     vertical-align: unset;
     position: relative;
@@ -2491,6 +2491,16 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     position: relative;
     top: 30px;
     margin-right: 15px;
+    cursor: pointer;
+}
+#fs-start-tr {
+    background-color: var(--bg-main-color);
+    min-height: 30vh;
+    position: relative;
+    text-align: center;
+}
+#current-tr-view:has(#fs-start-tr) {
+    background-color: var(--bg-main-color);
 }
 .current-transcription, .htr-current-transcription {
     height: calc(100% - 205px);

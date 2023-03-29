@@ -55,6 +55,11 @@ var tct_viewer = (function($, document, window) {
 			toggleFS();
             
 		});
+		jQuery('#fs-start-tr').click(function() {
+			document.querySelector('#transcription-edit-container').style.display = 'block';
+			document.querySelector('#transcription-view-container').style.display = 'none';
+			document.querySelector('#switch-tr-view i').classList = 'fa fa-times';
+		});
 		jQuery('.mtr-active').click(function() {
 			document.querySelector('#transcription-edit-container').style.display = 'none';
 			document.querySelector('#transcription-view-container').style.display = 'block';

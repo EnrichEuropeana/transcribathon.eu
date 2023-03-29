@@ -103,7 +103,7 @@ function _TCT_mtr_transcription($atts)
     // Check which Transcription is active
     $activeTr = $itemData['TranscriptionSource'];
     // Transcription to show in transcription View
-    $transcriptionView = '';
+    $transcriptionView = "";
 
     // Get English translation of story description
     //$engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
@@ -1049,7 +1049,7 @@ if (event.target.id != "tagging-status-indicator") {
             </script>";
 
         } else {
-            $transcriptionView = $currentTranscription['Text'];
+            $transcriptionView = !empty($currentTranscription['Text']) ? $currentTranscription['Text'] : "<p id='fs-start-tr'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg' style='top:15vh!important;'></p>";
             $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
                 // MCE Editor
                 $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
