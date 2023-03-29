@@ -1457,8 +1457,9 @@ function savePerson(itemId, userId, editStatusColor, statusCount) {
             jQuery('#person-input-container input').val("")
             jQuery('#item-person-spinner-container').css('display', 'none')
 
-
-            document.querySelector('#ppl-role-form').reset();
+            if(document.querySelector('#ppl-role-form')) {
+                document.querySelector('#ppl-role-form').reset();
+            }
 
 
         });
@@ -1734,6 +1735,12 @@ function loadPersonData(itemId, userId) {
                     ? new Date(person['DeathDate']).toLocaleDateString('en-GB')
                     : null;
 
+                if(person['BirthDate'].includes('01/01/')){
+                    person['BirthDate'] = person['BirthDate'].replace('01/01/','');
+                }
+
+                
+
                 personOutCont.innerHTML +=
                     `<div id='person-${person['PersonId']}'>` +
                         `<div class='single-person'>` +
@@ -1745,10 +1752,10 @@ function loadPersonData(itemId, userId) {
                                     ` (${person['BirthDate']}${isItString(person['BirthPlace'], 2)} - ${person['DeathDate']}${isItString(person['DeathPlace'], 2)})`
                                     :
                                     `${person['BirthDate'] || person['BirthPlace'] ?
-                                        ` (Birth: ${isItString(person['BirthDate'])}${person['BirthDate'] ? ',' : ''}${isItString(person['BirthPlace'])})`
+                                        ` (Birth: ${isItString(person['BirthDate'])}${person['BirthPlace'] ? ',' : ''}${isItString(person['BirthPlace'])})`
                                         :
                                         `${person['DeathDate'] || person['DeathPlace'] ?
-                                            ` (Death: ${isItString(person['DeathDate'])}${person['DeathDate'] ? ',' : ''}${isItString(person['DeathPlace'])})`
+                                            ` (Death: ${isItString(person['DeathDate'])}${person['DeatPlace'] ? ',' : ''}${isItString(person['DeathPlace'])})`
                                             :
                                             ``
                                         }`

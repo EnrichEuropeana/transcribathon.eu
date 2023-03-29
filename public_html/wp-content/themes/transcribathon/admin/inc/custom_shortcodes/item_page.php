@@ -716,6 +716,14 @@ if (event.target.id != "tagging-status-indicator") {
                     $person['DeathDate'] = !empty($person['DeathDate'])
                         ? date('d/m/Y', strtotime($person['DeathDate']))
                         : 'NULL';
+
+                    if(str_contains($person['BirthDate'], '01/01/')) {
+                        $person['BirthDate'] = str_replace('01/01/', '', $person['BirthDate']);
+                    }
+                    if(str_contains($person['DeathDate'], '01/01/')) {
+                        $person['DeathDate'] = str_replace('01/01/', '', $person['DeathDate']);
+                    }
+
                     $enrichmentTab .= "<div id='person-" . $person['PersonId'] . "'>";
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";

@@ -683,6 +683,14 @@ function _TCT_ration_cards($atts)
                     $person['DeathDate'] = !empty($person['DeathDate'])
                         ? date('d/m/Y', strtotime($person['DeathDate']))
                         : 'NULL';
+
+                    if(str_contains($person['BirthDate'], '01/01/')) {
+                        $person['BirthDate'] = str_replace('01/01/', '', $person['BirthDate']);
+                    }
+                    if(str_contains($person['DeathDate'], '01/01/')) {
+                        $person['DeathDate'] = str_replace('01/01/', '', $person['DeathDate']);
+                    }
+
                     $enrichmentTab .= "<div id='person-" . $person['PersonId'] . "'>";
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
@@ -700,13 +708,13 @@ function _TCT_ration_cards($atts)
                                     $enrichmentTab .= ")";
                                 } else if($person['BirthDate'] != 'NULL') {
                                     $enrichmentTab .= " (Birth: " . $person['BirthDate'];
-                                    if($person['BirthPlace'] != 'NULL') {
+                                    if(!empty($person['BirthPlace'])) {
                                         $enrichmentTab .= ", " . $person['BirthPlace'];
                                     }
                                     $enrichmentTab .= ")";
                                 } else if($person['DeathDate'] != 'NULL') {
                                     $enrichmentTab .= " (Death: " . $person['DeathDate'];
-                                    if($person['DeathPlace'] != 'NULL') {
+                                    if(!empty($person['DeathPlace'])) {
                                         $enrichmentTab .= ", " . $person['DeathPlace'];
                                     }
                                     $enrichmentTab .= ")";
@@ -2052,6 +2060,11 @@ function _TCT_ration_cards($atts)
                 $content .= "<div id='rc-tab' class='tabcontent' style='display:none;'>";
                     //$content .= do_shortcode('[tutorial_item_slider]');
                     $content .= "<div id='rc-form' style='position:relative;padding-right:5px;'>";
+                        $content .= "<div id='rc-popup' >";
+                            $content .= "<p> Please fill in information form Ration Card to their respective fields. </p>";
+                            $content .= "<p> Molimo unesite informacije is potrošačke kartice u za to predviđena mjesta. </p>";
+                            $content .= "<div id='close-rc-popup'> Close </div>";
+                        $content .= "</div>";
                         $content .= "<h3><b> Grad Zagreb </b></h3>";
                             // Top adress and card registration number(just labels)
                             $content .= "<table class='rc-top-address'>";
@@ -2090,7 +2103,7 @@ function _TCT_ration_cards($atts)
 
                                     $content .= "<td class='rc-second-col'> &nbsp </td>";
 
-                                    $content .= "<td class='rc-third-col'>Prezime i ime i stan kucevlasnika:</td>";
+                                    $content .= "<td class='rc-third-col'>Prezime i ime i stan kućevlasnika:</td>";
 
                                     $content .= "<td class='btn-col'>&nbsp</td>";
                                 $content .= "</tr>";
@@ -2124,7 +2137,7 @@ function _TCT_ration_cards($atts)
                                 $content .= "<tr>";
                                     $content .= "<td class='rc-first-col' style='vertical-align:top!important;position:relative;'>";
                                         $content .= "<label for='kbr' style='position:absolute;left:10%;'>Kbr:</label>";
-                                        $content .= "<input type='text' placeholder='Kucni Broj' id='kbr' style='border: none;border-bottom: 1px dotted #ccc;'>";
+                                        $content .= "<input type='text' placeholder='Kućni Broj' id='kbr' style='border: none;border-bottom: 1px dotted #ccc;'>";
                                         $content .= "<i class='fas fa-check' id='kbr-check' style='display:none;'></i>";
                                         $content .= "<i class='fas fa-search' id='rc-place-one'></i>";
                                         $content .= "<div id='edit-subm-container' style='display:none;'>";
@@ -2162,7 +2175,7 @@ function _TCT_ration_cards($atts)
                             $content .= "<div style='clear:both;'></div>";
                             
                             //
-                            $content .= "<h3 class='rc-title'> Potrosacka prijavnica <br> za kucanstva i samce - samice. </h3>";
+                            $content .= "<h3 class='rc-title'> Potrošačka prijavnica <br> za kućanstva i samce - samice. </h3>";
                             // Saving spinner
                             // $content .= "<div id='rc-spinner-container' class='spinner-container'>";
                             //     $content .= "<div class='spinner'></div>";
@@ -2274,7 +2287,7 @@ function _TCT_ration_cards($atts)
                             $content .= "</div>";
                             // Shop address
                             $content .= "<div id='shop-place' style='position:relative;'>";
-                                $content .= "<p> Zivezne namirnice nabavljat cu:</p>";
+                                $content .= "<p> Živežne namirnice nabavljat ću:</p>";
                                 $content .= "<label for='shop-name' style='position:relative;'>";
                                     $content .= "U radnji: ";
                                     $content .= "<input type='text' name='shop-name' id='shop-name' class='not-saved'>";

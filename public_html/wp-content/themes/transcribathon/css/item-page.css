@@ -4159,6 +4159,26 @@ div.rc-inner-bot-div {
 .current-transcription {
     cursor: default!important;
 }
+#rc-popup {
+    height: 300px;
+    width: 300px;
+    border: 1px solid #0a72cc;
+    background: #fff;
+    z-index: 99;
+    padding: 20px;
+    position: fixed;
+    left: calc(50vw - 150px);
+    top: calc(50vh - 150px);
+}
+#rc-popup p {
+    margin: 10px;
+}
+#close-rc-popup {
+    position: relative;
+    text-align: center;
+    color: #0a72cc;
+    cursor: pointer;
+}
 /* Ration Cards for Smaller Screens */
 @media screen and (max-width: 1200px) {
     .rc-inner-right {

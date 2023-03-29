@@ -1813,6 +1813,9 @@ ready(() => {
             event.target.contentEditable = false;
             
         })
+        document.querySelector('#close-rc-popup').addEventListener('click', function() {
+            document.querySelector('#rc-popup').style.display = 'none';
+        })
 
     
 });
