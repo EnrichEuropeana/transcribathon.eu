@@ -404,6 +404,10 @@ function _TCT_solr_search( $atts ) {
                         $image = json_decode($doc['PreviewImageLink'], true);
                         $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
 
+                        if(str_contains($doc['dcTitle'], 'šačka kartica')) {
+                            $imageLink = str_replace('full','0,0,2637,1319', $imageLink);
+                        }
+
                         $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/?story=" . $doc['StoryId'] . "'>";
                             $content .= "<div class='search-page-result-image'>";
                                 $content .= "<img src='" . $imageLink . "' alt='result image' width='280' height='140'>";
@@ -441,13 +445,14 @@ function _TCT_solr_search( $atts ) {
                         $compStatus .= "</div>";
 
                         $itemPath = 'item';
-                        if(str_contains($doc['Title'], 'Potrošačka kartica')) {
-                            $itemPath = 'ration-cards';
-                        }
-
 
                         $image = json_decode($doc['PreviewImageLink'], true);
                         $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
+
+                        if(str_contains($doc['Title'], 'Potrošačka kartica')) {
+                            $itemPath = 'ration-cards';
+                            $imageLink = str_replace('full','0,0,2637,1319', $imageLink);
+                        }
 
                         $content .= "<div class='search-page-single-result'><a href='" . home_url() . "/documents/story/" . $itemPath . "/?item=" . $doc['ItemId'] . "'>";
                             $content .= "<div class='search-page-result-image'>";
