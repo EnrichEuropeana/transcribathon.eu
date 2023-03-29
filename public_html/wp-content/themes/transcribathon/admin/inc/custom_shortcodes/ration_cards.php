@@ -1686,7 +1686,6 @@ function _TCT_ration_cards($atts)
 
             $content .= "</div>";
             $content .= "<div id='full-view-r'>";
-            //var_dump($itemData);
                 // Transcription
                 $content .= "<div id='transcription-container' style='height:600px;white-space:nowrap!important;overflowX:hidden;'>";
                     $content .= "<div id='startTranscription-rc' class='rc-active' style='display:flex;flex-direction:row;justify-content:space-between;cursor:pointer;' title='click to open editor'>";
@@ -1895,8 +1894,7 @@ function _TCT_ration_cards($atts)
                         $content .= "</div>";
                     $content .= "</li>";
 
-                    
-                   // var_dump($itemData);
+
                     if(empty($currentTranscription)) {
                         $content .= "<li style='display:none;'>";
                             $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
