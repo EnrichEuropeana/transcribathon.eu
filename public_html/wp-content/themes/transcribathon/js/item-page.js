@@ -3358,7 +3358,7 @@ ready(() => {
                     doubleDownIcon.classList = 'fas fa-angle-double-up';
                 });
             }
-
+            
 
             
         });

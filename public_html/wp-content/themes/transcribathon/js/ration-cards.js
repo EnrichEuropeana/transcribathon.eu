@@ -1193,6 +1193,11 @@ ready(() => {
             let lastName = document.querySelector('#submitter-lname').value;
             let personRole = 'DocumentCreator';
             let saveCheck = '#submitter-lname';
+
+            if(firstName == '' && lastName == '') {
+                window.alert('Please enter the name!');
+                return;
+            }
             
             saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'submitter', 'submitter', saveCheck);
         })
@@ -1207,6 +1212,10 @@ ready(() => {
             let lastName = document.querySelector('#landlord-lname').value;
             let personRole = 'PersonMentioned';
             let saveCheck = '#landlord-lname';
+            if(firstName == '' && lastName == '') {
+                window.alert('Please enter the name!');
+                return;
+            }
 
             saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'landlord', 'regular', saveCheck);
         })
@@ -1794,6 +1803,15 @@ ready(() => {
         saveRcPerson(itemId, userId, firstName, lastName, description, personRole, 'prirast', 'prirast', saveCheck);
 
         document.querySelector('#prirast-list-form').reset();
+        })
+
+        document.querySelector('.current-transcription').addEventListener('click', function(event) {
+            event.target.contentEditable = false;
+            
+        })
+        document.querySelector('#current-tr-view').addEventListener('click', function(event) {
+            event.target.contentEditable = false;
+            
         })
 
     

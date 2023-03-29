@@ -2051,7 +2051,7 @@ function _TCT_ration_cards($atts)
                 // Help tab
                 $content .= "<div id='rc-tab' class='tabcontent' style='display:none;'>";
                     //$content .= do_shortcode('[tutorial_item_slider]');
-                    $content .= "<div id='rc-form' style='position:relative;'>";
+                    $content .= "<div id='rc-form' style='position:relative;padding-right:5px;'>";
                         $content .= "<h3><b> Grad Zagreb </b></h3>";
                             // Top adress and card registration number(just labels)
                             $content .= "<table class='rc-top-address'>";
