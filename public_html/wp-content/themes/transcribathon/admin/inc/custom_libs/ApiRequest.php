@@ -26,7 +26,7 @@ class ApiRequest
 		return $this->toArray($response);
 	}
 
-	public function put(striing $endpint, array $payload) : array
+	public function put(string $endpint, array $payload) : array
 	{
 		$response = $this->send($handle, 'PUT', $payload);
 		return $this->toArray($response);
