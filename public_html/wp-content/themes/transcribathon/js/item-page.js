@@ -383,7 +383,6 @@ function closeAllSelect(elmnt) {
 function switchItemTab(event, tabName, tabControler) {
     if (tabName == 'info-tab' && !document.querySelector('.single-meta')) {
         document.querySelector('#meta-collapse').click();
-        console.log('click');
     }
     var i, tabcontent, tablinks;
     // Hide all tab contents
@@ -2081,8 +2080,6 @@ function editItemLocation(placeId, itemId, userId) {
             }
     var dataString= JSON.stringify(data);
 
-    console.log(data);
-
     jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
         'type': 'POST',
         'url': TP_API_HOST + '/tp-api/places/' + placeId,
@@ -2983,8 +2980,6 @@ ready(() => {
                     const autoEnrichmentsResponse = JSON.parse(response);
                     const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
 
-                    console.log(autoEnrichments);
-
                     if(autoEnrichments.items) {
                         let itmNr = 1;
                         for(let itm of autoEnrichments.items) {
@@ -3287,13 +3282,13 @@ ready(() => {
                 }
 
             } else {
-                console.log('calling metadata');
+
                 let storyId = document.querySelector('#story-id').textContent;
                 const metadataLeft = document.querySelector('#meta-container');
                 const metadataRight = document.querySelector('#storydesc');
                 
                 getMetadata(storyId).then((data) => {
-                   // console.log(data);
+
                     const storyData = data.data;
                     const storyDc = storyData.Dc;
                     const storyDcterms = storyData.Dcterms;
@@ -3404,20 +3399,20 @@ async function getMetadata(storyId) {
     
 }
 
-async function getUserdata(UserId) {
+// async function getUserdata(UserId) {
 
-    const params = {
-        userId: UserId
-    };
-    const options = {
-        method: 'POST',
-        body: JSON.stringify( params )  
-    };
-    const response = await fetch(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_username.php', options );
+//     const params = {
+//         userId: UserId
+//     };
+//     const options = {
+//         method: 'POST',
+//         body: JSON.stringify( params )  
+//     };
+//     const response = await fetch(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_username.php', options );
 
-    const result = await response.json();
+//     const result = await response.json();
 
-    return result
+//     return result
 
 
-}
+// }
