@@ -1983,7 +1983,7 @@ if (event.target.id != "tagging-status-indicator") {
                     //$content .= $trHistory;
                     // Automatic Enrichments 
                     if(empty($itemAutoE['data'])) {
-                        $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
+                        $content .= "<div id='run-itm-enrich' style='display:none;'> Analyse Transcription for Automatic Translation and Enrichments </div>";
                         $content .= "<div id='auto-e-link'>";
                             $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\");'> Locations </button>";
                             $content .= "<button id='auto-ppl-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tag-tab\");'> People </button>";
@@ -2017,7 +2017,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<div id='full-v-metadata'>";
                     // Story Auto Enrichments
                     if(empty($storyAutoE['data'])) {
-                        $content .= "<div id='run-stry-enrich'> Analyse Story Description for Automatic Enrichments </div>";
+                        $content .= "<div id='run-stry-enrich' style='display:none;'> Analyse Story Description for Automatic Enrichments </div>";
                     
                         $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";

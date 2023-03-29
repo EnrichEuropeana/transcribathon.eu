@@ -1967,7 +1967,7 @@ function _TCT_ration_cards($atts)
                     //$content .= $trHistory;
                     // Automatic Enrichments 
                     if(empty($itemAutoE['data'])) {
-                        $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
+                        $content .= "<div id='run-itm-enrich' style='display:none;'> Analyse Transcription for Automatic Translation and Enrichments </div>";
                         $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
                             $content .= "<div class='spinner'></div>";
                         $content .= "</div></div>";
@@ -1994,7 +1994,7 @@ function _TCT_ration_cards($atts)
                     }
                     $content .= "<div id='full-v-metadata'>";
                     if(empty($storyAutoE['data'])) {
-                        $content .= "<div id='run-stry-enrich'> Analyse Story Description for Automatic Enrichments </div>";
+                        $content .= "<div id='run-stry-enrich' style='display:none;'> Analyse Story Description for Automatic Enrichments </div>";
                     
                         $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
