@@ -1880,8 +1880,8 @@ function _TCT_ration_cards($atts)
                 $content .= '<ul id="item-tab-list" class="tab-list" style="list-style: none;">';
 
                     $content .= "<li>";
-                        $content .= "<div class='theme-color tablinks' title='Tutorial'
-                            onclick='switchItemTab(event, \"rc-tab\")'>";
+                        $content .= "<div id='ration-tab' class='theme-color tablinks' title='Tutorial'
+                            onclick='switchItemTab(event, \"rc-tab\", \"ration-tab\")'>";
                             $content .= '<i class="fas fa-file-spreadsheet"></i>';
                             $content .= "<p class='tab-h it'><span><b>RATION CARD</b></span></p>";
                         $content .= "</div>";
@@ -1892,7 +1892,7 @@ function _TCT_ration_cards($atts)
                     if(empty($currentTranscription)) {
                         $content .= "<li style='display:none;'>";
                             $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
-                                onclick='switchItemTab(event, \"editor-tab\")'>";
+                                onclick='switchItemTab(event, \"editor-tab\", \"tr-tab\")'>";
                                 $content .= '<i class="fa fa-quote-right tab-i"></i>';
                                 $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TranscriptionStatusColorCode'].";background-color:".$itemData['TranscriptionStatusColorCode'].";'></i>";
                                 $content .= "<span ><b> TRANSCRIPTION</b></span></p>";
@@ -1901,7 +1901,7 @@ function _TCT_ration_cards($atts)
                     } else {
                         $content .= "<li>";
                             $content .= "<div id='tr-tab' class='theme-color tablinks active' title='Transcription'
-                                onclick='switchItemTab(event, \"editor-tab\")'>";
+                                onclick='switchItemTab(event, \"editor-tab\", \"tr-tab\")'>";
                                 $content .= '<i class="fa fa-quote-right tab-i"></i>';
                                 $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TranscriptionStatusColorCode'].";background-color:".$itemData['TranscriptionStatusColorCode'].";'></i>";
                                 $content .= "<span ><b> TRANSCRIPTION</b></span></p>";
@@ -1911,7 +1911,7 @@ function _TCT_ration_cards($atts)
 
                     $content .= "<li>";
                         $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
-                            onclick='switchItemTab(event, \"tagging-tab\");'>";
+                            onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'>";
                            $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;position:relative;bottom:3px;'>";
                            $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
                            $content .= "<span><b> LOCATION</b></span></p>";
@@ -1919,14 +1919,14 @@ function _TCT_ration_cards($atts)
                     $content .= "</li>";
 
                     $content .= "<li>";
-                        $content .= "<div id='desc-tab' class='theme-color tablinks' title='Description' onclick='switchItemTab(event, \"description-tab\");'>";
+                        $content .= "<div id='desc-tab' class='theme-color tablinks' title='Description' onclick='switchItemTab(event, \"description-tab\", \"desc-tab\");'>";
                             $content .= "<i class='fa fa-tag tab-i'></i>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['DescriptionStatusColorCode'].";background-color:".$itemData['DescriptionStatusColorCode'].";'></i>";
                             $content .= "<span><b> DESCRIPTION</b></span></p>";
                         $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
-                        $content .= "<div id='tagi-tab' class='theme-color tablinks' title='Enrichments/Tagging' onclick='switchItemTab(event, \"tag-tab\");'>";
+                        $content .= "<div id='tagi-tab' class='theme-color tablinks' title='Enrichments/Tagging' onclick='switchItemTab(event, \"tag-tab\", \"tagi-tab\");'>";
                             $content .= "<i class='fa fa-user tab-i' aria-hidden='true'></i>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['TaggingStatusColorCode'].";background-color:".$itemData['TaggingStatusColorCode'].";'></i>";
                             $content .= "<span><b> PEOPLE</b></span></p>";
@@ -1936,8 +1936,8 @@ function _TCT_ration_cards($atts)
                     //     $content .= "<div>&nbsp</div>";
                     // $content .= "</li>";
                     $content .= "<li>";
-                        $content .= "<div class='theme-color tablinks' title='More Information'
-                            onclick='switchItemTab(event, \"info-tab\")'>";
+                        $content .= "<div id='inf-tab' class='theme-color tablinks' title='More Information'
+                            onclick='switchItemTab(event, \"info-tab\", \"inf-tab\")'>";
                             $content .= '<i class="fa fa-info-circle tab-i"></i>';
                             $content .= "<p class='tab-h it'><span><b> STORY INFO</b></span></p>";
                         $content .= "</div>";

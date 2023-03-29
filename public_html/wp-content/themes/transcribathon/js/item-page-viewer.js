@@ -51,7 +51,7 @@ var tct_viewer = (function($, document, window) {
             tinymce.EditorManager.get('item-page-transcription-text').focus();
 		});
 		jQuery('#no-text-placeholder-rc').click(function() {
-            switchItemTab(event, "rc-tab");
+            switchItemTab(event, "rc-tab", "ration-tab");
 			toggleFS();
             
 		});
@@ -59,6 +59,7 @@ var tct_viewer = (function($, document, window) {
 			document.querySelector('#transcription-edit-container').style.display = 'none';
 			document.querySelector('#transcription-view-container').style.display = 'block';
 			document.querySelector('#switch-tr-view i').classList = 'fa fa-pencil';
+			document.getElementById('tr-tab').classList.add('active');
 			toggleFS();
 		});
 		jQuery('#startDescription').click(function() {
@@ -87,12 +88,12 @@ var tct_viewer = (function($, document, window) {
 		});
 		// Ration Cards
 		jQuery('#full-page-rc').click(function() {
-            switchItemTab(event, "rc-tab");
+            switchItemTab(event, "rc-tab", "ration-tab");
 			toggleFS();
             
 		});
 		jQuery('#startTranscription-rc').click(function() {
-            switchItemTab(event, "rc-tab");
+            switchItemTab(event, "rc-tab", "ration-tab");
 			toggleFS();
 		});
 

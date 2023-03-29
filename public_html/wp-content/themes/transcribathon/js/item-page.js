@@ -380,7 +380,7 @@ function closeAllSelect(elmnt) {
 }
 
 // Switches between different tabs within the item page image view
-function switchItemTab(event, tabName) {
+function switchItemTab(event, tabName, tabControler) {
     if (tabName == 'info-tab' && !document.querySelector('.single-meta')) {
         document.querySelector('#meta-collapse').click();
         console.log('click');
@@ -398,9 +398,8 @@ function switchItemTab(event, tabName) {
     }
     // Show clicked tab content and make icon active
     document.getElementById(tabName).style.display = "block";
-    if(event.currentTarget) {
-      event.currentTarget.className += " active";
-    }
+    document.getElementById(tabControler).classList.add('active');
+
     if(map) {
         map.resize();
     }
