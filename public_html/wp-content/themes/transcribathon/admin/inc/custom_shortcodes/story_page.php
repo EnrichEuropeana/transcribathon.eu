@@ -44,42 +44,42 @@ function _TCT_get_document_data( $atts ) {
 
     }
 
-    // Change Story Endpoint
-    $allItems = [];
+    // // Change Story Endpoint
+    $allItems = $storyData['Items'];
 
-    foreach($storyData['ItemIds'] as $item) {
+    // foreach($storyData['ItemIds'] as $item) {
 
-        $singleItem = [];
+    //     $singleItem = [];
 
-        $url = TP_SOLR . '/solr/Items/query';
-        $options = [
-            'http' => [
-                'header' => [
-                    'Content-type: application/json',
-            ],
-                'method' => 'GET'
-            ]
-        ];
-        $options['http']['content'] = json_encode(
-            ['params' =>[
-                'q' => $item,
-                'df' => 'ItemId',
-                ]
-            ]
-        );
-        $context = stream_context_create($options);
+    //     $url = TP_SOLR . '/solr/Items/query';
+    //     $options = [
+    //         'http' => [
+    //             'header' => [
+    //                 'Content-type: application/json',
+    //         ],
+    //             'method' => 'GET'
+    //         ]
+    //     ];
+    //     $options['http']['content'] = json_encode(
+    //         ['params' =>[
+    //             'q' => $item,
+    //             'df' => 'ItemId',
+    //             ]
+    //         ]
+    //     );
+    //     $context = stream_context_create($options);
 
-	    $data = @file_get_contents($url, false, $context);
-        $data = json_decode($data, true);
-        $data = $data['response']['docs'];
+	//     $data = @file_get_contents($url, false, $context);
+    //     $data = json_decode($data, true);
+    //     $data = $data['response']['docs'];
 
-        $singleItem['Image'] = $data[0]['PreviewImageLink'];
-        $singleItem['CompletionStatus'] = $data[0]['CompletionColorCodeGradient'];
-        $singleItem['Id'] = $data[0]['ItemId'];
+    //     $singleItem['Image'] = $data[0]['PreviewImageLink'];
+    //     $singleItem['CompletionStatus'] = $data[0]['CompletionColorCodeGradient'];
+    //     $singleItem['Id'] = $data[0]['ItemId'];
 
-        array_push($allItems, $singleItem);
+    //     array_push($allItems, $singleItem);
 
-    }
+    // }
 
    // var_dump($allItems);
 
@@ -89,12 +89,12 @@ function _TCT_get_document_data( $atts ) {
 
 
     $randomItem = rand(0,(count($allItems)-1));
-    // if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
-    //     $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    // } else {
-    //     $imgDescriptionLink = str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    // }
-   // $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
+    if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
+        $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
+    } else {
+        $imgDescriptionLink = str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
+    }
+   $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
     // Change path if it's ration card
     $itemPath = 'item';
@@ -111,21 +111,35 @@ function _TCT_get_document_data( $atts ) {
     $compStatusCheck = 0;
     for($x = 0; $x < $numbPhotos; $x++) {
 
-        if(($allItems[$x]['CompletionStatus'] == '#ffd800' || $allItems[$x]['CompletionStatus'] == '#eeeeee') && $compStatusCheck < 1) {
+        if(($allItems[$x]['CompletionStatusId'] == 2 || $allItems[$x]['CompletionStatus'] == 1) && $compStatusCheck < 1) {
             $randomItem = $x;
             $compStatusCheck = 1;
         }
 
-        $sliderImg = json_decode($allItems[$x]['Image'], true);
+        $sliderImg = json_decode($allItems[$x]['ImageLink'], true);
         $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
 
         if($sliderImg['height'] == null) {
             $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
         }
 
-        array_push($allImages, ($sliderImgLink . ' || ' . $allItems[$x]['Id'] . ' || ' . $allItems[$x]['CompletionStatus']));
+        $completionStatusColor = '#eeeeee';
+
+        switch ($allItems[$x]['CompletionStatusId']) {
+            case 2:
+                $completionStatusColor = '#fff700';
+                break;
+            case 3:
+                $completionStatusColor = '#ffc720';
+                break;
+            case 4:
+                $completionStatusColor = '#61e02f';
+                break;
+        }
+
+        array_push($allImages, ($sliderImgLink . ' || ' . $allItems[$x]['ItemId'] . ' || ' . $completionStatusColor));
     }
-    $imgDescription = json_decode($allItems[$randomItem]['Image'], true);
+    $imgDescription = json_decode($allItems[$randomItem]['ImageLink'], true);
     $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => 'full', 'region' => 'full'));
 
     $imageSlider = "";
@@ -289,17 +303,17 @@ function _TCT_get_document_data( $atts ) {
                 $itemCount = 0;
 
                 foreach ($allItems as $item) {
-                    switch ($item['CompletionStatus']){
-                        case '#eeeeee':
+                    switch ($item['CompletionStatusId']){
+                        case 1:
                             $statusCount['Not Started'] += 1;
                             break;
-                        case '#ffd800':
+                        case 2:
                             $statusCount['Edit'] += 1;
                             break;
-                        case '#f0b146':
+                        case 3:
                             $statusCount['Review'] += 1;
                             break;
-                        case '#4dcd1c':
+                        case 4:
                             $statusCount['Completed'] += 1;
                             break;
                     }
