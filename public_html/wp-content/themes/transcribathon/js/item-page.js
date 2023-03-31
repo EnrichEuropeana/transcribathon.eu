@@ -1734,7 +1734,7 @@ function loadPersonData(itemId, userId) {
                     ? new Date(person['DeathDate']).toLocaleDateString('en-GB')
                     : null;
 
-                if(person['BirthDate'].includes('01/01/')){
+                if(person['BirthDate'] && person['BirthDate'].includes('01/01/')){
                     person['BirthDate'] = person['BirthDate'].replace('01/01/','');
                 }
 
@@ -2291,7 +2291,7 @@ function initializeMap() {
           + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',
           {
             type: 'GET',
-            url: TP_API_HOST + '/tp-api/places/story/' + itemId
+            url: TP_API_HOST + '/tp-api/places?ItemId=' + itemId
           },
           function(response) {
             const content  = JSON.parse(response).content;

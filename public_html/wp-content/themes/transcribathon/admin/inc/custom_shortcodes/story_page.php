@@ -127,7 +127,6 @@ function _TCT_get_document_data( $atts ) {
     }
     $imgDescription = json_decode($allItems[$randomItem]['Image'], true);
     $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => 'full', 'region' => 'full'));
-    //dd($allImages);
 
     $imageSlider = "";
     $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
