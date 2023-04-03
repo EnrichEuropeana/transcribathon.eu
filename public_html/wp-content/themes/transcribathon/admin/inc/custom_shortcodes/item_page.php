@@ -321,7 +321,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>";
                         $locationDisplay .= "<p><b>" . htmlspecialchars_decode($place['Name']) . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
                         if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
-                            $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: " . $place['Comment'] . "</p>";
+                            $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: " . htmlspecialchars_decode($place['Comment']) . "</p>";
                         }
                         if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
                             $locationDisplay .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
