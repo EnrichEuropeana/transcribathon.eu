@@ -2291,7 +2291,7 @@ function initializeMap() {
           + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',
           {
             type: 'GET',
-            url: TP_API_HOST + '/tp-api/places?ItemId=' + itemId
+            url: TP_API_HOST + '/tp-api/places/story/' + itemId
           },
           function(response) {
             const content  = JSON.parse(response).content;
