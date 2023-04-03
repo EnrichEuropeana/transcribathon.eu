@@ -40,61 +40,20 @@ function _TCT_get_document_data( $atts ) {
         $storyDataSet = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $storyId, $getJsonOptions, true);
         $storyData = $storyDataSet['data'];
         //var_dump($storyData);
+        // // Change Story Endpoint
+        $allItemsSet = sendQuery(TP_API_V2_ENDPOINT . '/items?StoryId=' . $storyId, $getJsonOptions, true);
+        $allItems = $allItemsSet['data'];
 
+       // dd($allItems);
 
     }
-
-    // // Change Story Endpoint
-    $allItems = $storyData['Items'];
-
-    // foreach($storyData['ItemIds'] as $item) {
-
-    //     $singleItem = [];
-
-    //     $url = TP_SOLR . '/solr/Items/query';
-    //     $options = [
-    //         'http' => [
-    //             'header' => [
-    //                 'Content-type: application/json',
-    //         ],
-    //             'method' => 'GET'
-    //         ]
-    //     ];
-    //     $options['http']['content'] = json_encode(
-    //         ['params' =>[
-    //             'q' => $item,
-    //             'df' => 'ItemId',
-    //             ]
-    //         ]
-    //     );
-    //     $context = stream_context_create($options);
-
-	//     $data = @file_get_contents($url, false, $context);
-    //     $data = json_decode($data, true);
-    //     $data = $data['response']['docs'];
-
-    //     $singleItem['Image'] = $data[0]['PreviewImageLink'];
-    //     $singleItem['CompletionStatus'] = $data[0]['CompletionColorCodeGradient'];
-    //     $singleItem['Id'] = $data[0]['ItemId'];
-
-    //     array_push($allItems, $singleItem);
-
-    // }
-
-   // var_dump($allItems);
-
-
 
 
 
 
     $randomItem = rand(0,(count($allItems)-1));
-    if(substr($imgDescription['service']['@id'],0,4) == 'rhus'){
-        $imgDescriptionLink ='http://'. str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    } else {
-        $imgDescriptionLink = str_replace(' ','_',$imgDescription['service']["@id"]) . '/full/full/0/default.jpg';
-    }
-   $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
+
+    $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
 
     // Change path if it's ration card
     $itemPath = 'item';
@@ -104,14 +63,23 @@ function _TCT_get_document_data( $atts ) {
 
     /////////////////////////
     $numbPhotos = count($allItems);
+
+    $statusCount = array(
+        "Not Started" => 0,
+        "Edit" => 0,
+        "Review" => 0,
+        "Completed" => 0
+    );
+
     // $numbSlides = floor($numbPhotos / 9);
     // $restPhotos = $numbPhotos - ($numbSlides * 9);
+    //dd($allItems);
     //// NEW IMAGE SLIDER
     $allImages = [];
     $compStatusCheck = 0;
     for($x = 0; $x < $numbPhotos; $x++) {
 
-        if(($allItems[$x]['CompletionStatusId'] == 2 || $allItems[$x]['CompletionStatus'] == 1) && $compStatusCheck < 1) {
+        if(($allItems[$x]['CompletionStatus']['StatusId'] == 2 || $allItems[$x]['CompletionStatus']['StatusId'] == 1) && $compStatusCheck < 1) {
             $randomItem = $x;
             $compStatusCheck = 1;
         }
@@ -123,19 +91,9 @@ function _TCT_get_document_data( $atts ) {
             $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
         }
 
-        $completionStatusColor = '#eeeeee';
+        $completionStatusColor = $allItems[$x]['CompletionStatus']['ColorCode'];
 
-        switch ($allItems[$x]['CompletionStatusId']) {
-            case 2:
-                $completionStatusColor = '#fff700';
-                break;
-            case 3:
-                $completionStatusColor = '#ffc720';
-                break;
-            case 4:
-                $completionStatusColor = '#61e02f';
-                break;
-        }
+        $statusCount[$allItems[$x]['CompletionStatus']['Name']] += 1;
 
         array_push($allImages, ($sliderImgLink . ' || ' . $allItems[$x]['ItemId'] . ' || ' . $completionStatusColor));
     }
@@ -284,46 +242,10 @@ function _TCT_get_document_data( $atts ) {
             //Status Chart
             $content .= "<div class='storypg-chart'>";
 
-                // Set request parameters for status data
-                $url = TP_API_HOST ."/tp-api/completionStatus";
-                $requestType = "GET";
-
-                // Execude http request
-                include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
-
-                // Save status data
-                $statusTypes = json_decode($result, true);
-
-                $statusCount = array(
-                                   "Not Started" => 0,
-                                   "Edit" => 0,
-                                   "Review" => 0,
-                                   "Completed" => 0
-                               );
-                $itemCount = 0;
-
-                foreach ($allItems as $item) {
-                    switch ($item['CompletionStatusId']){
-                        case 1:
-                            $statusCount['Not Started'] += 1;
-                            break;
-                        case 2:
-                            $statusCount['Edit'] += 1;
-                            break;
-                        case 3:
-                            $statusCount['Review'] += 1;
-                            break;
-                        case 4:
-                            $statusCount['Completed'] += 1;
-                            break;
-                    }
-
-                    $itemCount += 1;
-                }
-                $completedStatus = ($statusCount['Completed'] / $itemCount) * 100;
-                $reviewedStatus = ($statusCount['Review'] / $itemCount) * 100;
-                $editedStatus = ($statusCount['Edit'] / $itemCount) * 100;
-                $notStartedStatus = ($statusCount['Not Started'] / $itemCount) * 100;
+            $completedStatus = ($statusCount['Completed'] / $numbPhotos) * 100;
+            $reviewedStatus = ($statusCount['Review'] / $numbPhotos) * 100;
+            $editedStatus = ($statusCount['Edit'] / $numbPhotos) * 100;
+            $notStartedStatus = ($statusCount['Not Started'] / $numbPhotos) * 100;
 
 
                 // new "chart"
