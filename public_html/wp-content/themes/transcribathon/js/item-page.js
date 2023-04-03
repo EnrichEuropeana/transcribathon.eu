@@ -2375,7 +2375,7 @@ function initializeMap() {
                 wikiName = res.result.text;
             } else {
                 for(let el of res.result.context) {
-                    if(el.hasOwnProperty('wikidata')) {
+                    if(el.hasOwnProperty('wikidata') && el.id.includes('place')) {
                         wikiCode = el.wikidata;
                         wikiName = el.text;
                         break
@@ -2384,7 +2384,7 @@ function initializeMap() {
             }
         }
 
-        jQuery('#location-input-geonames-search-container > input').val(wikiName + '; ' + wikiCode);
+        jQuery('#location-input-geonames-search-container > input').val(wikiName + ';' + wikiCode);
         var el = document.createElement('div');
         el.className = 'marker';
 

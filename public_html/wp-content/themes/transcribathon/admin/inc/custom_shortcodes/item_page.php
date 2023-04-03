@@ -309,125 +309,133 @@ if (event.target.id != "tagging-status-indicator") {
         ]
     ];
 
-    $itemData['Places'] = sendQuery(TP_API_HOST . '/tp-api/places?ItemId=' . $itemId, $getJsonOptions, true);
+    $itemData['Places'] = sendQuery(TP_API_HOST . '/tp-api/places/story/' . $itemId, $getJsonOptions, true);
 
     // Locations Display
     $locationDisplay = "";
     $locationDisplay .= "<div id='location-editor' class='location-display-container' style='margin-top:20px;'>";
         foreach($itemData['Places'] as $place) {
-            $locationDisplay .= "<div id='location-" . $place['PlaceId'] . "'>";
-                $locationDisplay .= "<div id='location-data-output-" . $place['PlaceId'] . "' class='location-single'>";
-                    $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>";
-                    $locationDisplay .= "<p><b>" . $place['Name'] . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
-                    if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
-                        $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: " . $place['Comment'] . "</p>";
-                    }
-                    if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
-                        $locationDisplay .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
-                    }
-
-                    $locationDisplay .= "<div class='edit-delete-btns'>";
-                        $locationDisplay .= "<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openLocationEdit(" . $place['PlaceId'] . ")'></i>";
-                        $locationDisplay .= "<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover'
-                                        onCLick='deleteItemData(\"places\", " . $place['PlaceId'] . ", " . $_GET['item'] . ", \"place\", " . get_current_user_id() . ")' ></i>";
-                    $locationDisplay .= "</div>";
-
-
-                $locationDisplay .= "</div>";
-
-                $locationDisplay .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container' style='display:none;'>";
-
-                    $locationDisplay .= "<div class='location-input-section-top'>";
-                        $locationDisplay .= "<div class='location-input-name-container' style='min-height:25px;'>";
-                            $locationDisplay .= "<label>Location Name: </label>";
-                            $locationDisplay .= "<input type='text' class='edit-input' value='" . ($place['Name'] != 'NULL' ? htmlspecialchars($place['Name'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
-                        $locationDisplay .= "</div>";
-
-                        $locationDisplay .= "<div class='location-input-coordinates-container' style='min-height:25px;'>";
-                            $locationDisplay .= "<label>Coordinates: </label>";
-                            $locationDisplay .= "<span class='required-field'>*</span>";
-                            $locationDisplay .= "<input class='edit-input' type='text' value='" . ($place['Latitude'] != 'NULL' ? htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') : '') . ", "
-                                . ($place['Longitude'] != 'NULL' ? htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
-                        $locationDisplay .= "</div>";
-
-                        $locationDisplay .= "<div style='clear:both;'></div>";
-                    $locationDisplay .= "</div>";
-
-                    $locationDisplay .= "<div class='location-input-description-container' style='height:50px;'>";
-                        $locationDisplay .= "<label>";
-                            $locationDisplay .= "Description: ";
-                            $locationDisplay .= "<i class='fas fa-question-circle' style='font-size: 16px;cursor: pointer; margin-left: 4px;'
-                                            tite='Add more information about this location, e.g. building name, or it's significance to the item...'></i>";
-                        $locationDisplay .= "</label>";
-                        $locationDisplay .= "<textarea rows='2' class='edit-input gsearch-form' style='resize:none;' type='text' id='ldsc'>";
-                        if($place['Comment']) {
-                            $locationDisplay .= htmlspecialchars($place['Comment'], ENT_QUOTES, 'UTF-8');
+            if($place['ItemId'] != 0) {
+                $locationDisplay .= "<div id='location-" . $place['PlaceId'] . "'>";
+                    $locationDisplay .= "<div id='location-data-output-" . $place['PlaceId'] . "' class='location-single'>";
+                        $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>";
+                        $locationDisplay .= "<p><b>" . $place['Name'] . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
+                        if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
+                            $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: " . $place['Comment'] . "</p>";
                         }
-                        $locationDisplay .= "</textarea>";
-                    $locationDisplay .= "</div>";
-                    $locationDisplay .= "<div style='clear:both;'></div>";
-
-                    $locationCheck = '';
-                    if($place['PlaceRole'] == 'CreationPlace') {
-                        $locationCheck = 'checked';
-                    }
-                    $locationDisplay .= "<div class='loc-type'>";
-                        $locationDisplay .= "<label class='loc-checkbox-container' style='width:100%!important;'>";
-                            $locationDisplay .= "<span style='display:inline-block;width:30%;'> Creation Place ";
-                                $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Is this the location where the document was created?'></i>";
-                            $locationDisplay .= "</span>";
-                            $locationDisplay .= "<span class='loc-check-right' style='float:none!important;display:inline-block;'>";
-                                $locationDisplay .= "<input type='checkbox' class='loc-type-check' id='place-role-" . $place['PlaceId'] . "' name='CreationPlace' value='Creation Place' " . $locationCheck . ">";
-                                $locationDisplay .= "<span class='loc-checkmark'></span>";
-                            $locationDisplay .= "</span>";
-                        $locationDisplay .= "</label>";
-                    $locationDisplay .= "</div>";
-
-                    $locationDisplay .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
-                        $locationDisplay .= "<label>Wikidata Reference:";
-                            $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
-                        $locationDisplay .= "</label>";
-                        if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != '' && $place['WikidataName'] != 'NULL' && $place['WikidataName'] != '') {
-                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='"
-                                . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . ";"
-                                . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
-                        } else {
-                            $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
+                        if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
+                            $locationDisplay .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
                         }
+    
+                        $locationDisplay .= "<div class='edit-delete-btns'>";
+                            $locationDisplay .= "<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openLocationEdit(" . $place['PlaceId'] . ")'></i>";
+                            $locationDisplay .= "<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover'
+                                            onCLick='deleteItemData(\"places\", " . $place['PlaceId'] . ", " . $_GET['item'] . ", \"place\", " . get_current_user_id() . ")' ></i>";
+                        $locationDisplay .= "</div>";
+    
+    
                     $locationDisplay .= "</div>";
-
-
-                    $locationDisplay .= "<div class='form-buttons-right'>";
-                        $locationDisplay .= "<div class='form-btn-left'>";
-                            $locationDisplay .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
-                                $locationDisplay .= "CANCEL";
-                            $locationDisplay .= "</button>";
+    
+                    $locationDisplay .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container' style='display:none;'>";
+    
+                        $locationDisplay .= "<div class='location-input-section-top'>";
+                            $locationDisplay .= "<div class='location-input-name-container' style='min-height:25px;'>";
+                                $locationDisplay .= "<label>Location Name: </label>";
+                                $locationDisplay .= "<input type='text' class='edit-input' value='" . ($place['Name'] != 'NULL' ? htmlspecialchars($place['Name'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
+                            $locationDisplay .= "</div>";
+    
+                            $locationDisplay .= "<div class='location-input-coordinates-container' style='min-height:25px;'>";
+                                $locationDisplay .= "<label>Coordinates: </label>";
+                                $locationDisplay .= "<span class='required-field'>*</span>";
+                                $locationDisplay .= "<input class='edit-input' type='text' value='" . ($place['Latitude'] != 'NULL' ? htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') : '') . ", "
+                                    . ($place['Longitude'] != 'NULL' ? htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
+                            $locationDisplay .= "</div>";
+    
+                            $locationDisplay .= "<div style='clear:both;'></div>";
                         $locationDisplay .= "</div>";
-
-                        $locationDisplay .= "<div class='form-btn-right'>";
-                            $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save'
-                                            onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
-                                $locationDisplay .= "SAVE";
-                            $locationDisplay .= "</button>";
-                        $locationDisplay .= "</div>";
-
-                        $locationDisplay .= "<div id='item-location-" . $place['PlaceId'] . "-spinner-container' class='spinner-container spinner-container-right'>";
-                            $locationDisplay .= "<div class='spinner'></div>";
+    
+                        $locationDisplay .= "<div class='location-input-description-container' style='height:50px;'>";
+                            $locationDisplay .= "<label>";
+                                $locationDisplay .= "Description: ";
+                                $locationDisplay .= "<i class='fas fa-question-circle' style='font-size: 16px;cursor: pointer; margin-left: 4px;'
+                                                tite='Add more information about this location, e.g. building name, or it's significance to the item...'></i>";
+                            $locationDisplay .= "</label>";
+                            $locationDisplay .= "<textarea rows='2' class='edit-input gsearch-form' style='resize:none;' type='text' id='ldsc'>";
+                            if($place['Comment']) {
+                                $locationDisplay .= htmlspecialchars($place['Comment'], ENT_QUOTES, 'UTF-8');
+                            }
+                            $locationDisplay .= "</textarea>";
                         $locationDisplay .= "</div>";
                         $locationDisplay .= "<div style='clear:both;'></div>";
+    
+                        $locationCheck = '';
+                        if($place['PlaceRole'] == 'CreationPlace') {
+                            $locationCheck = 'checked';
+                        }
+                        $locationDisplay .= "<div class='loc-type'>";
+                            $locationDisplay .= "<label class='loc-checkbox-container' style='width:100%!important;'>";
+                                $locationDisplay .= "<span style='display:inline-block;width:30%;'> Creation Place ";
+                                    $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Is this the location where the document was created?'></i>";
+                                $locationDisplay .= "</span>";
+                                $locationDisplay .= "<span class='loc-check-right' style='float:none!important;display:inline-block;'>";
+                                    $locationDisplay .= "<input type='checkbox' class='loc-type-check' id='place-role-" . $place['PlaceId'] . "' name='CreationPlace' value='Creation Place' " . $locationCheck . ">";
+                                    $locationDisplay .= "<span class='loc-checkmark'></span>";
+                                $locationDisplay .= "</span>";
+                            $locationDisplay .= "</label>";
+                        $locationDisplay .= "</div>";
+    
+                        $locationDisplay .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
+                            $locationDisplay .= "<label>Wikidata Reference:";
+                                $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
+                            $locationDisplay .= "</label>";
+                            if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != '' && $place['WikidataName'] != 'NULL' && $place['WikidataName'] != '') {
+                                $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name='' value='"
+                                    . htmlspecialchars($place['WikidataName'], ENT_QUOTES, 'UTF-8') . ";"
+                                    . htmlspecialchars($place['WikidataId'], ENT_QUOTES, 'UTF-8') . "'>";
+                            } else {
+                                $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
+                            }
+                        $locationDisplay .= "</div>";
+    
+    
+                        $locationDisplay .= "<div class='form-buttons-right'>";
+                            $locationDisplay .= "<div class='form-btn-left'>";
+                                $locationDisplay .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
+                                    $locationDisplay .= "CANCEL";
+                                $locationDisplay .= "</button>";
+                            $locationDisplay .= "</div>";
+    
+                            $locationDisplay .= "<div class='form-btn-right'>";
+                                $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save'
+                                                onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
+                                    $locationDisplay .= "SAVE";
+                                $locationDisplay .= "</button>";
+                            $locationDisplay .= "</div>";
+    
+                            $locationDisplay .= "<div id='item-location-" . $place['PlaceId'] . "-spinner-container' class='spinner-container spinner-container-right'>";
+                                $locationDisplay .= "<div class='spinner'></div>";
+                            $locationDisplay .= "</div>";
+                            $locationDisplay .= "<div style='clear:both;'></div>";
+                        $locationDisplay .= "</div>";
+    
+                        $locationDisplay .= "<div style='clear:both;'></div>";
                     $locationDisplay .= "</div>";
-
-                    $locationDisplay .= "<div style='clear:both;'></div>";
-                $locationDisplay .= "</div>";
-            $locationDisplay .= "</div>"; // End of single location
-        }
-        if($itemData['StoryPlaceName'] != null && $itemData['StoryPlaceName'] != "" && $itemData['StoryPlaceName'] != "NULL") {
-            $locationDisplay .= "<div class='location-single story-location'>";
+                $locationDisplay .= "</div>"; // End of single location
+            } else {
+                $locationDisplay .= "<div class='location-single story-location'>";
                 $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;position:absolute;top:7px;filter:saturate(0.4)'>";
-                $locationDisplay .= "<p><b>" . $itemData['StoryPlaceName'] . "</b> (" . $itemData['StoryPlaceLatitude'] . ", " . $itemData['StoryPlaceLongitude'] . ")</p>";
+                $locationDisplay .= "<p><b>" . $place['Name'] . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
                 $locationDisplay .= "<p style='font-size:13px;'>Story Location</p>";
-            $locationDisplay .= "</div>";
+                $locationDisplay .= "</div>";
+            }
         }
+        // if($itemData['StoryPlaceName'] != null && $itemData['StoryPlaceName'] != "" && $itemData['StoryPlaceName'] != "NULL") {
+        //     $locationDisplay .= "<div class='location-single story-location'>";
+        //         $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='float:left;height:20px;position:absolute;top:7px;filter:saturate(0.4)'>";
+        //         $locationDisplay .= "<p><b>" . $itemData['StoryPlaceName'] . "</b> (" . $itemData['StoryPlaceLatitude'] . ", " . $itemData['StoryPlaceLongitude'] . ")</p>";
+        //         $locationDisplay .= "<p style='font-size:13px;'>Story Location</p>";
+        //     $locationDisplay .= "</div>";
+        // }
 
         // AutoEnrichment Places
         if(!empty($itemAutoPlaces)) {
