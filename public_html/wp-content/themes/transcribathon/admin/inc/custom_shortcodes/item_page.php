@@ -319,7 +319,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $locationDisplay .= "<div id='location-" . $place['PlaceId'] . "'>";
                     $locationDisplay .= "<div id='location-data-output-" . $place['PlaceId'] . "' class='location-single'>";
                         $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>";
-                        $locationDisplay .= "<p><b>" . $place['Name'] . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
+                        $locationDisplay .= "<p><b>" . htmlspecialchars_decode($place['Name']) . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
                         if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
                             $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: " . $place['Comment'] . "</p>";
                         }
