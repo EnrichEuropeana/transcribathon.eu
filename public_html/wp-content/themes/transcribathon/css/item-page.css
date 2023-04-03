@@ -2504,7 +2504,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 }
 #fs-start-tr {
     background-color: var(--bg-main-color);
-    min-height: 30vh;
+    min-height: 40vh;
     position: relative;
     text-align: center;
 }

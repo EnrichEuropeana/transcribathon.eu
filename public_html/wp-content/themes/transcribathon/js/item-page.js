@@ -1599,10 +1599,10 @@ function loadPlaceData(itemId, userId) {
                     `<div id='location-${escapeHtml(location['PlaceId'])}' >` +
                         `<div id='location-data-output-${location['PlaceId']}' class='location-single'>` +
                             `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
-                            `<p><b>${escapeHtml(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
+                            `<p><b>${htmlDecode(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
                             // Check if there is description : don't add <p> if not
                             `${location['Comment'] ?
-                                `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${escapeHtml(location['Comment'])}</b></p>`
+                                `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${htmlDecode(location['Comment'])}</b></p>`
                                 :
                                 ``
                             }` +
@@ -1734,7 +1734,7 @@ function loadPersonData(itemId, userId) {
                     ? new Date(person['DeathDate']).toLocaleDateString('en-GB')
                     : null;
 
-                if(person['BirthDate'].includes('01/01/')){
+                if(person['BirthDate'] && person['BirthDate'].includes('01/01/')){
                     person['BirthDate'] = person['BirthDate'].replace('01/01/','');
                 }
 
@@ -2375,7 +2375,7 @@ function initializeMap() {
                 wikiName = res.result.text;
             } else {
                 for(let el of res.result.context) {
-                    if(el.hasOwnProperty('wikidata')) {
+                    if(el.hasOwnProperty('wikidata') && el.id.includes('place')) {
                         wikiCode = el.wikidata;
                         wikiName = el.text;
                         break
@@ -2384,7 +2384,7 @@ function initializeMap() {
             }
         }
 
-        jQuery('#location-input-geonames-search-container > input').val(wikiName + '; ' + wikiCode);
+        jQuery('#location-input-geonames-search-container > input').val(wikiName + ';' + wikiCode);
         var el = document.createElement('div');
         el.className = 'marker';
 
@@ -2451,7 +2451,9 @@ async function showActiveTranscription(itemId) {
 }
 
 function htmlDecode(value) {
-    return jQuery("<textarea/>").html(value).text();
+    var txt = document.createElement("textarea");
+    txt.innerHTML = value;
+    return txt.value;
 }
 
 
