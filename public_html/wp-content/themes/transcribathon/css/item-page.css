@@ -4187,7 +4187,8 @@ div.rc-inner-bot-div {
     align-items: stretch;
 }
 p.list-person-single {
-    display: contents!important;
+    display: block;
+    width: 100%;
 }
 /* Ration Cards for Smaller Screens */
 @media screen and (max-width: 1200px) {
