@@ -196,7 +196,7 @@ function _TCT_get_document_data( $atts ) {
                             //     $content .= "</div>";
                             // $content .= "</div>";
 
-                        } elseif (strlen($storyText) > 420) {
+                        } else if (strlen($storyText) > 420) {
                             $content .= "<div class='desc-toggle' role='button'>";
                             $content .= "<div id='storyDescription' class='togglePara' style='max-height: 275px;'>";
                             $content .= $storyText;
@@ -216,7 +216,12 @@ function _TCT_get_document_data( $atts ) {
                             //     $content .= "</div>";
                             // $content .= "</div>";
 
+                        } else if(!empty($storyKeyWords)) {
+                            foreach($storyKeyWords as $keyWord) {
+                                $content .= "<p>".$keyWord."</p>";
+                            }
                         }
+                        // else{
                         // else{
                         //     $content .= "<div id='progress-wrap'>";
                         //         $content .= "<h5 class='progress-h'><i class=\"fa fa-flag-checkered\" aria-hidden=\"true\"></i>  PROGRESS</h5>";
