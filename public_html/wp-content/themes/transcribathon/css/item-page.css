@@ -4177,6 +4177,18 @@ div.rc-inner-bot-div {
     color: #0a72cc;
     cursor: pointer;
 }
+#show-list-ppl div.list-person-single {
+    display: flex;
+    align-items: stretch;
+}
+#rc-tr-wrapper div.list-person-single {
+    white-space: break-spaces;
+    display: flex;
+    align-items: stretch;
+}
+p.list-person-single {
+    display: contents!important;
+}
 /* Ration Cards for Smaller Screens */
 @media screen and (max-width: 1200px) {
     .rc-inner-right {
