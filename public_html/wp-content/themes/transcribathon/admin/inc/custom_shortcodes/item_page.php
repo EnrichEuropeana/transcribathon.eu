@@ -40,6 +40,9 @@ function _TCT_mtr_transcription($atts)
         return;
     }
 
+    $storyDataSet = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $itemData['StoryId'], $getJsonOptions, true);
+    $storyData = $storyDataSet['data'];
+
     // Replace Item endpoint
    // dd($itemData);
 
@@ -52,6 +55,7 @@ function _TCT_mtr_transcription($atts)
     $languages = $pageData['Languages'];
     $categories = $pageData['Categories'];
     $itemImages = $pageData['ItemImages'];
+
     // Get item status name and color
     foreach($statusTypes as $typ) {
         if($itemData['TranscriptionStatusId'] == $typ['CompletionStatusId']) {
@@ -1598,17 +1602,74 @@ if (event.target.id != "tagging-status-indicator") {
     // Metadata
     $metaData .= "";
     $metaData .= "<div id='meta-container'>";
-        // Metadata will be added on click
+        foreach($storyData['Dc'] as $key => $value) {
+            if(!empty($value) && $key != 'Description') {
+                // Clean duplicate values, and remove some if there are too many values for same category
+                $cleaningArr = array_unique(explode(' || ', $value));
+                if(count($cleaningArr) > 5) {
+                    $cleaningArr = array(
+                        0 => $cleaningArr[0],
+                        1 => $cleaningArr[1],
+                        3 => array_pop($cleaningArr)
+                    );
+                }
+                $metaData .= "<div class='single-meta'>";
+                    $metaData .= "<p class='mb-1'>" . $key . "</p>";
+                    $metaData .= "<p class='meta-p'>" . implode(' </br> ', $cleaningArr) . "</p>";
+                $metaData .= "</div>";
+                //var_dump($cleaningArr);
+            }
+        }
+        foreach($storyData['Edm'] as $key => $value) {
+            if(!empty($value)) {
+                // Clean duplicate values, and remove some if there are too many values for same category
+                $cleaningArr = array_unique(explode(' || ', $value));
+                if(count($cleaningArr) > 5) {
+                    $cleaningArr = array(
+                        0 => $cleaningArr[0],
+                        1 => $cleaningArr[1],
+                        3 => array_pop($cleaningArr)
+                    );
+                }
+                $metaData .= "<div class='single-meta'>";
+                    $metaData .= "<p class='mb-1'>" . $key . "</p>";
+                    $metaData .= "<p class='meta-p'>" . implode(' </br> ', $cleaningArr) . "</p>";
+                $metaData .= "</div>";
+                //var_dump($cleaningArr);
+            }
+        }
+        foreach($storyData['Dcterms'] as $key => $value) {
+            if(!empty($value)) {
+                // Clean duplicate values, and remove some if there are too many values for same category
+                $cleaningArr = array_unique(explode(' || ', $value));
+                if(count($cleaningArr) > 5) {
+                    $cleaningArr = array(
+                        0 => $cleaningArr[0],
+                        1 => $cleaningArr[1],
+                        3 => array_pop($cleaningArr)
+                    );
+                }
+                $metaData .= "<div class='single-meta'>";
+                    $metaData .= "<p class='mb-1'>" . $key . "</p>";
+                    $metaData .= "<p class='meta-p'>" . implode(' </br> ', $cleaningArr) . "</p>";
+                $metaData .= "</div>";
+                //var_dump($cleaningArr);
+            }
+        }
 
     $metaData .= "</div>"; // End of meta container
 
     // Story Description
     $storyDescription .= "<div id='storydesc'>";
-        // $storyDescription .= "<p class='mb-1'> Story Description</p>";
-        // $storyDescriptions = array_unique(explode(" || ", $itemData['StorydcDescription']));
-        // foreach($storyDescriptions as $description) {
-        //     $storyDescription .= "<p class='meta-p'>" . $description . "</p>";
-        // }
+        $storyDescription .= "<p class='mb-1'> Story Description</p>";
+        $storyDescriptions = array_unique(explode(" || ", $storyData['Dc']['Description']));
+        if(count($storyDescriptions) > 1) {
+            $description = implode('</br>', $storyDescriptions);
+        } else {
+            $description = $storyDescriptions[0];
+        }
+        $storyDescription .= "<p class='meta-p'>" . $description . "</p>";
+        
     $storyDescription .= "</div>";
     // Item progress bar
 
@@ -1873,12 +1934,12 @@ if (event.target.id != "tagging-status-indicator") {
         $content .= "<div style='clear:both;'></div>";
     $content .= "</section>";
 
-    $content .= "<section id='story-info' class='collapsed'>";
+    $content .= "<section id='story-info' class='collapsed' style='height:200px;padding-bottom:60px;'>";
         $content .= "<div id='meta-collapse' class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;margin:25px 0;' role='button' aria-expanded='false'>";
             $content .= "<span><h5><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>STORY INFORMATION</span><span style='float:right;padding-right:10px;'><i id='angle-i' style='font-size:25px;' class='fas fa-angle-down'></i></h5></span>";
         $content .= "</div>";
         $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:25px;'> &nbsp </div>";
-        $content .= "<div id='meta-wrapper' style='display:none;'>";
+        $content .= "<div id='meta-wrapper'>";
             $content .= "<div id='meta-left'>";
                 // Metadata
                 $content .= $metaData;
@@ -2011,7 +2072,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
 
                     $content .= "</div>";
-                    if($itemData['StorydcDescription'] != null && $itemData['StorydcDescription'] != 'NULL' && strlen($storyDescription) > 1300) {
+                    if($storyData['Dc']['Description'] != null && $storyData['Dc']['Description'] != 'NULL' && strlen($storyDescription) > 1300) {
                         $content .= "<div id='story-full-collapse'>Show More</div>";
                     }
                     // English translation

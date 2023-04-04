@@ -3269,111 +3269,115 @@ ready(() => {
     const storyInfoBtn = document.querySelector('#meta-collapse');
     if(storyInfoBtn){
         storyInfoBtn.addEventListener('click', function() {
+    //         let metaCheck = 0;
             const metaWrap = document.querySelector('#meta-wrapper');
             const downIcon = document.querySelector('#angle-i');
             const doubleDownIcon = document.querySelector('#meta-cover i');
-            if(document.querySelector('.single-meta')) {
-                if(metaWrap.style.display == 'block') {
-                    metaWrap.style.display = 'none';
-                    downIcon.classList = 'fas fa-angle-down';
-                    doubleDownIcon.classList = 'fas fa-angle-double-down';
-                } else {
-                    metaWrap.style.display = 'block';
-                    downIcon.classList = 'fas fa-angle-up';
-                    doubleDownIcon.classList = 'fas fa-angle-double-up';
-                }
-
+    //         if(document.querySelector('.single-meta')) {
+            if(document.querySelector('#story-info').style.height == '200px') {
+                document.querySelector('#story-info').style.height = 'unset';
+                downIcon.classList = 'fas fa-angle-up';
+                doubleDownIcon.classList = 'fas fa-angle-double-up';
             } else {
-
-                let storyId = document.querySelector('#story-id').textContent;
-                const metadataLeft = document.querySelector('#meta-container');
-                const metadataRight = document.querySelector('#storydesc');
-                
-                getMetadata(storyId).then((data) => {
-
-                    const storyData = data.data;
-                    const storyDc = storyData.Dc;
-                    const storyDcterms = storyData.Dcterms;
-                    const storyEdm = storyData.Edm;
-    
-                    for(const [key, value] of Object.entries(storyDc)) {
-                        if(value) {
-                            // clean multiple entries in data
-                            let cleaningArr = value.split(' || ');
-                            if(cleaningArr.length > 6) {
-                                cleaningArr = [cleaningArr[0], cleaningArr[1], cleaningArr.pop()];
-                            }
-                            let cleanArr = new Set(cleaningArr);
-                            let cleanData = Array.from(cleanArr).join(' <br> ');
-        
-                            let newMeta = document.createElement('div');
-                            newMeta.classList = 'single-meta';
-        
-                            newMeta.innerHTML = 
-                                `<p class='mb-1'> ${key} </p>` +
-                                `<p class='meta-p'> ${cleanData} </p>`;
-                            if(key == 'Description') {
-                                metadataRight.appendChild(newMeta);
-                            } else {
-                                metadataLeft.appendChild(newMeta);
-                            }
-                        }
-                    }
-    
-                    for(const [key, value] of Object.entries(storyDcterms)) {
-                        if(value) {
-                            // clean multiple entries in data
-                            let cleaningArr = value.split(' || ');
-                            if(cleaningArr.length > 6) {
-                                cleaningArr = [cleaningArr[0], cleaningArr[1], cleaningArr.pop()];
-                            }
-                            let cleanArr = new Set(cleaningArr);
-                            let cleanData = Array.from(cleanArr).join(' <br> ');
-        
-                            let newMeta = document.createElement('div');
-                            newMeta.classList = 'single-meta';
-        
-                            newMeta.innerHTML = 
-                                `<p class='mb-1'> ${key} </p>` +
-                                `<p class='meta-p'> ${cleanData} </p>`;
-    
-                            metadataLeft.appendChild(newMeta);
-                            
-                        }
-                    }
-    
-                    for(const [key, value] of Object.entries(storyEdm)) {
-                        if(value) {
-                            // clean multiple entries in data
-                            let cleaningArr = value.split(' || ');
-                            if(cleaningArr.length > 6) {
-                                cleaningArr = [cleaningArr[0], cleaningArr[1], cleaningArr.pop()];
-                            }
-                            let cleanArr = new Set(cleaningArr);
-                            let cleanData = Array.from(cleanArr).join(' <br> ');
-        
-                            let newMeta = document.createElement('div');
-                            newMeta.classList = 'single-meta';
-        
-                            newMeta.innerHTML = 
-                                `<p class='mb-1'> ${key} </p>` +
-                                `<p class='meta-p'> ${cleanData} </p>`;
-    
-                            metadataLeft.appendChild(newMeta);
-                            
-                        }
-                    }
-    
-                    metaWrap.style.display = 'block';
-                    downIcon.classList = 'fas fa-angle-up';
-                    doubleDownIcon.classList = 'fas fa-angle-double-up';
-                });
+                document.querySelector('#story-info').style.height = '200px';
+                downIcon.classList = 'fas fa-angle-down';
+                doubleDownIcon.classList = 'fas fa-angle-double-down';
             }
-            
-
-            
         });
     }
+
+    //         } else if (metaCheck < 1) {
+
+    //             metaCheck = 2;
+    //             let storyId = document.querySelector('#story-id').textContent;
+    //             const metadataLeft = document.querySelector('#meta-container');
+    //             const metadataRight = document.querySelector('#storydesc');
+                
+    //             getMetadata(storyId).then((data) => {
+
+    //                 const storyData = data.data;
+    //                 const storyDc = storyData.Dc;
+    //                 const storyDcterms = storyData.Dcterms;
+    //                 const storyEdm = storyData.Edm;
+    
+    //                 for(const [key, value] of Object.entries(storyDc)) {
+    //                     if(value) {
+    //                         // clean multiple entries in data
+    //                         let cleaningArr = value.split(' || ');
+    //                         if(cleaningArr.length > 6) {
+    //                             cleaningArr = [cleaningArr[0], cleaningArr[1], cleaningArr.pop()];
+    //                         }
+    //                         let cleanArr = new Set(cleaningArr);
+    //                         let cleanData = Array.from(cleanArr).join(' <br> ');
+        
+    //                         let newMeta = document.createElement('div');
+    //                         newMeta.classList = 'single-meta';
+        
+    //                         newMeta.innerHTML = 
+    //                             `<p class='mb-1'> ${key} </p>` +
+    //                             `<p class='meta-p'> ${cleanData} </p>`;
+    //                         if(key == 'Description') {
+    //                             metadataRight.appendChild(newMeta);
+    //                         } else {
+    //                             metadataLeft.appendChild(newMeta);
+    //                         }
+    //                     }
+    //                 }
+    
+    //                 for(const [key, value] of Object.entries(storyDcterms)) {
+    //                     if(value) {
+    //                         // clean multiple entries in data
+    //                         let cleaningArr = value.split(' || ');
+    //                         if(cleaningArr.length > 6) {
+    //                             cleaningArr = [cleaningArr[0], cleaningArr[1], cleaningArr.pop()];
+    //                         }
+    //                         let cleanArr = new Set(cleaningArr);
+    //                         let cleanData = Array.from(cleanArr).join(' <br> ');
+        
+    //                         let newMeta = document.createElement('div');
+    //                         newMeta.classList = 'single-meta';
+        
+    //                         newMeta.innerHTML = 
+    //                             `<p class='mb-1'> ${key} </p>` +
+    //                             `<p class='meta-p'> ${cleanData} </p>`;
+    
+    //                         metadataLeft.appendChild(newMeta);
+                            
+    //                     }
+    //                 }
+    
+    //                 for(const [key, value] of Object.entries(storyEdm)) {
+    //                     if(value) {
+    //                         // clean multiple entries in data
+    //                         let cleaningArr = value.split(' || ');
+    //                         if(cleaningArr.length > 6) {
+    //                             cleaningArr = [cleaningArr[0], cleaningArr[1], cleaningArr.pop()];
+    //                         }
+    //                         let cleanArr = new Set(cleaningArr);
+    //                         let cleanData = Array.from(cleanArr).join(' <br> ');
+        
+    //                         let newMeta = document.createElement('div');
+    //                         newMeta.classList = 'single-meta';
+        
+    //                         newMeta.innerHTML = 
+    //                             `<p class='mb-1'> ${key} </p>` +
+    //                             `<p class='meta-p'> ${cleanData} </p>`;
+    
+    //                         metadataLeft.appendChild(newMeta);
+                            
+    //                     }
+    //                 }
+    
+    //                 metaWrap.style.display = 'block';
+    //                 downIcon.classList = 'fas fa-angle-up';
+    //                 doubleDownIcon.classList = 'fas fa-angle-double-up';
+    //             });
+    //         }
+            
+
+            
+    //     });
+    // }
     
 
     installEventListeners();
