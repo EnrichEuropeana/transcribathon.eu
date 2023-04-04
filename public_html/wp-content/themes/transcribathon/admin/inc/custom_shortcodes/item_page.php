@@ -1613,9 +1613,18 @@ if (event.target.id != "tagging-status-indicator") {
                         3 => array_pop($cleaningArr)
                     );
                 }
+                $cleanArr = array_map(function($element) {
+                    if(empty($element)) {
+                        return;
+                    } else if(filter_var($element, FILTER_VALIDATE_URL)) {
+                        return "<a href='" . $element . "' class='meta-p' target='_blank'>" . $element . "</a>";
+                    } else {
+                        return "<p class='meta-p'>" . $element . "</p>";
+                    }
+                }, $cleaningArr);
                 $metaData .= "<div class='single-meta'>";
                     $metaData .= "<p class='mb-1'>" . $key . "</p>";
-                    $metaData .= "<p class='meta-p'>" . implode(' </br> ', $cleaningArr) . "</p>";
+                    $metaData .=  implode(' ', $cleanArr) ;
                 $metaData .= "</div>";
                 //var_dump($cleaningArr);
             }
@@ -1631,11 +1640,19 @@ if (event.target.id != "tagging-status-indicator") {
                         3 => array_pop($cleaningArr)
                     );
                 }
+                $cleanArr = array_map(function($element) {
+                    if(empty($element)) {
+                        return;
+                    } else if(filter_var($element, FILTER_VALIDATE_URL)) {
+                        return "<a href='" . $element . "' class='meta-p' target='_blank'>" . $element . "</a>";
+                    } else {
+                        return "<p class='meta-p'>" . $element . "</p>";
+                    }
+                }, $cleaningArr);
                 $metaData .= "<div class='single-meta'>";
                     $metaData .= "<p class='mb-1'>" . $key . "</p>";
-                    $metaData .= "<p class='meta-p'>" . implode(' </br> ', $cleaningArr) . "</p>";
+                    $metaData .=  implode(' ', $cleanArr) ;
                 $metaData .= "</div>";
-                //var_dump($cleaningArr);
             }
         }
         foreach($storyData['Dcterms'] as $key => $value) {
@@ -1649,11 +1666,19 @@ if (event.target.id != "tagging-status-indicator") {
                         3 => array_pop($cleaningArr)
                     );
                 }
+                $cleanArr = array_map(function($element) {
+                    if(empty($element)) {
+                        return;
+                    } else if(filter_var($element, FILTER_VALIDATE_URL)) {
+                        return "<a href='" . $element . "' class='meta-p' target='_blank'>" . $element . "</a>";
+                    } else {
+                        return "<p class='meta-p'>" . $element . "</p>";
+                    }
+                }, $cleaningArr);
                 $metaData .= "<div class='single-meta'>";
                     $metaData .= "<p class='mb-1'>" . $key . "</p>";
-                    $metaData .= "<p class='meta-p'>" . implode(' </br> ', $cleaningArr) . "</p>";
+                    $metaData .=  implode(' ', $cleanArr) ;
                 $metaData .= "</div>";
-                //var_dump($cleaningArr);
             }
         }
 
@@ -2073,7 +2098,7 @@ if (event.target.id != "tagging-status-indicator") {
 
                     $content .= "</div>";
                     if($storyData['Dc']['Description'] != null && $storyData['Dc']['Description'] != 'NULL' && strlen($storyDescription) > 1300) {
-                        $content .= "<div id='story-full-collapse'>Show More</div>";
+                        $content .= "<div id='story-full-collapse' style='cursor:pointer;'>Show More</div>";
                     }
                     // English translation
                     // if($engDescription != null) {

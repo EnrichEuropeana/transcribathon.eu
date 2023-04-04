@@ -381,9 +381,9 @@ function closeAllSelect(elmnt) {
 
 // Switches between different tabs within the item page image view
 function switchItemTab(event, tabName, tabControler) {
-    if (tabName == 'info-tab' && !document.querySelector('.single-meta')) {
-        document.querySelector('#meta-collapse').click();
-    }
+    // if (tabName == 'info-tab' && !document.querySelector('.single-meta')) {
+    //     document.querySelector('#meta-collapse').click();
+    // }
     var i, tabcontent, tablinks;
     // Hide all tab contents
     tabcontent = document.getElementsByClassName("tabcontent");
