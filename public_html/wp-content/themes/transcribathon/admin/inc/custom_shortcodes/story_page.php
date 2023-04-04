@@ -41,7 +41,7 @@ function _TCT_get_document_data( $atts ) {
         $storyData = $storyDataSet['data'];
         //var_dump($storyData);
         // // Change Story Endpoint
-        $allItemsSet = sendQuery(TP_API_V2_ENDPOINT . '/items?StoryId=' . $storyId, $getJsonOptions, true);
+        $allItemsSet = sendQuery(TP_API_V2_ENDPOINT . '/items?limit=500&page=1&orderBy=OrderIndex&orderDir=asc&StoryId=' . $storyId, $getJsonOptions, true);
         $allItems = $allItemsSet['data'];
 
        // dd($allItems);
