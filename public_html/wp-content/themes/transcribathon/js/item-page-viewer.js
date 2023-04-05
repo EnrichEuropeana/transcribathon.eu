@@ -341,8 +341,6 @@ var tct_viewer = (function($, document, window) {
 		tinyPlugins = 'wordcount charmap';
 		tinyToolbar = 'bold italic underline strikethrough | missbut unsure side-info | charmap undo redo | wordcount';
 	  }
-
-
 	  tinymce.init({
 	    selector: selector,
 		menubar: false,
@@ -352,6 +350,18 @@ var tct_viewer = (function($, document, window) {
 		toolbar: tinyToolbar,
 		placeholder:' Start transcribing...',
 		toolbar_mode: 'floating',
+		charmap_append: [
+            [381, 'Ž'],
+			[382, 'ž'],
+			[352, 'Š'],
+			[353, 'š'],
+			[263, 'ć'],
+			[262, 'Ć'],
+			[268, 'Č'],
+			[269, 'č'],
+			[272, 'Đ'],
+			[273, 'đ']
+		],
 	
 			setup: function (editor) {
 				
