@@ -346,13 +346,24 @@ var tct_viewer = (function($, document, window) {
 	
 			setup: function (editor) {
 				
-				editor.on('keydown',function(evt){
-					if (evt.keyCode==9) {
-						editor.execCommand('mceInsertContent', false, '&emsp;&emsp;'); // inserts tab
-						evt.preventDefault();
-						return false;
-					}
-				});
+				if(!document.getElementById('ration-tab')) {
+					editor.on('keydown',function(evt){
+						if (evt.keyCode==9) {
+							editor.execCommand('mceInsertContent', false, '&emsp;&emsp;'); // inserts tab
+							evt.preventDefault();
+							return false;
+						}
+					});
+				} else if (document.getElementById('ration-tab')) {
+					editor.on('keydown',function(evt){
+						if (evt.keyCode === 9 || evt.keyCode === 13 ) {
+							//editor.execCommand('mceInsertContent', false, '&emsp;&emsp;'); // inserts tab
+							evt.preventDefault();
+							evt.stopPropagation();
+						}
+					});
+				}
+
 				editor.on('focus', function() {
 					document.querySelector('.item-page-section-headline').style.visibility = 'hidden';
 					document.querySelector('#switch-tr-view').style.visibility = 'hidden';
