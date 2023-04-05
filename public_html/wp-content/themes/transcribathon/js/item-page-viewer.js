@@ -334,13 +334,22 @@ var tct_viewer = (function($, document, window) {
 		selection.enable();
 	},
 	initTinyWithConfig = function(selector) {
+      let tinyPlugins = 'wordcount table charmap directionality';
+	  let tinyToolbar = 'bold italic underline strikethrough removeformat | alignleft aligncenter alignright alignjustify | table | missbut unsure side-info | charmap undo redo subscript superscript indent ltr rtl wordcount';
+      // Change toolbar and pluins if it's ration card
+	  if(document.getElementById('ration-tab')) {
+		tinyPlugins = 'wordcount charmap';
+		tinyToolbar = 'bold italic underline strikethrough | missbut unsure side-info | charmap undo redo | wordcount';
+	  }
+
+
 	  tinymce.init({
 	    selector: selector,
 		menubar: false,
         inline: true,
 		resize: true,
-		plugins: 'wordcount table charmap directionality',
-		toolbar: 'bold italic underline strikethrough removeformat | alignleft aligncenter alignright alignjustify | table | missbut unsure side-info | charmap undo redo subscript superscript indent ltr rtl wordcount',
+		plugins: tinyPlugins,
+		toolbar: tinyToolbar,
 		placeholder:' Start transcribing...',
 		toolbar_mode: 'floating',
 	
