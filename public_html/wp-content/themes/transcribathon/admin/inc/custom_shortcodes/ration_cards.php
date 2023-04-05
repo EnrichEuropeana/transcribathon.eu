@@ -39,7 +39,8 @@ function _TCT_ration_cards($atts)
     if (empty($itemData['StoryId'])) {
         return;
     }
-
+    $storyDataSet = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $itemData['StoryId'], $getJsonOptions, true);
+    $storyData = $storyDataSet['data'];
     $storyId = $itemData['StoryId'];;
 
     $pageData = sendQuery(TP_API_HOST . '/tp-api/itemPage/' . $storyId, $getJsonOptions, true);
@@ -1551,16 +1552,98 @@ function _TCT_ration_cards($atts)
     // Metadata
     $metaData .= "";
     $metaData .= "<div id='meta-container'>";
+    foreach($storyData['Dc'] as $key => $value) {
+        if(!empty($value) && $key != 'Description') {
+            // Clean duplicate values, and remove some if there are too many values for same category
+            $cleaningArr = array_unique(explode(' || ', $value));
+            if(count($cleaningArr) > 5) {
+                $cleaningArr = array(
+                    0 => $cleaningArr[0],
+                    1 => $cleaningArr[1],
+                    3 => array_pop($cleaningArr)
+                );
+            }
+            $cleanArr = array_map(function($element) {
+                if(empty($element)) {
+                    return;
+                } else if(filter_var($element, FILTER_VALIDATE_URL)) {
+                    return "<a href='" . $element . "' class='meta-p' target='_blank'>" . $element . "</a>";
+                } else {
+                    return "<p class='meta-p'>" . $element . "</p>";
+                }
+            }, $cleaningArr);
+            $metaData .= "<div class='single-meta'>";
+                $metaData .= "<p class='mb-1'>" . $key . "</p>";
+                $metaData .=  implode(' ', $cleanArr) ;
+            $metaData .= "</div>";
+            //var_dump($cleaningArr);
+        }
+    }
+    foreach($storyData['Edm'] as $key => $value) {
+        if(!empty($value)) {
+            // Clean duplicate values, and remove some if there are too many values for same category
+            $cleaningArr = array_unique(explode(' || ', $value));
+            if(count($cleaningArr) > 5) {
+                $cleaningArr = array(
+                    0 => $cleaningArr[0],
+                    1 => $cleaningArr[1],
+                    3 => array_pop($cleaningArr)
+                );
+            }
+            $cleanArr = array_map(function($element) {
+                if(empty($element)) {
+                    return;
+                } else if(filter_var($element, FILTER_VALIDATE_URL)) {
+                    return "<a href='" . $element . "' class='meta-p' target='_blank'>" . $element . "</a>";
+                } else {
+                    return "<p class='meta-p'>" . $element . "</p>";
+                }
+            }, $cleaningArr);
+            $metaData .= "<div class='single-meta'>";
+                $metaData .= "<p class='mb-1'>" . $key . "</p>";
+                $metaData .=  implode(' ', $cleanArr) ;
+            $metaData .= "</div>";
+        }
+    }
+    foreach($storyData['Dcterms'] as $key => $value) {
+        if(!empty($value)) {
+            // Clean duplicate values, and remove some if there are too many values for same category
+            $cleaningArr = array_unique(explode(' || ', $value));
+            if(count($cleaningArr) > 5) {
+                $cleaningArr = array(
+                    0 => $cleaningArr[0],
+                    1 => $cleaningArr[1],
+                    3 => array_pop($cleaningArr)
+                );
+            }
+            $cleanArr = array_map(function($element) {
+                if(empty($element)) {
+                    return;
+                } else if(filter_var($element, FILTER_VALIDATE_URL)) {
+                    return "<a href='" . $element . "' class='meta-p' target='_blank'>" . $element . "</a>";
+                } else {
+                    return "<p class='meta-p'>" . $element . "</p>";
+                }
+            }, $cleaningArr);
+            $metaData .= "<div class='single-meta'>";
+                $metaData .= "<p class='mb-1'>" . $key . "</p>";
+                $metaData .=  implode(' ', $cleanArr) ;
+            $metaData .= "</div>";
+        }
+    }
         // Data will show on click
     $metaData .= "</div>"; // End of meta container
 
     // Story Description
     $storyDescription .= "<div id='storydesc'>";
-        // $storyDescription .= "<p class='mb-1'> Story Description</p>";
-        // $storyDescriptions = array_unique(explode(" || ", $itemData['StorydcDescription']));
-        // foreach($storyDescriptions as $description) {
-        //     $storyDescription .= "<p class='meta-p'>" . $description . "</p>";
-        // }
+        $storyDescription .= "<p class='mb-1'> Story Description</p>";
+        $storyDescriptions = array_unique(explode(" || ", $storyData['Dc']['Description']));
+        if(count($storyDescriptions) > 1) {
+            $description = implode('</br>', $storyDescriptions);
+        } else {
+            $description = $storyDescriptions[0];
+        }
+        $storyDescription .= "<p class='meta-p'>" . $description . "</p>";
     $storyDescription .= "</div>";
     // Item progress bar
 
@@ -1825,12 +1908,12 @@ function _TCT_ration_cards($atts)
         $content .= "<div style='clear:both;'></div>";
     $content .= "</section>";
 
-    $content .= "<section id='story-info' class='collapsed'>";
+    $content .= "<section id='story-info' class='collapsed' style='height:200px;padding-bottom:60px;'>";
         $content .= "<div id='meta-collapse' class='add-info enrich-header' style='color:#0a72cc;font-size:1.2em;cursor:pointer;margin:25px 0;' role='button' aria-expanded='false'>";
             $content .= "<span><h5><i style='margin-right:14px;' class=\"fa fa-info-circle\" aria-hidden=\"true\"></i>STORY INFORMATION</span><span style='float:right;padding-right:10px;'><i id='angle-i' style='font-size:25px;' class='fas fa-angle-down'></i></h5></span>";
         $content .= "</div>";
         $content .= "<div style='background-image:linear-gradient(14deg,rgba(255,255,255,1),rgba(238,236,237,0.4),rgba(255,255,255,1));height:5px;position:relative;bottom:25px;'> &nbsp </div>";
-        $content .= "<div id='meta-wrapper' style='display:none;'>";
+        $content .= "<div id='meta-wrapper'>";
             $content .= "<div id='meta-left'>";
                 // Metadata
                 $content .= $metaData;
@@ -2055,15 +2138,18 @@ function _TCT_ration_cards($atts)
                     $content .= "</div>";
                 $content .= "</div>";
                 // Help tab
-                $content .= "<div id='rc-tab' class='tabcontent' style='display:none;'>";
+                $content .= "<div id='rc-tab' class='tabcontent' style='display:none;padding-left:30px;'>";
                     //$content .= do_shortcode('[tutorial_item_slider]');
+                    $content .= "<div class='item-page-section-headline theme-color'> RC TRANSCRIPTION FORM </div>";
+
                     $content .= "<div id='rc-form' style='position:relative;padding-right:5px;'>";
                         $content .= "<div id='rc-popup' >";
-                            $content .= "<p> Please fill in information form Ration Card to their respective fields. </p>";
-                            $content .= "<p> Molimo unesite informacije is potrošačke kartice u za to predviđena mjesta. </p>";
+                            $content .= "<p> Please fill in information from Ration Card to their respective fields. </p>";
+                            $content .= "<p> Molimo unesite informacije iz potrošačke kartice u za to predviđena mjesta. </p>";
                             $content .= "<div id='close-rc-popup'> Close </div>";
                         $content .= "</div>";
-                        $content .= "<h3><b> Grad Zagreb </b></h3>";
+
+                        //$content .= "<h3><b> Grad Zagreb </b></h3>";
                             // Top adress and card registration number(just labels)
                             $content .= "<table class='rc-top-address'>";
                                 $content .= "<tr>";

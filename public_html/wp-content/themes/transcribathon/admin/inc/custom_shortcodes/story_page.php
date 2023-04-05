@@ -39,9 +39,9 @@ function _TCT_get_document_data( $atts ) {
     
         $storyDataSet = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $storyId, $getJsonOptions, true);
         $storyData = $storyDataSet['data'];
-        //var_dump($storyData);
+
         // // Change Story Endpoint
-        $allItemsSet = sendQuery(TP_API_V2_ENDPOINT . '/items?StoryId=' . $storyId, $getJsonOptions, true);
+        $allItemsSet = sendQuery(TP_API_V2_ENDPOINT . '/items?limit=500&page=1&orderBy=OrderIndex&orderDir=asc&StoryId=' . $storyId, $getJsonOptions, true);
         $allItems = $allItemsSet['data'];
 
        // dd($allItems);
@@ -53,7 +53,7 @@ function _TCT_get_document_data( $atts ) {
 
     $randomItem = rand(0,(count($allItems)-1));
 
-    $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
+
 
     // Change path if it's ration card
     $itemPath = 'item';
@@ -99,6 +99,8 @@ function _TCT_get_document_data( $atts ) {
     }
     $imgDescription = json_decode($allItems[$randomItem]['ImageLink'], true);
     $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => 'full', 'region' => 'full'));
+    $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
+    //dd($allItems);
 
     $imageSlider = "";
     $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
@@ -120,7 +122,7 @@ function _TCT_get_document_data( $atts ) {
 
         /* New- Start Transcription button */
 
-        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/" . $itemPath . "/?item=".$allItems[$randomItem]['Id']."' style='font-family:\"Dosis\";margin-top:6px;'><b>🖉  Start Transcription</b></a>";
+        $content .= "<a class='start-transcription' type='button' href='".get_europeana_url()."/documents/story/" . $itemPath . "/?item=".$allItems[$randomItem]['ItemId']."' style='font-family:\"Dosis\";margin-top:6px;'><b>🖉  Start Transcription</b></a>";
 
         $content .= "<div id='total-storypg' class='storypg-container'>";
             $content .= "<div class='main-storypg'>";
@@ -130,7 +132,7 @@ function _TCT_get_document_data( $atts ) {
 
                     $content .= "<div class='story-description-left'>";
                     //    $content .= "<div id='desc-img-wrap'>";
-                    $content .= "<a href='".home_url()."/documents/story/" . $itemPath . "/?item=".$allItems[$randomItem]['Id']."'><img class=\"description-img\" src='".$imgDescriptionLink."' alt=\"story-img\"></a>";
+                    $content .= "<a href='".home_url()."/documents/story/" . $itemPath . "/?item=".$allItems[$randomItem]['ItemId']."'><img class=\"description-img\" src='".$imgDescriptionLink."' alt=\"story-img\"></a>";
                     unset($imgDescriptionLink);
                     //    $content .= "</div>";
 
@@ -194,7 +196,7 @@ function _TCT_get_document_data( $atts ) {
                             //     $content .= "</div>";
                             // $content .= "</div>";
 
-                        } elseif (strlen($storyText) > 420) {
+                        } else if (strlen($storyText) > 420) {
                             $content .= "<div class='desc-toggle' role='button'>";
                             $content .= "<div id='storyDescription' class='togglePara' style='max-height: 275px;'>";
                             $content .= $storyText;
@@ -214,7 +216,12 @@ function _TCT_get_document_data( $atts ) {
                             //     $content .= "</div>";
                             // $content .= "</div>";
 
+                        } else if(!empty($storyKeyWords)) {
+                            foreach($storyKeyWords as $keyWord) {
+                                $content .= "<p>".$keyWord."</p>";
+                            }
                         }
+                        // else{
                         // else{
                         //     $content .= "<div id='progress-wrap'>";
                         //         $content .= "<h5 class='progress-h'><i class=\"fa fa-flag-checkered\" aria-hidden=\"true\"></i>  PROGRESS</h5>";
