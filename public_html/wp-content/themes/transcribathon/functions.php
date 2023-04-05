@@ -288,7 +288,7 @@ function embedd_custom_javascripts_and_css() {
         wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion);
 
 
-
+        var_dump($post->post_name);
 
         switch ($post->post_name) {
 
@@ -512,6 +512,7 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('child-style');
                 wp_dequeue_style('jQuery-UI');
                 wp_dequeue_style('bootstrap');
+                wp_dequeue_style('responsive-lightbox-swipebox');
 
                 // Dequeue unused scripts
                 wp_dequeue_script('tct-tutorial-slider-widget');
@@ -521,6 +522,7 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
                 wp_deregister_script('responsive-lightbox');
+                wp_dequeue_script('responsive-lightbox-swipebox');
                 //wp_dequeue_script('custom');
                 wp_dequeue_script('jQuery-UI');
                 wp_dequeue_script('pagination');
