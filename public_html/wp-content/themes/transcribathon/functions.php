@@ -419,31 +419,6 @@ function embedd_custom_javascripts_and_css() {
             
             case 'ration-cards':
 
-                // Dequeue unused styles
-                wp_dequeue_style('cpsh-shortcodes');
-                wp_dequeue_style('sp-ea-font-awesome');
-                wp_dequeue_style('sp-ea-style');
-                wp_dequeue_style('responsive-lightbox-featherlight');
-                wp_dequeue_style('responsive-lightbox-featherlight-gallery');
-                wp_dequeue_style('child-style');
-                wp_dequeue_style('jQuery-UI');
-                wp_dequeue_style('bootstrap');
-
-                // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
-                wp_dequeue_script('responsive-lightbox-featherlight');
-                wp_dequeue_script('responsive-lightbox');
-                wp_dequeue_script('responsive-lightbox-featherlight-gallery');
-                wp_deregister_script('responsive-lightbox');
-                wp_dequeue_script('custom');
-                wp_dequeue_script('jQuery-UI');
-                wp_dequeue_script('pagination');
-                wp_dequeue_script('jquery-migrate');
-                wp_dequeue_script('diff-match-patch');
-                wp_dequeue_script('bootstrap');
-
                 /* resizable JS*/
                 wp_register_script( 'resizable', CHILD_TEMPLATE_DIR . '/js/jquery-resizable.js', array( 'jQuery-UI' ), null, null, true );
                 wp_enqueue_script( 'resizable' );
@@ -466,6 +441,25 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_script( 'viewer', CHILD_TEMPLATE_DIR . '/js/item-page-viewer.js', array(), $themeVersion);
                 wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css', array(), $themeVersion);
                 wp_enqueue_script( 'item-js', CHILD_TEMPLATE_DIR . '/js/item-page.js', array(), $themeVersion);
+
+                // Dequeue unused styles
+                wp_dequeue_style('cpsh-shortcodes');
+                wp_dequeue_style('sp-ea-font-awesome');
+                wp_dequeue_style('sp-ea-style');
+                wp_dequeue_style('responsive-lightbox-featherlight');
+                wp_dequeue_style('responsive-lightbox-featherlight-gallery');
+                wp_dequeue_style('child-style');
+
+                // Dequeue unused scripts
+                wp_dequeue_script('tct-tutorial-slider-widget');
+                wp_dequeue_script('tct-menulist-widget');
+                wp_dequeue_script('tct-boxes-widget');
+                wp_dequeue_script('responsive-lightbox-featherlight');
+                wp_dequeue_script('responsive-lightbox');
+                wp_dequeue_script('responsive-lightbox-featherlight-gallery');
+                wp_deregister_script('responsive-lightbox');
+                wp_dequeue_script('custom');
+
                 wp_enqueue_script( 'rc-script', CHILD_TEMPLATE_DIR . '/js/ration-cards.js', array(), $themeVersion);
                 break;
 
