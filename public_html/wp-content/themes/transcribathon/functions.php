@@ -288,7 +288,7 @@ function embedd_custom_javascripts_and_css() {
         wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion);
 
 
-        //var_dump($post->post_name);
+        var_dump($post->post_name);
 
         switch ($post->post_name) {
 
