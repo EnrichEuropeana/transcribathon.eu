@@ -282,13 +282,14 @@ function embedd_custom_javascripts_and_css() {
         wp_enqueue_style( 'custom-css' );
 
         // Register jQuery script
+        wp_enqueue_script( 'jquery' );
         /* jQuery UI JS*/
         wp_register_script( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/js/jquery-ui.min.js');
 
         wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion);
 
 
-        var_dump($post->post_name);
+        //var_dump($post->post_name);
 
         switch ($post->post_name) {
 
