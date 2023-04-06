@@ -140,7 +140,7 @@ footer._tct_footer, footer.site-footer {
     display: none;
 }
 #go-home {
-    margin-top:8px;
+    margin-top:-4px;
     height:39px;
     padding:7px 5px 5px 5px;
     text-decoration:none;
