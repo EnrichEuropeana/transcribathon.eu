@@ -34,6 +34,9 @@ html {
   width: 100%;
   border: 0;
 }
+a {
+  text-decoration: none!important;
+}
 .hr-tb, .widget_tct-home-stats-widget {
   border-top: 2px solid #eee;
   border-bottom: 2px solid #eee;
