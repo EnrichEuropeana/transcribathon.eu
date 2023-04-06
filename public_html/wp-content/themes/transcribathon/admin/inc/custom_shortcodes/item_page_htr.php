@@ -150,6 +150,11 @@ footer._tct_footer, footer.site-footer {
     font-size: 14px;
     font-weight: bolder;
 }
+#go-home:hover {
+    background: #fff;
+    color: #0a72cc;
+    border: 1 px solid #0a72cc;
+}
 .editor-change {
     position:absolute;
     bottom:2%;
