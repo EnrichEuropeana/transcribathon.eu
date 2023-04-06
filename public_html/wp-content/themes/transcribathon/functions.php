@@ -359,6 +359,7 @@ function embedd_custom_javascripts_and_css() {
                 /* mapbox js and style*/
                 wp_enqueue_script( 'mapbox-gl', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js', null, null, true );
                 wp_enqueue_style('mapblox-gl', CHILD_TEMPLATE_DIR . '/css/mapbox-gl.css');
+                wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css', array(), $themeVersion);
 
                 // Dequeue unused styles
                 wp_dequeue_style('cpsh-shortcodes');
