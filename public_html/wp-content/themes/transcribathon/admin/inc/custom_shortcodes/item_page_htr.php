@@ -140,7 +140,7 @@ footer._tct_footer, footer.site-footer {
     display: none;
 }
 #go-home {
-    margin-top:8px;
+    margin-top:-4px;
     height:39px;
     padding:7px 5px 5px 5px;
     text-decoration:none;
@@ -149,6 +149,11 @@ footer._tct_footer, footer.site-footer {
     text-transform:none;
     font-size: 14px;
     font-weight: bolder;
+}
+#go-home:hover {
+    background: #fff;
+    color: #0a72cc;
+    border: 1 px solid #0a72cc;
 }
 .editor-change {
     position:absolute;
