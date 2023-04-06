@@ -498,38 +498,13 @@ function embedd_custom_javascripts_and_css() {
                 break;
 
             // Just temp case for local docker
-            case 'enrich-europeana-2':
+            case 'map':
 
                 // Dequeue unused styles
-                wp_dequeue_style('cpsh-shortcodes');
-                wp_dequeue_style('sp-ea-font-awesome');
-                wp_dequeue_style('sp-ea-style');
-                wp_dequeue_style('responsive-lightbox-featherlight');
-                wp_dequeue_style('responsive-lightbox-featherlight-gallery');
-                wp_dequeue_style('child-style');
-                wp_dequeue_style('jQuery-UI');
-                wp_dequeue_style('bootstrap');
-
-                // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
-                wp_dequeue_script('responsive-lightbox-featherlight');
-                wp_dequeue_script('responsive-lightbox');
-                wp_dequeue_script('responsive-lightbox-featherlight-gallery');
-                wp_deregister_script('responsive-lightbox');
-                wp_dequeue_script('custom');
-                wp_dequeue_script('jQuery-UI');
-                wp_dequeue_script('pagination');
-                wp_dequeue_script('jquery-migrate');
-                wp_dequeue_script('diff-match-patch');
-                wp_dequeue_script('bootstrap');
-
-
-                /* slick CSS*/
-                wp_enqueue_style( 'slick', CHILD_TEMPLATE_DIR . '/css/slick.css');
-                /* slick JS*/
-                wp_enqueue_script( 'slick', CHILD_TEMPLATE_DIR . '/js/slick.min.js');
+                /* mapbox js and style*/
+                wp_enqueue_script( 'mapbox-gl', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js', null, null, true );
+                wp_enqueue_style('mapblox-gl', CHILD_TEMPLATE_DIR . '/css/mapbox-gl.css');
+                wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css', array(), $themeVersion);
                 break;
 
             case 'transcribathon':
