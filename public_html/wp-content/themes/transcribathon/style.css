@@ -4,7 +4,7 @@
   Author URI: http://factsandfiles.com
   Description: A child theme of Vantage (SiteOrigin)
   Template: vantage
-  Version: 2.12.2
+  Version: 2.12.4
 */
 
 /* Retreive styles from mother theme */
@@ -33,6 +33,9 @@ html {
   height: 2px;
   width: 100%;
   border: 0;
+}
+a {
+  text-decoration: none!important;
 }
 .hr-tb, .widget_tct-home-stats-widget {
   border-top: 2px solid #eee;
@@ -580,6 +583,7 @@ footer._tct_footer {
   height: 100px;
   width: 100px;
   text-transform: uppercase;
+  text-decoration: none;
   font-size: 16px;
   border-radius: 50%;
   text-align: center;
@@ -2755,7 +2759,7 @@ button.content-view-button {
 }
 /*temporary background for search bar*/
 .temp-back {
-  background: url("/wp-content/themes/transcribathon/images/search-header.jpg");
+  background: url("/wp-content/themes/transcribathon/images/search-header.webp");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
