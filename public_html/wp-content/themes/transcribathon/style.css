@@ -21,7 +21,7 @@
   --p-font-family: 'Open Sans', sans-serif;
 }
 /* Optimize Fonts */
-/* @font-face {
+@font-face {
   font-family: 'Open Sans';
   src: url('fonts/open-sans-v34-latin-regular.woff2') format('woff2');
   font-weight: normal;
@@ -48,7 +48,7 @@
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-} */
+}
 /*----------------------------------- Main settings (p,div,select...)---------------------------*/
 html {
   background: #000;
