@@ -23,10 +23,10 @@
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo get_stylesheet_directory_uri(); ?>/images/apple-touch-icon-72x72-precomposed.png" />
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo get_stylesheet_directory_uri(); ?>/images/apple-touch-icon-114x114-precomposed.png" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo get_stylesheet_directory_uri(); ?>/images/apple-touch-icon-144x144-precomposed.png" />
-	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/dosis-v27-latin-regular.woff2" as="font" type="font/woff2" crossOrigin />
+	<!--<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/dosis-v27-latin-regular.woff2" as="font" type="font/woff2" crossOrigin />-->
 	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/dosis-v27-latin-700.woff2" as="font" type="font/woff2" crossOrigin />
 	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-regular.woff2" as="font" type="font/woff2" crossOrigin />
-	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-700.woff2" as="font" type="font/woff2" crossOrigin />
+	<!--<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-700.woff2" as="font" type="font/woff2" crossOrigin />-->
 	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-italic.woff2" as="font" type="font/woff2" crossOrigin />
 	<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/fonts.css" type="text/css" />
 	<script>const TP_API_HOST = '<?php echo TP_API_HOST; ?>';</script>
