@@ -20,8 +20,6 @@
   --h-font-family: 'Dosis', sans-serif;
   --p-font-family: 'Open Sans', sans-serif;
 }
-
-*/
 /*----------------------------------- Main settings (p,div,select...)---------------------------*/
 html {
   background: #000;
@@ -2751,8 +2749,8 @@ button.content-view-button {
 .map-search-page {
   display: inline-block;
   position: absolute;
-  bottom: 58px;
-  right: 16px;
+  bottom: 10px;
+  right: 5px;
 }
 .map-search-page a {
   text-decoration: none;

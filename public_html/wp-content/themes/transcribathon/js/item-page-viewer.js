@@ -334,25 +334,55 @@ var tct_viewer = (function($, document, window) {
 		selection.enable();
 	},
 	initTinyWithConfig = function(selector) {
+      let tinyPlugins = 'wordcount table charmap directionality';
+	  let tinyToolbar = 'bold italic underline strikethrough removeformat | alignleft aligncenter alignright alignjustify | table | missbut unsure side-info | charmap undo redo subscript superscript indent ltr rtl wordcount';
+      // Change toolbar and pluins if it's ration card
+	  if(document.getElementById('ration-tab')) {
+		tinyPlugins = 'wordcount charmap';
+		tinyToolbar = 'bold italic underline strikethrough | missbut unsure side-info | charmap undo redo | wordcount';
+	  }
 	  tinymce.init({
 	    selector: selector,
 		menubar: false,
         inline: true,
 		resize: true,
-		plugins: 'wordcount table charmap directionality',
-		toolbar: 'bold italic underline strikethrough removeformat | alignleft aligncenter alignright alignjustify | table | missbut unsure side-info | charmap undo redo subscript superscript indent ltr rtl wordcount',
+		plugins: tinyPlugins,
+		toolbar: tinyToolbar,
 		placeholder:' Start transcribing...',
 		toolbar_mode: 'floating',
+		charmap_append: [
+            [381, 'Ž'],
+			[382, 'ž'],
+			[352, 'Š'],
+			[353, 'š'],
+			[263, 'ć'],
+			[262, 'Ć'],
+			[268, 'Č'],
+			[269, 'č'],
+			[272, 'Đ'],
+			[273, 'đ']
+		],
 	
 			setup: function (editor) {
 				
-				editor.on('keydown',function(evt){
-					if (evt.keyCode==9) {
-						editor.execCommand('mceInsertContent', false, '&emsp;&emsp;'); // inserts tab
-						evt.preventDefault();
-						return false;
-					}
-				});
+				if(!document.getElementById('ration-tab')) {
+					editor.on('keydown',function(evt){
+						if (evt.keyCode==9) {
+							editor.execCommand('mceInsertContent', false, '&emsp;&emsp;'); // inserts tab
+							evt.preventDefault();
+							return false;
+						}
+					});
+				} else if (document.getElementById('ration-tab')) {
+					editor.on('keydown',function(evt){
+						if (evt.keyCode === 9 || evt.keyCode === 13 ) {
+							//editor.execCommand('mceInsertContent', false, '&emsp;&emsp;'); // inserts tab
+							evt.preventDefault();
+							evt.stopPropagation();
+						}
+					});
+				}
+
 				editor.on('focus', function() {
 					document.querySelector('.item-page-section-headline').style.visibility = 'hidden';
 					document.querySelector('#switch-tr-view').style.visibility = 'hidden';
