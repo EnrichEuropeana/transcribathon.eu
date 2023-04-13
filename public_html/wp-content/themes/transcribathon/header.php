@@ -20,10 +20,10 @@
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
 	<link rel="shortcut icon" href="<?php echo get_stylesheet_directory_uri(); ?>/images/favicon.ico" />
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo get_stylesheet_directory_uri(); ?>/images/apple-touch-icon-114x114-precomposed.png" />
-	<!--<link rel="preload" href="<?php //echo get_stylesheet_directory_uri(); ?>/fonts/dosis-v27-latin-regular.woff2" as="font" type="font/woff2" crossOrigin />-->
+	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/dosis-v27-latin-regular.woff2" as="font" type="font/woff2" crossOrigin />
 	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/dosis-v27-latin-700.woff2" as="font" type="font/woff2" crossOrigin />
 	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-regular.woff2" as="font" type="font/woff2" crossOrigin />
-	<!--<link rel="preload" href="<?php //echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-700.woff2" as="font" type="font/woff2" crossOrigin />-->
+	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-700.woff2" as="font" type="font/woff2" crossOrigin />
 	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-italic.woff2" as="font" type="font/woff2" crossOrigin />
 	<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/fonts.css" type="text/css" />
 	<script>const TP_API_HOST = '<?php echo TP_API_HOST; ?>';</script>
