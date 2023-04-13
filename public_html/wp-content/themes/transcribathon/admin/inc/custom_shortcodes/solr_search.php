@@ -395,10 +395,10 @@ function _TCT_solr_search( $atts ) {
                         $notStarted = ($doc['NotStartedAmount'] / $total) * 100;
 
                         $compStatus = "<div class='search-page-single-status'>";
-                            $compStatus .= "<div class='search-status' style='width:" . $completed . "%;background-color:#61e02f;z-index:4;' title='Completed:" . round($completed) . "%'>&nbsp</div>";
-                            $compStatus .= "<div class='search-status' style='width:" . ($completed + $review) . "%;background-color:#ffc720;z-index:3;' title='Review:" . round($review) . "%'>&nbsp</div>";
-                            $compStatus .= "<div class='search-status' style='width:" . ($completed + $review + $edit) . "%;background-color:#fff700;z-index:2;' title='Edit:" . round($edit) . "%'>&nbsp</div>";
-                            $compStatus .= "<div class='search-status' style='width:100%;background-color:#eeeeee;z-index:1;' title='Not Started:" . round($notStarted) . "%'>&nbsp</div>";
+                            $compStatus .= "<div class='search-status' style='width:" . $completed . "%;background-color:#61e02f;z-index:4;' title='Completed: " . round($completed) . "% Nr. of Items: " . $total . "'>&nbsp</div>";
+                            $compStatus .= "<div class='search-status' style='width:" . ($completed + $review) . "%;background-color:#ffc720;z-index:3;' title='Review: " . round($review) . "% Nr. of Items: " . $total . "'>&nbsp</div>";
+                            $compStatus .= "<div class='search-status' style='width:" . ($completed + $review + $edit) . "%;background-color:#fff700;z-index:2;' title='Edit: " . round($edit) . "% Nr. of Items: " . $total . "'>&nbsp</div>";
+                            $compStatus .= "<div class='search-status' style='width:100%;background-color:#eeeeee;z-index:1;' title='Not Started: " . round($notStarted) . "% Nr. of Items: " . $total . "'>&nbsp</div>";
                         $compStatus .= "</div>";
                         // Image
                         $image = json_decode($doc['PreviewImageLink'], true);
