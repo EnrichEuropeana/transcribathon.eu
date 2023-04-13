@@ -4177,7 +4177,7 @@ div.rc-inner-bot-div {
     color: #0a72cc;
     cursor: pointer;
 }
-#show-list-ppl div.list-person-single {
+#show-list-ppl div.list-person-single, #show-prirast-ppl div.list-person-single, #show-odpad-ppl div.list-person-single {
     display: flex;
     align-items: stretch;
 }
