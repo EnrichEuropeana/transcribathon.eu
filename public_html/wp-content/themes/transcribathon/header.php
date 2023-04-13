@@ -31,13 +31,6 @@
 	<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/fonts.css" type="text/css" />
 	<script>const TP_API_HOST = '<?php echo TP_API_HOST; ?>';</script>
 
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-163155192-1');
-</script>
 
 	<?php wp_head(); ?>
 </head>
