@@ -1748,7 +1748,7 @@ ready(() => {
         document.querySelector('#transcription-edit-container').style.display = 'block';
         document.querySelector('#transcription-view-container').style.display = 'none';
         document.querySelector('#switch-tr-view i').classList = 'fa fa-times';
-        switchItemTab(event, 'editor-tab');
+        switchItemTab(event, 'editor-tab', 'tr-tab');
     })
 
     // Add Prirast/Odpad tables on button click
