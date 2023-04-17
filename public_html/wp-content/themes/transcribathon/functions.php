@@ -289,8 +289,6 @@ function embedd_custom_javascripts_and_css() {
         wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion);
 
 
-        //var_dump($post->post_name);
-
         switch ($post->post_name) {
 
             case 'profile':
@@ -485,7 +483,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
                 wp_deregister_script('responsive-lightbox');
-                wp_dequeue_script('custom');
                 wp_dequeue_script('jQuery-UI');
                 wp_dequeue_script('pagination');
                 wp_dequeue_script('jquery-migrate');
