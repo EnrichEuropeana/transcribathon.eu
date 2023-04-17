@@ -865,6 +865,20 @@ function transfer_new_user( $user_id, $args ) {
     // Execude http request
     include TCT_THEME_DIR_PATH.'admin/inc/custom_scripts/send_api_request.php';
 }
+add_action( 'user_register', 'transfer_new_sso_user', 10, 2);
+function transfer_new_sso_user( $user_id ) {
+    $url = TP_API_HOST."/tp-api/users";
+    $requestType = "POST";
+    $requestData = array(
+        'WP_UserId' => $user_id,
+        'Role' => "Member",
+        'WP_Role' => "Subscriber",
+        'Token' => TP_API_TOKEN
+    );
+
+    // Execude http request
+    include TCT_THEME_DIR_PATH.'admin/inc/custom_scripts/send_api_request.php';
+}
 
 // ### Functions ### //
 function tct_generatePassword($passwordlength = 8,$numNonAlpha = 0,$numNumberChars = 0, $useCapitalLetter = false ) {
