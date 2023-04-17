@@ -289,8 +289,6 @@ function embedd_custom_javascripts_and_css() {
         wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion);
 
 
-        //var_dump($post->post_name);
-
         switch ($post->post_name) {
 
             case 'profile':
@@ -485,7 +483,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
                 wp_deregister_script('responsive-lightbox');
-                wp_dequeue_script('custom');
                 wp_dequeue_script('jQuery-UI');
                 wp_dequeue_script('pagination');
                 wp_dequeue_script('jquery-migrate');
@@ -853,6 +850,20 @@ function increase_upload( $bytes )
 
 add_action( 'um_registration_complete', 'transfer_new_user', 10, 2 );
 function transfer_new_user( $user_id, $args ) {
+    $url = TP_API_HOST."/tp-api/users";
+    $requestType = "POST";
+    $requestData = array(
+        'WP_UserId' => $user_id,
+        'Role' => "Member",
+        'WP_Role' => "Subscriber",
+        'Token' => TP_API_TOKEN
+    );
+
+    // Execude http request
+    include TCT_THEME_DIR_PATH.'admin/inc/custom_scripts/send_api_request.php';
+}
+add_action( 'user_register', 'transfer_new_sso_user', 10, 2);
+function transfer_new_sso_user( $user_id ) {
     $url = TP_API_HOST."/tp-api/users";
     $requestType = "POST";
     $requestData = array(
