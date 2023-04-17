@@ -969,7 +969,7 @@ function updateItemTranscription(itemId, userId, editStatusColor, statusCount) {
             // Check success and create confirmation message
             function(response) {
                 currentTranscription = currentTranscription.replace(/\s+/g, '');
-            
+
                 var amount = newTranscriptionLength - currentTranscription.length
                 if (amount > 0) {
                     amount = amount;
@@ -1738,7 +1738,7 @@ function loadPersonData(itemId, userId) {
                     person['BirthDate'] = person['BirthDate'].replace('01/01/','');
                 }
 
-                
+
 
                 personOutCont.innerHTML +=
                     `<div id='person-${person['PersonId']}'>` +
@@ -1790,11 +1790,11 @@ function loadPersonData(itemId, userId) {
                                 `<div class='person-desc-left' style='margin-bottom: 0!important;'>` +
                                     `<div class='person-description-input'>` +
                                         `<input type='text' id='person-${person['PersonId']}-description-edit' class='input-response person-edit-field'
-                                            placeholder='&nbsp; Add more info to this person...' value='${person['Description'] != 'NULL' ? htmlDecode(person['Description']) : ''}'>` +
+                                            placeholder='&nbsp; Add more info to this person...' value='${person['Description'] ? htmlDecode(person['Description']) : ''}'>` +
                                     `</div>` +
                                     `<div class='person-description-input'>` +
                                         `<input type='text' id='person-${person['PersonId']}-wiki-edit' class='input-response person-edit-field'
-                                            placeholder='&nbsp; Add Wikidata ID to this person.' title='e.g. Wikidata Title ID' value='${person['Link'] != 'NULL' ? htmlDecode(person['Link']) : ''}'>` +
+                                            placeholder='&nbsp; Add Wikidata ID to this person.' title='e.g. Wikidata Title ID' value='${person['Link'] ? htmlDecode(person['Link']) : ''}'>` +
                                     `</div>` +
                                 `</div>` +
                                 `<div class='person-desc-right'>` +
@@ -2018,7 +2018,7 @@ function openPersonEdit(personId) {
       lockWarning();
       return 0;
     }
-    
+
     if (jQuery('#person-data-edit-' + personId).css('display') == 'none') {
       jQuery('#person-data-edit-' + personId).css('display', 'block');
       jQuery('#person-data-output-display-' + personId).css('display', 'none');
@@ -2363,7 +2363,7 @@ function initializeMap() {
       });
 
       geocoder.on('result', function(res) {
-        
+
         let wikiCode = '';
         let wikiName = '';
         if(res.result.place_type.includes('country') || res.result.place_type.includes('place')) {
@@ -2586,13 +2586,13 @@ ready(() => {
         let numOfStickers = Math.floor(sliderWidth/200);
         const storyId = document.querySelector('#story-id').textContent;
         const currentItm = parseInt(document.querySelector('#current-itm').textContent);
-        
+
         const prevBtn = document.querySelector('.prev-slide');
         const nextBtn = document.querySelector('.next-slide');
-    
+
         // Get path to the item, if ration cards go to /ration-cards/
         let itemPath = document.querySelector('.storypg-title').innerHTML.includes('otrošačka kartica') ? 'ration-cards' : 'item';
-    
+
         if(sliderImages.length < numOfStickers) {
             prevBtn.style.display = 'none';
             nextBtn.style.display = 'none';
@@ -2602,17 +2602,17 @@ ready(() => {
             document.querySelector('#vertical-split').click();
             document.querySelector('#switcher-casephase').style.display = 'none';
         }
-    
+
         let startSlide = 0;
         let endSlide = numOfStickers;
-    
+
         // Create initial slides on the screen
         for(let x=0; x < numOfStickers; x++) {
             let imgInfo = sliderImages[x].split(' || ');
             let imgUri = imgInfo[0];
             let imgId = imgInfo[1];
             let imgCompStatus = imgInfo[2];
-    
+
             sliderContainer.innerHTML +=
                 `<div class='slide-sticker' data-value='${x + 1}'>` +
                     `<div class='slide-img-wrap'>` +
@@ -2632,7 +2632,7 @@ ready(() => {
         const numOfSlides = Math.ceil(sliderImages.length / numOfStickers);
         const dotContainer = document.querySelector('#dot-indicators');
         let currentDot = 1;
-    
+
         // Create dot indicators to jump to desired set of slides
         for(let z = 1; z <= numOfSlides; z++) {
             let singleDot = document.createElement('div');
@@ -2642,7 +2642,7 @@ ready(() => {
             singleDot.addEventListener('click', function() {
                 currentDot = parseInt(this.getAttribute('data-value'));
                 this.classList.add('current');
-    
+
                 endSlide = numOfStickers * z;
                 if(endSlide > sliderImages.length) {
                     endSlide = sliderImages.length;
@@ -2662,12 +2662,12 @@ ready(() => {
                 }
             }
         }
-        
+
         function slideImages(slideStart, slideEnd, slides, imageInfo, storyid, currItm) {
             let indexOfSlide = 0;
             for(let i = slideStart; i < slideEnd; i++) {
                 let imgArr = imageInfo[i].split(' || ');
-    
+
                 slides[indexOfSlide].querySelector('.slider-image').setAttribute('src', imgArr[0]);
                 slides[indexOfSlide].querySelector('.slider-link').setAttribute('href', `${home_url}/documents/story/${itemPath}/?item=${imgArr[1]}`);
                 slides[indexOfSlide].querySelector('.image-completion-status').style.backgroundColor = imgArr[2];
@@ -2680,7 +2680,7 @@ ready(() => {
                 indexOfSlide ++;
             }
         }
-    
+
         function activeDot(number) {
             const sliderDots = dotContainer.querySelectorAll('.slider-dot');
             for(let dot of sliderDots) {
@@ -2691,9 +2691,9 @@ ready(() => {
                 }
             }
         }
-    
+
         nextBtn.addEventListener('click', function () {
-    
+
             if(endSlide === sliderImages.length) {
                 endSlide = numOfStickers;
                 startSlide = 0;
@@ -2704,7 +2704,7 @@ ready(() => {
                 endSlide = endSlide + numOfStickers;
                 startSlide = startSlide + numOfStickers;
             }
-    
+
             slideImages(startSlide, endSlide, sliderSlides, sliderImages, storyId, currentItm);
             // change active dot
             const sliderDots = dotContainer.querySelectorAll('.slider-dot');
@@ -2717,7 +2717,7 @@ ready(() => {
                 sliderDots[curDot].classList.add('current');
             }
         });
-    
+
         prevBtn.addEventListener('click', function() {
             if(startSlide === 0) {
                 endSlide = sliderImages.length;
@@ -2742,8 +2742,8 @@ ready(() => {
             }
         });
     }
-    
-    
+
+
     // Item Page, Open full screen if user comes to page from fullscreen viewer
     if(document.querySelector('#openseadragon')){
         const url_string = window.location.href;
@@ -2912,7 +2912,7 @@ ready(() => {
                         for(let itm of autoEnrichments.items) {
                             let wikiDataArr = itm.body.id.split('/');
                             let wikiId = wikiDataArr.pop();
-                            let singlIcon = itm.body.type == 'Person' ? 
+                            let singlIcon = itm.body.type == 'Person' ?
                                 '<i class="fas fa-user enrich-icon"></i>' : `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
                             let singlEnrich = document.createElement('div');
                             singlEnrich.classList.add('single-annotation-' + enrichNr);
@@ -2942,7 +2942,7 @@ ready(() => {
                                 event.stopPropagation();
                                 this.parentElement.click();
                             })
-                        
+
                             enrichNr += 1;
                         }
                     } else {
@@ -2957,7 +2957,7 @@ ready(() => {
 
         })
     }
-    /// Auto enrich Items 
+    /// Auto enrich Items
     const autoPplCont = document.querySelector('#ppl-auto-enrich');
     const autoLocCont = document.querySelector('#loc-auto-enrich');
     const autoEnrichBtn = document.querySelector('#run-itm-enrich');
@@ -2978,7 +2978,7 @@ ready(() => {
                   token: ''
                 },
                 function(response) {
-                    
+
                     const autoEnrichmentsResponse = JSON.parse(response);
                     const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
 
@@ -2992,10 +2992,10 @@ ready(() => {
                                 let wikiDataArr = itm.body.id.split('/');
                                 let wikiId = wikiDataArr.pop();
                                 let singlIcon = `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
-                                
+
                                 let singlEnrich = document.createElement('div');
                                 singlEnrich.classList.add('single-annotation-' + itmNr);
-                                singlEnrich.innerHTML = 
+                                singlEnrich.innerHTML =
                                         `<p class="type-n-id" style="display:none;">` +
                                             `<span class="ann-type">${itm.body.type}</span>` +
                                             `<span class="ext-id">${itm.id}</span>` +
@@ -3041,10 +3041,10 @@ ready(() => {
                                 let wikiDataArr = itm.body.id.split('/');
                                 let wikiId = wikiDataArr.pop();
                                 let singlIcon = '<i class="fas fa-user enrich-icon"></i>';
-                                
+
                                 let singlEnrich = document.createElement('div');
                                 singlEnrich.classList.add('single-annotation-' + itmNr);
-                                singlEnrich.innerHTML = 
+                                singlEnrich.innerHTML =
                                         `<p class="type-n-id" style="display:none;">` +
                                             `<span class="ann-type">${itm.body.type}</span>` +
                                             `<span class="ext-id">${itm.id}</span>` +
@@ -3062,12 +3062,12 @@ ready(() => {
                                         `<div class="enrich-body-right">` +
                                             `<div class="slider-track" ><div class="slider-slider"></div></div>` +
                                         `</div>`;
-    
-    
+
+
                                     singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
                                         // document.querySelector('.single-annotation-' + itmNr).classList.toggle('accept');
                                         singlEnrich.classList.toggle('accept');
-    
+
                                     });
                                     singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
                                         event.stopPropagation();
@@ -3075,9 +3075,9 @@ ready(() => {
                                     });
 
                                     autoPplCont.appendChild(singlEnrich);
-    
+
                             }
-                            
+
                             itmNr += 1;
                         }
                     } else  {
@@ -3097,7 +3097,7 @@ ready(() => {
                         document.querySelector('#accept-ppl-enrich').style.display = 'block';
                         document.querySelector('#auto-ppl-btn').style.display = 'block';
                     }
-                    
+
                 });
         })
     }
@@ -3122,7 +3122,7 @@ ready(() => {
                 // Convert lat/long to float number
                 latitude = parseFloat(latitude);
                 longitude = parseFloat(longitude);
-            
+
                 // Save it also to the 'Place' table
                 let data = {
                     Name: locationName,
@@ -3144,7 +3144,7 @@ ready(() => {
                     'url': TP_API_HOST + '/tp-api/places',
                     'data': data
                 },function(response) {
-                    
+
                 });
             }
         })
@@ -3188,7 +3188,7 @@ ready(() => {
                 },
                 // Check success and create confirmation message
                 function(response) {
-                    
+
                 });
 
             }
@@ -3216,7 +3216,7 @@ ready(() => {
                     ExternalAnnotationId: enrichment.querySelector('.ext-id').textContent,
                     Comment: description
                 }
-                
+
                 jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                     'type': 'POST',
                     'data': singlEnrichment,
@@ -3253,13 +3253,13 @@ ready(() => {
                         },
                         function(response) {
                             let engTranslation = JSON.parse(response);
-        
+
                             translatedCont.querySelector('p').innerHTML = engTranslation.content;
                             translatedCont.classList.add('show');
                             translatedCont.classList.add('translated');
 
                             document.querySelector('#eng-tr-spinner').style.display = 'none';
-        
+
                         });
                 }
             }
@@ -3286,7 +3286,7 @@ ready(() => {
         });
     }
 
-    
+
 
     installEventListeners();
     initializeMap();
@@ -3305,10 +3305,10 @@ function deleteAutoEnrichment(enrichmentId, event) {
         });
 }
 async function getMetadata(storyId) {
-    
+
     const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/stories/' + storyId;
     const response = await fetch(requestUri);
 
     return response.json();
-    
+
 }
