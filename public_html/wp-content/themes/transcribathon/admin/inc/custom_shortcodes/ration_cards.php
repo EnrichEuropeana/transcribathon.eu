@@ -25,7 +25,7 @@ function _TCT_ration_cards($atts)
 
     $getJsonOptions = [
         'http' => [
-            'header' => [ 
+            'header' => [
                 'Content-type: application/json',
                 'Authorization: Bearer ' . TP_API_V2_TOKEN
             ],
@@ -68,7 +68,7 @@ function _TCT_ration_cards($atts)
             $itemData['DescriptionStatusColorCode'] = $typ['ColorCode'];
         }
     }
-    
+
     // Automatic Enrichments
     $getAutoJsonOptions = [
         'http' => [
@@ -85,7 +85,7 @@ function _TCT_ration_cards($atts)
 
     $itemAutoPlaces = [];
     $itemAutoPpl = [];
-    
+
     if(!empty($itemAutoE['data'])) {
         foreach($itemAutoE['data'] as $itm) {
             if($itm['Type'] == 'Place') {
@@ -241,7 +241,7 @@ function _TCT_ration_cards($atts)
             if($transcription['CurrentVersion'] == '1') {
                 $currentTranscription = $transcription;
                 $itemData['TranscriptionLanguages'] = $transcription['Languages'];
-            } 
+            }
         }
     }
 
@@ -261,7 +261,7 @@ function _TCT_ration_cards($atts)
     foreach($progressData as $status) {
         $progressCount[$status] += 1;
     }
- 
+
     $imageData = json_decode($itemData['ImageLink'], true);
     $imageData['service'] = extractImageService($imageData);
     $imageDataJson = json_encode($imageData);
@@ -492,7 +492,7 @@ function _TCT_ration_cards($atts)
                     $mapEditor .= "<input type='text' name='' placeholder='&nbsp&nbsp&nbsp e.g. Berlin' style='display:inline-block;'>";
                     $mapEditor .= '<div id="loc-name-check" class="loc-input-fa"><i class="fas fa-check" style="float:right;color:#61e02f;display:none;"></i></div>';
                 $mapEditor .= "</div>";
-        
+
                 $mapEditor .= "<div class='location-display location-input-coordinates-container location-input-container' style='min-height:25px;'>";
                     $mapEditor .= "<label>Coordinates:</label>";
                     $mapEditor .= "<span class='required-field'>*</span>";
@@ -532,7 +532,7 @@ function _TCT_ration_cards($atts)
                                 onClick='saveItemLocation(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" .$statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                     $mapEditor .= "SAVE";
                 $mapEditor .= "</button>";
-        
+
             $mapEditor .= "</div>";
             $mapEditor .= "<div style='clear:both;'></div>";
         $mapEditor .= "</div>";
@@ -678,48 +678,37 @@ function _TCT_ration_cards($atts)
 
             $enrichmentTab .= '<div id="item-person-list" class="item-data-output-list">';
                 foreach($itemData['Persons'] as $person) {
+
                     $person['BirthDate'] = !empty($person['BirthDate'])
                         ? date('d/m/Y', strtotime($person['BirthDate']))
-                        : 'NULL';
+                        : (!empty($person['BirthDateDisplay']) ? $person['BirthDateDisplay'] : null);
                     $person['DeathDate'] = !empty($person['DeathDate'])
                         ? date('d/m/Y', strtotime($person['DeathDate']))
-                        : 'NULL';
-
-                    if(str_contains($person['BirthDate'], '01/01/')) {
-                        $person['BirthDate'] = str_replace('01/01/', '', $person['BirthDate']);
-                    }
-                    if(str_contains($person['DeathDate'], '01/01/')) {
-                        $person['DeathDate'] = str_replace('01/01/', '', $person['DeathDate']);
-                    }
+                        : (!empty($person['DeathDateDisplay']) ? $person['DeathDateDisplay'] : null);
 
                     $enrichmentTab .= "<div id='person-" . $person['PersonId'] . "'>";
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span>" . htmlspecialchars_decode(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars_decode($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
-                                if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
-                                    $enrichmentTab .= " (" . $person['BirthDate'];
-                                    if($person['BirthPlace'] != 'NULL') {
-                                        $enrichmentTab .= ", " . $person['BirthPlace'];
-                                    }
-                                    $enrichmentTab .= " - " . $person['DeathDate'];
-                                    if($person['DeathPlace'] != 'NULL') {
-                                        $enrichmentTab .= ", " . $person['DeathPlace'];
-                                    }
-                                    $enrichmentTab .= ")";
-                                } else if($person['BirthDate'] != 'NULL') {
-                                    $enrichmentTab .= " (Birth: " . $person['BirthDate'];
-                                    if(!empty($person['BirthPlace'])) {
-                                        $enrichmentTab .= ", " . $person['BirthPlace'];
-                                    }
-                                    $enrichmentTab .= ")";
-                                } else if($person['DeathDate'] != 'NULL') {
-                                    $enrichmentTab .= " (Death: " . $person['DeathDate'];
-                                    if(!empty($person['DeathPlace'])) {
-                                        $enrichmentTab .= ", " . $person['DeathPlace'];
-                                    }
-                                    $enrichmentTab .= ")";
-                                }
+
+                                $enrichmentTab .= "<span>" . htmlspecialchars_decode($person['FirstName']) . " " . htmlspecialchars_decode($person['LastName']). "</span>";
+
+																$birthArray = [];
+																if (!empty($person['BirthDate'])) { $birthArray[] = $person['BirthDate']; }
+																if (!empty($person['BirthPlace'])) { $birthArray[] = $person['BirthPlace']; }
+																$birthString = implode(', ', $birthArray);
+
+																$deathArray = [];
+																if (!empty($person['DeathDate'])) { $deathArray[] = $person['DeathDate']; }
+																if (!empty($person['DeathPlace'])) { $deathArray[] = $person['DeathPlace']; }
+																$deathString = implode(', ', $deathArray);
+
+																$personDateArray = [];
+																if ($birthString) { $personDateArray[] = 'Birth: ' . $birthString; }
+																if ($deathString) { $personDateArray[] = 'Death: ' . $deathString; }
+																$personDateString = implode(' - ', $personDateArray);
+
+																$enrichmentTab .= $personDateString ? ' (' . $personDateString . ')' : '';
 
                             $enrichmentTab .= "</p>";
 
@@ -979,7 +968,7 @@ function _TCT_ration_cards($atts)
             if($htrTranscription != 'NULL' && $htrTranscription != '') {
                 $editorTab .= "<div id='fs-htr-link'>";
                     $editorTab .= "<a href='" . home_url() . "/documents/story/item-page-htr/?item=" . $itemId . "' target='_blank'> HTR EDITOR </a>";
-                $editorTab .= "</div>"; 
+                $editorTab .= "</div>";
             }
         $editorTab .= "</div>"; // End of header
         $editorTab .= "<div style='clear:both;'></div>";
@@ -1011,7 +1000,7 @@ function _TCT_ration_cards($atts)
                 // MCE Editor
                 $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
                     $editorTab .= "<div id='mytoolbar-transcription'></div>";
-                    
+
                     $editorTab .= "<div id='item-page-transcription-text' rows='8' style='white-space:nowrap!important;overflow-x:hidden;'>";
                         $editorTab .= "<div id='rc-form-test' contenteditable='false'>";
                         if($currentTranscription != null) {
@@ -1143,7 +1132,7 @@ function _TCT_ration_cards($atts)
                                     $descriptionTab .= "</div>";
                                 }
                             }
-                        } 
+                        }
                     $descriptionTab .= "</div>";
                 $descriptionTab .= "</div>";
             $descriptionTab .= "</div>";
@@ -1172,7 +1161,7 @@ function _TCT_ration_cards($atts)
                     $descriptionTab .= "</div>";
                 $descriptionTab .= "</div>";
             }
-    
+
             $descriptionTab .= "<div class='item-date-inner-container'>";
                 $descriptionTab .= "<label>Start Date</label>";
                 if($itemData['DateStartDisplay'] != null) {
@@ -1197,7 +1186,7 @@ function _TCT_ration_cards($atts)
                     $descriptionTab .= "</div>";
                 }
             $descriptionTab .= "</div>";
-    
+
             $descriptionTab .= "<div class='item-date-inner-container'>";
                 $descriptionTab .= "<label>End Date</label>";
                 if($itemData['DateEndDisplay'] != null) {
@@ -1223,7 +1212,7 @@ function _TCT_ration_cards($atts)
                     $descriptionTab .= "</div>";
                 }
             $descriptionTab .= "</div>";
-            
+
             // Date type checkmark
             $dateCheck = '';
             if($itemData['DateRole'] == 'CreationDate') {
@@ -1235,7 +1224,7 @@ function _TCT_ration_cards($atts)
                     $descriptionTab .= "<span class='date-checkmark'></span>";
                 $descriptionTab .= "</label>";
             $descriptionTab .= "</div>";
-    
+
             $descriptionTab .= "<button class='item-page-save-button login-required' id='item-date-save-button'
                                 onClick='saveItemDate(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                 $descriptionTab .= "<i class='fas fa-save'></i>";
@@ -1309,7 +1298,7 @@ function _TCT_ration_cards($atts)
             }
             $descriptionTab .= "<h6 class='enrich-language'> Language of Description </h6>";
             $descriptionTab .= "<div>";
-       
+
                 $descriptionTab .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
             $descriptionTab .= "</div></div>";
 
@@ -1352,7 +1341,7 @@ function _TCT_ration_cards($atts)
                     }
                 $descriptionTab .= "</select>";
             $descriptionTab .= "</div>";
-            
+
 
                 $descriptionTab .= "<button disabled class='language-tooltip' id='description-update-button' style='float:right'
                                     onClick='updateItemDescription(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")' >";
@@ -1476,7 +1465,7 @@ function _TCT_ration_cards($atts)
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div class='prop-desc' style='bottom:6px;padding-left:23px;'>" . $propDescription . "</div>";
                         $descriptionTab .= "</div>";
-        
+
                         $descriptionTab .= "<div class='link-data-edit-container' id='link-data-edit-" . $property['PropertyId'] . "'>";
                             $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-url-input' class='link-url-input'>";
                                 $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['Value'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
@@ -1822,7 +1811,7 @@ function _TCT_ration_cards($atts)
                                 $content .= $formattedTranscription;
                             $content .= "</div>";
                             $content .= "<div id='transcription-collapse-btn'> Show More </div>";
- 
+
                             $content .= "<div class='transcription-language'>";
                                 $content .= "<h6 class='enrich-language'> Language(s) of Transcription </h6>";
                                 $content .= "<div style='padding-left:24px;'>";
@@ -2033,8 +2022,8 @@ function _TCT_ration_cards($atts)
                     $content .= "</li>";
                 $content .= '</ul>';
             $content .= "</div>";
-            
-            
+
+
             $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
                 // Editor tab
                 $content .= "<div id='editor-tab' class='tabcontent'>";
@@ -2046,7 +2035,7 @@ function _TCT_ration_cards($atts)
                     // $content .= "</div>";
 
                     //$content .= $trHistory;
-                    // Automatic Enrichments 
+                    // Automatic Enrichments
                     if(empty($itemAutoE['data'])) {
                         $content .= "<div id='run-itm-enrich' style='display:none;'> Analyse Transcription for Automatic Translation and Enrichments </div>";
                         $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
@@ -2076,7 +2065,7 @@ function _TCT_ration_cards($atts)
                     $content .= "<div id='full-v-metadata'>";
                     if(empty($storyAutoE['data'])) {
                         $content .= "<div id='run-stry-enrich' style='display:none;'> Analyse Story Description for Automatic Enrichments </div>";
-                    
+
                         $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
                             $content .= "<div id='auto-story-spinner-container' class='spinner-container'>";
@@ -2257,7 +2246,7 @@ function _TCT_ration_cards($atts)
                             // Saved persons (submitter/landlord) will be shown here
                             $content .= "</div>";
                             $content .= "<div style='clear:both;'></div>";
-                            
+
                             //
                             $content .= "<h3 class='rc-title'> Potrošačka prijavnica <br> za kućanstva i samce - samice. </h3>";
                             // Saving spinner
@@ -2312,7 +2301,7 @@ function _TCT_ration_cards($atts)
                                     $content .= "<i class='fas fa-plus'></i>";
                                     $content .= "<p> Prirast </p>";
                                 $content .= "</div>";
-                                // Prirast container 
+                                // Prirast container
                                 $content .= "<div id='prirast-container' style='display:none;'>";
                                     $content .= "<p style='font-size:9px;font-weight:600;'>PRIRAST: (Ispunjava vlast) </p>";
                                     $content .= "<form id='prirast-list-form'>";
@@ -2336,7 +2325,7 @@ function _TCT_ration_cards($atts)
                                         $content .= "</div>";
                                     $content .= "</form>";
                                 $content .= "</div>";
-                                
+
                                 //
                                 $content .= "<div id='odpad-btn'>";
                                     $content .= "<i class='fas fa-plus'></i>";
@@ -2366,7 +2355,7 @@ function _TCT_ration_cards($atts)
                                         $content .= "</div>";
                                     $content .= "</form>";
                                 $content .= "</div>";
-                                
+
                                 //
                             $content .= "</div>";
                             // Shop address
@@ -2423,7 +2412,7 @@ function _TCT_ration_cards($atts)
                             //     $content .= "<div id='rc-loc-result'>";
                             //     $content .= "</div>";
                             // $content .= "</div>";
-                            
+
                             // Saved places
                             // $content .= "<div id='show-saved-loc'>";
                             //     $content .= "<p> Saved places: </p>";
@@ -2485,7 +2474,7 @@ if(descLangDel) {
         updateDataProperty('items', ". $itemData['ItemId'] .", 'DescriptionLanguage', 0);
         this.parentNode.style.display = 'none';
 }
-); 
+);
 }
 });
 </script>";
