@@ -83,7 +83,8 @@ $logo_in_menu = siteorigin_setting( 'layout_masthead' ) == 'logo-in-menu';
 	// Login modal
 	echo '<div id="default-login-container">';
 		echo '<div id="default-login-popup">';
-			echo '<div class="default-login-popup-header theme-color-background">';
+			echo '<div class="default-login-popup-header">';
+			    echo '<span class="login-title"> LOGIN </span>';
 				echo '<span class="item-login-close">&times;</span>';
 			echo '</div>';
 			echo '<div class="default-login-popup-body">';
@@ -93,7 +94,7 @@ $logo_in_menu = siteorigin_setting( 'layout_masthead' ) == 'logo-in-menu';
 				));
 				echo do_shortcode('[ultimatemember form_id="'.$login_post[0]->ID.'"]');
 			echo '</div>';
-			echo '<div class="default-login-popup-footer theme-color-background">';
+			echo '<div class="default-login-popup-footer">';
 			echo '</div>';
 		echo '</div>';
 	echo '</div>';
