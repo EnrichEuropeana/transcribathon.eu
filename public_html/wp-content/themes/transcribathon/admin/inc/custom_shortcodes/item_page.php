@@ -25,7 +25,7 @@ function _TCT_mtr_transcription($atts)
 
     $getJsonOptions = [
         'http' => [
-            'header' => [ 
+            'header' => [
                 'Content-type: application/json',
                 'Authorization: Bearer ' . TP_API_V2_TOKEN
             ],
@@ -92,7 +92,7 @@ function _TCT_mtr_transcription($atts)
 
     $itemAutoPlaces = [];
     $itemAutoPpl = [];
-    
+
     if(!empty($itemAutoE['data'])) {
         foreach($itemAutoE['data'] as $itm) {
             if($itm['Type'] == 'Place') {
@@ -252,7 +252,7 @@ if (event.target.id != "tagging-status-indicator") {
             if($transcription['CurrentVersion'] == '1') {
                 $currentTranscription = $transcription;
                 $itemData['TranscriptionLanguages'] = $transcription['Languages'];
-            } 
+            }
         }
     }
 
@@ -330,34 +330,34 @@ if (event.target.id != "tagging-status-indicator") {
                         if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
                             $locationDisplay .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
                         }
-    
+
                         $locationDisplay .= "<div class='edit-delete-btns'>";
                             $locationDisplay .= "<i class='login-required edit-item-data-icon fas fa-pencil theme-color-hover' onClick='openLocationEdit(" . $place['PlaceId'] . ")'></i>";
                             $locationDisplay .= "<i class='login-required edit-item-data-icon fas fa-trash-alt theme-color-hover'
                                             onCLick='deleteItemData(\"places\", " . $place['PlaceId'] . ", " . $_GET['item'] . ", \"place\", " . get_current_user_id() . ")' ></i>";
                         $locationDisplay .= "</div>";
-    
-    
+
+
                     $locationDisplay .= "</div>";
-    
+
                     $locationDisplay .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container' style='display:none;'>";
-    
+
                         $locationDisplay .= "<div class='location-input-section-top'>";
                             $locationDisplay .= "<div class='location-input-name-container' style='min-height:25px;'>";
                                 $locationDisplay .= "<label>Location Name: </label>";
                                 $locationDisplay .= "<input type='text' class='edit-input' value='" . ($place['Name'] != 'NULL' ? htmlspecialchars($place['Name'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
                             $locationDisplay .= "</div>";
-    
+
                             $locationDisplay .= "<div class='location-input-coordinates-container' style='min-height:25px;'>";
                                 $locationDisplay .= "<label>Coordinates: </label>";
                                 $locationDisplay .= "<span class='required-field'>*</span>";
                                 $locationDisplay .= "<input class='edit-input' type='text' value='" . ($place['Latitude'] != 'NULL' ? htmlspecialchars($place['Latitude'], ENT_QUOTES, 'UTF-8') : '') . ", "
                                     . ($place['Longitude'] != 'NULL' ? htmlspecialchars($place['Longitude'], ENT_QUOTES, 'UTF-8') : '') . "' name='' placeholder=''>";
                             $locationDisplay .= "</div>";
-    
+
                             $locationDisplay .= "<div style='clear:both;'></div>";
                         $locationDisplay .= "</div>";
-    
+
                         $locationDisplay .= "<div class='location-input-description-container' style='height:50px;'>";
                             $locationDisplay .= "<label>";
                                 $locationDisplay .= "Description: ";
@@ -371,7 +371,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $locationDisplay .= "</textarea>";
                         $locationDisplay .= "</div>";
                         $locationDisplay .= "<div style='clear:both;'></div>";
-    
+
                         $locationCheck = '';
                         if($place['PlaceRole'] == 'CreationPlace') {
                             $locationCheck = 'checked';
@@ -387,7 +387,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $locationDisplay .= "</span>";
                             $locationDisplay .= "</label>";
                         $locationDisplay .= "</div>";
-    
+
                         $locationDisplay .= "<div class='location-input-geonames-container location-search-container' style='min-height:25px;margin: 5px 0;'>";
                             $locationDisplay .= "<label>Wikidata Reference:";
                                 $locationDisplay .= "<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Identify this location by searching its name or code on WikiData'></i>";
@@ -400,28 +400,28 @@ if (event.target.id != "tagging-status-indicator") {
                                 $locationDisplay .= "<input class='edit-input' type='text' placeholder='' name=''>";
                             }
                         $locationDisplay .= "</div>";
-    
-    
+
+
                         $locationDisplay .= "<div class='form-buttons-right'>";
                             $locationDisplay .= "<div class='form-btn-left'>";
                                 $locationDisplay .= "<button class='theme-color-background edit-location-cancel' onClick='openLocationEdit(" . $place['PlaceId'] . ")'>";
                                     $locationDisplay .= "CANCEL";
                                 $locationDisplay .= "</button>";
                             $locationDisplay .= "</div>";
-    
+
                             $locationDisplay .= "<div class='form-btn-right'>";
                                 $locationDisplay .= "<button class='item-page-save-button theme-color-background edit-location-save'
                                                 onClick='editItemLocation(" . $place['PlaceId'] . ", " . $_GET['item'] . ", " . get_current_user_id() . ")'>";
                                     $locationDisplay .= "SAVE";
                                 $locationDisplay .= "</button>";
                             $locationDisplay .= "</div>";
-    
+
                             $locationDisplay .= "<div id='item-location-" . $place['PlaceId'] . "-spinner-container' class='spinner-container spinner-container-right'>";
                                 $locationDisplay .= "<div class='spinner'></div>";
                             $locationDisplay .= "</div>";
                             $locationDisplay .= "<div style='clear:both;'></div>";
                         $locationDisplay .= "</div>";
-    
+
                         $locationDisplay .= "<div style='clear:both;'></div>";
                     $locationDisplay .= "</div>";
                 $locationDisplay .= "</div>"; // End of single location
@@ -636,11 +636,10 @@ if (event.target.id != "tagging-status-indicator") {
                     'method' => 'GET'
                 ]
             ];
-        
+
             $itemData['Persons'] = sendQuery(TP_API_HOST . '/tp-api/persons?ItemId=' . $itemId, $getJsonOptions, true);
-            
-            ///
-            if(count($itemData['Persons']) > 0) {
+
+            if (count($itemData['Persons']) > 0) {
                 $enrichmentTab .= '<div class="collapse person-item-data-container" id="person-input-container" style="position:relative;">';
             } else {
                 $enrichmentTab .= '<div class="collapse person-item-data-container show login-required" id="person-input-container" style="position:relative;">';
@@ -721,49 +720,39 @@ if (event.target.id != "tagging-status-indicator") {
             $enrichmentTab .= "</div>";
 
             $enrichmentTab .= '<div id="item-person-list" class="item-data-output-list">';
+
                 foreach($itemData['Persons'] as $person) {
+
                     $person['BirthDate'] = !empty($person['BirthDate'])
                         ? date('d/m/Y', strtotime($person['BirthDate']))
-                        : 'NULL';
+                        : (!empty($person['BirthDateDisplay']) ? $person['BirthDateDisplay'] : null);
                     $person['DeathDate'] = !empty($person['DeathDate'])
                         ? date('d/m/Y', strtotime($person['DeathDate']))
-                        : 'NULL';
-
-                    if(str_contains($person['BirthDate'], '01/01/')) {
-                        $person['BirthDate'] = str_replace('01/01/', '', $person['BirthDate']);
-                    }
-                    if(str_contains($person['DeathDate'], '01/01/')) {
-                        $person['DeathDate'] = str_replace('01/01/', '', $person['DeathDate']);
-                    }
+                        : (!empty($person['DeathDateDisplay']) ? $person['DeathDateDisplay'] : null);
 
                     $enrichmentTab .= "<div id='person-" . $person['PersonId'] . "'>";
                         $enrichmentTab .= "<div class='single-person'>";
                             $enrichmentTab .= "<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>";
                             $enrichmentTab .= "<p class='person-data'>";
-                                $enrichmentTab .= "<span>" . htmlspecialchars_decode(($person['FirstName'] != 'NULL' ? $person['FirstName'] : '')) . " " . htmlspecialchars_decode($person['LastName'] != 'NULL' ? $person['LastName'] : ''). "</span>";
-                                if($person['BirthDate'] != 'NULL' && $person['DeathDate'] != 'NULL') {
-                                    $enrichmentTab .= " (" . $person['BirthDate'];
-                                    if($person['BirthPlace'] != 'NULL') {
-                                        $enrichmentTab .= ", " . $person['BirthPlace'];
-                                    }
-                                    $enrichmentTab .= " - " . $person['DeathDate'];
-                                    if($person['DeathPlace'] != 'NULL') {
-                                        $enrichmentTab .= ", " . $person['DeathPlace'];
-                                    }
-                                    $enrichmentTab .= ")";
-                                } else if($person['BirthDate'] != 'NULL') {
-                                    $enrichmentTab .= " (Birth: " . $person['BirthDate'];
-                                    if($person['BirthPlace'] != 'NULL') {
-                                        $enrichmentTab .= ", " . $person['BirthPlace'];
-                                    }
-                                    $enrichmentTab .= ")";
-                                } else if($person['DeathDate'] != 'NULL') {
-                                    $enrichmentTab .= " (Death: " . $person['DeathDate'];
-                                    if($person['DeathPlace'] != 'NULL') {
-                                        $enrichmentTab .= ", " . $person['DeathPlace'];
-                                    }
-                                    $enrichmentTab .= ")";
-                                }
+
+                                $enrichmentTab .= "<span>" . htmlspecialchars_decode($person['FirstName']) . " " . htmlspecialchars_decode($person['LastName']). "</span>";
+
+																$birthArray = [];
+																if (!empty($person['BirthDate'])) { $birthArray[] = $person['BirthDate']; }
+																if (!empty($person['BirthPlace'])) { $birthArray[] = $person['BirthPlace']; }
+																$birthString = implode(', ', $birthArray);
+
+																$deathArray = [];
+																if (!empty($person['DeathDate'])) { $deathArray[] = $person['DeathDate']; }
+																if (!empty($person['DeathPlace'])) { $deathArray[] = $person['DeathPlace']; }
+																$deathString = implode(', ', $deathArray);
+
+																$personDateArray = [];
+																if ($birthString) { $personDateArray[] = 'Birth: ' . $birthString; }
+																if ($deathString) { $personDateArray[] = 'Death: ' . $deathString; }
+																$personDateString = implode(' - ', $personDateArray);
+
+																$enrichmentTab .= $personDateString ? ' (' . $personDateString . ')' : '';
 
                             $enrichmentTab .= "</p>";
 
@@ -973,7 +962,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $trHistory .= "</span>";
                             $trHistory .= "<i class='fas fa-angle-down' style='float:right;'></i>";
                         $trHistory .= "</div>";
-    
+
                         $trHistory .= "<div id='transcription-" . $i . "' class='collapse transcription-history-collapse-content'>";
                             $trHistory .= "<p>";
                                 $trHistory .= $transcription['TextNoTags'];
@@ -1030,7 +1019,7 @@ if (event.target.id != "tagging-status-indicator") {
             if($htrTranscription != 'NULL' && $htrTranscription != '') {
                 $editorTab .= "<div id='fs-htr-link'>";
                     $editorTab .= "<a href='" . home_url() . "/documents/story/item-page-htr/?item=" . $itemId . "' target='_blank'> HTR EDITOR </a>";
-                $editorTab .= "</div>"; 
+                $editorTab .= "</div>";
             }
         $editorTab .= "</div>"; // End of header
         $editorTab .= "<div style='clear:both;'></div>";
@@ -1203,7 +1192,7 @@ if (event.target.id != "tagging-status-indicator") {
                                     $descriptionTab .= "</div>";
                                 }
                             }
-                        } 
+                        }
                     $descriptionTab .= "</div>";
                 $descriptionTab .= "</div>";
             $descriptionTab .= "</div>";
@@ -1232,7 +1221,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $descriptionTab .= "</div>";
                 $descriptionTab .= "</div>";
             }
-    
+
             $descriptionTab .= "<div class='item-date-inner-container'>";
                 $descriptionTab .= "<label>Start Date</label>";
                 if($itemData['DateStartDisplay'] != null) {
@@ -1257,7 +1246,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $descriptionTab .= "</div>";
                 }
             $descriptionTab .= "</div>";
-    
+
             $descriptionTab .= "<div class='item-date-inner-container'>";
                 $descriptionTab .= "<label>End Date</label>";
                 if($itemData['DateEndDisplay'] != null) {
@@ -1283,7 +1272,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $descriptionTab .= "</div>";
                 }
             $descriptionTab .= "</div>";
-            
+
             // Date type checkmark
             $dateCheck = '';
             if($itemData['DateRole'] == 'CreationDate') {
@@ -1295,7 +1284,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $descriptionTab .= "<span class='date-checkmark'></span>";
                 $descriptionTab .= "</label>";
             $descriptionTab .= "</div>";
-    
+
             $descriptionTab .= "<button class='item-page-save-button login-required' id='item-date-save-button'
                                 onClick='saveItemDate(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")'>";
                 $descriptionTab .= "<i class='fas fa-save'></i>";
@@ -1368,7 +1357,7 @@ if (event.target.id != "tagging-status-indicator") {
             }
             $descriptionTab .= "<h6 class='enrich-language'> Language of Description </h6>";
             $descriptionTab .= "<div>";
-       
+
                 $descriptionTab .= "<div class='language-single'>" . $descriptionLanguage . "</div>";
             $descriptionTab .= "</div></div>";
 
@@ -1411,7 +1400,7 @@ if (event.target.id != "tagging-status-indicator") {
                     }
                 $descriptionTab .= "</select>";
             $descriptionTab .= "</div>";
-            
+
 
                 $descriptionTab .= "<button disabled class='language-tooltip' id='description-update-button' style='float:right'
                                     onClick='updateItemDescription(" . $itemData['ItemId'] . ", " . get_current_user_id() . ", \"" . $statusTypes[1]['ColorCode'] . "\", " . sizeof($progressData) . ")' >";
@@ -1527,7 +1516,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $descriptionTab .= "</div>";
                             $descriptionTab .= "<div class='prop-desc' style='bottom:6px;padding-left:23px;'>" . $propDescription . "</div>";
                         $descriptionTab .= "</div>";
-        
+
                         $descriptionTab .= "<div class='link-data-edit-container' id='link-data-edit-" . $property['PropertyId'] . "'>";
                             $descriptionTab .= "<div id='link-" . $property['PropertyId'] . "-url-input' class='link-url-input'>";
                                 $descriptionTab .= "<input type='url' value='" . htmlspecialchars($property['Value'], ENT_QUOTES, 'UTF-8') . "' placeholder='Enter URL here'>";
@@ -1694,7 +1683,7 @@ if (event.target.id != "tagging-status-indicator") {
             $description = $storyDescriptions[0];
         }
         $storyDescription .= "<p class='meta-p'>" . $description . "</p>";
-        
+
     $storyDescription .= "</div>";
     // Item progress bar
 
@@ -1899,7 +1888,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "</div>";
 
                 $content .= "</div>"; // end of transcription
-            $content .= "</div>"; 
+            $content .= "</div>";
             $content .= "<div style='clear:both;'></div>";
       //  $content .= "</div>";
     $content .= "</section>";
@@ -2075,7 +2064,7 @@ if (event.target.id != "tagging-status-indicator") {
                     // Content will be added here in switchItemPageView function
                     $content .= $editorTab;
                     //$content .= $trHistory;
-                    // Automatic Enrichments 
+                    // Automatic Enrichments
                     if(empty($itemAutoE['data'])) {
                         $content .= "<div id='run-itm-enrich' style='display:none;'> Analyse Transcription for Automatic Translation and Enrichments </div>";
                         $content .= "<div id='auto-e-link'>";
@@ -2112,7 +2101,7 @@ if (event.target.id != "tagging-status-indicator") {
                     // Story Auto Enrichments
                     if(empty($storyAutoE['data'])) {
                         $content .= "<div id='run-stry-enrich' style='display:none;'> Analyse Story Description for Automatic Enrichments </div>";
-                    
+
                         $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
                             $content .= "<div id='auto-story-spinner-container' class='spinner-container'>";
@@ -2142,7 +2131,7 @@ if (event.target.id != "tagging-status-indicator") {
                         }
                         $content .= "</div>";
                     }
-                    
+
                     $content .= "</div>";
                     // Content will be added here in switchItemPageView function
                 $content .= "</div>";

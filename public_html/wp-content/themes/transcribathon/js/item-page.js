@@ -1723,43 +1723,41 @@ function loadPersonData(itemId, userId) {
 
             for(let person of content) {
 
-                let docCreatorCheck = person['PersonRole'] == 'DocumentCreator' ? 'checked' : '';
-                let addressedPersonCheck = person['PersonRole'] == 'AddressedPerson' ? 'checked' : '';
-                let personMentionedCheck = person['PersonRole'] == 'PersonMentioned' ? 'checked' : '';
+              let docCreatorCheck = person['PersonRole'] == 'DocumentCreator' ? 'checked' : '';
+              let addressedPersonCheck = person['PersonRole'] == 'AddressedPerson' ? 'checked' : '';
+              let personMentionedCheck = person['PersonRole'] == 'PersonMentioned' ? 'checked' : '';
 
-                person['BirthDate'] = !isNaN(Date.parse(person['BirthDate']))
-                    ? new Date(person['BirthDate']).toLocaleDateString('en-GB')
-                    : null;
-                person['DeathDate'] = !isNaN(Date.parse(person['DeathDate']))
-                    ? new Date(person['DeathDate']).toLocaleDateString('en-GB')
-                    : null;
+              person['BirthDate'] = person['BirthDate']
+                ? new Date(person['BirthDate']).toLocaleDateString('en-GB')
+								: person['BirthDateDisplay'] || null;
+              person['DeathDate'] = person['DeathDate']
+                ? new Date(person['DeathDate']).toLocaleDateString('en-GB')
+								: person['DeathDateDisplay'] || null;
 
-                if(person['BirthDate'] && person['BirthDate'].includes('01/01/')){
-                    person['BirthDate'] = person['BirthDate'].replace('01/01/','');
-                }
+							// careful, using non-strict comparators for checking null and undefined
+							const birthArray = [];
+							if (person['BirthDate'] != null) { birthArray.push(person['BirthDate']); }
+							if (person['BirthPlace'] != null) { birthArray.push(person['BirthPlace']); }
+							const birthString = birthArray.join(', ');
 
+							const deathArray = [];
+							if (person['DeathDate'] != null) { deathArray.push(person['DeathDate']); }
+							if (person['DeathPlace'] != null) { deathArray.push(person['DeathPlace']); }
+							const deathString = deathArray.join(', ');
 
+							const personDateArray = [];
+							if (birthString) { personDateArray.push('Birth: ' + birthString); }
+							if (deathString) { personDateArray.push('Death: ' + deathString); }
+							const personDateString = personDateArray.join(' - ');
 
                 personOutCont.innerHTML +=
                     `<div id='person-${person['PersonId']}'>` +
                         `<div class='single-person'>` +
                             `<i class='fas fa-user person-i' style='float:left;margin-right: 5px;'></i>` +
                             `<p class='person-data'>` +
-                                `${person['FirstName'] ? htmlDecode(person['FirstName']) : ''} ${person['LastName'] ? htmlDecode(person['LastName']) : ''}` +
-                                // Sorry for this one, but it looks like best solution for now xD
-                                `${(person['BirthDate']) && (person['DeathDate']) ?
-                                    ` (${person['BirthDate']}${isItString(person['BirthPlace'], 2)} - ${person['DeathDate']}${isItString(person['DeathPlace'], 2)})`
-                                    :
-                                    `${person['BirthDate'] || person['BirthPlace'] ?
-                                        ` (Birth: ${isItString(person['BirthDate'])}${person['BirthPlace'] ? ',' : ''}${isItString(person['BirthPlace'])})`
-                                        :
-                                        `${person['DeathDate'] || person['DeathPlace'] ?
-                                            ` (Death: ${isItString(person['DeathDate'])}${person['DeatPlace'] ? ',' : ''}${isItString(person['DeathPlace'])})`
-                                            :
-                                            ``
-                                        }`
-                                    }`
-                                }` +
+                                `${person['FirstName'] ? htmlDecode(person['FirstName']) : ''}
+																 ${person['LastName']  ? htmlDecode(person['LastName'])  : ''}
+																	${personDateString   ? ' (' + personDateString + ')'   : ''}` +
                             `</p>` +
                             `${person['Description'] ?
                                 `<p class='person-description'>Description: ${htmlDecode(person['Description'])}</p>`
@@ -2100,9 +2098,9 @@ function editPerson(personId, itemId, userId) {
     firstName = jQuery('#person-' + personId + '-firstName-edit').val();
     lastName = jQuery('#person-' + personId + '-lastName-edit').val();
     birthPlace = jQuery('#person-' + personId + '-birthPlace-edit').val();
-    birthDate = jQuery('#person-' + personId + '-birthDate-edit').val().split('/');
+    birthDate = jQuery('#person-' + personId + '-birthDate-edit').val();
     deathPlace = jQuery('#person-' + personId + '-deathPlace-edit').val();
-    deathDate = jQuery('#person-' + personId + '-deathDate-edit').val().split('/');
+    deathDate = jQuery('#person-' + personId + '-deathDate-edit').val();
     description = jQuery('#person-' + personId + '-description-edit').val();
     wiki = jQuery('#person-' + personId + '-wiki-edit').val();
     let personRole = 'PersonMentioned';
@@ -2128,17 +2126,25 @@ function editPerson(personId, itemId, userId) {
       PersonRole: personRole,
       ItemId: itemId
     }
-    if (!isNaN(birthDate[2]) && !isNaN(birthDate[1]) && !isNaN(birthDate[0])) {
-      data['BirthDate'] = birthDate[2] + "-" + birthDate[1] + "-" + birthDate[0];
+
+		const birthDateArray = birthDate.split('/');
+    if (Number.isInteger(birthDateArray[2]) && Number.isInteger(birthDateArray[1]) && Number.isInteger(birthDateArray[0])) {
+      data['BirthDate'] = birthDateArray[2] + "-" + birthDateArray[1] + "-" + birthDateArray[0];
+      data['BirthDateDisplay'] = null;
     }
     else {
       data['BirthDate'] = null;
+      data['BirthDateDisplay'] = birthDate;
     }
-    if (!isNaN(deathDate[2]) && !isNaN(deathDate[1]) && !isNaN(deathDate[0])) {
-      data['DeathDate'] = deathDate[2] + "-" + deathDate[1] + "-" + deathDate[0];
+
+		const deathDateArray = deathDate.split('/');
+    if (Number.isInteger(deathDateArray[2]) && Number.isInteger(deathDateArray[1]) && Number.isInteger(deathDateArray[0])) {
+      data['DeathDate'] = deathDateArray[2] + "-" + deathDateArray[1] + "-" + deathDateArray[0];
+      data['DeathDateDisplay'] = null;
     }
     else {
       data['DeathDate'] = null;
+      data['DeathDateDisplay'] = deathDate;
     }
 
     for (var key in data) {
