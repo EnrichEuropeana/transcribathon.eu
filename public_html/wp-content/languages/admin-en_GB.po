@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 6.2.x - Development - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2023-03-14 10:33:01+0000\n"
+"PO-Revision-Date: 2023-04-19 10:51:23+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -51,7 +51,7 @@ msgstr "Continue"
 #: wp-admin/export.php:60 wp-admin/includes/class-custom-background.php:101
 #: wp-admin/includes/class-custom-image-header.php:138 wp-admin/index.php:133
 #: wp-admin/link-manager.php:80 wp-admin/media-new.php:62 wp-admin/media.php:98
-#: wp-admin/my-sites.php:53 wp-admin/nav-menus.php:687
+#: wp-admin/my-sites.php:53 wp-admin/nav-menus.php:690
 #: wp-admin/options-discussion.php:33 wp-admin/options-general.php:61
 #: wp-admin/options-media.php:42 wp-admin/options-permalink.php:67
 #: wp-admin/options-reading.php:54 wp-admin/options-writing.php:54
@@ -653,6 +653,10 @@ msgstr "Important! Your version of WordPress (%1$s) will stop receiving security
 msgid "Important! Your version of WordPress (%1$s) is no longer supported, you will not receive any security updates for your website. To keep your site secure, please <a href=\"%2$s\">update to the latest version of WordPress</a>."
 msgstr "Important! Your version of WordPress (%1$s) is no longer supported, you will not receive any security updates for your website. To keep your site secure, please <a href=\"%2$s\">update to the latest version of WordPress</a>."
 
+#: wp-admin/about.php:249
+msgid "https://make.wordpress.org/core/2023/03/09/wordpress-6-2-field-guide/"
+msgstr "https://make.wordpress.org/core/2023/03/09/wordpress-6-2-field-guide/"
+
 #. translators: 1: WordPress Release Notes link, 2: WordPress version number.
 #: wp-admin/about.php:266
 msgid "<a href=\"%1$s\">Read the WordPress %2$s Release Notes</a> for more information on the included enhancements and issues fixed, installation information, developer notes and resources, release contributors, and the list of file changes in this release."
@@ -976,11 +980,11 @@ msgstr "Individual posts may override these settings. Changes here will only be 
 msgid "The Dashboard is the first place you will come to every time you log into your site. It is where you will find all your WordPress tools. If you need help, just click the &#8220;Help&#8221; tab above the screen title."
 msgstr "The dashboard is the first place you will come to, every time you log into your site. It is where you will find all your WordPress tools. If you need help, just click the &#8220;Help&#8221; tab above the screen title."
 
-#: wp-admin/nav-menus.php:519
+#: wp-admin/nav-menus.php:522
 msgid "Menu item removed"
 msgstr "Menu item removed"
 
-#: wp-admin/nav-menus.php:522
+#: wp-admin/nav-menus.php:525
 msgid "Menu item moved to the top"
 msgstr "Menu item moved to the top"
 
@@ -1151,24 +1155,24 @@ msgid "Themes %s"
 msgstr "Themes %s"
 
 #. translators: %s: Item name.
-#: wp-admin/nav-menus.php:515
+#: wp-admin/nav-menus.php:518
 msgid "item %s"
 msgstr "item %s"
 
 #. translators: %s: Item name.
-#: wp-admin/nav-menus.php:517
+#: wp-admin/nav-menus.php:520
 msgid "Deleted menu item: %s."
 msgstr "Deleted menu item: %s."
 
-#: wp-admin/nav-menus.php:1042 wp-admin/nav-menus.php:1077
+#: wp-admin/nav-menus.php:1045 wp-admin/nav-menus.php:1080
 msgid "Bulk Select"
 msgstr "Bulk select"
 
-#: wp-admin/nav-menus.php:1079
+#: wp-admin/nav-menus.php:1082
 msgid "Remove Selected Items"
 msgstr "Remove selected items"
 
-#: wp-admin/nav-menus.php:1081
+#: wp-admin/nav-menus.php:1084
 msgid "List of menu items selected for deletion:"
 msgstr "List of menu items selected for deletion:"
 
@@ -3013,7 +3017,7 @@ msgstr "<a href=\"https://wordpress.org/documentation/article/settings-permalink
 msgid "<a href=\"https://wordpress.org/documentation/article/dashboard-updates-screen/\">Documentation on Updating WordPress</a>"
 msgstr "<a href=\"https://wordpress.org/documentation/article/dashboard-updates-screen/\">Documentation on Updating WordPress</a>"
 
-#: wp-admin/nav-menus.php:686
+#: wp-admin/nav-menus.php:689
 msgid "<a href=\"https://wordpress.org/documentation/article/appearance-menus-screen/\">Documentation on Menus</a>"
 msgstr "<a href=\"https://wordpress.org/documentation/article/appearance-menus-screen/\">Documentation on Menus</a>"
 
@@ -3817,7 +3821,7 @@ msgid "PHP Extensions"
 msgstr "PHP Extensions"
 
 #: wp-admin/about.php:38 wp-admin/credits.php:42 wp-admin/freedoms.php:39
-#: wp-admin/includes/ms.php:1119 wp-admin/nav-menus.php:724
+#: wp-admin/includes/ms.php:1119 wp-admin/nav-menus.php:727
 #: wp-admin/options-privacy.php:161 wp-admin/privacy-policy-guide.php:44
 #: wp-admin/privacy.php:33 wp-admin/site-health.php:131
 msgid "Secondary menu"
@@ -4749,31 +4753,31 @@ msgstr "You cannot update because <a href=\"%1$s\">WordPress %2$s</a> requires M
 msgid "You cannot update because <a href=\"%1$s\">WordPress %2$s</a> requires PHP version %3$s or higher. You are running version %4$s."
 msgstr "You cannot update because <a href=\"%1$s\">WordPress %2$s</a> requires PHP version %3$s or higher. You are running version %4$s."
 
-#: wp-admin/nav-menus.php:980
+#: wp-admin/nav-menus.php:983
 msgid "Add menu items"
 msgstr "Add menu items"
 
 #. translators: Hidden accessibility text.
-#: wp-admin/nav-menus.php:886 wp-admin/nav-menus.php:956
+#: wp-admin/nav-menus.php:889 wp-admin/nav-menus.php:959
 msgid "Click the Save Menu button to save your changes."
 msgstr "Click the Save Menu button to save your changes."
 
 #. translators: Hidden accessibility text.
-#: wp-admin/nav-menus.php:862
+#: wp-admin/nav-menus.php:865
 msgid "Fill in the Menu Name and click the Create Menu button to create your first menu."
 msgstr "Fill in the Menu Name and click the Create Menu button to create your first menu."
 
-#: wp-admin/nav-menus.php:858
+#: wp-admin/nav-menus.php:861
 msgid "Create your first menu below."
 msgstr "Create your first menu below."
 
 #. translators: %s: URL to create a new menu.
-#: wp-admin/nav-menus.php:941
+#: wp-admin/nav-menus.php:944
 msgid "or <a href=\"%s\">create a new menu</a>. Do not forget to save your changes!"
 msgstr "or <a href=\"%s\">create a new menu</a>. Do not forget to save your changes!"
 
 #. translators: %s: URL to create a new menu.
-#: wp-admin/nav-menus.php:871
+#: wp-admin/nav-menus.php:874
 msgid "Edit your menu below, or <a href=\"%s\">create a new menu</a>. Do not forget to save your changes!"
 msgstr "Edit your menu below, or <a href=\"%s\">create a new menu</a>. Do not forget to save your changes!"
 
@@ -6321,7 +6325,7 @@ msgstr "Hide Controls"
 msgid "Expand Sidebar"
 msgstr "Expand Sidebar"
 
-#: wp-admin/nav-menus.php:1113
+#: wp-admin/nav-menus.php:1116
 msgid "Display location"
 msgstr "Display location"
 
@@ -6574,7 +6578,7 @@ msgstr "Sorry, you are not allowed to edit plugins for this site."
 msgid "Sorry, you are not allowed to delete this site."
 msgstr "Sorry, you are not allowed to delete this site."
 
-#: wp-admin/nav-menus.php:709 wp-admin/widgets-form.php:393
+#: wp-admin/nav-menus.php:712 wp-admin/widgets-form.php:393
 msgid "Manage with Live Preview"
 msgstr "Manage with Live Preview"
 
@@ -7251,7 +7255,7 @@ msgid "Send the new user an email about their account."
 msgstr "Send the new user an email about their account."
 
 #. translators: %s: Menu name.
-#: wp-admin/nav-menus.php:1133
+#: wp-admin/nav-menus.php:1136
 msgctxt "menu location"
 msgid "(Currently set to: %s)"
 msgstr "(Currently set to: %s)"
@@ -7920,7 +7924,7 @@ msgid "Show more details"
 msgstr "Show more details"
 
 #. translators: %s: Number of menus.
-#: wp-admin/nav-menus.php:753
+#: wp-admin/nav-menus.php:756
 msgid "Your theme supports %s menu. Select which menu appears in each location."
 msgid_plural "Your theme supports %s menus. Select which menu appears in each location."
 msgstr[0] "Your theme supports %s menu. Select which menu appears in each location."
@@ -8119,7 +8123,7 @@ msgstr "This theme has not been rated yet."
 msgid "New translations are available."
 msgstr "New translations are available."
 
-#: wp-admin/nav-menus.php:658
+#: wp-admin/nav-menus.php:661
 msgid "To add a custom link, <strong>expand the Custom Links section, enter a URL and link text, and click Add to Menu</strong>"
 msgstr "To add a custom link, <strong>expand the Custom Links section, enter a URL and link text, and click Add to Menu</strong>"
 
@@ -9210,12 +9214,12 @@ msgstr "The username you provided has invalid characters."
 msgid "Your passwords do not match. Please try again."
 msgstr "Your passwords do not match. Please try again."
 
-#: wp-admin/nav-menus.php:656
+#: wp-admin/nav-menus.php:659
 msgid "<strong>Clicking the arrow to the right of any menu item</strong> in the editor will reveal a standard group of settings. Additional settings such as link target, CSS classes, link relationships, and link descriptions can be enabled and disabled via the Screen Options tab."
 msgstr "<strong>Clicking the arrow to the right of any menu item</strong> in the editor will reveal a standard group of settings. Additional settings such as link target, CSS classes, link relationships, and link descriptions can be enabled and disabled via the Screen Options tab."
 
 #. translators: %s: URL to Widgets screen.
-#: wp-admin/nav-menus.php:616
+#: wp-admin/nav-menus.php:619
 msgid "Your theme does not natively support menus, but you can use them in sidebars by adding a &#8220;Navigation Menu&#8221; widget on the <a href=\"%s\">Widgets</a> screen."
 msgstr "Your theme does not natively support menus, but you can use them in sidebars by adding a &#8220;Navigation Menu&#8221; widget on the <a href=\"%s\">Widgets</a> screen."
 
@@ -9225,7 +9229,7 @@ msgstr "You must provide an email address."
 
 #. translators: 1: URL to Widgets screen, 2 and 3: The names of the default
 #. themes.
-#: wp-admin/nav-menus.php:625
+#: wp-admin/nav-menus.php:628
 msgid "Menus can be displayed in locations defined by your theme, even used in sidebars by adding a &#8220;Navigation Menu&#8221; widget on the <a href=\"%1$s\">Widgets</a> screen. If your theme does not support the navigation menus feature (the default themes, %2$s and %3$s, do), you can learn about adding this support by following the documentation link to the side."
 msgstr "Menus can be displayed in locations defined by your theme, even used in sidebars by adding a &#8220;Navigation Menu&#8221; widget on the <a href=\"%1$s\">Widgets</a> screen. If your theme does not support the navigation menus feature (the default themes, %2$s and %3$s, do), you can learn about adding this support by following the documentation link to the side."
 
@@ -9459,11 +9463,11 @@ msgstr "The item you are trying to restore from the Bin no longer exists."
 msgid "This item has already been deleted."
 msgstr "This item has already been deleted."
 
-#: wp-admin/nav-menus.php:1031
+#: wp-admin/nav-menus.php:1034
 msgid "Drag the items into the order you prefer. Click the arrow on the right of the item to reveal additional configuration options."
 msgstr "Drag the items into the order you prefer. Click the arrow on the right of the item to reveal additional configuration options."
 
-#: wp-admin/nav-menus.php:644
+#: wp-admin/nav-menus.php:647
 msgid "If you have not yet created any menus, <strong>click the &#8217;create a new menu&#8217; link</strong> to get started"
 msgstr "If you have not yet created any menus, <strong>click the &#8217;create a new menu&#8217; link</strong> to get started"
 
@@ -9503,15 +9507,15 @@ msgctxt "Button label for a next revision"
 msgid "Next"
 msgstr "Next"
 
-#: wp-admin/nav-menus.php:632
+#: wp-admin/nav-menus.php:635
 msgid "Add, organize, and modify individual menu items"
 msgstr "Add, organise, and modify individual menu items"
 
-#: wp-admin/nav-menus.php:659
+#: wp-admin/nav-menus.php:662
 msgid "To reorganize menu items, <strong>drag and drop items with your mouse or use your keyboard</strong>. Drag or move a menu item a little to the right to make it a submenu"
 msgstr "To reorganise menu items, <strong>drag and drop items with your mouse or use your keyboard</strong>. Drag or move a menu item a little to the right to make it a submenu"
 
-#: wp-admin/nav-menus.php:468
+#: wp-admin/nav-menus.php:471
 msgid "Menu locations updated."
 msgstr "Menu locations updated."
 
@@ -9548,93 +9552,93 @@ msgstr "Audio Codec:"
 msgid "Your latest changes were saved as a revision."
 msgstr "Your latest changes were saved as a revision."
 
-#: wp-admin/nav-menus.php:630 wp-admin/themes.php:133
+#: wp-admin/nav-menus.php:633 wp-admin/themes.php:133
 msgid "From this screen you can:"
 msgstr "From this screen you can:"
 
-#: wp-admin/nav-menus.php:631
+#: wp-admin/nav-menus.php:634
 msgid "Create, edit, and delete menus"
 msgstr "Create, edit, and delete menus"
 
-#: wp-admin/nav-menus.php:642
+#: wp-admin/nav-menus.php:645
 msgid "The menu management box at the top of the screen is used to control which menu is opened in the editor below."
 msgstr "The menu management box at the top of the screen is used to control which menu is opened in the editor below."
 
-#: wp-admin/nav-menus.php:645
+#: wp-admin/nav-menus.php:648
 msgid "You can assign theme locations to individual menus by <strong>selecting the desired settings</strong> at the bottom of the menu editor. To assign menus to all theme locations at once, <strong>visit the Manage Locations tab</strong> at the top of the screen."
 msgstr "You can assign theme locations to individual menus by <strong>selecting the desired settings</strong> at the bottom of the menu editor. To assign menus to all theme locations at once, <strong>visit the Manage Locations tab</strong> at the top of the screen."
 
-#: wp-admin/nav-menus.php:650
+#: wp-admin/nav-menus.php:653
 msgid "Menu Management"
 msgstr "Menu Management"
 
-#: wp-admin/nav-menus.php:657
+#: wp-admin/nav-menus.php:660
 msgid "Add one or several items at once by <strong>selecting the checkbox next to each item and clicking Add to Menu</strong>"
 msgstr "Add one or several items at once by <strong>selecting the checkbox next to each item and clicking Add to Menu</strong>"
 
-#: wp-admin/nav-menus.php:660
+#: wp-admin/nav-menus.php:663
 msgid "Delete a menu item by <strong>expanding it and clicking the Remove link</strong>"
 msgstr "Delete a menu item by <strong>expanding it and clicking the Remove link</strong>"
 
-#: wp-admin/nav-menus.php:665
+#: wp-admin/nav-menus.php:668
 msgid "Editing Menus"
 msgstr "Editing Menus"
 
-#: wp-admin/nav-menus.php:670
+#: wp-admin/nav-menus.php:673
 msgid "This screen is used for globally assigning menus to locations defined by your theme."
 msgstr "This screen is used for globally assigning menus to locations defined by your theme."
 
-#: wp-admin/nav-menus.php:672
+#: wp-admin/nav-menus.php:675
 msgid "To edit a menu currently assigned to a theme location, <strong>click the adjacent &#8217;Edit&#8217; link</strong>"
 msgstr "To edit a menu currently assigned to a theme location, <strong>click the adjacent &#8217;Edit&#8217; link</strong>"
 
-#: wp-admin/nav-menus.php:673
+#: wp-admin/nav-menus.php:676
 msgid "To add a new menu instead of assigning an existing one, <strong>click the &#8217;Use new menu&#8217; link</strong>. Your new menu will be automatically assigned to that theme location"
 msgstr "To add a new menu instead of assigning an existing one, <strong>click the &#8217;Use new menu&#8217; link</strong>. Your new menu will be automatically assigned to that theme location"
 
-#: wp-admin/nav-menus.php:725
+#: wp-admin/nav-menus.php:728
 msgid "Edit Menus"
 msgstr "Edit Menus"
 
-#: wp-admin/nav-menus.php:736
+#: wp-admin/nav-menus.php:739
 msgid "Manage Locations"
 msgstr "Manage Locations"
 
-#: wp-admin/nav-menus.php:767
+#: wp-admin/nav-menus.php:770
 msgid "Theme Location"
 msgstr "Theme Location"
 
-#: wp-admin/nav-menus.php:768
+#: wp-admin/nav-menus.php:771
 msgid "Assigned Menu"
 msgstr "Assigned Menu"
 
-#: wp-admin/nav-menus.php:777
+#: wp-admin/nav-menus.php:780
 msgid "Select a Menu"
 msgstr "Select a Menu"
 
-#: wp-admin/nav-menus.php:808
+#: wp-admin/nav-menus.php:811
 msgctxt "menu"
 msgid "Edit"
 msgstr "Edit"
 
-#: wp-admin/nav-menus.php:832
+#: wp-admin/nav-menus.php:835
 msgctxt "menu"
 msgid "Use new menu"
 msgstr "Use new menu"
 
-#: wp-admin/nav-menus.php:655
+#: wp-admin/nav-menus.php:658
 msgid "Each navigation menu may contain a mix of links to pages, categories, custom URLs or other content types. Menu links are added by selecting items from the expanding boxes in the left-hand column below."
 msgstr "Each navigation menu may contain a mix of links to pages, categories, custom URLs or other content types. Menu links are added by selecting items from the expanding boxes in the left-hand column below."
 
-#: wp-admin/nav-menus.php:622
+#: wp-admin/nav-menus.php:625
 msgid "This screen is used for managing your navigation menus."
 msgstr "This screen is used for managing your navigation menus."
 
-#: wp-admin/nav-menus.php:671
+#: wp-admin/nav-menus.php:674
 msgid "To assign menus to one or more theme locations, <strong>select a menu from each location&#8217;s dropdown</strong>. When you are finished, <strong>click Save Changes</strong>"
 msgstr "To assign menus to one or more theme locations, <strong>select a menu from each location&#8217;s dropdown</strong>. When you are finished, <strong>click Save Changes</strong>"
 
-#: wp-admin/nav-menus.php:643
+#: wp-admin/nav-menus.php:646
 msgid "To edit an existing menu, <strong>choose a menu from the dropdown and click Select</strong>"
 msgstr "To edit an existing menu, <strong>choose a menu from the dropdown and click Select</strong>"
 
@@ -9667,11 +9671,11 @@ msgstr "Down one"
 msgid "To the top"
 msgstr "To the top"
 
-#: wp-admin/nav-menus.php:1088 wp-admin/network/settings.php:501
+#: wp-admin/nav-menus.php:1091 wp-admin/network/settings.php:501
 msgid "Menu Settings"
 msgstr "Menu Settings"
 
-#: wp-admin/nav-menus.php:988
+#: wp-admin/nav-menus.php:991
 msgid "Menu structure"
 msgstr "Menu structure"
 
@@ -9690,7 +9694,7 @@ msgstr "You cannot move this item to the Bin. %s is currently editing."
 msgid "%s has taken over and is currently editing."
 msgstr "%s has taken over and is currently editing."
 
-#: wp-admin/nav-menus.php:893
+#: wp-admin/nav-menus.php:896
 msgid "Select a menu to edit:"
 msgstr "Select a menu to edit:"
 
@@ -9711,19 +9715,19 @@ msgstr "Client version"
 msgid "sub item"
 msgstr "sub item"
 
-#: wp-admin/nav-menus.php:326
+#: wp-admin/nav-menus.php:329
 msgid "Selected menus have been successfully deleted."
 msgstr "Selected menus have been successfully deleted."
 
-#: wp-admin/nav-menus.php:1104
+#: wp-admin/nav-menus.php:1107
 msgid "Auto add pages"
 msgstr "Auto add pages"
 
-#: wp-admin/nav-menus.php:1058
+#: wp-admin/nav-menus.php:1061
 msgid "Give your menu a name, then click Create Menu."
 msgstr "Give your menu a name, then click Create Menu."
 
-#: wp-admin/nav-menus.php:1029
+#: wp-admin/nav-menus.php:1032
 msgid "Edit your default menu by adding or removing items. Drag the items into the order you prefer. Click Create Menu to save your changes."
 msgstr "Edit your default menu by adding or removing items. Drag the items into the order you prefer. Click Create Menu to save your changes."
 
@@ -11079,8 +11083,8 @@ msgstr "You can use the following controls to arrange your Dashboard screen to s
 #: wp-admin/includes/class-custom-image-header.php:100
 #: wp-admin/includes/class-wp-screen.php:856 wp-admin/includes/ms.php:1134
 #: wp-admin/index.php:44 wp-admin/link-manager.php:57 wp-admin/media-new.php:49
-#: wp-admin/media.php:86 wp-admin/my-sites.php:44 wp-admin/nav-menus.php:637
-#: wp-admin/nav-menus.php:678 wp-admin/options-discussion.php:24
+#: wp-admin/media.php:86 wp-admin/my-sites.php:44 wp-admin/nav-menus.php:640
+#: wp-admin/nav-menus.php:681 wp-admin/options-discussion.php:24
 #: wp-admin/options-general.php:53 wp-admin/options-media.php:34
 #: wp-admin/options-permalink.php:23 wp-admin/options-privacy.php:38
 #: wp-admin/options-reading.php:25 wp-admin/options-writing.php:23
@@ -11209,7 +11213,7 @@ msgstr "Role"
 #: wp-admin/includes/class-custom-image-header.php:136
 #: wp-admin/includes/ms.php:1156 wp-admin/index.php:131
 #: wp-admin/link-manager.php:78 wp-admin/media-new.php:60 wp-admin/media.php:96
-#: wp-admin/my-sites.php:51 wp-admin/nav-menus.php:685
+#: wp-admin/my-sites.php:51 wp-admin/nav-menus.php:688
 #: wp-admin/options-discussion.php:31 wp-admin/options-general.php:59
 #: wp-admin/options-media.php:40 wp-admin/options-permalink.php:59
 #: wp-admin/options-privacy.php:46 wp-admin/options-reading.php:52
@@ -12274,7 +12278,7 @@ msgstr "You can customise the display of this screen in a number of ways:"
 msgid "Search Installed Plugins"
 msgstr "Search Installed Plugins"
 
-#: wp-admin/nav-menus.php:749
+#: wp-admin/nav-menus.php:752
 msgid "Your theme supports one menu. Select which menu you would like to use."
 msgstr "Your theme supports %s menu. Select which menu appears in each location."
 
@@ -12417,7 +12421,7 @@ msgstr "The installer attempted to contact a random hostname (%s) on your domain
 msgid "To use a subdomain configuration, you must have a wildcard entry in your DNS. This usually means adding a %s hostname record pointing at your web server in your DNS configuration tool."
 msgstr "To use a subdomain configuration, you must have a wildcard entry in your DNS. This usually means adding a %s hostname record pointing at your web server in your DNS configuration tool."
 
-#: wp-admin/nav-menus.php:281
+#: wp-admin/nav-menus.php:284
 msgid "The menu item has been successfully deleted."
 msgstr "The menu item has been successfully deleted."
 
@@ -12592,7 +12596,7 @@ msgstr "items"
 msgid "Usernames cannot be changed."
 msgstr "Usernames cannot be changed."
 
-#: wp-admin/nav-menus.php:304
+#: wp-admin/nav-menus.php:307
 msgid "The menu has been successfully deleted."
 msgstr "The menu has been successfully deleted."
 
@@ -12615,7 +12619,7 @@ msgstr "Link Target"
 msgid "CSS Classes (optional)"
 msgstr "CSS Classes (optional)"
 
-#: wp-admin/nav-menus.php:1014 wp-admin/nav-menus.php:1179
+#: wp-admin/nav-menus.php:1017 wp-admin/nav-menus.php:1182
 msgid "Save Menu"
 msgstr "Save Menu"
 
@@ -12730,7 +12734,7 @@ msgstr[1] "Must-Use <span class=\"count\">(%s)</span>"
 msgid "Go to Dashboard"
 msgstr "Go to Dashboard"
 
-#: wp-admin/nav-menus.php:400 wp-admin/nav-menus.php:422
+#: wp-admin/nav-menus.php:403 wp-admin/nav-menus.php:425
 msgid "Please enter a valid menu name."
 msgstr "Please enter a valid menu name."
 
@@ -15526,7 +15530,7 @@ msgid "Disable accessibility mode"
 msgstr "Disable accessibility mode"
 
 #: wp-admin/includes/dashboard.php:251 wp-admin/includes/template.php:2592
-#: wp-admin/nav-menus.php:841 wp-admin/options.php:413
+#: wp-admin/nav-menus.php:844 wp-admin/options.php:413
 msgid "Save Changes"
 msgstr "Save Changes"
 
