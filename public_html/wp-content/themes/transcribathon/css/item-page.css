@@ -2705,11 +2705,6 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     top: unset;
     position: relative;
 }
-/* .data-popout #item-date-container, .data-popout .item-page-person-container,
-.data-popout #item-page-keyword-container, .data-popout #item-page-link-container {
-    position: relative;
-    bottom: 30px;
-} */
 .data-popout #location-position i {
     left: 105px;
     top: 8px;
@@ -3013,21 +3008,6 @@ div.tox.tox-tinymce {
     color: var(--main-color);
     font-size: 14px;
 }
-/* .compare-tr {
-    display: inline-block;
-    margin-left: 15px;
-    font-family: var(--h-font-family);
-    font-weight: 600;
-    font-size: 1.1em;
-} */
-/* Item Page compare transcriptions btn */
-/* .tr-comp-btn {
-    float: right;
-    font-size: 13px;
-    border: 2px solid #0a72cc;;
-    border-radius: 15px;
-    font-weight: ;
-} */
 .full-container {
     margin-top: 85px;
 }
@@ -3144,8 +3124,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     color: var(--main-color);
 }
 .person-role-input {
-    /* width: 70%; */
-    /* margin: 0 auto; */
     line-height: 1.3em!important;
     height: inherit;
 }
@@ -3154,7 +3132,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     font-family: var(--p-font-family);
     position: relative;
     bottom: 2px;
-    /* margin-left: 5px; */
     color: var(--main-color);
 }
 .place-wiki-left {
@@ -3269,16 +3246,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     position: relative;
     top: 2.5px;
 } 
-/* .person-role-input span:after {
-    background: var(--main-color);
-    width: 11px;
-    height: 11px;
-    position: absolute;
-    top: 1px;
-    left: 2px;
-    transition: 300ms;
-    opacity: 0;
-} */
 .person-role-input span:after {
     display: inline-block;
     position: absolute;
@@ -3302,13 +3269,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .creation-date-container {
     display: inline-block;
 }
-/* .loc-type {
-    display: inline-block;
-    margin-top: 10px;
-}
-.loc-type label {
-    margin: 0 10px;
-} */
 /* Auto enrichments */
 #full-v-metadata h3 {
     font-size: 17px!important;
@@ -3593,34 +3553,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     text-align: center;
     height: inherit;
 }
-/* .rc-top-left {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 40%;
-    max-width: 300px;
-}
-.rc-top-left input {
-    padding: 0;
-    border: none;
-    width: 100%;
-} */
-.reg-num {
-    position: absolute;
-    width: 100px;
-    left: 50%;
-    text-align: center;
-}
-.reg-num input {
-    width: 50px;
-}
-.rc-top-right {
-    width: 40%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    max-width: 300px;
-}
 .rc-title {
     text-align: center;
     font-size: 20px;
@@ -3630,6 +3562,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #rc-date {
     margin-top: 25px;
+    position: relative;
 }
 #shop-place {
     margin-top: 25px;
@@ -3646,12 +3579,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #shop-loc-btn {
     margin-left: 5px;
-}
-#shop-tr-place {
-    margin-bottom: 20px;
-}
-.loc-name {
-    font-weight: 500;
 }
 .rc-first-col {
     width: 42%;
@@ -3678,9 +3605,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     width: 22%;
     text-align: center;
 }
-.rc-person-second-col {
-    width: 8%!important;
-}
 .rc-list-td {
     position: relative;
     border-bottom: 1px solid #ccc;
@@ -3700,20 +3624,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     right: 20px;
     top: 7px;
 }
-/* .top-part {
-    border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-}
-.mid-part {
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-}
-.bot-part {
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-} */
 #m-address {
     width: 90%;
     position: absolute;
@@ -3727,9 +3637,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     position: relative;
     left: 7px;
     top: 1px;
-}
-#rc-date {
-    position: relative;
 }
 .rc-list-display td {
     text-align: left!important;
@@ -3765,13 +3672,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     color: #fff;
     font-size: 12px;
     cursor: pointer;
-}
-.edit-delete {
-    margin-left: 3px;
-}
-.edit-delete i {
-    font-size: 12px;
-    margin: 0 5px;
 }
 #edit-shop-container, #edit-llord-container, #edit-subm-container {
     display: inline-block;
@@ -3879,70 +3779,13 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 #rc-form .location-single p:first-of-type {
     font-size: 14px;
 }
-.top-person-single {
-    padding: 5px 25px;
-    background: #fff;
-    margin-bottom: 10px;
-    font-weight: 400;
-    line-height: 1em!important;
-    position: relative;
-}
-.top-person-single i.fa-user {
-    float: left;
-    margin-right: 5px;
-    font-size: 12px;
-    color: var(--main-color);
-    position: relative;
-    top: 3px;
-}
-.top-person-single i.fa-trash-alt {
-    position: absolute;
-    right: 25px;
-    top: 7px;
-    font-size: 12px;
-}
-.top-person-single .person-data {
-    font-size: 14px!important;
-    font-weight: bold;
-    height: auto;
-}
-.top-person-single .person-description {
-    font-size: 12px!important;
-}
-/* .out-first-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-} */
-.out-first-span {
-    display: inline-block;
-    width: calc(44% - 35px);
-}
-.out-third-span {
-    display: inline-block;
-    width: 40%;
-    margin-left: 34px;
-}
-.out-third-span {
-    text-align: end;
-}
-.out-second-span {
-    display: inline-block;
-    width: 10%;
-    text-align: center;
-}
 .form-title {
     text-align: center;
     font-weight: 700;
     font-size: 25px;
     margin-top: 30px!important;
 }
-.form-sub-title {
-    text-align: center;
-    font-weight: 700;
-    font-size: 15px;
-}
-.form-cookies, .form-sub-cookies {
+.form-cookies {
     text-transform: uppercase;
     font-weight: 600;
     font-size: 9px;
@@ -3992,34 +3835,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 #prirast-odpad p {
     font-size: 12px;
     margin: 0!important;
-}
-.out-first-row .out-first-span {
-    font-weight: 600;
-}
-.out-first-row .out-third-span, .out-second-subrow .out-third-span {
-    font-size: 12px;
-}
-.out-third-row .out-first-span, .out-fourth-row .out-first-span {
-    font-size: 14px;
-}
-#zalihe-container {
-    border: 1px solid #000;
-}
-#zalihe-container span {
-    display: inline-block;
-    font-size: 10px;
-    line-height: normal;
-    text-align: center;
-    /* border: 1px solid #000; */
-    vertical-align: top;
-}
-#zalihe-top span:not(#zalihe-top span:last-of-type) {
-    border-bottom: 1px solid #000;
-    border-right: 1px solid #000;
-}
-#zalihe-bot span:not(#zalihe-bot span:last-of-type) {
-    border-top: 1px solid #000;
-    border-right: 1px solid #000;
 }
 /* -------------------------------- */
 .rc-first-left-block, .rc-first-right-block {
@@ -4118,10 +3933,6 @@ div.rc-inner-bot-div {
     font-size: 8px!important;
     line-height: 12px!important;
     text-overflow: clip;
-}
-.rc-brasno {
-    font-size: 8px!important;
-    line-height: 12px!important;
     text-align: center;
     min-height: 15px!important;
     border-bottom: 1px solid #000;
