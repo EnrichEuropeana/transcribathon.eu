@@ -1737,9 +1737,13 @@ ready(() => {
 
                     document.querySelector('#description-language-selector').appendChild(newLang);
                 }
-
-                document.querySelector('#type-Handwritten-checkbox').click();
-                document.querySelector('#type-Printed-checkbox').click();
+                if(!document.querySelector('#type-Handwritten-checkbox').checked) {
+                    document.querySelector('#type-Handwritten-checkbox').click();
+                }
+                if(!document.querySelector('#type-Printed-checkbox').checked) {
+                    document.querySelector('#type-Printed-checkbox').click();
+                }
+                
                 
             });
         }
