@@ -1334,7 +1334,7 @@ if (event.target.id != "tagging-status-indicator") {
         $descriptionTab .= "</div>";
         $descriptionTab .= "<div id='description-area'>";
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
-                $descriptionTab .= "Item Description ";
+                $descriptionTab .= "Document Description ";
               //  $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
                 $descriptionTab .= "<i id='description-open' class=\"fas fa-edit\"></i>";
             $descriptionTab .= "</h6>";

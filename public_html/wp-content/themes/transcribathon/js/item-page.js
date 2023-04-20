@@ -1062,7 +1062,7 @@ function addItemProperty(itemId, userId, type, editStatusColor, statusCount, pro
             'data': data
         },
         function(response) {
-            const keyWordCont = document.querySelector('.type-of-media div');
+            const keyWordCont = document.querySelector('#doc-type-view');
             let newKeyWord = document.createElement('div');
             newKeyWord.classList.add('keyword-single');
             newKeyWord.textContent = e.name;
@@ -1084,7 +1084,7 @@ function addItemProperty(itemId, userId, type, editStatusColor, statusCount, pro
                 },
                 // Check success and create confirmation message
                 function(response) {
-                    const keyWordCont = document.querySelector('.type-of-media div');
+                    const keyWordCont = document.querySelector('#doc-type-view');
                     const oldKeyWords = keyWordCont.querySelectorAll('.keyword-single');
                     for(let keyW of oldKeyWords) {
                         if(keyW.textContent === e.name) {

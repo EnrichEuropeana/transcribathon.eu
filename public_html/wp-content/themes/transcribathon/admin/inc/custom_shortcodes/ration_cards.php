@@ -1002,7 +1002,7 @@ function _TCT_ration_cards($atts)
                     $editorTab .= "<div id='mytoolbar-transcription'></div>";
 
                     $editorTab .= "<div id='item-page-transcription-text' rows='8' style='white-space:nowrap!important;overflow-x:hidden;'>";
-                        $editorTab .= "<div id='rc-form-test' contenteditable='false'>";
+                        $editorTab .= "<div class='rc-form-test' contenteditable='false'>";
                         if($currentTranscription != null) {
                             $editorTab .= $currentTranscription['Text'];
                         }
@@ -1275,7 +1275,7 @@ function _TCT_ration_cards($atts)
         $descriptionTab .= "</div>";
         $descriptionTab .= "<div id='description-area'>";
             $descriptionTab .= "<h6 class='theme-color item-data-input-headline login-required'>";
-                $descriptionTab .= "Item Description ";
+                $descriptionTab .= "Document Description ";
              //   $descriptionTab .= "<i style='margin-left: 5px;' class='fas fa-plus-circle' onClick='this.parentElement.parentElement.classList.toggle(\"show\");'></i>";
                 $descriptionTab .= "<i id='description-open' class=\"fas fa-edit\"></i>";
             $descriptionTab .= "</h6>";
