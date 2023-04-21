@@ -222,30 +222,24 @@ function my_login_logo_one() {
 // Custom Theme-Settings for Transcribathon
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_themesettings/tct-themesettings.php');
 
-// ### ADMIN PAGES ### //
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/teams-admin-page.php'); // Adds teams admin page
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/campaigns-admin-page.php'); // Adds campaigns admin page
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/documents-admin-page.php'); // Adds documents admin page
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/datasets-admin-page.php'); // Adds documents admin page
+if(is_admin()) {
+    // ### ADMIN PAGES ### //
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/teams-admin-page.php'); // Adds teams admin page
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/campaigns-admin-page.php'); // Adds campaigns admin page
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/documents-admin-page.php'); // Adds documents admin page
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/datasets-admin-page.php'); // Adds documents admin page
+}
 
-// Custom shortcodes
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_import.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/story_page.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/solr_search.php'); // Solr test client
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/ration_cards.php'); // Zagreb Ration Cards
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/compare_transcriptions.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_htr.php'); // Adds HTR Editor
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tct_new_search.php'); // Adds New Search Page
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_item_slider.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_menu.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/documents_map.php');
+
+
+//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
+
+//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tct_new_search.php'); // Adds New Search Page
+
+//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_menu.php');
+
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/team.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/transcriptions.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/contributions.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/achievements.php');
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/teams_runs.php');
+
 // Custom posts
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-news/tct-news.php'); // Adds custom post-type: news
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
@@ -258,7 +252,10 @@ add_image_size( 'tutorial-image', 1600, 800, true );
 function embedd_custom_javascripts_and_css() {
     global $post;
 
+
+
     $themeVersion  = wp_get_theme()->get('Version');
+   // var_dump($post->post_name);
 
     if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
 
@@ -292,6 +289,10 @@ function embedd_custom_javascripts_and_css() {
 
             case 'profile':
                 // Remove unused scripts and styles
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/transcriptions.php');
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/contributions.php');
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/achievements.php');
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/teams_runs.php');
                 //mapbox
                 wp_dequeue_style('mapblox-gl-css');
                 wp_deregister_style('mapblox-gl-css');
@@ -304,6 +305,9 @@ function embedd_custom_javascripts_and_css() {
 
 
             case 'item':
+                // get shortcode
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page.php');
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_item_slider.php');
 
                 /* resizable JS*/
                 wp_register_script( 'resizable', CHILD_TEMPLATE_DIR . '/js/jquery-resizable.js', array( 'jQuery-UI' ), null, null, true );
@@ -350,6 +354,8 @@ function embedd_custom_javascripts_and_css() {
                 break;
             
             case 'story':
+                //get shortcode
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/story_page.php');
             
                 wp_enqueue_style( 'storystyle', CHILD_TEMPLATE_DIR . '/css/story_page.css', array(), $themeVersion);
                 wp_enqueue_script( 'story-js', CHILD_TEMPLATE_DIR . '/js/story-page.js', array(), $themeVersion);
@@ -387,6 +393,8 @@ function embedd_custom_javascripts_and_css() {
                 break;
             
             case 'documents':
+                // get shortcode
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/solr_search.php');
                 // Dequeue unused styles
                 wp_dequeue_style('cpsh-shortcodes');
                 wp_dequeue_style('sp-ea-font-awesome');
@@ -417,6 +425,7 @@ function embedd_custom_javascripts_and_css() {
             
             case 'ration-cards':
 
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/ration_cards.php'); // Zagreb Ration Cards
                 /* resizable JS*/
                 wp_register_script( 'resizable', CHILD_TEMPLATE_DIR . '/js/jquery-resizable.js', array( 'jQuery-UI' ), null, null, true );
                 wp_enqueue_script( 'resizable' );
@@ -497,7 +506,7 @@ function embedd_custom_javascripts_and_css() {
 
             // Just temp case for local docker
             case 'map':
-
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/documents_map.php');
                 // Dequeue unused styles
                 /* mapbox js and style*/
                 wp_enqueue_script( 'mapbox-gl', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js', null, null, true );
@@ -545,6 +554,7 @@ function embedd_custom_javascripts_and_css() {
                 break;
 
             case 'item-page-htr':
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_htr.php'); // Adds HTR Editor
                 // Dequeue unused styles
                 wp_dequeue_style('cpsh-shortcodes');
                 wp_dequeue_style('sp-ea-font-awesome');
@@ -572,6 +582,7 @@ function embedd_custom_javascripts_and_css() {
                 break;
             
             case 'transcription-comparison':
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/compare_transcriptions.php');
 
                 wp_dequeue_script('custom');
 
@@ -581,6 +592,10 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css', array(), $themeVersion);
                 wp_enqueue_script( 'jquery' );
                 wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
+                break;
+
+            case 'import-htr-transcription': 
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_import.php');
                 break;
 
             default:
@@ -677,31 +692,31 @@ add_shortcode( 'footer-logo', '_TCT_footer_logos' );
 
 /* Add custom widgets */
 
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-top-transcribers/tct-top-transcribers-widget.php'); // Adds the top-transcribers-widget
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-chart/tct-progress-line-chart-widget.php'); // Adds the line-chart-widget
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-docstrt/tct-progress-line-docstrt-widget.php'); // Adds the line-chart-widget
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-home-stats/tct-home-stats-widget.php'); // Adds the widget for statistic numbers on a project landingpage
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-icon-links/tct-icon-links-widget.php'); // Adds the widget for icon links
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-news-container/tct-news-container-widget.php'); // Adds the widget for news container
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-search-documents/tct-search-documents-widget.php'); // Adds the widget for document search
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-horizontal-line-hr/tct-horizontal-line-widget.php'); // Adds the widget for headline (hr)
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-tutorial-slider/tct-tutorial-slider-widget.php'); // Adds the widget for tutorial slider
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-storyboxes/tct-storyboxes-widget.php'); // Adds the widget for storyboxes
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-storyofmonth/tct-storyofmonth-widget.php'); // Adds the widget for storyofmonth
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-itemboxes/tct-itemboxes-widget.php'); // Adds the widget for itemboxes
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-menulist/tct-menulist-widget.php'); // Adds the widget for menulist
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-headline/tct-headline-widget.php'); // Adds the widget for headline
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-colcontent/tct-colcontent-widget.php'); // Adds the widget for displaying content in different columns
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-boxes/tct-boxes-widget.php'); // Adds the widget for feature boxes
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-button/tct-button-widget.php'); // Adds the widget for a preformatted button
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-barchart/tct-barchart-widget.php'); // Adds the widget for a preformatted button
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-numbers/tct-numbers-widget.php'); // Adds the widget for a preformatted button
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-top-transcribers/tct-top-transcribers-widget.php'); // Adds the top-transcribers-widget
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-chart/tct-progress-line-chart-widget.php'); // Adds the line-chart-widget
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-docstrt/tct-progress-line-docstrt-widget.php'); // Adds the line-chart-widget
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-home-stats/tct-home-stats-widget.php'); // Adds the widget for statistic numbers on a project landingpage
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-icon-links/tct-icon-links-widget.php'); // Adds the widget for icon links
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-news-container/tct-news-container-widget.php'); // Adds the widget for news container
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-search-documents/tct-search-documents-widget.php'); // Adds the widget for document search
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-horizontal-line-hr/tct-horizontal-line-widget.php'); // Adds the widget for headline (hr)
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-tutorial-slider/tct-tutorial-slider-widget.php'); // Adds the widget for tutorial slider
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-storyboxes/tct-storyboxes-widget.php'); // Adds the widget for storyboxes
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-storyofmonth/tct-storyofmonth-widget.php'); // Adds the widget for storyofmonth
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-itemboxes/tct-itemboxes-widget.php'); // Adds the widget for itemboxes
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-menulist/tct-menulist-widget.php'); // Adds the widget for menulist
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-headline/tct-headline-widget.php'); // Adds the widget for headline
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-colcontent/tct-colcontent-widget.php'); // Adds the widget for displaying content in different columns
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-boxes/tct-boxes-widget.php'); // Adds the widget for feature boxes
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-button/tct-button-widget.php'); // Adds the widget for a preformatted button
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-barchart/tct-barchart-widget.php'); // Adds the widget for a preformatted button
+// require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-numbers/tct-numbers-widget.php'); // Adds the widget for a preformatted button
 
-function add_custom_widget_collection($folders){
-    $folders[] = CHILD_TEMPLATE_DIR.'admin/inc/custom_widgets/';
-    return $folders;
-}
-add_filter('siteorigin_widgets_widget_folders', 'add_custom_widget_collection');
+// function add_custom_widget_collection($folders){
+//     $folders[] = CHILD_TEMPLATE_DIR.'admin/inc/custom_widgets/';
+//     return $folders;
+// }
+// add_filter('siteorigin_widgets_widget_folders', 'add_custom_widget_collection');
 
 
 // Allow webp in wordpress
