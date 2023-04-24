@@ -2941,7 +2941,7 @@ input:checked + .slider:before {
   position: relative;
   background-color: #fefefe;
   margin: auto;
-  padding: 0;
+  padding: 20px;
   border: 1px solid #888;
   width: 40%;
   -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -2953,6 +2953,7 @@ input:checked + .slider:before {
 }
 .default-login-popup-header {
   padding: 20px 16px;
+  position: relative;
   background-color: #fff;
   color: var(--main-color);
 }
@@ -2967,19 +2968,25 @@ input:checked + .slider:before {
 
 /* The Close Button */
 .item-login-close {
-  color: var(--main-color);
-  float: right;
+  color: #000;
+  position: absolute;
   font-size: 28px;
+  top: 10px;
+  right: 10px;
   font-weight: bold;
   line-height: 1px;
 }
 .login-title {
+  width: 100%;
+  max-width: 350px;
   color: #000;
   display: inline-block;
   position: relative;
-  right: 20%;
-  font-family: var(--p-font-family);
+  text-align: left;
+  margin: 0 auto;
+  font-family: var(--h-font-family);
   font-weight: 700;
+  font-size: 21px;
 }
 .item-login-close:hover, .item-login-close:focus {
   color: #000;
@@ -2999,6 +3006,9 @@ input:checked + .slider:before {
 .pagination,
 .entry-content .pagination {
   display: none;
+}
+label.um-field-checkbox input {
+  margin-right: 5px;
 }
 a.ow-icon-placement-top.ow-button-hover {
   text-decoration: none;
@@ -3715,7 +3725,7 @@ a.tct-vio-but {
 }
 .um-form label {
   font-family: var(--h-font-family)!important;
-  font-weight: 700;
+  font-weight: normal;
   letter-spacing: 00.025em;
 }
 .um-right.um-half a.um-button.um-alt {
@@ -3724,16 +3734,21 @@ a.tct-vio-but {
   color: #000!important;
 }
 .um-col-alt div.um-left.um-half::after {
-  content: 'OR';
+  content: 'or';
+  text-transform: none!important;
   display: inline-block;
   position: relative;
+  font-family: var(--h-font-family);
+  letter-spacing: 00.025em;
   left: calc( 50% - 13px);
-  margin-top: 10px;
+  margin-top: 13px;
 }
 .um-right.um-half a.um-button.um-alt::before{
   content: url('css/logos_images/EuropeanaLogo.svg');
   margin-right: 10px!important;
   position: relative;
+  display: inline-block;
+  width: 17px;
   top: 5px;
 }
 .um-form input[type=text], .um-form input[type=search], .um-form input[type=tel], .um-form input[type=number], .um-form input[type=password] {
@@ -3763,6 +3778,8 @@ a.um-link-alt {
   color: #888 !important;
   display: block !important;
   text-decoration: none !important;
+  font-family: var(--h-font-family);
+  letter-spacing: 00.025em;
   font-weight: normal;
   text-align: center;
   border-bottom: none !important;
@@ -3788,6 +3805,7 @@ a.um-link-alt {
   padding: 15px 0 0 0;
 }
 .um-field-area {
+  margin-top: 9px;
   position: relative;
   word-wrap: break-word;
 }
@@ -3805,7 +3823,7 @@ a.um-link-alt {
   font-size: 15px;
 }
 a.um-button {
-  font-size: 15px;
+  font-size: 16px;
   border: none !important;
   display: block;
   width: 100%;
@@ -3846,7 +3864,7 @@ a.um-button {
 }
 .um-half {
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
 }
 
 .um-clear {
@@ -3855,13 +3873,15 @@ a.um-button {
 input[type=submit].um-button, input[type=submit].um-button:focus {
   vertical-align: middle !important;
   height: auto !important;
-  font-size: 15px;
+  font-size: 18px;
   cursor: pointer !important;
   width: 100%;
   box-shadow: none;
   text-shadow: none;
-  font-family: inherit;
+  font-family: var(--h-font-family);
+  font-weight: 700;
   outline: none !important;
+  letter-spacing: 0.025em;
   margin: 0;
   opacity: 1;
   -webkit-appearance: none;
