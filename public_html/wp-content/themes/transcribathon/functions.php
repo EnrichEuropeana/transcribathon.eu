@@ -264,7 +264,7 @@ function embedd_custom_javascripts_and_css() {
 
 
     $themeVersion  = wp_get_theme()->get('Version');
-    var_dump($post->post_name);
+    //var_dump($post->post_name);
 
     if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
 
