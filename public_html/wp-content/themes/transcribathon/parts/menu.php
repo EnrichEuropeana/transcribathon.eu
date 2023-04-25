@@ -85,7 +85,7 @@ $logo_in_menu = siteorigin_setting( 'layout_masthead' ) == 'logo-in-menu';
 		echo '<div id="default-login-popup">';
 			echo '<div class="default-login-popup-header">';
 			    echo '<span class="login-title"> LOGIN </span>';
-				echo '<span class="item-login-close">&times;</span>';
+				echo '<span class="item-login-close theme-color">&times;</span>';
 			echo '</div>';
 			echo '<div class="default-login-popup-body">';
 				$login_post = get_posts( array(
