@@ -292,24 +292,31 @@ function embedd_custom_javascripts_and_css() {
         /* jQuery UI JS*/
         wp_register_script( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/js/jquery-ui.min.js');
 
-        wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion, true);
+        wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion);
 
         switch ($post->post_name) {
 
             case 'profile':
 
                 // Import shortcodes for custom profile tabs
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_menu.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/transcriptions.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/contributions.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/achievements.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/teams_runs.php');
+
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-chart/tct-progress-line-chart-widget.php'); // Adds the line-chart-widget
+                register_widget('_TCT_Progress_Line_Chart_Widget');
                 //mapbox
                 wp_dequeue_style('mapblox-gl-css');
                 wp_deregister_style('mapblox-gl-css');
                 wp_dequeue_script('mapbox-gl-js');
                 wp_deregister_script('mapbox-gl-js');
-
-                wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js');
+                // profile needs slick
+                /* slick CSS*/
+                wp_enqueue_style( 'slick', CHILD_TEMPLATE_DIR . '/css/slick.css');
+                /* slick JS*/
+                wp_enqueue_script( 'slick', CHILD_TEMPLATE_DIR . '/js/slick.min.js');
 
                 break;
 
