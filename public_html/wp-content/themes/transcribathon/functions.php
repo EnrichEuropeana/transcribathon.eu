@@ -237,6 +237,10 @@ if(is_admin()) {
 
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-chart/tct-progress-line-chart-widget.php'); // Adds the line-chart-widget
     register_widget('_TCT_Progress_Line_Chart_Widget');
+
+    // Custom posts
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-news/tct-news.php'); // Adds custom post-type: news
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
 }
 
 
@@ -249,9 +253,7 @@ if(is_admin()) {
 
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/team.php');
 
-// Custom posts
-require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-news/tct-news.php'); // Adds custom post-type: news
-//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
+
 // Image settings
 add_image_size( 'news-image', 300, 200, true );
 // Image settings
