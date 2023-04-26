@@ -225,29 +225,29 @@ add_filter('enter_title_here','display_custom_title_placeholder_for_tutorial' );
 /* WP Navigation View ------------------------------------------------------------------------------------------------------------------------------------*/
 
 
-function add_custom_backend_styles_for_tutorial(){// 1494 / 16265
-	echo "<style>\n";
-	// main button default
-	echo "\n#adminmenu .menu-icon-tutorial,#adminmenu .toplevel_page_nestedpages-tutorial{ background:#".CSTL_MAIN_BG.";}\n";
-	echo "\n#adminmenu .menu-icon-tutorial a,#adminmenu .toplevel_page_nestedpages-tutorial a{color:#".CSTL_MAIN_FONTCOLOR.";}\n";
-	echo "\n#adminmenu .menu-icon-tutorial a,#adminmenu .toplevel_page_nestedpages-tutorial a:hover div.wp-menu-name{color:#".CSTL_HOVER_FONTCOLOR.";}\n";
-	//echo "\n#adminmenu .menu-icon-tutorial div.wp-menu-image:before,#adminmenu .toplevel_page_nestedpages-tutorial div.wp-menu-image:before {content: '\\f488'; color:#".CSTL_MAIN_FONTCOLOR.";}\n";
-	echo "\n#adminmenu .menu-icon-tutorial div.wp-menu-image:before,#adminmenu .toplevel_page_nestedpages-tutorial div.wp-menu-image:before {content: '\\f274'; font-family:'FontAwesome'; color:#".CSTL_MAIN_FONTCOLOR.";}\n";
-	// main button hover
-	echo "\n#adminmenu .menu-icon-tutorial:hover div.wp-menu-image:before,#adminmenu .toplevel_page_nestedpages-tutorial:hover div.wp-menu-image:before{color:#".CSTL_MAIN_FONTCOLOR." !important;}\n";
-	echo "\n#adminmenu .menu-icon-tutorial:hover div.wp-menu-name,n#adminmenu .toplevel_page_nestedpages-tutorial:hover div.wp-menu-name{color:#".CSTL_MAIN_FONTCOLOR." !important;}\n";
-	// main button: open menu
-	echo "\n#adminmenu .menu-icon-tutorial.wp-menu-open div.wp-menu-image:before,#adminmenu .toplevel_page_nestedpages-tutorial.wp-menu-open div.wp-menu-image:before {color:#".CSTL_MAIN_OPEN_FONTCOLOR."; background:#".CSTL_MAIN_OPEN_BG."}\n"; // icon
-	echo "\n#adminmenu .menu-icon-tutorial.wp-menu-open div.wp-menu-name ,#adminmenu .toplevel_page_nestedpages-tutorial.wp-menu-open div.wp-menu-name{color:#".CSTL_MAIN_OPEN_FONTCOLOR." !important; background:#".CSTL_MAIN_OPEN_BG.";}\n"; // font
-	// flyout-menu / sub-menu
-	echo "\n#adminmenu .menu-icon-tutorial ul.wp-submenu,#adminmenu .toplevel_page_nestedpages-tutorial ul.wp-submenu{background:#".CSTL_SUBMENU_BG." !important;}\n";
-	echo "\n#adminmenu .menu-icon-tutorial ul li,#adminmenu .toplevel_page_nestedpages-tutorial ul li{ background:#".CSTL_SUBMENU_BG.";}\n";
-	echo "\n#adminmenu .menu-icon-tutorial ul li a,#adminmenu .toplevel_page_nestedpages ul li a{color:#".CSTL_MAIN_FONTCOLOR." !important;}\n";
-	echo "\n#adminmenu .menu-icon-tutorial ul li a:hover,#adminmenu .toplevel_page_nestedpages ul li a:hover,#adminmenu .toplevel_page_nestedpages ul li:hover a,#adminmenu .toplevel_page_nestedpages ul.wp-submenu li a:hover{color:#".CSTL_HOVER_FONTCOLOR." !important;}\n";
-	echo "\n</style>\n"; 	
+// function add_custom_backend_styles_for_tutorial(){// 1494 / 16265
+// 	echo "<style>\n";
+// 	// main button default
+// 	echo "\n#adminmenu .menu-icon-tutorial,#adminmenu .toplevel_page_nestedpages-tutorial{ background:#".CSTL_MAIN_BG.";}\n";
+// 	echo "\n#adminmenu .menu-icon-tutorial a,#adminmenu .toplevel_page_nestedpages-tutorial a{color:#".CSTL_MAIN_FONTCOLOR.";}\n";
+// 	echo "\n#adminmenu .menu-icon-tutorial a,#adminmenu .toplevel_page_nestedpages-tutorial a:hover div.wp-menu-name{color:#".CSTL_HOVER_FONTCOLOR.";}\n";
+// 	//echo "\n#adminmenu .menu-icon-tutorial div.wp-menu-image:before,#adminmenu .toplevel_page_nestedpages-tutorial div.wp-menu-image:before {content: '\\f488'; color:#".CSTL_MAIN_FONTCOLOR.";}\n";
+// 	echo "\n#adminmenu .menu-icon-tutorial div.wp-menu-image:before,#adminmenu .toplevel_page_nestedpages-tutorial div.wp-menu-image:before {content: '\\f274'; font-family:'FontAwesome'; color:#".CSTL_MAIN_FONTCOLOR.";}\n";
+// 	// main button hover
+// 	echo "\n#adminmenu .menu-icon-tutorial:hover div.wp-menu-image:before,#adminmenu .toplevel_page_nestedpages-tutorial:hover div.wp-menu-image:before{color:#".CSTL_MAIN_FONTCOLOR." !important;}\n";
+// 	echo "\n#adminmenu .menu-icon-tutorial:hover div.wp-menu-name,n#adminmenu .toplevel_page_nestedpages-tutorial:hover div.wp-menu-name{color:#".CSTL_MAIN_FONTCOLOR." !important;}\n";
+// 	// main button: open menu
+// 	echo "\n#adminmenu .menu-icon-tutorial.wp-menu-open div.wp-menu-image:before,#adminmenu .toplevel_page_nestedpages-tutorial.wp-menu-open div.wp-menu-image:before {color:#".CSTL_MAIN_OPEN_FONTCOLOR."; background:#".CSTL_MAIN_OPEN_BG."}\n"; // icon
+// 	echo "\n#adminmenu .menu-icon-tutorial.wp-menu-open div.wp-menu-name ,#adminmenu .toplevel_page_nestedpages-tutorial.wp-menu-open div.wp-menu-name{color:#".CSTL_MAIN_OPEN_FONTCOLOR." !important; background:#".CSTL_MAIN_OPEN_BG.";}\n"; // font
+// 	// flyout-menu / sub-menu
+// 	echo "\n#adminmenu .menu-icon-tutorial ul.wp-submenu,#adminmenu .toplevel_page_nestedpages-tutorial ul.wp-submenu{background:#".CSTL_SUBMENU_BG." !important;}\n";
+// 	echo "\n#adminmenu .menu-icon-tutorial ul li,#adminmenu .toplevel_page_nestedpages-tutorial ul li{ background:#".CSTL_SUBMENU_BG.";}\n";
+// 	echo "\n#adminmenu .menu-icon-tutorial ul li a,#adminmenu .toplevel_page_nestedpages ul li a{color:#".CSTL_MAIN_FONTCOLOR." !important;}\n";
+// 	echo "\n#adminmenu .menu-icon-tutorial ul li a:hover,#adminmenu .toplevel_page_nestedpages ul li a:hover,#adminmenu .toplevel_page_nestedpages ul li:hover a,#adminmenu .toplevel_page_nestedpages ul.wp-submenu li a:hover{color:#".CSTL_HOVER_FONTCOLOR." !important;}\n";
+// 	echo "\n</style>\n"; 	
 	
-}
-add_action( 'admin_head', 'add_custom_backend_styles_for_tutorial' ); 
+// }
+// add_action( 'admin_head', 'add_custom_backend_styles_for_tutorial' ); 
 
 
 ?>
