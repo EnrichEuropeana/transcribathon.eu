@@ -230,18 +230,19 @@ if (event.target.id != "tagging-status-indicator") {
     $currentTranscription = [];
     $transcriptionList = array_reverse(sendQuery(TP_API_HOST . '/tp-api/transcriptions?ItemId=' . $itemId, $getJsonOptions, true));
 
-    if(!empty($transcriptionList) && $activeTr != 'htr') {
+    if(!empty($transcriptionList)) {
         foreach($transcriptionList as $transcription) {
             if($transcription['CurrentVersion'] == '1') {
                 $currentTranscription = $transcription;
                 $itemData['TranscriptionLanguages'] = $transcription['Languages'];
             }
         }
-    } else if ($activeTr == 'htr') {
-        $htrDataJson = sendQuery(TP_API_V2_ENDPOINT . '/htrdata?ItemId=' . $itemId, $getJsonOptions, true);
-        $htrTranscription = $htrDataJson['data'][0]['TranscriptionData'];
-        $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
-    }
+    } 
+    
+    $htrDataJson = sendQuery(TP_API_V2_ENDPOINT . '/htrdata?ItemId=' . $itemId, $getJsonOptions, true);
+    $htrTranscription = $htrDataJson['data'][0]['TranscriptionData'];
+    $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
+    
 
 
     //$currentTranscription = $itemData['Transcription'];
