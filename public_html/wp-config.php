@@ -41,7 +41,6 @@ define('COOKIEHASH', md5(getenv('DOMAIN_CURRENT_SITE')));
  * debug
  */
 define('WP_DEBUG', (bool) getenv('WP_DEBUG'));
-define( 'WP_DEBUG_LOG', true );
 
 /**
  * file access method
