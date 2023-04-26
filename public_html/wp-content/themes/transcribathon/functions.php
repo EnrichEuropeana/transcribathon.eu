@@ -307,11 +307,6 @@ function embedd_custom_javascripts_and_css() {
 
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-chart/tct-progress-line-chart-widget.php'); // Adds the line-chart-widget
                 register_widget('_TCT_Progress_Line_Chart_Widget');
-                //mapbox
-                wp_dequeue_style('mapblox-gl-css');
-                wp_deregister_style('mapblox-gl-css');
-                wp_dequeue_script('mapbox-gl-js');
-                wp_deregister_script('mapbox-gl-js');
                 // profile needs slick
                 /* slick CSS*/
                 wp_enqueue_style( 'slick', CHILD_TEMPLATE_DIR . '/css/slick.css');
@@ -360,9 +355,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('child-style');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -395,9 +387,6 @@ function embedd_custom_javascripts_and_css() {
                 //wp_dequeue_style('bootstrap');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -426,9 +415,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('bootstrap');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -480,9 +466,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('child-style');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -513,9 +496,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('bootstrap');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -566,9 +546,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('responsive-lightbox-swipebox');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -612,9 +589,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('bootstrap');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
