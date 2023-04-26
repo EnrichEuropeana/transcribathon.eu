@@ -49,22 +49,22 @@ function _TCT_item_page_htr( $atts) {
 	    echo '</div>';
         return;
     }
+    $itemId = $_GET['item'];
+    $getJsonOptions = [
+        'http' => [
+            'header' => [
+                'Content-type: application/json',
+                'Authorization: Bearer ' . TP_API_V2_TOKEN
+            ],
+            'method' => 'GET'
+        ]
+    ];
 
-    // create new Transkribus client and inject configuration
-    $transkribusClient = new TranskribusClient($config);
-
-    // get the HTR-transcribed data from database if there is one
-    $htrDataJson = $transkribusClient->getDataFromTranscribathon(
-        null,
-        array(
-            'ItemId' => $_GET['item'],
-		        'orderBy' => 'LastUpdated',
-		        'orderDir' => 'desc'
-        )
-    );
+    $htrDataArray = sendQuery(TP_API_V2_ENDPOINT . '/htrdata?ItemId=' . $itemId, $getJsonOptions, true);
 
     // extract the data itself
-    $htrDataArray = json_decode($htrDataJson, true);
+    //$htrDataArray = json_decode($htrDataJson, true);
+    
     $htrData = $htrDataArray['data'][0]['TranscriptionData'];
 		$htrDataId = $htrDataArray['data'][0]['HtrDataId'];
 

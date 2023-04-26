@@ -8,25 +8,21 @@ Description: Gets item data and builds the item page with htr editor
 // include required files
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
-
-require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
-require_once(get_stylesheet_directory() . '/htr-client/config.php');
-
-use FactsAndFiles\Transcribathon\TranskribusClient;
-
 date_default_timezone_set('Europe/Berlin');
 
 function _TCT_compare_transcriptions( $atts) {
     global $ultimatemember, $config;
     if (isset($_GET['item']) && $_GET['item'] != "") {
 
-	      $alpineJs = get_stylesheet_directory_uri(). '/js/alpinejs.3.10.4.min.js';
+        $itemId = intval($_GET['item']);
+
+	    $alpineJs = get_stylesheet_directory_uri(). '/js/alpinejs.3.10.4.min.js';
 
         // Set request parameters for image data
         $requestData = array(
             'key' => 'testKey'
         );
-        $url = TP_API_HOST."/tp-api/items/".$_GET['item'];
+        $url = TP_API_HOST."/tp-api/items/".$itemId;
         $requestType = "GET";
         $isLoggedIn = is_user_logged_in();
         // Execude http request
@@ -51,20 +47,17 @@ function _TCT_compare_transcriptions( $atts) {
         //include theme directory for text hovering
         $theme_sets = get_theme_mods();
         // Transkribus Client, include required files
-        // create new Transkribus client and inject configuration
-        $transkribusClient = new TranskribusClient($config);
-        // get the HTR-transcribed data from database if there is one
-        $itemId = intval($_GET['item']);
-        $htrDataJson = $transkribusClient->getDataFromTranscribathon(
-            null,
-            array(
-                'ItemId' => $itemId,
-		            'orderBy' => 'LastUpdated',
-		            'orderDir' => 'desc'
-            )
-        );
-        // extract the data itself
-        $htrDataArray = json_decode($htrDataJson, true);
+        $getJsonOptions = [
+            'http' => [
+                'header' => [
+                    'Content-type: application/json',
+                    'Authorization: Bearer ' . TP_API_V2_TOKEN
+                ],
+                'method' => 'GET'
+            ]
+        ];
+    
+        $htrDataArray = sendQuery(TP_API_V2_ENDPOINT . '/htrdata?ItemId=' . $itemId, $getJsonOptions, true);        
         $htrData = $htrDataArray['data'][0]['TranscriptionData'];
 
     // Build required components for the page

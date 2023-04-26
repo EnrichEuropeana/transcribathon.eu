@@ -227,33 +227,20 @@ if (event.target.id != "tagging-status-indicator") {
 
     $currentTranscription = null;
 
-    // Transkribus Client, include required files
-    require_once(get_stylesheet_directory() . '/htr-client/lib/TranskribusClient.php');
-    require_once(get_stylesheet_directory() . '/htr-client/config.php');
-    // create new Transkribus client and inject configuration
-    $transkribusClient = new TranskribusClient($config);
-    // get the HTR-transcribed data from database if there is one
-    $htrDataJson = $transkribusClient->getDataFromTranscribathon(
-        null,
-        array(
-            'ItemId' => $_GET['item'],
-                'orderBy' => 'LastUpdated',
-                'orderDir' => 'desc'
-        )
-    );
-    $htrTranscription = json_decode($htrDataJson) -> data[0] -> TranscriptionData;
-    $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
-
     $currentTranscription = [];
     $transcriptionList = array_reverse(sendQuery(TP_API_HOST . '/tp-api/transcriptions?ItemId=' . $itemId, $getJsonOptions, true));
- //   dd($transcriptionList);
-    if(!empty($transcriptionList)) {
+
+    if(!empty($transcriptionList) && $activeTr != 'htr') {
         foreach($transcriptionList as $transcription) {
             if($transcription['CurrentVersion'] == '1') {
                 $currentTranscription = $transcription;
                 $itemData['TranscriptionLanguages'] = $transcription['Languages'];
             }
         }
+    } else if ($activeTr == 'htr') {
+        $htrDataJson = sendQuery(TP_API_V2_ENDPOINT . '/htrdata?ItemId=' . $itemId, $getJsonOptions, true);
+        $htrTranscription = $htrDataJson['data'][0]['TranscriptionData'];
+        $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
     }
 
 
