@@ -237,10 +237,13 @@ if(is_admin()) {
 
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-chart/tct-progress-line-chart-widget.php'); // Adds the line-chart-widget
     register_widget('_TCT_Progress_Line_Chart_Widget');
+
+    // Custom posts
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
 }
 
-
-
+// we need news for menu
+require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-news/tct-news.php'); // Adds custom post-type: news
 //require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/item_page_test.php');
 
 //require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tct_new_search.php'); // Adds New Search Page
@@ -249,9 +252,7 @@ if(is_admin()) {
 
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/team.php');
 
-// Custom posts
-//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-news/tct-news.php'); // Adds custom post-type: news
-//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
+
 // Image settings
 add_image_size( 'news-image', 300, 200, true );
 // Image settings
@@ -288,28 +289,30 @@ function embedd_custom_javascripts_and_css() {
         wp_enqueue_style( 'custom-css' );
 
         // Register jQuery script
-        wp_enqueue_script( 'jquery', null, null, true );
+        wp_enqueue_script( 'jquery', null, null, false );
         /* jQuery UI JS*/
         wp_register_script( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/js/jquery-ui.min.js');
 
-        wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion, true);
+        wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js', array(), $themeVersion);
 
         switch ($post->post_name) {
 
             case 'profile':
 
                 // Import shortcodes for custom profile tabs
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_menu.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/transcriptions.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/contributions.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/achievements.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/teams_runs.php');
-                //mapbox
-                wp_dequeue_style('mapblox-gl-css');
-                wp_deregister_style('mapblox-gl-css');
-                wp_dequeue_script('mapbox-gl-js');
-                wp_deregister_script('mapbox-gl-js');
 
-                wp_enqueue_script( 'custom', CHILD_TEMPLATE_DIR . '/js/custom.js');
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-chart/tct-progress-line-chart-widget.php'); // Adds the line-chart-widget
+                register_widget('_TCT_Progress_Line_Chart_Widget');
+                // profile needs slick
+                /* slick CSS*/
+                wp_enqueue_style( 'slick', CHILD_TEMPLATE_DIR . '/css/slick.css');
+                /* slick JS*/
+                wp_enqueue_script( 'slick', CHILD_TEMPLATE_DIR . '/js/slick.min.js');
 
                 break;
 
@@ -353,9 +356,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('child-style');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -388,9 +388,6 @@ function embedd_custom_javascripts_and_css() {
                 //wp_dequeue_style('bootstrap');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -419,9 +416,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('bootstrap');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -473,9 +467,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('child-style');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -506,9 +497,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('bootstrap');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -559,9 +547,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('responsive-lightbox-swipebox');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -605,9 +590,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('bootstrap');
 
                 // Dequeue unused scripts
-                wp_dequeue_script('tct-tutorial-slider-widget');
-                wp_dequeue_script('tct-menulist-widget');
-                wp_dequeue_script('tct-boxes-widget');
                 wp_dequeue_script('responsive-lightbox-featherlight');
                 wp_dequeue_script('responsive-lightbox');
                 wp_dequeue_script('responsive-lightbox-featherlight-gallery');
@@ -670,28 +652,6 @@ function embedd_custom_javascripts_and_css() {
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-barchart/tct-barchart-widget.php'); // Adds the widget for a preformatted button
                 register_widget('TCT_Barchart_Widget');
                 break;
-            
-            case 'runs':
-                // Import and register widgets
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-horizontal-line-hr/tct-horizontal-line-widget.php'); // Adds the widget for headline (hr)
-                register_widget('TCT_Horizontal_Line_Widget');
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-storyboxes/tct-storyboxes-widget.php'); // Adds the widget for storyboxes
-                register_widget('_TCT_Storyboxes_widget');
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-headline/tct-headline-widget.php'); // Adds the widget for headline
-                register_widget('TCT_Headline_Widget');
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-tutorial-slider/tct-tutorial-slider-widget.php'); // Adds the widget for tutorial slider
-                register_widget('TCT_Tutorial_Slider_Widget');
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-menulist/tct-menulist-widget.php'); // Adds the widget for menulist
-                register_widget('_TCT_Menulist_Widget');
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-colcontent/tct-colcontent-widget.php'); // Adds the widget for displaying content in different columns
-                register_widget('TCT_Colcontent_Widget');
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-boxes/tct-boxes-widget.php'); // Adds the widget for feature boxes
-                register_widget('TCT_Boxes_Widget');
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-button/tct-button-widget.php'); // Adds the widget for a preformatted button
-                register_widget('TCT_Button_Widget');
-
-                break;
-
 
             default:
 
@@ -720,7 +680,7 @@ function embedd_custom_javascripts_and_css() {
                 /* Bootstrap JS */
                 wp_enqueue_script('bootstrap', CHILD_TEMPLATE_DIR . '/js/bootstrap.min.js', null, null, true);
                 /* resizable JS*/
-                wp_register_script( 'resizable', CHILD_TEMPLATE_DIR . '/js/jquery-resizable.js', array( 'jQuery-UI' ), null, null, true );
+                wp_register_script( 'resizable', CHILD_TEMPLATE_DIR . '/js/jquery-resizable.js', array( 'jQuery-UI' ), null, null );
                 wp_enqueue_script( 'resizable' );
         
                 /* Font Awesome CSS */
