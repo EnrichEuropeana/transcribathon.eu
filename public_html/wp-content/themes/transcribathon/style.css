@@ -52,6 +52,9 @@ div.um-profile-nav div.um-profile-nav-item a:hover,
 ul#_transcribathon_topmenu li ul li a:hover {
   background-color: #707070;
 }
+h1 {
+  color: var(--main-color)!important;
+}
 /*----------------------------------- Main settings (p,div,select...)---------------------------*/
 html {
   background: #000;

@@ -265,13 +265,12 @@ function embedd_custom_javascripts_and_css() {
 
 
     $themeVersion  = wp_get_theme()->get('Version');
-    //var_dump($post->post_name);
 
     if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
 
 
         // Enqueue on all pages
-        wp_enqueue_style('child-style', get_stylesheet_directory_uri() .'/style.css', array('parent-style'), $themeVersion);
+        wp_enqueue_style('child-style', get_stylesheet_directory_uri() .'/style.css', array(), $themeVersion);
         /* Bootstrap CSS */
         wp_enqueue_style( 'bootstrap', CHILD_TEMPLATE_DIR . '/css/bootstrap.min.css', array(), $themeVersion);
         /* Bootstrap JS */
