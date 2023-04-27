@@ -8,7 +8,6 @@ function _TCT_get_document_data( $atts ) {
     //include theme directory for text hovering
     $theme_sets = get_theme_mods();
 
-    echo $_SERVER['SERVER_NAME'];
     // Build Story page content
     $content = "";
 
