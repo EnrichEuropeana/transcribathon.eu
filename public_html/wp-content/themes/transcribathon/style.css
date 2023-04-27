@@ -37,7 +37,7 @@ nav[role='navigation'] ul#menu-main-menu li a:hover,
   background-image: none !important;
 }
 .theme-color, .widget_headline-widget h3 {
-  color: var(--main-color);
+  color: var(--main-color)!important;
 }
 div.um-profile-nav div.um-profile-nav-item a:hover,
 .theme-color-border,
@@ -50,7 +50,7 @@ div.um-profile-nav div.um-profile-nav-item a:hover,
   background-color: var(--main-color)!important;
 }
 ul#_transcribathon_topmenu li ul li a:hover {
-  background-color: #707070;
+  background-color: #707070!important;
 }
 h1 {
   color: var(--main-color)!important;
