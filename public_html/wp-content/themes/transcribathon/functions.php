@@ -284,10 +284,6 @@ function embedd_custom_javascripts_and_css() {
         /* diff-match-patch (Transcription text comparison) JS*/
         wp_enqueue_script( 'diff-match-patch', CHILD_TEMPLATE_DIR . '/js/diff-match-patch.js', null, null, true);
 
-        /* custom.php containing theme color CSS */
-        wp_register_style( 'custom-css', CHILD_TEMPLATE_DIR.'/css/custom.php');
-        wp_enqueue_style( 'custom-css' );
-
         // Register jQuery script
         wp_enqueue_script( 'jquery', null, null, false );
         /* jQuery UI JS*/

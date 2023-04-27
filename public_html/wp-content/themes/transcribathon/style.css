@@ -20,6 +20,35 @@
   --h-font-family: 'Dosis', sans-serif;
   --p-font-family: 'Open Sans', sans-serif;
 }
+/* Theme settings */
+nav[role='navigation'] ul#menu-main-menu li a {
+  color: var(--main-color)!important;
+} 
+nav[role='navigation'] ul#menu-main-menu li a:hover,
+.theme-color-hover:not(.active):hover,
+.theme-color-hover:hover .theme-hover-child
+{
+  color: #fff!important;
+  background-color: var(--main-color)!important;
+}
+.theme-color-background{
+  color: #fff !important;
+  background-color: var(--main-color)!important;
+  background-image: none !important;
+}
+.theme-color, .widget_headline-widget h3 {
+  color: var(--main-color);
+}
+div.um-profile-nav div.um-profile-nav-item a:hover,
+.theme-color-border,
+.div.um-profile-nav div.um-profile-nav-item.active a {
+  border-color: var(--main-color);
+}
+.um-button {
+  color: #fff!important;
+  background-image: none!important;
+  background-color: var(--main-color)!important;
+}
 /*----------------------------------- Main settings (p,div,select...)---------------------------*/
 html {
   background: #000;
@@ -4399,10 +4428,4 @@ a#new-temporary-prof:hover {
 .search-submitV :active{
   margin: 0!important;
   border: 0!important;
-}
-nav[role=navigation].main-navigation #menu-main-menu > li a {
-  color: var(--main-color)!important;
-}
-nav[role=navigation] ul#menu-main-menu li a {
-  color: var(--main-color)!important;
 }
