@@ -29,7 +29,7 @@
 	<script>const TP_API_HOST = '<?php echo TP_API_HOST; ?>';</script>
 	<script>
 		let currentUrl = window.location.href;
-		color = currentUrl.includes('europeana') ? '#a832a0' : '#b33e3e';
+		color = currentUrl.includes('europeana') ? '#0a72cc' : '#b33e3e';
 	    document.documentElement.style.setProperty('--main-color', color);
 	</script>
 
