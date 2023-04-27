@@ -38,6 +38,10 @@ function _TCT_get_document_data( $atts ) {
         ];
     
         $storyDataSet = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $storyId, $getJsonOptions, true);
+        if(!$storyDataSet['success']){
+            echo '<div style="width:50vw;height:50vh;margin:50px auto;"><h2>We couldn\'t find any story with that ID</h2></div>';
+            return;
+        }
         $storyData = $storyDataSet['data'];
 
         // // Change Story Endpoint
