@@ -102,8 +102,6 @@ function _TCT_mtr_transcription($atts)
             }
         }
     }
-
-var_dump($itemData);
     // Check which Transcription is active
     $activeTr = $itemData['TranscriptionSource'];
     // Transcription to show in transcription View
