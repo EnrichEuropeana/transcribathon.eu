@@ -15,18 +15,6 @@ function _TCT_get_document_data( $atts ) {
         // get Story Id from url parameter
         $storyId = $_GET['story'];
 
-        // // Set request parameters
-        // $url = TP_API_HOST."/tp-api/stories/".$storyId;
-        // $requestType = "GET";
-
-        // // Execude request
-        // include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
-
-        // // Display data
-        // $storyDataA = json_decode($result, true);
-        // //dd($storyData);
-        // $storyDataA = $storyDataA[0];
-        // dd($storyDataA);
         $getJsonOptions = [
             'http' => [
                 'header' => [ 
