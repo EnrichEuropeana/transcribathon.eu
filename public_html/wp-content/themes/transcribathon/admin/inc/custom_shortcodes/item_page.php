@@ -102,8 +102,6 @@ function _TCT_mtr_transcription($atts)
             }
         }
     }
-
-
     // Check which Transcription is active
     $activeTr = $itemData['TranscriptionSource'];
     // Transcription to show in transcription View
@@ -111,7 +109,6 @@ function _TCT_mtr_transcription($atts)
 
     // Get English translation of story description
     //$engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
-
 
     // Build required components for the page
     $content = "";
@@ -153,6 +150,7 @@ if (event.target.id != "tagging-status-indicator") {
             // Lock document
             // Prepare data and send API request
             data = {
+                
     };
     var today = new Date();
     today = new Date(today.getTime() + 60000);
@@ -161,20 +159,30 @@ if (event.target.id != "tagging-status-indicator") {
     data["LockedUser"] = '.get_current_user_id().';
 
     var dataString= JSON.stringify(data);
-    jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
-    "type": "POST",
-        "url": home_url + "/tp-api/items/" + '. $itemData['ItemId'] .',
-        "data": data
-    },
-        // Check success and create confirmation message
-        function(response) {
-            var response = JSON.parse(response);
-            if (response.code == "200") {
-                return 1;
-    }
-    else {
-    }
+
+    fetch("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            type: "POST",
+            url: TP_API_HOST + "/tp-api/items/" + ' . $itemId . ',
+            data: data
+        })
+
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log(data.code);
+        if(data.code == 200) {
+            return 1;
+        }
     });
+
     setInterval(function() {
         // Prepare data and send API request
         data = {
@@ -186,17 +194,27 @@ if (event.target.id != "tagging-status-indicator") {
     data["LockedUser"] = '.get_current_user_id().';
 
     var dataString= JSON.stringify(data);
-    jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
-    "type": "POST",
-        "url": home_url + "/tp-api/items/" + '.$_GET['item'].',
-        "data": data
-    },
-        // Check success and create confirmation message
-        function(response) {
-            var response = JSON.parse(response);
-            if (response.code == "200") {
-                return 1;
-    }
+    fetch("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            type: "POST",
+            url: TP_API_HOST + "/tp-api/items/" + ' . $itemId . ',
+            data: data
+        })
+
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log(data.code);
+        if(data.code == 200) {
+            return 1;
+        }
     });
     }, 55 * 1000);
     </script>';
