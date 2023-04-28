@@ -13,24 +13,44 @@ function _TCT_teams_admin_page($atts)
 	);
 
 	$html = <<<HTML
-<div class="container mx-auto mt-8" x-data="manage_teams">
+<div class="container mx-auto mt-8" x-data="manage_teams" id="team-mangement">
     <h1 class="text-2xl mb-4">Team Management</h1>
-    <div id="teamForm" class="bg-white p-6 rounded shadow-md">
-        <input type="hidden" id="teamId">
+    <div class="bg-white p-6 rounded shadow-md">
         <div class="mb-4">
             <label for="teamName" class="block mb-2">Team Name</label>
-            <input type="text" id="teamName" class="w-full px-4 py-2 border border-gray-300 rounded" placeholder="Enter team name">
+            <input type="text" id="teamName" class="w-full px-4 py-2 border border-gray-300 rounded" placeholder="Enter team name" x-model="selectedTeam.Name" />
+        </div>
+        <div class="mb-4">
+            <label for="teamName" class="block mb-2">Short Name</label>
+            <input type="text" id="teamName" class="w-full px-4 py-2 border border-gray-300 rounded" placeholder="Enter team name" x-model="selectedTeam.ShortName" />
+        </div>
+        <div class="mb-4">
+            <label for="teamName" class="block mb-2">Description</label>
+            <input type="text" id="teamName" class="w-full px-4 py-2 border border-gray-300 rounded" placeholder="Enter team name" x-model="selectedTeam.Description" />
         </div>
         <div class="mb-4">
             <label for="teamMembers" class="block mb-2">Team Members</label>
-            <textarea id="teamMembers" class="w-full px-4 py-2 border border-gray-300 rounded" placeholder="Enter team members"></textarea>
+            <input type="text" id="teamMember" class="w-full px-4 py-2 border border-gray-300 rounded" placeholder="Enter name of team member" />
+            <div class="min-h-[5rem] w-full flex gap-1 mt-4 px-4 py-2 border border-gray-300 rounded">
+							<template x-for="user in selectedTeam.Users">
+								<div class="w-fit h-fit bg-slate-200 rounded flex items-center">
+                	<div class="p-2" x-text="user.nicename"></div>
+                	<div @click="remove(id)" class="p-2 select-none rounded-r-md cursor-pointer hover:bg-magma-orange-clear">
+                    <svg width="10" height="10" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12.5745 1L1 12.5745" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M1.00024 1L12.5747 12.5745" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                	</div>
+            		</div>
+							</template>
+						</div>
         </div>
         <div class="flex justify-end">
-            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
-            <button type="button" id="cancelBtn" class="ml-2 px-4 py-2 bg-gray-500 text-white rounded">Cancel</button>
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded" @click="saveTeam(selectedTeam.TeamId)">Save</button>
+            <button type="button" class="ml-2 px-4 py-2 bg-gray-500 text-white rounded" @click="resetForm">Cancel</button>
         </div>
     </div,>
-    <table id="teamTable" class="mt-8 w-full table-auto bg-white rounded shadow-md">
+    <table class="mt-8 w-full table-auto bg-white rounded shadow-md">
         <thead class="bg-gray-200">
             <tr>
                 <th class="px-4 py-2">Team Name</th>
