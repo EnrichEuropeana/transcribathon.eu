@@ -4,7 +4,7 @@
   Author URI: http://factsandfiles.com
   Description: A child theme of Vantage (SiteOrigin)
   Template: vantage
-  Version: 3.1.7
+  Version: 3.1.8
 */
 
 /* Retreive styles from mother theme */
@@ -92,7 +92,7 @@ select {
   border-color: #cccccc;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Dosis', sans-serif;
+  font-family: 'Dosis', sans-serif!important;
 }
 h1 {
   font-family: 'Dosis', sans-serif;

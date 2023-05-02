@@ -7,7 +7,6 @@ Description: Gets item data and builds the item page without htr editor
 
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
-use FactsAndFiles\Transcribathon\TranskribusClient;
 
 date_default_timezone_set('Europe/Berlin');
 

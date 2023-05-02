@@ -238,6 +238,9 @@ if(is_admin()) {
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-chart/tct-progress-line-chart-widget.php'); // Adds the line-chart-widget
     register_widget('_TCT_Progress_Line_Chart_Widget');
 
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-storyofmonth/tct-storyofmonth-widget.php'); // Adds the widget for storyofmonth
+    register_widget('_TCT_Storyofmonth_Widget');
+
     // Custom posts
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
 }
