@@ -2267,7 +2267,7 @@ function initializeMap() {
         jQuery('.map-placeholder').css('display', 'none');
         map = new mapboxgl.Map({
           container: 'full-view-map',
-          style: 'mapbox://styles/fandf/clh6c9da300r401qucq3fgirj',
+          style: 'mapbox://styles/fandf/clh6frq6p00re01qu5ysw547b',
           center: [16, 49],
           zoom: 2.25,
           scrollZoom: false
