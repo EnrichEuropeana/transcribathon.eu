@@ -293,6 +293,9 @@ if (event.target.id != "tagging-status-indicator") {
             $imageViewer .= "<div id='rotate-left' class='theme-color theme-color-hover'><i class='fas fa-undo'></i></div>";
             $imageViewer .= "<div id='filterButton' class='theme-color theme-color-hover'><i class='fas fa-sliders-h'></i></div>";
             $imageViewer .= "<div id='full-page' title='Full Screen' class='theme-color theme-color-hover'><i class='fas fa-expand-arrows-alt'></i></div>";
+        if($locked) {
+            $imageViewer .= "<div id='transcribeLock' hidden><i class='far fa-lock'></i></div>";
+        }
         $imageViewer .= "</div>";
     $imageViewer .= "</div>"; // End of Image Viewer
 
@@ -340,7 +343,7 @@ if (event.target.id != "tagging-status-indicator") {
 
                     $locationDisplay .= "</div>";
 
-                    $locationDisplay .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container' style='display:none;'>";
+                    $locationDisplay .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container login-required' style='display:none;'>";
 
                         $locationDisplay .= "<div class='location-input-section-top'>";
                             $locationDisplay .= "<div class='location-input-name-container' style='min-height:25px;'>";
@@ -640,7 +643,7 @@ if (event.target.id != "tagging-status-indicator") {
             $itemData['Persons'] = sendQuery(TP_API_HOST . '/tp-api/persons?ItemId=' . $itemId, $getJsonOptions, true);
 
             if (count($itemData['Persons']) > 0) {
-                $enrichmentTab .= '<div class="collapse person-item-data-container" id="person-input-container" style="position:relative;">';
+                $enrichmentTab .= '<div class="collapse person-item-data-container login-required" id="person-input-container" style="position:relative;">';
             } else {
                 $enrichmentTab .= '<div class="collapse person-item-data-container show login-required" id="person-input-container" style="position:relative;">';
             }
