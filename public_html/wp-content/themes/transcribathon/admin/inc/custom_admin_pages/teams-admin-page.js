@@ -24,13 +24,20 @@ document.addEventListener('alpine:init', () => {
 
 		},
 
-		editTeam(teamId) {
+		loadTeam(teamId) {
 
 			this.selectedTeam = this.teams.find(t => t.TeamId === teamId);
 			this.selectedTeam.Users.forEach((user, index, array) => {
 				array[index].nicename = this.wpUsers.find(wpUser => parseInt(wpUser.id) === parseInt(user.WP_UserId))?.user_nicename || user.WP_UserId;
 			});
 			this.scrollElement.scrollIntoView({ behavior: 'smooth' });
+
+			console.log(this.selectedTeam);
+    },
+
+    removeTeamMember(userId) {
+
+			this.selectedTeam.Users = this.selectedTeam.Users.filter(user => user.UserId !== userId);
 
     },
 

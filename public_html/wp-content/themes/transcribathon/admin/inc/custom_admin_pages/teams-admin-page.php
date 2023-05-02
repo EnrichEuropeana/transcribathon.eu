@@ -35,7 +35,7 @@ function _TCT_teams_admin_page($atts)
 							<template x-for="user in selectedTeam.Users">
 								<div class="w-fit h-fit bg-slate-200 rounded flex items-center">
                 	<div class="p-2" x-text="user.nicename"></div>
-                	<div @click="remove(id)" class="p-2 select-none rounded-r-md cursor-pointer hover:bg-magma-orange-clear">
+                	<div @click="removeTeamMember(user.UserId)" class="p-2 select-none rounded-r-md cursor-pointer hover:bg-magma-orange-clear">
                     <svg width="10" height="10" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12.5745 1L1 12.5745" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
                       <path d="M1.00024 1L12.5747 12.5745" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
@@ -66,7 +66,7 @@ function _TCT_teams_admin_page($atts)
 							<td class="px-4 py-2 border-y-2 border-gray-200">
 								<button
                     class="px-2 py-1 bg-blue-500 text-white rounded"
-                    @click="editTeam(team.TeamId)"
+                    @click="loadTeam(team.TeamId)"
                 >Edit</button>
                 <button
                     class="ml-2 px-2 py-1 bg-red-500 text-white rounded"
