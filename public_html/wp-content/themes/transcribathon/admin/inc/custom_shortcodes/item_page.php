@@ -343,7 +343,7 @@ if (event.target.id != "tagging-status-indicator") {
 
                     $locationDisplay .= "</div>";
 
-                    $locationDisplay .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container login-required' style='display:none;'>";
+                    $locationDisplay .= "<div id='location-data-edit-" . $place['PlaceId'] . "' class='location-data-edit-container' style='display:none;'>";
 
                         $locationDisplay .= "<div class='location-input-section-top'>";
                             $locationDisplay .= "<div class='location-input-name-container' style='min-height:25px;'>";
