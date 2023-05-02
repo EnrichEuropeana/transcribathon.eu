@@ -3,10 +3,12 @@
 require_once( $_SERVER["DOCUMENT_ROOT"].'/wp-load.php' );
 require_once( $_SERVER["DOCUMENT_ROOT"].'/wp-admin/includes/post.php' );
 
+$requestData = json_decode(file_get_contents('php://input'), true);
 
-$url = $_POST['url'];
-$type = $_POST['type'];
-$data = $_POST['data'];
+$url = $requestData['url'];
+$type = $requestData['type'];
+$data = $requestData['data'];
+
 
 if(!empty($type) && !empty($url)) {
 
@@ -16,7 +18,7 @@ if(!empty($type) && !empty($url)) {
                 "method" => $type,
                 "header" => "Content-type: application/json\r\n",
                 "Content-Length: " . strlen($data) . "\r\n",
-                "content" => $data
+                "content" => json_encode($data)
             )
         );
     } else if ($type == "GET") {
@@ -33,7 +35,5 @@ if(!empty($type) && !empty($url)) {
     echo json_encode($result);
 
 }
-
-
 
 ?>

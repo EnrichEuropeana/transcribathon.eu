@@ -122,23 +122,7 @@ function installEventListeners() {
         }
     })
 
-    jQuery('#mce-wrapper-transcription').mousedown(function(event) {
-        // Checks if document is locked
-        if (jQuery('#transcribeLock').length) {
-            event.preventDefault();
-            lockWarning();
-        }
-    })
-
-    jQuery('#item-page-description-text').mousedown(function(event) {
-        // Checks if document is locked
-        if (jQuery('#transcribeLock').length) {
-            event.preventDefault();
-            lockWarning();
-        }
-    })
-    ////
-    jQuery('.edit-item-data-icon').mousedown(function(event) {
+    jQuery('#item-data-content').mousedown(function(event) {
         // Checks if document is locked
         if (jQuery('#transcribeLock').length) {
             event.preventDefault();
