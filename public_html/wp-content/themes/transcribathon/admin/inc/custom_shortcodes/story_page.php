@@ -90,7 +90,17 @@ function _TCT_get_document_data( $atts ) {
         array_push($allImages, ($sliderImgLink . ' || ' . $allItems[$x]['ItemId'] . ' || ' . $completionStatusColor));
     }
     $imgDescription = json_decode($allItems[$randomItem]['ImageLink'], true);
-    $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => 'full', 'region' => 'full'));
+    $imgSize = 'full';
+    if($imgDescription['width'] > $imgDescription['height']) {
+        $aspecRat = $imgDescription['width'] / $imgDescription['height'];
+        $percentResize = 500 / $imgDescription['height']; 
+        $imgSize = strval(ceil(($imgDescription['height'] * $percentResize )* $aspecRat)) . ',' . strval(ceil($imgDescription['height'] * $percentResize));
+    } else if ($imgDescription['width'] < $imgDescription['height']) {
+        $percentResize = 500 / $imgDescription['height']; 
+        $imgSize = strval(ceil($imgDescription['width'] * $percentResize)) . ',' . strval(ceil($imgDescription['height'] * $percentResize));
+    }
+
+    $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => $imgSize, 'region' => 'full'));
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
     //dd($allItems);
 
