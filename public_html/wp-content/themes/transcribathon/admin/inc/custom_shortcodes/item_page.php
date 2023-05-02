@@ -43,10 +43,6 @@ function _TCT_mtr_transcription($atts)
     $storyDataSet = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $itemData['StoryId'], $getJsonOptions, true);
     $storyData = $storyDataSet['data'];
 
-    // Replace Item endpoint
-   // dd($itemData);
-
-
     $storyId = $itemData['StoryId'];;
 
     $pageData = sendQuery(TP_API_HOST . '/tp-api/itemPage/' . $storyId, $getJsonOptions, true);
@@ -92,7 +88,6 @@ function _TCT_mtr_transcription($atts)
 
     $itemAutoPlaces = [];
     $itemAutoPpl = [];
-
     if(!empty($itemAutoE['data'])) {
         foreach($itemAutoE['data'] as $itm) {
             if($itm['Type'] == 'Place') {
@@ -145,6 +140,7 @@ if (event.target.id != "tagging-status-indicator") {
 </script>';
     // Lock item if user is not logged in or someone else is Enriching Item
     $locked = false;
+    
     if ($isLoggedIn && ($itemData['LockedTime'] < date("Y-m-d H:i:s") || get_current_user_id() == $itemData['LockedUser'])) {
         $content .= '<script>
             // Lock document
@@ -174,12 +170,12 @@ if (event.target.id != "tagging-status-indicator") {
 
     })
     .then(function(response) {
-        return response;
+        return response.json();
     })
     .then(function(data) {
         console.log(data);
-        if(data.code == 200) {
-            return 1;
+        if(data == "Update succesful") {
+             return 1;
         }
     });
 
@@ -194,7 +190,7 @@ if (event.target.id != "tagging-status-indicator") {
     data["LockedUser"] = '.get_current_user_id().';
 
     var dataString= JSON.stringify(data);
-    fetch("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php",
+    fetch("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php",
     {
         method: "POST",
         headers: {
@@ -211,8 +207,7 @@ if (event.target.id != "tagging-status-indicator") {
         return response.json();
     })
     .then(function(data) {
-        console.log(data.code);
-        if(data.code == 200) {
+        if(data == "Update succesful") {
             return 1;
         }
     });
@@ -222,7 +217,6 @@ if (event.target.id != "tagging-status-indicator") {
     else if ($isLoggedIn) {
         $locked = true;
     }
-
     $content .= "";
     // Large spinner
     $content .= "<div class='full-spinner-container'>";

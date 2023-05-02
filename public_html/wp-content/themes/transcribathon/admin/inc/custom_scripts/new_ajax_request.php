@@ -3,38 +3,37 @@
 require_once( $_SERVER["DOCUMENT_ROOT"].'/wp-load.php' );
 require_once( $_SERVER["DOCUMENT_ROOT"].'/wp-admin/includes/post.php' );
 
-$requestData = (file_get_contents('php://input'));
-var_dump($requestData);
-// $url = $_POST['url'];
-// $type = $_POST['type'];
-// $data = $_POST['data'];
+$requestData = json_decode(file_get_contents('php://input'), true);
 
-// if(!empty($type) && !empty($url)) {
+$url = $requestData['url'];
+$type = $requestData['type'];
+$data = $requestData['data'];
 
-//     if($type == "POST" && !empty($data)) {
-//         $options = array(
-//             "http" => array(
-//                 "method" => $type,
-//                 "header" => "Content-type: application/json\r\n",
-//                 "Content-Length: " . strlen($data) . "\r\n",
-//                 "content" => $data
-//             )
-//         );
-//     } else if ($type == "GET") {
-//         $options = array(
-//             "http" => array(
-//                 "method" => $type,
-//                 "header" => "Content-type: application/json\r\n",
-//             )
-//         );
-//     }
+
+if(!empty($type) && !empty($url)) {
+
+    if($type == "POST" && !empty($data)) {
+        $options = array(
+            "http" => array(
+                "method" => $type,
+                "header" => "Content-type: application/json\r\n",
+                "Content-Length: " . strlen($data) . "\r\n",
+                "content" => json_encode($data)
+            )
+        );
+    } else if ($type == "GET") {
+        $options = array(
+            "http" => array(
+                "method" => $type,
+                "header" => "Content-type: application/json\r\n",
+            )
+        );
+    }
     
-//     $context = stream_context_create($options);
-//     $result = file_get_contents($url, false, $context);
-//     echo json_encode($result);
+    $context = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    echo json_encode($result);
 
-// }
-
-
+}
 
 ?>
