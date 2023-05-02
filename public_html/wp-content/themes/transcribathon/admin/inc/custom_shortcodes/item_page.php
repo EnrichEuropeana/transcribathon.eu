@@ -160,7 +160,7 @@ if (event.target.id != "tagging-status-indicator") {
 
     var dataString= JSON.stringify(data);
 
-    fetch("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php",
+    fetch("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php",
     {
         method: "POST",
         headers: {
@@ -174,10 +174,10 @@ if (event.target.id != "tagging-status-indicator") {
 
     })
     .then(function(response) {
-        return response.json();
+        return response;
     })
     .then(function(data) {
-        console.log(data.code);
+        console.log(data);
         if(data.code == 200) {
             return 1;
         }
