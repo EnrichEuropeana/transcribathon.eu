@@ -81,7 +81,7 @@ $theme_sets = get_theme_mods();
 
     // Execude http request
     include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
-    
+
     // Display data
     $documents = json_decode($result, true);
     
@@ -90,11 +90,20 @@ $theme_sets = get_theme_mods();
             echo "<div class=\"tableholder\">\n";
                 echo "<div class=\"tablegrid\">\n";	
                     echo "<div class=\"section group sepgroup tab\">\n";
-                        $i=0;
+                        $i = 0;
+                        $k = 0;
                         if ($documents != null) {
                             foreach ($documents as $document){
-                                //var_dump($transcription);
-                                if($i>3){ echo "</div>\n<div class=\"section group sepgroup tab\">\n"; $i=0; }
+                                
+                                if ($i > 3) {
+                                    if($k >= 1) {
+                                        echo "</div>\n<div class=\"section group sepgroup tab\" style=\"display:none;\">\n";
+                                    } else {
+                                        echo "</div>\n<div class=\"section group sepgroup tab\">\n";
+                                    }
+                                    $k += 1;
+                                    $i = 0;
+                                }
                                 echo "<div class=\"column span_1_of_4 collection\">\n";
                                     //$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $doc['docid'] ),'post-thumbnail');
                                     //$c = get_post_custom($doc['docid']);
@@ -108,27 +117,6 @@ $theme_sets = get_theme_mods();
                                             if($image['height'] == null) {
                                                 $imageLink = str_replace('full', '50,50,1800,1100', $imageLink);
                                             }
-
-
-                                            // if (substr($image['service']['@id'], 0, 4) == "http") {
-                                            //     $imageLink = $image['service']['@id'];
-                                            // }
-                                            // else {
-                                            //     $imageLink = "http://".$image['service']['@id'];
-                                            // }
-
-                                            // if ($image["width"] != null || $image["height"] != null) {
-                                            //     if ($image["width"] <= ($image["height"] * 2)) {
-                                            //         $imageLink .= "/0,0,".$image["width"].",".($image["width"] / 2);
-                                            //     }
-                                            //     else {
-                                            //         $imageLink .= "/".round(($image["width"] - $image["height"]) / 2).",0,".($image["height"] * 2).",".$image["height"];
-                                            //     }
-                                            // }
-                                            // else {
-                                            //     $imageLink .= "/full";
-                                            // }
-                                            // $imageLink .= "/280,140/0/default.jpg";
 
                                             echo  '<img src='.$imageLink.'>';
                                         echo  "</a>";
@@ -167,7 +155,13 @@ $theme_sets = get_theme_mods();
                                                 ".$document['CompletionStatus']."
                                             </div>\n";
                                 echo "</div>\n";
+
                                 $i++;
+                            }
+
+                            if(count($documents) > 0) {
+                                echo "</div>";
+                                echo "<div id='profile-more'> Show More </div>";
                             }
                         }
                     echo "</div>\n";	
@@ -175,7 +169,40 @@ $theme_sets = get_theme_mods();
             echo "</div>\n";
 		echo "</div>\n"; 
 	
-	if(is_user_logged_in() &&  get_current_user_id() === 1){	}
+	echo "<script>
+        let itemRows = document.querySelectorAll('.section.group.sepgroup.tab');
+        let showButton = document.getElementById('profile-more');
+
+        showButton.addEventListener('click',function(){
+            if(!showButton.classList.contains('shown')) {
+                for(let row of itemRows) {
+                    row.style.display = 'table-row';
+                    showButton.classList.add('shown');
+                    showButton.textContent = 'Show Less';
+                }
+            } else {
+                let i = 0;
+                for(let row of itemRows) {
+                    if(i < 2) {
+                        i++;
+                        continue;
+                    }
+                    row.style.display = 'none';
+                    showButton.classList.remove('shown');
+                    showButton.textContent = 'Show More';
+                    i ++;
+                }
+            }
+            
+        });";
+    echo "</script>";
+    echo "<style>
+        #profile-more {
+            width: 100vw;
+            text-align: center;
+        }
+    ";
+    echo "</style>";
 
 
 }

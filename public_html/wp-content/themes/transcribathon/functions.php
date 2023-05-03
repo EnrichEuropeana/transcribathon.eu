@@ -300,7 +300,6 @@ function embedd_custom_javascripts_and_css() {
                 // Import shortcodes for custom profile tabs
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_menu.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/transcriptions.php');
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/contributions.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/achievements.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/teams_runs.php');
 
