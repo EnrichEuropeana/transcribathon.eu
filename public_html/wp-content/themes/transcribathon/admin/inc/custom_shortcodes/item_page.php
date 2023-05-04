@@ -7,7 +7,6 @@ Description: Gets item data and builds the item page without htr editor
 
 include($_SERVER["DOCUMENT_ROOT"].'/wp-load.php');
 
-use FactsAndFiles\Transcribathon\TranskribusClient;
 
 date_default_timezone_set('Europe/Berlin');
 
@@ -42,10 +41,6 @@ function _TCT_mtr_transcription($atts)
 
     $storyDataSet = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $itemData['StoryId'], $getJsonOptions, true);
     $storyData = $storyDataSet['data'];
-
-    // Replace Item endpoint
-   // dd($itemData);
-
 
     $storyId = $itemData['StoryId'];;
 
@@ -92,7 +87,6 @@ function _TCT_mtr_transcription($atts)
 
     $itemAutoPlaces = [];
     $itemAutoPpl = [];
-
     if(!empty($itemAutoE['data'])) {
         foreach($itemAutoE['data'] as $itm) {
             if($itm['Type'] == 'Place') {
@@ -102,8 +96,6 @@ function _TCT_mtr_transcription($atts)
             }
         }
     }
-
-
     // Check which Transcription is active
     $activeTr = $itemData['TranscriptionSource'];
     // Transcription to show in transcription View
@@ -111,7 +103,6 @@ function _TCT_mtr_transcription($atts)
 
     // Get English translation of story description
     //$engDescription = sendQuery('https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/' . $storyId . '/?property=description&wskey=apidemo', $getJsonOptions, false);
-
 
     // Build required components for the page
     $content = "";
@@ -148,11 +139,13 @@ if (event.target.id != "tagging-status-indicator") {
 </script>';
     // Lock item if user is not logged in or someone else is Enriching Item
     $locked = false;
+    
     if ($isLoggedIn && ($itemData['LockedTime'] < date("Y-m-d H:i:s") || get_current_user_id() == $itemData['LockedUser'])) {
         $content .= '<script>
             // Lock document
             // Prepare data and send API request
             data = {
+                
     };
     var today = new Date();
     today = new Date(today.getTime() + 60000);
@@ -161,20 +154,30 @@ if (event.target.id != "tagging-status-indicator") {
     data["LockedUser"] = '.get_current_user_id().';
 
     var dataString= JSON.stringify(data);
-    jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
-    "type": "POST",
-        "url": home_url + "/tp-api/items/" + '. $itemData['ItemId'] .',
-        "data": data
-    },
-        // Check success and create confirmation message
-        function(response) {
-            var response = JSON.parse(response);
-            if (response.code == "200") {
-                return 1;
-    }
-    else {
-    }
+
+    fetch("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            type: "POST",
+            url: TP_API_HOST + "/tp-api/items/" + ' . $itemId . ',
+            data: data
+        })
+
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log(data);
+        if(data == "Update succesful") {
+             return 1;
+        }
     });
+
     setInterval(function() {
         // Prepare data and send API request
         data = {
@@ -186,17 +189,26 @@ if (event.target.id != "tagging-status-indicator") {
     data["LockedUser"] = '.get_current_user_id().';
 
     var dataString= JSON.stringify(data);
-    jQuery.post("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php", {
-    "type": "POST",
-        "url": home_url + "/tp-api/items/" + '.$_GET['item'].',
-        "data": data
-    },
-        // Check success and create confirmation message
-        function(response) {
-            var response = JSON.parse(response);
-            if (response.code == "200") {
-                return 1;
-    }
+    fetch("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php",
+    {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            type: "POST",
+            url: TP_API_HOST + "/tp-api/items/" + ' . $itemId . ',
+            data: data
+        })
+
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        if(data == "Update succesful") {
+            return 1;
+        }
     });
     }, 55 * 1000);
     </script>';
@@ -204,7 +216,6 @@ if (event.target.id != "tagging-status-indicator") {
     else if ($isLoggedIn) {
         $locked = true;
     }
-
     $content .= "";
     // Large spinner
     $content .= "<div class='full-spinner-container'>";
@@ -281,6 +292,9 @@ if (event.target.id != "tagging-status-indicator") {
             $imageViewer .= "<div id='rotate-left' class='theme-color theme-color-hover'><i class='fas fa-undo'></i></div>";
             $imageViewer .= "<div id='filterButton' class='theme-color theme-color-hover'><i class='fas fa-sliders-h'></i></div>";
             $imageViewer .= "<div id='full-page' title='Full Screen' class='theme-color theme-color-hover'><i class='fas fa-expand-arrows-alt'></i></div>";
+        if($locked) {
+            $imageViewer .= "<div id='transcribeLock' hidden><i class='far fa-lock'></i></div>";
+        }
         $imageViewer .= "</div>";
     $imageViewer .= "</div>"; // End of Image Viewer
 
@@ -628,7 +642,7 @@ if (event.target.id != "tagging-status-indicator") {
             $itemData['Persons'] = sendQuery(TP_API_HOST . '/tp-api/persons?ItemId=' . $itemId, $getJsonOptions, true);
 
             if (count($itemData['Persons']) > 0) {
-                $enrichmentTab .= '<div class="collapse person-item-data-container" id="person-input-container" style="position:relative;">';
+                $enrichmentTab .= '<div class="collapse person-item-data-container login-required" id="person-input-container" style="position:relative;">';
             } else {
                 $enrichmentTab .= '<div class="collapse person-item-data-container show login-required" id="person-input-container" style="position:relative;">';
             }
