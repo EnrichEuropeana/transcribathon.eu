@@ -17,6 +17,7 @@ public_html/wp-content/*
 
 # ignore files for local development
 local-data
+node_modules
 
 public_html/wp-content/plugins
 public_html/wp-content/languages
