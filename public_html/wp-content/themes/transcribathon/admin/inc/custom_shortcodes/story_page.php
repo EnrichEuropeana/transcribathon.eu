@@ -15,18 +15,6 @@ function _TCT_get_document_data( $atts ) {
         // get Story Id from url parameter
         $storyId = $_GET['story'];
 
-        // // Set request parameters
-        // $url = TP_API_HOST."/tp-api/stories/".$storyId;
-        // $requestType = "GET";
-
-        // // Execude request
-        // include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
-
-        // // Display data
-        // $storyDataA = json_decode($result, true);
-        // //dd($storyData);
-        // $storyDataA = $storyDataA[0];
-        // dd($storyDataA);
         $getJsonOptions = [
             'http' => [
                 'header' => [ 
@@ -38,6 +26,10 @@ function _TCT_get_document_data( $atts ) {
         ];
     
         $storyDataSet = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $storyId, $getJsonOptions, true);
+        if(!$storyDataSet['success']){
+            echo '<div style="width:50vw;height:50vh;margin:50px auto;"><h2>We couldn\'t find any story with that ID</h2></div>';
+            return;
+        }
         $storyData = $storyDataSet['data'];
 
         // // Change Story Endpoint
@@ -98,7 +90,17 @@ function _TCT_get_document_data( $atts ) {
         array_push($allImages, ($sliderImgLink . ' || ' . $allItems[$x]['ItemId'] . ' || ' . $completionStatusColor));
     }
     $imgDescription = json_decode($allItems[$randomItem]['ImageLink'], true);
-    $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => 'full', 'region' => 'full'));
+    $imgSize = 'full';
+    if($imgDescription['width'] > $imgDescription['height']) {
+        $aspecRat = $imgDescription['width'] / $imgDescription['height'];
+        $percentResize = 500 / $imgDescription['height']; 
+        $imgSize = strval(ceil(($imgDescription['height'] * $percentResize )* $aspecRat)) . ',' . strval(ceil($imgDescription['height'] * $percentResize));
+    } else if ($imgDescription['width'] < $imgDescription['height']) {
+        $percentResize = 500 / $imgDescription['height']; 
+        $imgSize = strval(ceil($imgDescription['width'] * $percentResize)) . ',' . strval(ceil($imgDescription['height'] * $percentResize));
+    }
+
+    $imgDescriptionLink = createImageLinkFromData($imgDescription, array('size' => $imgSize, 'region' => 'full'));
     $descrLink = json_decode($storyData['Items'][0]['ItemId'], true);
     //dd($allItems);
 
@@ -360,7 +362,7 @@ function _TCT_get_document_data( $atts ) {
 		        					    mapboxgl.accessToken = 'pk.eyJ1IjoiZmFuZGYiLCJhIjoiY2pucHoybmF6MG5uMDN4cGY5dnk4aW80NSJ9.U8roKG6-JV49VZw5ji6YiQ';
 		        					    var map = new mapboxgl.Map({
 		        					      container: 'storyMap',
-		        					      style: 'mapbox://styles/fandf/ck4birror0dyh1dlmd25uhp6y',
+		        					      style: 'mapbox://styles/fandf/clh6frq6p00re01qu5ysw547b',
 		        					      center: [13, 46],
 		        					      zoom: 2.8
 		        					    });

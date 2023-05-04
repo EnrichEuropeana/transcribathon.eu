@@ -238,6 +238,9 @@ if(is_admin()) {
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-progress-line-chart/tct-progress-line-chart-widget.php'); // Adds the line-chart-widget
     register_widget('_TCT_Progress_Line_Chart_Widget');
 
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-storyofmonth/tct-storyofmonth-widget.php'); // Adds the widget for storyofmonth
+    register_widget('_TCT_Storyofmonth_Widget');
+
     // Custom posts
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
 }
@@ -265,13 +268,12 @@ function embedd_custom_javascripts_and_css() {
 
 
     $themeVersion  = wp_get_theme()->get('Version');
-    //var_dump($post->post_name);
 
     if (!is_admin() && $GLOBALS['pagenow'] != 'wp-login.php') {
 
 
         // Enqueue on all pages
-        wp_enqueue_style('child-style', get_stylesheet_directory_uri() .'/style.css', array('parent-style'), $themeVersion);
+        wp_enqueue_style('foundation-style', get_stylesheet_directory_uri() .'/style.css', array(), $themeVersion);
         /* Bootstrap CSS */
         wp_enqueue_style( 'bootstrap', CHILD_TEMPLATE_DIR . '/css/bootstrap.min.css', array(), $themeVersion);
         /* Bootstrap JS */
@@ -283,10 +285,6 @@ function embedd_custom_javascripts_and_css() {
 
         /* diff-match-patch (Transcription text comparison) JS*/
         wp_enqueue_script( 'diff-match-patch', CHILD_TEMPLATE_DIR . '/js/diff-match-patch.js', null, null, true);
-
-        /* custom.php containing theme color CSS */
-        wp_register_style( 'custom-css', CHILD_TEMPLATE_DIR.'/css/custom.php');
-        wp_enqueue_style( 'custom-css' );
 
         // Register jQuery script
         wp_enqueue_script( 'jquery', null, null, false );
@@ -328,8 +326,8 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_script( 'resizable' );
 
                 /* mapbox js and style*/
-                wp_enqueue_script( 'mapbox-gl', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js', null, null, true );
-	            wp_enqueue_style('mapblox-gl', CHILD_TEMPLATE_DIR . '/css/mapbox-gl.css');
+                wp_enqueue_script( 'mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js', null, null, true );
+	            wp_enqueue_style('mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css');
 
 
                 wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css', array(), $themeVersion);
@@ -353,7 +351,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('sp-ea-style');
                 wp_dequeue_style('responsive-lightbox-featherlight');
                 wp_dequeue_style('responsive-lightbox-featherlight-gallery');
-                wp_dequeue_style('child-style');
 
                 // Dequeue unused scripts
                 wp_dequeue_script('responsive-lightbox-featherlight');
@@ -373,8 +370,8 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_script( 'story-js', CHILD_TEMPLATE_DIR . '/js/story-page.js', array(), $themeVersion);
 
                 /* mapbox js and style*/
-                wp_enqueue_script( 'mapbox-gl', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js', null, null, true );
-                wp_enqueue_style('mapblox-gl', CHILD_TEMPLATE_DIR . '/css/mapbox-gl.css');
+                wp_enqueue_script( 'mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js', null, null, true );
+	            wp_enqueue_style('mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css');
                 wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css', array(), $themeVersion);
 
                 // Dequeue unused styles
@@ -383,7 +380,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('sp-ea-style');
                 wp_dequeue_style('responsive-lightbox-featherlight');
                 wp_dequeue_style('responsive-lightbox-featherlight-gallery');
-                wp_dequeue_style('child-style');
                 wp_dequeue_style('jQuery-UI');
                 //wp_dequeue_style('bootstrap');
 
@@ -411,7 +407,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('sp-ea-style');
                 wp_dequeue_style('responsive-lightbox-featherlight');
                 wp_dequeue_style('responsive-lightbox-featherlight-gallery');
-                wp_dequeue_style('child-style');
                 wp_dequeue_style('jQuery-UI');
                 wp_dequeue_style('bootstrap');
 
@@ -439,8 +434,8 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_script( 'resizable' );
 
                 /* mapbox js and style*/
-                wp_enqueue_script( 'mapbox-gl', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js', null, null, true );
-	            wp_enqueue_style('mapblox-gl', CHILD_TEMPLATE_DIR . '/css/mapbox-gl.css');
+                wp_enqueue_script( 'mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js', null, null, true );
+	            wp_enqueue_style('mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css');
 
 
                 wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css', array(), $themeVersion);
@@ -464,7 +459,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('sp-ea-style');
                 wp_dequeue_style('responsive-lightbox-featherlight');
                 wp_dequeue_style('responsive-lightbox-featherlight-gallery');
-                wp_dequeue_style('child-style');
 
                 // Dequeue unused scripts
                 wp_dequeue_script('responsive-lightbox-featherlight');
@@ -492,7 +486,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('sp-ea-style');
                 wp_dequeue_style('responsive-lightbox-featherlight');
                 wp_dequeue_style('responsive-lightbox-featherlight-gallery');
-                wp_dequeue_style('child-style');
                 wp_dequeue_style('jQuery-UI');
                 wp_dequeue_style('bootstrap');
 
@@ -525,8 +518,8 @@ function embedd_custom_javascripts_and_css() {
 
                 // Dequeue unused styles
                 /* mapbox js and style*/
-                wp_enqueue_script( 'mapbox-gl', 'https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.0/mapbox-gl.js', null, null, true );
-                wp_enqueue_style('mapblox-gl', CHILD_TEMPLATE_DIR . '/css/mapbox-gl.css');
+                wp_enqueue_script( 'mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js', null, null, true );
+	            wp_enqueue_style('mapbox-gl', 'https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css');
                 wp_enqueue_style( 'viewer', CHILD_TEMPLATE_DIR . '/css/viewer.css', array(), $themeVersion);
                 break;
 
@@ -541,7 +534,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('sp-ea-style');
                 wp_dequeue_style('responsive-lightbox-featherlight');
                 wp_dequeue_style('responsive-lightbox-featherlight-gallery');
-                wp_dequeue_style('child-style');
                 wp_dequeue_style('jQuery-UI');
                 wp_dequeue_style('bootstrap');
                 wp_dequeue_style('responsive-lightbox-swipebox');
@@ -585,7 +577,6 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('sp-ea-style');
                 wp_dequeue_style('responsive-lightbox-featherlight');
                 wp_dequeue_style('responsive-lightbox-featherlight-gallery');
-                wp_dequeue_style('child-style');
                 wp_dequeue_style('jQuery-UI');
                 wp_dequeue_style('bootstrap');
 
@@ -730,6 +721,11 @@ function embedd_custom_javascripts_and_css() {
                     );
  //after wp_enqueue_script
  wp_localize_script( 'my-script', 'WP_URLs', $translation_array );
+
+function dequeue_parent_style() {
+    wp_dequeue_style('vantage-style');
+}
+add_action('wp_enqueue_scripts', 'dequeue_parent_style', 11);
 
 
 /* SHORTCODES */

@@ -122,23 +122,7 @@ function installEventListeners() {
         }
     })
 
-    jQuery('#mce-wrapper-transcription').mousedown(function(event) {
-        // Checks if document is locked
-        if (jQuery('#transcribeLock').length) {
-            event.preventDefault();
-            lockWarning();
-        }
-    })
-
-    jQuery('#item-page-description-text').mousedown(function(event) {
-        // Checks if document is locked
-        if (jQuery('#transcribeLock').length) {
-            event.preventDefault();
-            lockWarning();
-        }
-    })
-    ////
-    jQuery('.edit-item-data-icon').mousedown(function(event) {
+    jQuery('#item-data-content').mousedown(function(event) {
         // Checks if document is locked
         if (jQuery('#transcribeLock').length) {
             event.preventDefault();
@@ -2283,7 +2267,7 @@ function initializeMap() {
         jQuery('.map-placeholder').css('display', 'none');
         map = new mapboxgl.Map({
           container: 'full-view-map',
-          style: 'mapbox://styles/fandf/ck4birror0dyh1dlmd25uhp6y',
+          style: 'mapbox://styles/fandf/clh6frq6p00re01qu5ysw547b',
           center: [16, 49],
           zoom: 2.25,
           scrollZoom: false

@@ -27,6 +27,11 @@
 	<link rel="preload" href="<?php echo get_stylesheet_directory_uri(); ?>/fonts/open-sans-v34-latin-italic.woff2" as="font" type="font/woff2" crossOrigin />
 	<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/css/fonts.css" type="text/css" />
 	<script>const TP_API_HOST = '<?php echo TP_API_HOST; ?>';</script>
+	<script>
+		let currentUrl = window.location.href;
+		color = currentUrl.includes('europeana') ? '#0a72cc' : '#b33e3e';
+	    document.documentElement.style.setProperty('--main-color', color);
+	</script>
 
 
 	<?php wp_head(); ?>

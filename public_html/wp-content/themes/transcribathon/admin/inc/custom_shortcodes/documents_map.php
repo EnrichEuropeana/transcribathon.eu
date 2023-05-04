@@ -15,7 +15,7 @@ function _TCT_documents_map( $atts ) {
 			mapboxgl.accessToken = 'pk.eyJ1IjoiZmFuZGYiLCJhIjoiY2pucHoybmF6MG5uMDN4cGY5dnk4aW80NSJ9.U8roKG6-JV49VZw5ji6YiQ';
 			var map = new mapboxgl.Map({
 				container: 'documentsMap',
-				style: 'mapbox://styles/fandf/ck4birror0dyh1dlmd25uhp6y',
+				style: 'mapbox://styles/fandf/clh6frq6p00re01qu5ysw547b',
 				center: [13, 46],
 				zoom: 2.25
 			});
