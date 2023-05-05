@@ -118,7 +118,7 @@ $theme_sets = get_theme_mods();
                                                 $imageLink = str_replace('full', '50,50,1800,1100', $imageLink);
                                             }
 
-                                            echo  '<img src='.$imageLink.'>';
+                                            echo  '<img src='.$imageLink.' loading="lazy" width="280" height="140" alt="edited-item">';
                                         echo  "</a>";
 
                                         echo "<h3 id= \"nopadmod\" class=\"nopad\">".$document['ItemTitle']."</h3>\n";
@@ -200,6 +200,7 @@ $theme_sets = get_theme_mods();
         #profile-more {
             width: 100vw;
             text-align: center;
+            color: #0a72cc;
         }
     ";
     echo "</style>";
