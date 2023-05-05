@@ -4033,9 +4033,9 @@ a#new-temporary-prof {
   padding: 1px 40px;
   background: #0a72cc;
   color: #ffffff !important;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 0px!important;
+  -moz-border-radius: 0px!important;
+  border-radius: 0px!important;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
   font-weight: 400;
   position: absolute;
@@ -4043,7 +4043,9 @@ a#new-temporary-prof {
   top: 10%;
 }
 a#new-temporary-prof:hover {
-  color: #7E7E7E !important;
+  color: #0a72cc !important;
+  background-color: #fff!important;
+  outline: 3px solid #0a72cc!important;
 }
 #new-temporary-ques{
   position: absolute;
