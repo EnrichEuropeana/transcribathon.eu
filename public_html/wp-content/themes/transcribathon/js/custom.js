@@ -247,8 +247,39 @@ function joinTeam(pid,cuid,tid){
 			alert('sorry, an error occured. Please reload page.');
 		}
 	});
+}
+// New create team function
+function createNewTeam(userId) {
+
+	const teamName = document.querySelector('#qtmnm').textContent;
+	const teamShortName = document.querySelector('#qtmshnm');
+	const teamDesc = document.querySelector('#qtsdes');
+	// EventUser is not used yet
+	const eventUser = 0;
+	const teamCode = document.querySelector('#qtmcd');
+	// Runs not available yet in api
+	const teamRuns = document.querySelector('#qcmpgncd');
+
+	if(teamName.value != '' && teamShortName.value != '' && teamCode.value != '') {
+		console.log('ready to go');
+		let data = {
+            Name: teamName,
+			ShortName: teamShortName,
+			Description: teamDesc,
+			EventUser: eventUser,
+			Code: teamCode,
+			UserIds: {
+				userId
+			}
+		};
+	} else {
+		window.alert('Please provide required information!');
+	}
+
 
 }
+
+
 function svTeam(pid,cuid){
 	"use strict";
 	var tmp = jQuery('a#svTmBut').text();

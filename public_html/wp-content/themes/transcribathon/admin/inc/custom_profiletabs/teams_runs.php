@@ -89,7 +89,7 @@ if(is_user_logged_in() &&  get_current_user_id() === um_profile_id()){
 				echo "</div>\n";
 				echo "<p class=\"nopad\">"._x('Would you like to create a new team? Please click the button below and fill out the form.', 'Team-Tab on Profile', 'transcribathon'  )."</p>\n";
 				echo "<div id=\"team-creation-feedback\"></div>\n";
-				echo "<a class=\"theme-color-background tct-vio-but\" id=\"open-tm-crt-but\" data-rel-close=\"X\" data-rel-open=\""._x('Create a team','Team-Tab on Profile','transcribathon')."\" onclick=\"openTmCreator('".um_profile_id()."','".get_current_user_id()."',jQuery(this)); return false;\">"._x('Create a team','Team-Tab on Profile','transcribathon')."</a>";
+				echo "<a class=\"theme-color-background tct-vio-but\" id=\"open-tm-crt-but\" data-rel-close=\"Cancel team creation\" data-rel-open=\""._x('Create a team','Team-Tab on Profile','transcribathon')."\" onclick=\"openTmCreator('".um_profile_id()."','".get_current_user_id()."',jQuery(this)); return false;\">"._x('Create a team','Team-Tab on Profile','transcribathon')."</a>";
 				echo "<form id=\"tct-crtrtm-frm\" autocomplete=\"off\">\n";
 					echo "<label for=\"qtmnm\">"._x('Team title', 'Team-Tab on Profile', 'transcribathon'  )."</label>\n";
 					echo "<input type=\"text\" data-rel-missing=\""._x('Please enter a team title', 'Team-Tab on Profile', 'transcribathon'  )."\" id=\"qtmnm\" placeholder=\""._x('Please enter a title', 'Team-Tab on Profile', 'transcribathon'  )."\" onchange=\"chkTeamname(jQuery(this));\" value=\"\" autocomplete=\"off\" />\n";
@@ -97,7 +97,7 @@ if(is_user_logged_in() &&  get_current_user_id() === um_profile_id()){
 					echo "<label for=\"qtmshnm\">"._x('Team title abbreviation', 'Team-Tab on Profile', 'transcribathon'  )."</label>\n";
 					echo "<input type=\"text\" maxlength=\"6\" style=\"width:80px;\" data-rel-missing=\""._x('Please enter an abbreviation of your team title', 'Team-Tab on Profile', 'transcribathon'  )."\" id=\"qtmshnm\" placeholder=\""._x('Abbr.', 'Team-Tab on Profile', 'transcribathon'  )."\" onchange=\"checkAbbr(jQuery(this));\" value=\"\" autocomplete=\"off\" />\n";
 					echo "<label for=\"qtsdes\">"._x('Short description', 'Team-Tab on Profile', 'transcribathon'  )."</label>\n";
-					echo "<textarea id=\"qtsdes\" cols=\"1\" rows=\"1\" placeholder=\""._x('Enter a short description of this team (optional)', 'Team-Tab on Profile', 'transcribathon'  )."\"></textarea>\n";
+					echo "<textarea id=\"qtsdes\" cols=\"4\" rows=\"1\" placeholder=\""._x('Enter a short description of this team (optional)', 'Team-Tab on Profile', 'transcribathon'  )."\"></textarea>\n";
 					echo "<p>"._x('If you want to create a <strong>Private team</strong>, set an <strong>access code</strong> by clicking the refresh button next to the code field below. Other users can then only join the team once they know this code or when they are sent an e-mail invitation from the team administrator.<br /><br />To create an <strong>Open team</strong>, leave the code field blank.', 'Team-Tab on Profile', 'transcribathon'  )."</p>";
 					echo "<table class=\"nopad\">\n<tbody>\n";
 						echo "<tr>\n";
@@ -108,7 +108,7 @@ if(is_user_logged_in() &&  get_current_user_id() === um_profile_id()){
 				echo "<p>"._x('If you want to register this team for a Special Transcribathon event or run, enter the run code below. You can also do this later via ‘Edit team’.', 'Team-Tab on Profile', 'transcribathon'  )."</p>\n";
 				echo "<label for=\"qcmpgncd\">"._x('Run code', 'Team-Tab on Profile', 'transcribathon'  )."</label>\n";
 				echo "<input type=\"password\" id=\"qcmpgncd\" placeholder=\""._x('Run code', 'Team-Tab on Profile', 'transcribathon'  )."\" value=\"\" autocomplete=\"off\" />\n";
-				echo "<a class=\"theme-color-background tct-vio-but\" id=\"svTmBut\" onclick=\"svTeam('".um_profile_id()."','".get_current_user_id()."'); return false;\">"._x('Create team','Team-Tab on Profile','transcribathon')."</a>";
+				echo "<a class=\"theme-color-background tct-vio-but\" id=\"svTmBut\" onclick=\"createNewTeam(".  .");\">"._x('Create team','Team-Tab on Profile','transcribathon')."</a>";
 				echo "</form>\n";
 		
 		
