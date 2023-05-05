@@ -998,3 +998,9 @@ function um_custom_validate_firstname_lastname($args){
 		UM()->form()->add_error( 'user_login', 'Your First name and Last name can not be equal(Sorry, just a measure against bots).' );
 	}
 }
+/* Custom profile cover ratio (ultimate member) */
+add_filter("um_get_option_filter__profile_cover_ratio", "um_change_profile_cover_ratio", 10, 1);
+function um_change_profile_cover_ratio( $ratio ){
+  
+   return "5:1";
+}
