@@ -148,18 +148,19 @@ function exitTm(pID,cuID,tID,txt){
 		});
 	}
 }
-function getTeamTabContent(pID,cuID){
-	"use strict";
-	jQuery.post(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_profiletabs/scripts/team-script.php",{'q':'init-teamtab','pid':pID,'cuid':cuID}, function(res) {
-		if(res.status === "ok"){
-			jQuery('div#ismember_list').html(res.teamlist);
-			jQuery('div#isparticipant_list').html(res.campaignlist);
-			jQuery('div#openteams_list').html(res.openteams);
-		}else{
-			alert("Sorry, an error occured. Please try again\n\n"+JSON.stringify(res));
-		}
-  });
-}
+// function getTeamTabContent(pID,cuID){
+// 	"use strict";
+// 	jQuery.post(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_profiletabs/scripts/team-script.php",{'q':'init-teamtab','pid':pID,'cuid':cuID}, function(res) {
+// 		console.log(res);
+// 		if(res.status === "ok"){
+// 			jQuery('div#ismember_list').html(res.teamlist);
+// 			jQuery('div#isparticipant_list').html(res.campaignlist);
+// 			jQuery('div#openteams_list').html(res.openteams);
+// 		}else{
+// 			alert("Sorry, an error occured. Please try again\n\n"+JSON.stringify(res));
+// 		}
+//   });
+// }
 function chkTmCd(pID,cuID){
 	"use strict";
 	var cd = jQuery("input#tct-mem-code").val();
