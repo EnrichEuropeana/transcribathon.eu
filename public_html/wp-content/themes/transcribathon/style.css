@@ -4,7 +4,7 @@
   Author URI: http://factsandfiles.com
   Description: A child theme of Vantage (SiteOrigin)
   Template: vantage
-  Version: 3.1.9
+  Version: 3.1.10
 */
 
 /* Retreive styles from mother theme */
@@ -23,7 +23,7 @@
 /* Theme settings */
 nav[role='navigation'] ul#menu-main-menu li a {
   color: var(--main-color)!important;
-} 
+}
 nav[role='navigation'] ul#menu-main-menu li a:hover,
 .theme-color-hover:not(.active):hover,
 .theme-color-hover:hover .theme-hover-child

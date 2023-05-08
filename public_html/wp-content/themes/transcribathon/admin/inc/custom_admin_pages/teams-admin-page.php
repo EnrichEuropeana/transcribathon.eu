@@ -1,328 +1,459 @@
 <?php
-/* 
-Shortcode: teams_admin_page
-Description: Creates the content for teams admin page
-*/
-function _TCT_teams_admin_page( $atts ) {  
 
-    global $wp;
-    // Set Post content
-    $requestData = array(
-        'key' => 'testKey'
-    );
-    $url = TP_API_HOST."/tp-api/teams";
-    $requestType = "GET";
+function _TCT_teams_admin_page($atts)
+{
+	$themeUri = get_stylesheet_directory_uri();
+	$mainUri = get_europeana_url();
+	$users = json_encode(
+		get_users([
+			'fields' => ['user_nicename', 'id'],
+			// 'role'   => 'subscriber',
+			'exclude' => [1]
+		])
+	);
 
-    include dirname(__FILE__) . '/../custom_scripts/send_api_request.php';
+	$tailwindLabelClasses = <<<TW1
+		before:content[' ']
+		after:content[' ']
+		pointer-events-none
+		absolute
+		left-0
+		-top-1.5
+		flex
+		h-full
+		w-full
+		select-none
+		text-[11px]
+		font-normal
+		leading-tight
+		text-blue-gray-400
+		transition-all
+		before:pointer-events-none
+		before:mt-[6.5px]
+		before:mr-1
+		before:box-border
+		before:block
+		before:h-1.5
+		before:w-2.5
+		before:rounded-tl-md
+		before:border-t
+		before:border-l
+		before:border-blue-gray-200
+		before:transition-all
+		after:pointer-events-none
+		after:mt-[6.5px]
+		after:ml-1
+		after:box-border
+		after:block
+		after:h-1.5
+		after:w-2.5
+		after:flex-grow
+		after:rounded-tr-md
+		after:border-t
+		after:border-r
+		after:border-blue-gray-200
+		after:transition-all
+		peer-placeholder-shown:text-sm
+		peer-placeholder-shown:leading-[3.75]
+		peer-placeholder-shown:text-blue-gray-500
+		peer-placeholder-shown:before:border-transparent
+		peer-placeholder-shown:after:border-transparent
+		peer-focus:text-[11px]
+		peer-focus:leading-tight
+		peer-focus:text-blue-500
+		peer-focus:before:border-t-2
+		peer-focus:before:border-l-2
+		peer-focus:before:border-blue-500
+		peer-focus:after:border-t-2
+		peer-focus:after:border-r-2
+		peer-focus:after:border-blue-500
+		peer-disabled:text-transparent
+		peer-disabled:before:border-transparent
+		peer-disabled:after:border-transparent
+		peer-disabled:peer-placeholder-shown:text-blue-gray-500
+TW1;
 
-    /* jQuery UI CSS*/
-    wp_enqueue_style( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/css/jquery-ui.min.css');
-    /* jQuery UI JS*/
-    wp_register_script( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/js/jquery-ui.min.js');
-    /* Bootstrap CSS */
-    wp_enqueue_style( 'bootstrap', CHILD_TEMPLATE_DIR . '/css/bootstrap.min.css');
-    /* Bootstrap JS */
-    wp_enqueue_script('bootstrap', CHILD_TEMPLATE_DIR . '/js/bootstrap.min.js');
+	$tailwindInputClasses = <<<TW2
+		peer
+		h-full
+		w-full
+		rounded-[7px]
+		border
+		border-blue-gray-200
+		border-t-transparent
+		bg-transparent
+		px-3
+		py-2.5
+		text-sm
+		font-normal
+		text-blue-gray-700
+		outline
+		outline-0
+		transition-all
+		placeholder-shown:border
+		placeholder-shown:border-blue-gray-200
+		placeholder-shown:border-t-blue-gray-200
+		focus:border-2
+		focus:border-blue-500
+		focus:border-t-transparent
+		focus:outline-0
+		disabled:border-0
+		disabled:bg-blue-gray-50
+TW2;
 
-    $teams = json_decode($result, true);
-    $content = "";
+	$tailwindInputWrapperClasses = <<<TW3
+		relative
+		mb-4
+		h-11
+		w-full
+		min-w-[200px]
+TW3;
 
-    $content .= "<style>";
-        $content .= ".admin-teams-list {
-                        list-style: none;
-                        margin: 0;
-                    }";
-        $content .= ".admin-teams-list li {
-                        border: 2px #c4c4c4 solid;
-                        border-radius: 5px;
-                        padding: 0 10px;
-                        margin-right: 100px;
-                        margin-bottom: 20px;
-                    }";
-        $content .= '.spinnerAdmin {
-                        height: 20px;  
-                        position: relative;
-                        opacity: 1;
-                        transition: opacity linear 0.1s; 
-                    }';
-        $content .= '.spinnerAdmin::before {
-                        border: solid 3px #eee;
-                        border-radius: 50%;
-                        content: "";
-                        height: 20px;
-                        left: 50%;
-                        position: absolute;
-                        top: 50%;
-                        transform: translate3d(-50%, -50%, 0);
-                        width: 20px;
-                        animation: 2s linear infinite spinnerAdmin;
-                        border: solid 3px #eee;
-                        border-bottom-color: rgb(152, 152, 152);
-                        border-radius: 50%;
-                        content: "";
-                        height: 20px;
-                        left: 50%;
-                        opacity: inherit;
-                        position: absolute;
-                        top: 50%;
-                        transform: translate3d(-50%, -50%, 0);
-                        transform-origin: center;
-                        width: 20px;
-                        will-change: transform;
-                    }
-                    @keyframes spinnerAdmin {
-                        0% {
-                            transform: translate3d(-50%, -50%, 0) rotate(0deg);
-                        }
-                        100% {
-                             transform: translate3d(-50%, -50%, 0) rotate(360deg);
-                        }
-                    }
-                    .spinner-container {
-                        display: none;
-                        padding: 10px;
-                        width: 40px;
-                    }
-                    .spinner-container-left {
-                        float: left;
-                    }
-                    .spinner-container-right {
-                        float: right;
-                    }
+	$html = <<<HTML
+<div class="container mx-auto mt-8" x-data="manage_teams" id="team-mangement">
+    <h1 class="text-2xl mb-4">Team Management</h1>
 
-                    .admin-team-view-info {
-                        float: left;
-                        width: 60%;
-                        padding-right: 20px;
-                    }
-                    .admin-team-view-member {
-                        float: left;
-                        width: 35%;
-                    }
-                    ';
-    $content .= "</style>";
+    <div class="bg-white p-6 rounded shadow-md">
 
-    $content .= "<script>";
-    $content .= "   function generateTeamCode() {
-                        var result           = '';
-                        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                        var charactersLength = characters.length;
-                        for ( var i = 0; i < 10; i++ ) {
-                            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                        }
-                        return result;
-                    }
-                    
-                    function editTeam(teamId) {
-                        jQuery('#team-' + teamId + '-spinner-container').css('display', 'block')
-                        name = jQuery('#admin-team-' + teamId + '-name').val();
-                        shortName = jQuery('#admin-team-' + teamId + '-shortName').val();
-                        description = jQuery('#admin-team-' + teamId + '-description').val();
-                        code = jQuery('#admin-team-' + teamId + '-code').val();
-                        
-                        // Prepare data and send API request
-                        data = {
-                            Name: name,
-                            ShortName: shortName,
-                            Description: description,
-                            Code: code
-                        }
-                        var dataString= JSON.stringify(data);
-                        
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'POST',
-                            'url': '".TP_API_HOST."/tp-api/teams/' + teamId,
-                            'data': data
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                            console.log(response);
-                            jQuery('#team-' + teamId + '-spinner-container').css('display', 'none')
-                        });
-                    }
-                    
-                    function addTeam() {
-                        jQuery('#team-spinner-container').css('display', 'block')
-                        name = jQuery('#admin-team-name').val();
-                        shortName = jQuery('#admin-team-shortName').val();
-                        description = jQuery('#admin-team-description').val();
-                        code = jQuery('#admin-team-code').val();
-                        
-                        // Prepare data and send API request
-                        data = {
-                            Name: name,
-                            ShortName: shortName,
-                            Description: description,
-                            Code: code
-                        }
-                        var dataString= JSON.stringify(data);
-                        
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'POST',
-                            'url': '".TP_API_HOST."/tp-api/teams',
-                            'data': data
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                            console.log(response);
-                            jQuery('#team-spinner-container').css('display', 'none')
-                        });
-                    }
-                    
-                    function removeTeamUser(userId, teamId) {                        
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'DELETE',
-                            'url': '".TP_API_HOST."/tp-api/teamUsers/' + teamId + '/' + userId,
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                        });
-                    }
-                    
-                    function addTeamUser(userId, teamId) {
-                        data = {
-                            UserId: userId,
-                            TeamId: teamId
-                        }
-                        var dataString= JSON.stringify(data);
-                        
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'POST',
-                            'url': '".TP_API_HOST."/tp-api/teamUsers',
-                            'data': data
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                        });
-                    }
-                    ";
-    $content .= "</script>";
+			<div class="{$tailwindInputWrapperClasses}">
+				<input
+					class="{$tailwindInputClasses}"
+					x-model="selectedTeam.Name"
+					placeholder=" "
+				/>
+				<label
+					class="{$tailwindLabelClasses}"
+				>Team Name</label>
+			</div>
 
-    $content .= "<h2>TEAMS</h2>";
+			<div class="{$tailwindInputWrapperClasses}">
+				<input
+					class="{$tailwindInputClasses}"
+					x-model="selectedTeam.ShortName"
+					placeholder=" "
+				/>
+				<label
+					class="{$tailwindLabelClasses}"
+				>Team Short Name</label>
+			</div>
 
-    $content .= "<button class='collapse-controller' data-toggle='collapse' href='#admin-team-add'>";
-        $content .= "ADD";
-    $content .= "</button>";
+			<div class="{$tailwindInputWrapperClasses}">
+				<input
+					class="{$tailwindInputClasses}"
+					x-model="selectedTeam.Description"
+					placeholder=" "
+				/>
+				<label
+					class="{$tailwindLabelClasses}"
+				>Team Description</label>
+			</div>
 
-    $content .= "<div id='admin-team-add' class='admin-team-edit collapse'>";
-        $content .= "<h6>Name: </h6>";
-        $content .= "<input id='admin-team-name'>";
-        $content .= "<h6>Short Name: </h6>";
-        $content .= "<input id='admin-team-shortName'>";
-        $content .= "<p>";
-            $content .= "<h6>Description: </h6>";
-            $content .= "<textarea id='admin-team-description' style='width: 80%'></textarea>";
-        $content .= "</p>";
-        $content .= "<h6>Code: </h6>";
-        $content .= "<input id='admin-team-code'>";
-        $content .= "</br>";
+			<div class="{$tailwindInputWrapperClasses}">
+				<input
+					class="{$tailwindInputClasses}"
+					x-model="selectedTeam.Code"
+					placeholder=" "
+				/>
+				<label
+					class="{$tailwindLabelClasses}"
+				>Team Code (only visible when inserting)</label>
+			</div>
 
-        $content .= "<button onClick='addTeam()' style='float: left; margin-top: 10px;'>";
-            $content .= "SAVE";
-        $content .= "</button>";
-        $content .= '<div id="team-spinner-container" class="spinner-container spinner-container-left">';
-            $content .= '<div class="spinnerAdmin"></div>';
-        $content .= "</div>";
-        $content .= "<div style='clear:both'></div>";
-    $content .= "</div>";
+			<div class="{$tailwindInputWrapperClasses}">
+				<input
+					class="{$tailwindInputClasses}"
+					x-model="searchTerm"
+					@keyup="searchTeamMember()"
+					placeholder=" "
+				/>
+				<label
+					class="{$tailwindLabelClasses}"
+				>Search and add Team Member</label>
+			</div>
 
-    $content .= "<hr>";
+			<div class="mb-4 min-h-11">
+				<ul class="
+					flex
+					flex-row
+					flex-wrap
+					content-start
+					items-center
+					gap-2
+					mt-3
+				">
+					<template x-for="member in teamMemberSearch">
+						<li class="">
+							<button
+								class="
+									center
+									relative
+									inline-block
+									select-none
+									whitespace-nowrap
+									rounded-lg
+									bg-green-500
+									py-2
+									px-3.5
+									align-baseline
+									text-xs
+									font-bold
+									leading-none
+									text-white
+								"
+								x-text="member.user_nicename"
+								@click="addTeamMember(member.id, member.user_nicename);"
+							></button>
+						</li>
+					</template>
+				</ul>
+			</div>
+      <div class="mb-4">
+        <div class="
+					{$tailwindInputClasses}
+					min-h-[5rem]
+					w-full
+					flex
+					flex-row
+					flex-wrap
+					content-start
+					items-center
+					gap-1
+				">
+					<template x-for="user in selectedTeam.Users">
+						<div class="
+							center
+							relative
+							inline-block
+							select-none
+							whitespace-nowrap
+							rounded-lg
+							bg-teal-500
+							py-2
+							px-3.5
+							align-baseline
+							text-xs
+							font-bold
+							leading-none
+							text-white
+						">
+							<div class="mr-5 mt-px" x-text="user.nicename"></div>
+							<div class="
+								absolute
+								top-1
+								right-1
+								mx-px
+								mt-[0.5px]
+								w-max
+								rounded-md
+								bg-red-500
+								transition-colors
+								hover:bg-red-600
+							">
+								<div
+									role="button"
+									class="h-5 w-5 p-1"
+									@click="removeTeamMember(user.UserId)"
+								>
+      						<svg
+        						xmlns="http://www.w3.org/2000/svg"
+        						fill="none"
+        						viewBox="0 0 24 24"
+        						stroke="currentColor"
+        						stroke-width="3"
+      						>
+        						<path
+          						stroke-linecap="round"
+          						stroke-linejoin="round"
+          						d="M6 18L18 6M6 6l12 12"
+        						></path>
+      						</svg>
+    						</div>
+  						</div>
+						</div>
+					</template>
+				</div>
+      </div>
 
-    $content .= "<ul class='admin-teams-list'>";
-        foreach ($teams as $team){
-            $content .= "<li>";
-                $content .= "<div class='admin-team-view-info'>";
-                    $content .= "<div class='admin-team-view'>";
-                            $content .= "<h5>".$team['Name']." (".$team['ShortName'].")</h5>";
-                            $content .= "<p>";
-                                $content .= "<span style='font-weight: bold'>Description: </span>";
-                                $content .= $team['Description'];
-                            $content .= "</p>";
-                            $content .= "<p>";
-                                $content .= "<span style='font-weight: bold'>Code: </span>";
-                                $content .= $team['Code'];
-                            $content .= "</p>";
-                        $content .= "</div>";
+      <div class="flex justify-end">
+      	<button
+					type="submit"
+					class="
+						mr-3
+						rounded-lg
+						bg-blue-500
+						py-3
+						px-6
+						text-xs
+						font-bold
+						uppercase
+						text-white
+						shadow-md
+						shadow-blue-500/20
+						transition-all
+						hover:shadow-lg
+						hover:shadow-blue-500/40
+						active:opacity-[0.85]
+						active:shadow-none
+					"
+					@click="saveTeam(selectedTeam.TeamId)"
+				>Save</button>
+        <button
+					type="button"
+					class="
+						rounded-lg
+						border
+						border-blue-500
+						py-3
+						px-6
+						text-xs
+						font-bold
+						uppercase
+						text-blue-500
+						transition-all
+						hover:opacity-75
+						active:opacity-[0.85]
+					"
+					@click="resetForm"
+				>Cancel</button>
+      </div>
+    </div>
 
-                    $content .= "<hr>";
-                    
-                    $content .= "<button class='collapse-controller' data-toggle='collapse' href='#admin-team-".$team['TeamId']."-edit'>";
-                        $content .= "EDIT";
-                    $content .= "</button>";
+    <table class="
+			w-full
+			mt-4
+			text-sm
+			text-left
+			text-gray-500
+		">
+  		<thead class="
+				text-xs
+				text-gray-700
+				uppercase
+				bg-gray-50
+			">
+        <tr>
+            <th scope="col" class="px-6 py-3">Team Name</th>
+            <th scope="col" class="px-6 py-3">Description</th>
+            <th scope="col" class="px-6 py-3">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+					<template x-for="(team, index) in teams" :key="team.TeamId">
+						<tr
+							class="border-b"
+							:class="index % 2 === 0 ? 'bg-whight' : 'bg-gray-50'"
+						>
+							<th cope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" x-text="team.Name"></td>
+							<td class="px-6 py-4" x-text="team.Description"></td>
+							<td class="flex px-6 py-4">
+								<button
+									class="
+										mr-3
+										rounded-lg
+										bg-blue-500
+										py-2
+										px-4
+										text-xs
+										font-bold
+										uppercase
+										text-white
+										shadow-md
+										shadow-blue-500/20
+										transition-all
+										hover:shadow-lg
+										hover:shadow-blue-500/40
+										active:opacity-[0.85]
+										active:shadow-none
+									"
+                  @click="loadTeam(team.TeamId)"
+								>Edit</button>
+                <button
+									class="
+										mr-3
+										rounded-lg
+										bg-red-500
+										py-2
+										px-4
+										text-xs
+										font-bold
+										uppercase
+										text-white
+										shadow-md
+										shadow-red-500/20
+										transition-all
+										hover:shadow-lg
+										hover:shadow-red-500/40
+										active:opacity-[0.85]
+										active:shadow-none
+									"
+                  @click="removeTeam(team.TeamId)"
+                >Delete</button>
+							</td>
+						</tr>
+					</template>
+					</tbody>
+    </table>
+  	<button
+			type="button"
+			@click="closeToast()"
+			x-show="toast"
+			x-transition.duration.300ms
+			class="
+				fixed top-16 right-4 z-50 rounded-lg p-4 text-base leading-5 font-bold text-white opacity-100 transition
+				"
+			:class="toastType === 'success' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'"
+		>
+      <p x-text="toastMessage"></p>
+		</button>
+</div>
+HTML;
 
-                    $content .= "<div id='admin-team-".$team['TeamId']."-edit' class='admin-team-edit collapse'>";
-                        $content .= "<h6>Name: </h6>";
-                        $content .= "<input id='admin-team-".$team['TeamId']."-name' value='".$team['Name']."'>";
-                        $content .= "<h6>Short Name: </h6>";
-                        $content .= "<input id='admin-team-".$team['TeamId']."-shortName' value='".$team['ShortName']."'>";
-                        $content .= "<p>";
-                            $content .= "<h6>Description: </h6>";
-                            $content .= "<textarea id='admin-team-".$team['TeamId']."-description' style='width: 80%'>".$team['Description']."</textarea>";
-                        $content .= "</p>";
-                        $content .= "<h6>Code: </h6>";
-                        $content .= "<input id='admin-team-".$team['TeamId']."-code' value='".$team['Code']."'>";
-                        $content .= "</br>";
+$js = <<<JS
+<script>
+	const THEME_URI = '{$themeUri}';
+	const MAIN_URI = '{$mainUri}';
+	const ALL_USERS = '{$users}';
+</script>
+JS;
 
-                        $content .= "<button onClick='editTeam(".$team['TeamId'].")' style='float: left; margin-top: 10px;'>";
-                            $content .= "SAVE";
-                        $content .= "</button>";
-                        $content .= '<div id="team-'.$team['TeamId'].'-spinner-container" class="spinner-container spinner-container-left">';
-                            $content .= '<div class="spinnerAdmin"></div>';
-                        $content .= "</div>";
-                        $content .= "<div style='clear:both'></div>";
-                    $content .= "</div>";
-                $content .= "</div>";
-
-                $content .= "<div class='admin-team-view-member'>";
-                    $content .= "<h5>Member:</h5>";
-                    $content .= "<ul>";
-                        $members = array();
-                        foreach ($team['Users'] as $member) {
-                            $content .= "<li>";
-                                $content .= get_userdata($member['WP_UserId'])->user_nicename;
-                                $content .= "<button onClick='removeTeamUser(".$member['WP_UserId'].", ".$team['TeamId'].")' style='float: right;'>REMOVE</button>";
-                                array_push($members, $member['WP_UserId']);
-                            $content .= "</li>";
-                        }
-                    $content .= "</ul>";
-                    $content .= "<button class='collapse-controller' data-toggle='collapse' href='#team-".$team['TeamId']."-user-list'>ADD</button>";
-
-                    $content .= "<div id='team-".$team['TeamId']."-user-list' class='collapse'>";
-                        $content .= "<ul>";
-                            $users = get_users('blog_id=1');
-                            foreach ($users as $user) {
-                                if (!in_array($user->data->ID, $members)) {
-                                    $content .= "<li>";
-                                        $content .= $user->data->user_nicename;
-                                        $content .= "<button onClick='addTeamUser(".$user->data->ID.", ".$team['TeamId'].")' style='float: right;'>+</button>";
-                                    $content .= "</li>";
-                                }
-                            }
-                        $content .= "</ul>";
-                    $content .= "</div>";
-                $content .= "</div>";
-
-                $content .= "<div style='clear: both;'></div>";
-            $content .= "</li>";
-        }
-    $content .= "</ul>";
-
-    echo $content;
-
-   
+	echo $html . $js;
 }
 
-add_action( 'admin_menu', 'teams_menu' );
-
-function teams_menu() {
-	add_menu_page( 
-        'Teams', 
-        'Teams', 
-        'manage_options', 
-        'teams-admin-page', 
-        '_TCT_teams_admin_page', 
-        'dashicons-groups', 
-        3  
-    );
+function teams_menu()
+{
+	add_menu_page(
+		'Teams',
+		'Teams',
+		'manage_options',
+		'teams-admin-page',
+		'_TCT_teams_admin_page',
+		'dashicons-groups',
+		3
+  );
 }
-?>
+
+function load_teams_scripts()
+{
+	// using the playground tailwindcss for now, no compiling but heavier load
+	// wp_register_script('add_tailwindcss', get_stylesheet_directory_uri(). '/admin/inc/custom_js/tailwindcss.min.js', [], '3.3.1', false);
+	// wp_enqueue_script('add_tailwindcss');
+	wp_register_style('add_css', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/teams-admin-page-css.min.css', [], '3.3.2', false);
+	wp_register_script('add_alpinejs', get_stylesheet_directory_uri(). '/admin/inc/custom_js/alpinejs.min.js', [], '3.12.0', false);
+	wp_register_script('add_team_script', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/teams-admin-page.js', [], '0.1.0', true);
+	wp_enqueue_style('add_css');
+	wp_enqueue_script('add_alpinejs');
+	wp_enqueue_script('add_team_script');
+	add_filter('script_loader_tag', 'defer_alpinejs', 10, 3);
+}
+
+function defer_alpinejs($tag, $handle, $src)
+{
+	if ('add_alpinejs' === $handle) {
+		$tag = '<script defer src="' . esc_url($src) . '"></script>';
+	}
+	return $tag;
+}
+
+
+add_action('admin_enqueue_scripts', 'load_teams_scripts');
+add_action('admin_menu', 'teams_menu');
