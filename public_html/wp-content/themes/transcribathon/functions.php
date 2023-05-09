@@ -643,6 +643,11 @@ function embedd_custom_javascripts_and_css() {
                 register_widget('TCT_Barchart_Widget');
                 break;
 
+            case 'team':
+                // Import shortcode
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/team.php');
+
+
             default:
 
                 // Import and register widgets (mostly used for runs)
