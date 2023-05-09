@@ -92,15 +92,15 @@ function getMoreTeamTops(myid,base,limit,tid){
 	});
 }
 
-function generateTeamCode() {
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < 10; i++ ) {
-     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+// function generateTeamCode() {
+//   var result           = '';
+//   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//   var charactersLength = characters.length;
+//   for ( var i = 0; i < 10; i++ ) {
+//      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+//   }
+//   return result;
+// }
 
 function editTeam(teamId) {
   jQuery('#team-' + teamId + '-spinner-container').css('display', 'block')
@@ -250,35 +250,35 @@ function joinTeam(pid,cuid,tid){
 	});
 }
 // New create team function
-function createNewTeam(userId) {
+// function createNewTeam(userId) {
 
-	const teamName = document.querySelector('#qtmnm').textContent;
-	const teamShortName = document.querySelector('#qtmshnm');
-	const teamDesc = document.querySelector('#qtsdes');
-	// EventUser is not used yet
-	const eventUser = 0;
-	const teamCode = document.querySelector('#qtmcd');
-	// Runs not available yet in api
-	const teamRuns = document.querySelector('#qcmpgncd');
+// 	const teamName = document.querySelector('#qtmnm').textContent;
+// 	const teamShortName = document.querySelector('#qtmshnm');
+// 	const teamDesc = document.querySelector('#qtsdes');
+// 	// EventUser is not used yet
+// 	const eventUser = 0;
+// 	const teamCode = document.querySelector('#qtmcd');
+// 	// Runs not available yet in api
+// 	const teamRuns = document.querySelector('#qcmpgncd');
 
-	if(teamName.value != '' && teamShortName.value != '' && teamCode.value != '') {
-		console.log('ready to go');
-		let data = {
-            Name: teamName,
-			ShortName: teamShortName,
-			Description: teamDesc,
-			EventUser: eventUser,
-			Code: teamCode,
-			UserIds: {
-				userId
-			}
-		};
-	} else {
-		window.alert('Please provide required information!');
-	}
+// 	if(teamName.value != '' && teamShortName.value != '' && teamCode.value != '') {
+// 		console.log('ready to go');
+// 		let data = {
+//             Name: teamName,
+// 			ShortName: teamShortName,
+// 			Description: teamDesc,
+// 			EventUser: eventUser,
+// 			Code: teamCode,
+// 			UserIds: {
+// 				userId
+// 			}
+// 		};
+// 	} else {
+// 		window.alert('Please provide required information!');
+// 	}
 
 
-}
+// }
 
 
 function svTeam(pid,cuid){
@@ -602,6 +602,69 @@ ready(() => {
             coverUp.style.display = 'none';
         })
     }
+
+
 });
 
 
+// Teams new functions
+
+// Generate team code
+function generateTeamCode() {
+	const teamName = document.querySelector('#team-title').value;
+	let result = teamName + '-';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@!?$&';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < 8; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+	// add check if code is already taken
+
+    return result;
+}
+
+// Create new team
+function createNewTeam(userId) {
+	const teamName = document.querySelector('#team-title').value;
+	const shortName = document.querySelector('#team-shortname').value;
+	const teamDesc = document.querySelector('#team-description').value;
+	const teamCode = document.querySelector('#access-code').value;
+    const runCode = document.querySelector('#run-code').value;
+
+	if(!teamName || !shortName || !teamCode) {
+		window.alert('Please fill in required info.');
+	} else {
+		let data = {
+			"Name": teamName,
+			"ShortName": shortName,
+			"Description": teamDesc,
+			"EventUser": 0,
+			"Code": teamCode,
+			"UserIds": [
+				userId
+			]
+		}
+
+		const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/teams';
+
+		fetch(requestUri, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'Application/json'
+			},
+			body: JSON.stringify(data)
+		})
+		.then(function(response){
+			return response.json();
+		})
+		.then(function(res){
+			if(res.success == true) {
+				window.alert('Team succesfully created!')
+			} else {
+				window.alert('Something went wrong, please try again!');
+			}
+		})
+
+	}
+}
