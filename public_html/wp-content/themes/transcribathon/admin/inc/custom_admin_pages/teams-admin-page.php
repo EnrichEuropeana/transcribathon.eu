@@ -192,6 +192,7 @@ TW3;
 									whitespace-nowrap
 									rounded-lg
 									bg-green-500
+									hover:bg-green-600
 									py-2
 									px-3.5
 									align-baseline
@@ -419,21 +420,11 @@ JS;
 	echo $html . $js;
 }
 
-function teams_menu()
+function load_teams_scripts($hook)
 {
-	add_menu_page(
-		'Teams',
-		'Teams',
-		'manage_options',
-		'teams-admin-page',
-		'_TCT_teams_admin_page',
-		'dashicons-groups',
-		3
-  );
-}
-
-function load_teams_scripts()
-{
+	if ($hook !== 'toplevel_page_teams-admin-page') {
+		return;
+	}
 	// using the playground tailwindcss for now, no compiling but heavier load
 	// wp_register_script('add_tailwindcss', get_stylesheet_directory_uri(). '/admin/inc/custom_js/tailwindcss.min.js', [], '3.3.1', false);
 	// wp_enqueue_script('add_tailwindcss');
@@ -454,6 +445,4 @@ function defer_alpinejs($tag, $handle, $src)
 	return $tag;
 }
 
-
 add_action('admin_enqueue_scripts', 'load_teams_scripts');
-add_action('admin_menu', 'teams_menu');

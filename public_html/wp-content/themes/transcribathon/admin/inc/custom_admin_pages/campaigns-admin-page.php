@@ -1,9 +1,9 @@
 <?php
-/* 
+/*
 Shortcode: campaigns_admin_page
 Description: Creates the content for campaigns admin page
 */
-function _TCT_campaigns_admin_page( $atts ) {  
+function _TCT_campaigns_admin_page( $atts ) {
 
     global $wp;
     // Set Post content
@@ -42,10 +42,10 @@ function _TCT_campaigns_admin_page( $atts ) {
                         margin-bottom: 20px;
                     }";
         $content .= '.spinnerAdmin {
-                        height: 20px;  
+                        height: 20px;
                         position: relative;
                         opacity: 1;
-                        transition: opacity linear 0.1s; 
+                        transition: opacity linear 0.1s;
                     }';
         $content .= '.spinnerAdmin::before {
                         border: solid 3px #eee;
@@ -105,7 +105,7 @@ function _TCT_campaigns_admin_page( $atts ) {
     $content .= "</style>";
 
     $content .= "<script>";
-    $content .= "   
+    $content .= "
                     jQuery ( document ).ready(function() {
                         jQuery( '.datepicker-input-field' ).datepicker({
                             dateFormat: 'dd/mm/yy',
@@ -126,7 +126,7 @@ function _TCT_campaigns_admin_page( $atts ) {
                         }
                         return result;
                     }
-                    
+
                     function editCampaign(campaignId) {
                         // Prepare data and send API request
                         data = {
@@ -150,9 +150,9 @@ function _TCT_campaigns_admin_page( $atts ) {
                         if (jQuery('#admin-campaign-' + campaignId + '-public').prop('checked')) {
                             data['Public'] = 1
                         }
-                        
+
                         var dataString= JSON.stringify(data);
-                        
+
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                             'type': 'POST',
                             'url': '".TP_API_HOST."/tp-api/campaigns/' + campaignId,
@@ -164,10 +164,10 @@ function _TCT_campaigns_admin_page( $atts ) {
                             jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'none')
                         });
                     }
-                    
-                    function removeCampaign(campaignId) {     
+
+                    function removeCampaign(campaignId) {
                         jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'block');
-                                           
+
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                             'type': 'DELETE',
                             'url': '".TP_API_HOST."/tp-api/campaigns/' + campaignId
@@ -178,7 +178,7 @@ function _TCT_campaigns_admin_page( $atts ) {
                             jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'none')
                         });
                     }
-                    
+
                     function addCampaign() {
                         // Prepare data and send API request
                         data = {
@@ -202,9 +202,9 @@ function _TCT_campaigns_admin_page( $atts ) {
                         if (jQuery('#admin-campaign-public').prop('checked')) {
                             data['Public'] = 1
                         }
-                        
+
                         var dataString= JSON.stringify(data);
-                        
+
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                             'type': 'POST',
                             'url': '".TP_API_HOST."/tp-api/campaigns',
@@ -216,8 +216,8 @@ function _TCT_campaigns_admin_page( $atts ) {
                             jQuery('#campaign-spinner-container').css('display', 'none')
                         });
                     }
-                    
-                    function removeCampaignTeam(teamId, campaignId) {                        
+
+                    function removeCampaignTeam(teamId, campaignId) {
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                             'type': 'DELETE',
                             'url': '".TP_API_HOST."/tp-api/teamCampaigns/' + campaignId + '/' + teamId,
@@ -226,14 +226,14 @@ function _TCT_campaigns_admin_page( $atts ) {
                         function(response) {
                         });
                     }
-                    
+
                     function addCampaignTeam(teamId, campaignId) {
                         data = {
                             TeamId: teamId,
                             CampaignId: campaignId
                         }
                         var dataString= JSON.stringify(data);
-                        
+
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                             'type': 'POST',
                             'url': '".TP_API_HOST."/tp-api/teamCampaigns',
@@ -243,7 +243,7 @@ function _TCT_campaigns_admin_page( $atts ) {
                         function(response) {
                         });
                     }
-                    
+
                     function changeDataset(campaignId) {
                         // Prepare data and send API request
                         data = {
@@ -251,7 +251,7 @@ function _TCT_campaigns_admin_page( $atts ) {
                         jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'block');
                         data['DatasetId'] = jQuery('#admin-campaign-' + campaignId + '-dataset').val();
                         var dataString= JSON.stringify(data);
-                        
+
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                             'type': 'POST',
                             'url': '".TP_API_HOST."/tp-api/campaigns/' + campaignId,
@@ -263,7 +263,7 @@ function _TCT_campaigns_admin_page( $atts ) {
                             jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'none');
                         });
                     }
-                    
+
                     ";
     $content .= "</script>";
 
@@ -295,9 +295,9 @@ function _TCT_campaigns_admin_page( $atts ) {
             );
             $url = TP_API_HOST."/tp-api/datasets";
             $requestType = "GET";
-        
+
             include dirname(__FILE__) . '/../custom_scripts/send_api_request.php';
-        
+
             $datasets = json_decode($result, true);
 
             $content .= '<option selected value=null>';
@@ -358,7 +358,7 @@ function _TCT_campaigns_admin_page( $atts ) {
                         $content .= "</div>";
 
                     $content .= "<hr>";
-                    
+
                     $content .= "<button class='collapse-controller' data-toggle='collapse' href='#admin-campaign-".$campaign['CampaignId']."-edit'>";
                         $content .= "EDIT";
                     $content .= "</button>";
@@ -384,11 +384,11 @@ function _TCT_campaigns_admin_page( $atts ) {
                             );
                             $url = TP_API_HOST."/tp-api/datasets";
                             $requestType = "GET";
-                        
+
                             include dirname(__FILE__) . '/../custom_scripts/send_api_request.php';
-                        
+
                             $datasets = json_decode($result, true);
-                
+
                             if ($campaign['DatasetName'] == null) {
                                 $content .= '<option selected value=null>';
                                     $content .= "No dataset";
@@ -420,7 +420,7 @@ function _TCT_campaigns_admin_page( $atts ) {
                             $checked = "checked";
                         }
                         $content .= "<span>Public: </span><input type='checkbox' id='admin-campaign-".$campaign['CampaignId']."-public' ".$checked.">";
-                                
+
                         $content .= "</br>";
 
                         $content .= "<button onClick='editCampaign(".$campaign['CampaignId'].")' style='float: left; margin-top: 10px;'>";
@@ -456,10 +456,10 @@ function _TCT_campaigns_admin_page( $atts ) {
                             // Set request parameters for story data
                             $url = TP_API_HOST."/tp-api/teams";
                             $requestType = "GET";
-                    
+
                             // Execude http request
                             include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
-                    
+
                             // Save story data
                             $teamData = json_decode($result, true);
 
@@ -481,21 +481,4 @@ function _TCT_campaigns_admin_page( $atts ) {
     $content .= "</ul>";
 
     echo $content;
-
-   
 }
-
-add_action( 'admin_menu', 'campaigns_menu' );
-
-function campaigns_menu() {
-	add_menu_page( 
-        'Campaigns', 
-        'Campaigns', 
-        'manage_options', 
-        'campaigns-admin-page', 
-        '_TCT_campaigns_admin_page', 
-        'dashicons-admin-site', 
-        3  
-    );
-}
-?>

@@ -219,15 +219,42 @@ function my_login_logo_one() {
     </style>
     <?php
     } add_action( 'login_enqueue_scripts', 'my_login_logo_one' );
-// Custom Theme-Settings for Transcribathon
-//require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_themesettings/tct-themesettings.php');
 
-if(is_admin()) {
-    // ### ADMIN PAGES ### //
-    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/teams-admin-page.php'); // Adds teams admin page
-    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/campaigns-admin-page.php'); // Adds campaigns admin page
-    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/documents-admin-page.php'); // Adds documents admin page
-    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_admin_pages/datasets-admin-page.php'); // Adds documents admin page
+
+function load_admin_page($pageData)
+{
+	add_menu_page(...$pageData);
+
+	$menuSlug = $pageData[3];
+	$page = $_GET['page'] ?? '';
+
+	if ($page !== $menuSlug) {
+		return;
+	}
+
+	$admin_page_content = '';
+	ob_start();
+	include_once(get_stylesheet_directory() . '/admin/inc/custom_admin_pages/' . $menuSlug . '.php');
+	$admin_page_content = ob_get_clean();
+	echo $admin_page_content;
+}
+
+	// load all needed pages and widges for admin pages
+	if (is_admin()) {
+
+		// declare admin pages
+		$adminPageData = [
+		//[page_title,   menu_title,  capability,       menu_slug,              callback,                    icon_url,              position],
+			['Teams',     'Teams',     'manage_options', 'teams-admin-page',     '_TCT_teams_admin_page',     'dashicons-groups',     3],
+			['Campaigns', 'Campaigns', 'manage_options', 'campaigns-admin-page', '_TCT_campaigns_admin_page', 'dashicons-admin-site', 3],
+			['Documents', 'Documents', 'manage_options', 'documents-admin-page', '_TCT_documents_admin_page', 'dashicons-admin-site', 3],
+			['Datasets',  'Datasets',  'manage_options', 'datasets-admin-page',  '_TCT_datasets_admin_page',  'dashicons-admin-site', 3]
+		];
+
+		// load admin pages
+		array_map(function($pageData) {
+			load_admin_page($pageData);
+		}, $adminPageData);
 
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-home-stats/tct-home-stats-widget.php'); // Adds the widget for statistic numbers on a project landingpage
     register_widget('TCT_Home_Stats_Widget');
@@ -243,7 +270,7 @@ if(is_admin()) {
 
     // Custom posts
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
-}
+	}
 
 // we need news for menu
 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-news/tct-news.php'); // Adds custom post-type: news
@@ -332,10 +359,10 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css', array(), $themeVersion);
                 wp_enqueue_script( 'jquery' );
                 wp_enqueue_style( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/css/jquery-ui.min.css');
-    
+
                 /* TinyMCE */
                 wp_enqueue_script( 'tinymce', CHILD_TEMPLATE_DIR . '/js/tinymce/js/tinymce/tinymce.min.js', null, null, true);
-    
+
                 /* iiif viewer */
                 wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon-bin-3.1.0/openseadragon.min.js', null, null, true);
                 /*osdSelection plugin*/
@@ -359,12 +386,12 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_script('custom');
 
                 break;
-            
+
             case 'story':
 
                 // Import shortcode
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/story_page.php');
-            
+
                 wp_enqueue_style( 'storystyle', CHILD_TEMPLATE_DIR . '/css/story_page.css', array(), $themeVersion);
                 wp_enqueue_script( 'story-js', CHILD_TEMPLATE_DIR . '/js/story-page.js', array(), $themeVersion);
 
@@ -395,7 +422,7 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_script('bootstrap');
 
                 break;
-            
+
             case 'documents':
 
                 // Import shortcode
@@ -423,7 +450,7 @@ function embedd_custom_javascripts_and_css() {
 
                 wp_enqueue_style( 'searchstyle', CHILD_TEMPLATE_DIR . '/css/search-page.css', array(), $themeVersion);
                 break;
-            
+
             case 'ration-cards':
 
                 // Import shortcode
@@ -440,10 +467,10 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_style( 'itemstyle', CHILD_TEMPLATE_DIR . '/css/item-page.css', array(), $themeVersion);
                 wp_enqueue_script( 'jquery' );
                 wp_enqueue_style( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/css/jquery-ui.min.css');
-    
+
                 /* TinyMCE */
                 wp_enqueue_script( 'tinymce', CHILD_TEMPLATE_DIR . '/js/tinymce/js/tinymce/tinymce.min.js', null, null, true);
-    
+
                 /* iiif viewer */
                 wp_enqueue_script( 'osd', CHILD_TEMPLATE_DIR . '/js/openseadragon-bin-3.1.0/openseadragon.min.js', null, null, true);
                 /*osdSelection plugin*/
@@ -591,7 +618,7 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_script('diff-match-patch');
                 wp_dequeue_script('bootstrap');
                 break;
-            
+
             case 'transcription-comparison':
                 // Import shortcode
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/compare_transcriptions.php');
@@ -606,7 +633,7 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_script('osdSelect', CHILD_TEMPLATE_DIR . '/js/openseadragonSelection.js');
                 break;
 
-            case 'import-htr-transcription': 
+            case 'import-htr-transcription':
                 // Import shortcode
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/htr_import.php');
                 break;
@@ -677,13 +704,13 @@ function embedd_custom_javascripts_and_css() {
                 /* resizable JS*/
                 wp_register_script( 'resizable', CHILD_TEMPLATE_DIR . '/js/jquery-resizable.js', array( 'jQuery-UI' ), null, null );
                 wp_enqueue_script( 'resizable' );
-        
+
                 /* Font Awesome CSS */
                 wp_enqueue_style( 'font-awesome', CHILD_TEMPLATE_DIR . '/css/all.min.css', array(), $themeVersion);
-        
+
                 /* diff-match-patch (Transcription text comparison) JS*/
                 wp_enqueue_script( 'diff-match-patch', CHILD_TEMPLATE_DIR . '/js/diff-match-patch.js');
-        
+
                 /* custom.php containing theme color CSS */
                 wp_register_style( 'custom-css', CHILD_TEMPLATE_DIR.'/css/custom.php');
                 wp_enqueue_style( 'custom-css' );
@@ -703,7 +730,7 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_style( 'slick', CHILD_TEMPLATE_DIR . '/css/slick.css');
                 /* slick JS*/
                 wp_enqueue_script( 'slick', CHILD_TEMPLATE_DIR . '/js/slick.min.js');
-    
+
                 /* chart JS */
                 wp_enqueue_style( 'chart', CHILD_TEMPLATE_DIR . '/css/chart.min.css');
                 /* chart JS */
