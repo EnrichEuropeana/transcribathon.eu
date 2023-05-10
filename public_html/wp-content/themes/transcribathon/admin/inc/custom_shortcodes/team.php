@@ -50,6 +50,8 @@ function _TCT_get_team( $atts ) {
                 float: right;
             }
         </style>';
+
+       
     
     if(empty($teamQuery)) {
         $allTeamsResponse = sendQuery(TP_API_V2_ENDPOINT . '/teams?orderBy=Name&orderDir=asc', $getJsonOptions, true);
@@ -60,7 +62,7 @@ function _TCT_get_team( $atts ) {
         $content .= '<div class="teams-container">';
             foreach($allTeams as $team) {
                 $content .= '<div class="single-team">';
-                    $content .= '<h4 class="theme-color"><a href="?team='.$team['Name'].'">' . $team['Name'] . ' (' . $team['ShortName'] . ') </a></h4>';
+                    $content .= '<h4 class="theme-color"><a href="?team='. $team['Name'] .'">' . $team['Name'] . ' (' . $team['ShortName'] . ') </a></h4>';
                     $content .= '<p>' . $team['Description'] . '</p>';
                     $content .= '<div class="team-left">';
                         $content .= '<h6 class="theme-color"> Members </h6>';
@@ -71,7 +73,7 @@ function _TCT_get_team( $atts ) {
                     $content .= '<div class="team-right">';
                         $content .= '<h6 class="theme-color"> Campaigns </h6>';
                         foreach($team['Campaigns'] as $run) {
-                            $content .= '<p><a href="' . get_europeana_url() . '/runs/' . $run['Name'] . '" target="_blank">' . $run['Name'] . '</a></p>';
+                            $content .= '<p><a href="' . get_europeana_url() . '/runs/' . str_replace(' ', '-',$run['Name']) . '" target="_blank">' . $run['Name'] . '</a></p>';
                         }
                     $content .= '</div>';
                     $content .= '<div style="clear:both;"></div>';
@@ -81,7 +83,32 @@ function _TCT_get_team( $atts ) {
 
 
     } else {
-        echo 'Hello';
+        $teamResponse = sendQuery(TP_API_V2_ENDPOINT . '/teams?Name=' . urlencode($teamQuery), $getJsonOptions, true);
+        $teamData = $teamResponse['data'];
+
+        $content .= '<h2 class="theme-color" style="margin-bottom:35px;">' . $teamData[0]['Name'] . ' (' . $teamData[0]['ShortName'] . ')</h2>';
+
+        if(!empty($teamData[0]['Description'])) {
+            $content .= '<h4 class="theme-color" style="margin-bottom:35px;"> Description: </h4>';
+            $content .= '<p>' . $teamData[0]['Description'] . '</p>';
+        }
+
+        $content .= '<div style="margin-top:35px;">';
+            $content .= '<div class="team-left">';
+                $content .= '<h4 class="theme-color"> Members </h4>';
+                foreach($teamData[0]['Users'] as $member) {
+                    $content .= '<p>' . $member['UserId'] . '</p>';
+                }
+            $content .= '</div>';
+    
+            $content .= '<div class="team-right">';
+                $content .= '<h4 class="theme-color"> Campaigns </h4>'; 
+                foreach($teamData[0]['Campaigns'] as $run) {
+                    $content .= '<p><a href="' . get_europeana_url() . '/runs/' . str_replace(' ', '-',$run['Name']) . '" target="_blank">' . $run['Name'] . '</a></p>';
+                }
+            $content .= '</div>';
+            $content .= '<div style="clear:both;"></div>';
+        $content .= '</div>';
     }
 
     return $content;
