@@ -1,9 +1,9 @@
 <?php
-/* 
+/*
 Shortcode: documents_admin_page
 Description: Creates the content for documents admin page
 */
-function _TCT_documents_admin_page( $atts ) {  
+function _TCT_documents_admin_page( $atts ) {
 
     global $wp;
     // Set Post content
@@ -42,10 +42,10 @@ function _TCT_documents_admin_page( $atts ) {
                         margin-bottom: 20px;
                     }";
         $content .= '.spinnerAdmin {
-                        height: 20px;  
+                        height: 20px;
                         position: relative;
                         opacity: 1;
-                        transition: opacity linear 0.1s; 
+                        transition: opacity linear 0.1s;
                     }';
         $content .= '.spinnerAdmin::before {
                         border: solid 3px #eee;
@@ -113,7 +113,7 @@ function _TCT_documents_admin_page( $atts ) {
                         jQuery('#story-' + storyId + '-spinner-container').css('display', 'block');
                         data['DatasetId'] = jQuery('#admin-story-' + storyId + '-dataset').val();
                         var dataString= JSON.stringify(data);
-                        
+
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                             'type': 'POST',
                             'url': '".TP_API_HOST."/tp-api/stories/' + storyId,
@@ -125,7 +125,7 @@ function _TCT_documents_admin_page( $atts ) {
                             jQuery('#story-' + storyId + '-spinner-container').css('display', 'none');
                         });
                     }
-                    
+
                     function searchStory() {
                         var storyId = jQuery('#search-story-id').val();
                         jQuery.post('".str_replace("http://", "https://", home_url())."' + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
@@ -143,7 +143,7 @@ function _TCT_documents_admin_page( $atts ) {
                             else {
                                 var imageLink = 'http://' + image['service']['@id'];
                             }
-            
+
                             if (image['width'] != null || image['height'] != null) {
                                 if (image['width'] <= image['height']) {
                                     imageLink += '/0,0,' + image['width'] + ',' + image['width'];
@@ -205,7 +205,7 @@ function _TCT_documents_admin_page( $atts ) {
                             else {
                                 $imageLink = "http://".$image['service']['@id'];
                             }
-            
+
                             if ($image["width"] != null || $image["height"] != null) {
                                 if ($image["width"] <= $image["height"]) {
                                     $imageLink .= "/0,0,".$image["width"].",".$image["width"];
@@ -230,11 +230,11 @@ function _TCT_documents_admin_page( $atts ) {
                                         );
                                         $url = TP_API_HOST."/tp-api/datasets";
                                         $requestType = "GET";
-                                    
+
                                         include dirname(__FILE__) . '/../custom_scripts/send_api_request.php';
-                                    
+
                                         $datasets = json_decode($result, true);
-                            
+
                                         if ($story['DatasetName'] == null) {
                                             $content .= '<option selected value=null>';
                                                 $content .= "No dataset";
@@ -274,21 +274,4 @@ function _TCT_documents_admin_page( $atts ) {
                 </table>';
 
     echo $content;
-
-   
 }
-
-add_action( 'admin_menu', 'documents_menu' );
-
-function documents_menu() {
-	add_menu_page( 
-        'Documents', 
-        'Documents', 
-        'manage_options', 
-        'documents-admin-page', 
-        '_TCT_documents_admin_page', 
-        'dashicons-admin-site', 
-        3  
-    );
-}
-?>

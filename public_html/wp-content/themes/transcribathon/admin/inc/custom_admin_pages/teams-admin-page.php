@@ -419,19 +419,6 @@ JS;
 	echo $html . $js;
 }
 
-function teams_menu()
-{
-	add_menu_page(
-		'Teams',
-		'Teams',
-		'manage_options',
-		'teams-admin-page',
-		'_TCT_teams_admin_page',
-		'dashicons-groups',
-		3
-  );
-}
-
 function load_teams_scripts($hook)
 {
 	if ($hook !== 'toplevel_page_teams-admin-page') {
@@ -457,6 +444,4 @@ function defer_alpinejs($tag, $handle, $src)
 	return $tag;
 }
 
-
 add_action('admin_enqueue_scripts', 'load_teams_scripts');
-add_action('admin_menu', 'teams_menu');

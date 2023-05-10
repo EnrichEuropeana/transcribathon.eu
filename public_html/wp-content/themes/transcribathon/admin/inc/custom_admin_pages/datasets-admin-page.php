@@ -1,9 +1,9 @@
 <?php
-/* 
+/*
 Shortcode: datasets_admin_page
 Description: Creates the content for datasets admin page
 */
-function _TCT_datasets_admin_page( $atts ) {  
+function _TCT_datasets_admin_page( $atts ) {
 
     global $wp;
 
@@ -26,7 +26,7 @@ function _TCT_datasets_admin_page( $atts ) {
     include dirname(__FILE__) . '/../custom_scripts/send_api_request.php';
 
     $datasets = json_decode($result, true);
-    
+
     $content = "";
 
     $content .= '<link rel="stylesheet" type="text/css" href="'.CHILD_TEMPLATE_DIR.'/css/jquery-ui.css">';
@@ -44,10 +44,10 @@ function _TCT_datasets_admin_page( $atts ) {
                         margin-bottom: 20px;
                     }";
         $content .= '.spinnerAdmin {
-                        height: 20px;  
+                        height: 20px;
                         position: relative;
                         opacity: 1;
-                        transition: opacity linear 0.1s; 
+                        transition: opacity linear 0.1s;
                     }';
         $content .= '.spinnerAdmin::before {
                         border: solid 3px #eee;
@@ -107,7 +107,7 @@ function _TCT_datasets_admin_page( $atts ) {
     $content .= "</style>";
 
     $content .= "<script>";
-    $content .= "                       
+    $content .= "
                     function editDataset(datasetId) {
                         // Prepare data and send API request
                         data = {
@@ -117,7 +117,7 @@ function _TCT_datasets_admin_page( $atts ) {
                         data['ProjectId'] = jQuery('#admin-dataset-' + datasetId + '-project').val();
 
                         var dataString= JSON.stringify(data);
-                        
+
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                             'type': 'POST',
                             'url': '".TP_API_HOST."/tp-api/datasets/' + datasetId,
@@ -129,8 +129,8 @@ function _TCT_datasets_admin_page( $atts ) {
                             jQuery('#dataset-' + datasetId + '-spinner-container').css('display', 'none')
                         });
                     }
-                    
-                    function removeDataset(datasetId) {     
+
+                    function removeDataset(datasetId) {
                         jQuery('#dataset-' + datasetId + '-spinner-container').css('display', 'block');
 
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
@@ -143,7 +143,7 @@ function _TCT_datasets_admin_page( $atts ) {
                             jQuery('#dataset-' + datasetId + '-spinner-container').css('display', 'none')
                         });
                     }
-    
+
                     function addDataset() {
                         // Prepare data and send API request
                         data = {
@@ -151,9 +151,9 @@ function _TCT_datasets_admin_page( $atts ) {
                         jQuery('#dataset-spinner-container').css('display', 'block');
                         data['Name'] = jQuery('#admin-dataset-name').val();
                         data['ProjectId'] = jQuery('#admin-dataset-project').val();
-                        
+
                         var dataString= JSON.stringify(data);
-                        
+
                         jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
                             'type': 'POST',
                             'url': '".TP_API_HOST."/tp-api/datasets',
@@ -165,8 +165,8 @@ function _TCT_datasets_admin_page( $atts ) {
                             jQuery('#dataset-spinner-container').css('display', 'none')
                         });
                     }
-                    
-                    
+
+
                     ";
     $content .= "</script>";
 
@@ -187,9 +187,9 @@ function _TCT_datasets_admin_page( $atts ) {
             );
             $url = TP_API_HOST."/tp-api/projects";
             $requestType = "GET";
-        
+
             include dirname(__FILE__) . '/../custom_scripts/send_api_request.php';
-        
+
             $projects = json_decode($result, true);
 
             foreach ($projects as $project) {
@@ -225,7 +225,7 @@ function _TCT_datasets_admin_page( $atts ) {
                         $content .= "</div>";
 
                     $content .= "<hr>";
-                    
+
                     $content .= "<button class='collapse-controller' data-toggle='collapse' href='#admin-dataset-".$dataset['DatasetId']."-edit'>";
                         $content .= "EDIT";
                     $content .= "</button>";
@@ -234,7 +234,7 @@ function _TCT_datasets_admin_page( $atts ) {
                         $content .= "<h6>Name: </h6>";
                         $content .= "<input id='admin-dataset-".$dataset['DatasetId']."-name' value='".$dataset['Name']."'>";
 
-                        $content .= "<select id='admin-dataset-".$dataset['DatasetId']."-project'>";            
+                        $content .= "<select id='admin-dataset-".$dataset['DatasetId']."-project'>";
                             foreach ($projects as $project) {
                                 if ($project['Name'] == $dataset['ProjectName']) {
                                     $content .= '<option selected value="'.$project['ProjectId'].'">';
@@ -248,7 +248,7 @@ function _TCT_datasets_admin_page( $atts ) {
                                 }
                             }
                         $content .= "</select>";
-                                
+
                         $content .= "</br>";
 
                         $content .= "<button onClick='editDataset(".$dataset['DatasetId'].")' style='float: left; margin-top: 10px;'>";
@@ -257,7 +257,7 @@ function _TCT_datasets_admin_page( $atts ) {
                         $content .= "<button onClick='removeDataset(".$dataset['DatasetId'].")' style='float: right; margin-top: 10px;'>";
                             $content .= "REMOVE";
                         $content .= "</button>";
-                        
+
                         $content .= '<div id="dataset-'.$dataset['DatasetId'].'-spinner-container" class="spinner-container spinner-container-left">';
                             $content .= '<div class="spinnerAdmin"></div>';
                         $content .= "</div>";
@@ -271,21 +271,4 @@ function _TCT_datasets_admin_page( $atts ) {
     $content .= "</ul>";
 
     echo $content;
-
-   
 }
-
-add_action( 'admin_menu', 'datasets_menu' );
-
-function datasets_menu() {
-	add_menu_page( 
-        'Datasets', 
-        'Datasets', 
-        'manage_options', 
-        'datasets-admin-page', 
-        '_TCT_datasets_admin_page', 
-        'dashicons-admin-site', 
-        3  
-    );
-}
-?>
