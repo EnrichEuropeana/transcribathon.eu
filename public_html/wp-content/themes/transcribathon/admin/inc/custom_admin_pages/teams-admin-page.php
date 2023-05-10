@@ -432,8 +432,11 @@ function teams_menu()
   );
 }
 
-function load_teams_scripts()
+function load_teams_scripts($hook)
 {
+	if ($hook !== 'toplevel_page_teams-admin-page') {
+		return;
+	}
 	// using the playground tailwindcss for now, no compiling but heavier load
 	// wp_register_script('add_tailwindcss', get_stylesheet_directory_uri(). '/admin/inc/custom_js/tailwindcss.min.js', [], '3.3.1', false);
 	// wp_enqueue_script('add_tailwindcss');
