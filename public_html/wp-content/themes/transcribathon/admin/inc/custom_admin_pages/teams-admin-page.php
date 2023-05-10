@@ -192,6 +192,7 @@ TW3;
 									whitespace-nowrap
 									rounded-lg
 									bg-green-500
+									hover:bg-green-600
 									py-2
 									px-3.5
 									align-baseline
