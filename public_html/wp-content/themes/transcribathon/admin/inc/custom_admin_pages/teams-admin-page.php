@@ -428,7 +428,7 @@ function load_teams_scripts($hook)
 	// using the playground tailwindcss for now, no compiling but heavier load
 	// wp_register_script('add_tailwindcss', get_stylesheet_directory_uri(). '/admin/inc/custom_js/tailwindcss.min.js', [], '3.3.1', false);
 	// wp_enqueue_script('add_tailwindcss');
-	wp_register_style('add_css', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/teams-admin-page-css.min.css', [], '3.3.2', false);
+	wp_register_style('add_css', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/backend.min.css', [], '3.3.2', false);
 	wp_register_script('add_alpinejs', get_stylesheet_directory_uri(). '/admin/inc/custom_js/alpinejs.min.js', [], '3.12.0', false);
 	wp_register_script('add_team_script', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/teams-admin-page.js', [], '0.1.0', true);
 	wp_enqueue_style('add_css');
