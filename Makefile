@@ -69,11 +69,19 @@ deploy_live:
 	@echo "...deploy done"
 	@echo
 
-teams_admin_page_css:
+compile_backend_css:
 	@echo
 	@echo "----"
-	@echo "Creating CSS file for teams-admin-page"
-	npx tailwindcss -c ./tailwindcss-teams-admin-page-config.js -i ./tailwindcss-teams-admin-page.css -o ./public_html/wp-content/themes/transcribathon/admin/inc/custom_admin_pages/teams-admin-page-css.min.css --minify
+	@echo "Creating CSS file for backend"
+	npx tailwindcss -c ./tailwindcss-backend-config.js -i ./tailwindcss-backend.css -o ./public_html/wp-content/themes/transcribathon/admin/inc/custom_admin_pages/backend.min.css --minify
+	@echo "----"
+	@echo
+
+compile_frontend_css:
+	@echo
+	@echo "----"
+	@echo "Creating CSS file for frontend"
+	npx tailwindcss -c ./tailwindcss-frontend-config.js -i ./tailwindcss-frontend.css -o ./public_html/wp-content/themes/transcribathon/css/frontend.min.css --minify
 	@echo "----"
 	@echo
 
