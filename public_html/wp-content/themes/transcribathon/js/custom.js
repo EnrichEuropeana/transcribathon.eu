@@ -635,6 +635,7 @@ function createNewTeam(userId) {
 	if(!teamName || !shortName || !teamCode) {
 		window.alert('Please fill in required info.');
 	} else {
+
 		let data = {
 			"Name": teamName,
 			"ShortName": shortName,
@@ -647,6 +648,10 @@ function createNewTeam(userId) {
 		}
 
 		const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/teams';
+
+		// Check if team name is already taken
+		//fetch(requestUri)
+		//
 
 		fetch(requestUri, {
 			method: 'POST',

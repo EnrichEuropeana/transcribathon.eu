@@ -58,6 +58,7 @@ function _TCT_get_team( $atts ) {
         $allTeams = $allTeamsResponse['data'];
         //var_dump($allTeams);
 
+
         $content .= '<h2 class="theme-color"> Teams </h2>';
         $content .= '<div class="teams-container">';
             foreach($allTeams as $team) {

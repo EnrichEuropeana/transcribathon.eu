@@ -177,7 +177,7 @@ function _TCT_teamsandruns_tab( $atts ) {
 					foreach($myTeams as $team) {
 
 						$content .= '<div class="single-team">';
-						    $content .= '<h4 class="theme-color">' . $team['Name'] . ' ( ' . $team['ShortName'] . ') ' . '</h4>';
+						    $content .= '<h4 class="theme-color"><a href="' . home_url() . '/team?team=' . $team['Name'] . '" target="_blank">' . $team['Name'] . ' ( ' . $team['ShortName'] . ') ' . '</a></h4>';
 							$content .= '<p class="team-desc">' . $team['Description'] . '</p>';
 							// Add all campaigns where team have participated
 							$content .= '<h6 class="theme-color"> Campaigns: </h6>';
