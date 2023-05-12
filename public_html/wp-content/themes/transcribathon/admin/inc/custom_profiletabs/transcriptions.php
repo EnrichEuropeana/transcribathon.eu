@@ -19,191 +19,233 @@ $theme_sets = get_theme_mods();
         // Save image data
         $profileStatistics = json_decode($result, true);
         $profileStatistics = $profileStatistics[0];
+
+        $twStatsBubblesClasses = <<<TW1
+            w-20
+            md:w-40
+            h-20
+            md:h-40
+            border-4
+            border-solid
+            rounded-full
+            border-gray-400
+            text-center
+            flex
+            flex-col
+            justify-center
+        TW1;
+
+        $twStatsNumbersClasses = <<<TW2
+            m-0
+            text-sm
+            md:text-xl
+            font-bold
+            text-gray-400
+        TW2;
+
+        $twStatsLabelsClasses = <<<TW3
+            m-0
+            text-xs
+            md:text-sm
+            text-gray-400
+            uppercase
+        TW3;
+
+        $content = '';
+
+        $content .= '<div class="container mx-auto">';
+            // Statistics circles
+            $content .= '<div
+                class="
+                    grid
+                    grid-cols-1
+                    md:grid-cols-5
+                    gap-y-2
+                    md:gap-x-5
+                    place-items-center
+                ">';
+
+                $content .= '<div class=" ' . $twStatsBubblesClasses . ' ">';
+                    $content .= '<p class=" ' . $twStatsNumbersClasses . ' ">' . number_format_i18n($profileStatistics['Miles']) . '</p>';
+                    $content .= '<p class=" ' . $twStatsLabelsClasses . ' ">' . _x('miles run', 'Transcription-Tab on Profile', 'transcribathon') . '</p>';
+                $content .= '</div>';
+
+                $content .= '<div class=" ' . $twStatsBubblesClasses . ' ">';
+                    $content .= '<p class=" ' . $twStatsNumbersClasses . ' ">' . number_format_i18n($profileStatistics['TranscriptionCharacters']) . '</p>';
+                    $content .= '<p class=" ' . $twStatsLabelsClasses . ' ">' . _x('characters', 'Transcription-tab on Profile', 'transcribathon') . '</p>';
+                $content .= '</div>';
+
+                $content .= '<div class=" ' . $twStatsBubblesClasses . ' ">';
+                    $content .= '<p class=" ' . $twStatsNumbersClasses . ' ">' . number_format_i18n($profileStatistics['Locations']) . '</p>';
+                    $content .= '<p class=" ' . $twStatsLabelsClasses . ' ">' . _x('locations', 'Transcription-tab on Profile', 'transcribathon') . '</p>';
+                $content .= '</div>';
+
+                $content .= '<div class=" ' . $twStatsBubblesClasses . ' ">';
+                    $content .= '<p class=" ' . $twStatsNumbersClasses . ' ">' . number_format_i18n($profileStatistics['Enrichments']) . '</p>';
+                    $content .= '<p class=" ' . $twStatsLabelsClasses . ' ">' . _x('enrichments', 'Transcirption-tab on Profile', 'transcribathon') . '</p>';
+                $content .= '</div>';
+
+                $content .= '<div class=" ' . $twStatsBubblesClasses . ' ">';
+                    $content .= '<p class=" ' . $twStatsNumbersClasses . ' ">' . number_format_i18n($profileStatistics['DocumentCount']) . '</p>';
+                    $content .= '<p class=" ' . $twStatsLabelsClasses . ' ">' . _x('documents', 'Transcription-tab on Profile', 'transcribathon') . '</p>';
+                $content .= '</div>';
+                
+            $content .= '</div>';
+
+            // Tr Characters chart
+            $content .= '<div class="container mx-auto">';
+                $content .= '<p> &nbsp </p>';
+                $content .= '<div id="personal_chart">';
+                    $content .= '<script type="text/javascript">';
+                        if(trim($amt[0][0] != '' && (int)$amt[0][0] > 0)) {
+                            $content .= 'getTCTlinePersonalChart("days", "' . date('Y-m-') . '01", "' . date('Y-m-t') . '", "personal_chart", "' . um_profile_id() . '");';
+                        } else {
+                            $content .= 'getTCTlinePersonalChart("months", "' . date('Y-') . '01-01", "' . date('Y-m-t', strtotime(date('Y') . '-12-01')) . '", "personal_chart", "' . um_profile_id() . '");';
+                        }
+                    $content .= '</script>';
+                $content .= '</div>';
+            $content .= '</div>';
+
+        $content .= '</div>';
     
-        echo "<div class=\"column-rgs span_1_of_5 alg_c\">\n";	
-           echo "<div class=\"number-ball alg_c\">\n";
-                echo "<div class=\"number-ball-content\">\n";
-                    echo "<p>".number_format_i18n($profileStatistics['Miles'])."</p>";
-                    echo "<span>"._x('miles run', 'Transcription-Tab on Profile', 'transcribathon'  )."</span>";
-                echo "</div>\n";
-            echo "</div>\n";	
-        echo "</div>\n";
-        echo "<div class=\"column-rgs span_1_of_5 alg_c\">\n";				
-            echo "<div class=\"number-ball\">\n";
-                echo "<div class=\"number-ball-content\">\n";
-                    echo "<p>".number_format_i18n($profileStatistics['TranscriptionCharacters'])."</p>";
-                    echo "<span>"._x('characters', 'Transcription-Tab on Profile', 'transcribathon'  )."</span>";
-                echo "</div>\n";
-            echo "</div>\n";	
-        echo "</div>\n";
-        echo "<div class=\"column-rgs span_1_of_5 alg_c\">\n";				
-            echo "<div class=\"number-ball\">\n";
-                echo "<div class=\"number-ball-content\">\n";
-                    echo "<p>".number_format_i18n($profileStatistics['Locations'])."</p>";
-                    echo "<span>"._x('locations', 'Transcription-Tab on Profile', 'transcribathon'  )."</span>";
-                echo "</div>\n";
-            echo "</div>\n";	
-        echo "</div>\n";	
-        echo "<div class=\"column-rgs span_1_of_5 alg_c\">\n";	
-            echo "<div class=\"number-ball\">\n";
-                echo "<div class=\"number-ball-content\">\n";
-                    echo "<p>".number_format_i18n($profileStatistics['Enrichments'])."</p>";
-                    echo "<span>"._x('enrichments', 'Transcription-Tab on Profile', 'transcribathon'  )."</span>";
-                echo "</div>\n";
-            echo "</div>\n";	
-        echo "</div>\n";	
-        echo "<div class=\"column-rgs span_1_of_5\">\n";				
-            echo "<div class=\"number-ball alg_c\">\n";
-                echo "<div class=\"number-ball-content\">\n";
-                    echo "<p>".number_format_i18n($profileStatistics['DocumentCount'])."</p>";
-                    echo "<span>"._x('documents', 'Transcription-Tab on Profile', 'transcribathon'  )."</span>";
-                echo "</div>\n";
-            echo "</div>\n";
-        echo "</div>\n";
-    echo "</div>\n";
+        // Get Documents that user edited
+        $url = TP_API_HOST . '/tp-api/transcriptionProfile/' . um_profile_id();
 
+        $getJsonOptions = [
+            'http' => [
+                'header' => [ 
+                    'Content-type: application/json',
+                ],
+                'method' => 'GET'
+            ]
+        ];
 
-    echo "<p>&nbsp;</p>\n<div id=\"personal_chart\">\n";
-        echo "<script type=\"text/javascript\">\n";
-            if(trim($amt[0][0]) != "" && (int)$amt[0][0] > 0){
-                echo "getTCTlinePersonalChart('days','".date('Y-m-')."01','".date('Y-m-t')."','personal_chart','".um_profile_id()."';\n";
-            }else{
-                echo "getTCTlinePersonalChart('months','".date('Y-')."01-01','".date('Y-m-t',strtotime(date('Y').'-12-01'))."','personal_chart','".um_profile_id()."');\n";
-            }
-        echo "</script>\n";
-    echo "</div>\n";
+        $documents = sendQuery($url, $getJsonOptions, true);
+        
+        // Display the documents
 
-    //$docs = $wpdb->get_results("SELECT crh.*,pst.post_title AS title,SUM(crh.amount) AS menge,MAX(crh.datum) as zeitpunkt FROM ".$wpdb->prefix."user_transcriptionprogress crh LEFT JOIN ".$wpdb->prefix."posts pst ON pst.ID = crh.docid WHERE crh.userid='".um_profile_id()."' GROUP BY crh.docid ORDER BY crh.datum DESC",ARRAY_A);
-		
-    /*Set request parameters*/
-     $url = TP_API_HOST."/tp-api/transcriptionProfile/".um_profile_id();
-    $requestType = "GET";
+        $content .= '<div class="container mx-auto">';
+            $content .= '<h2 class="theme-color text-xl font-bold mb-4">';
+                $content .= _x('My Contributions', 'Transcription-tab on Profile', 'transcribathon');
+            $content .= '</h2>';
 
-    // Execude http request
-    include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
+            $content .= '<div
+                class="
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+                    md:grid-cols-4
+                    gap-4
+                    justify-items-center
+                ">';
+                $i = 0;
+                $k = 0;
+                
+                if(!empty($documents)) {
+                    foreach($documents as $document) {
+                        if($i > 7) {
+                            $content .= '<div
+                                class="
+                                    item-sticker
+                                    border
+                                    border-solid
+                                    border-gray-400
+                                    rounded-none
+                                    max-w-xs
+                                    mx-auto
+                                    md:mx-0
+                                " style="display:none;">'; // start of single document (after 8th)
+                        } else {
+                            $content .= '<div
+                                class="
+                                    item-sticker
+                                    border
+                                    border-solid
+                                    border-gray-400
+                                    rounded-none
+                                    max-w-xs
+                                    mx-auto
+                                    md:mx-0
+                                ">'; // start of single document (before 8th)
+                        }
+                            $content .= '<a href="' . get_europeana_url() . "/documents/story/item?item=" . $document['ItemId'] . '">';
 
-    // Display data
-    $documents = json_decode($result, true);
-    
-	echo "<h2 style=\"margin-left: 50px;\">"._x('My Contributions','Transcription-Tab on Profile', 'transcribathon'  )."</h2>\n";
-		echo "<div class=\"doc-results profile\" style=\"padding: 0 50px;\">\n";
-            echo "<div class=\"tableholder\">\n";
-                echo "<div class=\"tablegrid\">\n";	
-                    echo "<div class=\"section group sepgroup tab\">\n";
-                        $i = 0;
-                        $k = 0;
-                        if ($documents != null) {
-                            foreach ($documents as $document){
-                                
-                                if ($i > 3) {
-                                    if($k >= 1) {
-                                        echo "</div>\n<div class=\"section group sepgroup tab\" style=\"display:none;\">\n";
-                                    } else {
-                                        echo "</div>\n<div class=\"section group sepgroup tab\">\n";
-                                    }
-                                    $k += 1;
-                                    $i = 0;
+                                $image = json_decode($document['ItemImageLink'], true);
+                                $imageLink = createImageLinkFromData($image, array('size' => '320,180', 'page' => 'search'));
+                                if($image['height'] == null) {
+                                    $imageLink = str_replace('full', '50,50,1800,1100', $imageLink);
                                 }
-                                echo "<div class=\"column span_1_of_4 collection\">\n";
-                                    //$thumb_url = wp_get_attachment_image_src( get_post_thumbnail_id( $doc['docid'] ),'post-thumbnail');
-                                    //$c = get_post_custom($doc['docid']);
-                                        echo "<a href=\"".str_replace("://", "://".$document['ProjectUrl'].".", home_url()."/documents/story/item?item=".$document['ItemId'])."\">";
-                                        
-                                            $image = json_decode($document['ItemImageLink'], true);
 
-                                            
-                                            $imageLink = createImageLinkFromData($image, array('size' => '280,140', 'page' => 'search'));
-                                            
-                                            if($image['height'] == null) {
-                                                $imageLink = str_replace('full', '50,50,1800,1100', $imageLink);
-                                            }
+                                $content .= '<img src="' . $imageLink . '" loading="lazy" width="320" height="180" alt="edited-item-' . $i . '">';
 
-                                            echo  '<img src='.$imageLink.' loading="lazy" width="280" height="140" alt="edited-item">';
-                                        echo  "</a>";
+                            $content .= '</a>';
+                            // Title
+                            $content .= '<h3 class="theme-color text-base my-3 px-2">' . $document['ItemTitle'] . '</h3>';
 
-                                        echo "<h3 id= \"nopadmod\" class=\"nopad\">".$document['ItemTitle']."</h3>\n";
-                                        echo "<p id= \"smalladinfo\" class=\"smallinfo\">";
-                                        echo "Last time: ".date_i18n(get_option('date_format'),strtotime($document['Timestamp']))."<br />";
+                            $content .= '<p class="text-xs m-0 px-2"> Last Edit: ' . date_i18n(get_option('date_format'), strtotime($document['Timestamp'])) . '</p>';
 
-                                        $scoreOutput = "";
-                                        foreach($document['Scores'] as $score) {
-                                            switch ($score['ScoreType']) {
-                                                case "Transcription":
-                                                    if ($scoreOutput != "") {
-                                                        $scoreOutput .= ", ";
-                                                    }
-                                                    $scoreOutput .= "Characters: ".$score['Amount'];
-                                                    break;
-                                                case "Location":
-                                                    if ($scoreOutput != "") {
-                                                        $scoreOutput .= ", ";
-                                                    }
-                                                    $scoreOutput .= "Locations: ".$score['Amount'];
-                                                    break;
-                                                case "Enrichment":
-                                                    if ($scoreOutput != "") {
-                                                        $scoreOutput .= ", ";
-                                                    }
-                                                    $scoreOutput .= "Enrichments: ".$score['Amount'];
-                                                    break;
-                                            }
-                                        }
-                                        echo $scoreOutput;
-                                        echo "</p>\n";
-
-                                    echo "<div class=\"docstate\" style=\"border-color: ".$document['CompletionColorCode']."  transparent transparent ".$document['CompletionColorCode']."\">
-                                                ".$document['CompletionStatus']."
-                                            </div>\n";
-                                echo "</div>\n";
-
-                                $i++;
+                            foreach($document['Scores'] as $score) {
+                                if(!empty($score)) {
+                                    $content .= '<p class="text-xs m-0 px-2">' . $score['ScoreType'] . ': ' . $score['Amount'] . '</p>';
+                                }
                             }
+                        
+                        $content .= '</div>'; // end of single document
+                        $i += 1;
+                    }
+                    
+                }
+            $content .= '</div>';
 
-                            if(count($documents) > 0) {
-                                echo "</div>";
-                                echo "<div id='profile-more'> Show More </div>";
+            if(!empty($documents) && count($documents) > 7) {
+                $content .= '<div id="profile-more"
+                    class="
+                        text-center
+                        my-6
+                        mx-auto
+                        cursor-pointer
+                        w-12
+                        text-xs
+                        sm:w-32
+                        sm:text-base
+                        py-2
+                        theme-color-background
+                    "> Show More </div>';
+            }
+        $content .= '</div>';
+
+        $content .= <<<EOT
+            <script type="text/javascript">
+                let showBtn = document.getElementById("profile-more");
+                console.log(showBtn);
+                let itemStickers = document.querySelectorAll(".item-sticker");
+
+                showBtn.addEventListener("click", function() {
+                    if(!showBtn.classList.contains("shown")) {
+                        for(let itm of itemStickers) {
+                            itm.style.display = "block";
+                            showBtn.classList.add("shown");
+                            showBtn.textContent = "Show Less";
+                        }
+                    } else {
+                        let i = 0;
+                        for(let itm of itemStickers) {
+                            if(i < 8) {
+                                i++;
+                                continue;
+                            } else {
+                                itm.style.display = "none";
+                                showBtn.classList.remove("shown");
+                                showBtn.textContent = "Show More";
+                                i++;
                             }
                         }
-                    echo "</div>\n";	
-                echo "</div>\n";
-            echo "</div>\n";
-		echo "</div>\n"; 
-	
-	echo "<script>
-        let itemRows = document.querySelectorAll('.section.group.sepgroup.tab');
-        let showButton = document.getElementById('profile-more');
-
-        showButton.addEventListener('click',function(){
-            if(!showButton.classList.contains('shown')) {
-                for(let row of itemRows) {
-                    row.style.display = 'table-row';
-                    showButton.classList.add('shown');
-                    showButton.textContent = 'Show Less';
-                }
-            } else {
-                let i = 0;
-                for(let row of itemRows) {
-                    if(i < 2) {
-                        i++;
-                        continue;
                     }
-                    row.style.display = 'none';
-                    showButton.classList.remove('shown');
-                    showButton.textContent = 'Show More';
-                    i ++;
-                }
-            }
-            
-        });";
-    echo "</script>";
-    echo "<style>
-        #profile-more {
-            width: 100vw;
-            text-align: center;
-            color: #0a72cc;
-        }
-    ";
-    echo "</style>";
+                });
+            </script>
+        EOT;
+
+    return $content;
 
 
 }

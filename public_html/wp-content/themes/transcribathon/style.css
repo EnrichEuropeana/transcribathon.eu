@@ -1644,7 +1644,7 @@ div.um-header {
 div.um-profile-nav {
   background-color: transparent;
   padding: 0px 65px;
-  border-bottom: 5px solid #eee;
+  border-bottom: 5px solid rgb(156, 163, 175);
 }
 div.um-profile-nav div.um-profile-nav-item {
   margin: 0 !important;
