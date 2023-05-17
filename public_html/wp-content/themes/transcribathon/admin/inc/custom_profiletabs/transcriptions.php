@@ -176,11 +176,11 @@ $theme_sets = get_theme_mods();
                                     $imageLink = str_replace('full', '50,50,1800,1100', $imageLink);
                                 }
 
-                                $content .= '<img src="' . $imageLink . '" loading="lazy" width="320" height="180" alt="edited-item-' . $i . '">';
+                                $content .= '<img class="border-b border-solid border-gray-400" src="' . $imageLink . '" loading="lazy" width="320" height="180" alt="edited-item-' . $i . '">';
 
                             $content .= '</a>';
                             // Title
-                            $content .= '<h3 class="theme-color text-base my-3 px-2">' . $document['ItemTitle'] . '</h3>';
+                            $content .= '<h3 class="theme-color text-base font-bold my-3 px-2">' . $document['ItemTitle'] . '</h3>';
 
                             $content .= '<p class="text-xs m-0 px-2"> Last Edit: ' . date_i18n(get_option('date_format'), strtotime($document['Timestamp'])) . '</p>';
 

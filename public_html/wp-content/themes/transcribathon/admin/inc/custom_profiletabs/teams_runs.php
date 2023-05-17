@@ -77,7 +77,7 @@ function _TCT_teamsandruns_tab( $atts ) {
 									right-2
 									bottom-2
 							">';
-							    $content .= '<a href="' . home_url() . '/teams/' . $team['Name'] . '" target="_blank"<i class="fas fa-eye mr-2" title="View team page"></i></a>';
+							    $content .= '<a href="' . home_url() . '/team/?team=' . $team['Name'] . '" target="_blank"<i class="fas fa-eye mr-2" title="View team page"></i></a>';
 								$content .= '<i class="fas fa-user-slash" title="Leave Team"></i>';
 							$content .= '</div>';
 						$content .= '</div>';
