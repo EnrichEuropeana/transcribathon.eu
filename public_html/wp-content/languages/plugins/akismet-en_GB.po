@@ -1,5 +1,5 @@
-# Translation of Plugins - Akismet Anti-Spam Spam Protection - Stable (latest release) in English (UK)
-# This file is distributed under the same license as the Plugins - Akismet Anti-Spam Spam Protection - Stable (latest release) package.
+# Translation of Plugins - Akismet Anti-Spam: Spam Protection - Stable (latest release) in English (UK)
+# This file is distributed under the same license as the Plugins - Akismet Anti-Spam: Spam Protection - Stable (latest release) package.
 msgid ""
 msgstr ""
 "PO-Revision-Date: 2023-04-04 15:24:55+0000\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: GlotPress/4.0.0-alpha.4\n"
 "Language: en_GB\n"
-"Project-Id-Version: Plugins - Akismet Anti-Spam Spam Protection - Stable (latest release)\n"
+"Project-Id-Version: Plugins - Akismet Anti-Spam: Spam Protection - Stable (latest release)\n"
 
 #: views/notice.php:32
 msgid "WP-Cron has been disabled using the DISABLE_WP_CRON constant. Comment rechecks may not work properly."
@@ -129,7 +129,7 @@ msgstr "Akismet could not recheck your comments for spam."
 
 #: class.akismet-admin.php:439
 msgid "You don&#8217;t have permission to do that."
-msgstr "You don&#8217;t have permission to do that."
+msgstr "You don't have permission to do that."
 
 #: class.akismet-cli.php:165
 msgid "Stats response could not be decoded."

@@ -342,7 +342,7 @@ TW3;
 					<template x-for="(team, index) in teams" :key="team.TeamId">
 						<tr
 							class="border-b"
-							:class="index % 2 === 0 ? 'bg-whight' : 'bg-gray-50'"
+							:class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
 						>
 							<th cope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" x-text="team.Name"></td>
 							<td class="px-6 py-4" x-text="team.Description"></td>

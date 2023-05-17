@@ -236,6 +236,7 @@ function load_admin_page($pageData)
 	ob_start();
 	include_once(get_stylesheet_directory() . '/admin/inc/custom_admin_pages/' . $menuSlug . '.php');
 	$admin_page_content = ob_get_clean();
+
 	echo $admin_page_content;
 }
 
