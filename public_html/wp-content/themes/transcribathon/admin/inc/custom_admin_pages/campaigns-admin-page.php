@@ -1,484 +1,564 @@
 <?php
-/*
-Shortcode: campaigns_admin_page
-Description: Creates the content for campaigns admin page
-*/
-function _TCT_campaigns_admin_page( $atts ) {
 
-    global $wp;
-    // Set Post content
-    $requestData = array(
-        'key' => 'testKey'
-    );
-    $url = TP_API_HOST."/tp-api/campaigns";
-    $requestType = "GET";
+function _TCT_campaigns_admin_page($atts)
+{
+	$themeUri = get_stylesheet_directory_uri();
+	$mainUri = get_europeana_url();
 
-    include dirname(__FILE__) . '/../custom_scripts/send_api_request.php';
+	$tailwindLabelClasses = <<<TW1
+		before:content[' ']
+		after:content[' ']
+		pointer-events-none
+		absolute
+		left-0
+		-top-1.5
+		flex
+		h-full
+		w-full
+		select-none
+		text-[11px]
+		font-normal
+		leading-tight
+		text-blue-gray-400
+		transition-all
+		before:pointer-events-none
+		before:mt-[6.5px]
+		before:mr-1
+		before:box-border
+		before:block
+		before:h-1.5
+		before:w-2.5
+		before:rounded-tl-md
+		before:border-t
+		before:border-l
+		before:border-blue-gray-200
+		before:transition-all
+		after:pointer-events-none
+		after:mt-[6.5px]
+		after:ml-1
+		after:box-border
+		after:block
+		after:h-1.5
+		after:w-2.5
+		after:flex-grow
+		after:rounded-tr-md
+		after:border-t
+		after:border-r
+		after:border-blue-gray-200
+		after:transition-all
+		peer-placeholder-shown:text-sm
+		peer-placeholder-shown:leading-[3.75]
+		peer-placeholder-shown:text-blue-gray-500
+		peer-placeholder-shown:before:border-transparent
+		peer-placeholder-shown:after:border-transparent
+		peer-focus:text-[11px]
+		peer-focus:leading-tight
+		peer-focus:text-blue-500
+		peer-focus:before:border-t-2
+		peer-focus:before:border-l-2
+		peer-focus:before:border-blue-500
+		peer-focus:after:border-t-2
+		peer-focus:after:border-r-2
+		peer-focus:after:border-blue-500
+		peer-disabled:text-transparent
+		peer-disabled:before:border-transparent
+		peer-disabled:after:border-transparent
+		peer-disabled:peer-placeholder-shown:text-blue-gray-500
+TW1;
 
-    /* jQuery UI CSS*/
-    wp_enqueue_style( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/css/all.min.css');
-    /* jQuery UI JS*/
-    wp_enqueue_script( 'jQuery-UI', CHILD_TEMPLATE_DIR . '/js/jquery-ui.min.js');
-    /* Bootstrap CSS */
-    wp_enqueue_style( 'bootstrap', CHILD_TEMPLATE_DIR . '/css/bootstrap.min.css');
-    /* Bootstrap JS */
-    wp_enqueue_script('bootstrap', CHILD_TEMPLATE_DIR . '/js/bootstrap.min.js');
+	$tailwindInputClasses = <<<TW2
+		peer
+		h-full
+		w-full
+		max-w-none
+		rounded-[7px]
+		border
+		border-blue-gray-200
+		border-t-transparent
+		bg-transparent
+		px-3
+		py-2.5
+		text-sm
+		font-normal
+		text-blue-gray-700
+		outline
+		outline-0
+		transition-all
+		placeholder-shown:border
+		placeholder-shown:border-blue-gray-200
+		placeholder-shown:border-t-blue-gray-200
+		focus:shadow-none
+		focus:border-2
+		focus:border-blue-500
+		focus:border-t-transparent
+		focus:outline-0
+		disabled:border-0
+		disabled:bg-blue-gray-50
+TW2;
 
-    $campaigns = json_decode($result, true);
-    $content = "";
+	$tailwindInputWrapperClasses = <<<TW3
+		relative
+		mb-4
+		h-11
+		w-full
+		min-w-[200px]
+TW3;
 
-    $content .= '<link rel="stylesheet" type="text/css" href="'.CHILD_TEMPLATE_DIR.'/css/jquery-ui.css">';
+	$html = <<<HTML
+<div class="container mx-auto mt-8" x-data="manage_teams" id="campaign-mangement">
+	<h1 class="text-2xl mb-4">Campaign Management</h1>
 
-    $content .= "<style>";
-        $content .= ".admin-campaigns-list {
-                        list-style: none;
-                        margin: 0;
-                    }";
-        $content .= ".admin-campaigns-list li {
-                        border: 2px #c4c4c4 solid;
-                        border-radius: 5px;
-                        padding: 0 10px;
-                        margin-right: 100px;
-                        margin-bottom: 20px;
-                    }";
-        $content .= '.spinnerAdmin {
-                        height: 20px;
-                        position: relative;
-                        opacity: 1;
-                        transition: opacity linear 0.1s;
-                    }';
-        $content .= '.spinnerAdmin::before {
-                        border: solid 3px #eee;
-                        border-radius: 50%;
-                        content: "";
-                        height: 20px;
-                        left: 50%;
-                        position: absolute;
-                        top: 50%;
-                        transform: translate3d(-50%, -50%, 0);
-                        width: 20px;
-                        animation: 2s linear infinite spinnerAdmin;
-                        border: solid 3px #eee;
-                        border-bottom-color: rgb(152, 152, 152);
-                        border-radius: 50%;
-                        content: "";
-                        height: 20px;
-                        left: 50%;
-                        opacity: inherit;
-                        position: absolute;
-                        top: 50%;
-                        transform: translate3d(-50%, -50%, 0);
-                        transform-origin: center;
-                        width: 20px;
-                        will-change: transform;
-                    }
-                    @keyframes spinnerAdmin {
-                        0% {
-                            transform: translate3d(-50%, -50%, 0) rotate(0deg);
-                        }
-                        100% {
-                             transform: translate3d(-50%, -50%, 0) rotate(360deg);
-                        }
-                    }
-                    .spinner-container {
-                        display: none;
-                        padding: 10px;
-                        width: 40px;
-                    }
-                    .spinner-container-left {
-                        float: left;
-                    }
-                    .spinner-container-right {
-                        float: right;
-                    }
+	<div class="bg-white p-6 rounded shadow-md">
 
-                    .admin-campaign-view-info {
-                        float: left;
-                        width: 60%;
-                        padding-right: 20px;
-                    }
-                    .admin-campaign-view-teams {
-                        float: left;
-                        width: 35%;
-                    }
-                    ';
-    $content .= "</style>";
+		<div class="{$tailwindInputWrapperClasses}">
+			<input
+				class="{$tailwindInputClasses}"
+				x-model="selectedCampaign.Name"
+				placeholder=" "
+			/>
+			<label
+				class="{$tailwindLabelClasses}"
+			>Campaign Name</label>
+		</div>
 
-    $content .= "<script>";
-    $content .= "
-                    jQuery ( document ).ready(function() {
-                        jQuery( '.datepicker-input-field' ).datepicker({
-                            dateFormat: 'dd/mm/yy',
-                            changeMonth: true,
-                            changeYear: true,
-                            yearRange: '2019:2022',
-                            showOn: 'button',
-                            buttonText: '<i class=\'far fa-calendar-edit datepick-calendar-size\'></i>'
-                        });
-                    })
+		<div class="{$tailwindInputWrapperClasses}">
+			<input
+				type="datetime-local"
+				class="{$tailwindInputClasses}"
+				x-model="selectedCampaign.Start"
+				placeholder=" "
+			/>
+			<label
+				class="{$tailwindLabelClasses}"
+			>Campaign Start</label>
+		</div>
 
-                    function generateCampaignCode() {
-                        var result           = '';
-                        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-                        var charactersLength = characters.length;
-                        for ( var i = 0; i < 10; i++ ) {
-                            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                        }
-                        return result;
-                    }
+		<div class="{$tailwindInputWrapperClasses}">
+			<input
+				type="datetime-local"
+				class="{$tailwindInputClasses}"
+				x-model="selectedCampaign.End"
+				placeholder=" "
+			/>
+			<label
+				class="{$tailwindLabelClasses}"
+			>Campaign End</label>
+		</div>
 
-                    function editCampaign(campaignId) {
-                        // Prepare data and send API request
-                        data = {
-                        }
-                        jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'block');
-                        data['Name'] = jQuery('#admin-campaign-' + campaignId + '-name').val();
-                        startDate = jQuery('#admin-campaign-' + campaignId + '-startDate').val().split('/');
-                        if (!isNaN(startDate[2]) && !isNaN(startDate[1]) && !isNaN(startDate[0])) {
-                          data['Start'] = startDate[2] + '-' + startDate[1] + '-' + startDate[0];
-                          data['Start'] += ' ' + jQuery('#admin-campaign-' + campaignId + '-startTime').val();
-                        }
-                        endDate = jQuery('#admin-campaign-' + campaignId + '-endDate').val().split('/');
-                        if (!isNaN(endDate[2]) && !isNaN(endDate[1]) && !isNaN(endDate[0])) {
-                          data['End'] = endDate[2] + '-' + endDate[1] + '-' + endDate[0];
-                          data['End'] += ' '  + jQuery('#admin-campaign-' + campaignId + '-endTime').val();
-                        }
-                        if (jQuery('#admin-campaign-' + campaignId + '-dataset').val() != 'null') {
-                            data['DatasetId'] = jQuery('#admin-campaign-' + campaignId + '-dataset').val();
-                        }
-                        data['Public'] = 0;
-                        if (jQuery('#admin-campaign-' + campaignId + '-public').prop('checked')) {
-                            data['Public'] = 1
-                        }
+		<div class="{$tailwindInputWrapperClasses}">
+			<select
+				class="{$tailwindInputClasses}"
+				x-model="selectedCampaign.DatasetId"
+			>
+				<option></option>
+				<template x-for="dataset in datasets">
+					<option
+						:value="dataset.DatasetId"
+						x-text="dataset.Name"
+						:selected="selectedCampaign.DatasetId === dataset.DatasetId"
+					></option>
+				</template>
+			</select>
+			<label
+				class="{$tailwindLabelClasses}"
+			>Associated Dataset</label>
+		</div>
 
-                        var dataString= JSON.stringify(data);
+		<div class="
+			{$tailwindInputWrapperClasses}
+			inline-flex
+			items-center
+		">
+		<div
+			class="
+				relative
+				inline-block
+				h-4
+				w-8
+				ml-2
+				cursor-pointer
+				rounded-full
+			"
+		>
+			<input
+				id="auto-update"
+				type="checkbox"
+				x-model="selectedCampaign.Public"
+				placeholder=" "
+				class="
+					peer
+					absolute
+					h-4
+					w-8
+					m-0
+					cursor-pointer
+					appearance-none
+					rounded-full
+					bg-gray-200
+					border-none
+					focus:border-none
+					transition-colors
+					duration-300
+					checked:bg-blue-500
+					peer-checked:border-blue-500
+					peer-checked:before:bg-blue-500
+					checked:before:content['']
+					checked:before:m-0
+				"
+			/>
+			<label
+				for="auto-update"
+				class="
+					before:content['']
+					absolute
+					top-2/4
+					-left-1
+					h-5
+					w-5
+					-translate-y-2/4
+					cursor-pointer
+					rounded-full
+					border
+					border-blue-gray-100
+					bg-white
+					shadow-md
+					transition-all
+					duration-300
+					before:absolute
+					before:top-2/4
+					before:left-2/4
+					before:block
+					before:h-10
+					before:w-10
+					before:-translate-y-2/4
+					before:-translate-x-2/4
+					before:rounded-full
+					before:bg-blue-gray-500
+					before:opacity-0
+					before:transition-opacity
+					hover:before:opacity-10
+					peer-checked:translate-x-full
+					peer-checked:border-blue-500
+					peer-checked:before:bg-blue-500
+				"
+			></label>
+		</div>
+			<label
+				for="auto-update"
+				class="
+					mt-px
+					ml-3
+					mb-0
+					cursor-pointer
+					select-none
+				"
+			>Public</label>
+		</div>
 
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'POST',
-                            'url': '".TP_API_HOST."/tp-api/campaigns/' + campaignId,
-                            'data': data
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                            console.log(response);
-                            jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'none')
-                        });
-                    }
+		<div class="{$tailwindInputWrapperClasses}">
+			<input
+				class="{$tailwindInputClasses}"
+				x-model="searchTerm"
+				@keyup="searchTeam()"
+				placeholder=" "
+			/>
+			<label
+				class="{$tailwindLabelClasses}"
+			>Search and add Teams</label>
+		</div>
 
-                    function removeCampaign(campaignId) {
-                        jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'block');
+		<div class="mb-4 min-h-11">
+			<ul class="
+				flex
+				flex-row
+				flex-wrap
+				content-start
+				items-center
+				gap-2
+				mt-3
+			">
+				<template x-for="team in teamSearch">
+					<li class="">
+						<button
+							class="
+								center
+								relative
+								inline-block
+								select-none
+								whitespace-nowrap
+								rounded-lg
+								bg-green-500
+								hover:bg-green-600
+								py-2
+								px-3.5
+								align-baseline
+								text-xs
+								font-bold
+								leading-none
+								text-white
+							"
+							x-text="team.Name"
+							@click="addTeam(team.TeamId, team.Name);"
+						></button>
+					</li>
+				</template>
+			</ul>
+		</div>
+		<div class="mb-4">
+			<div class="
+				{$tailwindInputClasses}
+				min-h-[5rem]
+				w-full
+				flex
+				flex-row
+				flex-wrap
+				content-start
+				items-center
+				gap-1
+			">
+				<template x-for="team in selectedCampaign.Teams">
+					<div class="
+						center
+						relative
+						inline-block
+						select-none
+						whitespace-nowrap
+						rounded-lg
+						bg-teal-500
+						py-2
+						px-3.5
+						align-baseline
+						text-xs
+						font-bold
+						leading-none
+						text-white
+					">
+						<div class="mr-5 mt-px" x-text="team.Name"></div>
+						<div class="
+							absolute
+							top-1
+							right-1
+							mx-px
+							mt-[0.5px]
+							w-max
+							rounded-md
+							bg-red-500
+							transition-colors
+							hover:bg-red-600
+						">
+							<div
+								role="button"
+								class="h-5 w-5 p-1"
+								@click="removeTeam(team.TeamId)"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									stroke-width="3"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M6 18L18 6M6 6l12 12"
+									></path>
+								</svg>
+							</div>
+						</div>
+					</div>
+				</template>
+			</div>
+		</div>
 
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'DELETE',
-                            'url': '".TP_API_HOST."/tp-api/campaigns/' + campaignId
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                            console.log(response);
-                            jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'none')
-                        });
-                    }
+		<div class="flex justify-end">
+			<button
+				type="submit"
+				class="
+					mr-3
+					rounded-lg
+					bg-blue-500
+					py-3
+					px-6
+					text-xs
+					font-bold
+					uppercase
+					text-white
+					shadow-md
+					shadow-blue-500/20
+					transition-all
+					hover:shadow-lg
+					hover:shadow-blue-500/40
+					active:opacity-[0.85]
+					active:shadow-none
+				"
+				@click="saveCampaign(selectedCampaign.CampaignId)"
+			>Save</button>
+			<button
+				type="button"
+				class="
+					rounded-lg
+					border
+					border-blue-500
+					py-3
+					px-6
+					text-xs
+					font-bold
+					uppercase
+					text-blue-500
+					transition-all
+					hover:opacity-75
+					active:opacity-[0.85]
+				"
+				@click="resetForm"
+			>Cancel</button>
+		</div>
+	</div>
 
-                    function addCampaign() {
-                        // Prepare data and send API request
-                        data = {
-                        }
-                        jQuery('#campaign-spinner-container').css('display', 'block');
-                        data['Name'] = jQuery('#admin-campaign-name').val();
-                        startDate = jQuery('#admin-campaign-startDate').val().split('/');
-                        if (!isNaN(startDate[2]) && !isNaN(startDate[1]) && !isNaN(startDate[0])) {
-                          data['Start'] = startDate[2] + '-' + startDate[1] + '-' + startDate[0];
-                          data['Start'] += ' ' + jQuery('#admin-campaign-startTime').val();
-                        }
-                        endDate = jQuery('#admin-campaign-endDate').val().split('/');
-                        if (!isNaN(endDate[2]) && !isNaN(endDate[1]) && !isNaN(endDate[0])) {
-                          data['End'] = endDate[2] + '-' + endDate[1] + '-' + endDate[0];
-                          data['End'] += ' '  + jQuery('#admin-campaign-endTime').val();
-                        }
-                        if (jQuery('#admin-campaign-dataset').val() != null && jQuery('#admin-campaign-dataset').val() != 'null') {
-                            data['DatasetId'] = jQuery('#admin-campaign-dataset').val();
-                        }
-                        data['Public'] = 0;
-                        if (jQuery('#admin-campaign-public').prop('checked')) {
-                            data['Public'] = 1
-                        }
+	<!--
+	<div class="mt-4 bg-white p-6 rounded shadow-md">
 
-                        var dataString= JSON.stringify(data);
+		<div class="{$tailwindInputWrapperClasses}">
+			<input
+				x-model="filterString"
+				@keyup="filterTable"
+				class="{$tailwindInputClasses}"
+				placeholder=" "
+			/>
+			<label
+				class="{$tailwindLabelClasses}"
+			>Filter Campaigns</label>
+		</div>
 
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'POST',
-                            'url': '".TP_API_HOST."/tp-api/campaigns',
-                            'data': data
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                            console.log(response);
-                            jQuery('#campaign-spinner-container').css('display', 'none')
-                        });
-                    }
+	</div>
+	-->
 
-                    function removeCampaignTeam(teamId, campaignId) {
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'DELETE',
-                            'url': '".TP_API_HOST."/tp-api/teamCampaigns/' + campaignId + '/' + teamId,
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                        });
-                    }
+	<table class="
+		w-full
+		mt-4
+		text-sm
+		text-left
+		text-gray-500
+	">
+		<thead class="
+			text-xs
+			text-gray-700
+			uppercase
+			bg-gray-50
+		">
+			<tr>
+					<th scope="col" class="px-6 py-3">Campaign Name</th>
+					<th scope="col" class="px-6 py-3">Date Start</th>
+					<th scope="col" class="px-6 py-3">Date End</th>
+					<th scope="col" class="px-6 py-3">Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+				<template x-for="(campaign, index) in campaigns" :key="campaign.CampaignId">
+					<tr
+						data-action="filter"
+						class="border-b"
+						:class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
+					>
+						<th cope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" x-text="campaign.Name"></td>
+						<td class="px-6 py-4" x-text="campaign.Start"></td>
+						<td class="px-6 py-4" x-text="campaign.End"></td>
+						<td class="flex px-6 py-4">
+							<button
+								class="
+									mr-3
+									rounded-lg
+									bg-blue-500
+									py-2
+									px-4
+									text-xs
+									font-bold
+									uppercase
+									text-white
+									shadow-md
+									shadow-blue-500/20
+									transition-all
+									hover:shadow-lg
+									hover:shadow-blue-500/40
+									active:opacity-[0.85]
+									active:shadow-none
+								"
+								@click="loadCampaign(campaign.CampaignId)"
+							>Edit</button>
+							<button
+								class="
+									mr-3
+									rounded-lg
+									bg-red-500
+									py-2
+									px-4
+									text-xs
+									font-bold
+									uppercase
+									text-white
+									shadow-md
+									shadow-red-500/20
+									transition-all
+									hover:shadow-lg
+									hover:shadow-red-500/40
+									active:opacity-[0.85]
+									active:shadow-none
+								"
+								@click="removeCampaign(campaign.CampaignId)"
+							>Delete</button>
+						</td>
+					</tr>
+				</template>
+				</tbody>
+	</table>
+	<button
+		type="button"
+		@click="closeToast()"
+		x-show="toast"
+		x-transition.duration.300ms
+		class="
+			fixed top-16 right-4 z-50 rounded-lg p-4 text-base leading-5 font-bold text-white opacity-100 transition
+			"
+		:class="toastType === 'success' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'"
+	>
+		<p x-text="toastMessage"></p>
+	</button>
+</div>
+HTML;
 
-                    function addCampaignTeam(teamId, campaignId) {
-                        data = {
-                            TeamId: teamId,
-                            CampaignId: campaignId
-                        }
-                        var dataString= JSON.stringify(data);
+$js = <<<JS
+<script>
+	const THEME_URI = '{$themeUri}';
+	const MAIN_URI = '{$mainUri}';
+</script>
+JS;
 
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'POST',
-                            'url': '".TP_API_HOST."/tp-api/teamCampaigns',
-                            'data': data
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                        });
-                    }
-
-                    function changeDataset(campaignId) {
-                        // Prepare data and send API request
-                        data = {
-                        }
-                        jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'block');
-                        data['DatasetId'] = jQuery('#admin-campaign-' + campaignId + '-dataset').val();
-                        var dataString= JSON.stringify(data);
-
-                        jQuery.post('".home_url( null, 'https' )."/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                            'type': 'POST',
-                            'url': '".TP_API_HOST."/tp-api/campaigns/' + campaignId,
-                            'data': data
-                        },
-                        // Check success and create confirmation message
-                        function(response) {
-                            console.log(response);
-                            jQuery('#campaign-' + campaignId + '-spinner-container').css('display', 'none');
-                        });
-                    }
-
-                    ";
-    $content .= "</script>";
-
-    $content .= "<h2>CAMPAIGNS</h2>";
-
-    $content .= "<button class='collapse-controller' data-toggle='collapse' href='#admin-campaign-add'>";
-        $content .= "ADD";
-    $content .= "</button>";
-
-    $content .= "<div id='admin-campaign-add' class='admin-campaign-edit collapse'>";
-        $content .= "<h6>Name: </h6>";
-        $content .= "<input id='admin-campaign-name'>";
-
-        $content .= "<p>";
-            $content .= "<h6>Start: </h6>";
-            $content .= "<input id='admin-campaign-startDate' class='datepicker-input-field' style='width: 150px;'>";
-            $content .= "<input id='admin-campaign-startTime' style='width: 200px; margin-left: 20px;' placeholder='Start time: hh/mm/ss'>";
-        $content .= "</p>";
-        $content .= "<p>";
-            $content .= "<h6>End: </h6>";
-            $content .= "<input id='admin-campaign-endDate' class='datepicker-input-field' style='width: 150px;'>";
-            $content .= "<input id='admin-campaign-endTime' style='width: 200px; margin-left: 20px;' placeholder='End time: hh/mm/ss'>";
-        $content .= "</p>";
-
-        $content .= "<h6>Dataset: </h6>";
-        $content .= "<select id='admin-campaign-dataset'>";
-            $requestData = array(
-                'key' => 'testKey'
-            );
-            $url = TP_API_HOST."/tp-api/datasets";
-            $requestType = "GET";
-
-            include dirname(__FILE__) . '/../custom_scripts/send_api_request.php';
-
-            $datasets = json_decode($result, true);
-
-            $content .= '<option selected value=null>';
-                $content .= "No dataset";
-            $content .= '</option>';
-            foreach ($datasets as $dataset) {
-                $content .= '<option value="'.$dataset['DatasetId'].'">';
-                    $content .= $dataset['Name'];
-                $content .= '</option>';
-            }
-        $content .= "</select>";
-
-        $content .= "</br>";
-
-        $content .= "<span>Public: </span><input type='checkbox' id='admin-campaign-public'>";
-        $content .= "</br>";
-
-        $content .= "<button onClick='addCampaign()' style='float: left; margin-top: 10px;'>";
-            $content .= "SAVE";
-        $content .= "</button>";
-        $content .= '<div id="campaign-spinner-container" class="spinner-container spinner-container-left">';
-            $content .= '<div class="spinnerAdmin"></div>';
-        $content .= "</div>";
-        $content .= "<div style='clear:both'></div>";
-    $content .= "</div>";
-
-    $content .= "<hr>";
-
-    $content .= "<ul class='admin-campaigns-list'>";
-        foreach ($campaigns as $campaign){
-            $content .= "<li>";
-                $content .= "<div class='admin-campaign-view-info'>";
-                    $content .= "<div class='admin-campaign-view'>";
-                            $content .= "<h5>".$campaign['Name']."</h5>";
-                            $content .= "<p>";
-                                $content .= "<span style='font-weight: bold'>Start: </span>";
-                                $startTimestamp = strtotime($campaign['Start']);
-                                $dateStart = date("d/m/Y", $startTimestamp);
-                                $timeStart = date("H:i:s", $startTimestamp);
-                                $content .= $dateStart." ".$timeStart;
-                            $content .= "</p>";
-                            $content .= "<p>";
-                                $content .= "<span style='font-weight: bold'>End: </span>";
-                                $endTimestamp = strtotime($campaign['End']);
-                                $dateEnd = date("d/m/Y", $endTimestamp);
-                                $timeEnd = date("H:i:s", $endTimestamp);
-                                $content .= $dateEnd." ".$timeEnd;
-                            $content .= "</p>";
-                            $content .= "<p>";
-                                $content .= "<span style='font-weight: bold'>Public: </span>";
-                                if ($campaign['Public'] == 1) {
-                                    $content .= "yes";
-                                }
-                                else {
-                                    $content .= "no";
-                                }
-                            $content .= "</p>";
-                        $content .= "</div>";
-
-                    $content .= "<hr>";
-
-                    $content .= "<button class='collapse-controller' data-toggle='collapse' href='#admin-campaign-".$campaign['CampaignId']."-edit'>";
-                        $content .= "EDIT";
-                    $content .= "</button>";
-
-                    $content .= "<div id='admin-campaign-".$campaign['CampaignId']."-edit' class='admin-campaign-edit collapse'>";
-                        $content .= "<h6>Name: </h6>";
-                        $content .= "<input id='admin-campaign-".$campaign['CampaignId']."-name' value='".$campaign['Name']."'>";
-                        $content .= "<p>";
-                            $content .= "<h6>Start: </h6>";
-                            $content .= "<input id='admin-campaign-".$campaign['CampaignId']."-startDate' class='datepicker-input-field' style='width: 150px;' value='".$dateStart."'>";
-                            $content .= "<input id='admin-campaign-".$campaign['CampaignId']."-startTime' style='width: 150px; margin-left: 20px;' value='".$timeStart."'>";
-                        $content .= "</p>";
-                        $content .= "<p>";
-                            $content .= "<h6>End: </h6>";
-                            $content .= "<input id='admin-campaign-".$campaign['CampaignId']."-endDate' class='datepicker-input-field' style='width: 150px;' value='".$dateEnd."'>";
-                            $content .= "<input id='admin-campaign-".$campaign['CampaignId']."-endTime' style='width: 150px; margin-left: 20px;' value='".$timeEnd."'>";
-                        $content .= "</p>";
-
-                        $content .= "<h6>Dataset: </h6>";
-                        $content .= "<select id='admin-campaign-".$campaign['CampaignId']."-dataset'>";
-                            $requestData = array(
-                                'key' => 'testKey'
-                            );
-                            $url = TP_API_HOST."/tp-api/datasets";
-                            $requestType = "GET";
-
-                            include dirname(__FILE__) . '/../custom_scripts/send_api_request.php';
-
-                            $datasets = json_decode($result, true);
-
-                            if ($campaign['DatasetName'] == null) {
-                                $content .= '<option selected value=null>';
-                                    $content .= "No dataset";
-                                $content .= '</option>';
-                            }
-                            else {
-                                $content .= '<option value=null>';
-                                    $content .= "No dataset";
-                                $content .= '</option>';
-                            }
-                            foreach ($datasets as $dataset) {
-                                if ($campaign['DatasetName'] == $dataset['Name']) {
-                                    $content .= '<option selected value="'.$dataset['DatasetId'].'">';
-                                        $content .= $dataset['Name'];
-                                    $content .= '</option>';
-                                }
-                                else {
-                                    $content .= '<option value="'.$dataset['DatasetId'].'">';
-                                        $content .= $dataset['Name'];
-                                    $content .= '</option>';
-                                }
-                            }
-                        $content .= "</select>";
-
-                        $content .= "</br>";
-
-                        $checked = "";
-                        if ($campaign['Public'] == 1) {
-                            $checked = "checked";
-                        }
-                        $content .= "<span>Public: </span><input type='checkbox' id='admin-campaign-".$campaign['CampaignId']."-public' ".$checked.">";
-
-                        $content .= "</br>";
-
-                        $content .= "<button onClick='editCampaign(".$campaign['CampaignId'].")' style='float: left; margin-top: 10px;'>";
-                            $content .= "SAVE";
-                        $content .= "</button>";
-                        $content .= "<button onClick='removeCampaign(".$campaign['CampaignId'].")' style='float: right; margin-top: 10px;'>";
-                            $content .= "REMOVE";
-                        $content .= "</button>";
-
-                        $content .= '<div id="campaign-'.$campaign['CampaignId'].'-spinner-container" class="spinner-container spinner-container-left">';
-                            $content .= '<div class="spinnerAdmin"></div>';
-                        $content .= "</div>";
-                        $content .= "<div style='clear:both'></div>";
-                    $content .= "</div>";
-                $content .= "</div>";
-
-                $content .= "<div class='admin-campaign-view-teams'>";
-                    $content .= "<h5>Teams:</h5>";
-                    $content .= "<ul>";
-                        $teams = array();
-                        foreach ($campaign['Teams'] as $team) {
-                            $content .= "<li>";
-                                $content .= $team['Name'];
-                                $content .= "<button onClick='removeCampaignTeam(".$team['TeamId'].", ".$campaign['CampaignId'].")' style='float: right;'>REMOVE</button>";
-                                array_push($teams, $team['TeamId']);
-                            $content .= "</li>";
-                        }
-                    $content .= "</ul>";
-                    $content .= "<button class='collapse-controller' data-toggle='collapse' href='#campaign-".$campaign['CampaignId']."-team-list'>ADD</button>";
-
-                    $content .= "<div id='campaign-".$campaign['CampaignId']."-team-list' class='collapse'>";
-                        $content .= "<ul>";
-                            // Set request parameters for story data
-                            $url = TP_API_HOST."/tp-api/teams";
-                            $requestType = "GET";
-
-                            // Execude http request
-                            include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
-
-                            // Save story data
-                            $teamData = json_decode($result, true);
-
-                            foreach ($teamData as $team) {
-                                if (!in_array($team['TeamId'], $teams)) {
-                                    $content .= "<li>";
-                                        $content .= $team['Name'];
-                                        $content .= "<button onClick='addCampaignTeam(".$team['TeamId'].", ".$campaign['CampaignId'].")' style='float: right;'>+</button>";
-                                    $content .= "</li>";
-                                }
-                            }
-                        $content .= "</ul>";
-                    $content .= "</div>";
-                $content .= "</div>";
-
-                $content .= "<div style='clear: both;'></div>";
-            $content .= "</li>";
-        }
-    $content .= "</ul>";
-
-    echo $content;
+	echo $html . $js;
 }
+
+function load_campaigns_scripts($hook)
+{
+	if ($hook !== 'toplevel_page_campaigns-admin-page') {
+		return;
+	}
+	// using the playground tailwindcss for now, no compiling but heavier load
+	// wp_register_script('add_tailwindcss', get_stylesheet_directory_uri(). '/admin/inc/custom_js/tailwindcss.min.js', [], '3.3.1', false);
+	// wp_enqueue_script('add_tailwindcss');
+	wp_register_style('add_css', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/backend.min.css', [], '3.3.2', false);
+	wp_register_script('add_alpinejs', get_stylesheet_directory_uri(). '/admin/inc/custom_js/alpinejs.min.js', [], '3.12.0', false);
+	wp_register_script('add_campaigns_script', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/campaigns-admin-page.js', [], '0.1.0', true);
+	wp_enqueue_style('add_css');
+	wp_enqueue_script('add_alpinejs');
+	wp_enqueue_script('add_campaigns_script');
+	add_filter('script_loader_tag', 'defer_alpinejs', 10, 3);
+}
+
+function defer_alpinejs($tag, $handle, $src)
+{
+	if ('add_alpinejs' === $handle) {
+		$tag = '<script defer src="' . esc_url($src) . '"></script>';
+	}
+	return $tag;
+}
+
+add_action('admin_enqueue_scripts', 'load_campaigns_scripts');
