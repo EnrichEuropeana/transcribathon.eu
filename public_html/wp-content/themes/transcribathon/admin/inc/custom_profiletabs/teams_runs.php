@@ -37,10 +37,10 @@ function _TCT_teamsandruns_tab( $atts ) {
 	if(is_user_logged_in() && get_current_user_id() === um_profile_id()) {
 
         $projectUrl = get_europeana_url();
-		$content .= '<div class="container mx-auto flex">';
+		$content .= '<div class="container mx-auto md:flex px-2">';
 
 		    // Teams that user is part of
-		    $content .= '<div class="flex-initial w-2/3">';
+		    $content .= '<div class="flex-initial w-full md:w-2/3">';
 			    $content .= '<h2 class="theme-color text-2xl font-bold"> Teams </h2>';
 				if(!empty($myTeams)) {
 					$content .= '<p class="text-sm"> Your Teams: </p>';
@@ -49,6 +49,8 @@ function _TCT_teamsandruns_tab( $atts ) {
 						$content .= '<div 
 						    class="
 						        relative
+								mx-auto
+								md:mx-0
 						        mb-2
 						        w-3/4
 								p-2
@@ -86,7 +88,7 @@ function _TCT_teamsandruns_tab( $atts ) {
 				}
 			$content .= '</div>';
 
-			$content .= '<div class="flex-initial w-1/3">';
+			$content .= '<div class="flex-initial w-11/12 md:w-1/3">';
 			    // Join a team
                 $content .= '<div class="whitespace-nowrap">';
 			        $content .= '<h3 class="theme-color text-xl font-bold"> Join a team </h3>';
