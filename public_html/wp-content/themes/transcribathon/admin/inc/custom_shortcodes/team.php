@@ -80,28 +80,30 @@ function _TCT_get_team( $atts ) {
         $teamResponse = sendQuery(TP_API_V2_ENDPOINT . '/teams?Name=' . urlencode($teamQuery), $getJsonOptions, true);
         $teamData = $teamResponse['data'];
 
-        $content .= '<h2 class="theme-color">' . $teamData[0]['Name'] . ' (' . $teamData[0]['ShortName'] . ')</h2>';
+        $content .= '<div class="container mx-auto">';
+            $content .= '<h2 class="theme-color text-xl font-bold mb-8">' . $teamData[0]['Name'] . ' (' . $teamData[0]['ShortName'] . ')</h2>';
 
-        if(!empty($teamData[0]['Description'])) {
-            $content .= '<h4 class="theme-color"> Description: </h4>';
-            $content .= '<p>' . $teamData[0]['Description'] . '</p>';
-        }
+            if(!empty($teamData[0]['Description'])) {
+                $content .= '<h3 class="theme-color text-base font-bold mb-4"> Description: </h3>';
+                $content .= '<p class="my-0 text-sm">' . $teamData[0]['Description'] . '</p>';
+            }
 
-        $content .= '<div>';
-            $content .= '<div class="">';
-                $content .= '<h4 class="theme-color"> Members </h4>';
-                foreach($teamData[0]['Users'] as $member) {
-                    $content .= '<p class="text-sm my-0">' . $member['UserId'] . '</p>';
-                }
-            $content .= '</div>';
+            $content .= '<div>';
+                $content .= '<div class="">';
+                    $content .= '<h3 class="theme-color text-base font-bold my-8"> Members </h3>';
+                    foreach($teamData[0]['Users'] as $member) {
+                        $content .= '<p class="text-sm my-0">' . $member['UserId'] . '</p>';
+                    }
+                $content .= '</div>';
     
-            $content .= '<div class="">';
-                $content .= '<h4 class="theme-color"> Campaigns </h4>'; 
-                foreach($teamData[0]['Campaigns'] as $run) {
-                    $content .= '<p class="text-sm my-1"><a href="' . get_europeana_url() . '/runs/' . str_replace(' ', '-',$run['Name']) . '" target="_blank">' . $run['Name'] . '</a></p>';
-                }
+                $content .= '<div class="">';
+                    $content .= '<h3 class="theme-color text-base font-bold my-8"> Campaigns </h3>'; 
+                    foreach($teamData[0]['Campaigns'] as $run) {
+                        $content .= '<p class="text-sm my-1"><a href="' . get_europeana_url() . '/runs/' . str_replace(' ', '-',$run['Name']) . '" target="_blank">' . $run['Name'] . '</a></p>';
+                    }
+                $content .= '</div>';
+                $content .= '<div style="clear:both;"></div>';
             $content .= '</div>';
-            $content .= '<div style="clear:both;"></div>';
         $content .= '</div>';
     }
 
