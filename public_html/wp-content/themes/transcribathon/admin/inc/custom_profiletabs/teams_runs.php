@@ -227,10 +227,15 @@ function _TCT_teamsandruns_tab( $atts ) {
 				    genCodeBtn.style.display = "none";
 				}
 			});
-
+			// Create new team
 			const createTeamBtn = document.querySelector("#create-team-btn");
 			createTeamBtn.addEventListener("click", function() {
 				createNewTeam(' . $userId . ');
+			});
+			// Join existing team
+			const joinTeamBtn = document.querySelector("#join-team-btn");
+			joinTeamBtn.addEventListener("click", function() {
+				chkTmCd("' . um_profile_id() . '", "' . get_current_user_id() . '");
 			});
 		
 		    </script>';

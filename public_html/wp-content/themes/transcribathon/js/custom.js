@@ -163,21 +163,23 @@ function exitTm(pID,cuID,tID,txt){
 // }
 function chkTmCd(pID,cuID){
 	"use strict";
-	var cd = jQuery("input#tct-mem-code").val();
-	jQuery('form#tct-tmcd-frm').html("<p class=\"smallloading\"></p>");
+	var cd = jQuery("#join-team-code").val();
+	console.log(cd);
+	//jQuery('form#tct-tmcd-frm').html("<p class=\"smallloading\"></p>");
 	jQuery.post(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_profiletabs/scripts/team-script.php",{'q':'chk-tm-cd','pid':pID,'cuid':cuID,'tidc':cd}, function(res) {
+		console.log(res);
 		if(res.status === "ok"){
 			if(res.success !== "yes"){
 				alert("Sorry, this did not work. Please try again\n\n");
 			}
-			jQuery('form#tct-tmcd-frm').html(res.content);
-			jQuery('form#tct-tmcd-frm div.message').delay( 3000 ).slideUp( 400 );
-			if(res.refresh !== 'no'){
-				jQuery('div#ismember_list').html(res.refresh);
-			}
-			if(res.refresh_caps !== 'no'){
-				jQuery('div#isparticipant_list').html(res.refresh_caps);
-			}
+			// jQuery('form#tct-tmcd-frm').html(res.content);
+			// jQuery('form#tct-tmcd-frm div.message').delay( 3000 ).slideUp( 400 );
+			// if(res.refresh !== 'no'){
+			// 	jQuery('div#ismember_list').html(res.refresh);
+			// }
+			// if(res.refresh_caps !== 'no'){
+			// 	jQuery('div#isparticipant_list').html(res.refresh_caps);
+			// }
 		}else{
 			alert("Sorry, an error occured.\n\n");
 		}
