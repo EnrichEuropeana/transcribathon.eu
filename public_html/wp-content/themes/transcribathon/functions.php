@@ -809,8 +809,10 @@ add_filter('upload_mimes', 'add_webp_mime_type');
 add_action( 'um_after_profile_name_inline', 'my_after_profile_name_inline', 10 );
 
 function my_after_profile_name_inline() {
-    echo "<a id=\"new-temporary-prof\" title=\"Choose a document and start transcribing!\" href='".get_europeana_url()."/documents'><i class=\"far fa-pen-nib\"></i><span class=\"temp-respve\" style=\"padding-left: 10px;\">Transcribe Now</span></a>\n";
-    echo "<a id=\"new-temporary-ques\" class=\"tutorial-model\" title=\"Tutorial\"><i class=\"fal fa-question-circle\"></i></a>";
+    echo "<div id=\"new-temp-container\">";
+        echo "<a id=\"new-temporary-prof\" title=\"Choose a document and start transcribing!\" href='".get_europeana_url()."/documents'><i class=\"far fa-pen-nib\"></i><span class=\"temp-respve\" style=\"padding-left: 10px;\">Transcribe Now</span></a>\n";
+        echo "<a id=\"new-temporary-ques\" class=\"tutorial-model\" title=\"Tutorial\"><i class=\"fal fa-question-circle\"></i></a>";
+    echo "</div>";
     echo do_shortcode( '[tutorial_menu]' );
     echo "<script>
     jQuery ( document ).ready(function() {

@@ -91,14 +91,14 @@ function _TCT_get_team( $atts ) {
             $content .= '<div class="">';
                 $content .= '<h4 class="theme-color"> Members </h4>';
                 foreach($teamData[0]['Users'] as $member) {
-                    $content .= '<p>' . $member['UserId'] . '</p>';
+                    $content .= '<p class="text-sm my-0">' . $member['UserId'] . '</p>';
                 }
             $content .= '</div>';
     
             $content .= '<div class="">';
                 $content .= '<h4 class="theme-color"> Campaigns </h4>'; 
                 foreach($teamData[0]['Campaigns'] as $run) {
-                    $content .= '<p><a href="' . get_europeana_url() . '/runs/' . str_replace(' ', '-',$run['Name']) . '" target="_blank">' . $run['Name'] . '</a></p>';
+                    $content .= '<p class="text-sm my-1"><a href="' . get_europeana_url() . '/runs/' . str_replace(' ', '-',$run['Name']) . '" target="_blank">' . $run['Name'] . '</a></p>';
                 }
             $content .= '</div>';
             $content .= '<div style="clear:both;"></div>';

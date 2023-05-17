@@ -59,7 +59,7 @@ $theme_sets = get_theme_mods();
                 class="
                     grid
                     grid-cols-1
-                    md:grid-cols-5
+                    sm:grid-cols-5
                     gap-y-2
                     md:gap-x-5
                     place-items-center
@@ -91,22 +91,30 @@ $theme_sets = get_theme_mods();
                 $content .= '</div>';
                 
             $content .= '</div>';
+        $content .= '</div>';
 
             // Tr Characters chart
-            $content .= '<div class="container mx-auto">';
-                $content .= '<p> &nbsp </p>';
-                $content .= '<div id="personal_chart">';
-                    $content .= '<script type="text/javascript">';
-                        if(trim($amt[0][0] != '' && (int)$amt[0][0] > 0)) {
-                            $content .= 'getTCTlinePersonalChart("days", "' . date('Y-m-') . '01", "' . date('Y-m-t') . '", "personal_chart", "' . um_profile_id() . '");';
-                        } else {
-                            $content .= 'getTCTlinePersonalChart("months", "' . date('Y-') . '01-01", "' . date('Y-m-t', strtotime(date('Y') . '-12-01')) . '", "personal_chart", "' . um_profile_id() . '");';
-                        }
-                    $content .= '</script>';
-                $content .= '</div>';
+        $content .= '<div class="container mx-auto">';
+            $content .= '<div id="personal_chart"
+                class="
+                    inline-block
+                    w-full
+                    h-48
+                    md:h-[350px]
+                    lg:h-[430px]
+                    xl:h-[550px]
+                ">';
+                $content .= '<script type="text/javascript">';
+                    if(trim($amt[0][0] != '' && (int)$amt[0][0] > 0)) {
+                        $content .= 'getTCTlinePersonalChart("days", "' . date('Y-m-') . '01", "' . date('Y-m-t') . '", "personal_chart", "' . um_profile_id() . '");';
+                    } else {
+                        $content .= 'getTCTlinePersonalChart("months", "' . date('Y-') . '01-01", "' . date('Y-m-t', strtotime(date('Y') . '-12-01')) . '", "personal_chart", "' . um_profile_id() . '");';
+                    }
+                $content .= '</script>';
             $content .= '</div>';
-
         $content .= '</div>';
+        $content .= '<div class="min-h-[50px]"> &nbsp </div>';
+
     
         // Get Documents that user edited
         $url = TP_API_HOST . '/tp-api/transcriptionProfile/' . um_profile_id();
