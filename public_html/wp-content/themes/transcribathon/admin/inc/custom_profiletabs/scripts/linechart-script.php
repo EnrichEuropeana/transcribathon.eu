@@ -167,7 +167,7 @@ if(isset($_POST['q']) && $_POST['q'] === "get-ln-chart"):
 			
 		
 			
-			$content .= "<div id='".$theme_sets['vantage_general_link_color']."' class=\"tct_linechart_area\" style=\"min-height:".$charouterheight."px;\">\n";
+			$content .= "<div id='".$theme_sets['vantage_general_link_color']."' class=\"tct_linechart_area\">\n";
 				$content .= "<div class=\"tct_linechart_holder\">\n";
 				
 				

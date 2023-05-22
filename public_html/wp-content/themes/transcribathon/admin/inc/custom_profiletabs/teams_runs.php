@@ -4,185 +4,267 @@ Shortcode: teamsandruns_tab
 Description: Creates the 'Teams & runs' tab of profile tab
 *//* Team-Tab */
 
-function _TCT_teamsandruns_tab( $atts ) {  
-echo  "<style type='text/css'>
+function _TCT_teamsandruns_tab( $atts ) {
 
-.tct_hd h1{text-transform:none; line-height:1.2; font-weight:500; letter-spacing:0.2; font-size:1.8rem !important; margin-bottom:0px !important; padding-bottom:0px !important;}
-.tct_hd h3{text-transform:none; line-height:1.2; font-weight:300; letter-spacing:0.3; color:#333; font-size:1.5rem !important; margin-top:0px !important; padding-top:0px !important; margin-bottom:0px !important;}
-.tct_hd h1+h3{margin-top:0px !important; padding-top:5px !important;}
-.tct_hd{padding-bottom:20px !important;}
+    // build 'Teams & runs' tab of Profile page
+    // Keep it temp here, needs to be replaced after changes to user endpoint
+    $url = TP_API_HOST."/tp-api/teams?WP_UserId=".um_profile_id();
+    $requestType = "GET";
+    
+    // Execude http request
+    include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
+    
+    // Save image data
+    $myTeams = json_decode($result, true);
+    
+     //var_dump($myTeams);
+    $getJsonOptions = [
+    	'http' => [
+    		'header' => [ 
+    			'Content-type: application/json',
+    			'Authorization: Bearer ' . TP_API_V2_TOKEN
+    		],
+    		'method' => 'GET'
+    	]
+    ];
+    
+    $userInfo = sendQuery(TP_API_V2_ENDPOINT . '/users?WP_UserId=' . get_current_user_id(), $getJsonOptions, true);
+	$userId = $userInfo["data"][0]["UserId"];
+	
 
-button.tct-vio-but[type=button],input.tct-vio-but[type=button],a.tct-vio-but{min-height:20px; border:none !important; font-size:0.9em; letter-spacing:0.5px;
-	padding:5px 30px; font-weight:400; color:#fff !important; text-align:center; cursor:pointer;
-	-ms-box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-	-moz-border-radius:4px; -webkit-border-radius:4px; border-radius:4px;
-	-webkit-transition: all 0.4s ease 0.1s; -moz-transition: all 0.4s ease 0.1s; -o-transition: all 0.4s ease 0.1s; transition: all 0.4s ease 0.1s;
-	-webkit-text-shadow:none !important; -moz-text-shadow:none !important; text-shadow:none !important;
-	margin-top:4px !important; display:inline-block !important;
-}
+	$content = '';
 
-</style>";
-// build 'Teams & runs' tab of Profile page
+	// Wip Disclaimer
+	$content .= '<h1
+	    class="
+		    my-6
+		    mx-auto
+			w-1/3
+		    border
+			border-solid
+			border-red-900
+			text-base
+			text-black
+			p-4
+		"> Hello there! </br>
+	    At the moment, this page is still under construction, and some features are not fuly functional. Our team is working to provide seamless and enjoyable experience once the page is complete. </h1>';
 
+	if(is_user_logged_in() && get_current_user_id() === um_profile_id()) {
 
-$url = TP_API_HOST."/tp-api/teams?WP_UserId=".um_profile_id();
-$requestType = "GET";
+        $projectUrl = get_europeana_url();
+		$content .= '<div class="container mx-auto md:flex px-2">';
 
-// Execude http request
-include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
+		    // Teams that user is part of
+		    $content .= '<div class="flex-initial w-full md:w-2/3">';
+			    $content .= '<h2 class="theme-color text-2xl font-bold"> Teams </h2>';
+				if(!empty($myTeams)) {
+					$content .= '<p class="text-sm"> Your Teams: </p>';
+					foreach($myTeams as $team) {
 
-// Save image data
-$myteams = json_decode($result, true);
+						$content .= '<div 
+						    class="
+						        relative
+								mx-auto
+								md:mx-0
+						        mb-2
+						        w-3/4
+								p-2
+								border-solid
+								border-2
+								border-gray-200
+								rounded-none
+						    ">';
+						    $content .= '<h3 class="theme-color text-xl"><a href="' . home_url() . '/team?team=' . $team['Name'] . '" target="_blank">' . $team['Name'] . ' ( ' . $team['ShortName'] . ') ' . '</a></h3>';
+							$content .= '<p class="team-desc text-sm">' . $team['Description'] . '</p>';
+							// Add all team members
+							$content .= '<div class="float-left w-1/3">';
+							    $content .= '<h4 class="theme-color text-lg"> Members </h4>';
+								$content .= '<p class="text-sm"> TestUser </p>';
+							$content .= '</div>';
+							// Add all campaigns where team have participated
+							$content .= '<div class="float-right w-2/3">';
+							    $content .= '<h4 class="theme-color text-lg"> Campaigns: </h4>';
+							    $content .= '<p class="campaign-single text-sm"><i class="fas fa-running"></i><a href="'. $projectUrl .'/runs/dublin-run/" target="_blank"> Test Run </a></p>';
+							$content .= '</div>';
+							$content .= '<div class="clear-both"></div>';
+							$content .= '<div 
+							    class="
+								    team-controls
+									absolute
+									right-2
+									bottom-2
+							">';
+							    $content .= '<a href="' . home_url() . '/team/?team=' . $team['Name'] . '" target="_blank"<i class="fas fa-eye mr-2" title="View team page"></i></a>';
+								$content .= '<i class="fas fa-user-slash" title="Leave Team"></i>';
+							$content .= '</div>';
+						$content .= '</div>';
 
-if(is_user_logged_in() &&  get_current_user_id() === um_profile_id()){
-		// Only User
+					}
+				}
+			$content .= '</div>';
+
+			$content .= '<div class="flex-initial w-11/12 md:w-1/3">';
+			    // Join a team
+                $content .= '<div class="whitespace-nowrap">';
+			        $content .= '<h3 class="theme-color text-xl font-bold"> Join a team </h3>';
+					$content .= '<p class="text-sm"> If you received a code to join a team, please enter it here and click \'Join\'</p>';
+					$content .= '<div class="h-8">';
+					    $content .= '<input type="text" id="join-team-code" placeholder="Enter team code" 
+						    class="
+						        w-4/5
+						    	h-full
+						    	rounded-none
+								box-border
+								align-bottom
+								p-0.5
+								leading-loose
+						">';
+					    $content .= '<button id="join-team-btn" 
+						    class="
+							    theme-color-background
+								w-1/5
+								h-full
+								rounded-none
+								border-red-800
+								box-border
+								align-bottom
+								pb-px
+								leading-loose
+								text-sm
+							">
+						    Join
+						</button>';
+					$content .= '</div>';
+			    $content .= '</div>';
+    
+			    // Create a team
+			    $content .= '<div class="create-team-box" style="margin-top:25px;">';
+			        $content .= '<h3 class="theme-color text-xl font-bold"> Create a team </h3>';
+					$content .= '<p class="text-sm mb-8"> If you want to create a new team, please fill the form: </p>';
+					$content .= '<form id="team-form">';
+					    // Team Name
+					    $content .= '<label for="team-title" class="text-sm"> Team Name: </label></br>';
+						$content .= '<input type="text" id="team-title" name="team-title" placeholder="Please enter a name" 
+						    class="
+							    w-full
+								h-8
+								box-border
+								p-0.5
+								leading-loose
+								rounded-none
+								mb-6
+							">
+						</br>';
+
+						// Short Name
+						$content .= '<p class="text-sm"> Please enter an abbreviated name (max 6 characters), this might appear in some cases next of a member\'s name. </p>';
+						$content .= '<label for="team-shortname" class="text-sm" class="w-2/6"> Team name abbreviation: </label>';
+						$content .= '<input type="text" id="team-shortname" name="team-shortname" placeholder="Abbr." class="w-4/6 rounded-none border-box mb-8"></br>';
+
+						// Description
+						$content .= '<label for="team-description" class="text-sm clear-both"> Short description of a team: </label></br>';
+						$content .= '<textarea id="team-description" name="team-description" placeholder="Enter short description (optional)" rows="3" 
+						    class="
+								w-full
+								box-border
+								rounded-none
+								px-0.5
+								mb-6
+							">
+						</textarea></br>';
+
+						// Access code
+						$content .= '<label for="access-code" class="text-sm"> 
+						    Generate the access code. Using this access code, other people can join your team:
+						</label></br>';
+						$content .= '<input type="text" id="access-code" name="access-code" style="display:none;">';
+						$content .= '<div id="generate-code" 
+						    class="
+							    theme-color-background
+								text-sm
+								text-center
+								leading-loose
+								h-8
+								mb-6
+							"> 
+						    Click here to generate access code 
+						</div>';
+
+						// Runs code
+						$content .= '<label for="run-code" class="text-sm"> 
+						    If you want to register this team for Transcribathon event or run, enter the run code below.
+						    You can also do that later via \'Edit Team\'.
+						</label></br>';
+						$content .= '<input type="text" id="run-code" name="run-code" placeholder="Run code"
+						    class="
+							    w-full
+								h-8
+								text-sm
+								rounded-none
+								leading-loose
+								box-border
+								mb-6
+							">
+						</br>';
+
+						// 'Submit' button
+						$content .= '<div id="create-team-btn" 
+						    class="
+							theme-color-background
+							text-sm
+							text-center
+							leading-loose
+							box-border
+							h-8
+							"> 
+						    Create Team 
+						</div>';
+
+					$content .= '</form>';
+			    $content .= '</div>';
+			$content .= '</div>';
+
+		$content .= '</div>';
+
+		// Add eventlisteners to buttons
+		$content .= 
+		    '<script>
+			// generate code
+			const genCodeBtn = document.querySelector("#generate-code");
+            genCodeBtn.addEventListener("click", function() {
+				if(document.querySelector("#team-title").value == "") {
+					window.alert("Please enter the team name first!");
+				} else {
+				    let code = generateTeamCode();
+    
+				    document.querySelector("#access-code").value = code;
+				    document.querySelector("#access-code").style.display = "block";
+				    genCodeBtn.style.display = "none";
+				}
+			});
+			// Create new team
+			const createTeamBtn = document.querySelector("#create-team-btn");
+			createTeamBtn.addEventListener("click", function() {
+				createNewTeam(' . $userId . ');
+			});
+			// Join existing team
+			const joinTeamBtn = document.querySelector("#join-team-btn");
+			joinTeamBtn.addEventListener("click", function() {
+				chkTmCd("' . um_profile_id() . '", "' . get_current_user_id() . '");
+			});
 		
-	echo "<div class=\"section group maingroup\">\n";
-		echo "<div class=\"column span_1_of_3\">\n";	
-				if(sizeof($myteams)>0){	
-					echo "<div class=\"tct_hd\">\n";
-					echo "<h1>"._x('Teams', 'Team-Tab on Profile', 'transcribathon'  )."</h1><h3>"._x('Your teams','Team-Tab on Profile','transcribathon')."</h3>\n";
-					echo "</div>\n";
-					// Team-Liste member
-					echo "<div id=\"ismember_list\" >\n";
-						echo "<p class=\"smallloading\"></p>\n";
-					echo "</div>\n";
-				}else{
-					echo "<div class=\"tct_hd\">\n";
-						echo "<h1>"._x('Teams', 'Team-Tab on Profile', 'transcribathon'  )."</h1><h3>"._x('Your teams','Team-Tab on Profile','transcribathon')."</h3>\n";
-					echo "</div>\n";
-					echo "<div id=\"ismember_list\" >";
-						echo "<p>"._x('You are not yet a member of any team', 'Team-Tab on Profile', 'transcribathon'  )."</p>";
-					echo "</div>\n";
-                }	
-		echo "</div>\n";
-			echo "<div class=\"column span_1_of_3 alg_l\">\n";		
-				echo "<div class=\"tct_hd\">\n";
-				echo "<h1>"._x('Join a team', 'Team-Tab on Profile', 'transcribathon'  )."</h1><h3>"._x('Join a team by code','Team-Tab on Profile','transcribathon')."</h3>\n";
-				echo "</div>\n";	
-				echo "<p class=\"nopad\">"._x('If you received a code to join a team, please enter it here and click ‘join’', 'Team-Tab on Profile', 'transcribathon'  )."</p>\n";
-				echo "<form id=\"tct-tmcd-frm\" autocomplete=\"off\">\n";
-				echo "<label for=\"tct-mem-code\">"._x('Code', 'Team-Tab on Profile', 'transcribathon'  ).":</label>\n<input type=\"password\" placeholder=\""._x('enter team code', 'Team-Tab on Profile', 'transcribathon'  )."\" id=\"tct-mem-code\" value=\"\" autocomplete=\"off\" />";
-				echo "<a class=\"theme-color-background tct-vio-but\" onclick=\"chkTmCd('".um_profile_id()."','".get_current_user_id()."'); return false;\">"._x('Join','Team-Tab on Profile','transcribathon')."</a>";
-				echo "</form>\n";
-		
-				echo "<p>&nbsp;</p>\n";
-		/*
-				// Code-Anmeldung
-				echo "<div class=\"tct_hd\">\n";
-				echo "<h1>"._x('Open teams', 'Team-Tab on Profile', 'transcribathon'  )."</h1><h3>"._x('Join an open team','Team-Tab on Profile','transcribathon')."</h3>\n";
-				echo "</div>\n";
-				// Team-Liste open teams
-				echo "<div id=\"openteams_messageholder\" ></div>\n";
-				echo "<div id=\"openteams_list\" >\n";
-					echo "<p class=\"smallloading\"></p>\n";
-				echo "</div>\n";*/
-		
-				
-				// TO COME
-				
-			echo "</div>\n";
-			echo "<div class=\"column span_1_of_3\">\n";	
-				// Create a team
-				echo "<div class=\"tct_hd\">\n";
-				echo "<h1>"._x('Create a team', 'Team-Tab on Profile', 'transcribathon'  )."</h1><h3>"._x('Open up a new team','Team-Tab on Profile','transcribathon')."</h3>\n";
-				echo "</div>\n";
-				echo "<p class=\"nopad\">"._x('Would you like to create a new team? Please click the button below and fill out the form.', 'Team-Tab on Profile', 'transcribathon'  )."</p>\n";
-				echo "<div id=\"team-creation-feedback\"></div>\n";
-				echo "<a class=\"theme-color-background tct-vio-but\" id=\"open-tm-crt-but\" data-rel-close=\"X\" data-rel-open=\""._x('Create a team','Team-Tab on Profile','transcribathon')."\" onclick=\"openTmCreator('".um_profile_id()."','".get_current_user_id()."',jQuery(this)); return false;\">"._x('Create a team','Team-Tab on Profile','transcribathon')."</a>";
-				echo "<form id=\"tct-crtrtm-frm\" autocomplete=\"off\">\n";
-					echo "<label for=\"qtmnm\">"._x('Team title', 'Team-Tab on Profile', 'transcribathon'  )."</label>\n";
-					echo "<input type=\"text\" data-rel-missing=\""._x('Please enter a team title', 'Team-Tab on Profile', 'transcribathon'  )."\" id=\"qtmnm\" placeholder=\""._x('Please enter a title', 'Team-Tab on Profile', 'transcribathon'  )."\" onchange=\"chkTeamname(jQuery(this));\" value=\"\" autocomplete=\"off\" />\n";
-					echo "<p>"._x('Please enter an abbreviated title (max. 6 chars). This might appear in some cases next of a member’s name', 'Team-Tab on Profile', 'transcribathon'  )."</p>";
-					echo "<label for=\"qtmshnm\">"._x('Team title abbreviation', 'Team-Tab on Profile', 'transcribathon'  )."</label>\n";
-					echo "<input type=\"text\" maxlength=\"6\" style=\"width:80px;\" data-rel-missing=\""._x('Please enter an abbreviation of your team title', 'Team-Tab on Profile', 'transcribathon'  )."\" id=\"qtmshnm\" placeholder=\""._x('Abbr.', 'Team-Tab on Profile', 'transcribathon'  )."\" onchange=\"checkAbbr(jQuery(this));\" value=\"\" autocomplete=\"off\" />\n";
-					echo "<label for=\"qtsdes\">"._x('Short description', 'Team-Tab on Profile', 'transcribathon'  )."</label>\n";
-					echo "<textarea id=\"qtsdes\" cols=\"1\" rows=\"1\" placeholder=\""._x('Enter a short description of this team (optional)', 'Team-Tab on Profile', 'transcribathon'  )."\"></textarea>\n";
-					echo "<p>"._x('If you want to create a <strong>Private team</strong>, set an <strong>access code</strong> by clicking the refresh button next to the code field below. Other users can then only join the team once they know this code or when they are sent an e-mail invitation from the team administrator.<br /><br />To create an <strong>Open team</strong>, leave the code field blank.', 'Team-Tab on Profile', 'transcribathon'  )."</p>";
-					echo "<table class=\"nopad\">\n<tbody>\n";
-						echo "<tr>\n";
-						echo "<td><input type=\"text\" id=\"qtmcd\" style=\"width:100%;\" placeholder=\""._x('the refresh button to generate an access code', 'Team-Tab on Profile', 'transcribathon'  )."\" value=\"\" readonly onchange=\"checkCode('qtmcd','"._x('Code too short. Please enter at least 8 characters','Team-Tab on Profile','transcribathon')."');\" /></td>\n";
-						echo "<td style=\"width:50px;\"><a onclick=\"tct_generateCode('qtmcd'); return false;\" class=\"theme-color-background tct-vio-but codecreator-but\" id=\"qtmcd-but\">create/refresh code</a><p class=\"smallloading\" style=\"display:none;\" id=\"qtmcd-waiter\"></td>\n";
-						echo "</tr>\n";		
-					echo "</tbody>\n</table>\n";
-				echo "<p>"._x('If you want to register this team for a Special Transcribathon event or run, enter the run code below. You can also do this later via ‘Edit team’.', 'Team-Tab on Profile', 'transcribathon'  )."</p>\n";
-				echo "<label for=\"qcmpgncd\">"._x('Run code', 'Team-Tab on Profile', 'transcribathon'  )."</label>\n";
-				echo "<input type=\"password\" id=\"qcmpgncd\" placeholder=\""._x('Run code', 'Team-Tab on Profile', 'transcribathon'  )."\" value=\"\" autocomplete=\"off\" />\n";
-				echo "<a class=\"theme-color-background tct-vio-but\" id=\"svTmBut\" onclick=\"svTeam('".um_profile_id()."','".get_current_user_id()."'); return false;\">"._x('Create team','Team-Tab on Profile','transcribathon')."</a>";
-				echo "</form>\n";
-		
-		
-				echo "<p>&nbsp;</p>\n";
-		/*
-				// Runs
-				echo "<div class=\"tct_hd\">\n";
-				echo "<h1>"._x('Runs', 'Team-Tab on Profile', 'transcribathon'  )."</h1><h3>"._x('Your runs','Team-Tab on Profile','transcribathon')."</h3>\n";
-				echo "<p>"._x('You participated actively in the following runs', 'Team-Tab on Profile', 'transcribathon'  )."</p>\n";
-				echo "</div>\n";
-				// Run-list
-				echo "<div id=\"isparticipant_list\" >\n";
-					echo "<p class=\"smallloading\"></p>\n";
-				echo "</div>\n";
-				*/
-				echo "<script type=\"text/javascript\">getTeamTabContent('".um_profile_id()."','".get_current_user_id()."');</script>\n";
-			echo "</div>\n";
-		echo "</div>\n";
+		    </script>';
 
-	}else{
-	// Public
-		
-		echo "<div class=\"section group maingroup\">\n";
-			echo "<div class=\"column span_1_of_3\">\n";	
-				if(sizeof($myteams)>0){	
-					if(substr(um_user('display_name'),strlen(um_user('display_name'))-1,1) == "s"){$sadd = "’";}else{$sadd = "’s";}
-					echo "<div class=\"tct_hd\">\n";
-					echo "<h1>"._x('Teams', 'Team-Tab on Profile', 'transcribathon'  )."</h1><h3>".sprintf( esc_html__('%s teams','transcribathon'),um_user('display_name').$sadd)."</h3>\n";
-					echo "</div>\n";	
-					
-					// Team-Liste member
-					echo "<div id=\"ismember_list\">\n";
-						echo "<div id=\"ismember_list\" >\n";
-							echo "<p class=\"smallloading\"></p>\n";
-						echo "</div>\n";
-					echo "</div>\n";
 
-						
-				}else{
-					if(substr(um_user('display_name'),strlen(um_user('display_name'))-1,1) == "s"){$sadd = "’";}else{$sadd = "’s";}
-					echo "<div class=\"tct_hd\">\n";
-					echo "<h1>"._x('Teams', 'Team-Tab on Profile', 'transcribathon'  )."</h1><h3>".sprintf( esc_html__('%s teams','transcribathon'),um_user('display_name').$sadd)."</h3>\n";
-					echo "</div>\n";	
-					echo "<p>".sprintf( esc_html__('%s is not a member of any team yet','transcribathon'),um_user('display_name'))."</p>\n";
-				}	
-		
-			echo "</div>\n";
-			echo "<div class=\"column span_1_of_3 alg_l\">\n";		
-				if(substr(um_user('display_name'),strlen(um_user('display_name'))-1,1) == "s"){$sadd = "’";}else{$sadd = "’s";}
-				// Runs
-				echo "<div class=\"tct_hd\">\n";
-				echo "<h1>"._x('Runs', 'Team-Tab on Profile', 'transcribathon'  )."</h1><h3>".sprintf( esc_html__('%s runs','transcribathon'),um_user('display_name').$sadd)."</h3>\n";
-				echo "</div>\n";
-				// Run-list
-				echo "<div id=\"isparticipant_list\" >\n";
-					echo "<p class=\"smallloading\"></p>\n";
-				echo "</div>\n";
-				echo "<script type=\"text/javascript\">getTeamTabContent('".um_profile_id()."','".get_current_user_id()."');</script>\n";
-				
-				
-			echo "</div>\n";
-			echo "<div class=\"column span_1_of_3\">\n";				
-				
-				
-		
-			echo "</div>\n";
-		echo "</div>\n";
+	} else {
+		echo 'Go Away';
+	}
 
-	}		
-		
+
+    return $content;
+
 }
     
-       
-
         
 
 add_shortcode( 'teamsandruns_tab', '_TCT_teamsandruns_tab' );

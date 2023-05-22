@@ -311,6 +311,9 @@ function embedd_custom_javascripts_and_css() {
         /* Font Awesome CSS */
         wp_enqueue_style( 'font-awesome', CHILD_TEMPLATE_DIR . '/css/all.min.css', array(), $themeVersion);
 
+        // Tailwind
+        wp_enqueue_style( 'tailwind-front', CHILD_TEMPLATE_DIR . '/css/frontend.min.css', array(), $themeVersion);
+
         /* diff-match-patch (Transcription text comparison) JS*/
         wp_enqueue_script( 'diff-match-patch', CHILD_TEMPLATE_DIR . '/js/diff-match-patch.js', null, null, true);
 
@@ -328,7 +331,6 @@ function embedd_custom_javascripts_and_css() {
                 // Import shortcodes for custom profile tabs
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/tutorial_menu.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/transcriptions.php');
-                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/contributions.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/achievements.php');
                 require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_profiletabs/teams_runs.php');
 
@@ -339,6 +341,8 @@ function embedd_custom_javascripts_and_css() {
                 wp_enqueue_style( 'slick', CHILD_TEMPLATE_DIR . '/css/slick.css');
                 /* slick JS*/
                 wp_enqueue_script( 'slick', CHILD_TEMPLATE_DIR . '/js/slick.min.js');
+
+                wp_dequeue_style('bootstrap');
 
                 break;
 
@@ -672,6 +676,11 @@ function embedd_custom_javascripts_and_css() {
                 register_widget('TCT_Barchart_Widget');
                 break;
 
+            case 'team':
+                // Import shortcode
+                require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_shortcodes/team.php');
+
+
             default:
 
                 // Import and register widgets (mostly used for runs)
@@ -801,8 +810,10 @@ add_filter('upload_mimes', 'add_webp_mime_type');
 add_action( 'um_after_profile_name_inline', 'my_after_profile_name_inline', 10 );
 
 function my_after_profile_name_inline() {
-    echo "<a id=\"new-temporary-prof\" title=\"Choose a document and start transcribing!\" href='".get_europeana_url()."/documents'><i class=\"far fa-pen-nib\"></i><span class=\"temp-respve\" style=\"padding-left: 10px;\">Transcribe Now</span></a>\n";
-    echo "<a id=\"new-temporary-ques\" class=\"tutorial-model\" title=\"Tutorial\"><i class=\"fal fa-question-circle\"></i></a>";
+    echo "<div id=\"new-temp-container\">";
+        echo "<a id=\"new-temporary-prof\" title=\"Choose a document and start transcribing!\" href='".get_europeana_url()."/documents'><i class=\"far fa-pen-nib\"></i><span class=\"temp-respve\" style=\"padding-left: 10px;\">Transcribe Now</span></a>\n";
+        echo "<a id=\"new-temporary-ques\" class=\"tutorial-model\" title=\"Tutorial\"><i class=\"fal fa-question-circle\"></i></a>";
+    echo "</div>";
     echo do_shortcode( '[tutorial_menu]' );
     echo "<script>
     jQuery ( document ).ready(function() {
@@ -1026,4 +1037,10 @@ function um_custom_validate_firstname_lastname($args){
     if ( isset( $args['first_name'] ) && isset( $args['last_name'] ) && $args['first_name'] == $args['last_name'] ) {
 		UM()->form()->add_error( 'user_login', 'Your First name and Last name can not be equal(Sorry, just a measure against bots).' );
 	}
+}
+/* Custom profile cover ratio (ultimate member) */
+add_filter("um_get_option_filter__profile_cover_ratio", "um_change_profile_cover_ratio", 10, 1);
+function um_change_profile_cover_ratio( $ratio ){
+  
+   return "5:1";
 }

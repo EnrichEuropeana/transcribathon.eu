@@ -92,15 +92,15 @@ function getMoreTeamTops(myid,base,limit,tid){
 	});
 }
 
-function generateTeamCode() {
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < 10; i++ ) {
-     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
+// function generateTeamCode() {
+//   var result           = '';
+//   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+//   var charactersLength = characters.length;
+//   for ( var i = 0; i < 10; i++ ) {
+//      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+//   }
+//   return result;
+// }
 
 function editTeam(teamId) {
   jQuery('#team-' + teamId + '-spinner-container').css('display', 'block')
@@ -148,35 +148,38 @@ function exitTm(pID,cuID,tID,txt){
 		});
 	}
 }
-function getTeamTabContent(pID,cuID){
-	"use strict";
-	jQuery.post(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_profiletabs/scripts/team-script.php",{'q':'init-teamtab','pid':pID,'cuid':cuID}, function(res) {
-		if(res.status === "ok"){
-			jQuery('div#ismember_list').html(res.teamlist);
-			jQuery('div#isparticipant_list').html(res.campaignlist);
-			jQuery('div#openteams_list').html(res.openteams);
-		}else{
-			alert("Sorry, an error occured. Please try again\n\n"+JSON.stringify(res));
-		}
-  });
-}
+// function getTeamTabContent(pID,cuID){
+// 	"use strict";
+// 	jQuery.post(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_profiletabs/scripts/team-script.php",{'q':'init-teamtab','pid':pID,'cuid':cuID}, function(res) {
+// 		console.log(res);
+// 		if(res.status === "ok"){
+// 			jQuery('div#ismember_list').html(res.teamlist);
+// 			jQuery('div#isparticipant_list').html(res.campaignlist);
+// 			jQuery('div#openteams_list').html(res.openteams);
+// 		}else{
+// 			alert("Sorry, an error occured. Please try again\n\n"+JSON.stringify(res));
+// 		}
+//   });
+// }
 function chkTmCd(pID,cuID){
 	"use strict";
-	var cd = jQuery("input#tct-mem-code").val();
-	jQuery('form#tct-tmcd-frm').html("<p class=\"smallloading\"></p>");
+	var cd = jQuery("#join-team-code").val();
+	console.log(cd);
+	//jQuery('form#tct-tmcd-frm').html("<p class=\"smallloading\"></p>");
 	jQuery.post(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_profiletabs/scripts/team-script.php",{'q':'chk-tm-cd','pid':pID,'cuid':cuID,'tidc':cd}, function(res) {
+		console.log(res);
 		if(res.status === "ok"){
 			if(res.success !== "yes"){
 				alert("Sorry, this did not work. Please try again\n\n");
 			}
-			jQuery('form#tct-tmcd-frm').html(res.content);
-			jQuery('form#tct-tmcd-frm div.message').delay( 3000 ).slideUp( 400 );
-			if(res.refresh !== 'no'){
-				jQuery('div#ismember_list').html(res.refresh);
-			}
-			if(res.refresh_caps !== 'no'){
-				jQuery('div#isparticipant_list').html(res.refresh_caps);
-			}
+			// jQuery('form#tct-tmcd-frm').html(res.content);
+			// jQuery('form#tct-tmcd-frm div.message').delay( 3000 ).slideUp( 400 );
+			// if(res.refresh !== 'no'){
+			// 	jQuery('div#ismember_list').html(res.refresh);
+			// }
+			// if(res.refresh_caps !== 'no'){
+			// 	jQuery('div#isparticipant_list').html(res.refresh_caps);
+			// }
 		}else{
 			alert("Sorry, an error occured.\n\n");
 		}
@@ -247,8 +250,39 @@ function joinTeam(pid,cuid,tid){
 			alert('sorry, an error occured. Please reload page.');
 		}
 	});
-
 }
+// New create team function
+// function createNewTeam(userId) {
+
+// 	const teamName = document.querySelector('#qtmnm').textContent;
+// 	const teamShortName = document.querySelector('#qtmshnm');
+// 	const teamDesc = document.querySelector('#qtsdes');
+// 	// EventUser is not used yet
+// 	const eventUser = 0;
+// 	const teamCode = document.querySelector('#qtmcd');
+// 	// Runs not available yet in api
+// 	const teamRuns = document.querySelector('#qcmpgncd');
+
+// 	if(teamName.value != '' && teamShortName.value != '' && teamCode.value != '') {
+// 		console.log('ready to go');
+// 		let data = {
+//             Name: teamName,
+// 			ShortName: teamShortName,
+// 			Description: teamDesc,
+// 			EventUser: eventUser,
+// 			Code: teamCode,
+// 			UserIds: {
+// 				userId
+// 			}
+// 		};
+// 	} else {
+// 		window.alert('Please provide required information!');
+// 	}
+
+
+// }
+
+
 function svTeam(pid,cuid){
 	"use strict";
 	var tmp = jQuery('a#svTmBut').text();
@@ -570,6 +604,74 @@ ready(() => {
             coverUp.style.display = 'none';
         })
     }
+
+
 });
 
 
+// Teams new functions
+
+// Generate team code
+function generateTeamCode() {
+	const teamName = document.querySelector('#team-title').value;
+	let result = teamName + '-';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@!?$&';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < 8; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+	// add check if code is already taken
+
+    return result;
+}
+
+// Create new team
+function createNewTeam(userId) {
+	const teamName = document.querySelector('#team-title').value;
+	const shortName = document.querySelector('#team-shortname').value;
+	const teamDesc = document.querySelector('#team-description').value;
+	const teamCode = document.querySelector('#access-code').value;
+    const runCode = document.querySelector('#run-code').value;
+
+	if(!teamName || !shortName || !teamCode) {
+		window.alert('Please fill in required info.');
+	} else {
+
+		let data = {
+			"Name": teamName,
+			"ShortName": shortName,
+			"Description": teamDesc,
+			"EventUser": 0,
+			"Code": teamCode,
+			"UserIds": [
+				userId
+			]
+		}
+
+		const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/teams';
+
+		// Check if team name is already taken
+		//fetch(requestUri)
+		//
+
+		fetch(requestUri, {
+			method: 'POST',
+			headers: {
+				'Content-type': 'Application/json'
+			},
+			body: JSON.stringify(data)
+		})
+		.then(function(response){
+			return response.json();
+		})
+		.then(function(res){
+			if(res.success == true) {
+				window.alert('Team succesfully created!')
+			} else {
+				window.alert('Something went wrong, please try again!');
+			}
+		})
+
+	}
+}

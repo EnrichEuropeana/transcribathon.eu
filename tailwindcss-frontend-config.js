@@ -1,4 +1,5 @@
 module.exports = {
+  important: true,	
   content: [
 		'./public_html/wp-content/themes/transcribathon/*.{php,js}',
 		'./public_html/wp-content/themes/transcribathon/templates/*.{php,js}',
