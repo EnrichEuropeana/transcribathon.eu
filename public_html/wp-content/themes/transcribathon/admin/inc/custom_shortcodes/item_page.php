@@ -906,9 +906,7 @@ if (event.target.id != "tagging-status-indicator") {
     } else {
         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
     }
-    $trHistory .= "<div class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' data-toggle='collapse' href='#transcription-history'
-    onClick='jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")
-    jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-up\")' style='margin-bottom: 0;'>";
+    $trHistory .= "<div id='tr-history-collapse-btn' class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' style='margin-bottom: 0;'>";
             $trHistory .= "<h4 id='transcription-history-collapse-heading' class='theme-color item-page-section-headline'>";
                 $trHistory .= "TRANSCRIPTION HISTORY";
             $trHistory .= "</h4>";
@@ -979,6 +977,7 @@ if (event.target.id != "tagging-status-indicator") {
                 }
             }
         $trHistory .= "</div>";
+        //var_dump($transcriptionList);
     $trHistory .= "</div>";
     // Editor Tab
 
