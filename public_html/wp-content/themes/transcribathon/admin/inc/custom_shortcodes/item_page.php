@@ -2020,7 +2020,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<li>";
                         $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
                             onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'>";
-                            $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;position:relative;bottom:3px;'>";
+                            $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;margin:0 auto;'>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
                             $content .= "<span><b> LOCATION</b></span></p>";
                         $content .= "</div>";
