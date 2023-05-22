@@ -34,6 +34,21 @@ function _TCT_teamsandruns_tab( $atts ) {
 
 	$content = '';
 
+	// Wip Disclaimer
+	$content .= '<h1
+	    class="
+		    my-6
+		    mx-auto
+			w-1/3
+		    border
+			border-solid
+			border-red-900
+			text-base
+			text-black
+			p-4
+		"> Hello there! </br>
+	    At the moment, this page is still under construction, and some features are not fuly functional. Our team is working to provide seamless and enjoyable experience once the page is complete. </h1>';
+
 	if(is_user_logged_in() && get_current_user_id() === um_profile_id()) {
 
         $projectUrl = get_europeana_url();
