@@ -52,7 +52,7 @@ function _TCT_teamsandruns_tab( $atts ) {
 	if(is_user_logged_in() && get_current_user_id() === um_profile_id()) {
 
         $projectUrl = get_europeana_url();
-		$content .= '<div class="container mx-auto md:flex px-2">';
+		$content .= '<div class="container mx-auto md:flex px-2 max-w-[80%]">';
 
 		    // Teams that user is part of
 		    $content .= '<div class="flex-initial w-full md:w-2/3">';

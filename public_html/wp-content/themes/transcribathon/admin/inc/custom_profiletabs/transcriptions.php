@@ -53,7 +53,7 @@ $theme_sets = get_theme_mods();
 
         $content = '';
 
-        $content .= '<div class="container mx-auto">';
+        $content .= '<div class="container mx-auto max-w-[80%]">';
             // Statistics circles
             $content .= '<div
                 class="
@@ -94,7 +94,7 @@ $theme_sets = get_theme_mods();
         $content .= '</div>';
 
             // Tr Characters chart
-        $content .= '<div class="container mx-auto">';
+        $content .= '<div class="container mx-auto max-w-[80%]">';
             $content .= '<div id="personal_chart"
                 class="
                     inline-block
@@ -132,7 +132,7 @@ $theme_sets = get_theme_mods();
         
         // Display the documents
 
-        $content .= '<div class="container mx-auto">';
+        $content .= '<div class="container mx-auto max-w-[80%]">';
             $content .= '<h2 class="theme-color text-xl font-bold mb-4">';
                 $content .= _x('My Contributions', 'Transcription-tab on Profile', 'transcribathon');
             $content .= '</h2>';
