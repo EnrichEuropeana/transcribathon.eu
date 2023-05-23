@@ -862,7 +862,7 @@ body.responsive.layout-full #page-wrapper .full-container {
   display: none;
 }
 button:focus {
-  outline: 0;
+  outline: 0!important;
 }
 /*------------------------------------------------------------------------------------*/
 /*-------------------------------------RUNS page -------------------------------------*/
