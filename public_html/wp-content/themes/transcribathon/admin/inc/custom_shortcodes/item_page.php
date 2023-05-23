@@ -1143,6 +1143,18 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div id='current-tr-view' style='padding-top: 11px;'>";
                 $editorTab .= $transcriptionView;
             $editorTab .= "</div>";
+            // Language of transcription
+            if(!empty($currentTranscription['Languages'])) {
+                $editorTab .= "<div class='transcription-language'>";
+                $editorTab .= "<h6 class='enrich-language' style='padding-left:0!important'> Language(s) of Transcription </h6>";
+                $editorTab .= "<div>";
+            
+                foreach($currentTranscription['Languages'] as $language) {
+                    $editorTab .= "<div class='language-single'>" . $language['Name'] . "</div>";
+                }
+            
+                $editorTab .= "</div>";
+            }
             // Transcription Translation
             // $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
             //     $editorTab .= "English Translation";
