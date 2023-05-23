@@ -1044,3 +1044,17 @@ function um_change_profile_cover_ratio( $ratio ){
   
    return "5:1";
 }
+/* Leave login message when user enters wrong password */
+function um_custom_login_failed() {
+    echo '<script>
+    var ready = (callback) => {
+        if (document.readyState != "loading") callback();
+        else document.addEventListener("DOMContentLoaded", callback);
+    }
+    
+    // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
+    ready(() => {document.querySelector("#default-login-container").style.display = "block";});
+    </script>';
+
+}
+add_action( 'wp_login_failed', 'um_custom_login_failed' );
