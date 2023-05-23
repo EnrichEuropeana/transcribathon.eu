@@ -906,9 +906,7 @@ if (event.target.id != "tagging-status-indicator") {
     } else {
         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
     }
-    $trHistory .= "<div class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' data-toggle='collapse' href='#transcription-history'
-    onClick='jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-down\")
-    jQuery(this).find(\"collapse-icon\").toggleClass(\"fa-caret-circle-up\")' style='margin-bottom: 0;'>";
+    $trHistory .= "<div id='tr-history-collapse-btn' class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' style='margin-bottom: 0;'>";
             $trHistory .= "<h4 id='transcription-history-collapse-heading' class='theme-color item-page-section-headline'>";
                 $trHistory .= "TRANSCRIPTION HISTORY";
             $trHistory .= "</h4>";
@@ -979,6 +977,7 @@ if (event.target.id != "tagging-status-indicator") {
                 }
             }
         $trHistory .= "</div>";
+        //var_dump($transcriptionList);
     $trHistory .= "</div>";
     // Editor Tab
 
@@ -1144,6 +1143,18 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div id='current-tr-view' style='padding-top: 11px;'>";
                 $editorTab .= $transcriptionView;
             $editorTab .= "</div>";
+            // Language of transcription
+            if(!empty($currentTranscription['Languages'])) {
+                $editorTab .= "<div class='transcription-language'>";
+                $editorTab .= "<h6 class='enrich-language' style='padding-left:0!important'> Language(s) of Transcription </h6>";
+                $editorTab .= "<div>";
+            
+                foreach($currentTranscription['Languages'] as $language) {
+                    $editorTab .= "<div class='language-single'>" . $language['Name'] . "</div>";
+                }
+            
+                $editorTab .= "</div>";
+            }
             // Transcription Translation
             // $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
             //     $editorTab .= "English Translation";
@@ -1561,34 +1572,40 @@ if (event.target.id != "tagging-status-indicator") {
     // Image Slider
     $numOfPhotos = count($itemImages);
     // Get the image of the Current Item
-    $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
+    if($numOfPhotos > 1) {
+        $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
 
-    $allImages = [];
+        $allImages = [];
 
-    for($x = 0; $x < $numOfPhotos; $x++) {
-        $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
-        $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
+        for($x = 0; $x < $numOfPhotos; $x++) {
+            $sliderImg = json_decode($itemImages[$x]['ImageLink'], true);
+            $sliderImgLink = createImageLinkFromData($sliderImg, array('size' => '200,200'));
 
-        if($sliderImg['height'] == null) {
-            $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
+            if($sliderImg['height'] == null) {
+                $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
+            }
+
+            array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || ' . $isActive));
         }
 
-        array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || ' . $isActive));
-    }
-
-    $imageSlider = "";
-    $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
-    $imageSlider .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
-    $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
-    $imageSlider .= "<div id='current-itm' style='display:none;'>" . $startingSlide . "</div>";
-    $imageSlider .= "<div id='img-slider'>";
-        $imageSlider .= "<div id='slider-container'>";
-            $imageSlider .= "<button class='prev-slide' type='button' aria-label='Previous'><i class='fas fa-chevron-left'></i></button>";
-            $imageSlider .= "<button class='next-slide' type='button' aria-label='Next'><i class='fas fa-chevron-right'></i></button>";
-            $imageSlider .= "<div id='inner-slider'></div>";
-            $imageSlider .= "<div id='dot-indicators'></div>";
+        $imageSlider = "";
+        $imageSlider .= "<div id='slider-images' style='display:none;'>" . json_encode($allImages) . "</div>";
+        $imageSlider .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
+        $startingSlide = array_search($_GET['item'], array_column($itemImages, 'ItemId'));
+        $imageSlider .= "<div id='current-itm' style='display:none;'>" . $startingSlide . "</div>";
+        $imageSlider .= "<div id='img-slider'>";
+            $imageSlider .= "<div id='slider-container'>";
+                $imageSlider .= "<button class='prev-slide' type='button' aria-label='Previous'><i class='fas fa-chevron-left'></i></button>";
+                $imageSlider .= "<button class='next-slide' type='button' aria-label='Next'><i class='fas fa-chevron-right'></i></button>";
+                $imageSlider .= "<div id='inner-slider'></div>";
+                $imageSlider .= "<div id='dot-indicators'></div>";
+            $imageSlider .= "</div>";
         $imageSlider .= "</div>";
-    $imageSlider .= "</div>";
+    } else {
+        // grey line when there is no slider
+        $imageSlider .= "<div style='height:80px;background:#f8f8f8;margin-bottom:15px;'></div>";
+        $imageSlider .= "<div id='story-id' style='display:none;'>" . $itemData['StoryId'] . "</div>";
+    }
 
     // Metadata
     $metaData .= "";
@@ -2021,7 +2038,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<li>";
                         $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
                             onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'>";
-                            $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;position:relative;bottom:3px;'>";
+                            $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;margin:0 auto;'>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
                             $content .= "<span><b> LOCATION</b></span></p>";
                         $content .= "</div>";

@@ -3276,6 +3276,20 @@ ready(() => {
         });
     }
 
+    // Transcription history collapse controller
+    const trHistoryColBtn = document.querySelector('#tr-history-collapse-btn');
+    if(trHistoryColBtn) {
+        const trHistoryContainer = document.querySelector('#transcription-history');
+        trHistoryColBtn.addEventListener('click', function() {
+            trHistoryContainer.classList.toggle('show');
+            if(trHistoryContainer.classList.contains('show')) {
+                trHistoryColBtn.querySelector('i').classList = 'far fa-caret-circle-up collapse-icon theme-color'
+            } else {
+                trHistoryColBtn.querySelector('i').classList = 'far fa-caret-circle-down collapse-icon theme-color'
+            }
+        })
+    }
+
 
 
     installEventListeners();

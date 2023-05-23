@@ -862,7 +862,7 @@ body.responsive.layout-full #page-wrapper .full-container {
   display: none;
 }
 button:focus {
-  outline: 0;
+  outline: 0!important;
 }
 /*------------------------------------------------------------------------------------*/
 /*-------------------------------------RUNS page -------------------------------------*/
@@ -3781,6 +3781,15 @@ a.tct-vio-but {
 /*-----------------------------------------Ultimate Member Css--------------------------------------------------*/
 /*# sourceMappingURL=style.css.map */
 /*# sourceMappingURL=style.css.map */
+.um.um-profile .um-form {
+  width: 80%!important;
+  margin: 0 auto;
+}
+.um.um-profile .um-profile-nav {
+  width: 80%;
+  padding: 0!important;
+  margin: 40px auto;
+}
 .um.um-login.um-38 {
   margin-left: auto;
   margin-right: auto;

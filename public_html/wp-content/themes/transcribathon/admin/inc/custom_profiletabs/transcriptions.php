@@ -22,9 +22,11 @@ $theme_sets = get_theme_mods();
 
         $twStatsBubblesClasses = <<<TW1
             w-20
-            md:w-40
+            md:w-26
+            lg:w-40
             h-20
-            md:h-40
+            md:h-26
+            lg:h-40
             border-4
             border-solid
             rounded-full
@@ -38,22 +40,23 @@ $theme_sets = get_theme_mods();
         $twStatsNumbersClasses = <<<TW2
             m-0
             text-sm
-            md:text-xl
+            md:text-base
+            lg:text-xl
             font-bold
             text-gray-400
         TW2;
 
         $twStatsLabelsClasses = <<<TW3
             m-0
-            text-xs
-            md:text-sm
+            text-[11px]
+            lg:text-sm
             text-gray-400
             uppercase
         TW3;
 
         $content = '';
 
-        $content .= '<div class="container mx-auto">';
+        $content .= '<div class="container mx-auto max-w-[80%]">';
             // Statistics circles
             $content .= '<div
                 class="
@@ -94,7 +97,7 @@ $theme_sets = get_theme_mods();
         $content .= '</div>';
 
             // Tr Characters chart
-        $content .= '<div class="container mx-auto">';
+        $content .= '<div class="container mx-auto max-w-[80%]">';
             $content .= '<div id="personal_chart"
                 class="
                     inline-block
@@ -132,7 +135,7 @@ $theme_sets = get_theme_mods();
         
         // Display the documents
 
-        $content .= '<div class="container mx-auto">';
+        $content .= '<div class="container mx-auto max-w-[80%]">';
             $content .= '<h2 class="theme-color text-xl font-bold mb-4">';
                 $content .= _x('My Contributions', 'Transcription-tab on Profile', 'transcribathon');
             $content .= '</h2>';
