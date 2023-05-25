@@ -44,12 +44,6 @@ class _TCT_Storyofmonth_Widget extends SiteOrigin_Widget {
 			$language_options[$language['Name']] = esc_html($language['Name']);  
 		}
 		
-		// $instance['tct-storyofmonth-headline'] = array(
-        // 	'type' => 'text',
-		// 	'label' => _x('Headline above the boxes', 'storyofmonth-widget (backend)','transcribathon'),
-		// 	'default' => '',
-		// 	'optional' => true,
-		// );
 		$instance['tct-storyofmonth-itemimage'] = array(
 			'type' => 'text',
 			'label' => _x('Enter image link of Item', 'storyofmonth-widget (backend)','transcribathon'),
@@ -57,6 +51,14 @@ class _TCT_Storyofmonth_Widget extends SiteOrigin_Widget {
 			'default' => '',
 			'rows' => 1,
 			'optional' => false,
+		);
+
+		$instance['tct-storyofmonth-title'] = array(
+			'type' => 'text',
+			'label' => 'Enter custom title',
+			'description' => 'Enter custom title if the Story title is too long',
+			'default' => '',
+			'rows' => 1
 		);
 		
 		$instance['tct-storyofmonth-storybunch'] = array(
@@ -68,7 +70,7 @@ class _TCT_Storyofmonth_Widget extends SiteOrigin_Widget {
 			'optional' => false,
 		);
 
-		$instance['tct-storyofmonth-colnum'] = array(
+		$instance['tct-storyofmonth-column'] = array(
 			'type' => 'number',
 			'label' => 'Column Number',
 			'description' => 'Number of stories in one row, max 4 stories.',
