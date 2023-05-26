@@ -1670,6 +1670,10 @@ div.um-header {
   padding-left: 10px!important;
   padding-right: unset!important;
 }
+.um-profile-navbar.um-messaging-bar {
+  width: 80%!important;
+  margin: 0 auto!important;
+}
 div.um-profile-nav {
   margin-top: 35px;
   background-color: transparent;
