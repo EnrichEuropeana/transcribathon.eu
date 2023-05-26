@@ -44,13 +44,16 @@ if(isset($instance['tct-numbers-kind']) && trim($instance['tct-numbers-kind']) !
 
 	$content .= '<div
 	    class="
-		    w-60
+		    w-72
 			mx-auto
+			flex
+			justify-around
 		">';
 	    $content .= '<div
 		    class="
 			    theme-color-background
-			    float-left
+			    inline-block
+				w-2/5
 				rounded-full
 				font-bold
 				tracking-wider
@@ -63,7 +66,8 @@ if(isset($instance['tct-numbers-kind']) && trim($instance['tct-numbers-kind']) !
 		    class="
 			    uppercase
 				leading-5
-				float-right
+				inline-block
+				w-2/5
 				text-left
 			">';
 		    $content .= '<h4 class="tracking-wide">' . str_replace('-', '<br>', $instance['tct-numbers-kind']) . '</h4>';
