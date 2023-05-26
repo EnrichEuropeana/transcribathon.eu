@@ -147,7 +147,7 @@ $theme_sets = get_theme_mods();
                     sm:grid-cols-2
                     md:grid-cols-4
                     gap-4
-                    justify-items-center
+                    justify-space-between
                 ">';
                 $i = 0;
                 $k = 0;
@@ -157,26 +157,42 @@ $theme_sets = get_theme_mods();
                         if($i > 7) {
                             $content .= '<div
                                 class="
+                                    xl:h-[400px]
+                                    lg:h-[350px]
+                                    h-[300px]
                                     item-sticker
                                     border
                                     border-solid
-                                    border-gray-400
+                                    border-gray-100
+                                    bg-gray-100
                                     rounded-none
-                                    max-w-xs
+                                    lg:max-w-xs
+                                    sm:max-w-[250px]
+                                    max-w-[200px]
                                     mx-auto
                                     md:mx-0
+                                    my-2
+                                    md:my-4
                                 " style="display:none;">'; // start of single document (after 8th)
                         } else {
                             $content .= '<div
                                 class="
+                                    xl:h-[400px]
+                                    lg:h-[350px]
+                                    h-[300px]
                                     item-sticker
                                     border
                                     border-solid
-                                    border-gray-400
+                                    border-gray-100
+                                    bg-gray-100
                                     rounded-none
-                                    max-w-xs
+                                    lg:max-w-xs
+                                    sm:max-w-[250px]
+                                    max-w-[200px]
                                     mx-auto
                                     md:mx-0
+                                    my-2
+                                    md:my-4
                                 ">'; // start of single document (before 8th)
                         }
                             $content .= '<a href="' . get_europeana_url() . "/documents/story/item?item=" . $document['ItemId'] . '">';
@@ -187,17 +203,25 @@ $theme_sets = get_theme_mods();
                                     $imageLink = str_replace('full', '50,50,1800,1100', $imageLink);
                                 }
 
-                                $content .= '<img class="border-b border-solid border-gray-400" src="' . $imageLink . '" loading="lazy" width="320" height="180" alt="edited-item-' . $i . '">';
+                                $content .= '<img class="border-b border-solid border-gray-100" src="' . $imageLink . '" loading="lazy" width="320" height="180" alt="edited-item-' . $i . '">';
 
                             $content .= '</a>';
                             // Title
-                            $content .= '<h3 class="theme-color text-base font-bold my-3 px-2">' . $document['ItemTitle'] . '</h3>';
+                            $content .= '<h3
+                                class="
+                                    theme-color
+                                    text-base
+                                    font-bold
+                                    my-3
+                                    px-4
+                                    truncate
+                                " title="' . $document['ItemTitle'] . '">' . $document['ItemTitle'] . '</h3>';
 
-                            $content .= '<p class="text-xs m-0 px-2"> Last Edit: ' . date_i18n(get_option('date_format'), strtotime($document['Timestamp'])) . '</p>';
+                            $content .= '<p class="text-sm tracking-wide m-0 px-4">Last Edit: ' . date_i18n(get_option('date_format'), strtotime($document['Timestamp'])) . '</p>';
 
                             foreach($document['Scores'] as $score) {
                                 if(!empty($score)) {
-                                    $content .= '<p class="text-xs m-0 px-2">' . $score['ScoreType'] . ': ' . $score['Amount'] . '</p>';
+                                    $content .= '<p class="text-sm tracking-wide m-0 px-4">' . $score['ScoreType'] . ': ' . $score['Amount'] . '</p>';
                                 }
                             }
                         
@@ -228,31 +252,31 @@ $theme_sets = get_theme_mods();
         $content .= <<<EOT
             <script type="text/javascript">
                 let showBtn = document.getElementById("profile-more");
-                console.log(showBtn);
                 let itemStickers = document.querySelectorAll(".item-sticker");
-
-                showBtn.addEventListener("click", function() {
-                    if(!showBtn.classList.contains("shown")) {
-                        for(let itm of itemStickers) {
-                            itm.style.display = "block";
-                            showBtn.classList.add("shown");
-                            showBtn.textContent = "Show Less";
-                        }
-                    } else {
-                        let i = 0;
-                        for(let itm of itemStickers) {
-                            if(i < 8) {
-                                i++;
-                                continue;
-                            } else {
-                                itm.style.display = "none";
-                                showBtn.classList.remove("shown");
-                                showBtn.textContent = "Show More";
-                                i++;
+                if(showBtn) {
+                    showBtn.addEventListener("click", function() {
+                        if(!showBtn.classList.contains("shown")) {
+                            for(let itm of itemStickers) {
+                                itm.style.display = "block";
+                                showBtn.classList.add("shown");
+                                showBtn.textContent = "Show Less";
+                            }
+                        } else {
+                            let i = 0;
+                            for(let itm of itemStickers) {
+                                if(i < 8) {
+                                    i++;
+                                    continue;
+                                } else {
+                                    itm.style.display = "none";
+                                    showBtn.classList.remove("shown");
+                                    showBtn.textContent = "Show More";
+                                    i++;
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
             </script>
         EOT;
 
