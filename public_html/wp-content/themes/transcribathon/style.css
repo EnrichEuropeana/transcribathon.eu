@@ -1112,7 +1112,7 @@ button.active {
   font-weight:600; font-size:1.1em; letter-spacing:0.3px; line-height:1.2; padding:10px 0px 0px 0px; color:#000;}
 .col.newsarchiv h3{font-weight:600; font-size:1em; letter-spacing:0.3px; line-height:1.2; padding:5px 0px 5px 0px; color:#000;}
 .col.newsarchiv p{/*font-weight:300;*/ font-size:0.9em; letter-spacing:0.3px; line-height:1.4; padding:5px 0px 5px 0px; color:#000;}
-.col.newsarchiv div.newsdate{display:block; margin-bottom: 1px; margin-top:-90px; margin-left:20px; background:#fff; height:121px; border:1px solid #ccc; max-width:140px; padding:5px 0px;}
+.col.newsarchiv div.newsdate{display:block; margin-bottom: 1px; margin-top:-90px; margin-left:20px; background:#fff; height:130px; border:1px solid #ccc; max-width:140px; padding:5px 0px;}
 .col.newsarchiv div.newsdate.single{max-width:64px;}
 .col.newsarchiv div.newsdate p.clear{clear:both;}
 .col.newsarchiv div.newsdate h4{line-height:1.1 !important; font-weight:400; font-size:3em; text-align:center;}
@@ -1665,10 +1665,20 @@ div.um-header {
   margin-right: 0!important;
   margin-left: 10px;
 }
+.um-meta-text {
+  margin-left: 10px!important;
+}
 .um-profile-meta {
   display: inline-block!important;
   padding-left: 10px!important;
   padding-right: unset!important;
+}
+.um-profile-navbar.um-messaging-bar {
+  width: 80%!important;
+  margin: 0 auto!important;
+}
+.um-profile-nav-item a i.fa.fa-users {
+  left: 7px!important;
 }
 div.um-profile-nav {
   margin-top: 35px;
@@ -1685,6 +1695,9 @@ div.um-profile-nav div.um-profile-nav-item a {
   border-radius: 0px;
   border-bottom: 5px solid transparent !important;
   margin-bottom: -5px;
+  margin-top: 5px;
+  margin-left:  0!important;
+  right: 2px;
 }
 div.um-profile-nav div.um-profile-nav-item a:hover {
   color: #444 !important;
@@ -1694,6 +1707,7 @@ div.um-profile-nav div.um-profile-nav-item.active a {
   color: #000 !important;
   background: transparent !important;
   border-radius: 0px;
+  border-bottom: 5px solid #0a72cc!important;
 }
 div.um-profile-nav p {
   display: inline-block;
@@ -3786,9 +3800,8 @@ a.tct-vio-but {
   margin: 0 auto;
 }
 .um.um-profile .um-profile-nav {
-  width: 80%;
   padding: 0!important;
-  margin: 40px auto;
+  margin: 50px auto 20px;
 }
 .um.um-login.um-38 {
   margin-left: auto;
@@ -4083,9 +4096,7 @@ a#new-temporary-prof {
   float: right;
 }
 a#new-temporary-prof:hover {
-  color: #0a72cc !important;
-  background-color: #fff!important;
-  outline: 3px solid #0a72cc!important;
+  background-color: #0058a4!important;
 }
 #new-temporary-ques{
   float: right;
@@ -4128,9 +4139,6 @@ a#new-temporary-prof:hover {
   div.tct-user-banner {
     right: 12%;
     top: 0%;
-}
-.um-meta-text {
-  margin-left: 19em !important;
 }
 }
 @media all and (max-width: 1200px) {}

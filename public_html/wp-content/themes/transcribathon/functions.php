@@ -269,6 +269,11 @@ function load_admin_page($pageData)
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-storyofmonth/tct-storyofmonth-widget.php'); // Adds the widget for storyofmonth
     register_widget('_TCT_Storyofmonth_Widget');
 
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-numbers/tct-numbers-widget.php'); // Adds the widget for numbers
+    register_widget('TCT_Numbers_Widget'); 
+
+
+
     // Custom posts
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
 	}
@@ -812,31 +817,7 @@ add_action( 'um_after_profile_name_inline', 'my_after_profile_name_inline', 10 )
 function my_after_profile_name_inline() {
     echo "<div id=\"new-temp-container\">";
         echo "<a id=\"new-temporary-prof\" title=\"Choose a document and start transcribing!\" href='".get_europeana_url()."/documents'><i class=\"far fa-pen-nib\"></i><span class=\"temp-respve\" style=\"padding-left: 10px;\">Transcribe Now</span></a>\n";
-        echo "<a id=\"new-temporary-ques\" class=\"tutorial-model\" title=\"Tutorial\"><i class=\"fal fa-question-circle\"></i></a>";
     echo "</div>";
-    echo do_shortcode( '[tutorial_menu]' );
-    echo "<script>
-    jQuery ( document ).ready(function() {
-                        // When the user clicks the button, open the modal
-                        jQuery('.tutorial-model').click(function() {
-                        jQuery('#tutorial-popup-window-container').css('display', 'block');
-                        jQuery('.tutorial-window-slider').slick('refresh');
-
-                        })
-
-                        // When the user clicks on <span> (x), close the modal
-                        jQuery('.tutorial-window-close').click(function() {
-                        jQuery('#tutorial-popup-window-container').css('display', 'none');
-                        })
-
-                        jQuery('#tutorial-popup-window-container').mousedown(function(event){
-                            if (event.target.id == 'tutorial-popup-window-container') {
-                                jQuery('#tutorial-popup-window-container').css('display', 'none')
-                            }
-                        })
-                    });
-
-</script>";
 }
 
 add_action( 'um_profile_header_cover_area', 'my_profile_header_cover_area', 10, 1 );
