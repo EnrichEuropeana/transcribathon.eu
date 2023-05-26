@@ -56,7 +56,7 @@ $theme_sets = get_theme_mods();
 
         $content = '';
 
-        $content .= '<div class="container mx-auto max-w-[80%]">';
+        $content .= '<div class="container mx-auto max-w-[95%]">';
             // Statistics circles
             $content .= '<div
                 class="
@@ -97,7 +97,7 @@ $theme_sets = get_theme_mods();
         $content .= '</div>';
 
             // Tr Characters chart
-        $content .= '<div class="container mx-auto max-w-[80%]">';
+        $content .= '<div class="container mx-auto max-w-[95%]">';
             $content .= '<div id="personal_chart"
                 class="
                     inline-block
@@ -135,7 +135,7 @@ $theme_sets = get_theme_mods();
         
         // Display the documents
 
-        $content .= '<div class="container mx-auto max-w-[80%]">';
+        $content .= '<div class="container mx-auto max-w-[95%]">';
             $content .= '<h2 class="theme-color text-xl font-bold mb-4">';
                 $content .= _x('My Contributions', 'Transcription-tab on Profile', 'transcribathon');
             $content .= '</h2>';
@@ -145,7 +145,8 @@ $theme_sets = get_theme_mods();
                     grid
                     grid-cols-1
                     sm:grid-cols-2
-                    md:grid-cols-4
+                    md:grid-cols-3
+                    xl:grid-cols-4
                     gap-4
                     justify-space-between
                 ">';
@@ -167,8 +168,8 @@ $theme_sets = get_theme_mods();
                                     bg-gray-100
                                     rounded-none
                                     lg:max-w-xs
-                                    sm:max-w-[250px]
-                                    max-w-[200px]
+                                    sm:max-w-[210px]
+                                    max-w-[220px]
                                     mx-auto
                                     md:mx-0
                                     my-2
@@ -187,7 +188,7 @@ $theme_sets = get_theme_mods();
                                     bg-gray-100
                                     rounded-none
                                     lg:max-w-xs
-                                    sm:max-w-[250px]
+                                    sm:max-w-[210px]
                                     max-w-[200px]
                                     mx-auto
                                     md:mx-0
