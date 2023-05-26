@@ -20,20 +20,24 @@ class TCT_Numbers_Widget extends SiteOrigin_Widget {
     }
 	function __construct() {
 
-		$requestType = "GET";
-		$url = TP_API_HOST."/tp-api/campaigns";
-		include dirname(__FILE__)."/../../custom_scripts/send_api_request.php";
-		$data = json_decode($result, true);
+		$getAutoJsonOptions = [
+			'http' => [
+				'header' => [
+					 'Content-type: application/json',
+					],
+				'method' => 'GET'
+			]
+		];
+	
+		$data = sendQuery(TP_API_HOST . '/tp-api/campaigns', $getAutoJsonOptions, true);
+
 		$campaigns = array();
 		$campaigns[''] = null;
 		foreach($data as $campaign) {
 			$campaigns[$campaign['CampaignId']] = $campaign['Name'];
 		}
-
-		$requestType = "GET";
-		$url = TP_API_HOST."/tp-api/datasets";
-		include dirname(__FILE__)."/../../custom_scripts/send_api_request.php";
-		$data = json_decode($result, true);
+	
+		$data = sendQuery(TP_API_HOST . '/tp-api/datasets', $getAutoJsonOptions, true);
 		$datasets = array();
 		$datasets[''] = null;
 		foreach($data as $dataset) {

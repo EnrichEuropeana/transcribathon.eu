@@ -269,6 +269,11 @@ function load_admin_page($pageData)
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-storyofmonth/tct-storyofmonth-widget.php'); // Adds the widget for storyofmonth
     register_widget('_TCT_Storyofmonth_Widget');
 
+    require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-numbers/tct-numbers-widget.php'); // Adds the widget for numbers
+    register_widget('TCT_Numbers_Widget'); 
+
+
+
     // Custom posts
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_posts/tct-tutorial/tct-tutorial.php'); // Adds custom post-type: news
 	}

@@ -7,22 +7,23 @@ if ( ! is_admin() ) {
 
     $storyId = $instance['tct-storyofmonth-storybunch'];
     $itemId = $instance['tct-storyofmonth-itemid'];
+    $colNum = $instance['tct-storyofmonth-column'];
+
 
     if(isset($storyId) && trim($storyId) != ""){ 
         $requestType = "GET";
         $url = TP_API_HOST."/tp-api/storiesMinimal?storyId=".str_replace(' ', '', $storyId);
         include dirname(__FILE__)."/../../custom_scripts/send_api_request.php";
         $storyData = json_decode($result, true);
-        
     }
 
     $storyTitle = !empty($instance['tct-storyofmonth-title']) ? $instance['tct-storyofmonth-title'] : $storyData[0]['dcTitle'];
 
     $imageLink = $instance['tct-storyofmonth-itemimage'] . '/50,50,1800,1100/300,200/0/default.jpg';
+
     if($instance['tct-storyofmonth-itemimage'] == '') {
         $image = json_decode($storyData[0]['PreviewImage'], true);
         
-    
         $imageLink = createImageLinkFromData($image, array('size' => '300,200'));
         // don't load full image when dimensions are missing
         if($image['height'] == null) {
@@ -48,7 +49,7 @@ if ( ! is_admin() ) {
     $edit = ($completionStatus['Edit'] / $totalItems) * 100;
     $notStarted = ($completionStatus['Not Started'] / $totalItems) * 100;
 
-    $compStatus = '<div class="relative h-4">';
+    $compStatus = '<div class="relative h-4 px-0 mb-2.5">';
         $compStatus .= '<div
            class="
                bg-[#61e02f]
@@ -88,43 +89,38 @@ if ( ! is_admin() ) {
                 h-[450px]
                 border
                 border-solid
-                border-gray-500
+                border-gray-100
+                bg-gray-100
                 mb-10
             " id="doc-results_' . $storyId . '">';
-            $content .= '<div class="img-holder">';
+            $content .= '<div class="img-holder relative">';
                 $content .= '<a href="' . home_url() . '/documents/story/?story=' . $storyId . '">';
                     $content .= '<img src="' . $imageLink . '" alt="Story-' . $storyId . '" width="300" height="200">';
                 $content .= '</a>';
-            $content .= '</div>';
-            $content .= '<div class="status-lang-date relative">';
                 $content .= '<div
                     class="
-                        h-4
+                        theme-color
+                        w-8
                         absolute
-                        w-full
-                        top-[-16px]
-                        px-2
-                    " style="background-color:rgba(0,0,0,0.5);">
-                        <span
-                            class="
-                               inline-block
-                               float-left
-                               text-xs
-                               text-white">' . $instance['tct-storyofmonth-lng'] . '</span>
-                        <span
-                            class="
-                                inline-block
-                                float-right
-                                text-xs
-                                text-white">' . $instance['tct-storyofmonth-month'] . '</span>
-                    </div>';
+                        font-bold
+                        text-center
+                        text-sm
+                        top-2.5
+                        right-2.5
+                        bg-gray-100
+                    ">';
+                    $content .= $instance['tct-storyofmonth-lng'];
+                $content .= '</div>';
+            $content .= '</div>';
+            $content .= '<div class="status-holder relative">';
                 $content .= $compStatus;
             $content .= '</div>';
             $content .= '<div
                 class="
                     body-holder
-                    p-2
-                    h-[250px]
+                    px-4
+                    pb-2.5
+                    h-[225px]
                     overflow-hidden
                 ">';
                 $content .= '<div class="h-1/5">';
@@ -144,11 +140,12 @@ if ( ! is_admin() ) {
                 $content .= '<hr/>';
                 $content .= '<p
                     class="
+                        m-0
                         text-sm
-                        pb-2
-                        h-4/5
-                        line-clamp-7
-                    ">' . $instance['tct-storyofmonth-description'] . '</p>';
+                        h-4/6
+                        line-clamp-[7]
+                        mt-4
+                    " title="'.$instance['tct-storyofmonth-description'].'">' . $instance['tct-storyofmonth-description'] . '</p>';
             $content .= '</div>';
         $content .= '</div>';
 
