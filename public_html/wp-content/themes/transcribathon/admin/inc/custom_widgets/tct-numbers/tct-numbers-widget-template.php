@@ -66,7 +66,7 @@ if(isset($instance['tct-numbers-kind']) && trim($instance['tct-numbers-kind']) !
 				float-right
 				text-left
 			">';
-		    $content .= str_replace('-', '<br>', $instance['tct-numbers-kind']);
+		    $content .= '<h4 class="tracking-wide">' . str_replace('-', '<br>', $instance['tct-numbers-kind']) . '</h4>';
 		$content .= '</div>';
 		$content .= '<div style="clear:both;"></div>';
 	$content .= '</div>';
