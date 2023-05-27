@@ -130,11 +130,13 @@ if ( ! is_admin() ) {
                             text-base
                             font-bold
                             truncate
+                            m-0
                         " title="' . $storyTitle . '">' . $storyTitle . '</h2>';
                     $content .= '<h4
                         class="
                             text-xs
                             text-gray-700
+                            m-0
                         ">' . $instance['tct-storyofmonth-subline'] . '</h4>';
                 $content .= '</div>';
                 $content .= '<hr/>';

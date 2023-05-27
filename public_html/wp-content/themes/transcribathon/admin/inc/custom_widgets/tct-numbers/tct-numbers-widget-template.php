@@ -65,12 +65,11 @@ if(isset($instance['tct-numbers-kind']) && trim($instance['tct-numbers-kind']) !
 		$content .= '<div
 		    class="
 			    uppercase
-				leading-5
 				inline-block
 				w-2/5
 				text-left
 			">';
-		    $content .= '<h4 class="tracking-wide">' . str_replace('-', '<br>', $instance['tct-numbers-kind']) . '</h4>';
+		    $content .= '<h4 class="tracking-wide leading-5 text-base my-0">' . str_replace('-', '<br>', $instance['tct-numbers-kind']) . '</h4>';
 		$content .= '</div>';
 		$content .= '<div style="clear:both;"></div>';
 	$content .= '</div>';
