@@ -108,7 +108,7 @@ function _TCT_teamsandruns_tab( $atts ) {
                 $content .= '<div class="whitespace-nowrap">';
 			        $content .= '<h3 class="theme-color text-xl font-bold"> Join a team </h3>';
 					$content .= '<p class="text-sm"> If you received a code to join a team, please enter it here and click \'Join\'</p>';
-					$content .= '<div class="h-8">';
+					$content .= '<div class="h-8 flex">';
 					    $content .= '<input type="text" id="join-team-code" placeholder="Enter team code" 
 						    class="
 						        w-4/5

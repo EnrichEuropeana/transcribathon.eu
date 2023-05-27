@@ -3845,7 +3845,7 @@ a.tct-vio-but {
   outline: none !important;
   cursor: text !important;
   font-size: 15px !important;
-  height: 40px !important;
+  height: 40px;
   box-sizing: border-box !important;
   box-shadow: none !important;
   border-radius: 0%!important;
