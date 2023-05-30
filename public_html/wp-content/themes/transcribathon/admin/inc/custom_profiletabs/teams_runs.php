@@ -159,7 +159,7 @@ function _TCT_teamsandruns_tab( $atts ) {
 						// Short Name
 						$content .= '<p class="text-sm"> Please enter an abbreviated name (max 6 characters), this might appear in some cases next of a member\'s name. </p>';
 						$content .= '<label for="team-shortname" class="text-sm" style="height:32px!important;"> Team name abbreviation: </label>';
-						$content .= '<input type="text" id="team-shortname" name="team-shortname" placeholder="Abbr." class="w-full rounded-none border-box mb-8 h-8"></br>';
+						$content .= '<input type="text" id="team-shortname" name="team-shortname" placeholder="Abbr." style="height:32px!important;" class="w-full rounded-none border-box mb-8 h-8"></br>';
 
 						// Description
 						$content .= '<label for="team-description" class="text-sm clear-both"> Short description of a team: </label></br>';
