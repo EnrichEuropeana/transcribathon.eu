@@ -204,7 +204,7 @@ $theme_sets = get_theme_mods();
                                     $imageLink = str_replace('full', '50,50,1800,1100', $imageLink);
                                 }
 
-                                $content .= '<img class="border-b border-solid border-gray-100" src="' . $imageLink . '" loading="lazy" width="320" height="180" alt="edited-item-' . $i . '">';
+                                $content .= '<img class="border-b border-solid border-gray-100 max-h-[180px]" src="' . $imageLink . '" loading="lazy" width="320" height="180" alt="edited-item-' . $i . '">';
 
                             $content .= '</a>';
                             // Title
