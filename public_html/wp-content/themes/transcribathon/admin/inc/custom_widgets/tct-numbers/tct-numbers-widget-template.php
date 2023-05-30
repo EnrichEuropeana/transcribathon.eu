@@ -59,6 +59,7 @@ if(isset($instance['tct-numbers-kind']) && trim($instance['tct-numbers-kind']) !
 				tracking-wider
 				py-2
 				px-4
+				max-h-10
 			">';
 	        $content .= number_format($numbers, 0, '.', ',');
 		$content .= '</div>';
