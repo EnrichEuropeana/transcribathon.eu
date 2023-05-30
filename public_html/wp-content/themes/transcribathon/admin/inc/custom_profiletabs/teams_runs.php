@@ -109,10 +109,10 @@ function _TCT_teamsandruns_tab( $atts ) {
 			        $content .= '<h3 class="theme-color text-xl font-bold"> Join a team </h3>';
 					$content .= '<p class="text-sm"> If you received a code to join a team, please enter it here and click \'Join\'</p>';
 					$content .= '<div class="h-8 flex">';
-					    $content .= '<input type="text" id="join-team-code" placeholder="Enter team code" 
+					    $content .= '<input type="text" id="join-team-code" placeholder="Enter team code" style="height:32px!important;"
 						    class="
 						        w-4/5
-						    	h-full
+						    	h-10
 						    	rounded-none
 								box-border
 								align-bottom
@@ -123,7 +123,7 @@ function _TCT_teamsandruns_tab( $atts ) {
 						    class="
 							    theme-color-background
 								w-1/5
-								h-full
+								h-8
 								rounded-none
 								border-red-800
 								box-border
@@ -144,7 +144,7 @@ function _TCT_teamsandruns_tab( $atts ) {
 					$content .= '<form id="team-form">';
 					    // Team Name
 					    $content .= '<label for="team-title" class="text-sm"> Team Name: </label></br>';
-						$content .= '<input type="text" id="team-title" name="team-title" placeholder="Please enter a name" 
+						$content .= '<input type="text" id="team-title" name="team-title" placeholder="Please enter a name" style="height:32px!important;" 
 						    class="
 							    w-full
 								h-8
@@ -158,8 +158,8 @@ function _TCT_teamsandruns_tab( $atts ) {
 
 						// Short Name
 						$content .= '<p class="text-sm"> Please enter an abbreviated name (max 6 characters), this might appear in some cases next of a member\'s name. </p>';
-						$content .= '<label for="team-shortname" class="text-sm" class="w-2/6"> Team name abbreviation: </label>';
-						$content .= '<input type="text" id="team-shortname" name="team-shortname" placeholder="Abbr." class="w-4/6 rounded-none border-box mb-8"></br>';
+						$content .= '<label for="team-shortname" class="text-sm" style="height:32px!important;"> Team name abbreviation: </label>';
+						$content .= '<input type="text" id="team-shortname" name="team-shortname" placeholder="Abbr." class="w-full rounded-none border-box mb-8 h-8"></br>';
 
 						// Description
 						$content .= '<label for="team-description" class="text-sm clear-both"> Short description of a team: </label></br>';
@@ -171,13 +171,13 @@ function _TCT_teamsandruns_tab( $atts ) {
 								px-0.5
 								mb-6
 							">
-						</textarea></br>';
+						</textarea>';
 
 						// Access code
-						$content .= '<label for="access-code" class="text-sm"> 
+						$content .= '<label for="access-code" class="text-sm h-10"> 
 						    Generate the access code. Using this access code, other people can join your team:
 						</label></br>';
-						$content .= '<input type="text" id="access-code" name="access-code" style="display:none;">';
+						$content .= '<input type="text" id="access-code" name="access-code" style="display:none;height:32px!important;">';
 						$content .= '<div id="generate-code" 
 						    class="
 							    theme-color-background
@@ -195,7 +195,7 @@ function _TCT_teamsandruns_tab( $atts ) {
 						    If you want to register this team for Transcribathon event or run, enter the run code below.
 						    You can also do that later via \'Edit Team\'.
 						</label></br>';
-						$content .= '<input type="text" id="run-code" name="run-code" placeholder="Run code"
+						$content .= '<input type="text" id="run-code" name="run-code" placeholder="Run code" style="height:32px!important;"
 						    class="
 							    w-full
 								h-8
@@ -204,8 +204,7 @@ function _TCT_teamsandruns_tab( $atts ) {
 								leading-loose
 								box-border
 								mb-6
-							">
-						</br>';
+							">';
 
 						// 'Submit' button
 						$content .= '<div id="create-team-btn" 
