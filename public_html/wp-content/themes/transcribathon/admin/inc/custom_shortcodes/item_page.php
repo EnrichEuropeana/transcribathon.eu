@@ -1059,7 +1059,7 @@ if (event.target.id != "tagging-status-indicator") {
             </script>";
 
         } else {
-            $transcriptionView = !empty($currentTranscription['Text']) ? $currentTranscription['Text'] : "<p id='fs-start-tr'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg' style='top:15vh!important;'></p>";
+            $transcriptionView = !empty($currentTranscription['Text']) ? $currentTranscription['Text'] : "<p id='fs-start-tr'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg' style='top:15vh!important;margin:0 auto;'></p>";
             $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
                 // MCE Editor
                 $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
@@ -1894,7 +1894,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $content .= "</div>";
                         } else {
                             $content .= "<div id='no-text-placeholder'>";
-                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg'></p>";
+                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg' style='margin:0 auto;'></p>";
                             $content .= "</div>";
                             $content .= "<div class='current-transcription' style='display:none;'></div>";
                             $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
