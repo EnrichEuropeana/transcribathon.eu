@@ -397,6 +397,7 @@ function embedd_custom_javascripts_and_css() {
                 wp_dequeue_style('sp-ea-style');
                 wp_dequeue_style('responsive-lightbox-featherlight');
                 wp_dequeue_style('responsive-lightbox-featherlight-gallery');
+                wp_dequeue_style('tailwind-front');
 
                 // Dequeue unused scripts
                 wp_dequeue_script('responsive-lightbox-featherlight');

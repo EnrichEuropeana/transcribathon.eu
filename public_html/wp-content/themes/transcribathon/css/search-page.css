@@ -219,10 +219,11 @@
     padding: 14px 10px!important;
     margin: 0!important;
     border-radius: 0;
+    height: 50px;
 }
 .map-search-page .document-search-button {
     position: relative;
-    padding: 13px 10px;
+    padding: 14px 10px;
 }
 .search-page-single-result .single-title > h2 {
     overflow-y: hidden;
@@ -243,6 +244,7 @@
 }
 #query-form {
     position: relative;
+    height: 49px;
 }
 @media screen and (max-width: 750px) {
     .facet-form-search {
