@@ -1147,7 +1147,6 @@ if (event.target.id != "tagging-status-indicator") {
             if(!empty($currentTranscription['Languages'])) {
                 $editorTab .= "<div class='transcription-language'>";
                 $editorTab .= "<h6 class='enrich-language' style='padding-left:0!important'> Language(s) of Transcription </h6>";
-                $editorTab .= "<div>";
             
                 foreach($currentTranscription['Languages'] as $language) {
                     $editorTab .= "<div class='language-single'>" . $language['Name'] . "</div>";
@@ -1166,7 +1165,7 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
 
             $editorTab .= $trHistory;
-            $editorTab .= "</div>";
+            
             $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";
         $editorTab .= "</div>";
 
