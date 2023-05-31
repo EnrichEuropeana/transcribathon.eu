@@ -120,6 +120,8 @@ function _TCT_htr_import()
 
 	$requestUri = get_stylesheet_directory_uri() . '/htr-client/request.php';
 
+	$solrImportWrapperUri = get_stylesheet_directory_uri() . '/solr-import-request.php';
+
 	$labels = $itemId
 		? getInputs($itemId, 'items')
 		: ($storyId ? getInputs($storyId, 'stories') : getInputs());
@@ -253,6 +255,8 @@ document.addEventListener('alpine:init', () => {
 
 	Alpine.data('htrForm', () => ({
 
+		solrImportWrapper: '{$solrImportWrapperUri}',
+		solrApiCommand: '/solr/Items/dataimport?command=delta-import&commit=true',
 		filterString: '',
 		requestUri: '{$requestUri}',
 		htrModels: {},
@@ -394,6 +398,12 @@ document.addEventListener('alpine:init', () => {
 			return data;
 		},
 
+		async updateSolr () {
+
+			const solrUpdate =  await (await fetch(this.solrImportWrapper + this.solrApiCommand)).json();
+
+		},
+
 		async getHtrData () {
 
 			this.showStatus = false;
@@ -443,6 +453,7 @@ document.addEventListener('alpine:init', () => {
 						this.disabled = false;
 						this.processing = false;
 						this.showStatus = true;
+						this.updateSolr();
 						return;
 					}
 
@@ -460,6 +471,7 @@ document.addEventListener('alpine:init', () => {
 					this.disabled = false;
 					this.processing = false;
 					this.showStatus = true;
+					this.updateSolr();
 					return;
 				}
 
