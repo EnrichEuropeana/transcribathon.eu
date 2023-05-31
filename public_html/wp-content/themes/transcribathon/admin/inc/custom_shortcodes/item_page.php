@@ -642,9 +642,9 @@ if (event.target.id != "tagging-status-indicator") {
             $itemData['Persons'] = sendQuery(TP_API_HOST . '/tp-api/persons?ItemId=' . $itemId, $getJsonOptions, true);
 
             if (count($itemData['Persons']) > 0) {
-                $enrichmentTab .= '<div class="collapse person-item-data-container login-required" id="person-input-container" style="position:relative;">';
+                $enrichmentTab .= '<div class="person-item-data-container login-required" id="person-input-container" style="position:relative;">';
             } else {
-                $enrichmentTab .= '<div class="collapse person-item-data-container show login-required" id="person-input-container" style="position:relative;">';
+                $enrichmentTab .= '<div class="person-item-data-container show login-required" id="person-input-container" style="position:relative;">';
             }
                 $enrichmentTab .= '<div class="person-input-names-container">';
                     $enrichmentTab .= '<input type="text" id="person-firstName-input" class="input-response person-input-field" name="" placeholder="&nbsp First Name" style="width:48.5%;">';
@@ -2167,7 +2167,7 @@ if (event.target.id != "tagging-status-indicator") {
                 // Tag tab
                 $content .= "<div id='tag-tab' class='tabcontent' style='display:none'>";
                 // $enrichmentTab;
-                // $enrichmentTab;
+                    
                     $content .= "<div id='ppl-auto-e-container'>";
                         $content .= "<h3 id='ppl-verify' style='display: none;'> Verify Automatically Identified Persons </h3>";
                         $content .= "<div id='ppl-auto-enrich'></div>";
