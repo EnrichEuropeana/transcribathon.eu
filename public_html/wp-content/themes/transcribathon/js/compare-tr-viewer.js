@@ -40,14 +40,14 @@ ready(() => {
         const imJaLink = document.querySelector('#image-json-link').textContent;
         const imgHeight = document.querySelector('#image-height').textContent;
         const imgWidth = document.querySelector('#image-width').textContent;
-    
+
 	      let imJLink = imJaLink;
 	      if (imJaLink.substring(0, 5) != 'https' && imJaLink.substring(0, 4) != 'http') {
 	          imJLink = 'https://' + imJaLink;
 	      } else if (imJaLink.substring(0, 5) == 'http:') {
 	           imJLink = imJaLink.replace('http','https');
 	      }
-    
+
 
         const viewer = OpenSeadragon({
             id: "openseadragon",
@@ -70,6 +70,8 @@ document.addEventListener('alpine:init', () => {
 
         source: null, // htr, manual
         requestUri: home_url + '/wp-content/themes/transcribathon/api-request.php/items/' + itemId,
+				solrImportWrapper: home_url + '/wp-content/themes/transcribathon/solr-import-request.php',
+				solrApiCommand: '/solr/Items/dataimport?command=delta-import&commit=true',
 
         async init () {
 
@@ -88,6 +90,7 @@ document.addEventListener('alpine:init', () => {
                 })).json();
 
                 if (setSource.success) {
+										const solrUpdate =  await (await fetch(this.solrImportWrapper + this.solrApiCommand)).json();
                     alert('Transcription set to ' + this.source);
                 } else {
                     alert('Transcription could not set to');

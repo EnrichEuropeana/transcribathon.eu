@@ -20,6 +20,7 @@ function _TCT_item_page_htr( $atts) {
     $textEditorUrl = get_stylesheet_directory_uri() . '/htr-client/texteditor/';
     $layoutEditorUrl = get_stylesheet_directory_uri() . '/htr-client/layouteditor/';
     $apiRequestUri = get_stylesheet_directory_uri() . '/api-request.php';
+		$solrImportWrapperUri = get_stylesheet_directory_uri() . '/solr-import-request.php';
     $homeUri = home_url();
 
     $isLoggedIn = is_user_logged_in();
@@ -64,7 +65,7 @@ function _TCT_item_page_htr( $atts) {
 
     // extract the data itself
     //$htrDataArray = json_decode($htrDataJson, true);
-    
+
     $htrData = $htrDataArray['data'][0]['TranscriptionData'];
 		$htrDataId = $htrDataArray['data'][0]['HtrDataId'];
 
@@ -201,6 +202,8 @@ ready(() => {
 <script>
     window.eventBus.\$on('save', async (data) => {
 
+				const solrApiCommand = '/solr/Items/dataimport?command=delta-import&commit=true';
+
         const payload = {
             ItemId: {$itemId},
             UserId: {$userId},
@@ -217,6 +220,7 @@ ready(() => {
 
         if (result && result.success === true) {
 
+						const solrUpdate =  await (await fetch('{$solrImportWrapperUri}' + solrApiCommand)).json();
             alert('The entry has been updated.');
 
         } else {
