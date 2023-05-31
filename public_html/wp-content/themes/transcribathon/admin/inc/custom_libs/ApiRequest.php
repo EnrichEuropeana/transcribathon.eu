@@ -8,37 +8,37 @@ class ApiRequest
 
 	protected $apiHost = null;
 
-	public function __construct(string $apiToken, string $apiHost)
+	public function __construct(String $apiToken, String $apiHost)
 	{
 		$this->apiToken = $apiToken;
 		$this->apiHost = $apiHost;
 	}
 
-	public function get(string $endpoint) : array
+	public function get(String $endpoint) : Array
 	{
 		$response = $this->send($endpoint, 'GET', null);
 		return $this->toArray($response);
 	}
 
-	public function post(string $endpint, array $payload) : array
+	public function post(String $endpint, Array $payload) : Array
 	{
 		$response = $this->send($handle, 'POST', $payload);
 		return $this->toArray($response);
 	}
 
-	public function put(string $endpint, array $payload) : array
+	public function put(String $endpint, Array $payload) : Array
 	{
 		$response = $this->send($handle, 'PUT', $payload);
 		return $this->toArray($response);
 	}
 
-	public function delete(string $endpint) : array
+	public function delete(String $endpint) : Array
 	{
 		$response = $this->send($handle, 'DELETE');
 		return $this->toArray($response);
 	}
 
-	public function send(string $endpoint, string $method = 'GET', mixed $payload = null) : string
+	public function send(String $endpoint, String $method = 'GET', Mixed $payload = null) : String
 	{
 		$url = $this->apiHost . $endpoint;
 		$options = [
@@ -58,12 +58,12 @@ class ApiRequest
 		return $this->sendRaw($url, $options);
 	}
 
-	public static function toArray(string $jsonString): array
+	public static function toArray(String $jsonString): Array
 	{
 			return json_decode($jsonString, true);
 	}
 
-	public static function sendRaw(string $url, array $options) : string
+	public static function sendRaw(String $url, Array $options) : String
 	{
 		$options['ssl'] = [
 			'verify_peer' => $options['ssl']['verify_peer'] ?? false,
