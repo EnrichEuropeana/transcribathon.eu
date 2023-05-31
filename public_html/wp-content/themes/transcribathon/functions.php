@@ -14,7 +14,8 @@ show_admin_bar(false);
  * Function to check valid Transcription
  * For now passing just item ID, it can be modified for other use
  */
-function checkActiveTranscription($itemID) {
+function checkActiveTranscription($itemID)
+{
 
     $url = TP_API_V2_ENDPOINT . '/items/' . $itemID;
 
@@ -59,7 +60,8 @@ function sendQuery($url, $options, $jsonDecode = false)
 		return $out;
 }
 
-function extractImageService($imageData) {
+function extractImageService($imageData)
+{
     $extractedService = $imageData['service'];
 
     if (is_array($imageData['service']) && empty($imageData['service']['@id'])) {
@@ -73,7 +75,8 @@ function extractImageService($imageData) {
  * $request as array with IIIF image request API:
  * region, size, rotation, quality, format
  */
-function createImageLinkFromData($imageData, $request = array()) {
+function createImageLinkFromData($imageData, $request = array())
+{
     $imageData['service'] = extractImageService($imageData);
     $imageId = $imageData['service']['@id'];
     $imageWidth = $imageData['width'];
@@ -127,7 +130,8 @@ function createImageLinkFromData($imageData, $request = array()) {
     return $imageLink;
 }
 
-function get_http_response_code($url) {
+function get_http_response_code($url)
+{
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
@@ -138,12 +142,14 @@ function get_http_response_code($url) {
     return $httpCode;
 }
 
-function dd($data) {
+function dd($data)
+{
     dump($data);
     die();
 }
 
-function dump($data) {
+function dump($data)
+{
     $style = '
         position: fixed;
         top: 10vh;
@@ -177,15 +183,18 @@ function dump($data) {
     echo '</pre>';
 }
 
-function get_main_url() {
+function get_main_url()
+{
     return get_home_url();
 }
 
-function get_europeana_url() {
+function get_europeana_url()
+{
     return get_home_url(11);
 }
 
-function get_text_from_pagexml($xmlString, $break = '') {
+function get_text_from_pagexml($xmlString, $break = '')
+{
     $text = '';
     $xmlString = str_replace('xmlns=', 'ns=', $xmlString);
     if($xmlString) {
@@ -270,7 +279,7 @@ function load_admin_page($pageData)
     register_widget('_TCT_Storyofmonth_Widget');
 
     require_once(TCT_THEME_DIR_PATH.'admin/inc/custom_widgets/tct-numbers/tct-numbers-widget.php'); // Adds the widget for numbers
-    register_widget('TCT_Numbers_Widget'); 
+    register_widget('TCT_Numbers_Widget');
 
 
 
@@ -1022,7 +1031,7 @@ function um_custom_validate_firstname_lastname($args){
 /* Custom profile cover ratio (ultimate member) */
 add_filter("um_get_option_filter__profile_cover_ratio", "um_change_profile_cover_ratio", 10, 1);
 function um_change_profile_cover_ratio( $ratio ){
-  
+
    return "5:1";
 }
 /* Leave login message when user enters wrong password */
@@ -1032,7 +1041,7 @@ function um_custom_login_failed() {
         if (document.readyState != "loading") callback();
         else document.addEventListener("DOMContentLoaded", callback);
     }
-    
+
     // Replacement for jQuery document.ready; It runs the code after DOM is completely loaded
     ready(() => {document.querySelector("#default-login-container").style.display = "block";});
     </script>';
