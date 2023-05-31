@@ -74,6 +74,14 @@ define('HTR_ENDPOINT', getenv('HTR_ENDPOINT'));
 define('HTR_MODEL_ENDPOINT', getenv('HTR_MODEL_ENDPOINT'));
 
 /**
+ * define europeana auth credentials
+ */
+define('EUROPEANA_USER', getenv('EUROPEANA_USER'));
+define('EUROPEANA_PASS', getenv('EUROPEANA_PASS'));
+define('EUROPEANA_CLIENT_ID', getenv('EUROPEANA_CLIENT_ID'));
+define('EUROPEANA_CLIENT_SECRET', getenv('EUROPEANA_CLIENT_SECRET'));
+
+/**
  * define endpoint and token for TP API V2
  */
 define('TP_API_V2_TOKEN', getenv('TP_API_V2_TOKEN'));
