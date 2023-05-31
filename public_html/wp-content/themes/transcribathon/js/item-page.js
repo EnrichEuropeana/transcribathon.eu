@@ -2888,62 +2888,91 @@ ready(() => {
     const stryId = parseInt(document.querySelector('#story-id').textContent);
     if(runBtn) {
         runBtn.addEventListener('click', function() {
+            // Show the spinner
             document.querySelector('#auto-story-spinner-container').style.display = 'block';
-            jQuery.post(
-                home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
-                  type: 'GET',
-                  url: `https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/annotation?property=description&storyId=${stryId}&wskey=apidemo`
-                },
-                function(response) {
-                    const autoEnrichmentsResponse = JSON.parse(response);
-                    const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
-                    let enrichNr = 1;
-                    if(autoEnrichments.items) {
-                        for(let itm of autoEnrichments.items) {
-                            let wikiDataArr = itm.body.id.split('/');
-                            let wikiId = wikiDataArr.pop();
-                            let singlIcon = itm.body.type == 'Person' ?
-                                '<i class="fas fa-user enrich-icon"></i>' : `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
-                            let singlEnrich = document.createElement('div');
-                            singlEnrich.classList.add('single-annotation-' + enrichNr);
-                            singlEnrich.innerHTML =
-                                    `<p class="type-n-id" style="display:none;">` +
-                                        `<span class="ann-type">${itm.body.type}</span>` +
-                                        `<span class="ext-id">${itm.id}</span>` +
-                                        `<span class="ann-id">${itm.body.id}</span>` +
-                                    `</p>` +
-                                    `<div class="enrich-body-left">` +
-                                        `<p>` +
-                                            singlIcon +
-                                            `<span class="enrich-label">${itm.body.prefLabel.en} </span>` +
-                                            ` - ` +
-                                            `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'>Wikidata ID: ${wikiId} </a></span>` +
-                                        `</p>` +
-                                        `<p class='auto-description'>Description: ${itm.body.description} </p>` +
-                                    `</div>` +
-                                    `<div class="enrich-body-right">` +
-                                        `<div class="slider-track" ><div class="slider-slider"></div></div>` +
-                                    `</div>` ;
-                            autoEnrichCont.appendChild(singlEnrich);
-                            singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
-                                singlEnrich.classList.toggle('accept');
-                            });
-                            singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
-                                event.stopPropagation();
-                                this.parentElement.click();
-                            })
 
-                            enrichNr += 1;
-                        }
-                    } else {
-                        alert('We are sorry! We haven\'t been able to generate auto enrichments.');
-                        document.querySelector('#auto-story-spinner-container').style.display = 'none';
-                        return;
+            // Create enrichments via AIT api
+            fetch(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_auto_enrichments.php",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify({
+                    storyId: stryId,
+                    property: "description"
+                })
+            
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                const autoEnrichments = JSON.parse(data);
+                console.log(autoEnrichments);
+                if(autoEnrichments.total > 0) {
+
+                    let enrichNr = 1;
+
+                    for(let itm of autoEnrichments.items) {
+
+                        let wikiDataArr = itm.body.id.split('/');
+                        let wikiDataId = wikiDataArr.pop();
+                        // Check if the enrichment type is person or location and assign adequate icon
+                        let singleIcon = itm.body.type == 'Person' ?
+                            '<i class="fa fa-user enrich-icon"></i>'
+                            :
+                            `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
+                        
+                        // Create new div for new enrichment, add classes and fill inner html with data
+                        let singlEnrich = document.createElement('div');
+                        singlEnrich.classList.add('single-annotation' + enrichNr);
+                        singlEnrich.innerHTML = 
+                            `<p class="type-n-id" style="display:none;">` +
+                                `<span class="ann-type">${itm.body.type}</span>` +
+                                `<span class="ann-id">${itm.id}</span>` +
+                            `</p>` +
+                            `<div class="enrich-body-left">` +
+                                `<p>` +
+                                    singleIcon +
+                                    `<span class="enrich-label">${itm.body.prefLabel.en}</span>` +
+                                    ` - ` +
+                                    `<span class="enrich-wiki"><ahref="https://www.wikidata.org/wiki/${wikiDataId}" target="_blank">Wikidata ID: ${wikiDataId}</a></span>` +
+                                `</p>` +
+                                `<p class="auto-description">Description: ${itm.body.descriptiion} </p>` +
+                            `</div>` +
+                            `<div class="enrich-body-right">` +
+                                `<div class="slider-track">` +
+                                    `<div class="slider-slider"></div>` +
+                                `</div>` +
+                            `</div>`;
+
+                        autoEnrichCont.appendChild(singlEnrich);
+
+                        singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
+                            singlEnrich.classList.toggle('accept');
+                        });
+                        singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
+                            event.stopPropagation();
+                            this.parentElement.click();
+                        })
+
+                        enrichNr += 1;
+
                     }
+
+
+                } else {
+                    alert('We are sorry! We haven\'t been able to generate auto enrichments.');
+                    document.querySelector('#auto-story-spinner-container').style.display = 'none';
+                    return;
+                }
                     document.querySelector('#auto-story-spinner-container').style.display = 'none';
                     document.querySelector('#verify-h').style.display = 'block';
                     document.querySelector('#accept-story-enrich').style.display = 'block';
-                });
+
+            });
+
 
         })
     }
