@@ -1166,6 +1166,7 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
 
             $editorTab .= $trHistory;
+            $editorTab .= "</div>";
             $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";
         $editorTab .= "</div>";
 
