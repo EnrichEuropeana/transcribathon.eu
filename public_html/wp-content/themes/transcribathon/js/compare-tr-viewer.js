@@ -91,7 +91,6 @@ document.addEventListener('alpine:init', () => {
 
                 if (setSource.success) {
 										const solrUpdate =  await (await fetch(this.solrImportWrapper + this.solrApiCommand)).json();
-										console.log(solrUpdate);
                     alert('Transcription set to ' + this.source);
                 } else {
                     alert('Transcription could not set to');
