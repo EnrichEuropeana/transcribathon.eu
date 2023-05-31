@@ -1058,7 +1058,7 @@ if (event.target.id != "tagging-status-indicator") {
             </script>";
 
         } else {
-            $transcriptionView = !empty($currentTranscription['Text']) ? $currentTranscription['Text'] : "<p id='fs-start-tr'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg' style='top:15vh!important;margin:0 auto;'></p>";
+            $transcriptionView = !empty($currentTranscription['Text']) ? $currentTranscription['Text'] : "<p id='fs-start-tr'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg' style='top:15vh!important;margin: 0 auto;'></p>";
             $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
                 // MCE Editor
                 $editorTab .= "<div id='mce-wrapper-transcription' class='login-required'>";
@@ -1146,7 +1146,6 @@ if (event.target.id != "tagging-status-indicator") {
             if(!empty($currentTranscription['Languages'])) {
                 $editorTab .= "<div class='transcription-language'>";
                 $editorTab .= "<h6 class='enrich-language' style='padding-left:0!important'> Language(s) of Transcription </h6>";
-                $editorTab .= "<div>";
             
                 foreach($currentTranscription['Languages'] as $language) {
                     $editorTab .= "<div class='language-single'>" . $language['Name'] . "</div>";
@@ -1165,6 +1164,7 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
 
             $editorTab .= $trHistory;
+            
             $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";
         $editorTab .= "</div>";
 
@@ -1892,7 +1892,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $content .= "</div>";
                         } else {
                             $content .= "<div id='no-text-placeholder'>";
-                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg' style='margin:0 auto;'></p>";
+                                $content .= "<p style='position:relative;top:40%;'><img src='".home_url()."/wp-content/themes/transcribathon/images/pen_in_circle.svg' style='margin: 0 auto;'></p>";
                             $content .= "</div>";
                             $content .= "<div class='current-transcription' style='display:none;'></div>";
                             $content .= "<div id='transcription-collapse-btn' style='display:none;'> Show More </div>";
@@ -2165,7 +2165,7 @@ if (event.target.id != "tagging-status-indicator") {
                 // Tag tab
                 $content .= "<div id='tag-tab' class='tabcontent' style='display:none'>";
                 // $enrichmentTab;
-                // $enrichmentTab;
+                    
                     $content .= "<div id='ppl-auto-e-container'>";
                         $content .= "<h3 id='ppl-verify' style='display: none;'> Verify Automatically Identified Persons </h3>";
                         $content .= "<div id='ppl-auto-enrich'></div>";
