@@ -38,4 +38,4 @@ if (empty($path)) {
 
 $url = TP_SOLR . $path . $query;
 
-echo(ApiRequest::sendRaw($url, []));
+ApiRequest::sendRaw($url, []);
