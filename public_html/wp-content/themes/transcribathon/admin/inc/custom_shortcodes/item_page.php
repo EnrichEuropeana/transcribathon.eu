@@ -2248,30 +2248,6 @@ if(descLangDel) {
 });
 </script>';
 
-/// AUto enrichments test --- works
-// $content .= '<script>
-
-// fetch("'.home_url().'/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_auto_enrichments.php",
-// {
-//     method: "POST",
-//     headers: {
-//         "Content-Type" : "application/json"
-//     },
-//     body: JSON.stringify({
-//         storyId: 100096,
-//         itemId: 1001287,
-//         property: "transcription"
-//     })
-
-// })
-// .then(function(response) {
-//     return response.json();
-// })
-// .then(function(data) {
-//     console.log(data);
-// });
-// </script>';
-
     //$content .= "</section>"; // End of main section
 
     return $content;
