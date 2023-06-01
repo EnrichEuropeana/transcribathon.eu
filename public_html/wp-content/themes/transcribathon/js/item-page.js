@@ -2908,7 +2908,8 @@ ready(() => {
                 return response.json();
             })
             .then(function(data) {
-                const autoEnrichments = JSON.parse(data);
+               // console.log(data);
+                const autoEnrichments = data;
                 console.log(autoEnrichments);
                 if(autoEnrichments.total > 0) {
 
@@ -2923,13 +2924,15 @@ ready(() => {
                             '<i class="fa fa-user enrich-icon"></i>'
                             :
                             `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
-                        
+                        // Check if there is enrichment description
+                        let description = itm.body.description ? `<p class="auto-description">Description: ${itm.body.description}</p>` : '';
                         // Create new div for new enrichment, add classes and fill inner html with data
                         let singlEnrich = document.createElement('div');
                         singlEnrich.classList.add('single-annotation' + enrichNr);
                         singlEnrich.innerHTML = 
                             `<p class="type-n-id" style="display:none;">` +
                                 `<span class="ann-type">${itm.body.type}</span>` +
+                                `<span class="ext-id">${itm.body.id}</span>` +
                                 `<span class="ann-id">${itm.id}</span>` +
                             `</p>` +
                             `<div class="enrich-body-left">` +
@@ -2939,7 +2942,7 @@ ready(() => {
                                     ` - ` +
                                     `<span class="enrich-wiki"><ahref="https://www.wikidata.org/wiki/${wikiDataId}" target="_blank">Wikidata ID: ${wikiDataId}</a></span>` +
                                 `</p>` +
-                                `<p class="auto-description">Description: ${itm.body.descriptiion} </p>` +
+                                description +
                             `</div>` +
                             `<div class="enrich-body-right">` +
                                 `<div class="slider-track">` +
