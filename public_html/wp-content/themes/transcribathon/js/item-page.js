@@ -2928,16 +2928,16 @@ ready(() => {
                         let description = itm.body.description ? `<p class="auto-description">Description: ${itm.body.description}</p>` : '';
                         // Create new div for new enrichment, add classes and fill inner html with data
                         let singlEnrich = document.createElement('div');
-                        singlEnrich.classList.add('single-annotation' + enrichNr);
+                        singlEnrich.classList.add('single-annotation' + enrichNr, 'auto-enrichment');
                         singlEnrich.innerHTML = 
                             `<p class="type-n-id" style="display:none;">` +
                                 `<span class="ann-type">${itm.body.type}</span>` +
                                 `<span class="ext-id">${itm.body.id}</span>` +
                                 `<span class="ann-id">${itm.id}</span>` +
                             `</p>` +
+                            singleIcon +
                             `<div class="enrich-body-left">` +
                                 `<p>` +
-                                    singleIcon +
                                     `<span class="enrich-label">${itm.body.prefLabel.en}</span>` +
                                     ` - ` +
                                     `<span class="enrich-wiki"><a href="https://www.wikidata.org/wiki/${wikiDataId}" target="_blank">Wikidata ID: ${wikiDataId}</a></span>` +
@@ -3028,6 +3028,10 @@ ready(() => {
 
                         // Check if the enrichment tpe is place
                         if(itm.body.type == 'Place') {
+                            // Don't show location if it doesn't have coords
+                            if(!itm.body.long) {
+                                continue;
+                            }
 
                             // Create enrichment
                             let singleEnrichment = document.createElement('div');

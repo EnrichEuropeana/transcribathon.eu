@@ -3365,17 +3365,11 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .ait-decline-btn i {
     color: red!important;
 }
-.auto-enrichment img {
+.auto-enrichment img, .auto-enrichment i {
     position: absolute;
     top: 18px;
     left: 10px;
     color: var(--main-color);
-}
-.enrich-body-left i {
-    color: var(--main-color);
-    margin-right: 16px;
-    position: relative;
-    left: 3px;
 }
 .ait-accept-btn button, .ait-decline-btn button {
     padding: 0!important;
@@ -3458,6 +3452,9 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     text-align: center;
     letter-spacing: 00.025em;
     cursor: pointer;
+}
+.panel-right #accept-ppl-enrich {
+    margin-left: 30px;
 }
 #ppl-auto-e-container {
     margin-left: 30px;
