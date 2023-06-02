@@ -3072,8 +3072,6 @@ ready(() => {
                             }).setLngLat([itm.body.long,itm.body.lat])
                             .addTo(map);
 
-                            
-
                             singleEnrichment.querySelector('.slider-track').addEventListener('click', function() {
                                 singleEnrichment.classList.toggle('accept');
                             });
@@ -3094,16 +3092,16 @@ ready(() => {
                             }
 
                             let singleEnrichment = document.createElement('div');
-                            singleEnrichment.classList.add('single-annotation-' + enrichNr);
+                            singleEnrichment.classList.add('single-annotation-' + enrichNr, 'auto-enrichment');
                             singleEnrichment.innerHTML = 
                                 `<p class="type-n-id" style="display:none;">` +
                                     `<span class="ann-type">${itm.body.type}</span>` +
                                     `<span class="ext-id">${itm.body.id}</span>` +
                                     `<span class="ann-id">${itm.id}</span>` +
                                 `</p>` +
+                                `<i class="fas fa-user enrich-icon"></i>` +
                                 `<div class="enrich-body-left">` +
                                     `<p>` +
-                                        `<i class="fas fa-user enrich-icon"></i>` +
                                         `<span class="enrich-label">` +
                                             `<span class="firstName">${firstName}</span>` +
                                             `<span class="lastName"> ${lastName ? lastName : ''}</span>` +
