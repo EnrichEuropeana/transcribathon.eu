@@ -3031,17 +3031,18 @@ ready(() => {
 
                             // Create enrichment
                             let singleEnrichment = document.createElement('div');
-                            singleEnrichment.classList.add('single-annotation-' + enrichNr);
+                            singleEnrichment.classList.add('single-annotation-' + enrichNr, 'auto-enrichment');
                             singleEnrichment.innerHTML = 
                                 `<p class="type-n-id" style="display:none;">` +
                                     `<span class="ann-type">${itm.body.type}</span>` +
                                     `<span class="ext-id">${itm.body.id}</span>` +
                                     `<span class="ann-id">${itm.id}</span>` +
                                 `</p>` +
+                                `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-img">` +
                                 `<div class="enrich-body-left">` +
                                     `<p>` +
-                                        `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-img">` +
                                         `<span class="enrich-label">${itm.body.prefLabel.en}</span>` +
+                                        ` - ` +
                                         `<span class="enrich-wiki"><a href="${itm.body.id}" target="_blank">Wikidata ID: ${wikiId}</a></span>` +
                                     `</p>` +
                                     description +
@@ -3054,6 +3055,24 @@ ready(() => {
 
                             singleEnrichment.setAttribute('lat', itm.body.lat);
                             singleEnrichment.setAttribute('long', itm.body.long);
+
+                            // create marker for enrichment and place it on the map
+                            let autoEnMarker = document.createElement('div');
+                            autoEnMarker.style.cssText = `
+                                border: 1px solid #0a72cc;
+                                background-color: #0a72cc;
+                                border-radius: 9999px;
+                            `;
+                            autoEnMarker.innerHTML = 
+                                `<p style="font-size:8px!important;color:#fff;margin: 2px!important;">${wikiId}</p>`;
+
+                            let marker = new mapboxgl.Marker({
+                                draggable: false,
+                                element: autoEnMarker
+                            }).setLngLat([itm.body.long,itm.body.lat])
+                            .addTo(map);
+
+                            
 
                             singleEnrichment.querySelector('.slider-track').addEventListener('click', function() {
                                 singleEnrichment.classList.toggle('accept');
@@ -3124,14 +3143,14 @@ ready(() => {
                 // Show saving buttons if there are any enrichments to save
                 document.querySelector('#auto-itm-spinner-container').style.display = 'none';
                 if(autoLocCont.querySelector('div') != null) {
-                    document.querySelector('#loc-verify').style.dispaly = 'block';
+                    document.querySelector('#loc-verify').style.display = 'block';
                     document.querySelector('#accept-loc-enrich').style.display = 'block';
-                    document.querySelector('#auto-loc-btn').style.display = 'block';
+                    document.querySelector('#auto-loc-btn').style.display = 'inline-block';
                 }
                 if(autoPplCont.querySelector('div') != null) {
                     document.querySelector('#ppl-verify').style.display = 'block';
                     document.querySelector('#accept-ppl-enrich').style.display = 'block';
-                    document.querySelector('#auto-ppl-btn').style.display = 'block';
+                    document.querySelector('#auto-ppl-btn').style.display = 'inline-block';
                 }
 
                 return;

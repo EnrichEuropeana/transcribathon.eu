@@ -3298,29 +3298,34 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 
 /* Auto Enrichments Css */
+.auto-enrichment {
+    margin: 10px auto!important;
+    padding: 5px;
+    border: 1px solid #eee;
+    height: 60px;
+    position: relative;
+}
 .single-annotation, .verified-annot {
     margin: 10px auto;
     max-width: 800px;
     padding: 0 20px;
     position: relative;
 }
-.type-n-id {
-    font-size: 12px;
-    position: relative;
-    bottom: 2px;
-    margin: 0!important;
-    border-bottom: 0.5px solid #eee;
-}
 .enrich-body-left {
-    display: inline-block;
+    position: relative;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-content: center;
+    padding-left: 30px;
+    height: 90%;
     width: 80%;
 }
 .enrich-body-left p {
     margin: 0!important;
+    width: 100%;
 }
 .enrich-body-left .auto-description {
     font-size: 12px;
-    padding-left: 30px;
     position: relative;
     bottom: 8px;
 }
@@ -3329,7 +3334,8 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     float: right;
     right: 10px;
     width: 40px;
-    top: 3px;
+    top: calc(50% - 20px);
+    max-width: 20%;
 }
 .ait-section {
     margin: 20px auto;
@@ -3359,8 +3365,10 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .ait-decline-btn i {
     color: red!important;
 }
-.enrich-body-left img {
-    margin-right: 10px;
+.auto-enrichment img {
+    position: absolute;
+    top: 18px;
+    left: 10px;
     color: var(--main-color);
 }
 .enrich-body-left i {
@@ -3378,7 +3386,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     font-size: 15px;
 }
 #loc-auto-enrich {
-    padding-right: 25px;
+    width: 99%;
 }
 #translated-tr {
     display: none;
@@ -3399,7 +3407,8 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     padding-left: 25px!important;
 }
 #auto-e-link button {
-    padding: 10px!important;
+    padding: 0 5px!important;
+    font-size: 12px;
     border-top: 1px solid var(--main-color);
     border-right: 1px solid var(--main-color);
     border-bottom: 1px solid var(--main-color);
@@ -3493,8 +3502,11 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     margin-left: 5px;
     margin-right: 10px;
 }
+.loc-auto-enrich .enrich-wiki {
+    font-size: 11px;
+}
 .enrich-view .enrich-wiki {
-    font-size: 13px;
+    font-size: 11px;
     margin: 0!important;
     padding-left: 25px;
     position: relative;

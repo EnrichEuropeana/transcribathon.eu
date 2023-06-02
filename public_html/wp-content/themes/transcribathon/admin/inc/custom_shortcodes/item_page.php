@@ -2085,7 +2085,7 @@ if (event.target.id != "tagging-status-indicator") {
                     if(empty($itemAutoE['data'])) {
                         $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
                         $content .= "<div id='auto-e-link'>";
-                            $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\");'> Locations </button>";
+                            $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'> Locations </button>";
                             $content .= "<button id='auto-ppl-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tag-tab\");'> People </button>";
                         $content .= "</div>";
                         $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
