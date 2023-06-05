@@ -2755,10 +2755,12 @@ ready(() => {
         const transEditContainer = document.querySelector('#transcription-edit-container');
         const transViewContainer = document.querySelector('#transcription-view-container');
         const transHeader = document.querySelector('.transcription-headline-header span');
+        const autoEnrichItems = document.querySelector('#run-itm-enrich');
         transcriptionSwitch.addEventListener('click', function() {
             if(transEditContainer.style.display == 'none') {
                 transEditContainer.style.display = 'block';
                 transViewContainer.style.display = 'none';
+                autoEnrichItems.style.display = 'none';
                 transcriptionSwitch.querySelector('i').classList.replace('fa-pencil', 'fa-times');
                 if(transcriptionSwitch.classList.contains('htr-trans')) {
                     transHeader.textContent = 'TRANSCRIPTION';
@@ -2766,6 +2768,7 @@ ready(() => {
             } else {
                 transEditContainer.style.display = 'none';
                 transViewContainer.style.display = 'block';
+                autoEnrichItems.style.display = 'block';
                 transcriptionSwitch.querySelector('i').classList.replace('fa-times', 'fa-pencil');
                 if(transcriptionSwitch.classList.contains('htr-trans')) {
                     transHeader.textContent = 'HTR TRANSCRIPTION';

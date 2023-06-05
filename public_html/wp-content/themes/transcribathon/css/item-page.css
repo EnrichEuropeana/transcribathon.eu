@@ -1168,7 +1168,7 @@ p.mb-1 {
     margin-right: 1px;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 90%;
+    height: 80%;
 }
 #transcription-view-container #current-tr-view {
     min-height: 40vh;
@@ -3299,6 +3299,11 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     text-align: center;
     font-weight: 600;
     cursor: pointer;
+}
+#run-itm-enrich {
+    position: absolute;
+    bottom: 0;
+    width: calc( 100% - 60px);
 }
 #auto-enrich-story {
     padding-left: 25px;

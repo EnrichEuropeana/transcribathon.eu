@@ -1164,8 +1164,6 @@ if (event.target.id != "tagging-status-indicator") {
             $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
 
             $editorTab .= $trHistory;
-            
-            $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";
         $editorTab .= "</div>";
 
     $editorTab .= "</div>"; // End of Transcription-section
@@ -2077,7 +2075,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
                 // Editor tab
-                $content .= "<div id='editor-tab' class='tabcontent'>";
+                $content .= "<div id='editor-tab' class='tabcontent' style='position:relative;'>";
                     // Content will be added here in switchItemPageView function
                     $content .= $editorTab;
                     //$content .= $trHistory;
