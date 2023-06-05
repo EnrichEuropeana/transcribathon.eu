@@ -1320,7 +1320,7 @@ p.mb-1 {
     margin-top: 0!important;
     padding-top: 0!important;
     margin-bottom: 19px;
-    height: fit-content;
+    height: 14vh;
     padding-bottom: 0;
 }
 .panel-right .back-to-story {
@@ -1436,7 +1436,6 @@ p.mb-1 {
 .tab-list li {
     width: 20%;
     margin-left: 0!important;
-    margin: 0.65px;
     list-style-type: none;
 }
 .tab-list div {
@@ -1461,7 +1460,7 @@ p.mb-1 {
 .tab-h {
     font-size: 12px;
     color: inherit;
-    margin-left: 1px;
+    margin: 2px!important;
 }
 #loc-tab .tab-h {
     position: relative;

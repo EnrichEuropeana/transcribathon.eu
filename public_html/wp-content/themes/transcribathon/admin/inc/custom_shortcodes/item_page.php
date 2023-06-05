@@ -366,7 +366,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $locationDisplay .= "<i class='fas fa-question-circle' style='font-size: 16px;cursor: pointer; margin-left: 4px;'
                                                 tite='Add more information about this location, e.g. building name, or it's significance to the item...'></i>";
                             $locationDisplay .= "</label>";
-                            $locationDisplay .= "<textarea rows='2' class='edit-input gsearch-form' style='resize:none;' type='text' id='ldsc'>";
+                            $locationDisplay .= "<textarea rows='2' class='edit-input gsearch-form' style='resize:none;' type='text'>";
                             if($place['Comment']) {
                                 $locationDisplay .= htmlspecialchars($place['Comment'], ENT_QUOTES, 'UTF-8');
                             }
