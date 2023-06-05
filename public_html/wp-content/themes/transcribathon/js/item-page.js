@@ -1622,7 +1622,7 @@ function loadPlaceData(itemId, userId) {
                                 `<label>Description: ` +
                                     `<i class='fas fa-question-circle' style='font-size:16px;cursor:pointer;margin-left:4px;' title='Add more information about this location, e.g. building name, or it's significance to the item...'></i>` +
                                 `</label>` +
-                                `<textarea rows='2' id='ldsc' class='edit-input gsearch-form' style='resize:none;' type='text'>` +
+                                `<textarea rows='2' class='edit-input gsearch-form' style='resize:none;' type='text'>` +
                                 `${location['Comment'] != 'NULL' ?
                                 `${escapeHtml(location['Comment'])}`
                                 :

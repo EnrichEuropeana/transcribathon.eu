@@ -366,7 +366,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $locationDisplay .= "<i class='fas fa-question-circle' style='font-size: 16px;cursor: pointer; margin-left: 4px;'
                                                 tite='Add more information about this location, e.g. building name, or it's significance to the item...'></i>";
                             $locationDisplay .= "</label>";
-                            $locationDisplay .= "<textarea rows='2' class='edit-input gsearch-form' style='resize:none;' type='text' id='ldsc'>";
+                            $locationDisplay .= "<textarea rows='2' class='edit-input gsearch-form' style='resize:none;' type='text'>";
                             if($place['Comment']) {
                                 $locationDisplay .= htmlspecialchars($place['Comment'], ENT_QUOTES, 'UTF-8');
                             }
@@ -1014,7 +1014,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= "</div>";
                 $editorTab .= "<div id='popout-language-holder'></div>";
             $editorTab .= "</div>"; // End of inner Header
-            $editorTab .= "<div id='switch-tr-view' style='float:right;'><i class='fa fa-pencil' style='font-size:30px;color:#0a72cc;cursor:pointer;margin-top:5px;'></i></div>";
+            $editorTab .= "<div id='switch-tr-view' style='float:right;'><i class='fa fa-pencil' style='color:#0a72cc;cursor:pointer;margin-top:5px;'></i></div>";
             // Add link to HTR Editor when there is HTR data available
             if($htrTranscription != 'NULL' && $htrTranscription != '') {
                 $editorTab .= "<div id='fs-htr-link'>";
@@ -2036,7 +2036,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<li>";
                         $content .= "<div id='loc-tab' class='theme-color tablinks' title='Locations'
                             onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'>";
-                            $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='40px' width='40px' style='height:28px;margin:0 auto;'>";
+                            $content .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' alt='location-icon' height='20px' width='20px' style='height:20px;margin:0 auto;position:relative;bottom:3px;'>";
                             $content .= "<p class='tab-h'><i class='tab-status fal fa-circle' style='color:".$itemData['LocationStatusColorCode'].";background-color:".$itemData['LocationStatusColorCode'].";'></i>";
                             $content .= "<span><b> LOCATION</b></span></p>";
                         $content .= "</div>";

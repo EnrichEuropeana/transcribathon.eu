@@ -348,7 +348,8 @@ var tct_viewer = (function($, document, window) {
 		resize: true,
 		plugins: tinyPlugins,
 		toolbar: tinyToolbar,
-		placeholder:' Start transcribing...',
+		content_style: '.mce-content-body[data-mce-placeholder]:not(.mce-visualblocks)::before {padding-left:10px;}',
+		placeholder:'Start transcribing...',
 		toolbar_mode: 'floating',
 		charmap_append: [
             [381, 'Ž'],
