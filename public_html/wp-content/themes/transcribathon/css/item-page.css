@@ -1336,8 +1336,7 @@ p.mb-1 {
     color: #2b2b2b;
 }
 .panel-right .tab-list {
-    height: 90px;
-    padding-top: 17px;
+    padding-top: 8px;
     padding-left: 18px;
     position: relative;
     left: -3%;
@@ -1442,7 +1441,7 @@ p.mb-1 {
     color: #2b2b2b!important;
     background-color: #fff!important;
     position: relative;
-    font-size: 25px;
+    font-size: 20px;
     -webkit-transition: 0.3s;
     transition: 0.3s;
     display: inline-block;
@@ -1464,7 +1463,7 @@ p.mb-1 {
 }
 #loc-tab .tab-h {
     position: relative;
-    bottom: 4px;
+    bottom: 6px;
 }
 .data-popout #loc-tab .tab-h {
     bottom: 0;
