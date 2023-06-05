@@ -1015,7 +1015,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= "</div>";
                 $editorTab .= "<div id='popout-language-holder'></div>";
             $editorTab .= "</div>"; // End of inner Header
-            $editorTab .= "<div id='switch-tr-view' style='float:right;'><i class='fa fa-pencil' style='font-size:30px;color:#0a72cc;cursor:pointer;margin-top:5px;'></i></div>";
+            $editorTab .= "<div id='switch-tr-view' style='float:right;'><i class='fa fa-pencil' style='color:#0a72cc;cursor:pointer;margin-top:5px;'></i></div>";
             // Add link to HTR Editor when there is HTR data available
             if($htrTranscription != 'NULL' && $htrTranscription != '') {
                 $editorTab .= "<div id='fs-htr-link'>";
