@@ -668,7 +668,7 @@ p.mb-1 {
 }
 /* --- Full Screen Css --*/
 .item-page-section {
-    padding: 0 8px 8px 0;
+    padding: 5px 8px 8px 0;
     position: relative;
     margin-left: 30px;
 }
@@ -904,7 +904,6 @@ p.mb-1 {
     text-transform: none;
 }
 #transcription-update-button {
-    display: none;
     float: right;
     border: 1px solid #eeeeee;
     background: #eeeeee;
@@ -915,6 +914,7 @@ p.mb-1 {
 }
 #transcription-history, #current-tr-view {
     padding-left: 11px;
+    padding-right: 10px;
     padding-bottom: 10px;
 }
 #fs-htr-link {
@@ -1165,9 +1165,10 @@ p.mb-1 {
     text-decoration: none;
 }
 #transcription-view-container {
+    margin-right: 1px;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: calc(70vh - 100px);
+    height: 90%;
 }
 #transcription-view-container #current-tr-view {
     min-height: 40vh;
@@ -1295,7 +1296,8 @@ p.mb-1 {
     align-content: space-evenly;
 }
 .panel-right .item-page-section-headline-container {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    height: 10%;
 }
 .panel-right #transcription-update-button, .panel-right #description-update-button {
     width: 100%;
@@ -1320,7 +1322,7 @@ p.mb-1 {
     margin-top: 0!important;
     padding-top: 0!important;
     margin-bottom: 19px;
-    height: fit-content;
+    height: 14vh;
     padding-bottom: 0;
 }
 .panel-right .back-to-story {
@@ -1336,8 +1338,7 @@ p.mb-1 {
     color: #2b2b2b;
 }
 .panel-right .tab-list {
-    height: 90px;
-    padding-top: 17px;
+    padding-top: 8px;
     padding-left: 18px;
     position: relative;
     left: -3%;
@@ -1436,14 +1437,13 @@ p.mb-1 {
 .tab-list li {
     width: 20%;
     margin-left: 0!important;
-    margin: 0.65px;
     list-style-type: none;
 }
 .tab-list div {
     color: #2b2b2b!important;
     background-color: #fff!important;
     position: relative;
-    font-size: 25px;
+    font-size: 20px;
     -webkit-transition: 0.3s;
     transition: 0.3s;
     display: inline-block;
@@ -1461,11 +1461,11 @@ p.mb-1 {
 .tab-h {
     font-size: 12px;
     color: inherit;
-    margin-left: 1px;
+    margin: 2px!important;
 }
 #loc-tab .tab-h {
     position: relative;
-    bottom: 4px;
+    bottom: 6px;
 }
 .data-popout #loc-tab .tab-h {
     bottom: 0;
@@ -1785,28 +1785,31 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 /* Full screen viewer / change view */
 /* Vertical Split */
 .panel-right #mce-wrapper-transcription {
-    max-height: 60vh;
+    height: 80%!important;
+}
+.panel-right #transcription-edit-container {
+    height: 90%;
 }
 .panel-right #item-page-transcription-text {
-    max-height: inherit;
-    min-height: 40vh;
+    height: 100%;
+    max-height: unset;
+    min-height: unset;
 }
 #editor-tab.tabcontent {
     overflow: hidden!important;
 }
 .panel-right #item-data-content {
-    height: 85%;
+    height: 80vh;
 }
 .panel-right #transcription-section {
-    height: fit-content;
+    height: 80vh;
 }
 .panel-right .selected-lang {
     padding-top: 5px!important;
 }
 .panel-right .transcription-mini-metadata {
-    height: 13%;
+    height: 20%;
 }
-
 .selected-option:hover {
     background-color: var(--main-color)!important;
     color: #fff!important;
@@ -1822,11 +1825,11 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     letter-spacing: -0.5px;
 }
 .panel-right #transcription-language-selector {
-    height: 100%;
+    height: 50%;
 }
 .panel-right #transcription-selected-languages {
     float: unset;
-    margin-bottom: 10px;
+    height: 50%;
 }
 .panel-right #transcription-selected-languages li {
     font-size: 14px;
@@ -1845,7 +1848,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     margin-top: 5px;
 }
 .panel-right .tablinks {
-    height: 65px!important;
+    height: 50px!important;
     min-width: 30px!important;
 }
 /* Horizontal Split */
@@ -1929,8 +1932,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     width: 100px;
     font-size: 15px;
     border: 5px solid var(--main-color);
-    margin-right: 5px;
+    left: 5px;
     padding: 0 5px;
+    line-height: 1;
 }
 .panel-bottom .transcription-metadata-container {
     position: absolute;
@@ -2563,6 +2567,9 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 #popout-language-holder, .data-popout #switch-tr-view, .panel-bottom #switch-tr-view {
     display: none;
 }
+#switch-tr-view i {
+    font-size: 30px;
+}
 .data-popout #popout-language-holder {
     display: block;
 }
@@ -2608,6 +2615,7 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
     font-size: 15px;
     border: 2px solid var(--main-color);
     padding: 0;
+    line-height: 1;
 }
 .data-popout #item-transcription-spinner-container {
     position: relative;
@@ -2831,7 +2839,6 @@ input#person-birthPlace-input, input#person-deathPlace-input, #person-birthDate-
 .panel-bottom #loc-tab img {
     height: 17px!important;
     bottom: 7px!important;
-    left: 7px;
 }
 .panel-bottom #transcription-section, .panel-bottom #transcription-edit-container {
     position: relative;
@@ -4057,5 +4064,47 @@ p.list-person-single {
     }
     #shop-container p {
         font-size: 10px;
+    }
+}
+@media screen and (max-height: 610px) {
+    .item-page-section-headline {
+        font-size: 15px!important;
+        padding: 0!important;
+    }
+    #switch-tr-view i {
+        font-size: 25px;
+    }
+    .panel-right .item-page-section-headline-container {
+        height: 7%;
+    }
+    .panel-right #transcription-language-custom-selector {
+        height: 30px;
+        padding: 0 5px;
+    }
+    .panel-right #transcription-selected-languages li {
+        padding: 0 5px;
+        padding-top: 0;
+        height: 30px;
+    }
+}
+@media screen and (max-height: 450px) {
+    .tab-list li {
+        width: unset;
+    }
+    #item-tab-list li div {
+        display: flex;
+        width: 30px;
+    }
+    .tab-status {
+        bottom: 6px;
+    }
+    .panel-right .tablinks {
+        height: 35px!important;
+    }
+    #loc-tab .tab-h {
+        bottom: 1px;
+    }
+    .panel-right #transcription-edit-container {
+        height: 80%;
     }
 }
