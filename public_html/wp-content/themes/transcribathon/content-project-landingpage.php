@@ -17,7 +17,7 @@
 		<!-- bubbles -->
 		<div class="entry-content bubbles">
 			<!-- <hr class="hr-theme-bg theme-color-background"> -->
-			<a class="bubble search theme-color-background" href="<?php echo network_home_url(); ?>log-in/"><i class="fal fa-user-circle"></i><span class="rwd-mobile-display">Search</span></a>
+			<a class="bubble search theme-color-background" href="<?php echo network_home_url(); ?>log-in/"><i class="fal fa-user-circle"></i><span class="rwd-mobile-display">Log In</span></a>
 			<a class="bubble big transcribe-now theme-color-background" href="/documents"><i class="far fa-pen-nib"></i><br />&nbsp;<br />&nbsp;<br />Transcribe <br />now</a>
 			<a class="bubble help theme-color-background tutorial-model" id="tutorial-mode"><i class="fal fa-question-circle"></i><span class="rwd-mobile-display">How to start</span></a>
 		</div>
