@@ -3293,6 +3293,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     color: var(--main-color);
     font-size: 15px;
     border: 1px solid var(--main-color);
+    background-color: #fff;
     margin-left: 25px;
     margin-top: 10px;
     margin-right: 30px;
@@ -3300,7 +3301,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     font-weight: 600;
     cursor: pointer;
 }
-#run-itm-enrich {
+#run-itm-enrich-container {
     position: absolute;
     bottom: 0;
     width: calc( 100% - 60px);
