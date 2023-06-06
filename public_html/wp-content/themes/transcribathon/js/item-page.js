@@ -2889,6 +2889,7 @@ ready(() => {
     /// Story automatic enrichments
     const autoEnrichCont = document.querySelector('#auto-enrich-story');
     const runBtn = document.querySelector('#run-stry-enrich');
+    const storyTranslation = document.querySelector('#eng-desc-fs');
     if(runBtn) {
         runBtn.addEventListener('click', function() {
             // Show the spinner
@@ -2911,9 +2912,18 @@ ready(() => {
                 return response.json();
             })
             .then(function(data) {
-               // console.log(data);
+                console.log(data);
                 const autoEnrichments = data;
-                console.log(autoEnrichments);
+              //  console.log(autoEnrichments);
+                // Show english translation
+                if(autoEnrichments.translation != '') {
+                    storyTranslation.style.display = 'block';
+                    let translation = document.createElement('p');
+                    translation.classList.add('meta-p');
+                    translation.textContent = htmlDecode(autoEnrichments.translation);
+
+                    storyTranslation.appendChild(translation);
+                }
                 if(autoEnrichments.total > 0) {
 
                     let enrichNr = 1;
@@ -2936,7 +2946,7 @@ ready(() => {
                             `<p class="type-n-id" style="display:none;">` +
                                 `<span class="ann-type">${itm.body.type}</span>` +
                                 `<span class="ext-id">${itm.body.id}</span>` +
-                                `<span class="ann-id">${itm.id}</span>` +
+                                `<span class="wikiId">${wikiDataId}</span>` +
                             `</p>` +
                             singleIcon +
                             `<div class="enrich-body-left">` +
@@ -3027,12 +3037,12 @@ ready(() => {
 
                         let wikiDataArr = itm.body.id.split('/');
                         let wikiId = wikiDataArr.pop();
-                        let description = itm.body.description ? `<p class="auto-description">Description: ${itm.body.description} </p>` : '';
+                        let description = itm.body.description ? `<p class="auto-description">Description: ${itm.body.description} </p>` : '<p class="auto-description" style="display:none;"></p>';
 
                         // Check if the enrichment tpe is place
                         if(itm.body.type == 'Place') {
                             // Don't show location if it doesn't have coords
-                            if(!itm.body.long) {
+                            if(!itm.body.long && !itm.body.lat) {
                                 continue;
                             }
 
@@ -3043,7 +3053,7 @@ ready(() => {
                                 `<p class="type-n-id" style="display:none;">` +
                                     `<span class="ann-type">${itm.body.type}</span>` +
                                     `<span class="ext-id">${itm.body.id}</span>` +
-                                    `<span class="ann-id">${itm.id}</span>` +
+                                    `<span class="wikiId">${wikiId}</span>` +
                                 `</p>` +
                                 `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-img">` +
                                 `<div class="enrich-body-left">` +
@@ -3104,7 +3114,7 @@ ready(() => {
                                 `<p class="type-n-id" style="display:none;">` +
                                     `<span class="ann-type">${itm.body.type}</span>` +
                                     `<span class="ext-id">${itm.body.id}</span>` +
-                                    `<span class="ann-id">${itm.id}</span>` +
+                                    `<span class="wikiId">${wikiId}</span>` +
                                 `</p>` +
                                 `<i class="fas fa-user enrich-icon"></i>` +
                                 `<div class="enrich-body-left">` +
@@ -3252,6 +3262,7 @@ ready(() => {
                 // Check success and create confirmation message
                 function(response) {
 
+                    console.log(response);
                 });
 
             }
@@ -3273,22 +3284,44 @@ ready(() => {
                 let singlEnrichment = {
                     Name: enrichment.querySelector('.enrich-label').textContent,
                     Type: enrichment.querySelector('.ann-type').textContent,
-                    WikiData: enrichment.querySelector('.ann-id').textContent,
-                    StoryId: storyId,
+                    WikiData: enrichment.querySelector('.wikiId').textContent,
+                    StoryId: parseInt(storyId),
                     ItemId: null,
                     ExternalAnnotationId: enrichment.querySelector('.ext-id').textContent,
                     Comment: description
                 }
 
-                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                    'type': 'POST',
-                    'data': singlEnrichment,
-                    'url': 'http://tp_api_v2/v2/autoenrichments',
-                    'token': 'yes'
-                  },
-                  function(response) {
+                
+                fetch(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type" : "application/json"
+                    },
+                    body: JSON.stringify({
+                        type: "POST",
+                        url: TP_API_HOST_V2 + "/autoenrichments",
+                        data: singlEnrichment,
+                        token: "yes"
+                    })
+            
+                })
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data);
+                })
 
-                  });
+                // jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php', {
+                //     'type': 'POST',
+                //     'data': singlEnrichment,
+                //     'url': 'https://transcribathon.eu.local:4443/v2/autoenrichments',
+                //     'token': 'yes'
+                //   },
+                //   function(response) {
+                //       console.log(response);
+                //   });
             }
 
         })
@@ -3300,32 +3333,7 @@ ready(() => {
 
     if(translateTrBtn) {
         translateTrBtn.addEventListener('click', function() {
-            if(translatedCont.classList.contains('show')) {
-                translatedCont.classList.remove('show');
-            } else {
-                if(translatedCont.classList.contains('translated')) {
-                    translatedCont.classList.add('show');
-                } else {
-                    // Show spinner while we wait for translation
-                    document.querySelector('#eng-tr-spinner').style.display = 'block';
-
-                    jQuery.post(
-                        home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
-                          type: 'GET',
-                          url: `http://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/${stryId}/${itemId}?property=${autoProp}&wskey=apidemo`
-                        },
-                        function(response) {
-                            let engTranslation = JSON.parse(response);
-
-                            translatedCont.querySelector('p').innerHTML = engTranslation.content;
-                            translatedCont.classList.add('show');
-                            translatedCont.classList.add('translated');
-
-                            document.querySelector('#eng-tr-spinner').style.display = 'none';
-
-                        });
-                }
-            }
+            translatedCont.classList.toggle('show');
         })
     }
     // Get metadata when user click on 'Story Information'
@@ -3371,16 +3379,27 @@ ready(() => {
 });
 
 function deleteAutoEnrichment(enrichmentId, event) {
-    jQuery.post(
-        home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
-          type: 'DELETE',
-          url: 'http://tp_api_v2/v2/autoenrichments/' + enrichmentId,
-          token: 'yes'
+
+    fetch(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
         },
-        function(response) {
-            event.target.parentElement.remove();
-        });
+        body: JSON.stringify({
+            type: "DELETE",
+            url: TP_API_HOST_V2 + "/autoenrichments/" + enrichmentId,
+            token: 'yes'
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        event.target.parentElement.remove();
+    })
+
 }
+
+
 async function getMetadata(storyId) {
 
     const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/stories/' + storyId;
