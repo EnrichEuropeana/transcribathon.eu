@@ -9,29 +9,25 @@ $storyId = $requestData['storyId'];
 $itemId = !empty($requestData['itemId']) ?  $requestData['itemId'] : '';
 $property = !empty($requestData['property']) ? $requestData['property'] : 'description';
 
-if(!empty($storyId)) {
-    // Try first if there are already generated annotations
-    $getAnnoOptions = [
+
+if($storyId != '') {
+    // Check first if the annotations are created
+    $getEnrichmentOptions = [
         'http' => [
-            'header' => [
-                'Content-Type: application/json'
-            ],
-            'method' => 'GET'
-        ]
+            'Content-Type: application/json'
+        ], 
+        'method' => 'GET'
     ];
 
-    $url = 'https://dsi-demo.ait.ac.at/enrichment-web/enrichment/annotation?property=' . $property . '&storyId=' . $storyId . '&wskey=apidemo';
-    if(!empty($itemId)) {
-        $url .= '&itemId=' . $itemId;
+    $enrichmentsUrl = 'https://dsi-demo.ait.ac.at/enrichment-web/enrichment/annotation?property=' . $property . '&storyId=' . $storyId . '&wskey=apidemo';
+    if($itemId != '') {
+        $enrichmentsUrl .= '&itemId=' . $itemId;
     }
 
-    $result = sendQuery($url, $getAnnoOptions, true);
+    $autoEnrichments = sendQuery($enrichmentsUrl, $getEnrichmentOptions, true);
 
-    if($result['total'] > 0) {
-        // If annotations exist send them back to item page
-        echo json_encode($result);
-    } else {
-        // Else get europeana JWT token and send POST request to create annotation
+    if($autoEnrichments['total'] < 1) {
+        // Get JWT token from europeana
         $getEuropeanaTokenOptions = [
             'http' => [
                 'header' => [
@@ -48,11 +44,12 @@ if(!empty($storyId)) {
                 ])
             ]
         ];
-
+        
         $europeanaJwtResponse = sendQuery('https://auth.europeana.eu/auth/realms/europeana/protocol/openid-connect/token', $getEuropeanaTokenOptions, true);
         $europeanaJwt = $europeanaJwtResponse['access_token'];
 
-        $postAnnoOptions = [
+        // Create annotations 
+        $postEnrichmentOptions = [
             'http' => [
                 'header' => [
                     'Content-Type: application/json',
@@ -61,19 +58,37 @@ if(!empty($storyId)) {
                 'method' => 'POST'
             ]
         ];
+    
+        $enrichmentsUrl = $itemId != '' ? 'https://dsi-demo.ait.ac.at/enrichment-web/enrichment/annotation/' . $storyId . '/' . $itemId . '?property=' . $property : 'https://dsi-demo.ait.ac.at/enrichment-web/enrichment/annotation/' . $storyId . '?property=' . $property;
 
-        $url = 'https://dsi-demo.ait.ac.at/enrichment-web/enrichment/annotation/' . $storyId . '/?property=' . $property;
-        // add item ID for item specific enrichments
-        if($itemId != '') {
-            $url = 'https://dsi-demo.ait.ac.at/enrichment-web/enrichment/annotation/' . $storyId . '/' . $itemId . '/?property=' . $property;
-        }
+        $autoEnrichments = sendQuery($enrichmentsUrl, $postEnrichmentOptions, true);
 
-        $result = sendQuery($url, $postAnnoOptions, true);
 
-        echo json_encode($result);
+    } 
+    // GET translation and add it to the auto enrichments
+    $getTranslationOptions = [
+        'http' => [
+            'Content-Type: text/plain'
+        ],
+        'method' => 'GET'
+    ];
+    $urlParams = '?property=' . $property . '&translationTool=Google&wskey=apidemo';
+    $pathParams = $itemId != '' ? $storyId . '/' . $itemId : $storyId;
+    
+    $translationUrl = 'https://dsi-demo.ait.ac.at/enrichment-web/enrichment/translation/';
+    
+    $translationUrl .= $pathParams . $urlParams; 
+    $translation = sendQuery($translationUrl, $getTranslationOptions);
+    
 
-    }
 
+    $autoEnrichments['translation'] = $translation;
+
+    echo json_encode($autoEnrichments);
+
+
+} else {
+    echo json_encode('Sorry something went wrong!');
 }
 
 
