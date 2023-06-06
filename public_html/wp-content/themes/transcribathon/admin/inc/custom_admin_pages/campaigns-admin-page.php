@@ -105,7 +105,7 @@ TW2;
 TW3;
 
 	$html = <<<HTML
-<div class="container mx-auto mt-8" x-data="manage_teams" id="campaign-mangement">
+<div class="container mx-auto mt-8" x-data="manage_campaigns" id="campaign-mangement">
 	<h1 class="text-2xl mb-4">Campaign Management</h1>
 
 	<div class="bg-white p-6 rounded shadow-md">
