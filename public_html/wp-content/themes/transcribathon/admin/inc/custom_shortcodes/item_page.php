@@ -907,9 +907,9 @@ if (event.target.id != "tagging-status-indicator") {
         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
     }
     $trHistory .= "<div id='tr-history-collapse-btn' class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' style='margin-bottom: 0;'>";
-            $trHistory .= "<h4 id='transcription-history-collapse-heading' class='theme-color item-page-section-headline'>";
-                $trHistory .= "TRANSCRIPTION HISTORY";
-            $trHistory .= "</h4>";
+            $trHistory .= "<h6 id='transcription-history-collapse-heading' class='theme-color' style='display:inline-block;'>";
+                $trHistory .= "Transcription History";
+            $trHistory .= "</h6>";
             $trHistory .= "<i class='far fa-caret-circle-down collapse-icon theme-color' style='font-size:17px; margin-left:8px; margin-top:9px;'></i>";
         $trHistory .= "</div>";
         $trHistory .= "<div style='clear:both;'></div>";
@@ -1041,17 +1041,6 @@ if (event.target.id != "tagging-status-indicator") {
                     $editorTab .= "</div>";
                 $editorTab .= "</div>";
 
-
-            ////
-            // $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
-            // // MCE Editor
-            // $editorTab .= "<div id='mce-wrapper-transcription' class='login-required htr-active-tr'>";
-            //     $editorTab .= "<div id='mytoolbar-transcription'></div>";
-            //     $editorTab .= "<div id='item-page-transcription-text' rows='8'>";
-            //         $editorTab .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/htr_active.svg' style='margin-left:15px;'>";
-            //     $editorTab .= "</div>";
-            // $editorTab .= "</div>";
-
             $editorTab .= "<script>
                 document.querySelector('.transcription-headline-header span').textContent = 'HTR TRANSCRIPTION';
                 document.querySelector('#switch-tr-view').classList.add('htr-trans');
@@ -1154,13 +1143,13 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= "</div>";
             }
             // Transcription Translation
-            // $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
-            //     $editorTab .= "English Translation";
-            //     $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
-            //     $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
-            //         $editorTab .= "<div class='spinner'></div>";
-            //     $editorTab .= "</div>";
-            // $editorTab .= "</h4>";
+            $editorTab .= "<h6 class='theme-color' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
+                $editorTab .= "English Translation";
+                $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
+                $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
+                    $editorTab .= "<div class='spinner'></div>";
+                $editorTab .= "</div>";
+            $editorTab .= "</h6>";
             $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
 
             $editorTab .= $trHistory;
@@ -2081,14 +2070,16 @@ if (event.target.id != "tagging-status-indicator") {
                     //$content .= $trHistory;
                     // Automatic Enrichments
                     if(empty($itemAutoE['data'])) {
-                        $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
-                        $content .= "<div id='auto-e-link'>";
-                            $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'> Locations </button>";
-                            $content .= "<button id='auto-ppl-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tag-tab\", \"tagi-tab\");'> People </button>";
-                        $content .= "</div>";
-                        $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
-                            $content .= "<div class='spinner'></div>";
-                        $content .= "</div></div>";
+                        $content .= "<div id='run-itm-enrich-container'>";
+                            $content .= "<div id='auto-e-link'>";
+                                $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'> Locations </button>";
+                                $content .= "<button id='auto-ppl-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tag-tab\", \"tagi-tab\");'> People </button>";
+                            $content .= "</div>";
+                            $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
+                            $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
+                                $content .= "<div class='spinner'></div>";
+                            $content .= "</div></div>";
+                        $content .= '</div>';
                     }
                 $content .= "</div>";
                 // Description Tab
@@ -2105,12 +2096,9 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<div id='story-full-collapse' style='cursor:pointer;'>Show More</div>";
                     }
                     // English translation
-                    // if($engDescription != null) {
-                    //     $content .= "<div id='eng-desc-fs'>";
-                    //         $content .= "<p class='mb-1'> English Translation </p>";
-                    //         $content .= $engDescription;
-                    //     $content .= "</div>";
-                    // }
+                    $content .= "<div id='eng-desc-fs' style='display:none;'>";
+                        $content .= "<p class='mb-1'> English Translation </p>";
+                    $content .= "</div>";
 
                     $content .= "<div id='full-v-metadata'>";
                     // Story Auto Enrichments
