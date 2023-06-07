@@ -1,9 +1,10 @@
 <?php
 
-function _TCT_campaigns_admin_page($atts)
+function _TCT_stories_admin_page($atts)
 {
 	$themeUri = get_stylesheet_directory_uri();
 	$mainUri = get_europeana_url();
+	$solrImportWrapper = $themeUri . '/solr-import-request.php';
 
 	$tailwindLabelClasses = <<<TW1
 		before:content[' ']
@@ -105,8 +106,10 @@ TW2;
 TW3;
 
 	$html = <<<HTML
-<div class="container mx-auto mt-8" x-data="manage_teams" id="campaign-mangement">
-	<h1 class="text-2xl mb-4">Campaign Management</h1>
+<div class="container mx-auto mt-8" x-data="manage_stories" id="story-mangement">
+	<h1 class="text-2xl mb-4">Story Management</h1>
+
+<!--
 
 	<div class="bg-white p-6 rounded shadow-md">
 
@@ -415,23 +418,45 @@ TW3;
 		</div>
 	</div>
 
-	<!--
+-->
+
 	<div class="mt-4 bg-white p-6 rounded shadow-md">
 
-		<div class="{$tailwindInputWrapperClasses}">
+		<div class="flex {$tailwindInputWrapperClasses}">
 			<input
-				x-model="filterString"
-				@keyup="filterTable"
+				x-model="searchString"
 				class="{$tailwindInputClasses}"
 				placeholder=" "
+				@keydown.enter="search"
 			/>
 			<label
 				class="{$tailwindLabelClasses}"
-			>Filter Campaigns</label>
+			>Search stories by title here (otherwise latest 100 imported stories are shown)</label>
+			<button
+				class="
+					ml-3
+					rounded-lg
+					bg-blue-500
+					py-2
+					px-4
+					text-xs
+					font-bold
+					uppercase
+					text-white
+					shadow-md
+					shadow-blue-500/20
+					transition-all
+					hover:shadow-lg
+					hover:shadow-blue-500/40
+					active:opacity-[0.85]
+					active:shadow-none
+				"
+				@click="search"
+				@keydown.enter="search"
+			>Search</button>
 		</div>
 
 	</div>
-	-->
 
 	<table class="
 		w-full
@@ -447,22 +472,22 @@ TW3;
 			bg-gray-50
 		">
 			<tr>
-					<th scope="col" class="px-6 py-3">Campaign Name</th>
-					<th scope="col" class="px-6 py-3">Date Start</th>
-					<th scope="col" class="px-6 py-3">Date End</th>
+					<th scope="col" class="px-6 py-3">StoryId</th>
+					<th scope="col" class="px-6 py-3">Title</th>
+					<th scope="col" class="px-6 py-3 min-w-[9rem]">Dataset</th>
 					<th scope="col" class="px-6 py-3">Actions</th>
 			</tr>
 			</thead>
 			<tbody>
-				<template x-for="(campaign, index) in campaigns" :key="campaign.CampaignId">
+				<template x-for="(story, index) in stories" :key="story.StoryId">
 					<tr
 						data-action="filter"
 						class="border-b"
 						:class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
 					>
-						<th cope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" x-text="campaign.Name"></td>
-						<td class="px-6 py-4" x-text="campaign.Start"></td>
-						<td class="px-6 py-4" x-text="campaign.End"></td>
+						<th cope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" x-text="story.StoryId"></td>
+						<td class="px-6 py-4" x-text="story.Dc.Title"></td>
+						<td class="px-6 py-4" x-text="datasets.find(set => set.DatasetId === story.DatasetId)?.Name || ''"></td>
 						<td class="flex px-6 py-4">
 							<button
 								class="
@@ -483,29 +508,8 @@ TW3;
 									active:opacity-[0.85]
 									active:shadow-none
 								"
-								@click="loadCampaign(campaign.CampaignId)"
+								@click="loadStory(story.StoryId)"
 							>Edit</button>
-							<button
-								class="
-									mr-3
-									rounded-lg
-									bg-red-500
-									py-2
-									px-4
-									text-xs
-									font-bold
-									uppercase
-									text-white
-									shadow-md
-									shadow-red-500/20
-									transition-all
-									hover:shadow-lg
-									hover:shadow-red-500/40
-									active:opacity-[0.85]
-									active:shadow-none
-								"
-								@click="removeCampaign(campaign.CampaignId)"
-							>Delete</button>
 						</td>
 					</tr>
 				</template>
@@ -530,15 +534,16 @@ $js = <<<JS
 <script>
 	const THEME_URI = '{$themeUri}';
 	const MAIN_URI = '{$mainUri}';
+	const solrWrapper = '{$solrImportWrapper}';
 </script>
 JS;
 
 	echo $html . $js;
 }
 
-function load_campaigns_scripts($hook)
+function load_stories_scripts($hook)
 {
-	if ($hook !== 'toplevel_page_campaigns-admin-page') {
+	if ($hook !== 'toplevel_page_stories-admin-page') {
 		return;
 	}
 	// using the playground tailwindcss for now, no compiling but heavier load
@@ -546,10 +551,10 @@ function load_campaigns_scripts($hook)
 	// wp_enqueue_script('add_tailwindcss');
 	wp_register_style('add_css', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/backend.min.css', [], '3.3.2', false);
 	wp_register_script('add_alpinejs', get_stylesheet_directory_uri(). '/admin/inc/custom_js/alpinejs.min.js', [], '3.12.0', false);
-	wp_register_script('add_campaigns_script', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/campaigns-admin-page.js', [], '0.1.0', true);
+	wp_register_script('add_stories_script', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/stories-admin-page.js', [], '0.1.0', true);
 	wp_enqueue_style('add_css');
 	wp_enqueue_script('add_alpinejs');
-	wp_enqueue_script('add_campaigns_script');
+	wp_enqueue_script('add_stories_script');
 	add_filter('script_loader_tag', 'defer_alpinejs', 10, 3);
 }
 
@@ -561,4 +566,4 @@ function defer_alpinejs($tag, $handle, $src)
 	return $tag;
 }
 
-add_action('admin_enqueue_scripts', 'load_campaigns_scripts');
+add_action('admin_enqueue_scripts', 'load_stories_scripts');

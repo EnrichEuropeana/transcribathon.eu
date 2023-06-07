@@ -1,33 +1,31 @@
 document.addEventListener('alpine:init', () => {
 
-	Alpine.data('manage_teams', () => ({
+	Alpine.data('manage_stories', () => ({
 
-		filterString: '',
+		searchString: '',
 		toast: false,
 		toastType: 'success',
 		toastMessage: '',
-		campaigns: [],
-		teams: [],
-		selectedCampaign: {},
-		searchTerm: '',
-		teamSearch: [],
+		selectedStory: {},
+		stories: [],
+		initalStories: [],
 		datasets: [],
-		scrollElement: document.querySelector('#campaign-mangement'),
+		scrollElement: document.querySelector('#story-mangement'),
 
 		async init() {
 
 			this.resetForm();
 
-			const campaignData = await (await fetch(THEME_URI + '/api-request.php/campaigns?limit=500&page=1&orderBy=End&orderDir=desc')).json();
+			const storiesData = await (await fetch(THEME_URI + '/api-request.php/stories?limit=100&page=1&orderBy=StoryId&orderDir=desc')).json();
 
-			if (!campaignData.success) {
+			if (!storiesData.success) {
 
-				this.openToast('error', campaignData.error);
+				this.openToast('error', storiesData.error);
 				return;
 
 			}
 
-			this.campaigns = campaignData.data;
+			this.stories = this.initalStories = storiesData.data;
 
 			const datasetData = await (await fetch(THEME_URI + '/api-request.php/datasets?limit=500')).json();
 
@@ -42,224 +40,60 @@ document.addEventListener('alpine:init', () => {
 
 		},
 
-		async addTeam (teamId, teamName) {
+		loadStory(storyId) {
 
-			const team = {
-				TeamId: teamId,
-				Name: teamName
-			}
-
-			if (this.selectedCampaign.Teams.find(selectedTeam => selectedTeam.TeamId === team.TeamId)) {
-
-				this.searchTerm = '';
-				this.teamSearch = [];
-				return;
-
-			}
-
-			this.selectedCampaign.Teams.push(team);
-
-			this.searchTerm = '';
-			this.teamSearch = [];
-
-		},
-
-		async searchTeam () {
-
-			if (this.searchTerm.length < 3) {
-
-				return;
-
-			}
-
-			const teamsData = await (await fetch(THEME_URI + '/api-request.php/teams?limit=500')).json();
-
-			if (!teamsData.success) {
-
-				this.openToast('error', 'Could not reach teams endpoint.')
-				return;
-
-			}
-
-			this.teams = teamsData.data;
-
-			this.teamSearch = this.teams.filter(
-				team => team.Name.toLowerCase().includes(this.searchTerm.toLowerCase())
-			);
-
-		},
-
-		loadCampaign(campaignId) {
-
-			this.selectedCampaign = this.campaigns.find(c => c.CampaignId === campaignId);
+			this.selectedStory = this.stories.find(c => c.StoryId === storyId);
 			this.scrollElement.scrollIntoView({ behavior: 'smooth' });
 
     },
 
-    removeTeam(teamId) {
-
-			this.selectedCampaign.Teams = this.selectedCampaign.Teams.filter(team => team.TeamId !== teamId);
-
-    },
-
-    async removeCampaign(campaignId) {
-
-			const remove = await (await fetch(THEME_URI + '/api-request.php/campaigns/' + campaignId, {
-				method: 'DELETE'
-			})).json();
-
-			if (!remove.success) {
-
-				this.openToast('error', 'Could not delete campaign.');
-				return;
-
-			}
-
-			this.campaigns = this.campaigns.filter(campaign => campaign.CampaignId !== campaignId);
-			this.openToast('success', 'Campaign deleted.');
-
-    },
-
-    saveCampaign(campaignId = null) {
-
-			if (this.selectedCampaign.Name === '') {
-
-				return;
-
-			}
-
-			if (!campaignId) {
-
-				this.createCampaign();
-				return;
-
-			}
-
-			this.updateCampaign(campaignId);
-
-    },
-
-		async updateCampaign(campaignId) {
-
-			const teamIdArray = [];
-			for (const team of this.selectedCampaign.Teams) {
-
-				teamIdArray.push(team.TeamId);
-
-			}
-
-			const payload = {
-				Name: this.selectedCampaign.Name,
-				Start: this.selectedCampaign.Start,
-				End: this.selectedCampaign.End,
-				Public: this.selectedCampaign.Public,
-				DatasetId: this.selectedCampaign.DatasetId,
-				TeamIds: [...teamIdArray]
-			};
-
-			const updated = await (await fetch(THEME_URI + '/api-request.php/campaigns/' + campaignId, {
-				method: 'PUT',
-				body: JSON.stringify(payload)
-			})).json();
-
-			if (updated.success) {
-
-				this.campaigns.map(campaign => campaign.CampaignId === campaignId ? updated.data : campaign);
-				this.resetForm();
-				this.openToast('success', 'Campaign updated.');
-
-			} else {
-
-				this.openToast('error', 'Campaign could not updated.');
-
-			}
-
-		},
-
-		async createCampaign() {
-
-			const teamIdArray = [];
-			for (const team of this.selectedCampaign.Teams) {
-
-				teamIdArray.push(team.TeamId);
-
-			}
-
-			const payload = {
-				Name: this.selectedCampaign.Name,
-				Start: this.selectedCampaign.Start,
-				End: this.selectedCampaign.End,
-				Public: this.selectedCampaign.Public === '1' ? true : false,
-				DatasetId: this.selectedCampaign.DatasetId,
-				TeamIds: [...teamIdArray]
-			};
-
-			const created = await (await fetch(THEME_URI + '/api-request.php/campaigns', {
-				method: 'POST',
-				body: JSON.stringify(payload)
-			})).json();
-
-			if (created.success) {
-
-				this.selectedCampaign = { ...created.data };
-				this.campaigns.push(this.selectedCampaign);
-				this.resetForm();
-				this.openToast('success', 'Campaign created.');
-
-			} else {
-
-				this.openToast('error', 'Campaign could not created.');
-
-			}
-
-		},
-
     resetForm() {
 
-    	this.selectedCampaign = {
-    		CampaignId: '',
-				Name: '',
-				Start: '',
-				End: '',
-				DatasetId: '',
-				Public: '0',
-				Teams: []
+    	this.selectedStory = {
+    // 		CampaignId: '',
+				// Name: '',
+				// Start: '',
+				// End: '',
+				// DatasetId: '',
+				// Public: '0',
+				// Teams: []
     	};
 
     },
 
-		filterTable () {
+    async search() {
 
-			if (!this.filterString) {
+			if (this.searchString.length < 3 && this.searchString.length > 0) {
+
+				this.openToast('error', 'At least 3 chars are needed for search.');
 
 				return;
 
 			}
 
-			const elRows = document.querySelectorAll('tr[data-action="filter"]');
-			const filterStrings = this.filterString.split(' ');
+			if (this.searchString.length === 0) {
 
-			elRows.forEach(row => {
+				this.stories = [...this.initalStories];
 
-				const rowText = row.innerText.toLowerCase();
-				let check = true;
-				row.style.display = 'none';
+				return;
 
-				filterStrings.forEach(string => {
+			}
 
-					check = (rowText.search(string.toLowerCase()) !== -1 && check === true) ? true : false;
+			this.stories = [];
 
-				});
+			const solrApiCommand = '/solr/Stories/select?rows=100&dcTitle=&q=' + this.searchString;
 
-				if (check === true) {
+			const solrResponse = await (await fetch(solrWrapper + solrApiCommand)).json();
 
-					row.style.display = 'table-row';
+			for (const solrData of solrResponse.response.docs) {
 
-				}
+				const storyResponse = await (await fetch(THEME_URI + '/api-request.php/stories/' + solrData.StoryId)).json();
 
-			});
+				this.stories.push(storyResponse.data);
 
-		},
+			}
+
+    },
 
     openToast(type, message) {
 
