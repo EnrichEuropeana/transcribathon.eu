@@ -3296,15 +3296,17 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     background-color: #fff;
     margin-left: 25px;
     margin-top: 10px;
-    margin-right: 30px;
     text-align: center;
     font-weight: 600;
     cursor: pointer;
 }
+#run-stry-enrich {
+    margin-right: 30px;
+}
 #run-itm-enrich-container {
     position: absolute;
     bottom: 0;
-    width: calc( 100% - 60px);
+    width: calc( 100% - 30px);
 }
 #auto-enrich-story {
     padding-left: 25px;
@@ -3413,6 +3415,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #auto-e-link {
     padding-left: 25px!important;
+    background-color: #fff;
 }
 #auto-e-link button {
     padding: 0 5px!important;
@@ -3468,7 +3471,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     cursor: pointer;
 }
 .panel-right #accept-ppl-enrich {
-    margin-left: 30px;
+    width: 100%!important;
 }
 #ppl-auto-e-container {
     margin-left: 30px;

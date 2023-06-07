@@ -72,22 +72,23 @@ function _TCT_mtr_transcription($atts)
     }
 
     // Get Auto Enrichments for item/story if there are auto enrichments in database
-    $getAutoJsonOptions = [
+    $getTrJsonOptions = [
         'http' => [
             'header' => [
-                 'Content-type: application/json',
-                 'Authorization: Bearer ' . TP_API_V2_TOKEN
+                 'Content-type: text/plain',
                 ],
             'method' => 'GET'
         ]
     ];
 
-    $itemAutoE = sendQuery(TP_API_V2_ENDPOINT . '/items/' . $itemId . '/autoenrichments', $getAutoJsonOptions, true);
-    $storyAutoE = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $storyId . '/autoenrichments', $getAutoJsonOptions, true);
-
+    $itemAutoE = sendQuery(TP_API_V2_ENDPOINT . '/items/' . $itemId . '/autoenrichments', $getJsonOptions, true);
+    $storyAutoE = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $storyId . '/autoenrichments', $getJsonOptions, true);
     $itemAutoPlaces = [];
     $itemAutoPpl = [];
-    if(!empty($itemAutoE['data'])) {
+    $transcriptionTranslation = '';
+    if($itemData['AutomaticEnrichmentStatusId'] > 1) {
+        // Get translation if there are auto enrichments
+        $transcriptionTranslation = sendQuery('https://dsi-demo.ait.ac.at/enrichment-web/enrichment/translation/' . $storyId . '/' . $itemId . '?property=transcription&translationTool=Google&wskey=apidemo', $getTrJsonOptions);
         foreach($itemAutoE['data'] as $itm) {
             if($itm['Type'] == 'Place') {
                 array_push($itemAutoPlaces, $itm);
@@ -96,6 +97,9 @@ function _TCT_mtr_transcription($atts)
             }
         }
     }
+
+    var_dump($transcriptionTranslation);
+
     // Check which Transcription is active
     $activeTr = $itemData['TranscriptionSource'];
     // Transcription to show in transcription View
@@ -1143,14 +1147,18 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= "</div>";
             }
             // Transcription Translation
-            $editorTab .= "<h6 class='theme-color' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
+            if($transcriptionTranslation != '') {
+                $editorTab .= "<h6 class='theme-color' id='translation-collapse' style='cursor:pointer;position:relative;width:100%;'>";
+            } else {
+                $editorTab .= "<h6 class='theme-color' id='translation-collapse' style='cursor:pointer;position:relative;width:100%;display:none;'>";
+            }
                 $editorTab .= "English Translation";
                 $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
                 $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
                     $editorTab .= "<div class='spinner'></div>";
                 $editorTab .= "</div>";
             $editorTab .= "</h6>";
-            $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
+            $editorTab .= "<div id='translated-tr' style='display:none;'><p>" . $transcriptionTranslation . "</p></div>";
 
             $editorTab .= $trHistory;
         $editorTab .= "</div>";
@@ -2069,7 +2077,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= $editorTab;
                     //$content .= $trHistory;
                     // Automatic Enrichments
-                    if(empty($itemAutoE['data'])) {
+                    if($itemData['AutomaticEnrichmentStatusId'] < 2) {
                         $content .= "<div id='run-itm-enrich-container'>";
                             $content .= "<div id='auto-e-link'>";
                                 $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'> Locations </button>";
@@ -2105,8 +2113,8 @@ if (event.target.id != "tagging-status-indicator") {
                     if(empty($storyAutoE['data'])) {
                         $content .= "<div id='run-stry-enrich'> Analyse Story Description for Automatic Enrichments </div>";
 
-                        $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
+                        $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
                             $content .= "<div id='auto-story-spinner-container' class='spinner-container'>";
                                 $content .= "<div class='spinner'></div>";
                             $content .= "</div>";
@@ -2143,9 +2151,11 @@ if (event.target.id != "tagging-status-indicator") {
                     // Content will be added here in switchItemPageView function
                     $content .= "<div id='full-screen-map-placeholder'></div>";
                     // $content .= $mapEditor;
-                    $content .= "<h3 id='loc-verify' style='display:none;'> Verify Automatically Identified Locations </h3>";
-                    $content .= "<div id='loc-auto-enrich'></div>";
-                    $content .= "<div id='accept-loc-enrich' style='display:none;'> SUBMIT </div>";
+                    $content .= "<div id='loc-auto-e-container'>";
+                        $content .= "<h3 id='loc-verify' style='display:none;'> Verify Automatically Identified Locations </h3>";
+                        $content .= "<div id='loc-auto-enrich'></div>";
+                        $content .= "<div id='accept-loc-enrich' style='display:none;'> SUBMIT </div>";
+                    $content .= "</div>";
 
                 $content .= "</div>";
                 // Tag tab
@@ -2155,8 +2165,9 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<div id='ppl-auto-e-container'>";
                         $content .= "<h3 id='ppl-verify' style='display: none;'> Verify Automatically Identified Persons </h3>";
                         $content .= "<div id='ppl-auto-enrich'></div>";
+                        $content .= "<div id='accept-ppl-enrich' style='display:none;'> SUBMIT </div>";
                     $content .= "</div>";
-                    $content .= "<div id='accept-ppl-enrich' style='display:none;'> SUBMIT </div>";
+                    
 
                 $content .= "</div>";
                 // Help tab

@@ -1098,8 +1098,10 @@ function addItemProperty(itemId, userId, type, editStatusColor, statusCount, pro
 }
 // Change progress status
 function changeStatus (itemId, oldStatus, newStatus, fieldName, value, color, statusCount, e) {
-    jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-changer').css('background-color', color);
-    jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').text(newStatus);
+    if(jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-changer')) {
+        jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-changer').css('background-color', color);
+        jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').text(newStatus);
+    }
 
     if (fieldName != "CompletionStatusId") {
         if (oldStatus == null) {
@@ -1586,7 +1588,7 @@ function loadPlaceData(itemId, userId) {
                             `<p><b>${htmlDecode(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
                             // Check if there is description : don't add <p> if not
                             `${location['Comment'] ?
-                                `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${htmlDecode(location['Comment'])}</b></p>`
+                                `<p style='margin-top:0px;font-size:13px;'>Description: ${htmlDecode(location['Comment'])}</p>`
                                 :
                                 ``
                             }` +
@@ -2760,7 +2762,9 @@ ready(() => {
             if(transEditContainer.style.display == 'none') {
                 transEditContainer.style.display = 'block';
                 transViewContainer.style.display = 'none';
-                autoEnrichItems.style.display = 'none';
+                if(autoEnrichItems) {
+                    autoEnrichItems.style.display = 'none';
+                }
                 transcriptionSwitch.querySelector('i').classList.replace('fa-pencil', 'fa-times');
                 if(transcriptionSwitch.classList.contains('htr-trans')) {
                     transHeader.textContent = 'TRANSCRIPTION';
@@ -2768,7 +2772,9 @@ ready(() => {
             } else {
                 transEditContainer.style.display = 'none';
                 transViewContainer.style.display = 'block';
-                autoEnrichItems.style.display = 'block';
+                if(autoEnrichItems) {
+                    autoEnrichItems.style.display = 'block';
+                }
                 transcriptionSwitch.querySelector('i').classList.replace('fa-times', 'fa-pencil');
                 if(transcriptionSwitch.classList.contains('htr-trans')) {
                     transHeader.textContent = 'HTR TRANSCRIPTION';
@@ -3026,13 +3032,16 @@ ready(() => {
                 return response.json();
             })
             .then(function(data) {
-                console.log(data);
                 const autoEnrichments = data;
 
                 // Check if there are any enrichments
                 if(autoEnrichments.total > 0) {
                     console.log(autoEnrichments);
+                    const translateCont = document.querySelector('#translated-tr');
+                    const translateCollapse = document.querySelector('#translation-collapse');
                     let enrichNr = 1;
+
+
                     for(let itm of autoEnrichments.items) {
 
                         let wikiDataArr = itm.body.id.split('/');
@@ -3147,6 +3156,15 @@ ready(() => {
 
                         enrichNr += 1;
                     }
+
+                    // Add translation under the transcription
+                    if(autoEnrichments.translation != '') {
+                        translateCont.querySelector('p').textContent = autoEnrichments.translation;
+                        translateCont.style.display = 'block';
+                        translateCollapse.style.display = 'block';
+                        translateCollapse.querySelector('i').classList = 'far fa-caret-circle-up';
+                    }
+                    
                     
 
                 } else {
@@ -3168,8 +3186,6 @@ ready(() => {
                     document.querySelector('#auto-ppl-btn').style.display = 'inline-block';
                 }
 
-                return;
-
             })
             
         })
@@ -3188,7 +3204,7 @@ ready(() => {
                 let locationName = enrichment.querySelector('.enrich-label').textContent;
                 let latitude = (enrichment.getAttribute('lat')).toString();
                 let longitude = (enrichment.getAttribute('long')).toString();
-                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' - Automatically Generated.';
+                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' *Automatically Generated';
                 let wikidata = (enrichment.querySelector('.enrich-wiki a').getAttribute('href')).split('/');
                 let wikidataId = wikidata.pop();
                 let placeRole = 'Other';
@@ -3217,7 +3233,9 @@ ready(() => {
                     'url': TP_API_HOST + '/tp-api/places',
                     'data': data
                 },function(response) {
-
+                    changeStatus(itemId, 'Not Started', 'Edit', 'AutomaticEnrichmentStatusId', 2, '#fffddd', 2, event );
+                    document.querySelector('#loc-auto-e-container').style.display = 'none';
+                    loadPlaceData(itemId, userId);
                 });
             }
         })
@@ -3232,7 +3250,7 @@ ready(() => {
                 // Store data into variables
                 let firstName = enrichment.querySelector('.firstName').textContent;
                 let lastName = enrichment.querySelector('.lastName').textContent;
-                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
+                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' *Automatically Generated';
                 let link = enrichment.querySelector('.wikiId').textContent;
 
                 data = {
@@ -3262,7 +3280,9 @@ ready(() => {
                 // Check success and create confirmation message
                 function(response) {
 
-                    console.log(response);
+                    changeStatus(itemId, 'Not Started', 'Edit', 'AutomaticEnrichmentStatusId', 2, '#fffddd', 2, event );
+                    document.querySelector('#ppl-auto-e-container').style.display = 'none';
+                    loadPersonData(itemId, userId);
                 });
 
             }
@@ -3313,27 +3333,24 @@ ready(() => {
                     console.log(data);
                 })
 
-                // jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php', {
-                //     'type': 'POST',
-                //     'data': singlEnrichment,
-                //     'url': 'https://transcribathon.eu.local:4443/v2/autoenrichments',
-                //     'token': 'yes'
-                //   },
-                //   function(response) {
-                //       console.log(response);
-                //   });
             }
 
         })
     }
 
     // Get En translation of transcription
-    const translateTrBtn = document.querySelector('#translate-tr');
+    const translateTrBtn = document.querySelector('#translation-collapse');
     const translatedCont = document.querySelector('#translated-tr');
 
     if(translateTrBtn) {
         translateTrBtn.addEventListener('click', function() {
-            translatedCont.classList.toggle('show');
+            if(translatedCont.style.display == 'block') {
+                translatedCont.style.display = 'none';
+                translateTrBtn.querySelector('i').classList = 'far fa-caret-circle-down';
+            } else {
+                translatedCont.style.display = 'block';
+                translateTrBtn.querySelector('i').classList = 'far fa-caret-circle-up';
+            }
         })
     }
     // Get metadata when user click on 'Story Information'
