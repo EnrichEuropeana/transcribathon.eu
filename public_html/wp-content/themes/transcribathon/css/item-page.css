@@ -3464,7 +3464,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     background-color: #0a72cc;
 }
 .panel-right #accept-loc-enrich, .panel-right #accept-ppl-enrich, .panel-right #accept-story-enrich {
-    width: 99%;
     color: #fff;
     background-color: var(--main-color);
     font-family: var(--p-font-family);
@@ -3473,6 +3472,9 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     text-align: center;
     letter-spacing: 00.025em;
     cursor: pointer;
+}
+.panel-right #accept-loc-enrich {
+    width: 99%;
 }
 .panel-right #accept-ppl-enrich {
     width: 100%!important;

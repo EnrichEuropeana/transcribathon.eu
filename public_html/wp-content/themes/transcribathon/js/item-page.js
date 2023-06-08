@@ -2989,6 +2989,7 @@ ready(() => {
                     document.querySelector('#auto-story-spinner-container').style.display = 'none';
                     return;
                 }
+                    runBtn.style.display = 'none';
                     document.querySelector('#auto-story-spinner-container').style.display = 'none';
                     document.querySelector('#verify-h').style.display = 'block';
                     document.querySelector('#accept-story-enrich').style.display = 'block';
@@ -3295,8 +3296,9 @@ ready(() => {
         const enrichStoryArr = [];
         storySubmit.addEventListener('click', function() {
             let acceptedEnrich = document.querySelector('#auto-enrich-story').querySelectorAll('.accept');
+            let lastEnrCheck = 0;
             for(let enrichment of acceptedEnrich) {
-
+                
                 let description = null;
                 if(enrichment.querySelector('.auto-description') && enrichment.querySelector('.auto-description').textContent != 'Description: ') {
                     description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
@@ -3327,10 +3329,15 @@ ready(() => {
             
                 })
                 .then(function(response) {
-                    return response.text();
+                    lastEnrCheck += 1;
+
+                    return response.json();
                 })
                 .then(data => {
-                    console.log(data);
+                    if(lastEnrCheck === acceptedEnrich.length) {
+                        loadStoryEnrichments(storyId);
+                    }
+                    
                 })
 
             }
@@ -3388,8 +3395,6 @@ ready(() => {
         })
     }
 
-
-
     installEventListeners();
     initializeMap();
 
@@ -3424,4 +3429,54 @@ async function getMetadata(storyId) {
 
     return response.json();
 
+}
+// Get story auto enrichments
+async function getStoryEnrichments(storyId) {
+
+    const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/stories/' + storyId + '/autoenrichments';
+    const response = await fetch(requestUri);
+    // return promise
+    return response;
+
+}
+// Show story autenrichments
+async function loadStoryEnrichments(storyId) {
+    try {
+
+        const enrichmentContainer = document.querySelector('#auto-enrich-story');
+        const response = await getStoryEnrichments(storyId);
+        const autoEnrcihments = await response.json();
+
+        enrichmentContainer.innerHTML = '';
+
+        for (let autoE of autoEnrcihments.data) {
+
+            let enrichIcon = autoE.Type == 'Place' ?
+                '<img src="' + home_url + '/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="loc-icon">'
+                :
+                '<i class="fas fa-user left-i"></i>';
+
+            let description = autoE.Comment != null ?
+                `<p class="enrich-description">Description: ${autoE.Comment}</p>`
+                :
+                '';
+            
+            let singleEnrichment = document.createElement('div');
+            singleEnrichment.classList = 'enrich-view';
+            singleEnrichment.innerHTML = 
+                `<p>` +
+                    enrichIcon +
+                    `<span class="enrich-label">${autoE.Name}</span>` +
+                `</p>` +
+                description +
+                `<p class="enrich-wiki"> Wikidata Reference: <a href="${autoE.ExternalAnnotationId}" target="_blank">${autoE.WikiData}</a></p>` +
+                `<i class="fas fa-trash-alt auto-delete" onClick="deleteAutoEnrichment(${autoE.AutoEnrichmentId}, event);"></i>`;
+                
+            enrichmentContainer.appendChild(singleEnrichment);
+
+        }
+    } catch (error) {
+        console.error('error:', error);
+        throw error;
+    }
 }
