@@ -486,8 +486,8 @@ TW3;
 						:class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
 					>
 						<th cope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" x-text="story.StoryId"></td>
-						<td class="px-6 py-4" x-text="story.Dc.Title"></td>
-						<td class="px-6 py-4" x-text="datasets.find(set => set.DatasetId === story.DatasetId)?.Name || ''"></td>
+						<td class="px-6 py-4" x-text="story.Dc?.Title || story.dcTitle"></td>
+						<td class="px-6 py-4" x-text="datasets.find(set => set.DatasetId === story.DatasetId)?.Name || story.Dataset || ''"></td>
 						<td class="flex px-6 py-4">
 							<button
 								class="

@@ -81,17 +81,11 @@ document.addEventListener('alpine:init', () => {
 
 			this.stories = [];
 
-			const solrApiCommand = '/solr/Stories/select?rows=100&dcTitle=&q=' + this.searchString;
+			const solrApiCommand = '/solr/Stories/select?rows=100&dcTitle=&q=*' + encodeURI(this.searchString) + '*';
 
 			const solrResponse = await (await fetch(solrWrapper + solrApiCommand)).json();
 
-			for (const solrData of solrResponse.response.docs) {
-
-				const storyResponse = await (await fetch(THEME_URI + '/api-request.php/stories/' + solrData.StoryId)).json();
-
-				this.stories.push(storyResponse.data);
-
-			}
+			this.stories = solrResponse.response ? [...solrResponse.response.docs] : [];
 
     },
 
