@@ -3405,6 +3405,10 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     display: block;
     padding: 0 10px;
 }
+#translated-tr p{
+    padding-left: 11px;
+    padding-right: 10px;
+}
 #loc-verify, #ppl-verify {
     color: var(--main-color);
     font-family: var(--h-font-family);

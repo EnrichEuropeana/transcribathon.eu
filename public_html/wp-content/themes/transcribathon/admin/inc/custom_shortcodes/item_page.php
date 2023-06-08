@@ -2100,7 +2100,7 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
 
                     $content .= "</div>";
-                    if($storyData['Dc']['Description'] != null && $storyData['Dc']['Description'] != 'NULL' && strlen($storyDescription) > 1300) {
+                    if(!empty($storyData['Dc']['Description']) && $storyData['Dc']['Description'] != 'NULL' && strlen($storyDescription) > 1300) {
                         $content .= "<div id='story-full-collapse' style='cursor:pointer;'>Show More</div>";
                     }
                     // English translation
@@ -2109,8 +2109,9 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "</div>";
 
                     $content .= "<div id='full-v-metadata'>";
+
                     // Story Auto Enrichments
-                    if(empty($storyAutoE['data'])) {
+                    if(empty($storyAutoE['data']) && $storyData['Dc']['Description'] != 'NULL' && !empty($storyData['Dc']['Description'])) {
                         $content .= "<div id='run-stry-enrich'> Analyse Story Description for Automatic Enrichments </div>";
 
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
