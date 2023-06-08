@@ -43,6 +43,16 @@ if(!empty($type) && !empty($url)) {
                 "header" => "Content-type: application/json\r\n",
             )
         );
+    } else if ($type == 'DELETE') {
+        $options = array(
+            "http" => array(
+                "method" => $type,
+                "header" => array(
+                    "Content-type: application/json",
+                    "Authorization: Bearer " . TP_API_V2_TOKEN
+                )
+            )
+        );
     }
     
     $context = stream_context_create($options);
@@ -50,7 +60,7 @@ if(!empty($type) && !empty($url)) {
 
     if ($result === false) {
         $error = error_get_last();
-        echo json_encode("Request error: " . $error['message'] . "data:" . TP_API_V2_TOKEN);
+        echo json_encode("Request error: " . $error['message']);
     } else {
         echo json_encode($result);
     }
