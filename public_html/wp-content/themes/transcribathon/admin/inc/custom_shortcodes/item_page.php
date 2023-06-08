@@ -34,6 +34,7 @@ function _TCT_mtr_transcription($atts)
 
     $itemDataset = sendQuery(TP_API_V2_ENDPOINT . '/items/' . $itemId, $getJsonOptions, true);
     $itemData = $itemDataset['data'];
+    $itemData['Places'] = array();
 
     if (empty($itemData['StoryId'])) {
         return;
@@ -97,8 +98,6 @@ function _TCT_mtr_transcription($atts)
             }
         }
     }
-
-    var_dump($transcriptionTranslation);
 
     // Check which Transcription is active
     $activeTr = $itemData['TranscriptionSource'];
