@@ -3479,9 +3479,15 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .panel-right #accept-ppl-enrich {
     width: 100%!important;
 }
+.panel-right #accept-story-enrich {
+    margin-right: 30px;
+}
 #ppl-auto-e-container {
     margin-left: 30px;
     padding-right: 15px;
+}
+#verify-h {
+    margin-left: 0!important;
 }
 .auto-h {
     margin-left: 30px!important;
@@ -3500,7 +3506,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     padding-left: 15px;
 }
 #full-v-metadata .auto-h {
-    margin-left: 30px!important;
+    margin-left: 25px!important;
     padding-left: 20px;
 }
 .auto-delete {
@@ -3540,6 +3546,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 .enrich-view .auto-delete {
     top: 3px!important;
+    right: 20px!important;
 }
 .enrich-view {
     position: relative;

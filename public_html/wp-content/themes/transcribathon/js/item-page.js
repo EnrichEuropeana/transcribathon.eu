@@ -3335,7 +3335,9 @@ ready(() => {
                 })
                 .then(data => {
                     if(lastEnrCheck === acceptedEnrich.length) {
+                        storySubmit.style.display = 'none';
                         loadStoryEnrichments(storyId);
+                        document.querySelector('#full-v-metadata').querySelector('.auto-h').style.display = 'block';
                     }
                     
                 })
