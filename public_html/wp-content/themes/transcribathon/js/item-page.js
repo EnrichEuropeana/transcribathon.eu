@@ -3477,6 +3477,9 @@ async function loadStoryEnrichments(storyId) {
             enrichmentContainer.appendChild(singleEnrichment);
 
         }
+
+        document.querySelector('#identified-enrich').style.display = 'block';
+        
     } catch (error) {
         console.error('error:', error);
         throw error;

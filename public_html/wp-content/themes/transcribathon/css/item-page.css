@@ -1451,12 +1451,24 @@ p.mb-1 {
     height: unset!important;
     width: unset!important;
 }
+#info-fa-cont {
+    width: 30px!important;
+    position: relative;
+    margin: 0 auto;
+    bottom: 3px;
+}
 .tablinks {
     border: none;
 }
 .tab-i {
     display: block;
     margin: 0 auto;
+}
+#story-info-tag {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 10px;
 }
 .tab-h {
     font-size: 12px;

@@ -84,6 +84,12 @@ function _TCT_mtr_transcription($atts)
 
     $itemAutoE = sendQuery(TP_API_V2_ENDPOINT . '/items/' . $itemId . '/autoenrichments', $getJsonOptions, true);
     $storyAutoE = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $storyId . '/autoenrichments', $getJsonOptions, true);
+    // Get story translation and enrichments
+
+    $storyTranslation = '';
+    if(!empty($storyAutoE) && $storyData['Dc']['Language'] != 'eng || English') {
+        $storyTranslation = sendQuery('https://dsi-demo.ait.ac.at/enrichment-web/enrichment/translation/' . $storyId . '?property=description&translationTool=Google&wskey=apidemo', $getTrJsonOptions);
+    }
     $itemAutoPlaces = [];
     $itemAutoPpl = [];
     $transcriptionTranslation = '';
@@ -2055,15 +2061,18 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<li>";
                         $content .= "<div id='inf-tab' class='theme-color tablinks' title='More Information'
                             onclick='switchItemTab(event, \"info-tab\", \"inf-tab\")'>";
-                            $content .= '<i class="fa fa-info-circle tab-i"></i>';
-                            $content .= "<p class='tab-h it'><span><b> STORY INFO</b></span></p>";
+                            $content .= '<div id="info-fa-cont">';
+                                $content .= '<i class="fa fa-info-circle tab-i"></i>';
+                                $content .= '<i id="story-info-tag" class="fa fa-tag"></i>';
+                            $content .= '</div>';
+                            $content .= "<p class='tab-h it' style='bottom:5px;'><span><b> STORY INFO</b></span></p>";
                         $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
                         $content .= "<div id='tut-tab' class='theme-color tablinks' title='Tutorial'
                             onclick='switchItemTab(event, \"help-tab\", \"tut-tab\")'>";
                             $content .= '<i class="fa fa-question-circle tab-i"></i>';
-                            $content .= "<p class='tab-h it'><span><b> TUTORIAL</b></span></p>";
+                            $content .= "<p class='tab-h it' style='bottom:1px;'><span><b> TUTORIAL</b></span></p>";
                         $content .= "</div>";
                     $content .= "</li>";
                 $content .= '</ul>';
@@ -2075,8 +2084,9 @@ if (event.target.id != "tagging-status-indicator") {
                     // Content will be added here in switchItemPageView function
                     $content .= $editorTab;
                     //$content .= $trHistory;
+
                     // Automatic Enrichments
-                    if($itemData['AutomaticEnrichmentStatusId'] < 2) {
+                    if($itemData['AutomaticEnrichmentStatusId'] < 2 && $itemData['TranscriptionStatusId'] > 2 && $itemData['TranscriptionText'] != '') {
                         $content .= "<div id='run-itm-enrich-container'>";
                             $content .= "<div id='auto-e-link'>";
                                 $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'> Locations </button>";
@@ -2103,16 +2113,23 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<div id='story-full-collapse' style='cursor:pointer;'>Show More</div>";
                     }
                     // English translation
-                    $content .= "<div id='eng-desc-fs' style='display:none;'>";
-                        $content .= "<p class='mb-1'> English Translation </p>";
-                    $content .= "</div>";
+                    if(empty($storyTranslation) || ($storyTranslation == $storyData['Dc']['Description'])) {
+                        $content .= "<div id='eng-desc-fs' style='display:none;'>";
+                            $content .= "<p class='mb-1'> English Translation </p>";
+                        $content .= "</div>";
+                    } else {
+                        $content .= "<div id='eng-desc-fs'>";
+                            $content .= "<p class='mb-1'> English Translation </p>";
+                            $content .= "<p class='meta-p'>" . $storyTranslation . "</p>";
+                        $content .= "</div>";
+                    }
 
                     $content .= "<div id='full-v-metadata'>";
 
                     // Story Auto Enrichments
                     if(empty($storyAutoE['data']) && $storyData['Dc']['Description'] != 'NULL' && !empty($storyData['Dc']['Description'])) {
                         $content .= "<div id='run-stry-enrich'> Analyse Story Description for Automatic Enrichments </div>";
-                        $content .= "<p class='mb-1' style='display:none;padding-left:25px!important;margin-bottom:10px!important;'> Automatically Identified Enrichments </p>";
+                        $content .= "<p id='identified-enrich' class='mb-1' style='display:none;padding-left:25px!important;margin-bottom:10px!important;'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
                         $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
                             $content .= "<div id='auto-story-spinner-container' class='spinner-container'>";
