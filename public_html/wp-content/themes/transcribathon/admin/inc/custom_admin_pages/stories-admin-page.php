@@ -109,56 +109,44 @@ TW3;
 <div class="container mx-auto mt-8" x-data="manage_stories" id="story-mangement">
 	<h1 class="text-2xl mb-4">Story Management</h1>
 
-<!--
-
 	<div class="bg-white p-6 rounded shadow-md">
 
 		<div class="{$tailwindInputWrapperClasses}">
-			<input
-				class="{$tailwindInputClasses}"
-				x-model="selectedCampaign.Name"
-				placeholder=" "
-			/>
+			<div class="inline-block {$tailwindInputClasses}">
+				<span x-text="selectedStory.StoryId"></span>
+				<a
+					class="text-blue-500"
+					x-show="selectedStory.StoryId"
+					:href="'{$mainUri}/documents/story/?story=' + selectedStory.StoryId"
+					target="_blank"
+				>(link)</a>
+			</div>
 			<label
 				class="{$tailwindLabelClasses}"
-			>Campaign Name</label>
+			>StoryId</label>
 		</div>
 
 		<div class="{$tailwindInputWrapperClasses}">
-			<input
-				type="datetime-local"
-				class="{$tailwindInputClasses}"
-				x-model="selectedCampaign.Start"
-				placeholder=" "
-			/>
+			<span
+				class="inline-block {$tailwindInputClasses}"
+				x-text="selectedStory.Dc?.Title"
+			></span>
 			<label
 				class="{$tailwindLabelClasses}"
-			>Campaign Start</label>
-		</div>
-
-		<div class="{$tailwindInputWrapperClasses}">
-			<input
-				type="datetime-local"
-				class="{$tailwindInputClasses}"
-				x-model="selectedCampaign.End"
-				placeholder=" "
-			/>
-			<label
-				class="{$tailwindLabelClasses}"
-			>Campaign End</label>
+			>Title</label>
 		</div>
 
 		<div class="{$tailwindInputWrapperClasses}">
 			<select
 				class="{$tailwindInputClasses}"
-				x-model="selectedCampaign.DatasetId"
+				x-model="selectedStory.DatasetId"
 			>
 				<option></option>
 				<template x-for="dataset in datasets">
 					<option
 						:value="dataset.DatasetId"
 						x-text="dataset.Name"
-						:selected="selectedCampaign.DatasetId === dataset.DatasetId"
+						:selected="selectedStory.DatasetId === dataset.DatasetId"
 					></option>
 				</template>
 			</select>
@@ -167,107 +155,16 @@ TW3;
 			>Associated Dataset</label>
 		</div>
 
-		<div class="
-			{$tailwindInputWrapperClasses}
-			inline-flex
-			items-center
-		">
-		<div
-			class="
-				relative
-				inline-block
-				h-4
-				w-8
-				ml-2
-				cursor-pointer
-				rounded-full
-			"
-		>
-			<input
-				id="auto-update"
-				type="checkbox"
-				x-model="selectedCampaign.Public"
-				placeholder=" "
-				class="
-					peer
-					absolute
-					h-4
-					w-8
-					m-0
-					cursor-pointer
-					appearance-none
-					rounded-full
-					bg-gray-200
-					border-none
-					focus:border-none
-					transition-colors
-					duration-300
-					checked:bg-blue-500
-					peer-checked:border-blue-500
-					peer-checked:before:bg-blue-500
-					checked:before:content['']
-					checked:before:m-0
-				"
-			/>
-			<label
-				for="auto-update"
-				class="
-					before:content['']
-					absolute
-					top-2/4
-					-left-1
-					h-5
-					w-5
-					-translate-y-2/4
-					cursor-pointer
-					rounded-full
-					border
-					border-blue-gray-100
-					bg-white
-					shadow-md
-					transition-all
-					duration-300
-					before:absolute
-					before:top-2/4
-					before:left-2/4
-					before:block
-					before:h-10
-					before:w-10
-					before:-translate-y-2/4
-					before:-translate-x-2/4
-					before:rounded-full
-					before:bg-blue-gray-500
-					before:opacity-0
-					before:transition-opacity
-					hover:before:opacity-10
-					peer-checked:translate-x-full
-					peer-checked:border-blue-500
-					peer-checked:before:bg-blue-500
-				"
-			></label>
-		</div>
-			<label
-				for="auto-update"
-				class="
-					mt-px
-					ml-3
-					mb-0
-					cursor-pointer
-					select-none
-				"
-			>Public</label>
-		</div>
-
 		<div class="{$tailwindInputWrapperClasses}">
 			<input
 				class="{$tailwindInputClasses}"
 				x-model="searchTerm"
-				@keyup="searchTeam()"
+				@keyup="searchCampaign()"
 				placeholder=" "
 			/>
 			<label
 				class="{$tailwindLabelClasses}"
-			>Search and add Teams</label>
+			>Search and add campaigns</label>
 		</div>
 
 		<div class="mb-4 min-h-11">
@@ -280,7 +177,7 @@ TW3;
 				gap-2
 				mt-3
 			">
-				<template x-for="team in teamSearch">
+				<template x-for="campaign in campaignSearch">
 					<li class="">
 						<button
 							class="
@@ -300,8 +197,8 @@ TW3;
 								leading-none
 								text-white
 							"
-							x-text="team.Name"
-							@click="addTeam(team.TeamId, team.Name);"
+							x-text="campaign.Name"
+							@click="addCampaign(campaign.CampaignId, campaign.Name);"
 						></button>
 					</li>
 				</template>
@@ -319,7 +216,7 @@ TW3;
 				items-center
 				gap-1
 			">
-				<template x-for="team in selectedCampaign.Teams">
+				<template x-for="campaign in selectedStoryCampaigns">
 					<div class="
 						center
 						relative
@@ -336,7 +233,7 @@ TW3;
 						leading-none
 						text-white
 					">
-						<div class="mr-5 mt-px" x-text="team.Name"></div>
+						<div class="mr-5 mt-px" x-text="campaign.Name"></div>
 						<div class="
 							absolute
 							top-1
@@ -352,7 +249,7 @@ TW3;
 							<div
 								role="button"
 								class="h-5 w-5 p-1"
-								@click="removeTeam(team.TeamId)"
+								@click="removeCampaign(campaign.CampaignId)"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -395,7 +292,7 @@ TW3;
 					active:opacity-[0.85]
 					active:shadow-none
 				"
-				@click="saveCampaign(selectedCampaign.CampaignId)"
+				@click="saveStory(selectedStory.StoryId)"
 			>Save</button>
 			<button
 				type="button"
@@ -417,8 +314,6 @@ TW3;
 			>Cancel</button>
 		</div>
 	</div>
-
--->
 
 	<div class="mt-4 bg-white p-6 rounded shadow-md">
 

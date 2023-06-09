@@ -7,9 +7,12 @@ document.addEventListener('alpine:init', () => {
 		toastType: 'success',
 		toastMessage: '',
 		selectedStory: {},
+		selectedStoryCampaigns: [],
 		stories: [],
 		initalStories: [],
 		datasets: [],
+		campaigns: [],
+		searchTerm: '',
 		scrollElement: document.querySelector('#story-mangement'),
 
 		async init() {
@@ -38,26 +41,49 @@ document.addEventListener('alpine:init', () => {
 
 			this.datasets = datasetData.data;
 
+			const campaignData = await (await fetch(THEME_URI + '/api-request.php/campaigns?limit=500')).json();
+
+			if (!campaignData.success) {
+
+				this.openToast('error', campaignData.error);
+				return;
+
+			}
+
+			this.campaigns = campaignData.data;
+
 		},
 
-		loadStory(storyId) {
+		async loadStory(storyId) {
 
 			this.selectedStory = this.stories.find(c => c.StoryId === storyId);
 			this.scrollElement.scrollIntoView({ behavior: 'smooth' });
+
+			const campaingsData = await (await fetch(THEME_URI + '/api-request.php/stories/' + storyId + '/campaigns')).json();
+
+			this.selectedStoryCampaigns = [...campaingsData?.data];
+
+    },
+
+    saveStory(StoryId = null) {
+
+			if (!StoryId) {
+
+				this.openToast('error', 'Nothing to save.');
+				return;
+
+			}
+
+    },
+
+    campaignSearch() {
 
     },
 
     resetForm() {
 
-    	this.selectedStory = {
-    // 		CampaignId: '',
-				// Name: '',
-				// Start: '',
-				// End: '',
-				// DatasetId: '',
-				// Public: '0',
-				// Teams: []
-    	};
+    	this.selectedStory = {};
+			this.selectedStoryCampaigns = [];
 
     },
 
