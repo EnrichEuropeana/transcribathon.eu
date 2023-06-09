@@ -2924,11 +2924,7 @@ ready(() => {
                 // Show english translation
                 if(autoEnrichments.translation != '') {
                     storyTranslation.style.display = 'block';
-                    let translation = document.createElement('p');
-                    translation.classList.add('meta-p');
-                    translation.textContent = htmlDecode(autoEnrichments.translation);
-
-                    storyTranslation.appendChild(translation);
+                    storyTranslation.querySelector('.meta-p').textContent = autoEnrichments.translation;
                 }
                 if(autoEnrichments.total > 0) {
 
@@ -3479,7 +3475,7 @@ async function loadStoryEnrichments(storyId) {
         }
 
         document.querySelector('#identified-enrich').style.display = 'block';
-        
+
     } catch (error) {
         console.error('error:', error);
         throw error;

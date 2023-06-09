@@ -1492,7 +1492,7 @@ p.mb-1 {
     bottom: 1px;
     margin-right: 3px;
 }
-.tab-list div.active {
+.tab-list div.active, .tab-list div.active div {
     color: var(--main-color)!important;
 }
 .tab-list span {
