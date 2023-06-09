@@ -1751,7 +1751,7 @@ function loadPersonData(itemId, userId) {
                                 ``
                             }` +
                             `${person['Link'] ?
-                                `<p class='person-description'><a href='http://www.wikidata.org/wiki/${escapeHtml(person['Link'])}' target='_blank'>${escapeHtml(person['Link'])}</a></p>`
+                                `<p class='person-description'>Wikidata Reference: <b><a href='http://www.wikidata.org/wiki/${escapeHtml(person['Link'])}' target='_blank'>${escapeHtml(person['Link'])}</a></b></p>`
                                 :
                                 ``
                             }` +
@@ -3467,7 +3467,7 @@ async function loadStoryEnrichments(storyId) {
                     `<span class="enrich-label">${autoE.Name}</span>` +
                 `</p>` +
                 description +
-                `<p class="enrich-wiki"> Wikidata Reference: <a href="${autoE.ExternalAnnotationId}" target="_blank">${autoE.WikiData}</a></p>` +
+                `<p class="enrich-wiki"> Wikidata Reference: <b><a href="${autoE.ExternalAnnotationId}" target="_blank">${autoE.WikiData}</a></b></p>` +
                 `<i class="fas fa-trash-alt auto-delete" onClick="deleteAutoEnrichment(${autoE.AutoEnrichmentId}, event);"></i>`;
                 
             enrichmentContainer.appendChild(singleEnrichment);

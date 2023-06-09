@@ -3541,14 +3541,14 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     margin-right: 10px;
 }
 .loc-auto-enrich .enrich-wiki {
-    font-size: 11px;
+    font-size: 13px;
 }
 .enrich-view .enrich-wiki {
-    font-size: 11px;
+    font-size: 13px;
     margin: 0!important;
     padding-left: 25px;
     position: relative;
-    bottom: 5px;
+    bottom: 4px;
 }
 .enrich-view .enrich-description {
     font-size: 13px;

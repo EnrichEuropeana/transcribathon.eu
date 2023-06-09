@@ -771,7 +771,7 @@ if (event.target.id != "tagging-status-indicator") {
                                 $enrichmentTab .= "<p class='person-description'>Description: " . htmlspecialchars_decode($person['Description']) . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></p>";
+                                $enrichmentTab .= "<p class='person-description'>Wikidata Reference: <b><a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></b></p>";
                             }
                             // Edit/Delete buttons
                             $enrichmentTab .= "<div class='edit-del-person'>";
@@ -896,7 +896,7 @@ if (event.target.id != "tagging-status-indicator") {
                                     $enrichmentTab .= $person['Name'];
                                  //   $enrichmentTab .= "<i class='fas fa-trash-alt auto-delete' onClick='deleteAutoEnrichment(".$person['AutoEnrichmentId'].")'></i>";
                                 $enrichmentTab .= "</p>";
-                                $enrichmentTab .= "<p class='person-description'> Wikidata Reference: <a href='" . $person['WikiData'] . "' target='_blank'>" . $wikiId . "</a></p>";
+                                $enrichmentTab .= "<p class='person-description'> Wikidata Reference: <b><a href='" . $person['WikiData'] . "' target='_blank'>" . $wikiId . "</a></b></p>";
                                 $enrichmentTab .= "<i class='fas fa-trash-alt auto-delete' onClick='deleteAutoEnrichment(".$person['AutoEnrichmentId'].", event);'></i>";
                         $enrichmentTab .= "</div>";
                     }
@@ -916,7 +916,7 @@ if (event.target.id != "tagging-status-indicator") {
         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
     }
     $trHistory .= "<div id='tr-history-collapse-btn' class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' style='margin-bottom: 0;'>";
-            $trHistory .= "<h6 id='transcription-history-collapse-heading' class='theme-color' style='display:inline-block;'>";
+            $trHistory .= "<h6 id='transcription-history-collapse-heading' class='theme-color  item-data-input-headline' style='display:inline-block;'>";
                 $trHistory .= "Transcription History";
             $trHistory .= "</h6>";
             $trHistory .= "<i class='far fa-caret-circle-down collapse-icon theme-color' style='font-size:17px; margin-left:8px; margin-top:9px;'></i>";
@@ -1153,9 +1153,9 @@ if (event.target.id != "tagging-status-indicator") {
             }
             // Transcription Translation
             if($transcriptionTranslation != '') {
-                $editorTab .= "<h6 class='theme-color' id='translation-collapse' style='cursor:pointer;position:relative;width:100%;'>";
+                $editorTab .= "<h6 class='theme-color item-data-input-headline' id='translation-collapse' style='cursor:pointer;position:relative;width:100%;'>";
             } else {
-                $editorTab .= "<h6 class='theme-color' id='translation-collapse' style='cursor:pointer;position:relative;width:100%;display:none;'>";
+                $editorTab .= "<h6 class='theme-color item-data-input-headline' id='translation-collapse' style='cursor:pointer;position:relative;width:100%;display:none;'>";
             }
                 $editorTab .= "English Translation";
                 $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
@@ -2115,11 +2115,11 @@ if (event.target.id != "tagging-status-indicator") {
                     // English translation
                     if(empty($storyTranslation) || ($storyTranslation == $storyData['Dc']['Description'])) {
                         $content .= "<div id='eng-desc-fs' style='display:none;'>";
-                            $content .= "<p class='mb-1'> English Translation </p>";
+                            $content .= "<p class='mb-1' style='margin: 10px 0px!important;'> English Translation </p>";
                         $content .= "</div>";
                     } else {
                         $content .= "<div id='eng-desc-fs'>";
-                            $content .= "<p class='mb-1'> English Translation </p>";
+                            $content .= "<p class='mb-1' style='margin: 10px 0px!important;'> English Translation </p>";
                             $content .= "<p class='meta-p'>" . $storyTranslation . "</p>";
                         $content .= "</div>";
                     }
@@ -2138,7 +2138,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "</div>";
                         $content .= "<div id='accept-story-enrich' style='display:none;margin-left:25px;'> SUBMIT </div>";
                     } elseif(!empty($storyAutoE['data'])) {
-                        $content .= "<p class='mb-1' style='padding-left:25px!important;margin-bottom:10px!important;'> Automatically Identified Enrichments </p>";
+                        $content .= "<p class='mb-1' style='padding-left:25px!important;margin:10px 0px!important;'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
                         foreach($storyAutoE['data'] as $enrichment) {
 
@@ -2148,11 +2148,12 @@ if (event.target.id != "tagging-status-indicator") {
                                 $content .= "<p>";
                                     $content .= $enrichment['Type'] == 'Place' ? "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>" : "<i class='fas fa-user left-i'></i>";
                                     $content .= "<span class='enrich-label'>" . $enrichment['Name'] . "</span>";
+                                    $content .= "<i class='fas fa-check' style='color:#61e02f;' title='User Verified'></i>";
                                 $content .= "</p>";
                                 if($enrichment['Comment'] != 'NULL') {
                                     $content .= "<p class='enrich-description'>Description: " . $enrichment['Comment'] . "</p>";
                                 }
-                                $content .= "<p class='enrich-wiki'> Wikidata Reference: <a href='" . $enrichment['WikiData'] . "' target='_blank'>" . $wikiId . "</a></p>";
+                                $content .= "<p class='enrich-wiki'> Wikidata Reference: <b><a href='" . $enrichment['WikiData'] . "' target='_blank'>" . $wikiId . "</a></b></p>";
                                 $content .= "<i class='fas fa-trash-alt auto-delete' onClick='deleteAutoEnrichment(".$enrichment['AutoEnrichmentId'].",event)'></i>";
                             $content .= "</div>";
 
