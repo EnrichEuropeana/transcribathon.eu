@@ -2445,8 +2445,8 @@ div.tct_linechart_area div.tct_linechart_holder .tooltip {
   transition: opacity 0.3s;
 }
 div.tct_linechart_area div.tct_linechart_holder g.tooltip rect {
-  fill: #7f3978;
-  stroke: #7f3978;
+  fill: #b33e3e;
+  stroke: #b33e3e;
   z-index: 200;
 }
 div.tct_linechart_area div.tct_linechart_holder g.tooltip rect text {
