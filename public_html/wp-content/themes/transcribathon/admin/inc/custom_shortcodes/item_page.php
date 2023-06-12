@@ -1695,6 +1695,7 @@ if (event.target.id != "tagging-status-indicator") {
     $metaData .= "</div>"; // End of meta container
 
     // Story Description
+    $storyDescription = "";
     $storyDescription .= "<div id='storydesc'>";
         $storyDescription .= "<p class='mb-1'> Story Description</p>";
         $storyDescriptions = array_unique(explode(" || ", $storyData['Dc']['Description']));
