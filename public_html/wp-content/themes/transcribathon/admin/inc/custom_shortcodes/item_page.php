@@ -319,7 +319,7 @@ if (event.target.id != "tagging-status-indicator") {
             'method' => 'GET'
         ]
     ];
-
+    $itemData['Places'] = [];
     $itemData['Places'] = sendQuery(TP_API_HOST . '/tp-api/places/story/' . $itemId, $getJsonOptions, true);
 
     // Locations Display
