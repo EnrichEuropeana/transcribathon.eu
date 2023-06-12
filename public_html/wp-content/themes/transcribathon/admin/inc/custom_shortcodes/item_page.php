@@ -1848,6 +1848,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $content .= "<div style='padding-left:24px;'></div>";
                         $content .= "</div>";
                     } else {
+                        $formattedTranscription = '';
 
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
                             if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
@@ -1861,7 +1862,9 @@ if (event.target.id != "tagging-status-indicator") {
                                     });
                                 </script>";
                             } else {
-                                $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
+                                if(!empty($currentTranscription['Text'])) {
+                                    $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
+                                }
                             }
                         }
                         if(strlen($formattedTranscription) < 600 && strlen($formattedTranscription) != 0) {
@@ -2100,7 +2103,6 @@ if (event.target.id != "tagging-status-indicator") {
                   //  $content .= $descriptionTab;
                 $content .= "</div>";
                 // Info tab
-                var_dump($itemData);
                 $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
                     $content .= "<div class='item-page-section-headline theme-color' style='padding-left:25px!important;'> Story Information </div>";
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
