@@ -1587,7 +1587,7 @@ function loadPlaceData(itemId, userId) {
                             `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
                             `<p>
                                 <b>${htmlDecode(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})
-                                ${location['Comment'].includes('*Automatically Generated') ? '<i class="fas fa-check" title="User Verified"></i>' : ''}
+                                ${!location['Comment'] ? '' : location['Comment'].includes('*Automatically Generated') ? '<i class="fas fa-check" title="User Verified"></i>' : ''}
                             </p>` +
                             // Check if there is description : don't add <p> if not
                             `${location['Comment'] ?
@@ -1747,7 +1747,7 @@ function loadPersonData(itemId, userId) {
                                 `${person['FirstName'] ? htmlDecode(person['FirstName']) : ''}
 																 ${person['LastName']  ? htmlDecode(person['LastName'])  : ''}
 																	${personDateString   ? ' (' + personDateString + ')'   : ''}` +
-                                `${person['Description'].includes('*Automatically Generated') ? '<i class="fas fa-check" title="User Verified"></i>' : ''}` +
+                                `${!person['Description'] ? '' : person['Description'].includes('*Automatically Generated') ? '<i class="fas fa-check" title="User Verified"></i>' : ''}` +
                             `</p>` +
                             `${person['Description'] ?
                                 `<p class='person-description'>Description: ${htmlDecode(person['Description'])}</p>`
