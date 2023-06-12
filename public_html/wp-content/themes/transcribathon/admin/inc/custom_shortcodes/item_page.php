@@ -1848,6 +1848,7 @@ if (event.target.id != "tagging-status-indicator") {
                             $content .= "<div style='padding-left:24px;'></div>";
                         $content .= "</div>";
                     } else {
+                        // Declare var to avoid error when there is no transcription
                         $formattedTranscription = '';
 
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
