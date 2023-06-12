@@ -158,7 +158,7 @@ TW3;
 		<div class="{$tailwindInputWrapperClasses}">
 			<input
 				class="{$tailwindInputClasses}"
-				x-model="searchTerm"
+				x-model="searchCampaignTerm"
 				@keyup="searchCampaign()"
 				placeholder=" "
 			/>
@@ -177,7 +177,7 @@ TW3;
 				gap-2
 				mt-3
 			">
-				<template x-for="campaign in campaignSearch">
+				<template x-for="campaign in searchedCampaigns">
 					<li class="">
 						<button
 							class="

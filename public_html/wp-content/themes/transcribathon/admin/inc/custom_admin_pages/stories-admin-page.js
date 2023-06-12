@@ -12,7 +12,8 @@ document.addEventListener('alpine:init', () => {
 		initalStories: [],
 		datasets: [],
 		campaigns: [],
-		searchTerm: '',
+		searchedCampaigns: [],
+		searchCampaignTerm: '',
 		scrollElement: document.querySelector('#story-mangement'),
 
 		async init() {
@@ -65,25 +66,84 @@ document.addEventListener('alpine:init', () => {
 
     },
 
-    saveStory(StoryId = null) {
+    async saveStory(storyId = null) {
 
-			if (!StoryId) {
+			if (!storyId) {
 
 				this.openToast('error', 'Nothing to save.');
 				return;
 
 			}
 
+			const campaignsPayload = {};
+			campaignsPayload.Campaigns = this.selectedStoryCampaigns.map(campaign => campaign.CampaignId);
+
+			const campaignsUpdated = await (await fetch(THEME_URI + '/api-request.php/stories/' + storyId + '/campaigns', {
+				method: 'PUT',
+				body: JSON.stringify(campaignsPayload)
+			})).json();
+
+			const datasetPayload = {};
+			datasetPayload.DatasetId = this.selectedStory.DatasetId;
+
+			const datasetUpdated = await (await fetch(THEME_URI + '/api-request.php/stories/' + storyId, {
+				method: 'PUT',
+				body: JSON.stringify(datasetPayload)
+			})).json();
+
+			if (campaignsUpdated.success && datasetUpdated.success) {
+
+				this.openToast('success', 'Story updated.');
+
+			} else {
+
+				this.openToast('error', 'Story could not updated.');
+
+			}
+
     },
 
-    campaignSearch() {
+    searchCampaign() {
+
+			if (this.searchCampaignTerm.length < 3) {
+
+				this.searchedCampaigns = [];
+				return;
+
+			}
+
+			this.searchedCampaigns = this.campaigns.filter(
+				campaign => campaign.Name.toLowerCase().includes(this.searchCampaignTerm.toLowerCase())
+			);
+
 
     },
+
+		addCampaign (CampaignId, CampaignName) {
+
+
+			this.selectedStoryCampaigns.push({
+				CampaignId: CampaignId,
+				Name: CampaignName
+			});
+
+			this.searchCampaignTerm = '';
+			this.searchedCampaigns= [];
+
+		},
+
 
     resetForm() {
 
     	this.selectedStory = {};
 			this.selectedStoryCampaigns = [];
+			this.searchedCampaigns = [];
+
+    },
+
+    removeCampaign(CampaignId) {
+
+			this.selectedStoryCampaigns = this.selectedStoryCampaigns.filter(campaign => campaign.CampaignId !== CampaignId);
 
     },
 
