@@ -84,18 +84,11 @@ function _TCT_item_page_htr( $atts) {
     // Execude http request
     include dirname(__FILE__)."/../custom_scripts/send_api_request.php";
 
-    // Save image data
+    // Get image data
     $itemData = json_decode($result, true);
-    $imgInfo = explode('":"',$itemData['ImageLink']);
-    $imgLink = explode(',',$imgInfo[1]);
-    $imgJson = str_replace('full/full/0/default.jpg"','info.json',$imgLink[0]);
-    $imJLink = '';
-    if (substr($imgJson,0,4) != 'http') {
-        $imJLink = "https://";
-        $imJLink .= $imgJson;
-    } else {
-        $imJLink = $imgJson;
-    }
+    $imageData = json_decode($itemData['ImageLink'], true);
+    $imageLink = createImageLinkFromData($imageData, array('region' => 'full'));
+    $imageDataJson = str_replace('full/full/0/default.jpg', 'info.json', $imageLink);
 
     $transcription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
     $transcription = htmlspecialchars($transcription, ENT_QUOTES, 'UTF-8');
@@ -176,7 +169,7 @@ footer._tct_footer, footer.site-footer {
 <div
     id="transkribusEditor"
     ref="editor"
-    data-iiif-url='{$imJLink}',
+    data-iiif-url='{$imageDataJson}',
     data-xml= '{$transcription}'
 >
 </div>
@@ -241,7 +234,7 @@ HED;
         $layoutTranscription = trim(preg_replace('/\s+/', ' ', $htrTranscription));
 
         // Get json file from IIIF
-        $layoutImage = file_get_contents($imJLink);
+        $layoutImage = file_get_contents($imageDataJson);
         // Remove line breaks
         $cleanImage = trim(preg_replace('/\s+/', ' ', $layoutImage));
 
