@@ -2100,8 +2100,9 @@ if (event.target.id != "tagging-status-indicator") {
                   //  $content .= $descriptionTab;
                 $content .= "</div>";
                 // Info tab
+                var_dump($itemData);
                 $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
-                    $content .= "<div class='item-page-section-headline theme-color'>" . $itemData['StorydcTitle'] . "</div>";
+                    $content .= "<div class='item-page-section-headline theme-color' style='padding-left:25px!important;'> Story Information </div>";
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
 
                     $content .= "</div>";
@@ -2173,7 +2174,8 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<div id='ppl-auto-enrich'></div>";
                     $content .= "</div>";
                     $content .= "<div id='accept-ppl-enrich' style='display:none;'> SUBMIT </div>";
-
+                    echo '</br>';
+                    var_dump(error_get_last());
                 $content .= "</div>";
                 // Help tab
                 $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";
