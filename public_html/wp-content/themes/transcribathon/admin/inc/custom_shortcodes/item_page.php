@@ -236,7 +236,6 @@ if (event.target.id != "tagging-status-indicator") {
         $content .= "</div>";
     $content .= "</div>";
 
-    $currentTranscription = null;
 
     $currentTranscription = [];
     $transcriptionList = array_reverse(sendQuery(TP_API_HOST . '/tp-api/transcriptions?ItemId=' . $itemId, $getJsonOptions, true));
@@ -248,12 +247,18 @@ if (event.target.id != "tagging-status-indicator") {
                 $itemData['TranscriptionLanguages'] = $transcription['Languages'];
             }
         }
-    } 
+    } else {
+        $currentTranscription['Text'] = '';
+        $currentTranscription['NoText'] = '';
+        $currentTranscription['TextNoTags'] = '';
+    }
     
     $htrDataJson = sendQuery(TP_API_V2_ENDPOINT . '/htrdata?ItemId=' . $itemId, $getJsonOptions, true);
-    $htrTranscription = $htrDataJson['data'][0]['TranscriptionData'];
-    $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
-    
+    $htrTranscription = '';
+    if(!empty($htrDataJson['data'])) {
+        $htrTranscription = $htrDataJson['data'][0]['TranscriptionData'];
+        $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
+    }
 
 
     //$currentTranscription = $itemData['Transcription'];
@@ -300,7 +305,7 @@ if (event.target.id != "tagging-status-indicator") {
 
 
     // Mapbox
-    $mapBox .= "";
+    $mapBox = "";
     $mapBox .= "<div id='full-view-map' style='height:400px;'>";
     $mapBox .= "<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>";
     $mapBox .= "<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />";
@@ -901,11 +906,13 @@ if (event.target.id != "tagging-status-indicator") {
 
     // Transcription History
     $trHistory = "";
-    if(!$currentTranscription['Text']) {
+    if($currentTranscription['Text'] == '') {
         $trHistory .= "<div class='tr-history-section' style='display:none;'>";
+        $trHistory .= "</div>";
     } else {
         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
-    }
+    
+
     $trHistory .= "<div id='tr-history-collapse-btn' class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' style='margin-bottom: 0;'>";
             $trHistory .= "<h4 id='transcription-history-collapse-heading' class='theme-color item-page-section-headline'>";
                 $trHistory .= "TRANSCRIPTION HISTORY";
@@ -936,7 +943,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             $trHistory .= "<div id='transcription-0' class='collapse transcription-history-collapse-content'>";
                 $trHistory .= "<p>";
-                    $trHistory .= $currentTranscription['TextNoTags'] ? $currentTranscription['TextNoTags'] : "";
+                    $trHistory .= !empty($currentTranscription['TextNoTags']) ? $currentTranscription['TextNoTags'] : "";
                 $trHistory .= "</p>";
             $trHistory .= "</div>";
 
@@ -979,6 +986,7 @@ if (event.target.id != "tagging-status-indicator") {
         $trHistory .= "</div>";
         //var_dump($transcriptionList);
     $trHistory .= "</div>";
+}
     // Editor Tab
 
     $editorTab = "";
@@ -1087,7 +1095,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= "</div>";
                 $editorTab .= "<div id='transcription-selected-languages' class='language-selected'>";
                     $editorTab .= "<ul>";
-                        if($itemData['TranscriptionLanguages'] != null) {
+                        if(!empty($itemData['TranscriptionLanguages'])) {
                             $transcriptionLanguages = $itemData['TranscriptionLanguages'];
 
                             foreach($transcriptionLanguages as $trLanguage) {
@@ -1359,7 +1367,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             $descriptionLanguage = "";
             foreach($languages as $language) {
-                if($itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
+                if(!empty($itemData['DescriptionLang']) && $itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
                     $descriptionLanguage = $language['Name'];
                 }
             }
@@ -1585,7 +1593,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
             }
 
-            array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || ' . $isActive));
+            array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || '));
         }
 
         $imageSlider = "";
@@ -1608,7 +1616,7 @@ if (event.target.id != "tagging-status-indicator") {
     }
 
     // Metadata
-    $metaData .= "";
+    $metaData = "";
     $metaData .= "<div id='meta-container'>";
         foreach($storyData['Dc'] as $key => $value) {
             if(!empty($value) && $key != 'Description') {
@@ -1693,6 +1701,7 @@ if (event.target.id != "tagging-status-indicator") {
     $metaData .= "</div>"; // End of meta container
 
     // Story Description
+    $storyDescription = "";
     $storyDescription .= "<div id='storydesc'>";
         $storyDescription .= "<p class='mb-1'> Story Description</p>";
         $storyDescriptions = array_unique(explode(" || ", $storyData['Dc']['Description']));
@@ -1848,6 +1857,8 @@ if (event.target.id != "tagging-status-indicator") {
                             $content .= "<div style='padding-left:24px;'></div>";
                         $content .= "</div>";
                     } else {
+                        // Declare var to avoid error when there is no transcription
+                        $formattedTranscription = '';
 
                         if(!str_contains(strtolower($currentTranscription['Text']),'<script>')) {
                             if($activeTr == 'htr' || ($currentTranscription['Text'] == null && $htrTranscription != null)) {
@@ -1861,7 +1872,9 @@ if (event.target.id != "tagging-status-indicator") {
                                     });
                                 </script>";
                             } else {
-                                $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
+                                if(!empty($currentTranscription['Text'])) {
+                                    $formattedTranscription = htmlspecialchars_decode($currentTranscription['Text']);
+                                }
                             }
                         }
                         if(strlen($formattedTranscription) < 600 && strlen($formattedTranscription) != 0) {
@@ -2101,7 +2114,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $content .= "</div>";
                 // Info tab
                 $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
-                    $content .= "<div class='item-page-section-headline theme-color'>" . $itemData['StorydcTitle'] . "</div>";
+                    $content .= "<div class='item-page-section-headline theme-color' style='padding-left:25px!important;'> Story Information </div>";
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
 
                     $content .= "</div>";
