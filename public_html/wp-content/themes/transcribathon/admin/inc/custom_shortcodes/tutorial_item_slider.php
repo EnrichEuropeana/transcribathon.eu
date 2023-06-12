@@ -22,19 +22,23 @@ function _TCT_tutorial_item_slider( $atts ) {
                             position: relative;
                             float: left;
                             bottom: 0;
-                            padding: 5px;
+                            padding: 4px;
                             background: #0a72cc;
                             color: #fff;
-                            width: 80px;
+                            width: 100px;
+                            height: 35px;
+                            font-size: 14px;
                         }
                         .tutorial-next {
                             position: relative;
                             float: right;
                             bottom: 0;
-                            padding: 5px;
+                            padding: 4px;
                             background: #0a72cc;
                             color: #fff;
-                            width: 80px;
+                            width: 100px;
+                            height: 35px;
+                            font-size: 14px;
                         }
                         #tutorial-carousel button:focus {
                             background: #0a72cc!important;
@@ -94,11 +98,11 @@ function _TCT_tutorial_item_slider( $atts ) {
             $content .= "</div>"; // Carousel inner closing
             $content .= "<div style='height:10%;'>";
             $content .= "<button id='tut-prev' class='tutorial-prev' type='button' data-target='#tutorial-carousel' data-slide='prev'>";
-                $content .= "<span class='' aria-hidden='true'><< Previous</span>";
+                $content .= "<span class='' aria-hidden='true'><i class='far fa-chevron-double-left'></i> Previous</span>";
                 $content .= "<span class='sr-only'>Prevoius</span>";
             $content .= "</button>";
             $content .= "<button id='tut-next' class='tutorial-next' type='button' data-target='#tutorial-carousel' data-slide='next'>";
-                $content .= "<span class='' aria-hidden='true'>Next >></span>";
+                $content .= "<span class='' aria-hidden='true'>Next <i class='far fa-chevron-double-right'></i></span>";
                 $content .= "<span class='sr-only'>Next</span>";
             $content .= "</button>";
             $content .= "</div>";

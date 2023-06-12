@@ -4,7 +4,7 @@
   Author URI: http://factsandfiles.com
   Description: A child theme of Vantage (SiteOrigin)
   Template: vantage
-  Version: 3.3.3
+  Version: 3.3.6
 */
 
 /* Retreive styles from mother theme */
@@ -1707,7 +1707,7 @@ div.um-profile-nav div.um-profile-nav-item.active a {
   color: #000 !important;
   background: transparent !important;
   border-radius: 0px;
-  border-bottom: 5px solid #0a72cc!important;
+  border-bottom: 5px solid #b33e3e!important;
 }
 div.um-profile-nav p {
   display: inline-block;
@@ -2445,8 +2445,8 @@ div.tct_linechart_area div.tct_linechart_holder .tooltip {
   transition: opacity 0.3s;
 }
 div.tct_linechart_area div.tct_linechart_holder g.tooltip rect {
-  fill: #7f3978;
-  stroke: #7f3978;
+  fill: #b33e3e;
+  stroke: #b33e3e;
   z-index: 200;
 }
 div.tct_linechart_area div.tct_linechart_holder g.tooltip rect text {

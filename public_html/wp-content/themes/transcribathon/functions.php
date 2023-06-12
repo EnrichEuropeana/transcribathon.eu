@@ -254,11 +254,11 @@ function load_admin_page($pageData)
 
 		// declare admin pages
 		$adminPageData = [
-		//[page_title,   menu_title,  capability,       menu_slug,              callback,                    icon_url,              position],
-			['Teams',     'Teams',     'manage_options', 'teams-admin-page',     '_TCT_teams_admin_page',     'dashicons-groups',     3],
-			['Campaigns', 'Campaigns', 'manage_options', 'campaigns-admin-page', '_TCT_campaigns_admin_page', 'dashicons-admin-site', 3],
-			['Documents', 'Documents', 'manage_options', 'documents-admin-page', '_TCT_documents_admin_page', 'dashicons-admin-site', 3],
-			['Datasets',  'Datasets',  'manage_options', 'datasets-admin-page',  '_TCT_datasets_admin_page',  'dashicons-admin-site', 3]
+		//[page_title,   menu_title,  capability,       menu_slug,              callback,                    icon_url,                  position],
+			['Teams',     'Teams',     'manage_options', 'teams-admin-page',     '_TCT_teams_admin_page',     'dashicons-groups',         3],
+			['Campaigns', 'Campaigns', 'manage_options', 'campaigns-admin-page', '_TCT_campaigns_admin_page', 'dashicons-tag',            3],
+			['Stories',   'Stories',   'manage_options', 'stories-admin-page',   '_TCT_stories_admin_page',   'dashicons-media-document', 3],
+			['Datasets',  'Datasets',  'manage_options', 'datasets-admin-page',  '_TCT_datasets_admin_page',  'dashicons-category',       3]
 		];
 
 		// load admin pages

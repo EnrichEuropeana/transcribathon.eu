@@ -1,9 +1,10 @@
 <?php
 
-function _TCT_campaigns_admin_page($atts)
+function _TCT_stories_admin_page($atts)
 {
 	$themeUri = get_stylesheet_directory_uri();
 	$mainUri = get_europeana_url();
+	$solrImportWrapper = $themeUri . '/solr-import-request.php';
 
 	$tailwindLabelClasses = <<<TW1
 		before:content[' ']
@@ -105,57 +106,47 @@ TW2;
 TW3;
 
 	$html = <<<HTML
-<div class="container mx-auto mt-8" x-data="manage_campaigns" id="campaign-mangement">
-	<h1 class="text-2xl mb-4">Campaign Management</h1>
+<div class="container mx-auto mt-8" x-data="manage_stories" id="story-mangement">
+	<h1 class="text-2xl mb-4">Story Management</h1>
 
 	<div class="bg-white p-6 rounded shadow-md">
 
 		<div class="{$tailwindInputWrapperClasses}">
-			<input
-				class="{$tailwindInputClasses}"
-				x-model="selectedCampaign.Name"
-				placeholder=" "
-			/>
+			<div class="inline-block {$tailwindInputClasses}">
+				<span x-text="selectedStory.StoryId"></span>
+				<a
+					class="text-blue-500"
+					x-show="selectedStory.StoryId"
+					:href="'{$mainUri}/documents/story/?story=' + selectedStory.StoryId"
+					target="_blank"
+				>(link)</a>
+			</div>
 			<label
 				class="{$tailwindLabelClasses}"
-			>Campaign Name</label>
+			>StoryId</label>
 		</div>
 
 		<div class="{$tailwindInputWrapperClasses}">
-			<input
-				type="datetime-local"
-				class="{$tailwindInputClasses}"
-				x-model="selectedCampaign.Start"
-				placeholder=" "
-			/>
+			<span
+				class="inline-block {$tailwindInputClasses}"
+				x-text="selectedStory.Dc?.Title"
+			></span>
 			<label
 				class="{$tailwindLabelClasses}"
-			>Campaign Start</label>
-		</div>
-
-		<div class="{$tailwindInputWrapperClasses}">
-			<input
-				type="datetime-local"
-				class="{$tailwindInputClasses}"
-				x-model="selectedCampaign.End"
-				placeholder=" "
-			/>
-			<label
-				class="{$tailwindLabelClasses}"
-			>Campaign End</label>
+			>Title</label>
 		</div>
 
 		<div class="{$tailwindInputWrapperClasses}">
 			<select
 				class="{$tailwindInputClasses}"
-				x-model="selectedCampaign.DatasetId"
+				x-model="selectedStory.DatasetId"
 			>
 				<option></option>
 				<template x-for="dataset in datasets">
 					<option
 						:value="dataset.DatasetId"
 						x-text="dataset.Name"
-						:selected="selectedCampaign.DatasetId === dataset.DatasetId"
+						:selected="selectedStory.DatasetId === dataset.DatasetId"
 					></option>
 				</template>
 			</select>
@@ -164,107 +155,16 @@ TW3;
 			>Associated Dataset</label>
 		</div>
 
-		<div class="
-			{$tailwindInputWrapperClasses}
-			inline-flex
-			items-center
-		">
-		<div
-			class="
-				relative
-				inline-block
-				h-4
-				w-8
-				ml-2
-				cursor-pointer
-				rounded-full
-			"
-		>
-			<input
-				id="auto-update"
-				type="checkbox"
-				x-model="selectedCampaign.Public"
-				placeholder=" "
-				class="
-					peer
-					absolute
-					h-4
-					w-8
-					m-0
-					cursor-pointer
-					appearance-none
-					rounded-full
-					bg-gray-200
-					border-none
-					focus:border-none
-					transition-colors
-					duration-300
-					checked:bg-blue-500
-					peer-checked:border-blue-500
-					peer-checked:before:bg-blue-500
-					checked:before:content['']
-					checked:before:m-0
-				"
-			/>
-			<label
-				for="auto-update"
-				class="
-					before:content['']
-					absolute
-					top-2/4
-					-left-1
-					h-5
-					w-5
-					-translate-y-2/4
-					cursor-pointer
-					rounded-full
-					border
-					border-blue-gray-100
-					bg-white
-					shadow-md
-					transition-all
-					duration-300
-					before:absolute
-					before:top-2/4
-					before:left-2/4
-					before:block
-					before:h-10
-					before:w-10
-					before:-translate-y-2/4
-					before:-translate-x-2/4
-					before:rounded-full
-					before:bg-blue-gray-500
-					before:opacity-0
-					before:transition-opacity
-					hover:before:opacity-10
-					peer-checked:translate-x-full
-					peer-checked:border-blue-500
-					peer-checked:before:bg-blue-500
-				"
-			></label>
-		</div>
-			<label
-				for="auto-update"
-				class="
-					mt-px
-					ml-3
-					mb-0
-					cursor-pointer
-					select-none
-				"
-			>Public</label>
-		</div>
-
 		<div class="{$tailwindInputWrapperClasses}">
 			<input
 				class="{$tailwindInputClasses}"
-				x-model="searchTerm"
-				@keyup="searchTeam()"
+				x-model="searchCampaignTerm"
+				@keyup="searchCampaign()"
 				placeholder=" "
 			/>
 			<label
 				class="{$tailwindLabelClasses}"
-			>Search and add Teams</label>
+			>Search and add campaigns</label>
 		</div>
 
 		<div class="mb-4 min-h-11">
@@ -277,7 +177,7 @@ TW3;
 				gap-2
 				mt-3
 			">
-				<template x-for="team in teamSearch">
+				<template x-for="campaign in searchedCampaigns">
 					<li class="">
 						<button
 							class="
@@ -297,8 +197,8 @@ TW3;
 								leading-none
 								text-white
 							"
-							x-text="team.Name"
-							@click="addTeam(team.TeamId, team.Name);"
+							x-text="campaign.Name"
+							@click="addCampaign(campaign.CampaignId, campaign.Name);"
 						></button>
 					</li>
 				</template>
@@ -316,7 +216,7 @@ TW3;
 				items-center
 				gap-1
 			">
-				<template x-for="team in selectedCampaign.Teams">
+				<template x-for="campaign in selectedStoryCampaigns">
 					<div class="
 						center
 						relative
@@ -333,7 +233,7 @@ TW3;
 						leading-none
 						text-white
 					">
-						<div class="mr-5 mt-px" x-text="team.Name"></div>
+						<div class="mr-5 mt-px" x-text="campaign.Name"></div>
 						<div class="
 							absolute
 							top-1
@@ -349,7 +249,7 @@ TW3;
 							<div
 								role="button"
 								class="h-5 w-5 p-1"
-								@click="removeTeam(team.TeamId)"
+								@click="removeCampaign(campaign.CampaignId)"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -392,7 +292,7 @@ TW3;
 					active:opacity-[0.85]
 					active:shadow-none
 				"
-				@click="saveCampaign(selectedCampaign.CampaignId)"
+				@click="saveStory(selectedStory.StoryId)"
 			>Save</button>
 			<button
 				type="button"
@@ -415,23 +315,43 @@ TW3;
 		</div>
 	</div>
 
-	<!--
 	<div class="mt-4 bg-white p-6 rounded shadow-md">
 
-		<div class="{$tailwindInputWrapperClasses}">
+		<div class="flex {$tailwindInputWrapperClasses}">
 			<input
-				x-model="filterString"
-				@keyup="filterTable"
+				x-model="searchString"
 				class="{$tailwindInputClasses}"
 				placeholder=" "
+				@keydown.enter="search"
 			/>
 			<label
 				class="{$tailwindLabelClasses}"
-			>Filter Campaigns</label>
+			>Search stories by title here (otherwise latest 100 imported stories are shown)</label>
+			<button
+				class="
+					ml-3
+					rounded-lg
+					bg-blue-500
+					py-2
+					px-4
+					text-xs
+					font-bold
+					uppercase
+					text-white
+					shadow-md
+					shadow-blue-500/20
+					transition-all
+					hover:shadow-lg
+					hover:shadow-blue-500/40
+					active:opacity-[0.85]
+					active:shadow-none
+				"
+				@click="search"
+				@keydown.enter="search"
+			>Search</button>
 		</div>
 
 	</div>
-	-->
 
 	<table class="
 		w-full
@@ -447,22 +367,22 @@ TW3;
 			bg-gray-50
 		">
 			<tr>
-					<th scope="col" class="px-6 py-3">Campaign Name</th>
-					<th scope="col" class="px-6 py-3">Date Start</th>
-					<th scope="col" class="px-6 py-3">Date End</th>
+					<th scope="col" class="px-6 py-3">StoryId</th>
+					<th scope="col" class="px-6 py-3">Title</th>
+					<th scope="col" class="px-6 py-3 min-w-[9rem]">Dataset</th>
 					<th scope="col" class="px-6 py-3">Actions</th>
 			</tr>
 			</thead>
 			<tbody>
-				<template x-for="(campaign, index) in campaigns" :key="campaign.CampaignId">
+				<template x-for="(story, index) in stories" :key="story.StoryId">
 					<tr
 						data-action="filter"
 						class="border-b"
 						:class="index % 2 === 0 ? 'bg-white' : 'bg-gray-50'"
 					>
-						<th cope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" x-text="campaign.Name"></td>
-						<td class="px-6 py-4" x-text="campaign.Start"></td>
-						<td class="px-6 py-4" x-text="campaign.End"></td>
+						<th cope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap" x-text="story.StoryId"></td>
+						<td class="px-6 py-4" x-text="story.Dc?.Title || story.dcTitle"></td>
+						<td class="px-6 py-4" x-text="datasets.find(set => set.DatasetId === story.DatasetId)?.Name || story.Dataset || ''"></td>
 						<td class="flex px-6 py-4">
 							<button
 								class="
@@ -483,29 +403,8 @@ TW3;
 									active:opacity-[0.85]
 									active:shadow-none
 								"
-								@click="loadCampaign(campaign.CampaignId)"
+								@click="loadStory(story.StoryId)"
 							>Edit</button>
-							<button
-								class="
-									mr-3
-									rounded-lg
-									bg-red-500
-									py-2
-									px-4
-									text-xs
-									font-bold
-									uppercase
-									text-white
-									shadow-md
-									shadow-red-500/20
-									transition-all
-									hover:shadow-lg
-									hover:shadow-red-500/40
-									active:opacity-[0.85]
-									active:shadow-none
-								"
-								@click="removeCampaign(campaign.CampaignId)"
-							>Delete</button>
 						</td>
 					</tr>
 				</template>
@@ -530,15 +429,16 @@ $js = <<<JS
 <script>
 	const THEME_URI = '{$themeUri}';
 	const MAIN_URI = '{$mainUri}';
+	const solrWrapper = '{$solrImportWrapper}';
 </script>
 JS;
 
 	echo $html . $js;
 }
 
-function load_campaigns_scripts($hook)
+function load_stories_scripts($hook)
 {
-	if ($hook !== 'toplevel_page_campaigns-admin-page') {
+	if ($hook !== 'toplevel_page_stories-admin-page') {
 		return;
 	}
 	// using the playground tailwindcss for now, no compiling but heavier load
@@ -546,10 +446,10 @@ function load_campaigns_scripts($hook)
 	// wp_enqueue_script('add_tailwindcss');
 	wp_register_style('add_css', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/backend.min.css', [], '3.3.2', false);
 	wp_register_script('add_alpinejs', get_stylesheet_directory_uri(). '/admin/inc/custom_js/alpinejs.min.js', [], '3.12.0', false);
-	wp_register_script('add_campaigns_script', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/campaigns-admin-page.js', [], '0.1.0', true);
+	wp_register_script('add_stories_script', get_stylesheet_directory_uri(). '/admin/inc/custom_admin_pages/stories-admin-page.js', [], '0.1.0', true);
 	wp_enqueue_style('add_css');
 	wp_enqueue_script('add_alpinejs');
-	wp_enqueue_script('add_campaigns_script');
+	wp_enqueue_script('add_stories_script');
 	add_filter('script_loader_tag', 'defer_alpinejs', 10, 3);
 }
 
@@ -561,4 +461,4 @@ function defer_alpinejs($tag, $handle, $src)
 	return $tag;
 }
 
-add_action('admin_enqueue_scripts', 'load_campaigns_scripts');
+add_action('admin_enqueue_scripts', 'load_stories_scripts');
