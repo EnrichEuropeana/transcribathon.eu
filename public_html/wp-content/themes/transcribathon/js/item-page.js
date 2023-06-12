@@ -2986,6 +2986,7 @@ ready(() => {
 
                 } else {
                     alert('We are sorry! We haven\'t been able to generate auto enrichments.');
+                    runBtn.style.display = 'none';
                     document.querySelector('#auto-story-spinner-container').style.display = 'none';
                     return;
                 }
@@ -3170,6 +3171,7 @@ ready(() => {
 
                 } else {
                     alert("We are sorry! We haven't been able to generate auto enrichments.");
+                    autoEnrichBtn.style.display = 'none';
                     document.querySelector('#auto-itm-spinner-container').style.display = 'none';
                     return;
                 }

@@ -2112,7 +2112,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $content .= "</div>";
                 // Info tab
                 $content .= "<div id='info-tab' class='tabcontent' style='display:none;'>";
-                    $content .= "<div class='item-page-section-headline theme-color'>" . $itemData['StorydcTitle'] . "</div>";
+                    $content .= "<div class='item-page-section-headline theme-color' style='padding-left: 25px!important;'>Story Information</div>";
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
 
                     $content .= "</div>";
