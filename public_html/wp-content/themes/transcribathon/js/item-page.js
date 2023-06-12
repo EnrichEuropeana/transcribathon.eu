@@ -2761,7 +2761,7 @@ ready(() => {
         const transEditContainer = document.querySelector('#transcription-edit-container');
         const transViewContainer = document.querySelector('#transcription-view-container');
         const transHeader = document.querySelector('.transcription-headline-header span');
-        const autoEnrichItems = document.querySelector('#run-itm-enrich');
+        const autoEnrichItems = document.querySelector('#run-itm-enrich-container');
         transcriptionSwitch.addEventListener('click', function() {
             if(transEditContainer.style.display == 'none') {
                 transEditContainer.style.display = 'block';
@@ -3337,7 +3337,6 @@ ready(() => {
                     if(lastEnrCheck === acceptedEnrich.length) {
                         storySubmit.style.display = 'none';
                         loadStoryEnrichments(storyId);
-                        document.querySelector('#full-v-metadata').querySelector('.auto-h').style.display = 'block';
                     }
                     
                 })

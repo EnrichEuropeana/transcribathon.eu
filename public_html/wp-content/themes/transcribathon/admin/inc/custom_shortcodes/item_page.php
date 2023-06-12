@@ -2136,7 +2136,7 @@ if (event.target.id != "tagging-status-indicator") {
                     // Story Auto Enrichments
                     if(empty($storyAutoE['data']) && $storyData['Dc']['Description'] != 'NULL' && !empty($storyData['Dc']['Description'])) {
                         $content .= "<div id='run-stry-enrich'> Analyse Story Description for Automatic Enrichments </div>";
-                        $content .= "<p id='identified-enrich' class='mb-1' style='display:none;padding-left:25px!important;margin-bottom:10px!important;'> Automatically Identified Enrichments </p>";
+                        $content .= "<p id='identified-enrich' class='mb-1' style='display:none;padding-left:25px!important;margin: 10px 0px!important;'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
                         $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
                             $content .= "<div id='auto-story-spinner-container' class='spinner-container'>";
