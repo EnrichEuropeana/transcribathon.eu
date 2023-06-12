@@ -477,6 +477,12 @@ h6.enrich-headers {
     height: unset;
     white-space: normal;
 }
+.person-data .fas.fa-check, .location-single .fas.fa-check {
+    color: #61e02f;
+    position: relative;
+    left: 5px;
+    font-size: 16px;
+}
 .edit-del-person {
     position: absolute;
     top: 5px;

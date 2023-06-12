@@ -334,9 +334,14 @@ if (event.target.id != "tagging-status-indicator") {
                 $locationDisplay .= "<div id='location-" . $place['PlaceId'] . "'>";
                     $locationDisplay .= "<div id='location-data-output-" . $place['PlaceId'] . "' class='location-single'>";
                         $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>";
-                        $locationDisplay .= "<p><b>" . htmlspecialchars_decode($place['Name']) . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
+                        $locationDisplay .= "<p>";
+                            $locationDisplay .= "<b>" . htmlspecialchars_decode($place['Name']) . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")";
+                            $locationDisplay .= str_contains($place['Comment'], '*Automatically Generated') ? "<i class='fas fa-check' style='color:#61e02f;' title='User Verified'></i>" : '';
+                        $locationDisplay .= "</p>";
                         if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
-                            $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: " . htmlspecialchars_decode($place['Comment']) . "</p>";
+                            $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>";
+                                $locationDisplay .= "Description: " . htmlspecialchars_decode($place['Comment']);
+                            $locationDisplay .= "</p>";
                         }
                         if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
                             $locationDisplay .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
@@ -764,6 +769,8 @@ if (event.target.id != "tagging-status-indicator") {
 																$personDateString = implode(' - ', $personDateArray);
 
 																$enrichmentTab .= $personDateString ? ' (' . $personDateString . ')' : '';
+
+                                $enrichmentTab .= str_contains($person['Description'], '*Automatically Generated') ? "<i class='fas fa-check' style='color:#61e02f;' title='User Verified'></i>" : '';
 
                             $enrichmentTab .= "</p>";
 
