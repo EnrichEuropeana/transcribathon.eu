@@ -1,6 +1,6 @@
 document.addEventListener('alpine:init', () => {
 
-	Alpine.data('manage_teams', () => ({
+	Alpine.data('manage_campaigns', () => ({
 
 		filterString: '',
 		toast: false,

@@ -38,4 +38,11 @@ if (empty($path)) {
 
 $url = TP_SOLR . $path . $query;
 
-ApiRequest::sendRaw($url, []);
+$jsonResponse = ApiRequest::sendRaw($url, []);
+
+// reomve possible database credentials
+$response = json_decode($jsonResponse, true);
+unset($response['initArgs']);
+$jsonResponse = json_encode($response);
+
+echo $jsonResponse;
