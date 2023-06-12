@@ -250,12 +250,15 @@ if (event.target.id != "tagging-status-indicator") {
     } else {
         $currentTranscription['Text'] = '';
         $currentTranscription['NoText'] = '';
+        $currentTranscription['TextNoTags'] = '';
     }
     
     $htrDataJson = sendQuery(TP_API_V2_ENDPOINT . '/htrdata?ItemId=' . $itemId, $getJsonOptions, true);
-    $htrTranscription = $htrDataJson['data'][0]['TranscriptionData'];
-    $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
-    
+    $htrTranscription = '';
+    if(!empty($htrDataJson['data'])) {
+        $htrTranscription = $htrDataJson['data'][0]['TranscriptionData'];
+        $htrTranscription = get_text_from_pagexml($htrTranscription, '<br />');
+    }
 
 
     //$currentTranscription = $itemData['Transcription'];
@@ -302,7 +305,7 @@ if (event.target.id != "tagging-status-indicator") {
 
 
     // Mapbox
-    $mapBox .= "";
+    $mapBox = "";
     $mapBox .= "<div id='full-view-map' style='height:400px;'>";
     $mapBox .= "<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>";
     $mapBox .= "<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />";
@@ -903,11 +906,13 @@ if (event.target.id != "tagging-status-indicator") {
 
     // Transcription History
     $trHistory = "";
-    if(!$currentTranscription['Text']) {
+    if($currentTranscription['Text'] == '') {
         $trHistory .= "<div class='tr-history-section' style='display:none;'>";
+        $trHistory .= "</div>";
     } else {
         $trHistory .= "<div class='tr-history-section' style='display:block;'>";
-    }
+    
+
     $trHistory .= "<div id='tr-history-collapse-btn' class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' style='margin-bottom: 0;'>";
             $trHistory .= "<h4 id='transcription-history-collapse-heading' class='theme-color item-page-section-headline'>";
                 $trHistory .= "TRANSCRIPTION HISTORY";
@@ -938,7 +943,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             $trHistory .= "<div id='transcription-0' class='collapse transcription-history-collapse-content'>";
                 $trHistory .= "<p>";
-                    $trHistory .= $currentTranscription['TextNoTags'] ? $currentTranscription['TextNoTags'] : "";
+                    $trHistory .= !empty($currentTranscription['TextNoTags']) ? $currentTranscription['TextNoTags'] : "";
                 $trHistory .= "</p>";
             $trHistory .= "</div>";
 
@@ -981,6 +986,7 @@ if (event.target.id != "tagging-status-indicator") {
         $trHistory .= "</div>";
         //var_dump($transcriptionList);
     $trHistory .= "</div>";
+}
     // Editor Tab
 
     $editorTab = "";
@@ -1089,7 +1095,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= "</div>";
                 $editorTab .= "<div id='transcription-selected-languages' class='language-selected'>";
                     $editorTab .= "<ul>";
-                        if($itemData['TranscriptionLanguages'] != null) {
+                        if(!empty($itemData['TranscriptionLanguages'])) {
                             $transcriptionLanguages = $itemData['TranscriptionLanguages'];
 
                             foreach($transcriptionLanguages as $trLanguage) {
@@ -1361,7 +1367,7 @@ if (event.target.id != "tagging-status-indicator") {
 
             $descriptionLanguage = "";
             foreach($languages as $language) {
-                if($itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
+                if(!empty($itemData['DescriptionLang']) && $itemData['DescriptionLang']['LanguageId'] == $language['LanguageId']) {
                     $descriptionLanguage = $language['Name'];
                 }
             }
@@ -1587,7 +1593,7 @@ if (event.target.id != "tagging-status-indicator") {
                 $sliderImgLink = str_replace('full', '50,50,1800,1100', $sliderImgLink);
             }
 
-            array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || ' . $isActive));
+            array_push($allImages, ($sliderImgLink . ' || ' . $itemImages[$x]['ItemId'] . ' || ' . $itemImages[$x]['CompletionStatusColorCode'] . ' || '));
         }
 
         $imageSlider = "";
@@ -1610,7 +1616,7 @@ if (event.target.id != "tagging-status-indicator") {
     }
 
     // Metadata
-    $metaData .= "";
+    $metaData = "";
     $metaData .= "<div id='meta-container'>";
         foreach($storyData['Dc'] as $key => $value) {
             if(!empty($value) && $key != 'Description') {
@@ -2180,8 +2186,7 @@ if (event.target.id != "tagging-status-indicator") {
                         $content .= "<div id='ppl-auto-enrich'></div>";
                     $content .= "</div>";
                     $content .= "<div id='accept-ppl-enrich' style='display:none;'> SUBMIT </div>";
-                    echo '</br>';
-                    var_dump(error_get_last());
+
                 $content .= "</div>";
                 // Help tab
                 $content .= "<div id='help-tab' class='tabcontent' style='display:none;'>";
