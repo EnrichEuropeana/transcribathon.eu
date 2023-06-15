@@ -1098,8 +1098,10 @@ function addItemProperty(itemId, userId, type, editStatusColor, statusCount, pro
 }
 // Change progress status
 function changeStatus (itemId, oldStatus, newStatus, fieldName, value, color, statusCount, e) {
-    jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-changer').css('background-color', color);
-    jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').text(newStatus);
+    if(jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-changer')) {
+        jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-changer').css('background-color', color);
+        jQuery('#' + fieldName.replace("StatusId", "").toLowerCase() + '-status-indicator').text(newStatus);
+    }
 
     if (fieldName != "CompletionStatusId") {
         if (oldStatus == null) {
@@ -1583,10 +1585,13 @@ function loadPlaceData(itemId, userId) {
                     `<div id='location-${escapeHtml(location['PlaceId'])}' >` +
                         `<div id='location-data-output-${location['PlaceId']}' class='location-single'>` +
                             `<img src='${home_url}/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>` +
-                            `<p><b>${htmlDecode(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})</p>` +
+                            `<p>
+                                <b>${htmlDecode(location['Name'])}</b> (${escapeHtml(location['Latitude'])}, ${escapeHtml(location['Longitude'])})
+                                ${!location['Comment'] ? '' : location['Comment'].includes('*Automatically Generated') ? '<i class="fas fa-check" title="User Verified"></i>' : ''}
+                            </p>` +
                             // Check if there is description : don't add <p> if not
                             `${location['Comment'] ?
-                                `<p style='margin-top:0px;font-size:13px;'>Description: <b> ${htmlDecode(location['Comment'])}</b></p>`
+                                `<p style='margin-top:0px;font-size:13px;'>Description: ${htmlDecode(location['Comment'])}</p>`
                                 :
                                 ``
                             }` +
@@ -1742,6 +1747,7 @@ function loadPersonData(itemId, userId) {
                                 `${person['FirstName'] ? htmlDecode(person['FirstName']) : ''}
 																 ${person['LastName']  ? htmlDecode(person['LastName'])  : ''}
 																	${personDateString   ? ' (' + personDateString + ')'   : ''}` +
+                                `${!person['Description'] ? '' : person['Description'].includes('*Automatically Generated') ? '<i class="fas fa-check" title="User Verified"></i>' : ''}` +
                             `</p>` +
                             `${person['Description'] ?
                                 `<p class='person-description'>Description: ${htmlDecode(person['Description'])}</p>`
@@ -1749,7 +1755,7 @@ function loadPersonData(itemId, userId) {
                                 ``
                             }` +
                             `${person['Link'] ?
-                                `<p class='person-description'><a href='http://www.wikidata.org/wiki/${escapeHtml(person['Link'])}' target='_blank'>${escapeHtml(person['Link'])}</a></p>`
+                                `<p class='person-description'>Wikidata Reference: <b><a href='http://www.wikidata.org/wiki/${escapeHtml(person['Link'])}' target='_blank'>${escapeHtml(person['Link'])}</a></b></p>`
                                 :
                                 ``
                             }` +
@@ -2459,6 +2465,8 @@ ready(() => {
     // Item Page/Full Screen - Hide tab names when they start to break
     const tabHeadList = document.querySelector('#item-tab-list');
     const tabNames = tabHeadList.querySelectorAll('.tab-h span');
+    // Story ID
+    const storyId = document.querySelector('#story-id').textContent;
 
     // Item page full screen image splitter, remove 'editor bar' while resizing screen - item page only
     // Add listener to hide tab names when resizing below min width
@@ -2574,7 +2582,6 @@ ready(() => {
         const sliderImages = JSON.parse(document.querySelector('#slider-images').innerHTML);
         const sliderWidth = sliderContainer.offsetWidth;
         let numOfStickers = Math.floor(sliderWidth/200);
-        const storyId = document.querySelector('#story-id').textContent;
         const currentItm = parseInt(document.querySelector('#current-itm').textContent);
 
         const prevBtn = document.querySelector('.prev-slide');
@@ -2754,10 +2761,14 @@ ready(() => {
         const transEditContainer = document.querySelector('#transcription-edit-container');
         const transViewContainer = document.querySelector('#transcription-view-container');
         const transHeader = document.querySelector('.transcription-headline-header span');
+        const autoEnrichItems = document.querySelector('#run-itm-enrich-container');
         transcriptionSwitch.addEventListener('click', function() {
             if(transEditContainer.style.display == 'none') {
                 transEditContainer.style.display = 'block';
                 transViewContainer.style.display = 'none';
+                if(autoEnrichItems) {
+                    autoEnrichItems.style.display = 'none';
+                }
                 transcriptionSwitch.querySelector('i').classList.replace('fa-pencil', 'fa-times');
                 if(transcriptionSwitch.classList.contains('htr-trans')) {
                     transHeader.textContent = 'TRANSCRIPTION';
@@ -2765,6 +2776,9 @@ ready(() => {
             } else {
                 transEditContainer.style.display = 'none';
                 transViewContainer.style.display = 'block';
+                if(autoEnrichItems) {
+                    autoEnrichItems.style.display = 'block';
+                }
                 transcriptionSwitch.querySelector('i').classList.replace('fa-times', 'fa-pencil');
                 if(transcriptionSwitch.classList.contains('htr-trans')) {
                     transHeader.textContent = 'HTR TRANSCRIPTION';
@@ -2885,65 +2899,106 @@ ready(() => {
     /// Story automatic enrichments
     const autoEnrichCont = document.querySelector('#auto-enrich-story');
     const runBtn = document.querySelector('#run-stry-enrich');
-    const stryId = parseInt(document.querySelector('#story-id').textContent);
+    const storyTranslation = document.querySelector('#eng-desc-fs');
     if(runBtn) {
         runBtn.addEventListener('click', function() {
+            // Show the spinner
             document.querySelector('#auto-story-spinner-container').style.display = 'block';
-            jQuery.post(
-                home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
-                  type: 'GET',
-                  url: `https://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/annotation?property=description&storyId=${stryId}&wskey=apidemo`
-                },
-                function(response) {
-                    const autoEnrichmentsResponse = JSON.parse(response);
-                    const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
-                    let enrichNr = 1;
-                    if(autoEnrichments.items) {
-                        for(let itm of autoEnrichments.items) {
-                            let wikiDataArr = itm.body.id.split('/');
-                            let wikiId = wikiDataArr.pop();
-                            let singlIcon = itm.body.type == 'Person' ?
-                                '<i class="fas fa-user enrich-icon"></i>' : `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
-                            let singlEnrich = document.createElement('div');
-                            singlEnrich.classList.add('single-annotation-' + enrichNr);
-                            singlEnrich.innerHTML =
-                                    `<p class="type-n-id" style="display:none;">` +
-                                        `<span class="ann-type">${itm.body.type}</span>` +
-                                        `<span class="ext-id">${itm.id}</span>` +
-                                        `<span class="ann-id">${itm.body.id}</span>` +
-                                    `</p>` +
-                                    `<div class="enrich-body-left">` +
-                                        `<p>` +
-                                            singlIcon +
-                                            `<span class="enrich-label">${itm.body.prefLabel.en} </span>` +
-                                            ` - ` +
-                                            `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'>Wikidata ID: ${wikiId} </a></span>` +
-                                        `</p>` +
-                                        `<p class='auto-description'>Description: ${itm.body.description} </p>` +
-                                    `</div>` +
-                                    `<div class="enrich-body-right">` +
-                                        `<div class="slider-track" ><div class="slider-slider"></div></div>` +
-                                    `</div>` ;
-                            autoEnrichCont.appendChild(singlEnrich);
-                            singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
-                                singlEnrich.classList.toggle('accept');
-                            });
-                            singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
-                                event.stopPropagation();
-                                this.parentElement.click();
-                            })
 
-                            enrichNr += 1;
-                        }
-                    } else {
-                        alert('We are sorry! We haven\'t been able to generate auto enrichments.');
-                        document.querySelector('#auto-story-spinner-container').style.display = 'none';
-                        return;
+            // Create enrichments via AIT api
+            fetch(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_auto_enrichments.php",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json"
+                },
+                body: JSON.stringify({
+                    storyId: storyId,
+                    property: "description"
+                })
+            
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log(data);
+                const autoEnrichments = data;
+              //  console.log(autoEnrichments);
+                // Show english translation
+                if(autoEnrichments.translation != '') {
+                    storyTranslation.style.display = 'block';
+                    storyTranslation.querySelector('.meta-p').textContent = autoEnrichments.translation;
+                }
+                if(autoEnrichments.total > 0) {
+
+                    let enrichNr = 1;
+
+                    for(let itm of autoEnrichments.items) {
+
+                        let wikiDataArr = itm.body.id.split('/');
+                        let wikiDataId = wikiDataArr.pop();
+                        // Check if the enrichment type is person or location and assign adequate icon
+                        let singleIcon = itm.body.type == 'Person' ?
+                            '<i class="fa fa-user enrich-icon"></i>'
+                            :
+                            `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
+                        // Check if there is enrichment description
+                        let description = itm.body.description ? `<p class="auto-description">Description: ${itm.body.description}</p>` : '';
+                        // Create new div for new enrichment, add classes and fill inner html with data
+                        let singlEnrich = document.createElement('div');
+                        singlEnrich.classList.add('single-annotation' + enrichNr, 'auto-enrichment');
+                        singlEnrich.innerHTML = 
+                            `<p class="type-n-id" style="display:none;">` +
+                                `<span class="ann-type">${itm.body.type}</span>` +
+                                `<span class="ext-id">${itm.body.id}</span>` +
+                                `<span class="wikiId">${wikiDataId}</span>` +
+                            `</p>` +
+                            singleIcon +
+                            `<div class="enrich-body-left">` +
+                                `<p>` +
+                                    `<span class="enrich-label">${itm.body.prefLabel.en}</span>` +
+                                    ` - ` +
+                                    `<span class="enrich-wiki"><a href="https://www.wikidata.org/wiki/${wikiDataId}" target="_blank">Wikidata ID: ${wikiDataId}</a></span>` +
+                                `</p>` +
+                                description +
+                            `</div>` +
+                            `<div class="enrich-body-right">` +
+                                `<div class="slider-track">` +
+                                    `<div class="slider-slider"></div>` +
+                                `</div>` +
+                            `</div>`;
+
+                        autoEnrichCont.appendChild(singlEnrich);
+
+                        singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
+                            singlEnrich.classList.toggle('accept');
+                        });
+                        singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
+                            event.stopPropagation();
+                            this.parentElement.click();
+                        })
+
+                        enrichNr += 1;
+
                     }
+
+
+                } else {
+                    alert('We are sorry! We haven\'t been able to generate auto enrichments.');
+                    runBtn.style.display = 'none';
+                    document.querySelector('#auto-story-spinner-container').style.display = 'none';
+                    return;
+                }
+                    runBtn.style.display = 'none';
                     document.querySelector('#auto-story-spinner-container').style.display = 'none';
                     document.querySelector('#verify-h').style.display = 'block';
                     document.querySelector('#accept-story-enrich').style.display = 'block';
-                });
+
+                    return;
+
+            });
+
 
         })
     }
@@ -2956,139 +3011,186 @@ ready(() => {
     const itemId = parseInt(url.searchParams.get('item'));
     const userId = parseInt(document.querySelector('#missing-info').textContent);
 
-    let autoProp = 'transcription';
     if(autoEnrichBtn) {
 
         autoEnrichBtn.addEventListener('click', function() {
+
             document.querySelector('#auto-itm-spinner-container').style.display = 'block';
-            jQuery.post(
-                home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
-                  type: 'GET',
-                  url: `http://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/annotation?storyId=${stryId}&itemId=${itemId}&property=${autoProp}&wskey=apidemo`,
-                  token: ''
+
+            // Send request to auto enrichments script
+            fetch(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_scripts/get_auto_enrichments.php",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json"
                 },
-                function(response) {
+                body: JSON.stringify({
+                    storyId: storyId,
+                    property: 'transcription',
+                    itemId: itemId
+                })
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                const autoEnrichments = data;
 
-                    const autoEnrichmentsResponse = JSON.parse(response);
-                    const autoEnrichments = JSON.parse(autoEnrichmentsResponse.content);
-
-                    if(autoEnrichments.items) {
-                        let itmNr = 1;
-                        for(let itm of autoEnrichments.items) {
-
-                            //// refactor this part
-                            if(itm.body.type == 'Place') {
-
-                                let wikiDataArr = itm.body.id.split('/');
-                                let wikiId = wikiDataArr.pop();
-                                let singlIcon = `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-icon">`;
-
-                                let singlEnrich = document.createElement('div');
-                                singlEnrich.classList.add('single-annotation-' + itmNr);
-                                singlEnrich.innerHTML =
-                                        `<p class="type-n-id" style="display:none;">` +
-                                            `<span class="ann-type">${itm.body.type}</span>` +
-                                            `<span class="ext-id">${itm.id}</span>` +
-                                            `<span class="ann-id">${itm.body.id}</span>` +
-                                        `</p>` +
-                                        `<div class="enrich-body-left">` +
-                                            `<p>` +
-                                                singlIcon +
-                                                `<span class="enrich-label">${itm.body.prefLabel.en}</span>` +
-                                                ` - ` +
-                                                `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'> Wikidata ID: ${wikiId} </a></span>` +
-                                            `</p>` +
-                                            `<p class='auto-description'>Description: ${itm.body.description ? itm.body.description : ''} </p>` +
-                                        `</div>` +
-                                        `<div class="enrich-body-right">` +
-                                            `<div class="slider-track" ><div class="slider-slider"></div></div>` +
-                                        `</div>`;
-
-                                singlEnrich.setAttribute('lat', itm.body.lat);
-                                singlEnrich.setAttribute('long', itm.body.long);
-
-                                singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
-                                    // document.querySelector('.single-annotation-' + itmNr).classList.toggle('accept');
-                                    singlEnrich.classList.toggle('accept');
-
-                                });
-                                singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
-                                    event.stopPropagation();
-                                    this.parentElement.click();
-                                });
-
-                                autoLocCont.appendChild(singlEnrich);
-
-                            } else if (itm.body.type == 'Person') {
-
-                                let firstName = itm.body.prefLabel.en;
-                                let lastName = itm.body.familyName;
-                                // Remove last name from label
-                                if(firstName.includes(lastName)) {
-                                    firstName = firstName.replace(` ${lastName}`, '');
-                                }
-
-                                let wikiDataArr = itm.body.id.split('/');
-                                let wikiId = wikiDataArr.pop();
-                                let singlIcon = '<i class="fas fa-user enrich-icon"></i>';
-
-                                let singlEnrich = document.createElement('div');
-                                singlEnrich.classList.add('single-annotation-' + itmNr);
-                                singlEnrich.innerHTML =
-                                        `<p class="type-n-id" style="display:none;">` +
-                                            `<span class="ann-type">${itm.body.type}</span>` +
-                                            `<span class="ext-id">${itm.id}</span>` +
-                                            `<span class="ann-id">${itm.body.id}</span>` +
-                                        `</p>` +
-                                        `<div class="enrich-body-left">` +
-                                            `<p>` +
-                                                singlIcon +
-                                                `<span class="enrich-label"><span class='firstName'>${firstName}</span>  <span class='lastName'>${lastName ? lastName : ''}</span></span>` +
-                                                ` - ` +
-                                                `<span class="enrich-wiki"><a href='https://www.wikidata.org/wiki/${wikiId}' target='_blank'> Wikidata ID: <span class='wikiId'>${wikiId}</span></a></span>` +
-                                            `</p>` +
-                                            `<p class='auto-description'>Description: ${itm.body.description ? itm.body.description : ''} (AI generated)</p>` +
-                                        `</div>` +
-                                        `<div class="enrich-body-right">` +
-                                            `<div class="slider-track" ><div class="slider-slider"></div></div>` +
-                                        `</div>`;
+                // Check if there are any enrichments
+                if(autoEnrichments.total > 0) {
+                    console.log(autoEnrichments);
+                    const translateCont = document.querySelector('#translated-tr');
+                    const translateCollapse = document.querySelector('#translation-collapse');
+                    let enrichNr = 1;
 
 
-                                    singlEnrich.querySelector('.slider-track').addEventListener('click', function() {
-                                        // document.querySelector('.single-annotation-' + itmNr).classList.toggle('accept');
-                                        singlEnrich.classList.toggle('accept');
+                    for(let itm of autoEnrichments.items) {
 
-                                    });
-                                    singlEnrich.querySelector('.slider-slider').addEventListener('click', function(event) {
-                                        event.stopPropagation();
-                                        this.parentElement.click();
-                                    });
+                        let wikiDataArr = itm.body.id.split('/');
+                        let wikiId = wikiDataArr.pop();
+                        let description = itm.body.description ? `<p class="auto-description">Description: ${itm.body.description} </p>` : '<p class="auto-description" style="display:none;"></p>';
 
-                                    autoPplCont.appendChild(singlEnrich);
-
+                        // Check if the enrichment tpe is place
+                        if(itm.body.type == 'Place') {
+                            // Don't show location if it doesn't have coords
+                            if(!itm.body.long && !itm.body.lat) {
+                                continue;
                             }
 
-                            itmNr += 1;
+                            // Create enrichment
+                            let singleEnrichment = document.createElement('div');
+                            singleEnrichment.classList.add('single-annotation-' + enrichNr, 'auto-enrichment');
+                            singleEnrichment.innerHTML = 
+                                `<p class="type-n-id" style="display:none;">` +
+                                    `<span class="ann-type">${itm.body.type}</span>` +
+                                    `<span class="ext-id">${itm.body.id}</span>` +
+                                    `<span class="wikiId">${wikiId}</span>` +
+                                `</p>` +
+                                `<img class="enrich-icon" src="${home_url}/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="location-img">` +
+                                `<div class="enrich-body-left">` +
+                                    `<p>` +
+                                        `<span class="enrich-label">${itm.body.prefLabel.en}</span>` +
+                                        ` - ` +
+                                        `<span class="enrich-wiki"><a href="${itm.body.id}" target="_blank">Wikidata ID: ${wikiId}</a></span>` +
+                                    `</p>` +
+                                    description +
+                                `</div>` +
+                                `<div class="enrich-body-right">` +
+                                    `<div class="slider-track">` +
+                                        `<div class="slider-slider"></div>` +
+                                    `</div>` +
+                                `</div>`;
+
+                            singleEnrichment.setAttribute('lat', itm.body.lat);
+                            singleEnrichment.setAttribute('long', itm.body.long);
+
+                            // create marker for enrichment and place it on the map
+                            let autoEnMarker = document.createElement('div');
+                            autoEnMarker.style.cssText = `
+                                border: 1px solid #0a72cc;
+                                background-color: #0a72cc;
+                                border-radius: 9999px;
+                            `;
+                            autoEnMarker.innerHTML = 
+                                `<p style="font-size:8px!important;color:#fff;margin: 2px!important;">${wikiId}</p>`;
+
+                            let marker = new mapboxgl.Marker({
+                                draggable: false,
+                                element: autoEnMarker
+                            }).setLngLat([itm.body.long,itm.body.lat])
+                            .addTo(map);
+
+                            singleEnrichment.querySelector('.slider-track').addEventListener('click', function() {
+                                singleEnrichment.classList.toggle('accept');
+                            });
+                            singleEnrichment.querySelector('.slider-slider').addEventListener('click', function(event) {
+                                event.stopPropagation();
+                                this.parentElement.click();
+                            });
+
+                            // add enrichment to verification container
+                            autoLocCont.appendChild(singleEnrichment);
+                        } else {
+                            // Get person name and remove last name if shown twice
+                            let firstName = itm.body.prefLabel.en;
+                            let lastName = itm.body.familyName;
+                            
+                            if(firstName.includes(lastName)) {
+                                firstName = firstName.replace(` ${lastName}`, '');
+                            }
+
+                            let singleEnrichment = document.createElement('div');
+                            singleEnrichment.classList.add('single-annotation-' + enrichNr, 'auto-enrichment');
+                            singleEnrichment.innerHTML = 
+                                `<p class="type-n-id" style="display:none;">` +
+                                    `<span class="ann-type">${itm.body.type}</span>` +
+                                    `<span class="ext-id">${itm.body.id}</span>` +
+                                    `<span class="wikiId">${wikiId}</span>` +
+                                `</p>` +
+                                `<i class="fas fa-user enrich-icon"></i>` +
+                                `<div class="enrich-body-left">` +
+                                    `<p>` +
+                                        `<span class="enrich-label">` +
+                                            `<span class="firstName">${firstName}</span>` +
+                                            `<span class="lastName"> ${lastName ? lastName : ''}</span>` +
+                                        `</span>` +
+                                        ` - ` +
+                                        `<span class="enrich-wiki"><a href="${itm.body.id}" target="_blank">Wikidata ID: ${wikiId}</a></span>` +
+                                    `</p>` +
+                                    description +
+                                `</div>` +
+                                `<div class="enrich-body-right">` +
+                                    `<div class="slider-track">` +
+                                        `<div class="slider-slider"></div>` +
+                                    `</div>` +
+                                `</div>`;
+
+                                singleEnrichment.querySelector('.slider-track').addEventListener('click', function() {
+                                    singleEnrichment.classList.toggle('accept');
+                                });
+                                singleEnrichment.querySelector('.slider-slider').addEventListener('click', function(event) {
+                                    event.stopPropagation();
+                                    this.parentElement.click();
+                                })
+
+                                autoPplCont.appendChild(singleEnrichment);
                         }
-                    } else  {
-                        alert('We are sorry! We haven\'t been able to generate auto enrichments.');
-                        document.querySelector('#auto-itm-spinner-container').style.display = 'none';
-                        return;
-                    }
-                    // Show saving Button if there is something to save
-                    document.querySelector('#auto-itm-spinner-container').style.display = 'none';
-                    if(autoLocCont.querySelector('div') != null) {
-                        document.querySelector('#loc-verify').style.display = 'block';
-                        document.querySelector('#accept-loc-enrich').style.display = 'block';
-                        document.querySelector('#auto-loc-btn').style.display = 'block';
-                    }
-                    if(autoPplCont.querySelector('div') != null) {
-                        document.querySelector('#ppl-verify').style.display = 'block';
-                        document.querySelector('#accept-ppl-enrich').style.display = 'block';
-                        document.querySelector('#auto-ppl-btn').style.display = 'block';
+
+                        enrichNr += 1;
                     }
 
-                });
+                    // Add translation under the transcription
+                    if(autoEnrichments.translation != '') {
+                        translateCont.querySelector('p').textContent = autoEnrichments.translation;
+                        translateCont.style.display = 'block';
+                        translateCollapse.style.display = 'block';
+                        translateCollapse.querySelector('i').classList = 'far fa-caret-circle-up';
+                    }
+                    
+                    
+
+                } else {
+                    alert("We are sorry! We haven't been able to generate auto enrichments.");
+                    autoEnrichBtn.style.display = 'none';
+                    document.querySelector('#auto-itm-spinner-container').style.display = 'none';
+                    return;
+                }
+
+                // Show saving buttons if there are any enrichments to save
+                document.querySelector('#auto-itm-spinner-container').style.display = 'none';
+                if(autoLocCont.querySelector('div') != null) {
+                    document.querySelector('#loc-verify').style.display = 'block';
+                    document.querySelector('#accept-loc-enrich').style.display = 'block';
+                    document.querySelector('#auto-loc-btn').style.display = 'inline-block';
+                }
+                if(autoPplCont.querySelector('div') != null) {
+                    document.querySelector('#ppl-verify').style.display = 'block';
+                    document.querySelector('#accept-ppl-enrich').style.display = 'block';
+                    document.querySelector('#auto-ppl-btn').style.display = 'inline-block';
+                }
+
+            })
+            
         })
     }
 
@@ -3105,7 +3207,7 @@ ready(() => {
                 let locationName = enrichment.querySelector('.enrich-label').textContent;
                 let latitude = (enrichment.getAttribute('lat')).toString();
                 let longitude = (enrichment.getAttribute('long')).toString();
-                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' - Automatically Generated.';
+                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' *Automatically Generated';
                 let wikidata = (enrichment.querySelector('.enrich-wiki a').getAttribute('href')).split('/');
                 let wikidataId = wikidata.pop();
                 let placeRole = 'Other';
@@ -3134,7 +3236,9 @@ ready(() => {
                     'url': TP_API_HOST + '/tp-api/places',
                     'data': data
                 },function(response) {
-
+                    changeStatus(itemId, 'Not Started', 'Edit', 'AutomaticEnrichmentStatusId', 2, '#fffddd', 2, event );
+                    document.querySelector('#loc-auto-e-container').style.display = 'none';
+                    loadPlaceData(itemId, userId);
                 });
             }
         })
@@ -3149,7 +3253,7 @@ ready(() => {
                 // Store data into variables
                 let firstName = enrichment.querySelector('.firstName').textContent;
                 let lastName = enrichment.querySelector('.lastName').textContent;
-                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
+                let description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '') + ' *Automatically Generated';
                 let link = enrichment.querySelector('.wikiId').textContent;
 
                 data = {
@@ -3179,6 +3283,9 @@ ready(() => {
                 // Check success and create confirmation message
                 function(response) {
 
+                    changeStatus(itemId, 'Not Started', 'Edit', 'AutomaticEnrichmentStatusId', 2, '#fffddd', 2, event );
+                    document.querySelector('#ppl-auto-e-container').style.display = 'none';
+                    loadPersonData(itemId, userId);
                 });
 
             }
@@ -3191,8 +3298,9 @@ ready(() => {
         const enrichStoryArr = [];
         storySubmit.addEventListener('click', function() {
             let acceptedEnrich = document.querySelector('#auto-enrich-story').querySelectorAll('.accept');
+            let lastEnrCheck = 0;
             for(let enrichment of acceptedEnrich) {
-
+                
                 let description = null;
                 if(enrichment.querySelector('.auto-description') && enrichment.querySelector('.auto-description').textContent != 'Description: ') {
                     description = (enrichment.querySelector('.auto-description').textContent).replace('Description: ', '');
@@ -3200,58 +3308,58 @@ ready(() => {
                 let singlEnrichment = {
                     Name: enrichment.querySelector('.enrich-label').textContent,
                     Type: enrichment.querySelector('.ann-type').textContent,
-                    WikiData: enrichment.querySelector('.ann-id').textContent,
-                    StoryId: stryId,
+                    WikiData: enrichment.querySelector('.wikiId').textContent,
+                    StoryId: parseInt(storyId),
                     ItemId: null,
                     ExternalAnnotationId: enrichment.querySelector('.ext-id').textContent,
                     Comment: description
                 }
 
-                jQuery.post(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php', {
-                    'type': 'POST',
-                    'data': singlEnrichment,
-                    'url': 'http://tp_api_v2/v2/autoenrichments',
-                    'token': 'yes'
-                  },
-                  function(response) {
+                
+                fetch(home_url + "/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type" : "application/json"
+                    },
+                    body: JSON.stringify({
+                        type: "POST",
+                        url: TP_API_HOST_V2 + "/autoenrichments",
+                        data: singlEnrichment,
+                        token: "yes"
+                    })
+            
+                })
+                .then(function(response) {
+                    lastEnrCheck += 1;
 
-                  });
+                    return response.json();
+                })
+                .then(data => {
+                    if(lastEnrCheck === acceptedEnrich.length) {
+                        storySubmit.style.display = 'none';
+                        loadStoryEnrichments(storyId);
+                    }
+                    
+                })
+
             }
 
         })
     }
 
     // Get En translation of transcription
-    const translateTrBtn = document.querySelector('#translate-tr');
+    const translateTrBtn = document.querySelector('#translation-collapse');
     const translatedCont = document.querySelector('#translated-tr');
 
     if(translateTrBtn) {
         translateTrBtn.addEventListener('click', function() {
-            if(translatedCont.classList.contains('show')) {
-                translatedCont.classList.remove('show');
+            if(translatedCont.style.display == 'block') {
+                translatedCont.style.display = 'none';
+                translateTrBtn.querySelector('i').classList = 'far fa-caret-circle-down';
             } else {
-                if(translatedCont.classList.contains('translated')) {
-                    translatedCont.classList.add('show');
-                } else {
-                    // Show spinner while we wait for translation
-                    document.querySelector('#eng-tr-spinner').style.display = 'block';
-
-                    jQuery.post(
-                        home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
-                          type: 'GET',
-                          url: `http://dsi-demo2.ait.ac.at/enrichment-web-test/enrichment/translation/${stryId}/${itemId}?property=${autoProp}&wskey=apidemo`
-                        },
-                        function(response) {
-                            let engTranslation = JSON.parse(response);
-
-                            translatedCont.querySelector('p').innerHTML = engTranslation.content;
-                            translatedCont.classList.add('show');
-                            translatedCont.classList.add('translated');
-
-                            document.querySelector('#eng-tr-spinner').style.display = 'none';
-
-                        });
-                }
+                translatedCont.style.display = 'block';
+                translateTrBtn.querySelector('i').classList = 'far fa-caret-circle-up';
             }
         })
     }
@@ -3290,24 +3398,33 @@ ready(() => {
         })
     }
 
-
-
     installEventListeners();
     initializeMap();
 
 });
 
 function deleteAutoEnrichment(enrichmentId, event) {
-    jQuery.post(
-        home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/send_ajax_api_request.php',{
-          type: 'DELETE',
-          url: 'http://tp_api_v2/v2/autoenrichments/' + enrichmentId,
-          token: 'yes'
+
+    fetch(home_url + '/wp-content/themes/transcribathon/admin/inc/custom_scripts/new_ajax_request.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
         },
-        function(response) {
-            event.target.parentElement.remove();
-        });
+        body: JSON.stringify({
+            type: "DELETE",
+            url: TP_API_HOST_V2 + "/autoenrichments/" + enrichmentId,
+            token: 'yes'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        event.target.parentElement.remove();
+    })
+
 }
+
+
 async function getMetadata(storyId) {
 
     const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/stories/' + storyId;
@@ -3315,4 +3432,57 @@ async function getMetadata(storyId) {
 
     return response.json();
 
+}
+// Get story auto enrichments
+async function getStoryEnrichments(storyId) {
+
+    const requestUri = home_url + '/wp-content/themes/transcribathon/api-request.php/stories/' + storyId + '/autoenrichments';
+    const response = await fetch(requestUri);
+    // return promise
+    return response;
+
+}
+// Show story autenrichments
+async function loadStoryEnrichments(storyId) {
+    try {
+
+        const enrichmentContainer = document.querySelector('#auto-enrich-story');
+        const response = await getStoryEnrichments(storyId);
+        const autoEnrcihments = await response.json();
+
+        enrichmentContainer.innerHTML = '';
+
+        for (let autoE of autoEnrcihments.data) {
+
+            let enrichIcon = autoE.Type == 'Place' ?
+                '<img src="' + home_url + '/wp-content/themes/transcribathon/images/location-icon.svg" height="20px" width="20px" alt="loc-icon">'
+                :
+                '<i class="fas fa-user left-i"></i>';
+
+            let description = autoE.Comment != null ?
+                `<p class="enrich-description">Description: ${autoE.Comment}</p>`
+                :
+                '';
+            
+            let singleEnrichment = document.createElement('div');
+            singleEnrichment.classList = 'enrich-view';
+            singleEnrichment.innerHTML = 
+                `<p>` +
+                    enrichIcon +
+                    `<span class="enrich-label">${autoE.Name}</span>` +
+                `</p>` +
+                description +
+                `<p class="enrich-wiki"> Wikidata Reference: <b><a href="${autoE.ExternalAnnotationId}" target="_blank">${autoE.WikiData}</a></b></p>` +
+                `<i class="fas fa-trash-alt auto-delete" onClick="deleteAutoEnrichment(${autoE.AutoEnrichmentId}, event);"></i>`;
+                
+            enrichmentContainer.appendChild(singleEnrichment);
+
+        }
+
+        document.querySelector('#identified-enrich').style.display = 'block';
+
+    } catch (error) {
+        console.error('error:', error);
+        throw error;
+    }
 }

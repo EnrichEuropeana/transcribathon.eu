@@ -477,6 +477,12 @@ h6.enrich-headers {
     height: unset;
     white-space: normal;
 }
+.person-data .fas.fa-check, .location-single .fas.fa-check {
+    color: #61e02f;
+    position: relative;
+    left: 5px;
+    font-size: 16px;
+}
 .edit-del-person {
     position: absolute;
     top: 5px;
@@ -1168,7 +1174,7 @@ p.mb-1 {
     margin-right: 1px;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 90%;
+    height: 80%;
 }
 #transcription-view-container #current-tr-view {
     min-height: 40vh;
@@ -1451,12 +1457,24 @@ p.mb-1 {
     height: unset!important;
     width: unset!important;
 }
+#info-fa-cont {
+    width: 30px!important;
+    position: relative;
+    margin: 0 auto;
+    bottom: 3px;
+}
 .tablinks {
     border: none;
 }
 .tab-i {
     display: block;
     margin: 0 auto;
+}
+#story-info-tag {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 10px;
 }
 .tab-h {
     font-size: 12px;
@@ -1480,7 +1498,7 @@ p.mb-1 {
     bottom: 1px;
     margin-right: 3px;
 }
-.tab-list div.active {
+.tab-list div.active, .tab-list div.active div {
     color: var(--main-color)!important;
 }
 .tab-list span {
@@ -3293,12 +3311,20 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     color: var(--main-color);
     font-size: 15px;
     border: 1px solid var(--main-color);
+    background-color: #fff;
     margin-left: 25px;
     margin-top: 10px;
-    margin-right: 30px;
     text-align: center;
     font-weight: 600;
     cursor: pointer;
+}
+#run-stry-enrich {
+    margin-right: 30px;
+}
+#run-itm-enrich-container {
+    position: absolute;
+    bottom: 0;
+    width: calc( 100% - 30px);
 }
 #auto-enrich-story {
     padding-left: 25px;
@@ -3306,29 +3332,34 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 
 /* Auto Enrichments Css */
+.auto-enrichment {
+    margin: 10px auto!important;
+    padding: 5px;
+    border: 1px solid #eee;
+    height: 60px;
+    position: relative;
+}
 .single-annotation, .verified-annot {
     margin: 10px auto;
     max-width: 800px;
     padding: 0 20px;
     position: relative;
 }
-.type-n-id {
-    font-size: 12px;
-    position: relative;
-    bottom: 2px;
-    margin: 0!important;
-    border-bottom: 0.5px solid #eee;
-}
 .enrich-body-left {
-    display: inline-block;
+    position: relative;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-content: center;
+    padding-left: 30px;
+    height: 90%;
     width: 80%;
 }
 .enrich-body-left p {
     margin: 0!important;
+    width: 100%;
 }
 .enrich-body-left .auto-description {
     font-size: 12px;
-    padding-left: 30px;
     position: relative;
     bottom: 8px;
 }
@@ -3337,7 +3368,8 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     float: right;
     right: 10px;
     width: 40px;
-    top: 3px;
+    top: calc(50% - 20px);
+    max-width: 20%;
 }
 .ait-section {
     margin: 20px auto;
@@ -3367,15 +3399,11 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 .ait-decline-btn i {
     color: red!important;
 }
-.enrich-body-left img {
-    margin-right: 10px;
+.auto-enrichment img, .auto-enrichment i {
+    position: absolute;
+    top: 18px;
+    left: 10px;
     color: var(--main-color);
-}
-.enrich-body-left i {
-    color: var(--main-color);
-    margin-right: 16px;
-    position: relative;
-    left: 3px;
 }
 .ait-accept-btn button, .ait-decline-btn button {
     padding: 0!important;
@@ -3386,7 +3414,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     font-size: 15px;
 }
 #loc-auto-enrich {
-    padding-right: 25px;
+    width: 99%;
 }
 #translated-tr {
     display: none;
@@ -3394,6 +3422,10 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 #translated-tr.show {
     display: block;
     padding: 0 10px;
+}
+#translated-tr p{
+    padding-left: 11px;
+    padding-right: 10px;
 }
 #loc-verify, #ppl-verify {
     color: var(--main-color);
@@ -3405,9 +3437,11 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 #auto-e-link {
     padding-left: 25px!important;
+    background-color: #fff;
 }
 #auto-e-link button {
-    padding: 10px!important;
+    padding: 0 5px!important;
+    font-size: 12px;
     border-top: 1px solid var(--main-color);
     border-right: 1px solid var(--main-color);
     border-bottom: 1px solid var(--main-color);
@@ -3448,7 +3482,6 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     background-color: #0a72cc;
 }
 .panel-right #accept-loc-enrich, .panel-right #accept-ppl-enrich, .panel-right #accept-story-enrich {
-    width: 99%;
     color: #fff;
     background-color: var(--main-color);
     font-family: var(--p-font-family);
@@ -3458,9 +3491,21 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     letter-spacing: 00.025em;
     cursor: pointer;
 }
+.panel-right #accept-loc-enrich {
+    width: 99%;
+}
+.panel-right #accept-ppl-enrich {
+    width: 100%!important;
+}
+.panel-right #accept-story-enrich {
+    margin-right: 30px;
+}
 #ppl-auto-e-container {
     margin-left: 30px;
     padding-right: 15px;
+}
+#verify-h {
+    margin-left: 0!important;
 }
 .auto-h {
     margin-left: 30px!important;
@@ -3479,7 +3524,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     padding-left: 15px;
 }
 #full-v-metadata .auto-h {
-    margin-left: 30px!important;
+    margin-left: 25px!important;
     padding-left: 20px;
 }
 .auto-delete {
@@ -3501,12 +3546,15 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
     margin-left: 5px;
     margin-right: 10px;
 }
+.loc-auto-enrich .enrich-wiki {
+    font-size: 13px;
+}
 .enrich-view .enrich-wiki {
     font-size: 13px;
     margin: 0!important;
     padding-left: 25px;
     position: relative;
-    bottom: 5px;
+    bottom: 4px;
 }
 .enrich-view .enrich-description {
     font-size: 13px;
@@ -3516,6 +3564,7 @@ nav.site-navigation.main-navigation.primary.use-sticky-menu.sticky {
 }
 .enrich-view .auto-delete {
     top: 3px!important;
+    right: 20px!important;
 }
 .enrich-view {
     position: relative;

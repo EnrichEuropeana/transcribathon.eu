@@ -34,6 +34,7 @@ function _TCT_mtr_transcription($atts)
 
     $itemDataset = sendQuery(TP_API_V2_ENDPOINT . '/items/' . $itemId, $getJsonOptions, true);
     $itemData = $itemDataset['data'];
+    $itemData['Places'] = array();
 
     if (empty($itemData['StoryId'])) {
         return;
@@ -72,22 +73,29 @@ function _TCT_mtr_transcription($atts)
     }
 
     // Get Auto Enrichments for item/story if there are auto enrichments in database
-    $getAutoJsonOptions = [
+    $getTrJsonOptions = [
         'http' => [
             'header' => [
-                 'Content-type: application/json',
-                 'Authorization: Bearer ' . TP_API_V2_TOKEN
+                 'Content-type: text/plain',
                 ],
             'method' => 'GET'
         ]
     ];
 
-    $itemAutoE = sendQuery(TP_API_V2_ENDPOINT . '/items/' . $itemId . '/autoenrichments', $getAutoJsonOptions, true);
-    $storyAutoE = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $storyId . '/autoenrichments', $getAutoJsonOptions, true);
+    $itemAutoE = sendQuery(TP_API_V2_ENDPOINT . '/items/' . $itemId . '/autoenrichments', $getJsonOptions, true);
+    $storyAutoE = sendQuery(TP_API_V2_ENDPOINT . '/stories/' . $storyId . '/autoenrichments', $getJsonOptions, true);
+    // Get story translation and enrichments
 
+    $storyTranslation = '';
+    if(!empty($storyAutoE) && $storyData['Dc']['Language'] != 'eng || English') {
+        $storyTranslation = sendQuery('https://dsi-demo.ait.ac.at/enrichment-web/enrichment/translation/' . $storyId . '?property=description&translationTool=Google&wskey=apidemo', $getTrJsonOptions);
+    }
     $itemAutoPlaces = [];
     $itemAutoPpl = [];
-    if(!empty($itemAutoE['data'])) {
+    $transcriptionTranslation = '';
+    if($itemData['AutomaticEnrichmentStatusId'] > 1) {
+        // Get translation if there are auto enrichments
+        $transcriptionTranslation = sendQuery('https://dsi-demo.ait.ac.at/enrichment-web/enrichment/translation/' . $storyId . '/' . $itemId . '?property=transcription&translationTool=Google&wskey=apidemo', $getTrJsonOptions);
         foreach($itemAutoE['data'] as $itm) {
             if($itm['Type'] == 'Place') {
                 array_push($itemAutoPlaces, $itm);
@@ -96,6 +104,7 @@ function _TCT_mtr_transcription($atts)
             }
         }
     }
+
     // Check which Transcription is active
     $activeTr = $itemData['TranscriptionSource'];
     // Transcription to show in transcription View
@@ -330,9 +339,14 @@ if (event.target.id != "tagging-status-indicator") {
                 $locationDisplay .= "<div id='location-" . $place['PlaceId'] . "'>";
                     $locationDisplay .= "<div id='location-data-output-" . $place['PlaceId'] . "' class='location-single'>";
                         $locationDisplay .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>";
-                        $locationDisplay .= "<p><b>" . htmlspecialchars_decode($place['Name']) . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")</p>";
+                        $locationDisplay .= "<p>";
+                            $locationDisplay .= "<b>" . htmlspecialchars_decode($place['Name']) . "</b> (" . $place['Latitude'] . ", " . $place['Longitude'] . ")";
+                            $locationDisplay .= str_contains($place['Comment'], '*Automatically Generated') ? "<i class='fas fa-check' style='color:#61e02f;' title='User Verified'></i>" : '';
+                        $locationDisplay .= "</p>";
                         if($place['Comment'] != 'NULL' && $place['Comment'] != "") {
-                            $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>Description: " . htmlspecialchars_decode($place['Comment']) . "</p>";
+                            $locationDisplay .= "<p style='margin-top:0px;font-size:13px;'>";
+                                $locationDisplay .= "Description: " . htmlspecialchars_decode($place['Comment']);
+                            $locationDisplay .= "</p>";
                         }
                         if($place['WikidataId'] != 'NULL' && $place['WikidataId'] != "") {
                             $locationDisplay .= "<p style='margin-top:0px;font-size:13px;margin-left:30px;'>Wikidata Reference: <b><a href='http://wikidata.org/wiki/". $place['WikidataId'] . "' style='text-decoration: none;' target='_blank'>" . $place['WikidataName'] . ", " . $place['WikidataId'] . "</a></b></p>";
@@ -761,13 +775,15 @@ if (event.target.id != "tagging-status-indicator") {
 
 																$enrichmentTab .= $personDateString ? ' (' . $personDateString . ')' : '';
 
+                                $enrichmentTab .= str_contains($person['Description'], '*Automatically Generated') ? "<i class='fas fa-check' style='color:#61e02f;' title='User Verified'></i>" : '';
+
                             $enrichmentTab .= "</p>";
 
                             if($person['Description'] != 'NULL' && $person['Description'] != null) {
                                 $enrichmentTab .= "<p class='person-description'>Description: " . htmlspecialchars_decode($person['Description']) . "</p>";
                             }
                             if($person['Link'] != 'NULL' && $person['Link'] != null) {
-                                $enrichmentTab .= "<p class='person-description'>Wikidata ID: <a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></p>";
+                                $enrichmentTab .= "<p class='person-description'>Wikidata Reference: <b><a href='http://www.wikidata.org/wiki/" . $person['Link'] . "' target='_blank'>" . htmlspecialchars_decode($person['Link']) . "</a></b></p>";
                             }
                             // Edit/Delete buttons
                             $enrichmentTab .= "<div class='edit-del-person'>";
@@ -892,7 +908,7 @@ if (event.target.id != "tagging-status-indicator") {
                                     $enrichmentTab .= $person['Name'];
                                  //   $enrichmentTab .= "<i class='fas fa-trash-alt auto-delete' onClick='deleteAutoEnrichment(".$person['AutoEnrichmentId'].")'></i>";
                                 $enrichmentTab .= "</p>";
-                                $enrichmentTab .= "<p class='person-description'> Wikidata Reference: <a href='" . $person['WikiData'] . "' target='_blank'>" . $wikiId . "</a></p>";
+                                $enrichmentTab .= "<p class='person-description'> Wikidata Reference: <b><a href='" . $person['WikiData'] . "' target='_blank'>" . $wikiId . "</a></b></p>";
                                 $enrichmentTab .= "<i class='fas fa-trash-alt auto-delete' onClick='deleteAutoEnrichment(".$person['AutoEnrichmentId'].", event);'></i>";
                         $enrichmentTab .= "</div>";
                     }
@@ -914,9 +930,9 @@ if (event.target.id != "tagging-status-indicator") {
     
 
     $trHistory .= "<div id='tr-history-collapse-btn' class='item-page-section-headline-container collapse-headline item-page-section-collapse-headline collapse-controller' style='margin-bottom: 0;'>";
-            $trHistory .= "<h4 id='transcription-history-collapse-heading' class='theme-color item-page-section-headline'>";
-                $trHistory .= "TRANSCRIPTION HISTORY";
-            $trHistory .= "</h4>";
+            $trHistory .= "<h6 id='transcription-history-collapse-heading' class='theme-color  item-data-input-headline' style='display:inline-block;'>";
+                $trHistory .= "Transcription History";
+            $trHistory .= "</h6>";
             $trHistory .= "<i class='far fa-caret-circle-down collapse-icon theme-color' style='font-size:17px; margin-left:8px; margin-top:9px;'></i>";
         $trHistory .= "</div>";
         $trHistory .= "<div style='clear:both;'></div>";
@@ -984,7 +1000,6 @@ if (event.target.id != "tagging-status-indicator") {
                 }
             }
         $trHistory .= "</div>";
-        //var_dump($transcriptionList);
     $trHistory .= "</div>";
 }
     // Editor Tab
@@ -1049,17 +1064,6 @@ if (event.target.id != "tagging-status-indicator") {
                         }
                     $editorTab .= "</div>";
                 $editorTab .= "</div>";
-
-
-            ////
-            // $editorTab .= "<div id='transcription-edit-container' style='display:none;'>";
-            // // MCE Editor
-            // $editorTab .= "<div id='mce-wrapper-transcription' class='login-required htr-active-tr'>";
-            //     $editorTab .= "<div id='mytoolbar-transcription'></div>";
-            //     $editorTab .= "<div id='item-page-transcription-text' rows='8'>";
-            //         $editorTab .= "<img src='".home_url()."/wp-content/themes/transcribathon/images/htr_active.svg' style='margin-left:15px;'>";
-            //     $editorTab .= "</div>";
-            // $editorTab .= "</div>";
 
             $editorTab .= "<script>
                 document.querySelector('.transcription-headline-header span').textContent = 'HTR TRANSCRIPTION';
@@ -1163,18 +1167,20 @@ if (event.target.id != "tagging-status-indicator") {
                 $editorTab .= "</div>";
             }
             // Transcription Translation
-            // $editorTab .= "<h4 class='item-page-section-headline' id='translate-tr' style='cursor:pointer;position:relative;width:100%;'>";
-            //     $editorTab .= "English Translation";
-            //     $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
-            //     $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
-            //         $editorTab .= "<div class='spinner'></div>";
-            //     $editorTab .= "</div>";
-            // $editorTab .= "</h4>";
-            $editorTab .= "<div id='translated-tr' style='display:none;'><p></p></div>";
+            if($transcriptionTranslation != '') {
+                $editorTab .= "<h6 class='theme-color item-data-input-headline' id='translation-collapse' style='cursor:pointer;position:relative;width:100%;'>";
+            } else {
+                $editorTab .= "<h6 class='theme-color item-data-input-headline' id='translation-collapse' style='cursor:pointer;position:relative;width:100%;display:none;'>";
+            }
+                $editorTab .= "English Translation";
+                $editorTab .= "<i class='far fa-caret-circle-down' style='margin-left:8px;font-size:17px;'></i>";
+                $editorTab .= "<div id='eng-tr-spinner' class='spinner-container'>";
+                    $editorTab .= "<div class='spinner'></div>";
+                $editorTab .= "</div>";
+            $editorTab .= "</h6>";
+            $editorTab .= "<div id='translated-tr' style='display:none;'><p>" . $transcriptionTranslation . "</p></div>";
 
             $editorTab .= $trHistory;
-            
-            $editorTab .= "<div style='min-height:20px;'>&nbsp</div>";
         $editorTab .= "</div>";
 
     $editorTab .= "</div>"; // End of Transcription-section
@@ -1642,7 +1648,6 @@ if (event.target.id != "tagging-status-indicator") {
                     $metaData .= "<p class='mb-1'>" . $key . "</p>";
                     $metaData .=  implode(' ', $cleanArr) ;
                 $metaData .= "</div>";
-                //var_dump($cleaningArr);
             }
         }
         foreach($storyData['Edm'] as $key => $value) {
@@ -2076,15 +2081,18 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<li>";
                         $content .= "<div id='inf-tab' class='theme-color tablinks' title='More Information'
                             onclick='switchItemTab(event, \"info-tab\", \"inf-tab\")'>";
-                            $content .= '<i class="fa fa-info-circle tab-i"></i>';
-                            $content .= "<p class='tab-h it'><span><b> STORY INFO</b></span></p>";
+                            $content .= '<div id="info-fa-cont">';
+                                $content .= '<i class="fa fa-info-circle tab-i"></i>';
+                                $content .= '<i id="story-info-tag" class="fa fa-tag"></i>';
+                            $content .= '</div>';
+                            $content .= "<p class='tab-h it' style='bottom:5px;'><span><b> STORY INFO</b></span></p>";
                         $content .= "</div>";
                     $content .= "</li>";
                     $content .= "<li>";
                         $content .= "<div id='tut-tab' class='theme-color tablinks' title='Tutorial'
                             onclick='switchItemTab(event, \"help-tab\", \"tut-tab\")'>";
                             $content .= '<i class="fa fa-question-circle tab-i"></i>';
-                            $content .= "<p class='tab-h it'><span><b> TUTORIAL</b></span></p>";
+                            $content .= "<p class='tab-h it' style='bottom:1px;'><span><b> TUTORIAL</b></span></p>";
                         $content .= "</div>";
                     $content .= "</li>";
                 $content .= '</ul>';
@@ -2092,20 +2100,23 @@ if (event.target.id != "tagging-status-indicator") {
 
             $content .= "<div id='item-data-content' class='panel-right-tab-menu'>";
                 // Editor tab
-                $content .= "<div id='editor-tab' class='tabcontent'>";
+                $content .= "<div id='editor-tab' class='tabcontent' style='position:relative;'>";
                     // Content will be added here in switchItemPageView function
                     $content .= $editorTab;
                     //$content .= $trHistory;
+
                     // Automatic Enrichments
-                    if(empty($itemAutoE['data'])) {
-                        $content .= "<div id='run-itm-enrich' style='display:none;'> Analyse Transcription for Automatic Translation and Enrichments </div>";
-                        $content .= "<div id='auto-e-link'>";
-                            $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\");'> Locations </button>";
-                            $content .= "<button id='auto-ppl-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tag-tab\");'> People </button>";
-                        $content .= "</div>";
-                        $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
-                            $content .= "<div class='spinner'></div>";
-                        $content .= "</div></div>";
+                    if($itemData['AutomaticEnrichmentStatusId'] < 2 && $itemData['TranscriptionStatusId'] > 2 && $itemData['TranscriptionText'] != '') {
+                        $content .= "<div id='run-itm-enrich-container'>";
+                            $content .= "<div id='auto-e-link'>";
+                                $content .= "<button id='auto-loc-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tagging-tab\", \"loc-tab\");'> Locations </button>";
+                                $content .= "<button id='auto-ppl-btn' type='button' style='display:none;' onclick='switchItemTab(event, \"tag-tab\", \"tagi-tab\");'> People </button>";
+                            $content .= "</div>";
+                            $content .= "<div id='run-itm-enrich'> Analyse Transcription for Automatic Translation and Enrichments </div>";
+                            $content .= "<div style='position:relative;'><div id='auto-itm-spinner-container' class='spinner-container' style='top: -50px;'>";
+                                $content .= "<div class='spinner'></div>";
+                            $content .= "</div></div>";
+                        $content .= '</div>';
                     }
                 $content .= "</div>";
                 // Description Tab
@@ -2118,31 +2129,36 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<div id='full-v-story-description' style='max-height:40vh;'>";
 
                     $content .= "</div>";
-                    if($storyData['Dc']['Description'] != null && $storyData['Dc']['Description'] != 'NULL' && strlen($storyDescription) > 1300) {
+                    if(!empty($storyData['Dc']['Description']) && $storyData['Dc']['Description'] != 'NULL' && strlen($storyDescription) > 1300) {
                         $content .= "<div id='story-full-collapse' style='cursor:pointer;'>Show More</div>";
                     }
                     // English translation
-                    // if($engDescription != null) {
-                    //     $content .= "<div id='eng-desc-fs'>";
-                    //         $content .= "<p class='mb-1'> English Translation </p>";
-                    //         $content .= $engDescription;
-                    //     $content .= "</div>";
-                    // }
+                    if(empty($storyTranslation) || ($storyTranslation == $storyData['Dc']['Description'])) {
+                        $content .= "<div id='eng-desc-fs' style='display:none;'>";
+                            $content .= "<p class='mb-1' style='margin: 10px 0px!important;'> English Translation </p>";
+                        $content .= "</div>";
+                    } else {
+                        $content .= "<div id='eng-desc-fs'>";
+                            $content .= "<p class='mb-1' style='margin: 10px 0px!important;'> English Translation </p>";
+                            $content .= "<p class='meta-p'>" . $storyTranslation . "</p>";
+                        $content .= "</div>";
+                    }
 
                     $content .= "<div id='full-v-metadata'>";
-                    // Story Auto Enrichments
-                    if(empty($storyAutoE['data'])) {
-                        $content .= "<div id='run-stry-enrich' style='display:none;'> Analyse Story Description for Automatic Enrichments </div>";
 
-                        $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
+                    // Story Auto Enrichments
+                    if(empty($storyAutoE['data']) && $storyData['Dc']['Description'] != 'NULL' && !empty($storyData['Dc']['Description'])) {
+                        $content .= "<div id='run-stry-enrich'> Analyse Story Description for Automatic Enrichments </div>";
+                        $content .= "<p id='identified-enrich' class='mb-1' style='display:none;padding-left:25px!important;margin: 10px 0px!important;'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
+                        $content .= "<h3 id='verify-h' style='display:none;'> Verify Automatically Identified Enrichments </h3>";
                             $content .= "<div id='auto-story-spinner-container' class='spinner-container'>";
                                 $content .= "<div class='spinner'></div>";
                             $content .= "</div>";
                         $content .= "</div>";
                         $content .= "<div id='accept-story-enrich' style='display:none;margin-left:25px;'> SUBMIT </div>";
                     } elseif(!empty($storyAutoE['data'])) {
-                        $content .= "<p class='auto-h'> Automatically Identified Enrichments </p>";
+                        $content .= "<p class='mb-1' style='padding-left:25px!important;margin:10px 0px!important;'> Automatically Identified Enrichments </p>";
                         $content .= "<div id='auto-enrich-story' style='position:relative;'>";
                         foreach($storyAutoE['data'] as $enrichment) {
 
@@ -2152,11 +2168,12 @@ if (event.target.id != "tagging-status-indicator") {
                                 $content .= "<p>";
                                     $content .= $enrichment['Type'] == 'Place' ? "<img src='".home_url()."/wp-content/themes/transcribathon/images/location-icon.svg' height='20px' width='20px' alt='location-icon'>" : "<i class='fas fa-user left-i'></i>";
                                     $content .= "<span class='enrich-label'>" . $enrichment['Name'] . "</span>";
+                                    $content .= "<i class='fas fa-check' style='color:#61e02f;' title='User Verified'></i>";
                                 $content .= "</p>";
                                 if($enrichment['Comment'] != 'NULL') {
                                     $content .= "<p class='enrich-description'>Description: " . $enrichment['Comment'] . "</p>";
                                 }
-                                $content .= "<p class='enrich-wiki'> Wikidata Reference: <a href='" . $enrichment['WikiData'] . "' target='_blank'>" . $wikiId . "</a></p>";
+                                $content .= "<p class='enrich-wiki'> Wikidata Reference: <b><a href='" . $enrichment['WikiData'] . "' target='_blank'>" . $wikiId . "</a></b></p>";
                                 $content .= "<i class='fas fa-trash-alt auto-delete' onClick='deleteAutoEnrichment(".$enrichment['AutoEnrichmentId'].",event)'></i>";
                             $content .= "</div>";
 
@@ -2172,9 +2189,11 @@ if (event.target.id != "tagging-status-indicator") {
                     // Content will be added here in switchItemPageView function
                     $content .= "<div id='full-screen-map-placeholder'></div>";
                     // $content .= $mapEditor;
-                    $content .= "<h3 id='loc-verify' style='display:none;'> Verify Automatically Identified Locations </h3>";
-                    $content .= "<div id='loc-auto-enrich'></div>";
-                    $content .= "<div id='accept-loc-enrich' style='display:none;'> SUBMIT </div>";
+                    $content .= "<div id='loc-auto-e-container'>";
+                        $content .= "<h3 id='loc-verify' style='display:none;'> Verify Automatically Identified Locations </h3>";
+                        $content .= "<div id='loc-auto-enrich'></div>";
+                        $content .= "<div id='accept-loc-enrich' style='display:none;'> SUBMIT </div>";
+                    $content .= "</div>";
 
                 $content .= "</div>";
                 // Tag tab
@@ -2184,8 +2203,9 @@ if (event.target.id != "tagging-status-indicator") {
                     $content .= "<div id='ppl-auto-e-container'>";
                         $content .= "<h3 id='ppl-verify' style='display: none;'> Verify Automatically Identified Persons </h3>";
                         $content .= "<div id='ppl-auto-enrich'></div>";
+                        $content .= "<div id='accept-ppl-enrich' style='display:none;'> SUBMIT </div>";
                     $content .= "</div>";
-                    $content .= "<div id='accept-ppl-enrich' style='display:none;'> SUBMIT </div>";
+                    
 
                 $content .= "</div>";
                 // Help tab
