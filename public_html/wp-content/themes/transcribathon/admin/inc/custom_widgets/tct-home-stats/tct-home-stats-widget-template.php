@@ -45,6 +45,7 @@ $content .= '<div
 				md:text-3xl
 				lg:text-4xl
 				font-bold
+				mb-0
 			">' . number_format(intval($items), 0, '.', ' ') . '</h3>';
 		$content .= '<p
 		    class="
@@ -67,6 +68,7 @@ $content .= '<div
 				md:text-3xl
 				lg:text-4xl
 				font-bold
+				mb-0
 			">' . number_format(intval($characters), 0, '.', ' ') . '</h3>';
 		$content .= '<p
 		    class="
@@ -89,6 +91,7 @@ $content .= '<div
 				md:text-3xl
 				lg:text-4xl
 				font-bold
+				mb-0
 			">' . number_format(intval($enrichments), 0, '.', ' ') . '</h3>';
 		$content .= '<p
 		    class="
