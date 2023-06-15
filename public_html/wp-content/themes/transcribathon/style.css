@@ -112,6 +112,11 @@ h1 {
     color: #0058a4!important;
     text-decoration: none;
 }
+/*------- Site origin widgets custom css ------*/
+.siteorigin-widget-tinymce.textwidget, .so-widget-sow-image, .widget_media_video {
+  max-width: 85%!important;
+  margin: 0 auto!important;
+}
 /*----------------------- Main Nvigation and everything regarding navbar ---------------------*/
 div._transcribathon_mainnav {
   height: 50px;
